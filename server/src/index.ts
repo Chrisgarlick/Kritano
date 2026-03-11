@@ -1,0 +1,147 @@
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
+import { Pool } from 'pg';
+import { configureSecurityMiddleware } from './middleware/security.middleware.js';
+import { ensureCsrfToken, csrfProtection } from './middleware/csrf.middleware.js';
+import { globalRateLimiter } from './middleware/rateLimit.middleware.js';
+import { testRedisConnection } from './db/redis.js';
+
+// Load environment variables
+dotenv.config();
+
+// Database connection - require DATABASE_URL (no hardcoded credentials)
+if (!process.env.DATABASE_URL) {
+  console.error('FATAL: DATABASE_URL environment variable is required');
+  process.exit(1);
+}
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 20,
+});
+
+const app = express();
+
+// Security middleware (Helmet)
+configureSecurityMiddleware(app);
+
+// CORS configuration
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
+  })
+);
+
+// Body parsing
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
+// Cookie parser
+app.use(cookieParser());
+
+// CSRF protection
+app.use(ensureCsrfToken);
+app.use('/api', csrfProtection);
+
+// Global rate limiting
+app.use('/api', globalRateLimiter);
+
+// Health check endpoint (no auth required)
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', service: 'pagepulser', timestamp: new Date().toISOString() });
+});
+
+// API version endpoint
+app.get('/api', (req, res) => {
+  res.json({
+    name: 'PagePulser API',
+    version: '1.0.0',
+    documentation: '/api/docs',
+  });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Not found',
+    code: 'NOT_FOUND',
+    path: req.path,
+  });
+});
+
+// Error handler
+app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error('Unhandled error:', err);
+
+  const message = process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message;
+
+  res.status(500).json({
+    error: message,
+    code: 'INTERNAL_ERROR',
+  });
+});
+
+// Start server with port retry logic
+const BASE_PORT = parseInt(process.env.PORT || '3001', 10);
+const MAX_PORT_ATTEMPTS = 10;
+let serverRef: ReturnType<typeof app.listen> | null = null;
+
+const startServer = (port: number, attempt: number = 1): void => {
+  if (attempt > MAX_PORT_ATTEMPTS) {
+    console.error(`Failed to start server: all ports ${BASE_PORT}-${BASE_PORT + MAX_PORT_ATTEMPTS - 1} in use`);
+    process.exit(1);
+  }
+
+  const server = app.listen(port);
+  serverRef = server;
+
+  server.on('error', (err: NodeJS.ErrnoException) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${port} in use, trying ${port + 1}...`);
+      startServer(port + 1, attempt + 1);
+    } else {
+      console.error('Server error:', err);
+      process.exit(1);
+    }
+  });
+
+  server.on('listening', async () => {
+    console.log(`PagePulser server running on http://localhost:${port}`);
+    console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+    await testRedisConnection().catch(() => console.warn('Redis not available — rate limiting will fail open'));
+  });
+};
+
+// Graceful shutdown
+const shutdown = (signal: string) => {
+  console.log(`\nReceived ${signal}, shutting down...`);
+
+  setTimeout(() => {
+    console.log('Forcing exit...');
+    process.exit(0);
+  }, 3000).unref();
+
+  if (serverRef) {
+    serverRef.close(() => {
+      pool.end().finally(() => {
+        process.exit(0);
+      });
+    });
+  } else {
+    pool.end().finally(() => {
+      process.exit(0);
+    });
+  }
+};
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
+
+startServer(BASE_PORT);
+
+export default app;

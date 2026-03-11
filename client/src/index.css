@@ -1,0 +1,273 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Brand Colors */
+  --color-primary: #4f46e5;
+  --color-primary-light: #6366f1;
+  --color-primary-dark: #4338ca;
+  --color-accent: #fbbf24;
+  --color-accent-dark: #f59e0b;
+
+  /* Typography */
+  --font-display: 'Instrument Serif', serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Transitions */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body {
+  @apply bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased;
+  font-family: var(--font-body);
+}
+
+/* =============================================
+   Typography Utility Classes
+   ============================================= */
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* =============================================
+   The Pulse Motion System - Signature Animations
+   ============================================= */
+
+/* Pulse Glow - Active/monitoring states */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(99, 102, 241, 0.2); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Heartbeat - Processing/scanning states */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.1); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.15); }
+  56% { transform: scale(1); }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* Reveal Up - Page load orchestration */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-reveal-up {
+  animation: reveal-up 0.3s ease-out forwards;
+}
+
+/* Stagger classes for cascading reveals */
+.stagger-1 { animation-delay: 0ms; }
+.stagger-2 { animation-delay: 50ms; }
+.stagger-3 { animation-delay: 100ms; }
+.stagger-4 { animation-delay: 150ms; }
+.stagger-5 { animation-delay: 200ms; }
+.stagger-6 { animation-delay: 250ms; }
+.stagger-7 { animation-delay: 300ms; }
+.stagger-8 { animation-delay: 350ms; }
+.stagger-9 { animation-delay: 400ms; }
+.stagger-10 { animation-delay: 450ms; }
+
+/* Slide in from right */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* Count up animation for numbers */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-count-up {
+  animation: count-up 0.8s ease-out forwards;
+}
+
+/* Shake animation for errors */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Success flash animation */
+@keyframes success-flash {
+  0% { background-color: transparent; }
+  50% { background-color: rgba(16, 185, 129, 0.1); }
+  100% { background-color: transparent; }
+}
+
+.animate-success-flash {
+  animation: success-flash 0.6s ease-out;
+}
+
+/* Spin animation (for loading) */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Progress ring animation */
+@keyframes progress-fill {
+  from { stroke-dashoffset: var(--progress-circumference, 283); }
+  to { stroke-dashoffset: var(--progress-offset, 0); }
+}
+
+.animate-progress-fill {
+  animation: progress-fill 1s ease-out forwards;
+}
+
+/* =============================================
+   Background Treatments
+   ============================================= */
+
+.dashboard-bg {
+  background:
+    radial-gradient(ellipse at top right, rgba(99, 102, 241, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(251, 191, 36, 0.02) 0%, transparent 50%),
+    #f8fafc;
+}
+
+.dark .dashboard-bg {
+  background:
+    radial-gradient(ellipse at top right, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(251, 191, 36, 0.04) 0%, transparent 50%),
+    #020617;
+}
+
+/* Glassmorphism for premium elements */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* =============================================
+   Component Layer Utilities
+   ============================================= */
+
+@layer components {
+  /* Button glow effect */
+  .btn-glow {
+    @apply relative;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Accent button with gradient */
+  .btn-accent {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #1e1b4b;
+    box-shadow: 0 4px 14px rgba(251, 191, 36, 0.4);
+    @apply font-semibold;
+  }
+
+  .btn-accent:hover {
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.5);
+    transform: translateY(-1px);
+  }
+
+  /* Card elevation system */
+  .card-level-0 {
+    @apply bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800;
+  }
+
+  .card-level-1 {
+    @apply bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow;
+  }
+
+  .card-level-2 {
+    @apply bg-white dark:bg-slate-900 shadow-md ring-1 ring-indigo-100 dark:ring-indigo-900/30;
+  }
+
+  .card-level-3 {
+    @apply bg-white dark:bg-slate-900 shadow-xl;
+  }
+
+  .card-level-4 {
+    @apply bg-white dark:bg-slate-900 shadow-2xl backdrop-blur-sm;
+  }
+
+  /* Interactive card hover */
+  .card-interactive {
+    @apply transition-all duration-200;
+  }
+
+  .card-interactive:hover {
+    @apply -translate-y-0.5 shadow-lg border-indigo-200 dark:border-indigo-800;
+  }
+}
+
+/* =============================================
+   Accessibility: Reduced Motion
+   ============================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =============================================
+   Print Styles
+   ============================================= */
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+  }
+  .print-break {
+    page-break-before: always;
+  }
+}

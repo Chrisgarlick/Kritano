@@ -1,0 +1,9 @@
+{
+  "name": "PagePulser",
+  "short_name": "PagePulser",
+  "description": "Website auditing for SEO, accessibility, security, and performance",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5"
+}
