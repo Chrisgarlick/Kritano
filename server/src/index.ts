@@ -8,6 +8,7 @@ import { ensureCsrfToken, csrfProtection } from './middleware/csrf.middleware.js
 import { globalRateLimiter } from './middleware/rateLimit.middleware.js';
 import { testRedisConnection } from './db/redis.js';
 import { authRouter } from './routes/auth/index.js';
+import { auditsRouter, setPool as setAuditsPool } from './routes/audits/index.js';
 
 // Load environment variables
 dotenv.config();
@@ -68,6 +69,10 @@ app.get('/api', (req, res) => {
 
 // Auth routes
 app.use('/api/auth', authRouter);
+
+// Audit routes (inject pool)
+setAuditsPool(pool);
+app.use('/api/audits', auditsRouter);
 
 // 404 handler
 app.use((req, res) => {

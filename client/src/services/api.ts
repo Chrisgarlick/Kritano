@@ -138,3 +138,42 @@ export const userApi = {
   getSubscription: () =>
     api.get<{ subscription: Subscription | null; limits: TierLimits | null }>('/user/subscription'),
 };
+
+// Audit API functions
+export const auditsApi = {
+  start: (data: { targetUrl: string; options?: object }) =>
+    api.post('/audits', data),
+
+  list: (params?: { status?: string; limit?: number; offset?: number }) =>
+    api.get('/audits', { params }),
+
+  get: (id: string) =>
+    api.get(`/audits/${id}`),
+
+  getFindings: (id: string, params?: { category?: string; severity?: string; limit?: number; page?: number }) =>
+    api.get(`/audits/${id}/findings`, { params }),
+
+  getPages: (id: string, params?: { status?: string; limit?: number; page?: number }) =>
+    api.get(`/audits/${id}/pages`, { params }),
+
+  getPage: (auditId: string, pageId: string) =>
+    api.get(`/audits/${auditId}/pages/${pageId}`),
+
+  dismiss: (auditId: string, findingId: string, status: 'dismissed' | 'active') =>
+    api.patch(`/audits/${auditId}/findings/${findingId}/dismiss`, { status }),
+
+  bulkDismiss: (auditId: string, ruleId: string, message: string, status?: 'dismissed' | 'active') =>
+    api.patch(`/audits/${auditId}/findings/bulk-dismiss`, { ruleId, message, status }),
+
+  rerun: (id: string) =>
+    api.post(`/audits/${id}/rerun`),
+
+  cancel: (id: string) =>
+    api.post(`/audits/${id}/cancel`),
+
+  delete: (id: string) =>
+    api.delete(`/audits/${id}`),
+
+  createProgressStream: (id: string) =>
+    new EventSource(`/api/audits/${id}/stream`, { withCredentials: true } as EventSourceInit),
+};

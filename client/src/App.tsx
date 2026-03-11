@@ -12,6 +12,10 @@ import RegisterSuccessPage from './pages/auth/RegisterSuccess';
 import VerifyEmailPage from './pages/auth/VerifyEmail';
 import DashboardPage from './pages/dashboard/Dashboard';
 import ProfilePage from './pages/settings/Profile';
+import AuditListPage from './pages/audits/AuditList';
+import AuditDetailPage from './pages/audits/AuditDetail';
+import NewAuditPage from './pages/audits/NewAudit';
+import PageDetailPage from './pages/audits/PageDetail';
 import NotFoundPage from './pages/errors/NotFound';
 
 function App() {
@@ -55,9 +59,39 @@ function App() {
                 {/* Legacy profile route redirect */}
                 <Route path="/profile" element={<Navigate to="/settings/profile" replace />} />
 
-                {/* Placeholder routes for future phases */}
-                <Route path="/audits" element={<PlaceholderPage title="Audits" phase={3} />} />
-                <Route path="/audits/*" element={<PlaceholderPage title="Audits" phase={3} />} />
+                {/* Audit routes */}
+                <Route
+                  path="/audits"
+                  element={
+                    <ProtectedRoute>
+                      <AuditListPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/audits/new"
+                  element={
+                    <ProtectedRoute>
+                      <NewAuditPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/audits/:id"
+                  element={
+                    <ProtectedRoute>
+                      <AuditDetailPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/audits/:id/pages/:pageId"
+                  element={
+                    <ProtectedRoute>
+                      <PageDetailPage />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="/sites" element={<PlaceholderPage title="Sites" phase={4} />} />
                 <Route path="/sites/*" element={<PlaceholderPage title="Sites" phase={4} />} />
                 <Route path="/analytics" element={<PlaceholderPage title="Analytics" phase={7} />} />
