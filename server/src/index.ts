@@ -7,6 +7,7 @@ import { configureSecurityMiddleware } from './middleware/security.middleware.js
 import { ensureCsrfToken, csrfProtection } from './middleware/csrf.middleware.js';
 import { globalRateLimiter } from './middleware/rateLimit.middleware.js';
 import { testRedisConnection } from './db/redis.js';
+import { authRouter } from './routes/auth/index.js';
 
 // Load environment variables
 dotenv.config();
@@ -64,6 +65,9 @@ app.get('/api', (req, res) => {
     documentation: '/api/docs',
   });
 });
+
+// Auth routes
+app.use('/api/auth', authRouter);
 
 // 404 handler
 app.use((req, res) => {

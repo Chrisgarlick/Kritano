@@ -73,13 +73,6 @@ export {
   NoSearchResultsEmptyState,
 } from './EmptyState';
 
-// Site cards
-export {
-  SiteCard,
-  SiteCardGrid,
-  SiteListItem,
-} from './SiteCard';
-
 // Charts
 export {
   ScoreChart,
