@@ -2,10 +2,17 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Alert } from '../../components/ui/Alert';
+import { ContentAnalysisPanel } from '../../components/audits/ContentAnalysisPanel';
+import { KeywordAnalysisPanel } from '../../components/audits/KeywordAnalysisPanel';
 import { auditsApi } from '../../services/api';
 import type { AuditPage, Finding, FindingCategory, Severity, FindingsSummary } from '../../types/audit.types';
 import { formatDate, formatBytes } from '../../utils/format';
 import { severityColors, categoryColors, categoryLabels } from '../../utils/constants';
+import {
+  Image, FileText, Video, Music, Type, Palette, FileCode, File,
+  ChevronDown, ChevronRight, ExternalLink,
+} from 'lucide-react';
+import type { AuditAsset } from '../../types/audit.types';
 
 function ScoreCircle({ score, label }: { score: number | null; label: string }) {
   const getScoreColor = (s: number | null) => {
@@ -35,10 +42,13 @@ export default function PageDetailPage() {
   const [summary, setSummary] = useState<FindingsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['seo', 'accessibility', 'security', 'performance']));
+  const [pageAssets, setPageAssets] = useState<AuditAsset[]>([]);
+  const [assetsExpanded, setAssetsExpanded] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set(['seo', 'accessibility', 'security', 'performance', 'content', 'content-eeat', 'content-aeo', 'structured-data']));
   const [categoryFilter, setCategoryFilter] = useState<FindingCategory | null>(null);
   const [severityFilter, setSeverityFilter] = useState<Severity | null>(null);
 
+  // Computed filtered findings
   const filteredFindings = findings.filter(f => {
     if (categoryFilter && f.category !== categoryFilter) return false;
     if (severityFilter && f.severity !== severityFilter) return false;
@@ -55,20 +65,32 @@ export default function PageDetailPage() {
 
   const categoriesToShow: FindingCategory[] = categoryFilter
     ? [categoryFilter]
-    : (['seo', 'accessibility', 'security', 'performance'] as FindingCategory[]);
+    : (['seo', 'accessibility', 'security', 'performance', 'content', 'content-eeat', 'content-aeo', 'structured-data'] as FindingCategory[]);
 
-  const getCategoryCount = (cat: FindingCategory) =>
-    findings.filter(f => f.category === cat && (!severityFilter || f.severity === severityFilter)).length;
+  // Compute counts for filter buttons (category counts respect severity filter, severity counts respect category filter)
+  const getCategoryCount = (cat: FindingCategory) => {
+    return findings.filter(f => f.category === cat && (!severityFilter || f.severity === severityFilter)).length;
+  };
+
+  const getSeverityCount = (sev: Severity) => {
+    return findings.filter(f => f.severity === sev && (!categoryFilter || f.category === categoryFilter)).length;
+  };
 
   const fetchPageData = useCallback(async () => {
     if (!auditId || !pageId) return;
     try {
       setLoading(true);
       setError(null);
-      const response = await auditsApi.getPage(auditId, pageId);
+      const [response, assetsRes] = await Promise.all([
+        auditsApi.getPage(auditId, pageId),
+        auditsApi.getPageAssets(auditId, pageId).catch(() => null),
+      ]);
       setPage(response.data.page);
       setFindings(response.data.findings);
       setSummary(response.data.summary);
+      if (assetsRes?.data?.assets) {
+        setPageAssets(assetsRes.data.assets as unknown as AuditAsset[]);
+      }
     } catch (err) {
       setError('Failed to load page details.');
       console.error('Failed to fetch page:', err);
@@ -84,8 +106,11 @@ export default function PageDetailPage() {
   const toggleCategory = (category: string) => {
     setExpandedCategories(prev => {
       const next = new Set(prev);
-      if (next.has(category)) next.delete(category);
-      else next.add(category);
+      if (next.has(category)) {
+        next.delete(category);
+      } else {
+        next.add(category);
+      }
       return next;
     });
   };
@@ -154,7 +179,7 @@ export default function PageDetailPage() {
           </span>
         </div>
 
-        {/* Scores */}
+        {/* Scores (R3: flex-wrap for mobile responsiveness) */}
         <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-6 pt-6 border-t border-slate-100">
           <ScoreCircle score={page.seo_score} label="SEO" />
           <ScoreCircle score={page.accessibility_score} label="Accessibility" />
@@ -253,7 +278,7 @@ export default function PageDetailPage() {
               </div>
               <div className="mt-4 space-y-2">
                 <h4 className="text-xs font-medium text-slate-500 uppercase">By Category</h4>
-                {(['seo', 'accessibility', 'security', 'performance'] as FindingCategory[]).map(cat => (
+                {(['seo', 'accessibility', 'security', 'performance', 'content'] as FindingCategory[]).map(cat => (
                   summary.byCategory[cat] > 0 && (
                     <div key={cat} className="flex justify-between items-center">
                       <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${categoryColors[cat]}`}>
@@ -269,13 +294,141 @@ export default function PageDetailPage() {
         </div>
       </div>
 
+      {/* Keyword Analysis Panel */}
+      {page.keyword_data && (
+        <div className="mb-6">
+          <KeywordAnalysisPanel keywordData={page.keyword_data} />
+        </div>
+      )}
+
+      {/* Content Analysis Panel */}
+      {page.content_score !== null && (
+        <div className="mb-6">
+          <ContentAnalysisPanel
+            metrics={{
+              content_quality_score: page.content_quality_score,
+              content_readability_score: page.content_readability_score,
+              content_structure_score: page.content_structure_score,
+              content_engagement_score: page.content_engagement_score,
+              eeat_score: page.eeat_score,
+              eeat_experience_score: page.eeat_experience_score,
+              eeat_expertise_score: page.eeat_expertise_score,
+              eeat_authoritativeness_score: page.eeat_authoritativeness_score,
+              eeat_trustworthiness_score: page.eeat_trustworthiness_score,
+              has_author_bio: page.has_author_bio,
+              has_author_credentials: page.has_author_credentials,
+              citation_count: page.citation_count,
+              has_contact_info: page.has_contact_info,
+              has_privacy_policy: page.has_privacy_policy,
+              has_terms_of_service: page.has_terms_of_service,
+              eeat_tier: page.eeat_tier,
+              eeat_evidence: page.eeat_evidence,
+              aeo_score: page.aeo_score,
+              aeo_nugget_score: page.aeo_nugget_score,
+              aeo_factual_density_score: page.aeo_factual_density_score,
+              aeo_source_authority_score: page.aeo_source_authority_score,
+              aeo_tier: page.aeo_tier,
+              aeo_nuggets: page.aeo_nuggets,
+              flesch_kincaid_grade: page.flesch_kincaid_grade,
+              flesch_reading_ease: page.flesch_reading_ease,
+              word_count: page.word_count,
+              reading_time_minutes: page.reading_time_minutes,
+              detected_content_type: page.detected_content_type,
+            }}
+            contentScore={page.content_score}
+            eeatFindings={findings.filter(f => f.category === 'content-eeat').map(f => ({
+              ruleId: f.rule_id,
+              ruleName: f.rule_name,
+              severity: f.severity,
+              message: f.message,
+              description: f.description,
+              recommendation: f.recommendation,
+            }))}
+            aeoFindings={findings.filter(f => f.category === 'content-aeo').map(f => ({
+              ruleId: f.rule_id,
+              ruleName: f.rule_name,
+              severity: f.severity,
+              message: f.message,
+              description: f.description,
+              recommendation: f.recommendation,
+            }))}
+          />
+        </div>
+      )}
+
+      {/* Files & Assets Section */}
+      {pageAssets.length > 0 && (
+        <div className="mb-6">
+          <button
+            onClick={() => setAssetsExpanded(!assetsExpanded)}
+            className="flex items-center gap-2 w-full text-left bg-white border border-slate-200 rounded-lg px-4 py-3 hover:bg-slate-50 transition-colors"
+          >
+            {assetsExpanded ? <ChevronDown className="w-4 h-4 text-slate-400" /> : <ChevronRight className="w-4 h-4 text-slate-400" />}
+            <File className="w-4 h-4 text-indigo-500" />
+            <span className="text-sm font-medium text-slate-900">Files & Assets</span>
+            <span className="ml-auto text-xs text-slate-500">{pageAssets.length} file{pageAssets.length !== 1 ? 's' : ''}</span>
+          </button>
+          {assetsExpanded && (
+            <div className="mt-2 bg-white border border-slate-200 rounded-lg overflow-hidden">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-slate-100 bg-slate-50">
+                    <th className="text-left text-xs font-medium text-slate-500 px-4 py-2">Type</th>
+                    <th className="text-left text-xs font-medium text-slate-500 px-4 py-2">File</th>
+                    <th className="text-right text-xs font-medium text-slate-500 px-4 py-2">Size</th>
+                    <th className="text-center text-xs font-medium text-slate-500 px-4 py-2">Source</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {pageAssets.map((asset) => {
+                    const typeIcons: Record<string, typeof Image> = {
+                      image: Image, document: FileText, video: Video, audio: Music,
+                      font: Type, stylesheet: Palette, script: FileCode, other: File,
+                    };
+                    const Icon = typeIcons[asset.asset_type] || File;
+                    return (
+                      <tr key={asset.id} className="hover:bg-slate-50">
+                        <td className="px-4 py-2">
+                          <Icon className="w-4 h-4 text-slate-400" />
+                        </td>
+                        <td className="px-4 py-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-slate-900 truncate max-w-xs">{asset.file_name || 'Unknown'}</span>
+                            {asset.file_extension && (
+                              <span className="px-1 py-0.5 text-[10px] font-mono bg-slate-100 text-slate-500 rounded">.{asset.file_extension}</span>
+                            )}
+                            <a href={asset.url} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-indigo-500">
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-right text-xs text-slate-500">
+                          {asset.file_size_bytes ? formatBytes(asset.file_size_bytes) : '—'}
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          <span className="text-[10px] font-medium text-slate-500">
+                            {asset.source === 'both' ? 'HTML+Net' : asset.source === 'network' ? 'Network' : 'HTML'}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Findings Section */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <h2 className="text-lg font-medium text-slate-900">Findings</h2>
 
+          {/* Filters */}
           {findings.length > 0 && (
             <div className="flex flex-wrap gap-2">
+              {/* Category Filter */}
               <div className="flex items-center gap-1 bg-slate-100 rounded-lg p-1">
                 <button
                   onClick={() => setCategoryFilter(null)}
@@ -285,7 +438,7 @@ export default function PageDetailPage() {
                 >
                   All
                 </button>
-                {(['seo', 'accessibility', 'security', 'performance'] as FindingCategory[]).map(cat => {
+                {(['seo', 'accessibility', 'security', 'performance', 'content'] as FindingCategory[]).map(cat => {
                   const count = getCategoryCount(cat);
                   const totalCount = summary?.byCategory[cat] || 0;
                   if (totalCount === 0) return null;
@@ -295,7 +448,7 @@ export default function PageDetailPage() {
                       onClick={() => setCategoryFilter(cat)}
                       className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                         categoryFilter === cat ? 'bg-white shadow text-slate-900' : 'text-slate-600 hover:text-slate-900'
-                      }`}
+                      } ${count === 0 && severityFilter ? 'opacity-50' : ''}`}
                     >
                       {categoryLabels[cat]} ({count})
                     </button>
@@ -303,15 +456,23 @@ export default function PageDetailPage() {
                 })}
               </div>
 
+              {/* Severity Filter */}
               <select
                 value={severityFilter || ''}
                 onChange={(e) => setSeverityFilter(e.target.value as Severity || null)}
-                className="px-3 py-1.5 text-xs font-medium border border-slate-300 rounded-lg bg-white"
+                className="px-3 py-1.5 text-xs font-medium border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="">All Severities</option>
-                {(['critical', 'serious', 'moderate', 'minor', 'info'] as Severity[]).map(sev => (
-                  <option key={sev} value={sev}>{sev.charAt(0).toUpperCase() + sev.slice(1)}</option>
-                ))}
+                {(['critical', 'serious', 'moderate', 'minor', 'info'] as Severity[]).map(sev => {
+                  const totalCount = summary?.bySeverity[sev] || 0;
+                  if (totalCount === 0) return null;
+                  const count = getSeverityCount(sev);
+                  return (
+                    <option key={sev} value={sev}>
+                      {sev.charAt(0).toUpperCase() + sev.slice(1)} ({count})
+                    </option>
+                  );
+                })}
               </select>
             </div>
           )}
@@ -334,6 +495,8 @@ export default function PageDetailPage() {
               <div key={category} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <button
                   onClick={() => toggleCategory(category)}
+                  aria-expanded={expandedCategories.has(category)}
+                  aria-controls={`category-panel-${category}`}
                   className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors"
                 >
                   <div className="flex items-center space-x-3">
@@ -347,13 +510,14 @@ export default function PageDetailPage() {
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    aria-hidden="true"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
 
                 {expandedCategories.has(category) && (
-                  <div className="border-t border-slate-100">
+                  <div id={`category-panel-${category}`} className="border-t border-slate-100">
                     {categoryFindings.map((finding) => (
                       <div key={finding.id} className="px-6 py-4 border-b border-slate-100 last:border-b-0">
                         <div className="flex items-start justify-between mb-2">
@@ -361,11 +525,14 @@ export default function PageDetailPage() {
                             {finding.severity}
                           </span>
                         </div>
+
                         <h4 className="text-sm font-medium text-slate-900 mb-1">{finding.rule_name}</h4>
                         <p className="text-sm text-slate-600">{finding.message}</p>
+
                         {finding.description && (
                           <p className="text-sm text-slate-500 mt-2">{finding.description}</p>
                         )}
+
                         {finding.recommendation && (
                           <div className="mt-3 p-3 bg-indigo-50 rounded-lg">
                             <p className="text-sm text-indigo-800">
@@ -373,17 +540,20 @@ export default function PageDetailPage() {
                             </p>
                           </div>
                         )}
+
                         {finding.selector && (
                           <div className="mt-2">
                             <span className="text-xs text-slate-500">Selector: </span>
                             <code className="text-xs bg-slate-100 px-1 py-0.5 rounded">{finding.selector}</code>
                           </div>
                         )}
+
                         {finding.snippet && (
                           <pre className="mt-2 p-3 bg-slate-50 rounded-lg text-xs text-slate-700 overflow-x-auto">
                             {finding.snippet}
                           </pre>
                         )}
+
                         {finding.wcag_criteria && finding.wcag_criteria.length > 0 && (
                           <div className="mt-2 flex flex-wrap gap-1">
                             {finding.wcag_criteria.map((criteria, i) => (
@@ -393,6 +563,7 @@ export default function PageDetailPage() {
                             ))}
                           </div>
                         )}
+
                         {finding.help_url && (
                           <a
                             href={finding.help_url}

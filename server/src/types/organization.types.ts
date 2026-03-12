@@ -1,5 +1,14 @@
 // Minimal organization types needed by domain-verification service
 
+export interface OrgBranding {
+  companyName?: string;
+  logoUrl?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  footerText?: string;
+}
+
 export interface OrganizationDomain {
   id: string;
   organization_id: string;

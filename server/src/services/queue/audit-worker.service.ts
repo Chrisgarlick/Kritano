@@ -1,5 +1,4 @@
-// @ts-nocheck
-
+import { Pool } from 'pg';
 import { chromium, Browser, Page } from 'playwright';
 import { JobQueueService, createJobQueue } from './job-queue.service';
 import { createSpider } from '../spider/spider.service';
@@ -17,6 +16,9 @@ import {
   SCANNER_INFO,
   type RateLimitProfile,
 } from '../../constants/consent.constants.js';
+import { getDomainSettingsForAudit } from '../domain-verification.service.js';
+import { extractAssets } from '../asset-extractor.service.js';
+import type { DiscoveredAsset } from '../../types/asset.types.js';
 import {
   addActivityLog as sharedAddActivityLog,
   addToQueue as sharedAddToQueue,
@@ -296,8 +298,10 @@ export class AuditWorkerService {
     // Build spider config - apply stricter limits for unverified domains
     const isUnverifiedMode = (job as AuditJob & { unverified_mode?: boolean }).unverified_mode === true;
 
-    // Domain settings (full implementation in Phase 4 with site verification)
-    const domainSettings: { verified: boolean; rateLimitProfile?: string; ignoreRobotsTxt?: boolean } | null = null;
+    // Look up domain bypass settings for verified domains
+    const domainSettings = job.organization_id
+      ? await getDomainSettingsForAudit(job.organization_id, job.target_domain)
+      : null;
 
     // Determine rate limit profile settings
     let rateLimitConfig = {
@@ -522,6 +526,17 @@ export class AuditWorkerService {
               });
             }
 
+            // File extraction (non-blocking)
+            if (checkFileExtraction) {
+              try {
+                const assets = extractAssets(crawlResult.html, crawlResult.url, crawlResult.resources);
+                if (assets.length > 0) {
+                  await this.storeAssets(job.id, pageId, assets);
+                }
+              } catch (assetErr) {
+                console.log(`   ⚠️ Asset extraction failed: ${assetErr instanceof Error ? assetErr.message : assetErr}`);
+              }
+            }
 
             const isHtmlContent = this.isHtmlContentType(crawlResult.contentType);
             let auditResult: Awaited<ReturnType<typeof this.auditCoordinator.analyzePage>> = { findings: [] };
@@ -795,6 +810,54 @@ export class AuditWorkerService {
           continue;
         }
         await sharedAddToQueue(this.pool,job.id, link.href, nextDepth, result.url, priority);
+      }
+    }
+  }
+
+  /**
+   * Store discovered assets for a page (upsert + junction rows)
+   */
+  private async storeAssets(auditJobId: string, pageId: string, assets: DiscoveredAsset[]): Promise<void> {
+    for (const asset of assets) {
+      try {
+        // Upsert asset row — increment page_count on conflict, upgrade source to 'both' if mixed
+        const result = await this.pool.query<{ id: string }>(`
+          INSERT INTO audit_assets (audit_job_id, url, url_hash, asset_type, mime_type, file_extension, file_name, file_size_bytes, source, http_status, page_count)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 1)
+          ON CONFLICT (audit_job_id, url_hash) DO UPDATE SET
+            page_count = audit_assets.page_count + 1,
+            source = CASE
+              WHEN audit_assets.source != EXCLUDED.source THEN 'both'
+              ELSE audit_assets.source
+            END,
+            mime_type = COALESCE(EXCLUDED.mime_type, audit_assets.mime_type),
+            file_size_bytes = COALESCE(EXCLUDED.file_size_bytes, audit_assets.file_size_bytes),
+            http_status = COALESCE(EXCLUDED.http_status, audit_assets.http_status)
+          RETURNING id
+        `, [
+          auditJobId,
+          asset.url,
+          asset.urlHash,
+          asset.assetType,
+          asset.mimeType,
+          asset.fileExtension,
+          asset.fileName,
+          asset.fileSizeBytes,
+          asset.source,
+          asset.httpStatus,
+        ]);
+
+        const assetId = result.rows[0].id;
+
+        // Insert junction row (ignore duplicate)
+        await this.pool.query(`
+          INSERT INTO audit_asset_pages (audit_asset_id, audit_page_id, html_element, html_attribute)
+          VALUES ($1, $2, $3, $4)
+          ON CONFLICT (audit_asset_id, audit_page_id) DO NOTHING
+        `, [assetId, pageId, asset.htmlElement, asset.htmlAttribute]);
+      } catch (err) {
+        // Skip individual asset errors silently
+        console.log(`   ⚠️ Failed to store asset ${asset.url}: ${err instanceof Error ? err.message : err}`);
       }
     }
   }

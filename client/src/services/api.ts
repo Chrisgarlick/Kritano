@@ -153,10 +153,24 @@ export const userApi = {
 
 // Audit API functions
 export const auditsApi = {
-  start: (data: { targetUrl: string; options?: object }) =>
+  start: (data: { targetUrl: string; siteId?: string; options?: object; consent?: { accepted: boolean; dontShowAgain?: boolean } }) =>
     api.post('/audits', data),
 
-  list: (params?: { status?: string; limit?: number; offset?: number }) =>
+  getDomainStatus: (url: string) =>
+    api.get<{
+      domain: string;
+      isVerified: boolean;
+      requiresConsent: boolean;
+      userSkipsWarning: boolean;
+      scanLimits: {
+        maxPages: number;
+        minDelayMs: number;
+        robotsTxtRequired: boolean;
+        sequential: boolean;
+      } | null;
+    }>('/audits/domain-status', { params: { url } }),
+
+  list: (params?: { status?: string; limit?: number; offset?: number; siteId?: string }) =>
     api.get('/audits', { params }),
 
   get: (id: string) =>
@@ -164,6 +178,9 @@ export const auditsApi = {
 
   getFindings: (id: string, params?: { category?: string; severity?: string; limit?: number; page?: number }) =>
     api.get(`/audits/${id}/findings`, { params }),
+
+  getBrokenLinks: (id: string) =>
+    api.get(`/audits/${id}/broken-links`),
 
   getPages: (id: string, params?: { status?: string; limit?: number; page?: number }) =>
     api.get(`/audits/${id}/pages`, { params }),
@@ -180,11 +197,109 @@ export const auditsApi = {
   rerun: (id: string) =>
     api.post(`/audits/${id}/rerun`),
 
+  checkUrl: (url: string) =>
+    api.get<{ reachable: boolean; status?: number; error?: string; finalUrl?: string }>('/audits/check-url', { params: { url } }),
+
   cancel: (id: string) =>
     api.post(`/audits/${id}/cancel`),
 
   delete: (id: string) =>
     api.delete(`/audits/${id}`),
+
+  getRecentUrls: () =>
+    api.get<{ urls: Array<{ target_url: string; target_domain: string }> }>('/audits/recent-urls'),
+
+  dismissFinding: (auditId: string, findingId: string, status: 'dismissed' | 'active') =>
+    api.patch(`/audits/${auditId}/findings/${findingId}/dismiss`, { status }),
+
+  exportCsv: (id: string) =>
+    api.get(`/audits/${id}/export/csv`, { responseType: 'blob' }),
+
+  exportJson: (id: string) =>
+    api.get(`/audits/${id}/export/json`, { responseType: 'blob' }),
+
+  exportMarkdown: (id: string) =>
+    api.get(`/audits/${id}/export/markdown`, { responseType: 'blob' }),
+
+  exportHtml: (id: string) =>
+    api.get(`/audits/${id}/export/html`, { responseType: 'blob' }),
+
+  exportPdf: (id: string) =>
+    api.get(`/audits/${id}/export/pdf`, { responseType: 'blob' }),
+
+  getScoreHistory: (id: string) =>
+    api.get<{ history: Array<{ id: string; created_at: string; seo_score: number | null; accessibility_score: number | null; security_score: number | null; performance_score: number | null }> }>(`/audits/${id}/score-history`),
+
+  getIndexExposure: (id: string) =>
+    api.get<{
+      total: number;
+      bySeverity: { critical: number; serious: number; moderate: number; minor: number; info: number };
+      byCategory: Record<string, number>;
+      findings: Array<{
+        id: string;
+        rule_id: string;
+        rule_name: string;
+        severity: string;
+        message: string;
+        description: string | null;
+        recommendation: string | null;
+        selector: string | null;
+        snippet: string | null;
+        help_url: string | null;
+        created_at: string;
+      }>;
+      scanPerformed: boolean;
+    }>(`/audits/${id}/index-exposure`),
+
+  getSchemaSummary: (id: string) =>
+    api.get<{
+      hasStructuredData: boolean;
+      jsonLdCount: number;
+      hasOpenGraph: boolean;
+      hasTwitterCard: boolean;
+      detectedTypes: string[];
+      pagesWithSchema: number;
+      pagesWithoutSchema: number;
+      totalPages: number;
+      pages: Array<{
+        id: string;
+        url: string;
+        title: string | null;
+        metaDescription: string | null;
+        jsonLdCount: number;
+        hasOg: boolean;
+        hasTc: boolean;
+        detectedTypes: string[];
+        detectedPageType: string | null;
+        ogData: Record<string, unknown> | null;
+        tcData: Record<string, unknown> | null;
+        jsonLdItems: Array<Record<string, unknown>> | null;
+      }>;
+    }>(`/audits/${id}/schema-summary`),
+
+  generateSchema: (auditId: string, pageId: string) =>
+    api.post<{ jsonLd: string; pageType: string }>(`/audits/${auditId}/pages/${pageId}/generate-schema`),
+
+  generateSchemaAll: (auditId: string) =>
+    api.post<{
+      pages: Array<{ pageId: string; url: string; title: string | null; pageType: string; jsonLd: string }>;
+      combined: string;
+    }>(`/audits/${auditId}/generate-schema-all`),
+
+  getAssets: (id: string, params?: { type?: string; search?: string; sort?: string; order?: string; limit?: number; offset?: number }) =>
+    api.get(`/audits/${id}/assets`, { params }),
+
+  getAssetPages: (auditId: string, assetId: string) =>
+    api.get<{ pages: Array<{ id: string; url: string; title: string | null; html_element: string | null; html_attribute: string | null }> }>(
+      `/audits/${auditId}/assets/${assetId}/pages`
+    ),
+
+  getPageAssets: (auditId: string, pageId: string) =>
+    api.get<{ assets: Array<{
+      id: string; url: string; asset_type: string; mime_type: string | null; file_extension: string | null;
+      file_name: string | null; file_size_bytes: number | null; source: string; http_status: number | null;
+      page_count: number; html_element: string | null; html_attribute: string | null;
+    }> }>(`/audits/${auditId}/pages/${pageId}/assets`),
 
   createProgressStream: (id: string) =>
     new EventSource(`/api/audits/${id}/stream`, { withCredentials: true } as EventSourceInit),
