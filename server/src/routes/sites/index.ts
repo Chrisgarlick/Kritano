@@ -1,0 +1,797 @@
+import { Router, Request, Response } from 'express';
+import { authenticate } from '../../middleware/auth.middleware.js';
+import {
+  loadSite,
+  requireSitePermission,
+  requireSiteOwner,
+  requireMinPermission,
+  type SiteRequest,
+} from '../../middleware/site.middleware.js';
+import {
+  createSite,
+  getUserSites,
+  getSiteById,
+  getSiteWithStats,
+  updateSite,
+  deleteSite,
+  getUserSiteUsage,
+  getSiteAudits,
+  getSiteScoreHistory,
+  getSiteUrls,
+  getUrlById,
+  getUrlAudits,
+  addUrl,
+  discoverSitemapUrls,
+  getUrlCount,
+  generateVerificationToken,
+  markSiteVerified,
+  incrementVerificationAttempt,
+  isSiteVerified,
+  getSiteOwnerTierLimits,
+} from '../../services/site.service.js';
+
+const router = Router();
+
+// All routes require authentication
+router.use(authenticate);
+
+// =============================================
+// SITE CRUD (User-centric, no org prefix)
+// =============================================
+
+/**
+ * GET /api/sites
+ * List all sites accessible by user (owned + shared)
+ */
+router.get('/', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+
+    const [sites, usage] = await Promise.all([
+      getUserSites(userId),
+      getUserSiteUsage(userId),
+    ]);
+
+    // Transform to camelCase for API
+    const transformed = sites.map(s => ({
+      id: s.site.id,
+      name: s.site.name,
+      domain: s.site.domain,
+      description: s.site.description,
+      logoUrl: s.site.logo_url,
+      verified: s.site.verified,
+      settings: s.site.settings,
+      createdAt: s.site.created_at,
+      updatedAt: s.site.updated_at,
+      permission: s.permission,
+      isOwner: s.permission === 'owner',
+      sharedBy: s.sharedBy,
+      sharedAt: s.sharedAt,
+      stats: {
+        totalAudits: s.site.stats.totalAudits,
+        lastAuditAt: s.site.stats.lastAuditAt,
+        latestScores: s.site.stats.latestScores,
+        urlCount: s.site.stats.urlCount,
+      },
+    }));
+
+    res.json({
+      sites: transformed,
+      usage: {
+        sites: usage.sites,
+        maxSites: usage.maxSites,
+        canAddMore: usage.canAddMore,
+      },
+    });
+  } catch (error: unknown) {
+    console.error('Get sites error:', error);
+    res.status(500).json({ error: 'Failed to get sites' });
+  }
+});
+
+/**
+ * POST /api/sites
+ * Create a new site
+ */
+router.post('/', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const { name, domain, description } = req.body;
+
+    if (!name || !domain) {
+      res.status(400).json({ error: 'Name and domain are required' });
+      return;
+    }
+
+    const site = await createSite(userId, { name, domain, description });
+
+    res.status(201).json({
+      site: {
+        id: site.id,
+        name: site.name,
+        domain: site.domain,
+        description: site.description,
+        logoUrl: site.logo_url,
+        verified: site.verified,
+        settings: site.settings,
+        createdAt: site.created_at,
+        updatedAt: site.updated_at,
+      },
+    });
+  } catch (error: unknown) {
+    console.error('Create site error:', error);
+    const message = error instanceof Error ? error.message : 'Failed to create site';
+    res.status(400).json({ error: message });
+  }
+});
+
+/**
+ * GET /api/sites/:siteId
+ * Get a single site with full details
+ */
+router.get('/:siteId', loadSite, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const siteReq = req as SiteRequest;
+    const siteId = siteReq.siteId!;
+
+    const site = await getSiteWithStats(siteId);
+
+    if (!site) {
+      res.status(404).json({ error: 'Site not found' });
+      return;
+    }
+
+    // Get additional data
+    const scoreHistory = await getSiteScoreHistory(siteId, 30);
+
+    res.json({
+      site: {
+        id: site.id,
+        name: site.name,
+        domain: site.domain,
+        description: site.description,
+        logoUrl: site.logo_url,
+        verified: site.verified,
+        verificationToken: siteReq.sitePermission === 'owner' || siteReq.sitePermission === 'admin'
+          ? site.verification_token
+          : undefined,
+        verifiedAt: site.verified_at,
+        settings: site.settings,
+        createdAt: site.created_at,
+        updatedAt: site.updated_at,
+        stats: {
+          totalAudits: site.stats.totalAudits,
+          lastAuditAt: site.stats.lastAuditAt,
+          latestScores: site.stats.latestScores,
+          urlCount: site.stats.urlCount,
+        },
+      },
+      permission: siteReq.sitePermission,
+      isOwner: siteReq.sitePermission === 'owner',
+      scoreHistory: scoreHistory.map(s => ({
+        date: s.date,
+        seo: s.seo,
+        accessibility: s.accessibility,
+        security: s.security,
+        performance: s.performance,
+      })),
+    });
+  } catch (error: unknown) {
+    console.error('Get site error:', error);
+    res.status(500).json({ error: 'Failed to get site' });
+  }
+});
+
+/**
+ * PATCH /api/sites/:siteId
+ * Update a site
+ */
+router.patch(
+  '/:siteId',
+  loadSite,
+  requireMinPermission('editor'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const { name, description, logoUrl, settings } = req.body;
+
+      const site = await updateSite(siteId, {
+        name,
+        description,
+        logo_url: logoUrl,
+        settings,
+      });
+
+      res.json({
+        site: {
+          id: site.id,
+          name: site.name,
+          domain: site.domain,
+          description: site.description,
+          logoUrl: site.logo_url,
+          verified: site.verified,
+          settings: site.settings,
+          createdAt: site.created_at,
+          updatedAt: site.updated_at,
+        },
+      });
+    } catch (error: unknown) {
+      console.error('Update site error:', error);
+      const message = error instanceof Error ? error.message : 'Failed to update site';
+      res.status(400).json({ error: message });
+    }
+  }
+);
+
+/**
+ * DELETE /api/sites/:siteId
+ * Delete a site (owner only)
+ */
+router.delete(
+  '/:siteId',
+  loadSite,
+  requireSiteOwner,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+
+      await deleteSite(siteId);
+
+      res.json({ success: true });
+    } catch (error: unknown) {
+      console.error('Delete site error:', error);
+      res.status(500).json({ error: 'Failed to delete site' });
+    }
+  }
+);
+
+// =============================================
+// SITE AUDITS
+// =============================================
+
+/**
+ * GET /api/sites/:siteId/audits
+ * Get audits for a site
+ */
+router.get('/:siteId/audits', loadSite, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const siteReq = req as SiteRequest;
+    const siteId = siteReq.siteId!;
+    const { limit = '20', offset = '0', status } = req.query;
+
+    const { audits, total } = await getSiteAudits(siteId, {
+      limit: parseInt(limit as string, 10),
+      offset: parseInt(offset as string, 10),
+      status: status as string | undefined,
+    });
+
+    res.json({
+      audits: audits.map((a: any) => ({
+        id: a.id,
+        targetUrl: a.target_url,
+        targetDomain: a.target_domain,
+        status: a.status,
+        pagesFound: a.pages_found,
+        pagesCrawled: a.pages_crawled,
+        pagesAudited: a.pages_audited,
+        totalIssues: a.total_issues,
+        criticalIssues: a.critical_issues,
+        seoScore: a.seo_score,
+        accessibilityScore: a.accessibility_score,
+        securityScore: a.security_score,
+        performanceScore: a.performance_score,
+        startedAt: a.started_at,
+        completedAt: a.completed_at,
+        createdAt: a.created_at,
+      })),
+      pagination: {
+        total,
+        limit: parseInt(limit as string, 10),
+        offset: parseInt(offset as string, 10),
+      },
+    });
+  } catch (error: unknown) {
+    console.error('Get site audits error:', error);
+    res.status(500).json({ error: 'Failed to get audits' });
+  }
+});
+
+// =============================================
+// SITE URLs
+// =============================================
+
+/**
+ * GET /api/sites/:siteId/urls
+ * Get URLs for a site (with search and pagination)
+ */
+router.get('/:siteId/urls', loadSite, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const siteReq = req as SiteRequest;
+    const siteId = siteReq.siteId!;
+    const { search, limit = '50', offset = '0', sortBy, sortOrder } = req.query;
+
+    const { urls, total } = await getSiteUrls(siteId, {
+      search: search as string | undefined,
+      limit: parseInt(limit as string, 10),
+      offset: parseInt(offset as string, 10),
+      sortBy: sortBy as 'url_path' | 'last_audited_at' | 'audit_count' | 'sitemap_priority' | 'last_seo_score' | 'last_accessibility_score' | 'last_security_score' | 'last_performance_score' | undefined,
+      sortOrder: sortOrder as 'asc' | 'desc' | undefined,
+    });
+
+    res.json({
+      urls: urls.map(u => ({
+        id: u.id,
+        url: u.url,
+        urlPath: u.url_path,
+        source: u.source,
+        lastAuditedAt: u.last_audited_at,
+        lastAuditId: u.last_audit_id,
+        lastSeoScore: u.last_seo_score,
+        lastAccessibilityScore: u.last_accessibility_score,
+        lastSecurityScore: u.last_security_score,
+        lastPerformanceScore: u.last_performance_score,
+        lastContentScore: u.last_content_score,
+        auditCount: u.audit_count,
+        sitemapPriority: u.sitemap_priority,
+        sitemapChangefreq: u.sitemap_changefreq,
+        createdAt: u.created_at,
+      })),
+      pagination: {
+        total,
+        limit: parseInt(limit as string, 10),
+        offset: parseInt(offset as string, 10),
+      },
+    });
+  } catch (error: unknown) {
+    console.error('Get site URLs error:', error);
+    res.status(500).json({ error: 'Failed to get URLs' });
+  }
+});
+
+/**
+ * POST /api/sites/:siteId/urls
+ * Add a URL manually
+ */
+router.post(
+  '/:siteId/urls',
+  loadSite,
+  requireMinPermission('editor'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const { url } = req.body;
+
+      if (!url) {
+        res.status(400).json({ error: 'URL is required' });
+        return;
+      }
+
+      const newUrl = await addUrl(siteId, url);
+
+      res.status(201).json({
+        url: {
+          id: newUrl.id,
+          url: newUrl.url,
+          urlPath: newUrl.url_path,
+          source: newUrl.source,
+          createdAt: newUrl.created_at,
+        },
+      });
+    } catch (error: unknown) {
+      console.error('Add URL error:', error);
+      const message = error instanceof Error ? error.message : 'Failed to add URL';
+      res.status(400).json({ error: message });
+    }
+  }
+);
+
+/**
+ * GET /api/sites/:siteId/urls/:urlId
+ * Get a specific URL
+ */
+router.get('/:siteId/urls/:urlId', loadSite, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const siteReq = req as SiteRequest;
+    const { urlId } = req.params;
+
+    const url = await getUrlById(urlId);
+
+    if (!url || url.site_id !== siteReq.siteId) {
+      res.status(404).json({ error: 'URL not found' });
+      return;
+    }
+
+    res.json({
+      url: {
+        id: url.id,
+        url: url.url,
+        urlPath: url.url_path,
+        source: url.source,
+        lastAuditedAt: url.last_audited_at,
+        lastAuditId: url.last_audit_id,
+        lastSeoScore: url.last_seo_score,
+        lastAccessibilityScore: url.last_accessibility_score,
+        lastSecurityScore: url.last_security_score,
+        lastPerformanceScore: url.last_performance_score,
+        auditCount: url.audit_count,
+        sitemapPriority: url.sitemap_priority,
+        sitemapChangefreq: url.sitemap_changefreq,
+        createdAt: url.created_at,
+        updatedAt: url.updated_at,
+      },
+    });
+  } catch (error: unknown) {
+    console.error('Get URL error:', error);
+    res.status(500).json({ error: 'Failed to get URL' });
+  }
+});
+
+/**
+ * GET /api/sites/:siteId/urls/:urlId/audits
+ * Get audits for a specific URL
+ */
+router.get('/:siteId/urls/:urlId/audits', loadSite, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const siteReq = req as SiteRequest;
+    const { urlId } = req.params;
+    const { limit = '20', offset = '0' } = req.query;
+
+    // Verify URL belongs to this site
+    const url = await getUrlById(urlId);
+    if (!url || url.site_id !== siteReq.siteId) {
+      res.status(404).json({ error: 'URL not found' });
+      return;
+    }
+
+    const { audits, total } = await getUrlAudits(urlId, {
+      limit: parseInt(limit as string, 10),
+      offset: parseInt(offset as string, 10),
+    });
+
+    res.json({
+      audits: audits.map((a: any) => ({
+        id: a.id,
+        targetUrl: a.target_url,
+        status: a.status,
+        seoScore: a.seo_score,
+        accessibilityScore: a.accessibility_score,
+        securityScore: a.security_score,
+        performanceScore: a.performance_score,
+        completedAt: a.completed_at,
+        createdAt: a.created_at,
+      })),
+      pagination: {
+        total,
+        limit: parseInt(limit as string, 10),
+        offset: parseInt(offset as string, 10),
+      },
+    });
+  } catch (error: unknown) {
+    console.error('Get URL audits error:', error);
+    res.status(500).json({ error: 'Failed to get URL audits' });
+  }
+});
+
+/**
+ * GET /api/sites/:siteId/urls/count
+ * Get count of URLs for a site
+ */
+router.get('/:siteId/urls-count', loadSite, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const siteReq = req as SiteRequest;
+    const siteId = siteReq.siteId!;
+
+    const count = await getUrlCount(siteId);
+
+    res.json({ count });
+  } catch (error: unknown) {
+    console.error('Get URL count error:', error);
+    res.status(500).json({ error: 'Failed to get count' });
+  }
+});
+
+/**
+ * POST /api/sites/:siteId/discover-urls
+ * Discover URLs from sitemap
+ */
+router.post(
+  '/:siteId/discover-urls',
+  loadSite,
+  requireMinPermission('editor'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const site = siteReq.site!;
+
+      const { urlsDiscovered, errors } = await discoverSitemapUrls(siteId, site.domain);
+
+      res.json({
+        message: `Discovered ${urlsDiscovered} URLs from sitemap`,
+        urlsDiscovered,
+        errors: errors.length > 0 ? errors : undefined,
+      });
+    } catch (error: unknown) {
+      console.error('Discover URLs error:', error);
+      res.status(500).json({ error: 'Failed to discover URLs' });
+    }
+  }
+);
+
+// =============================================
+// SITE VERIFICATION
+// =============================================
+
+/**
+ * POST /api/sites/:siteId/verification-token
+ * Generate a verification token (returns existing token unless regenerate=true)
+ */
+router.post(
+  '/:siteId/verification-token',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const { regenerate } = req.body;
+
+      const token = await generateVerificationToken(siteId, regenerate === true);
+
+      res.json({
+        token,
+        instructions: {
+          dns: {
+            type: 'TXT',
+            name: '_pagepulser',
+            value: token,
+          },
+          file: {
+            path: `/.well-known/pagepulser-verification.txt`,
+            content: token,
+          },
+        },
+      });
+    } catch (error: unknown) {
+      console.error('Generate token error:', error);
+      res.status(500).json({ error: 'Failed to generate verification token' });
+    }
+  }
+);
+
+/**
+ * POST /api/sites/:siteId/extract-branding
+ * Extract colors and fonts from the site's homepage
+ */
+router.post(
+  '/:siteId/extract-branding',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const site = siteReq.site!;
+
+      // Fetch the homepage
+      const url = `https://${site.domain}`;
+      let html: string;
+
+      try {
+        const response = await fetch(url, {
+          signal: AbortSignal.timeout(15000),
+          headers: {
+            'User-Agent': 'PagePulser/1.0 (Branding Extractor)',
+          },
+        });
+
+        if (!response.ok) {
+          res.status(400).json({ error: `Failed to fetch site: ${response.status}` });
+          return;
+        }
+
+        html = await response.text();
+      } catch (fetchError) {
+        res.status(400).json({ error: 'Could not reach the website' });
+        return;
+      }
+
+      // Extract colors from CSS and inline styles
+      const colorCounts = new Map<string, number>();
+
+      // Helper to normalize and count colors
+      const addColor = (color: string) => {
+        // Normalize to lowercase hex
+        let normalized = color.toLowerCase().trim();
+
+        // Convert 3-digit hex to 6-digit
+        if (/^#[0-9a-f]{3}$/i.test(normalized)) {
+          normalized = `#${normalized[1]}${normalized[1]}${normalized[2]}${normalized[2]}${normalized[3]}${normalized[3]}`;
+        }
+
+        // Skip if not valid hex
+        if (!/^#[0-9a-f]{6}$/i.test(normalized)) return;
+
+        // Skip black, white, and near-black/white colors
+        const r = parseInt(normalized.slice(1, 3), 16);
+        const g = parseInt(normalized.slice(3, 5), 16);
+        const b = parseInt(normalized.slice(5, 7), 16);
+
+        // Skip very dark or very light colors
+        const brightness = (r + g + b) / 3;
+        if (brightness < 20 || brightness > 240) return;
+
+        // Skip grays (where r, g, b are very close)
+        const maxDiff = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+        if (maxDiff < 15) return;
+
+        colorCounts.set(normalized, (colorCounts.get(normalized) || 0) + 1);
+      };
+
+      // Extract hex colors
+      const hexPattern = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/g;
+      let match;
+      while ((match = hexPattern.exec(html)) !== null) {
+        addColor(match[0]);
+      }
+
+      // Extract rgb/rgba colors and convert to hex
+      const rgbPattern = /rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/gi;
+      while ((match = rgbPattern.exec(html)) !== null) {
+        const r = parseInt(match[1], 10);
+        const g = parseInt(match[2], 10);
+        const b = parseInt(match[3], 10);
+        if (r <= 255 && g <= 255 && b <= 255) {
+          const hex = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+          addColor(hex);
+        }
+      }
+
+      // Sort by frequency and get top colors
+      const sortedColors = [...colorCounts.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .map(([color]) => color);
+
+      // Try to extract meta theme-color
+      const themeColorMatch = html.match(/<meta[^>]*name=["']theme-color["'][^>]*content=["']([^"']+)["']/i)
+        || html.match(/<meta[^>]*content=["']([^"']+)["'][^>]*name=["']theme-color["']/i);
+
+      if (themeColorMatch) {
+        const themeColor = themeColorMatch[1];
+        // Add theme color as high priority
+        if (themeColor.startsWith('#')) {
+          // Move to front if it exists, or add it
+          const idx = sortedColors.indexOf(themeColor.toLowerCase());
+          if (idx > 0) {
+            sortedColors.splice(idx, 1);
+            sortedColors.unshift(themeColor.toLowerCase());
+          } else if (idx === -1) {
+            sortedColors.unshift(themeColor.toLowerCase());
+          }
+        }
+      }
+
+      // Extract site title for company name suggestion
+      const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+      const ogSiteNameMatch = html.match(/<meta[^>]*property=["']og:site_name["'][^>]*content=["']([^"']+)["']/i)
+        || html.match(/<meta[^>]*content=["']([^"']+)["'][^>]*property=["']og:site_name["']/i);
+
+      let companyName = '';
+      if (ogSiteNameMatch) {
+        companyName = ogSiteNameMatch[1].trim();
+      } else if (titleMatch) {
+        // Clean up title (often has " - Company" or "| Company" format)
+        let title = titleMatch[1].trim();
+        // Take the last part after | or -
+        const parts = title.split(/\s*[|\-\u2013\u2014]\s*/);
+        if (parts.length > 1) {
+          companyName = parts[parts.length - 1].trim();
+        } else {
+          companyName = title;
+        }
+      }
+
+      // Assign colors to primary, secondary, accent
+      const palette = {
+        primary: sortedColors[0] || '#4f46e5',
+        secondary: sortedColors[1] || sortedColors[0] || '#6366f1',
+        accent: sortedColors[2] || sortedColors[1] || '#f59e0b',
+      };
+
+      res.json({
+        palette,
+        companyName,
+        allColors: sortedColors.slice(0, 10), // Return top 10 for user to choose
+      });
+    } catch (error: unknown) {
+      console.error('Extract branding error:', error);
+      res.status(500).json({ error: 'Failed to extract branding' });
+    }
+  }
+);
+
+/**
+ * POST /api/sites/:siteId/verify
+ * Verify site ownership
+ */
+router.post(
+  '/:siteId/verify',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const site = siteReq.site!;
+      const { method } = req.body;
+
+      if (!['dns', 'file'].includes(method)) {
+        res.status(400).json({ error: 'Method must be "dns" or "file"' });
+        return;
+      }
+
+      // Check if already verified
+      if (site.verified) {
+        res.json({ verified: true, message: 'Site is already verified' });
+        return;
+      }
+
+      if (!site.verification_token) {
+        res.status(400).json({ error: 'No verification token generated. Generate one first.' });
+        return;
+      }
+
+      // Increment attempt counter
+      await incrementVerificationAttempt(siteId);
+
+      let verified = false;
+
+      if (method === 'dns') {
+        // Check DNS TXT record
+        try {
+          const dns = await import('dns/promises');
+          const records = await dns.resolveTxt(`_pagepulser.${site.domain}`);
+          verified = records.some(r => r.join('').includes(site.verification_token!));
+        } catch {
+          // DNS lookup failed
+          verified = false;
+        }
+      } else {
+        // Check file
+        try {
+          const url = `https://${site.domain}/.well-known/pagepulser-verification.txt`;
+          const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+          if (response.ok) {
+            const text = await response.text();
+            verified = text.trim() === site.verification_token;
+          }
+        } catch {
+          // File fetch failed
+          verified = false;
+        }
+      }
+
+      if (verified) {
+        await markSiteVerified(siteId, method);
+        res.json({
+          verified: true,
+          message: 'Site verified successfully!',
+        });
+      } else {
+        res.json({
+          verified: false,
+          message: method === 'dns'
+            ? `Could not find verification TXT record at _pagepulser.${site.domain}`
+            : `Could not find verification file at https://${site.domain}/.well-known/pagepulser-verification.txt`,
+        });
+      }
+    } catch (error: unknown) {
+      console.error('Verify site error:', error);
+      res.status(500).json({ error: 'Failed to verify site' });
+    }
+  }
+);
+
+export default router;

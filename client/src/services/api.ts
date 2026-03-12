@@ -1,6 +1,18 @@
 import axios, { type AxiosInstance, type AxiosError } from 'axios';
 import type { ErrorResponse } from '../types/auth.types';
-import type { Subscription, TierLimits } from '../types/site.types';
+import type {
+  Site,
+  SiteWithStats,
+  SiteUrl,
+  SitePermission,
+  CreateSiteInput,
+  UpdateSiteInput,
+  SiteUsage,
+  ScoreHistoryEntry,
+  Subscription,
+  TierLimits,
+  VerificationInstructions,
+} from '../types/site.types';
 
 // Get CSRF token from cookie
 function getCsrfToken(): string | null {
@@ -176,4 +188,134 @@ export const auditsApi = {
 
   createProgressStream: (id: string) =>
     new EventSource(`/api/audits/${id}/stream`, { withCredentials: true } as EventSourceInit),
+};
+
+// Sites API functions
+export const sitesApi = {
+  list: () =>
+    api.get<{
+      sites: SiteWithStats[];
+      usage: SiteUsage & { canAddMore: boolean };
+    }>('/sites'),
+
+  create: (data: CreateSiteInput) =>
+    api.post<{ site: Site }>('/sites', data),
+
+  get: (siteId: string) =>
+    api.get<{
+      site: SiteWithStats;
+      permission: SitePermission;
+      isOwner: boolean;
+      scoreHistory: ScoreHistoryEntry[];
+    }>(`/sites/${siteId}`),
+
+  update: (siteId: string, data: UpdateSiteInput) =>
+    api.patch<{ site: Site }>(`/sites/${siteId}`, data),
+
+  delete: (siteId: string) =>
+    api.delete(`/sites/${siteId}`),
+
+  getAudits: (siteId: string, params: { limit?: number; offset?: number; status?: string } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.offset) searchParams.set('offset', String(params.offset));
+    if (params.status) searchParams.set('status', params.status);
+    const query = searchParams.toString();
+    return api.get<{
+      audits: Array<{
+        id: string;
+        targetUrl: string;
+        targetDomain: string;
+        status: string;
+        pagesFound: number;
+        pagesCrawled: number;
+        pagesAudited: number;
+        totalIssues: number;
+        criticalIssues: number;
+        seoScore: number | null;
+        accessibilityScore: number | null;
+        securityScore: number | null;
+        performanceScore: number | null;
+        startedAt: string | null;
+        completedAt: string | null;
+        createdAt: string;
+      }>;
+      pagination: { total: number; limit: number; offset: number };
+    }>(`/sites/${siteId}/audits${query ? `?${query}` : ''}`);
+  },
+
+  getUrls: (siteId: string, params?: {
+    search?: string;
+    limit?: number;
+    offset?: number;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+  }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.search) searchParams.set('search', params.search);
+    if (params?.limit) searchParams.set('limit', String(params.limit));
+    if (params?.offset) searchParams.set('offset', String(params.offset));
+    if (params?.sortBy) searchParams.set('sortBy', params.sortBy);
+    if (params?.sortOrder) searchParams.set('sortOrder', params.sortOrder);
+    const query = searchParams.toString();
+    return api.get<{
+      urls: SiteUrl[];
+      pagination: { total: number; limit: number; offset: number };
+    }>(`/sites/${siteId}/urls${query ? `?${query}` : ''}`);
+  },
+
+  getUrlsCount: (siteId: string) =>
+    api.get<{ count: number }>(`/sites/${siteId}/urls-count`),
+
+  addUrl: (siteId: string, url: string) =>
+    api.post<{ url: SiteUrl }>(`/sites/${siteId}/urls`, { url }),
+
+  getUrl: (siteId: string, urlId: string) =>
+    api.get<{ url: SiteUrl }>(`/sites/${siteId}/urls/${urlId}`),
+
+  getUrlAudits: (siteId: string, urlId: string, params?: { limit?: number; offset?: number }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.limit) searchParams.set('limit', String(params.limit));
+    if (params?.offset) searchParams.set('offset', String(params.offset));
+    const query = searchParams.toString();
+    return api.get(`/sites/${siteId}/urls/${urlId}/audits${query ? `?${query}` : ''}`);
+  },
+
+  discoverPages: (siteId: string) =>
+    api.post<{
+      message: string;
+      urlsDiscovered: number;
+      errors?: string[];
+    }>(`/sites/${siteId}/discover-urls`),
+
+  generateVerificationToken: (siteId: string, regenerate: boolean = false) =>
+    api.post<{
+      token: string;
+      instructions: VerificationInstructions;
+    }>(`/sites/${siteId}/verification-token`, { regenerate }),
+
+  verify: (siteId: string, method: 'dns' | 'file') =>
+    api.post<{
+      verified: boolean;
+      method?: 'dns' | 'file';
+      error?: string;
+      details?: string;
+    }>(`/sites/${siteId}/verify`, { method }),
+
+  extractBranding: (siteId: string) =>
+    api.post<{
+      palette: { primary: string; secondary: string; accent: string };
+      companyName: string;
+      allColors: string[];
+    }>(`/sites/${siteId}/extract-branding`),
+};
+
+// Consent API functions
+export const consentApi = {
+  logCookieConsent: (data: {
+    consent_version: string;
+    categories: Record<string, boolean>;
+    action: string;
+    page_url: string;
+  }) => api.post<{ success: boolean; logged_at: string }>('/consent/cookies', data),
 };

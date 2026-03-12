@@ -9,6 +9,12 @@ import { globalRateLimiter } from './middleware/rateLimit.middleware.js';
 import { testRedisConnection } from './db/redis.js';
 import { authRouter } from './routes/auth/index.js';
 import { auditsRouter, setPool as setAuditsPool } from './routes/audits/index.js';
+import sitesRouter from './routes/sites/index.js';
+import { cookieConsentRouter } from './routes/consent/cookie-consent.js';
+import { setPool as setSiteServicePool } from './services/site.service.js';
+import { setPool as setDomainVerificationPool } from './services/domain-verification.service.js';
+import { setPool as setConsentServicePool } from './services/consent.service.js';
+import { setPool as setSiteMiddlewarePool } from './middleware/site.middleware.js';
 
 // Load environment variables
 dotenv.config();
@@ -73,6 +79,16 @@ app.use('/api/auth', authRouter);
 // Audit routes (inject pool)
 setAuditsPool(pool);
 app.use('/api/audits', auditsRouter);
+
+// Site routes (inject pool into services and middleware)
+setSiteServicePool(pool);
+setDomainVerificationPool(pool);
+setConsentServicePool(pool);
+setSiteMiddlewarePool(pool);
+app.use('/api/sites', sitesRouter);
+
+// Consent routes (public, no auth required for cookie consent)
+app.use('/api/consent/cookies', cookieConsentRouter);
 
 // 404 handler
 app.use((req, res) => {

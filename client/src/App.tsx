@@ -4,8 +4,11 @@ import { AuthProvider } from './contexts/AuthContext';
 import { AdminProvider } from './contexts/AdminContext';
 import { ToastProvider } from './components/ui/Toast';
 import { ProtectedRoute } from './routes/ProtectedRoute';
+import { CookieConsentProvider } from './contexts/CookieConsentContext';
 import { SettingsLayout } from './components/layout/SettingsLayout';
 import HomePage from './pages/Home';
+import SiteListPage from './pages/sites/SiteList';
+import SiteDetailPage from './pages/sites/SiteDetail';
 import LoginPage from './pages/auth/Login';
 import RegisterPage from './pages/auth/Register';
 import RegisterSuccessPage from './pages/auth/RegisterSuccess';
@@ -24,6 +27,7 @@ function App() {
       <AuthProvider>
         <AdminProvider>
           <ToastProvider>
+            <CookieConsentProvider>
             <BrowserRouter>
               <Routes>
                 {/* Public routes */}
@@ -92,8 +96,22 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-                <Route path="/sites" element={<PlaceholderPage title="Sites" phase={4} />} />
-                <Route path="/sites/*" element={<PlaceholderPage title="Sites" phase={4} />} />
+                <Route
+                  path="/sites"
+                  element={
+                    <ProtectedRoute>
+                      <SiteListPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/sites/:siteId"
+                  element={
+                    <ProtectedRoute>
+                      <SiteDetailPage />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="/analytics" element={<PlaceholderPage title="Analytics" phase={7} />} />
                 <Route path="/schedules" element={<PlaceholderPage title="Schedules" phase={7} />} />
 
@@ -101,6 +119,7 @@ function App() {
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </BrowserRouter>
+            </CookieConsentProvider>
           </ToastProvider>
         </AdminProvider>
       </AuthProvider>
