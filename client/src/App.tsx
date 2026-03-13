@@ -30,6 +30,7 @@ import SiteAnalytics from './pages/analytics/SiteAnalytics';
 import UrlAnalytics from './pages/analytics/UrlAnalytics';
 import AuditComparison from './pages/analytics/AuditComparison';
 import SiteComparison from './pages/analytics/SiteComparison';
+import SiteInvitationPage from './pages/invitations/SiteInvitation';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
                 <Route path="/register/early-access-success" element={<EarlyAccessSuccessPage />} />
                 <Route path="/verify-email" element={<VerifyEmailPage />} />
                 <Route path="/pricing" element={<PricingPage />} />
+                <Route path="/invitations/:token" element={<SiteInvitationPage />} />
 
                 {/* Protected routes */}
                 <Route

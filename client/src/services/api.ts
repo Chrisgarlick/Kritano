@@ -453,6 +453,108 @@ export const sitesApi = {
       companyName: string;
       allColors: string[];
     }>(`/sites/${siteId}/extract-branding`),
+
+  // Sharing
+  getShares: (siteId: string) =>
+    api.get<{
+      shares: Array<{
+        id: string;
+        userId: string;
+        email: string;
+        name: string;
+        permission: string;
+        invitedAt: string;
+        acceptedAt: string | null;
+      }>;
+      memberLimit: { used: number; max: number | null; tier: string };
+    }>(`/sites/${siteId}/shares`),
+
+  shareByEmail: (siteId: string, email: string, permission: string) =>
+    api.post(`/sites/${siteId}/shares`, { email, permission }),
+
+  updateShare: (siteId: string, shareId: string, permission: string) =>
+    api.patch(`/sites/${siteId}/shares/${shareId}`, { permission }),
+
+  removeShare: (siteId: string, shareId: string) =>
+    api.delete(`/sites/${siteId}/shares/${shareId}`),
+
+  getInvitations: (siteId: string) =>
+    api.get<{
+      invitations: Array<{
+        id: string;
+        email: string;
+        permission: string;
+        status: string;
+        invitedBy: string;
+        expiresAt: string;
+        createdAt: string;
+      }>;
+    }>(`/sites/${siteId}/invitations`),
+
+  createInvitation: (siteId: string, email: string, permission: string) =>
+    api.post(`/sites/${siteId}/invitations`, { email, permission }),
+
+  cancelInvitation: (siteId: string, invitationId: string) =>
+    api.delete(`/sites/${siteId}/invitations/${invitationId}`),
+};
+
+// Site Invitations API functions
+export const siteInvitationsApi = {
+  get: (token: string) =>
+    api.get(`/invitations/${token}`),
+
+  accept: (token: string) =>
+    api.post(`/invitations/${token}/accept`),
+
+  decline: (token: string) =>
+    api.post(`/invitations/${token}/decline`),
+
+  getPending: () =>
+    api.get<{
+      invitations: Array<{
+        id: string;
+        email: string;
+        permission: string;
+        siteName: string;
+        siteDomain: string;
+        inviterName: string;
+        expiresAt: string;
+        token: string;
+      }>;
+    }>('/invitations/pending/me'),
+};
+
+// Organizations API functions
+export const organizationsApi = {
+  list: () =>
+    api.get('/organizations'),
+
+  create: (data: { name: string; slug?: string }) =>
+    api.post('/organizations', data),
+
+  get: (orgId: string) =>
+    api.get(`/organizations/${orgId}`),
+
+  update: (orgId: string, data: { name?: string; slug?: string }) =>
+    api.patch(`/organizations/${orgId}`, data),
+
+  delete: (orgId: string) =>
+    api.delete(`/organizations/${orgId}`),
+
+  getMembers: (orgId: string) =>
+    api.get(`/organizations/${orgId}/members`),
+
+  inviteMember: (orgId: string, data: { email: string; role?: string }) =>
+    api.post(`/organizations/${orgId}/members`, data),
+
+  removeMember: (orgId: string, memberId: string) =>
+    api.delete(`/organizations/${orgId}/members/${memberId}`),
+
+  updateMemberRole: (orgId: string, memberId: string, role: string) =>
+    api.patch(`/organizations/${orgId}/members/${memberId}`, { role }),
+
+  getSubscription: (orgId: string) =>
+    api.get(`/organizations/${orgId}/subscription`),
 };
 
 // Consent API functions

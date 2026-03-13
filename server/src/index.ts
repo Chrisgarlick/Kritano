@@ -22,6 +22,10 @@ import { createTrialWorker } from './services/queue/trial-worker.service.js';
 import { schedulesRouter } from './routes/schedules/index.js';
 import analyticsRouter, { setPool as setAnalyticsPool } from './routes/analytics/index.js';
 import { setPool as setScheduleServicePool } from './services/schedule.service.js';
+import { setPool as setSiteSharingPool } from './services/site-sharing.service.js';
+import { setPool as setOrganizationServicePool } from './services/organization.service.js';
+import { organizationsRouter } from './routes/organizations/index.js';
+import siteInvitationsRouter from './routes/site-invitations/index.js';
 
 // Load environment variables
 dotenv.config();
@@ -95,7 +99,15 @@ setSiteServicePool(pool);
 setDomainVerificationPool(pool);
 setConsentServicePool(pool);
 setSiteMiddlewarePool(pool);
+setSiteSharingPool(pool);
 app.use('/api/sites', sitesRouter);
+
+// Site invitation routes (accept/decline invitations)
+app.use('/api/invitations', siteInvitationsRouter);
+
+// Organization routes
+setOrganizationServicePool(pool);
+app.use('/api/organizations', organizationsRouter);
 
 // Consent routes (public, no auth required for cookie consent)
 app.use('/api/consent/cookies', cookieConsentRouter);

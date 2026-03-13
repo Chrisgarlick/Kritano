@@ -29,6 +29,16 @@ import {
   isSiteVerified,
   getSiteOwnerTierLimits,
 } from '../../services/site.service.js';
+import {
+  getSiteShares,
+  getSiteInvitations,
+  shareByEmail,
+  updateSharePermission,
+  removeShare,
+  createInvitation,
+  cancelInvitation,
+  findUserByEmail,
+} from '../../services/site-sharing.service.js';
 
 const router = Router();
 
@@ -790,6 +800,296 @@ router.post(
     } catch (error: unknown) {
       console.error('Verify site error:', error);
       res.status(500).json({ error: 'Failed to verify site' });
+    }
+  }
+);
+
+// =============================================
+// SITE SHARING
+// =============================================
+
+/**
+ * GET /api/sites/:siteId/shares
+ * Get all users who have access to this site
+ */
+router.get(
+  '/:siteId/shares',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+
+      const [shares, tierLimits, pendingInvitations] = await Promise.all([
+        getSiteShares(siteId),
+        getSiteOwnerTierLimits(siteId),
+        getSiteInvitations(siteId),
+      ]);
+
+      const maxMembers = tierLimits?.max_members_per_site as number | null | undefined;
+      const pendingCount = pendingInvitations.filter(i => i.status === 'pending').length;
+      const usedMembers = shares.length + pendingCount;
+
+      res.json({
+        shares: shares.map(s => ({
+          id: s.id,
+          userId: s.user_id,
+          email: s.user_email,
+          name: s.user_name,
+          permission: s.permission,
+          invitedAt: s.invited_at,
+          acceptedAt: s.accepted_at,
+        })),
+        memberLimit: {
+          used: usedMembers,
+          max: maxMembers ?? null,
+          tier: (tierLimits?.tier as string) || 'free',
+        },
+      });
+    } catch (error: unknown) {
+      console.error('Get shares error:', error);
+      res.status(500).json({ error: 'Failed to get shares' });
+    }
+  }
+);
+
+/**
+ * POST /api/sites/:siteId/shares
+ * Share site with a user by email
+ */
+router.post(
+  '/:siteId/shares',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const userId = req.user!.id;
+      const { email, permission = 'viewer' } = req.body;
+
+      if (!email) {
+        res.status(400).json({ error: 'Email is required' });
+        return;
+      }
+
+      if (!['viewer', 'editor', 'admin'].includes(permission)) {
+        res.status(400).json({ error: 'Invalid permission level' });
+        return;
+      }
+
+      const result = await shareByEmail(siteId, email, permission, userId);
+
+      if (result.type === 'share') {
+        const share = result.data as any;
+        res.status(201).json({
+          type: 'share',
+          share: {
+            id: share.id,
+            userId: share.user_id,
+            permission: share.permission,
+          },
+          message: 'User has been granted access',
+        });
+      } else {
+        const invitation = result.data as any;
+        res.status(201).json({
+          type: 'invitation',
+          invitation: {
+            id: invitation.id,
+            email: invitation.email,
+            permission: invitation.permission,
+            expiresAt: invitation.expires_at,
+          },
+          message: 'Invitation sent',
+        });
+      }
+    } catch (error: unknown) {
+      console.error('Share site error:', error);
+      const message = error instanceof Error ? error.message : 'Failed to share site';
+      const isMemberLimit = message.includes('Member limit');
+      res.status(isMemberLimit ? 403 : 400).json({
+        error: message,
+        code: isMemberLimit ? 'MEMBER_LIMIT_REACHED' : undefined,
+      });
+    }
+  }
+);
+
+/**
+ * PATCH /api/sites/:siteId/shares/:shareId
+ * Update share permission
+ */
+router.patch(
+  '/:siteId/shares/:shareId',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { shareId } = req.params;
+      const { permission } = req.body;
+
+      if (!['viewer', 'editor', 'admin'].includes(permission)) {
+        res.status(400).json({ error: 'Invalid permission level' });
+        return;
+      }
+
+      const share = await updateSharePermission(shareId, permission);
+
+      res.json({
+        share: {
+          id: share.id,
+          userId: share.user_id,
+          permission: share.permission,
+        },
+      });
+    } catch (error: unknown) {
+      console.error('Update share error:', error);
+      const message = error instanceof Error ? error.message : 'Failed to update share';
+      res.status(400).json({ error: message });
+    }
+  }
+);
+
+/**
+ * DELETE /api/sites/:siteId/shares/:shareId
+ * Remove share (revoke access)
+ */
+router.delete(
+  '/:siteId/shares/:shareId',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { shareId } = req.params;
+
+      await removeShare(shareId);
+
+      res.json({ success: true });
+    } catch (error: unknown) {
+      console.error('Remove share error:', error);
+      const message = error instanceof Error ? error.message : 'Failed to remove share';
+      res.status(400).json({ error: message });
+    }
+  }
+);
+
+// =============================================
+// SITE INVITATIONS
+// =============================================
+
+/**
+ * GET /api/sites/:siteId/invitations
+ * Get pending invitations for this site
+ */
+router.get(
+  '/:siteId/invitations',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+
+      const invitations = await getSiteInvitations(siteId);
+
+      res.json({
+        invitations: invitations.map(i => ({
+          id: i.id,
+          email: i.email,
+          permission: i.permission,
+          status: i.status,
+          invitedBy: i.inviter_name,
+          expiresAt: i.expires_at,
+          createdAt: i.created_at,
+        })),
+      });
+    } catch (error: unknown) {
+      console.error('Get invitations error:', error);
+      res.status(500).json({ error: 'Failed to get invitations' });
+    }
+  }
+);
+
+/**
+ * POST /api/sites/:siteId/invitations
+ * Create a new invitation
+ */
+router.post(
+  '/:siteId/invitations',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const userId = req.user!.id;
+      const { email, permission = 'viewer' } = req.body;
+
+      if (!email) {
+        res.status(400).json({ error: 'Email is required' });
+        return;
+      }
+
+      const existingUser = await findUserByEmail(email);
+      if (existingUser) {
+        res.status(400).json({
+          error: 'User exists - use /shares endpoint instead',
+          userId: existingUser.id,
+        });
+        return;
+      }
+
+      const invitation = await createInvitation({
+        siteId,
+        email,
+        permission,
+        invitedBy: userId,
+      });
+
+      res.status(201).json({
+        invitation: {
+          id: invitation.id,
+          email: invitation.email,
+          permission: invitation.permission,
+          token: invitation.token,
+          expiresAt: invitation.expires_at,
+        },
+      });
+    } catch (error: unknown) {
+      console.error('Create invitation error:', error);
+      const message = error instanceof Error ? error.message : 'Failed to create invitation';
+      const isMemberLimit = message.includes('Member limit');
+      res.status(isMemberLimit ? 403 : 400).json({
+        error: message,
+        code: isMemberLimit ? 'MEMBER_LIMIT_REACHED' : undefined,
+      });
+    }
+  }
+);
+
+/**
+ * DELETE /api/sites/:siteId/invitations/:invitationId
+ * Cancel a pending invitation
+ */
+router.delete(
+  '/:siteId/invitations/:invitationId',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const { invitationId } = req.params;
+
+      await cancelInvitation(invitationId, siteId);
+
+      res.json({ success: true });
+    } catch (error: unknown) {
+      console.error('Cancel invitation error:', error);
+      const message = error instanceof Error ? error.message : 'Failed to cancel invitation';
+      res.status(400).json({ error: message });
     }
   }
 );
