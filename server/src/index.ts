@@ -19,6 +19,9 @@ import { setPool as setConsentServicePool } from './services/consent.service.js'
 import { setPool as setSiteMiddlewarePool } from './middleware/site.middleware.js';
 import { setPool as setSystemSettingsPool } from './services/system-settings.service.js';
 import { createTrialWorker } from './services/queue/trial-worker.service.js';
+import { schedulesRouter } from './routes/schedules/index.js';
+import analyticsRouter, { setPool as setAnalyticsPool } from './routes/analytics/index.js';
+import { setPool as setScheduleServicePool } from './services/schedule.service.js';
 
 // Load environment variables
 dotenv.config();
@@ -100,6 +103,14 @@ app.use('/api/consent/cookies', cookieConsentRouter);
 // Billing, subscription, early access, and coming soon routes
 setSystemSettingsPool(pool);
 app.use('/api', billingRouter);
+
+// Schedule routes
+setScheduleServicePool(pool);
+app.use('/api/audits/schedules', schedulesRouter);
+
+// Analytics routes
+setAnalyticsPool(pool);
+app.use('/api/analytics', analyticsRouter);
 
 // 404 handler
 app.use((req, res) => {

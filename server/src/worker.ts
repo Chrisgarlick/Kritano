@@ -11,6 +11,8 @@ import { createAuditWorker } from './services/queue';
 import { emailService } from './services/email.service';
 import { auditService } from './services/audit.service';
 import { getMemoryUsage, getMemoryThreshold } from './services/queue/memory-monitor';
+import { createSchedulePoller } from './services/queue/schedule-poller.service.js';
+import { setPool as setScheduleServicePool } from './services/schedule.service.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -196,6 +198,7 @@ const shutdown = async (signal: string) => {
     healthServerRef.close();
     healthServerRef = null;
   }
+  await schedulePoller.stop();
   await worker.stop();
   await pool.end();
   process.exit(0);
@@ -218,6 +221,12 @@ process.on('unhandledRejection', async (reason) => {
   process.exit(1);
 });
 
+// Initialize schedule service pool
+setScheduleServicePool(pool);
+
+// Create schedule poller
+const schedulePoller = createSchedulePoller({ pool });
+
 // Start worker
 console.log('PagePulser Worker');
 console.log('   Version: 1.0.0');
@@ -229,4 +238,9 @@ worker.start().catch(async (error) => {
   console.error('Failed to start worker:', error);
   await pool.end();
   process.exit(1);
+});
+
+// Start schedule poller
+schedulePoller.start().catch((error) => {
+  console.error('Failed to start schedule poller:', error);
 });

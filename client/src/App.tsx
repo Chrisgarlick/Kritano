@@ -23,6 +23,13 @@ import NotFoundPage from './pages/errors/NotFound';
 import PricingPage from './pages/public/Pricing';
 import EarlyAccessSuccessPage from './pages/auth/EarlyAccessSuccess';
 import { ComingSoonGuard } from './components/ComingSoonGuard';
+import ScheduleListPage from './pages/schedules/ScheduleListPage';
+import ScheduleDetailPage from './pages/schedules/ScheduleDetailPage';
+import AnalyticsDashboard from './pages/analytics/AnalyticsDashboard';
+import SiteAnalytics from './pages/analytics/SiteAnalytics';
+import UrlAnalytics from './pages/analytics/UrlAnalytics';
+import AuditComparison from './pages/analytics/AuditComparison';
+import SiteComparison from './pages/analytics/SiteComparison';
 
 function App() {
   return (
@@ -118,8 +125,65 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-                <Route path="/analytics" element={<PlaceholderPage title="Analytics" phase={7} />} />
-                <Route path="/schedules" element={<PlaceholderPage title="Schedules" phase={7} />} />
+                {/* Schedule routes */}
+                <Route
+                  path="/schedules"
+                  element={
+                    <ProtectedRoute>
+                      <ScheduleListPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/schedules/:id"
+                  element={
+                    <ProtectedRoute>
+                      <ScheduleDetailPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Analytics routes */}
+                <Route
+                  path="/analytics"
+                  element={
+                    <ProtectedRoute>
+                      <AnalyticsDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/analytics/sites/:siteId"
+                  element={
+                    <ProtectedRoute>
+                      <SiteAnalytics />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/analytics/sites/:siteId/urls/:urlId"
+                  element={
+                    <ProtectedRoute>
+                      <UrlAnalytics />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/analytics/compare"
+                  element={
+                    <ProtectedRoute>
+                      <AuditComparison />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/analytics/compare-sites"
+                  element={
+                    <ProtectedRoute>
+                      <SiteComparison />
+                    </ProtectedRoute>
+                  }
+                />
 
                 {/* 404 */}
                 <Route path="*" element={<NotFoundPage />} />
@@ -131,19 +195,6 @@ function App() {
         </AdminProvider>
       </AuthProvider>
     </ThemeProvider>
-  );
-}
-
-function PlaceholderPage({ title, phase }: { title: string; phase: number }) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
-      <div className="text-center p-8">
-        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white mb-2">{title}</h1>
-        <p className="text-slate-500 dark:text-slate-400">
-          Coming in Phase {phase}
-        </p>
-      </div>
-    </div>
   );
 }
 

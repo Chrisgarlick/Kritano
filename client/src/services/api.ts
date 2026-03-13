@@ -464,3 +464,148 @@ export const consentApi = {
     page_url: string;
   }) => api.post<{ success: boolean; logged_at: string }>('/consent/cookies', data),
 };
+
+// Schedule types
+export type ScheduleFrequency = 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'custom';
+
+export interface AuditScheduleSummary {
+  id: string;
+  user_id: string;
+  site_id: string | null;
+  name: string | null;
+  target_url: string;
+  target_domain: string;
+  frequency: ScheduleFrequency;
+  cron_expression: string;
+  next_run_at: string | null;
+  last_run_at: string | null;
+  last_status: string | null;
+  enabled: boolean;
+  paused_reason: string | null;
+  run_count: number;
+  consecutive_failures: number;
+  timezone: string;
+  created_at: string;
+  site_name?: string;
+  site_verified?: boolean;
+}
+
+export interface AuditScheduleDetail extends AuditScheduleSummary {
+  config: Record<string, unknown>;
+  last_audit_id: string | null;
+  failure_count: number;
+  max_consecutive_failures: number;
+  paused_at: string | null;
+  notify_on_completion: boolean;
+  notify_on_failure: boolean;
+  updated_at: string;
+}
+
+export interface ScheduleRunSummary {
+  id: string;
+  status: string;
+  target_url: string;
+  created_at: string;
+  completed_at: string | null;
+  seo_score: number | null;
+  accessibility_score: number | null;
+  security_score: number | null;
+  performance_score: number | null;
+  total_issues: number | null;
+}
+
+export interface CreateSchedulePayload {
+  targetUrl: string;
+  name?: string;
+  frequency: ScheduleFrequency;
+  cronExpression?: string;
+  config?: Record<string, unknown>;
+  notifyOnCompletion?: boolean;
+  notifyOnFailure?: boolean;
+  timezone?: string;
+  dayOfWeek?: number;
+  hourOfDay?: number;
+}
+
+export interface UpdateSchedulePayload {
+  name?: string;
+  frequency?: ScheduleFrequency;
+  cronExpression?: string;
+  config?: Record<string, unknown>;
+  notifyOnCompletion?: boolean;
+  notifyOnFailure?: boolean;
+  timezone?: string;
+  dayOfWeek?: number;
+  hourOfDay?: number;
+}
+
+// Schedules API functions
+export const schedulesApi = {
+  list: (siteId?: string) => {
+    const params = siteId ? `?siteId=${siteId}` : '';
+    return api.get<{ schedules: AuditScheduleSummary[] }>(`/audits/schedules${params}`);
+  },
+
+  get: (id: string) =>
+    api.get<{ schedule: AuditScheduleDetail; recentRuns: ScheduleRunSummary[] }>(`/audits/schedules/${id}`),
+
+  create: (data: CreateSchedulePayload) =>
+    api.post<{ schedule: AuditScheduleDetail }>('/audits/schedules', data),
+
+  update: (id: string, data: UpdateSchedulePayload) =>
+    api.patch<{ schedule: AuditScheduleDetail }>(`/audits/schedules/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/audits/schedules/${id}`),
+
+  toggle: (id: string, enabled: boolean) =>
+    api.post<{ schedule: AuditScheduleDetail }>(`/audits/schedules/${id}/toggle`, { enabled }),
+
+  getRuns: (id: string, limit = 20, offset = 0) =>
+    api.get<{ runs: ScheduleRunSummary[]; total: number }>(`/audits/schedules/${id}/runs?limit=${limit}&offset=${offset}`),
+};
+
+// Analytics API functions
+import type {
+  ScoreHistory,
+  IssueTrends,
+  AuditComparison,
+  SiteComparison,
+  TimeRange,
+  GroupBy,
+  UserOverview,
+  UrlAnalytics,
+  UrlComparison,
+  UserAuditedUrl,
+} from '../types/analytics.types';
+
+export const analyticsApi = {
+  getSiteScores: (siteId: string, options?: { range?: TimeRange; from?: string; to?: string }) =>
+    api.get<ScoreHistory>(`/analytics/sites/${siteId}/scores`, { params: options }),
+
+  getSiteIssues: (siteId: string, options?: { range?: TimeRange; groupBy?: GroupBy }) =>
+    api.get<IssueTrends>(`/analytics/sites/${siteId}/issues`, { params: options }),
+
+  compareAudits: (auditIds: string[]) =>
+    api.get<AuditComparison>('/analytics/compare', { params: { audits: auditIds.join(',') } }),
+
+  compareSites: (siteIds: string[]) =>
+    api.get<SiteComparison>('/analytics/compare-sites', { params: { sites: siteIds.join(',') } }),
+
+  getUserOverview: () =>
+    api.get<UserOverview>('/analytics/overview'),
+
+  getUrlAnalytics: (siteId: string, urlId: string) =>
+    api.get<UrlAnalytics>(`/analytics/sites/${siteId}/urls/${urlId}`),
+
+  getUrlScores: (siteId: string, urlId: string, options?: { range?: TimeRange }) =>
+    api.get<ScoreHistory>(`/analytics/sites/${siteId}/urls/${urlId}/scores`, { params: options }),
+
+  getUserUrls: (search?: string, limit?: number) =>
+    api.get<UserAuditedUrl[]>('/analytics/user-urls', { params: { search, limit } }),
+
+  compareUrls: (urlSpecs: [{ siteId: string; urlId: string }, { siteId: string; urlId: string }]) =>
+    api.get<UrlComparison>('/analytics/compare-urls', {
+      params: { urls: urlSpecs.map(s => `${s.siteId}:${s.urlId}`).join(',') },
+    }),
+};
