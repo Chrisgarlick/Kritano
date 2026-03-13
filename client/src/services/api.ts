@@ -711,3 +711,292 @@ export const analyticsApi = {
       params: { urls: urlSpecs.map(s => `${s.siteId}:${s.urlId}`).join(',') },
     }),
 };
+
+// Admin API types - re-export for use by admin pages
+export type {
+  DashboardStats,
+  SystemHealth,
+  AnalyticsDataPoint,
+  AdminUser,
+  AdminOrganization,
+  AdminActivity,
+  Pagination,
+  AdminSubscriptionTier,
+  AdminSubscriptionStatus,
+  WorkerStatus,
+  QueueBacklog,
+  AdminFunnelAnalytics,
+  AdminFunnelStage,
+  AdminGlobalTrends,
+  AdminTopIssue,
+  AdminRevenueAnalytics,
+  AdminTierRevenue,
+  BugReport,
+  BugReportComment,
+  BugReportStats,
+  AdminScheduleItem,
+  AdminScheduleStats,
+} from '../types/admin.types';
+
+import type {
+  DashboardStats,
+  SystemHealth,
+  AnalyticsDataPoint,
+  AdminUser,
+  AdminOrganization,
+  AdminActivity,
+  Pagination,
+  AdminSubscriptionTier,
+  AdminSubscriptionStatus,
+  WorkerStatus,
+  QueueBacklog,
+  AdminFunnelAnalytics,
+  AdminGlobalTrends,
+  AdminRevenueAnalytics,
+  BugReport,
+  BugReportComment,
+  BugReportStats,
+} from '../types/admin.types';
+
+// Admin API functions
+export const adminApi = {
+  check: () =>
+    api.get<{ isAdmin: boolean; admin: { id: string; email: string } }>('/admin/check'),
+
+  getDashboard: () =>
+    api.get<{ stats: DashboardStats; health: SystemHealth }>('/admin/dashboard'),
+
+  getAnalytics: (days: number = 30) =>
+    api.get<{ analytics: AnalyticsDataPoint[] }>(`/admin/analytics?days=${days}`),
+
+  getFunnelAnalytics: (range: string = '30d') =>
+    api.get<AdminFunnelAnalytics>(`/admin/analytics/funnel?range=${range}`),
+
+  getGlobalTrends: (range: string = '30d') =>
+    api.get<AdminGlobalTrends>(`/admin/analytics/trends?range=${range}`),
+
+  getRevenueAnalytics: () =>
+    api.get<AdminRevenueAnalytics>('/admin/analytics/revenue'),
+
+  listUsers: (params: { page?: number; limit?: number; search?: string; sortBy?: string; sortOrder?: string } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.search) searchParams.set('search', params.search);
+    if (params.sortBy) searchParams.set('sortBy', params.sortBy);
+    if (params.sortOrder) searchParams.set('sortOrder', params.sortOrder);
+    return api.get<{ users: AdminUser[]; pagination: Pagination }>(`/admin/users?${searchParams.toString()}`);
+  },
+
+  getUser: (userId: string) =>
+    api.get<{ user: AdminUser }>(`/admin/users/${userId}`),
+
+  updateUser: (userId: string, data: { is_super_admin?: boolean }) =>
+    api.patch<{ user: AdminUser }>(`/admin/users/${userId}`, data),
+
+  deleteUser: (userId: string) =>
+    api.delete<{ success: boolean }>(`/admin/users/${userId}`),
+
+  listOrganizations: (params: { page?: number; limit?: number; search?: string; tier?: string; sortBy?: string; sortOrder?: string } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.search) searchParams.set('search', params.search);
+    if (params.tier) searchParams.set('tier', params.tier);
+    if (params.sortBy) searchParams.set('sortBy', params.sortBy);
+    if (params.sortOrder) searchParams.set('sortOrder', params.sortOrder);
+    return api.get<{ organizations: AdminOrganization[]; pagination: Pagination }>(`/admin/organizations?${searchParams.toString()}`);
+  },
+
+  getOrganization: (orgId: string) =>
+    api.get<{ organization: AdminOrganization }>(`/admin/organizations/${orgId}`),
+
+  updateSubscription: (orgId: string, data: { tier?: AdminSubscriptionTier; status?: AdminSubscriptionStatus }) =>
+    api.patch<{ organization: AdminOrganization }>(`/admin/organizations/${orgId}/subscription`, data),
+
+  getActivityLog: (params: { page?: number; limit?: number; adminId?: string } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.adminId) searchParams.set('adminId', params.adminId);
+    return api.get<{ activities: AdminActivity[]; pagination: Pagination }>(`/admin/activity?${searchParams.toString()}`);
+  },
+
+  getWorkerStatus: () =>
+    api.get<WorkerStatus>('/admin/worker/status'),
+
+  getWorkerHealth: () =>
+    api.get<{ status: string; uptime: number }>('/admin/worker/health'),
+
+  restartWorker: () =>
+    api.post<{ success: boolean; message: string }>('/admin/worker/restart'),
+
+  getQueueBacklog: () =>
+    api.get<QueueBacklog>('/admin/worker/queue'),
+
+  cancelQueueJob: (jobId: string) =>
+    api.post<{ success: boolean; message: string }>(`/admin/worker/queue/${jobId}/cancel`),
+
+  cancelAllPending: () =>
+    api.post<{ success: boolean; cancelled: number }>('/admin/worker/queue/cancel-all'),
+};
+
+// Admin Bug Reports API
+export const adminBugReportsApi = {
+  list: (params?: { page?: number; limit?: number; status?: string; severity?: string; category?: string; search?: string }) =>
+    api.get<{ items: BugReport[]; total: number; page: number; limit: number; pages: number }>('/admin/bug-reports', { params }),
+
+  getStats: () =>
+    api.get<BugReportStats>('/admin/bug-reports/stats'),
+
+  getById: (id: string) =>
+    api.get<{ report: BugReport & { comments: BugReportComment[] } }>(`/admin/bug-reports/${id}`),
+
+  update: (id: string, data: { status?: string; priority?: string | null; adminNotes?: string; resolutionNotes?: string; assignedTo?: string | null }) =>
+    api.patch<{ report: BugReport }>(`/admin/bug-reports/${id}`, data),
+
+  addComment: (id: string, content: string) =>
+    api.post<{ comment: BugReportComment }>(`/admin/bug-reports/${id}/comments`, { content }),
+
+  delete: (id: string) =>
+    api.delete<{ success: boolean }>(`/admin/bug-reports/${id}`),
+};
+
+// Admin Feature Requests API
+export interface FeatureRequest {
+  id: string;
+  user_id: string;
+  title: string;
+  description: string;
+  impact: string;
+  category: string;
+  page_url: string | null;
+  status: string;
+  priority: string | null;
+  created_at: string;
+  updated_at: string;
+  completed_at: string | null;
+  reporter_email?: string;
+}
+
+export interface FeatureRequestComment {
+  id: string;
+  feature_request_id: string;
+  user_id: string;
+  is_admin_comment: boolean;
+  content: string;
+  created_at: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
+}
+
+export interface FeatureRequestStats {
+  total: number;
+  submitted: number;
+  under_review: number;
+  planned: number;
+  in_progress: number;
+  completed: number;
+  last_7_days: number;
+  last_24_hours: number;
+}
+
+export const adminFeatureRequestsApi = {
+  list: (params?: { page?: number; limit?: number; status?: string; impact?: string; category?: string; search?: string }) =>
+    api.get<{ items: FeatureRequest[]; total: number; page: number; limit: number; pages: number }>('/admin/feature-requests', { params }),
+
+  getStats: () =>
+    api.get<FeatureRequestStats>('/admin/feature-requests/stats'),
+
+  getById: (id: string) =>
+    api.get<{ request: FeatureRequest & { comments: FeatureRequestComment[] } }>(`/admin/feature-requests/${id}`),
+
+  update: (id: string, data: { status?: string; priority?: string | null; adminNotes?: string; resolutionNotes?: string; assignedTo?: string | null }) =>
+    api.patch<{ request: FeatureRequest }>(`/admin/feature-requests/${id}`, data),
+
+  addComment: (id: string, content: string) =>
+    api.post<{ comment: FeatureRequestComment }>(`/admin/feature-requests/${id}/comments`, { content }),
+
+  delete: (id: string) =>
+    api.delete<{ success: boolean }>(`/admin/feature-requests/${id}`),
+};
+
+// Admin Schedules API
+export const adminSchedulesApi = {
+  list: (params?: { page?: number; limit?: number; status?: string; search?: string }) =>
+    api.get('/admin/schedules', { params }),
+
+  getStats: () =>
+    api.get('/admin/schedules/stats'),
+
+  get: (id: string) =>
+    api.get(`/admin/schedules/${id}`),
+
+  getById: (id: string) =>
+    api.get(`/admin/schedules/${id}`),
+
+  update: (id: string, data: { enabled?: boolean; paused_reason?: string | null; max_consecutive_failures?: number }) =>
+    api.patch(`/admin/schedules/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/schedules/${id}`),
+};
+
+// Admin SEO API
+export const adminSeoApi = {
+  list: () =>
+    api.get('/admin/seo'),
+
+  upsert: (data: {
+    route_path: string;
+    title?: string | null;
+    description?: string | null;
+    keywords?: string | null;
+    og_title?: string | null;
+    og_description?: string | null;
+    og_image?: string | null;
+    og_type?: string | null;
+    twitter_card?: string | null;
+    canonical_url?: string | null;
+    featured_image?: string | null;
+    structured_data?: Record<string, unknown> | null;
+    noindex?: boolean;
+  }) => api.put('/admin/seo', data),
+
+  remove: (route_path: string) =>
+    api.delete('/admin/seo', { data: { route_path } }),
+};
+
+// Admin Settings API
+export const adminSettingsApi = {
+  getAll: () =>
+    api.get('/admin/settings'),
+
+  update: (key: string, value: string) =>
+    api.put('/admin/settings', { key, value }),
+};
+
+// Admin Coming Soon API
+export const adminComingSoonApi = {
+  getSignups: (params?: { page?: number; limit?: number; search?: string }) =>
+    api.get('/admin/coming-soon/signups', { params }),
+
+  getStats: () =>
+    api.get('/admin/coming-soon/stats'),
+};
+
+// Admin Early Access API
+export const adminEarlyAccessApi = {
+  getStats: () =>
+    api.get('/admin/early-access/stats'),
+
+  getUsers: (params?: { page?: number; limit?: number; search?: string }) =>
+    api.get('/admin/early-access/users', { params }),
+
+  activate: () =>
+    api.post('/admin/early-access/activate', { confirm: true }),
+
+  exportUsers: () =>
+    api.get('/admin/early-access/users/export', { responseType: 'blob' }),
+};

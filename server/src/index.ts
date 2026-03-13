@@ -26,6 +26,11 @@ import { setPool as setSiteSharingPool } from './services/site-sharing.service.j
 import { setPool as setOrganizationServicePool } from './services/organization.service.js';
 import { organizationsRouter } from './routes/organizations/index.js';
 import siteInvitationsRouter from './routes/site-invitations/index.js';
+import { adminRouter, setPool as setAdminRouterPool } from './routes/admin/index.js';
+import { initializeAdminMiddleware } from './middleware/admin.middleware.js';
+import { initializeAdminService } from './services/admin.service.js';
+import { initializeAdminAnalyticsService } from './services/admin-analytics.service.js';
+import { setPool as setSeoServicePool } from './services/seo.service.js';
 
 // Load environment variables
 dotenv.config();
@@ -108,6 +113,14 @@ app.use('/api/invitations', siteInvitationsRouter);
 // Organization routes
 setOrganizationServicePool(pool);
 app.use('/api/organizations', organizationsRouter);
+
+// Admin routes
+initializeAdminMiddleware(pool);
+initializeAdminService(pool);
+initializeAdminAnalyticsService(pool);
+setAdminRouterPool(pool);
+setSeoServicePool(pool);
+app.use('/api/admin', adminRouter);
 
 // Consent routes (public, no auth required for cookie consent)
 app.use('/api/consent/cookies', cookieConsentRouter);

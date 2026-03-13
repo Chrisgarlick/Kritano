@@ -31,6 +31,24 @@ import UrlAnalytics from './pages/analytics/UrlAnalytics';
 import AuditComparison from './pages/analytics/AuditComparison';
 import SiteComparison from './pages/analytics/SiteComparison';
 import SiteInvitationPage from './pages/invitations/SiteInvitation';
+import { AdminRoute } from './routes/AdminRoute';
+import AdminDashboardPage from './pages/admin/AdminDashboard';
+import AdminUsersPage from './pages/admin/AdminUsers';
+import AdminOrganizationsPage from './pages/admin/AdminOrganizations';
+import AdminActivityPage from './pages/admin/AdminActivity';
+import AdminBugReportsPage from './pages/admin/AdminBugReports';
+import AdminBugReportDetailPage from './pages/admin/AdminBugReportDetail';
+import AdminFeatureRequestsPage from './pages/admin/AdminFeatureRequests';
+import AdminFeatureRequestDetailPage from './pages/admin/AdminFeatureRequestDetail';
+import AdminSchedulesPage from './pages/admin/AdminSchedules';
+import AdminScheduleDetailPage from './pages/admin/AdminScheduleDetail';
+import AdminEarlyAccessPage from './pages/admin/AdminEarlyAccess';
+import AdminFunnelPage from './pages/admin/analytics/FunnelPage';
+import AdminTrendsPage from './pages/admin/analytics/TrendsPage';
+import AdminRevenuePage from './pages/admin/analytics/RevenuePage';
+import AdminSeoManagerPage from './pages/admin/seo/SeoManagerPage';
+import AdminSystemSettingsPage from './pages/admin/settings/SystemSettingsPage';
+import AdminComingSoonSignupsPage from './pages/admin/settings/ComingSoonSignupsPage';
 
 function App() {
   return (
@@ -186,6 +204,25 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+
+                {/* Admin routes */}
+                <Route path="/admin" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
+                <Route path="/admin/users" element={<AdminRoute><AdminUsersPage /></AdminRoute>} />
+                <Route path="/admin/organizations" element={<AdminRoute><AdminOrganizationsPage /></AdminRoute>} />
+                <Route path="/admin/activity" element={<AdminRoute><AdminActivityPage /></AdminRoute>} />
+                <Route path="/admin/bug-reports" element={<AdminRoute><AdminBugReportsPage /></AdminRoute>} />
+                <Route path="/admin/bug-reports/:id" element={<AdminRoute><AdminBugReportDetailPage /></AdminRoute>} />
+                <Route path="/admin/feature-requests" element={<AdminRoute><AdminFeatureRequestsPage /></AdminRoute>} />
+                <Route path="/admin/feature-requests/:id" element={<AdminRoute><AdminFeatureRequestDetailPage /></AdminRoute>} />
+                <Route path="/admin/schedules" element={<AdminRoute><AdminSchedulesPage /></AdminRoute>} />
+                <Route path="/admin/schedules/:id" element={<AdminRoute><AdminScheduleDetailPage /></AdminRoute>} />
+                <Route path="/admin/early-access" element={<AdminRoute><AdminEarlyAccessPage /></AdminRoute>} />
+                <Route path="/admin/analytics/funnel" element={<AdminRoute><AdminFunnelPage /></AdminRoute>} />
+                <Route path="/admin/analytics/trends" element={<AdminRoute><AdminTrendsPage /></AdminRoute>} />
+                <Route path="/admin/analytics/revenue" element={<AdminRoute><AdminRevenuePage /></AdminRoute>} />
+                <Route path="/admin/seo" element={<AdminRoute><AdminSeoManagerPage /></AdminRoute>} />
+                <Route path="/admin/settings" element={<AdminRoute><AdminSystemSettingsPage /></AdminRoute>} />
+                <Route path="/admin/coming-soon" element={<AdminRoute><AdminComingSoonSignupsPage /></AdminRoute>} />
 
                 {/* 404 */}
                 <Route path="*" element={<NotFoundPage />} />
