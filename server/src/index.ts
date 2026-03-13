@@ -11,10 +11,14 @@ import { authRouter } from './routes/auth/index.js';
 import { auditsRouter, setPool as setAuditsPool } from './routes/audits/index.js';
 import sitesRouter from './routes/sites/index.js';
 import { cookieConsentRouter } from './routes/consent/cookie-consent.js';
+import { billingRouter } from './routes/billing/index.js';
+import { initializeStripeWebhooks } from './routes/webhooks/stripe.js';
 import { setPool as setSiteServicePool } from './services/site.service.js';
 import { setPool as setDomainVerificationPool } from './services/domain-verification.service.js';
 import { setPool as setConsentServicePool } from './services/consent.service.js';
 import { setPool as setSiteMiddlewarePool } from './middleware/site.middleware.js';
+import { setPool as setSystemSettingsPool } from './services/system-settings.service.js';
+import { createTrialWorker } from './services/queue/trial-worker.service.js';
 
 // Load environment variables
 dotenv.config();
@@ -44,6 +48,9 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
   })
 );
+
+// Stripe webhook route — must use raw body BEFORE express.json()
+app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }), initializeStripeWebhooks(pool));
 
 // Body parsing
 app.use(express.json({ limit: '10kb' }));
@@ -89,6 +96,10 @@ app.use('/api/sites', sitesRouter);
 
 // Consent routes (public, no auth required for cookie consent)
 app.use('/api/consent/cookies', cookieConsentRouter);
+
+// Billing, subscription, early access, and coming soon routes
+setSystemSettingsPool(pool);
+app.use('/api', billingRouter);
 
 // 404 handler
 app.use((req, res) => {
@@ -139,6 +150,10 @@ const startServer = (port: number, attempt: number = 1): void => {
     console.log(`PagePulser server running on http://localhost:${port}`);
     console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
     await testRedisConnection().catch(() => console.warn('Redis not available — rate limiting will fail open'));
+
+    // Start trial expiry worker
+    const trialWorker = createTrialWorker({ pool });
+    trialWorker.start().catch((err) => console.error('Trial worker failed to start:', err));
   });
 };
 

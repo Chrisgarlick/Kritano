@@ -20,6 +20,9 @@ import AuditDetailPage from './pages/audits/AuditDetail';
 import NewAuditPage from './pages/audits/NewAudit';
 import PageDetailPage from './pages/audits/PageDetail';
 import NotFoundPage from './pages/errors/NotFound';
+import PricingPage from './pages/public/Pricing';
+import EarlyAccessSuccessPage from './pages/auth/EarlyAccessSuccess';
+import { ComingSoonGuard } from './components/ComingSoonGuard';
 
 function App() {
   return (
@@ -29,13 +32,16 @@ function App() {
           <ToastProvider>
             <CookieConsentProvider>
             <BrowserRouter>
+              <ComingSoonGuard>
               <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/register/success" element={<RegisterSuccessPage />} />
+                <Route path="/register/early-access-success" element={<EarlyAccessSuccessPage />} />
                 <Route path="/verify-email" element={<VerifyEmailPage />} />
+                <Route path="/pricing" element={<PricingPage />} />
 
                 {/* Protected routes */}
                 <Route
@@ -118,6 +124,7 @@ function App() {
                 {/* 404 */}
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
+              </ComingSoonGuard>
             </BrowserRouter>
             </CookieConsentProvider>
           </ToastProvider>

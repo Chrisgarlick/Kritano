@@ -22,6 +22,7 @@ import {
 } from '../../schemas/auth.schemas.js';
 import { getDeviceInfo, getClientIp } from '../../utils/ip.utils.js';
 import { COOKIE_CONFIG, REFRESH_TOKEN_CONFIG, JWT_CONFIG } from '../../config/auth.config.js';
+import { claimSpot } from '../../services/early-access.service.js';
 import type {
   RegisterInput,
   LoginInput,
@@ -76,6 +77,18 @@ router.post(
 
       // Create user
       const user = await userService.create(input);
+
+      // Claim early access spot if applicable
+      if (input.earlyAccessChannel) {
+        try {
+          const claimed = await claimSpot(user.id, input.earlyAccessChannel);
+          if (claimed) {
+            console.log(`Early access spot claimed for ${user.email} via ${input.earlyAccessChannel}`);
+          }
+        } catch (eaError) {
+          console.error('Failed to claim early access spot:', eaError);
+        }
+      }
 
       // Send verification email
       try {

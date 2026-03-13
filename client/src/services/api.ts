@@ -145,10 +145,40 @@ export const authApi = {
   getSessions: () => api.get('/auth/sessions'),
 };
 
-// User API functions (subscription endpoints available in later phases)
+// User API functions
 export const userApi = {
   getSubscription: () =>
-    api.get<{ subscription: Subscription | null; limits: TierLimits | null }>('/user/subscription'),
+    api.get<{ subscription: Subscription | null; limits: TierLimits | null }>('/subscription'),
+
+  startTrial: (tier: string) =>
+    api.post('/subscription/start-trial', { tier }),
+
+  getUsage: () =>
+    api.get('/usage'),
+};
+
+// Billing API functions
+export const billingApi = {
+  createCheckout: (tier: string) =>
+    api.post<{ url: string }>('/subscription/checkout', { tier }),
+
+  createPortal: () =>
+    api.post<{ url: string }>('/subscription/portal'),
+};
+
+// Early Access API functions
+export const earlyAccessApi = {
+  getStatus: () =>
+    api.get<{ enabled: boolean; spotsRemaining: number; maxSpots: number; isFull: boolean }>('/early-access/status'),
+};
+
+// Coming Soon API functions
+export const comingSoonApi = {
+  getStatus: () =>
+    api.get<{ enabled: boolean; headline: string; description: string }>('/coming-soon/status'),
+
+  signup: (data: { email: string; name?: string }) =>
+    api.post('/coming-soon/signup', data),
 };
 
 // Audit API functions
