@@ -10,6 +10,7 @@
 import { pool } from '../db/index.js';
 import { getSetting, setSetting } from './system-settings.service.js';
 import { startTrial } from './trial.service.js';
+import { sendTemplate } from './email-template.service.js';
 
 export async function isEarlyAccessEnabled(): Promise<boolean> {
   const val = await getSetting('early_access_enabled');
@@ -179,8 +180,18 @@ export async function activateAll(adminId: string): Promise<{ activated: number;
         [user.id]
       );
 
-      // [Phase 10] Would send early_access_activated email
-      console.log(`[Phase 10] Would send early_access_activated email to ${user.email}`);
+      // Send early_access_activated email
+      sendTemplate({
+        templateSlug: 'trial_started',
+        to: { userId: user.id, email: user.email, firstName: user.first_name || '' },
+        variables: {
+          tierName: 'Agency (Early Access)',
+          trialEndDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          featureHighlight1: '30-day free Agency trial',
+          featureHighlight2: 'Founding member lifetime discount',
+          featureHighlight3: 'Full access to all features',
+        },
+      }).catch(err => console.error('Failed to send early_access_activated email:', err));
 
       activated++;
     } catch (err) {

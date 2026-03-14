@@ -712,6 +712,177 @@ export const analyticsApi = {
     }),
 };
 
+// CRM & Email types
+export interface CrmLead {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  lead_score: number;
+  lead_status: string;
+  lead_score_updated_at: string;
+  email_verified: boolean;
+  last_login_at: string | null;
+  created_at: string;
+  tier: string;
+  total_audits: number;
+  completed_audits: number;
+  total_sites: number;
+  verified_domains: number;
+  team_members: number;
+  has_exported_pdf: boolean;
+}
+
+export interface CrmStats {
+  total: number;
+  avg_score: number;
+  by_status: Record<string, number>;
+}
+
+export interface CrmTrigger {
+  id: string;
+  user_id: string;
+  trigger_type: string;
+  status: string;
+  context: Record<string, unknown>;
+  created_at: string;
+  actioned_at: string | null;
+  actioned_by: string | null;
+  user_email?: string;
+  user_first_name?: string;
+  user_last_name?: string;
+  user_lead_score?: number;
+  user_lead_status?: string;
+}
+
+export interface CrmTriggerStats {
+  total: number;
+  pending: number;
+  sent: number;
+  dismissed: number;
+  actioned: number;
+  by_type: Record<string, number>;
+}
+
+export interface CrmTimelineEvent {
+  event: string;
+  detail: string;
+  timestamp: string;
+}
+
+export interface CrmMembership {
+  site_id: string;
+  site_name: string;
+  site_domain: string;
+  role: string;
+  tier: string;
+  verified: boolean;
+  last_audit_at: string | null;
+  audit_count: number;
+}
+
+export interface CrmOutreachRecord {
+  id: string;
+  template_id: string;
+  subject: string;
+  status: string;
+  created_at: string;
+  template_name?: string;
+  template_slug?: string;
+  sent_by_email?: string;
+}
+
+export interface EmailCampaignItem {
+  id: string;
+  name: string;
+  description: string | null;
+  template_id: string;
+  status: string;
+  segment: Record<string, unknown>;
+  audience_count: number;
+  scheduled_at: string | null;
+  started_at: string | null;
+  completed_at: string | null;
+  stats: {
+    total: number;
+    queued: number;
+    sent: number;
+    delivered: number;
+    opened: number;
+    clicked: number;
+    bounced: number;
+    complained: number;
+    failed: number;
+  };
+  send_rate_per_second: number;
+  max_recipients: number;
+  created_at: string;
+  template_name?: string;
+  template_slug?: string;
+}
+
+export interface CampaignSegment {
+  tiers?: string[];
+  leadStatuses?: string[];
+  minLeadScore?: number;
+  maxLeadScore?: number;
+  verifiedDomain?: boolean;
+  auditCountMin?: number;
+  auditCountMax?: number;
+  lastLoginAfter?: string;
+  lastLoginBefore?: string;
+  registeredAfter?: string;
+  registeredBefore?: string;
+  excludeUserIds?: string[];
+}
+
+export type CampaignStatus = 'draft' | 'scheduled' | 'sending' | 'paused' | 'sent' | 'cancelled' | 'failed';
+
+export interface EmailSendRecord {
+  id: string;
+  to_email: string;
+  status: string;
+  resend_message_id?: string;
+  sent_at: string | null;
+  opened_at: string | null;
+  clicked_at: string | null;
+  error_message?: string;
+  created_at: string;
+}
+
+export interface EmailAnalyticsDay {
+  date: string;
+  sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  bounced: number;
+  complained: number;
+}
+
+export interface EmailAnalyticsTotals {
+  sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  bounced: number;
+  complained: number;
+}
+
+export interface TemplatePerformanceItem {
+  template_id: string;
+  template_name: string;
+  template_slug: string;
+  total_sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  bounced: number;
+  delivery_rate: number;
+  open_rate: number;
+  click_rate: number;
+}
+
 // Admin API types - re-export for use by admin pages
 export type {
   DashboardStats,
@@ -736,6 +907,8 @@ export type {
   BugReportStats,
   AdminScheduleItem,
   AdminScheduleStats,
+  AdminScoreDistribution,
+  AdminTierAuditBreakdown,
 } from '../types/admin.types';
 
 import type {
@@ -839,6 +1012,107 @@ export const adminApi = {
 
   cancelAllPending: () =>
     api.post<{ success: boolean; cancelled: number }>('/admin/worker/queue/cancel-all'),
+
+  // CRM stats
+  getCrmStats: () =>
+    api.get('/admin/crm/stats'),
+
+  getTriggerStats: () =>
+    api.get('/admin/crm/triggers/stats'),
+
+  // Email analytics
+  getEmailAnalytics: (days: number = 30) =>
+    api.get(`/admin/email/analytics?days=${days}`),
+
+  // CRM Leads
+  getLeads: (params?: { status?: string; search?: string; sort?: string; order?: string; page?: number; limit?: number }) =>
+    api.get('/admin/crm/leads', { params }),
+
+  getLead: (userId: string) =>
+    api.get(`/admin/crm/leads/${userId}`),
+
+  recalcLeadScore: (userId: string) =>
+    api.post(`/admin/crm/leads/${userId}/recalc`),
+
+  sendOutreach: (userId: string, templateSlugOrData: string | { templateSlug: string; variables?: Record<string, string> }) =>
+    api.post(`/admin/crm/outreach/${userId}`, typeof templateSlugOrData === 'string' ? { templateSlug: templateSlugOrData } : templateSlugOrData),
+
+  // CRM Triggers
+  getTriggers: (params?: { status?: string; type?: string; userId?: string; page?: number; limit?: number }) =>
+    api.get('/admin/crm/triggers', { params }),
+
+  actionTrigger: (id: string, status: string) =>
+    api.patch(`/admin/crm/triggers/${id}`, { status }),
+
+  // Email Templates
+  listTemplates: (params?: { category?: string; is_system?: string; search?: string; page?: number; limit?: number }) =>
+    api.get('/admin/email/templates', { params }),
+
+  getTemplate: (id: string) =>
+    api.get(`/admin/email/templates/${id}`),
+
+  createTemplate: (data: Record<string, unknown>) =>
+    api.post('/admin/email/templates', data),
+
+  updateTemplate: (id: string, data: Record<string, unknown>) =>
+    api.put(`/admin/email/templates/${id}`, data),
+
+  deleteTemplate: (id: string) =>
+    api.delete(`/admin/email/templates/${id}`),
+
+  previewTemplate: (id: string, variables?: Record<string, string>) =>
+    api.post(`/admin/email/templates/${id}/preview`, { variables }),
+
+  testSendTemplate: (id: string, variables?: Record<string, string>) =>
+    api.post(`/admin/email/templates/${id}/test`, { variables }),
+
+  duplicateTemplate: (id: string, slugOrData: string | { slug: string; name: string }, name?: string) =>
+    api.post(`/admin/email/templates/${id}/duplicate`, typeof slugOrData === 'string' ? { slug: slugOrData, name: name! } : slugOrData),
+
+  // Email Campaigns
+  listCampaigns: (params?: { status?: string; search?: string; page?: number; limit?: number }) =>
+    api.get('/admin/email/campaigns', { params }),
+
+  getCampaign: (id: string) =>
+    api.get(`/admin/email/campaigns/${id}`),
+
+  createCampaign: (data: Record<string, unknown>) =>
+    api.post('/admin/email/campaigns', data),
+
+  updateCampaign: (id: string, data: Record<string, unknown>) =>
+    api.put(`/admin/email/campaigns/${id}`, data),
+
+  deleteCampaign: (id: string) =>
+    api.delete(`/admin/email/campaigns/${id}`),
+
+  launchCampaign: (id: string) =>
+    api.post(`/admin/email/campaigns/${id}/launch`),
+
+  scheduleCampaign: (id: string, scheduledAt: string) =>
+    api.post(`/admin/email/campaigns/${id}/schedule`, { scheduled_at: scheduledAt }),
+
+  pauseCampaign: (id: string) =>
+    api.post(`/admin/email/campaigns/${id}/pause`),
+
+  resumeCampaign: (id: string) =>
+    api.post(`/admin/email/campaigns/${id}/resume`),
+
+  cancelCampaign: (id: string) =>
+    api.post(`/admin/email/campaigns/${id}/cancel`),
+
+  getCampaignAudienceCount: (segment: CampaignSegment | Record<string, unknown>) =>
+    api.post('/admin/email/campaigns/audience-count', { segment }),
+
+  getCampaignSends: (id: string, params?: { status?: string; page?: number; limit?: number }) =>
+    api.get(`/admin/email/campaigns/${id}/sends`, { params }),
+
+  // Email Sends
+  getSends: (params?: { status?: string; campaignId?: string; page?: number; limit?: number }) =>
+    api.get('/admin/email/sends', { params }),
+
+  // Email Analytics - Template Performance
+  getTemplatePerformance: () =>
+    api.get('/admin/email/analytics/templates'),
 };
 
 // Admin Bug Reports API
@@ -973,7 +1247,7 @@ export const adminSettingsApi = {
   getAll: () =>
     api.get('/admin/settings'),
 
-  update: (key: string, value: string) =>
+  update: (key: string, value: unknown) =>
     api.put('/admin/settings', { key, value }),
 };
 
@@ -981,6 +1255,15 @@ export const adminSettingsApi = {
 export const adminComingSoonApi = {
   getSignups: (params?: { page?: number; limit?: number; search?: string }) =>
     api.get('/admin/coming-soon/signups', { params }),
+
+  listSignups: (params?: { page?: number; limit?: number; search?: string }) =>
+    api.get('/admin/coming-soon/signups', { params }),
+
+  deleteSignup: (id: string) =>
+    api.delete(`/admin/coming-soon/signups/${id}`),
+
+  exportSignups: () =>
+    api.get('/admin/coming-soon/signups/export', { responseType: 'blob' }),
 
   getStats: () =>
     api.get('/admin/coming-soon/stats'),
@@ -999,4 +1282,125 @@ export const adminEarlyAccessApi = {
 
   exportUsers: () =>
     api.get('/admin/early-access/users/export', { responseType: 'blob' }),
+};
+
+// Admin CRM API
+export const adminCrmApi = {
+  getLeads: (params?: { status?: string; search?: string; sort?: string; order?: string; page?: number; limit?: number }) =>
+    api.get('/admin/crm/leads', { params }),
+
+  getLead: (userId: string) =>
+    api.get(`/admin/crm/leads/${userId}`),
+
+  recalculateScore: (userId: string) =>
+    api.post(`/admin/crm/leads/${userId}/recalc`),
+
+  getStats: () =>
+    api.get('/admin/crm/stats'),
+
+  getMemberships: (userId: string) =>
+    api.get(`/admin/crm/leads/${userId}/memberships`),
+
+  getTriggers: (params?: { status?: string; type?: string; userId?: string; page?: number; limit?: number }) =>
+    api.get('/admin/crm/triggers', { params }),
+
+  actionTrigger: (triggerId: string, status: 'sent' | 'dismissed' | 'actioned') =>
+    api.patch(`/admin/crm/triggers/${triggerId}`, { status }),
+
+  getTriggerStats: () =>
+    api.get('/admin/crm/triggers/stats'),
+
+  sendOutreach: (userId: string, data: { templateSlug: string; variables?: Record<string, string> }) =>
+    api.post(`/admin/crm/outreach/${userId}`, data),
+
+  getOutreach: (params?: { userId?: string; page?: number; limit?: number }) =>
+    api.get('/admin/crm/outreach', { params }),
+};
+
+// Admin Email API
+export const adminEmailApi = {
+  // Templates
+  listTemplates: (params?: { category?: string; is_system?: string; search?: string; page?: number; limit?: number }) =>
+    api.get('/admin/email/templates', { params }),
+
+  getTemplate: (id: string) =>
+    api.get(`/admin/email/templates/${id}`),
+
+  createTemplate: (data: Record<string, unknown>) =>
+    api.post('/admin/email/templates', data),
+
+  updateTemplate: (id: string, data: Record<string, unknown>) =>
+    api.put(`/admin/email/templates/${id}`, data),
+
+  deleteTemplate: (id: string) =>
+    api.delete(`/admin/email/templates/${id}`),
+
+  previewTemplate: (id: string, variables?: Record<string, string>) =>
+    api.post(`/admin/email/templates/${id}/preview`, { variables }),
+
+  testSendTemplate: (id: string, variables?: Record<string, string>) =>
+    api.post(`/admin/email/templates/${id}/test`, { variables }),
+
+  duplicateTemplate: (id: string, data: { slug: string; name: string }) =>
+    api.post(`/admin/email/templates/${id}/duplicate`, data),
+
+  // Campaigns
+  listCampaigns: (params?: { status?: string; search?: string; page?: number; limit?: number }) =>
+    api.get('/admin/email/campaigns', { params }),
+
+  getCampaign: (id: string) =>
+    api.get(`/admin/email/campaigns/${id}`),
+
+  createCampaign: (data: Record<string, unknown>) =>
+    api.post('/admin/email/campaigns', data),
+
+  updateCampaign: (id: string, data: Record<string, unknown>) =>
+    api.put(`/admin/email/campaigns/${id}`, data),
+
+  deleteCampaign: (id: string) =>
+    api.delete(`/admin/email/campaigns/${id}`),
+
+  launchCampaign: (id: string) =>
+    api.post(`/admin/email/campaigns/${id}/launch`),
+
+  scheduleCampaign: (id: string, scheduledAt: string) =>
+    api.post(`/admin/email/campaigns/${id}/schedule`, { scheduled_at: scheduledAt }),
+
+  pauseCampaign: (id: string) =>
+    api.post(`/admin/email/campaigns/${id}/pause`),
+
+  resumeCampaign: (id: string) =>
+    api.post(`/admin/email/campaigns/${id}/resume`),
+
+  cancelCampaign: (id: string) =>
+    api.post(`/admin/email/campaigns/${id}/cancel`),
+
+  getAudienceCount: (segment: Record<string, unknown>) =>
+    api.post('/admin/email/campaigns/audience-count', { segment }),
+
+  getCampaignSends: (id: string, params?: { status?: string; page?: number; limit?: number }) =>
+    api.get(`/admin/email/campaigns/${id}/sends`, { params }),
+
+  // Sends
+  getSends: (params?: { status?: string; campaignId?: string; page?: number; limit?: number }) =>
+    api.get('/admin/email/sends', { params }),
+
+  // Analytics
+  getAnalytics: (days: number = 30) =>
+    api.get(`/admin/email/analytics?days=${days}`),
+
+  getTemplatePerformance: () =>
+    api.get('/admin/email/analytics/templates'),
+};
+
+// Email Preferences API (user-facing)
+export const emailPreferencesApi = {
+  get: () =>
+    api.get('/email/my-preferences'),
+
+  update: (prefs: { audit_notifications?: boolean; product_updates?: boolean; educational?: boolean; marketing?: boolean; unsubscribed_all?: boolean }) =>
+    api.put('/email/my-preferences', prefs),
+
+  unsubscribeWithToken: (token: string) =>
+    api.post('/email/unsubscribe', { token }),
 };

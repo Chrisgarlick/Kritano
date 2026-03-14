@@ -947,8 +947,41 @@ export async function markSiteVerified(
     [method, siteId]
   );
 
-  // TODO: Phase 10 - Send verification success email
-  // TODO: Phase 10 - Fire CRM trigger for domain_verified
+  // Send verification success email and fire CRM trigger
+  try {
+    const siteResult = await pool.query<{ domain: string; created_by: string }>(
+      `SELECT domain, created_by FROM sites WHERE id = $1`,
+      [siteId]
+    );
+    if (siteResult.rows.length > 0) {
+      const site = siteResult.rows[0];
+      const userResult = await pool.query<{ email: string; first_name: string }>(
+        `SELECT email, first_name FROM users WHERE id = $1`,
+        [site.created_by]
+      );
+      if (userResult.rows.length > 0) {
+        const user = userResult.rows[0];
+        const { sendTemplate } = await import('./email-template.service.js');
+        const { checkTriggers } = await import('./crm-trigger.service.js');
+
+        sendTemplate({
+          templateSlug: 'domain_verified',
+          to: { userId: site.created_by, email: user.email, firstName: user.first_name || '' },
+          variables: {
+            domain: site.domain,
+            verificationMethod: method === 'dns' ? 'DNS TXT record' : 'file upload',
+            siteUrl: `${process.env.APP_URL || 'http://localhost:3000'}/sites/${siteId}`,
+            verifiedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          },
+        }).catch(err => console.error('Failed to send domain_verified email:', err));
+
+        checkTriggers(site.created_by, 'domain_verified', { siteId, domain: site.domain })
+          .catch(err => console.error('Failed to fire domain_verified trigger:', err));
+      }
+    }
+  } catch (err) {
+    console.error('Failed to process domain verification notifications:', err);
+  }
 }
 
 /**

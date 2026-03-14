@@ -13,6 +13,9 @@ import sitesRouter from './routes/sites/index.js';
 import { cookieConsentRouter } from './routes/consent/cookie-consent.js';
 import { billingRouter } from './routes/billing/index.js';
 import { initializeStripeWebhooks } from './routes/webhooks/stripe.js';
+import { resendWebhookRouter } from './routes/webhooks/resend.js';
+import emailRouter from './routes/email/index.js';
+import { createCampaignWorker } from './services/queue/campaign-worker.service.js';
 import { setPool as setSiteServicePool } from './services/site.service.js';
 import { setPool as setDomainVerificationPool } from './services/domain-verification.service.js';
 import { setPool as setConsentServicePool } from './services/consent.service.js';
@@ -61,8 +64,9 @@ app.use(
   })
 );
 
-// Stripe webhook route — must use raw body BEFORE express.json()
+// Webhook routes — must use raw body BEFORE express.json()
 app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }), initializeStripeWebhooks(pool));
+app.use('/api/webhooks/resend', express.raw({ type: 'application/json' }), resendWebhookRouter);
 
 // Body parsing
 app.use(express.json({ limit: '10kb' }));
@@ -129,6 +133,9 @@ app.use('/api/consent/cookies', cookieConsentRouter);
 setSystemSettingsPool(pool);
 app.use('/api', billingRouter);
 
+// Email routes (unsubscribe, preferences)
+app.use('/api/email', emailRouter);
+
 // Schedule routes
 setScheduleServicePool(pool);
 app.use('/api/audits/schedules', schedulesRouter);
@@ -190,6 +197,10 @@ const startServer = (port: number, attempt: number = 1): void => {
     // Start trial expiry worker
     const trialWorker = createTrialWorker({ pool });
     trialWorker.start().catch((err) => console.error('Trial worker failed to start:', err));
+
+    // Start campaign worker
+    const campaignWorker = createCampaignWorker({ pool });
+    campaignWorker.start().catch((err) => console.error('Campaign worker failed to start:', err));
   });
 };
 

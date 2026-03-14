@@ -5,13 +5,14 @@ import { createContext, useContext, type ReactNode } from 'react';
 
 interface AdminContextType {
   isAdmin: boolean;
+  isLoading: boolean;
 }
 
-const AdminContext = createContext<AdminContextType>({ isAdmin: false });
+const AdminContext = createContext<AdminContextType>({ isAdmin: false, isLoading: false });
 
 export function AdminProvider({ children }: { children: ReactNode }) {
   return (
-    <AdminContext.Provider value={{ isAdmin: false }}>
+    <AdminContext.Provider value={{ isAdmin: false, isLoading: false }}>
       {children}
     </AdminContext.Provider>
   );

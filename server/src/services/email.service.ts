@@ -5,6 +5,7 @@ import { pool } from '../db/index.js';
 import { generateSecureToken, hashToken } from '../utils/crypto.utils.js';
 import { EMAIL_TOKEN_CONFIG } from '../config/auth.config.js';
 import type { EmailTokenType } from '../types/auth.types.js';
+import { sendTemplate } from './email-template.service.js';
 
 /**
  * Email service supporting multiple transports:
@@ -140,16 +141,45 @@ export class EmailService {
   /**
    * Send email verification email via template service.
    */
-  async sendVerificationEmail(email: string, firstName: string, token: string, _userId?: string): Promise<void> {
+  async sendVerificationEmail(email: string, firstName: string, token: string, userId?: string): Promise<void> {
     const verifyUrl = `${this.appUrl}/verify-email?token=${token}`;
+
+    if (userId) {
+      try {
+        await sendTemplate({
+          templateSlug: 'email_verification',
+          to: { userId, email, firstName },
+          variables: { firstName, verifyUrl },
+        });
+        return;
+      } catch (err) {
+        console.warn('Template send failed, falling back to direct send:', err);
+      }
+    }
+
+    // Fallback: direct send (for migration period or missing userId)
     await this.sendEmailDirect(email, 'Verify your PagePulser account', this.buildVerificationHtml(firstName, verifyUrl));
   }
 
   /**
    * Send password reset email via template service.
    */
-  async sendPasswordResetEmail(email: string, firstName: string, token: string, _userId?: string): Promise<void> {
+  async sendPasswordResetEmail(email: string, firstName: string, token: string, userId?: string): Promise<void> {
     const resetUrl = `${this.appUrl}/reset-password?token=${token}`;
+
+    if (userId) {
+      try {
+        await sendTemplate({
+          templateSlug: 'password_reset',
+          to: { userId, email, firstName },
+          variables: { firstName, resetUrl },
+        });
+        return;
+      } catch (err) {
+        console.warn('Template send failed, falling back to direct send:', err);
+      }
+    }
+
     await this.sendEmailDirect(email, 'Reset your PagePulser password', this.buildResetHtml(firstName, resetUrl));
   }
 
@@ -173,9 +203,41 @@ export class EmailService {
       content_score?: number | null;
       structured_data_score?: number | null;
     },
-    _userId?: string
+    userId?: string
   ): Promise<void> {
-    const statusText = audit.status === 'completed' ? 'Completed' : 'Failed';
+    const isSuccess = audit.status === 'completed';
+    const statusText = isSuccess ? 'Completed' : 'Failed';
+
+    if (userId) {
+      try {
+        await sendTemplate({
+          templateSlug: 'audit_completed',
+          to: { userId, email, firstName },
+          variables: {
+            firstName,
+            domain: audit.target_domain,
+            targetUrl: audit.target_url,
+            statusText,
+            statusMessage: isSuccess ? 'completed successfully' : 'failed',
+            auditId: audit.id,
+            auditUrl: `${this.appUrl}/audits/${audit.id}`,
+            totalIssues: String(audit.total_issues || 0),
+            criticalIssues: String(audit.critical_issues || 0),
+            seoScore: String(audit.seo_score || 0),
+            accessibilityScore: String(audit.accessibility_score || 0),
+            securityScore: String(audit.security_score || 0),
+            performanceScore: String(audit.performance_score || 0),
+            contentScore: String(audit.content_score || 0),
+            structuredDataScore: String(audit.structured_data_score || 0),
+          },
+        });
+        return;
+      } catch (err) {
+        console.warn('Template send failed, falling back to direct send:', err);
+      }
+    }
+
+    // Fallback
     await this.sendEmailDirect(email, `Audit ${statusText}: ${audit.target_domain}`, this.buildAuditHtml(firstName, audit));
   }
 

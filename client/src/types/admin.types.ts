@@ -182,6 +182,7 @@ export interface BugReportStats {
   resolved: number;
   closed: number;
   critical: number;
+  critical_open: number;
   last_7_days: number;
   last_24_hours: number;
 }
@@ -191,6 +192,7 @@ export interface AdminFunnelStage {
   name: string;
   count: number;
   rate: number;
+  conversionFromPrevious: number;
 }
 
 export interface AdminFunnelAnalytics {
@@ -201,9 +203,30 @@ export interface AdminFunnelAnalytics {
 export interface AdminTopIssue {
   rule_id: string;
   rule_name: string;
+  ruleId: string;
+  ruleName: string;
   category: string;
   severity: string;
   count: number;
+  affectedAudits: number;
+  percentage: number;
+}
+
+export interface AdminScoreDistribution {
+  range: string;
+  count: number;
+  avg: number;
+  median: number;
+  p10: number;
+  p90: number;
+}
+
+export interface AdminTierAuditBreakdown {
+  tier: string;
+  count: number;
+  percentage: number;
+  audits: number;
+  avgScore: number;
 }
 
 export interface AdminGlobalTrends {
@@ -211,6 +234,10 @@ export interface AdminGlobalTrends {
   pagesPerDay: Array<{ date: string; count: number }>;
   issuesPerDay: Array<{ date: string; count: number }>;
   topIssues: AdminTopIssue[];
+  totalAuditsCompleted: number;
+  totalPagesScanned: number;
+  scoreDistribution: Record<string, AdminScoreDistribution>;
+  tierBreakdown: Record<string, AdminTierAuditBreakdown>;
   period: string;
 }
 
@@ -224,9 +251,11 @@ export interface AdminRevenueAnalytics {
   mrr: number;
   arr: number;
   totalRevenue: number;
-  byTier: AdminTierRevenue[];
+  byTier: Record<string, AdminTierRevenue>;
   churnRate: number;
   trialConversionRate: number;
+  newThisMonth: { count: number; mrrGained: number };
+  churnThisMonth: { count: number; mrrLost: number };
 }
 
 // Admin Schedule Types
@@ -249,6 +278,7 @@ export interface AdminScheduleItem {
   next_run_at: string | null;
   last_run_at: string | null;
   last_status: string | null;
+  target_domain: string;
   created_at: string;
 }
 
@@ -256,6 +286,8 @@ export interface AdminScheduleStats {
   total: number;
   active: number;
   paused: number;
+  disabled: number;
+  ranToday: number;
   byFrequency: Record<string, number>;
 }
 

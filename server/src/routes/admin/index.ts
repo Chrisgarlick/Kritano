@@ -27,6 +27,8 @@ import { adminSettingsRouter } from './settings.js';
 import { adminComingSoonRouter } from './coming-soon.js';
 import { adminSeoRouter } from './seo.js';
 import { adminEarlyAccessRouter } from './early-access.js';
+import { adminCrmRouter } from './crm.js';
+import { adminEmailRouter } from './email.js';
 import {
   getAdminSchedulesList,
   getAdminScheduleStats,
@@ -47,8 +49,8 @@ const router = Router();
 router.use(authenticate, requireSuperAdmin);
 
 // Mount sub-routers
-// [Phase 10] router.use('/crm', adminCrmRouter);
-// [Phase 10] router.use('/email', adminEmailRouter);
+router.use('/crm', adminCrmRouter);
+router.use('/email', adminEmailRouter);
 // [Phase 11] router.use('/cms', adminCmsRouter);
 router.use('/analytics', adminAnalyticsRouter);
 // [Phase 11] router.use('/marketing', adminMarketingRouter);

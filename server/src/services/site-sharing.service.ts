@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import crypto from 'crypto';
 import { getSiteOwnerTierLimits } from './site.service.js';
-// [Phase 10] lead-scoring.service will be added later
+import { recalculateScore } from './lead-scoring.service.js';
 
 // Types
 export type SitePermission = 'viewer' | 'editor' | 'admin';
@@ -159,9 +159,9 @@ export async function createShare(input: CreateShareInput): Promise<SiteShare> {
     [siteId, userId, permission, invitedBy]
   );
 
-  // [Phase 10] CRM: Recalculate score for the site owner (team member added signal)
+  // CRM: Recalculate score for the site owner (team member added signal)
   if (invitedBy) {
-    console.log('[Phase 10] Would recalculate CRM score for user:', invitedBy);
+    recalculateScore(invitedBy).catch(err => console.error('CRM score recalc failed:', err));
   }
 
   return result.rows[0];

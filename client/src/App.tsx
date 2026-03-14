@@ -49,6 +49,15 @@ import AdminRevenuePage from './pages/admin/analytics/RevenuePage';
 import AdminSeoManagerPage from './pages/admin/seo/SeoManagerPage';
 import AdminSystemSettingsPage from './pages/admin/settings/SystemSettingsPage';
 import AdminComingSoonSignupsPage from './pages/admin/settings/ComingSoonSignupsPage';
+import AdminLeadsPage from './pages/admin/crm/LeadsPage';
+import AdminLeadDetailPage from './pages/admin/crm/LeadDetailPage';
+import AdminTriggersPage from './pages/admin/crm/TriggersPage';
+import AdminTemplatesPage from './pages/admin/email/TemplatesPage';
+import AdminTemplateEditorPage from './pages/admin/email/TemplateEditorPage';
+import AdminCampaignsPage from './pages/admin/email/CampaignsPage';
+import AdminCampaignEditorPage from './pages/admin/email/CampaignEditorPage';
+import AdminEmailAnalyticsPage from './pages/admin/email/EmailAnalyticsPage';
+import UnsubscribePage from './pages/email/UnsubscribePage';
 
 function App() {
   return (
@@ -69,6 +78,7 @@ function App() {
                 <Route path="/verify-email" element={<VerifyEmailPage />} />
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route path="/invitations/:token" element={<SiteInvitationPage />} />
+                <Route path="/email/unsubscribe" element={<UnsubscribePage />} />
 
                 {/* Protected routes */}
                 <Route
@@ -223,6 +233,16 @@ function App() {
                 <Route path="/admin/seo" element={<AdminRoute><AdminSeoManagerPage /></AdminRoute>} />
                 <Route path="/admin/settings" element={<AdminRoute><AdminSystemSettingsPage /></AdminRoute>} />
                 <Route path="/admin/coming-soon" element={<AdminRoute><AdminComingSoonSignupsPage /></AdminRoute>} />
+                <Route path="/admin/crm/leads" element={<AdminRoute><AdminLeadsPage /></AdminRoute>} />
+                <Route path="/admin/crm/leads/:userId" element={<AdminRoute><AdminLeadDetailPage /></AdminRoute>} />
+                <Route path="/admin/crm/triggers" element={<AdminRoute><AdminTriggersPage /></AdminRoute>} />
+                <Route path="/admin/email/templates" element={<AdminRoute><AdminTemplatesPage /></AdminRoute>} />
+                <Route path="/admin/email/templates/:id" element={<AdminRoute><AdminTemplateEditorPage /></AdminRoute>} />
+                <Route path="/admin/email/templates/new" element={<AdminRoute><AdminTemplateEditorPage /></AdminRoute>} />
+                <Route path="/admin/email/campaigns" element={<AdminRoute><AdminCampaignsPage /></AdminRoute>} />
+                <Route path="/admin/email/campaigns/:id" element={<AdminRoute><AdminCampaignEditorPage /></AdminRoute>} />
+                <Route path="/admin/email/campaigns/new" element={<AdminRoute><AdminCampaignEditorPage /></AdminRoute>} />
+                <Route path="/admin/email/analytics" element={<AdminRoute><AdminEmailAnalyticsPage /></AdminRoute>} />
 
                 {/* 404 */}
                 <Route path="*" element={<NotFoundPage />} />
