@@ -947,40 +947,54 @@ export async function markSiteVerified(
     [method, siteId]
   );
 
-  // Send verification success email and fire CRM trigger
+  // Send verification success email & fire CRM trigger (non-blocking)
   try {
-    const siteResult = await pool.query<{ domain: string; created_by: string }>(
-      `SELECT domain, created_by FROM sites WHERE id = $1`,
+    const siteResult = await pool.query(
+      `SELECT s.id, s.domain, s.created_by,
+              u.email, u.first_name
+       FROM sites s
+       JOIN users u ON s.created_by = u.id
+       WHERE s.id = $1`,
       [siteId]
     );
+
     if (siteResult.rows.length > 0) {
       const site = siteResult.rows[0];
-      const userResult = await pool.query<{ email: string; first_name: string }>(
-        `SELECT email, first_name FROM users WHERE id = $1`,
-        [site.created_by]
-      );
-      if (userResult.rows.length > 0) {
-        const user = userResult.rows[0];
-        const { sendTemplate } = await import('./email-template.service.js');
-        const { checkTriggers } = await import('./crm-trigger.service.js');
+      const appUrl = process.env.APP_URL || 'http://localhost:3000';
 
-        sendTemplate({
-          templateSlug: 'domain_verified',
-          to: { userId: site.created_by, email: user.email, firstName: user.first_name || '' },
-          variables: {
-            domain: site.domain,
-            verificationMethod: method === 'dns' ? 'DNS TXT record' : 'file upload',
-            siteUrl: `${process.env.APP_URL || 'http://localhost:3000'}/sites/${siteId}`,
-            verifiedDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-          },
-        }).catch(err => console.error('Failed to send domain_verified email:', err));
+      // Send email
+      const { sendTemplate } = await import('./email-template.service.js');
+      await sendTemplate({
+        templateSlug: 'domain_verified',
+        to: {
+          userId: site.created_by,
+          email: site.email,
+          firstName: site.first_name || 'there',
+        },
+        variables: {
+          firstName: site.first_name || 'there',
+          domain: site.domain,
+          verificationMethod: method === 'dns' ? 'DNS TXT record' : 'verification file',
+          siteUrl: `${appUrl}/sites/${site.id}`,
+          verifiedDate: new Date().toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          }),
+        },
+      });
 
-        checkTriggers(site.created_by, 'domain_verified', { siteId, domain: site.domain })
-          .catch(err => console.error('Failed to fire domain_verified trigger:', err));
-      }
+      // Fire CRM trigger
+      const { checkTriggers } = await import('./crm-trigger.service.js');
+      await checkTriggers(site.created_by, 'domain_verified', {
+        siteId: site.id,
+        domain: site.domain,
+        method,
+      });
     }
   } catch (err) {
-    console.error('Failed to process domain verification notifications:', err);
+    // Don't fail verification if email/trigger fails
+    console.warn('Domain verification notification failed:', err);
   }
 }
 

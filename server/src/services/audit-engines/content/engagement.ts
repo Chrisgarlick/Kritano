@@ -1,6 +1,5 @@
-// @ts-nocheck
-
-/** Engagement Analysis Module
+/**
+ * Engagement Analysis Module
  * Analyzes hooks, CTAs, power words, questions, and transitions
  */
 

@@ -2049,8 +2049,8 @@ function generateUrlInsights(a: UrlPageSnapshot, b: UrlPageSnapshot): UrlCompari
   }
 
   // Issue count comparison
-  const aTotalIssues = Object.values(a.issueCountByCategory).reduce((s: number, v: number) => s + v, 0);
-  const bTotalIssues = Object.values(b.issueCountByCategory).reduce((s: number, v: number) => s + v, 0);
+  const aTotalIssues = Object.values(a.issueCountByCategory).reduce((s, v) => s + v, 0);
+  const bTotalIssues = Object.values(b.issueCountByCategory).reduce((s, v) => s + v, 0);
   if (Math.abs(aTotalIssues - bTotalIssues) > 20) {
     insights.push({
       category: 'Issues',
@@ -2243,8 +2243,8 @@ function generateUrlInsights(a: UrlPageSnapshot, b: UrlPageSnapshot): UrlCompari
   }
 
   // Sort by severity (high first)
-  const severityOrder: Record<string, number> = { high: 0, medium: 1, low: 2 };
-  insights.sort((x, y) => (severityOrder[x.severity] ?? 3) - (severityOrder[y.severity] ?? 3));
+  const severityOrder = { high: 0, medium: 1, low: 2 };
+  insights.sort((x, y) => severityOrder[x.severity] - severityOrder[y.severity]);
 
   return insights;
 }

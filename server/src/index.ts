@@ -1,51 +1,42 @@
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
+import * as Sentry from '@sentry/node';
 import { configureSecurityMiddleware } from './middleware/security.middleware.js';
 import { ensureCsrfToken, csrfProtection } from './middleware/csrf.middleware.js';
 import { globalRateLimiter } from './middleware/rateLimit.middleware.js';
 import { testRedisConnection } from './db/redis.js';
-import { authRouter } from './routes/auth/index.js';
-import { auditsRouter, setPool as setAuditsPool } from './routes/audits/index.js';
-import sitesRouter from './routes/sites/index.js';
-import { cookieConsentRouter } from './routes/consent/cookie-consent.js';
-import { billingRouter } from './routes/billing/index.js';
-import { initializeStripeWebhooks } from './routes/webhooks/stripe.js';
+import { apiRouter, initializeRoutes } from './routes/index.js';
+import { shutdownPdfBrowser } from './services/pdf-report.service.js';
 import { resendWebhookRouter } from './routes/webhooks/resend.js';
-import emailRouter from './routes/email/index.js';
-import { createCampaignWorker } from './services/queue/campaign-worker.service.js';
-import { blogRouter } from './routes/blog.js';
-import { createDiscoveryWorker } from './services/queue/discovery-worker.service.js';
-import { createColdProspectWorker } from './services/queue/cold-prospect-worker.service.js';
-import { apiKeysRouter } from './routes/api-keys/index.js';
-import bugReportsRouter from './routes/bug-reports/index.js';
-import featureRequestsRouter from './routes/feature-requests/index.js';
-import { referralsRouter } from './routes/referrals/index.js';
-import { docsRouter } from './routes/docs/index.js';
-import { v1Router, setPool as setV1Pool } from './routes/v1/index.js';
-import { setPool as setSiteServicePool } from './services/site.service.js';
-import { setPool as setDomainVerificationPool } from './services/domain-verification.service.js';
-import { setPool as setConsentServicePool } from './services/consent.service.js';
-import { setPool as setSiteMiddlewarePool } from './middleware/site.middleware.js';
-import { setPool as setSystemSettingsPool } from './services/system-settings.service.js';
-import { createTrialWorker } from './services/queue/trial-worker.service.js';
-import { schedulesRouter } from './routes/schedules/index.js';
-import analyticsRouter, { setPool as setAnalyticsPool } from './routes/analytics/index.js';
-import { setPool as setScheduleServicePool } from './services/schedule.service.js';
-import { setPool as setSiteSharingPool } from './services/site-sharing.service.js';
-import { setPool as setOrganizationServicePool } from './services/organization.service.js';
-import { organizationsRouter } from './routes/organizations/index.js';
-import siteInvitationsRouter from './routes/site-invitations/index.js';
-import { adminRouter, setPool as setAdminRouterPool } from './routes/admin/index.js';
-import { initializeAdminMiddleware } from './middleware/admin.middleware.js';
-import { initializeAdminService } from './services/admin.service.js';
-import { initializeAdminAnalyticsService } from './services/admin-analytics.service.js';
-import { setPool as setSeoServicePool } from './services/seo.service.js';
+import { initializeStripeWebhooks } from './routes/webhooks/stripe.js';
 
 // Load environment variables
 dotenv.config();
+
+// Initialize Sentry (#68)
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.NODE_ENV || 'development',
+    tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
+    integrations: [
+      Sentry.httpIntegration(),
+      Sentry.expressIntegration(),
+    ],
+    beforeSend(event) {
+      // Filter out sensitive data
+      if (event.request?.cookies) {
+        delete event.request.cookies;
+      }
+      return event;
+    },
+  });
+  console.log('🔍 Sentry error tracking enabled');
+}
 
 // Database connection - require DATABASE_URL (no hardcoded credentials)
 if (!process.env.DATABASE_URL) {
@@ -58,6 +49,9 @@ const pool = new Pool({
   max: 20,
 });
 
+// Initialize route dependencies
+initializeRoutes(pool);
+
 const app = express();
 
 // Security middleware (Helmet)
@@ -67,17 +61,24 @@ configureSecurityMiddleware(app);
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-    credentials: true,
+    credentials: true, // Allow cookies
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
   })
 );
 
-// Webhook routes — must use raw body BEFORE express.json()
-app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }), initializeStripeWebhooks(pool));
+// Webhook routes — registered BEFORE body parsers for raw body access
 app.use('/api/webhooks/resend', express.raw({ type: 'application/json' }), resendWebhookRouter);
+app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }), initializeStripeWebhooks(pool));
 
-// Body parsing
+// Static file serving for blog uploads
+app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads'), {
+  maxAge: '7d',
+  immutable: true,
+}));
+
+// Body parsing — larger limit for admin JSON imports
+app.use('/api/admin/cold-prospects/import-json', express.json({ limit: '10mb' }));
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
@@ -105,73 +106,8 @@ app.get('/api', (req, res) => {
   });
 });
 
-// Auth routes
-app.use('/api/auth', authRouter);
-
-// Audit routes (inject pool)
-setAuditsPool(pool);
-app.use('/api/audits', auditsRouter);
-
-// Site routes (inject pool into services and middleware)
-setSiteServicePool(pool);
-setDomainVerificationPool(pool);
-setConsentServicePool(pool);
-setSiteMiddlewarePool(pool);
-setSiteSharingPool(pool);
-app.use('/api/sites', sitesRouter);
-
-// Site invitation routes (accept/decline invitations)
-app.use('/api/invitations', siteInvitationsRouter);
-
-// Organization routes
-setOrganizationServicePool(pool);
-app.use('/api/organizations', organizationsRouter);
-
-// Admin routes
-initializeAdminMiddleware(pool);
-initializeAdminService(pool);
-initializeAdminAnalyticsService(pool);
-setAdminRouterPool(pool);
-setSeoServicePool(pool);
-app.use('/api/admin', adminRouter);
-
-// Consent routes (public, no auth required for cookie consent)
-app.use('/api/consent/cookies', cookieConsentRouter);
-
-// Billing, subscription, early access, and coming soon routes
-setSystemSettingsPool(pool);
-app.use('/api', billingRouter);
-
-// Email routes (unsubscribe, preferences)
-app.use('/api/email', emailRouter);
-
-// Schedule routes
-setScheduleServicePool(pool);
-app.use('/api/audits/schedules', schedulesRouter);
-
-// Analytics routes
-setAnalyticsPool(pool);
-app.use('/api/analytics', analyticsRouter);
-
-// Blog routes (public)
-app.use('/api/blog', blogRouter);
-
-// API keys routes
-app.use('/api/api-keys', apiKeysRouter);
-
-// Bug reports & feature requests (user-facing)
-app.use('/api/bug-reports', bugReportsRouter);
-app.use('/api/feature-requests', featureRequestsRouter);
-
-// Referrals routes
-app.use('/api/referrals', referralsRouter);
-
-// API docs redirect
-app.use('/api/docs', docsRouter);
-
-// Public API v1
-setV1Pool(pool);
-app.use('/api/v1', v1Router);
+// API routes
+app.use('/api', apiRouter);
 
 // 404 handler
 app.use((req, res) => {
@@ -182,10 +118,21 @@ app.use((req, res) => {
   });
 });
 
+// Sentry error handler (must be before other error handlers)
+if (process.env.SENTRY_DSN) {
+  Sentry.setupExpressErrorHandler(app);
+}
+
 // Error handler
 app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Unhandled error:', err);
 
+  // Capture error in Sentry if not already captured
+  if (process.env.SENTRY_DSN) {
+    Sentry.captureException(err);
+  }
+
+  // Don't expose internal errors in production
   const message = process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message;
 
   res.status(500).json({
@@ -201,7 +148,7 @@ let serverRef: ReturnType<typeof app.listen> | null = null;
 
 const startServer = (port: number, attempt: number = 1): void => {
   if (attempt > MAX_PORT_ATTEMPTS) {
-    console.error(`Failed to start server: all ports ${BASE_PORT}-${BASE_PORT + MAX_PORT_ATTEMPTS - 1} in use`);
+    console.error(`❌ Failed to start server: all ports ${BASE_PORT}-${BASE_PORT + MAX_PORT_ATTEMPTS - 1} in use`);
     process.exit(1);
   }
 
@@ -210,54 +157,39 @@ const startServer = (port: number, attempt: number = 1): void => {
 
   server.on('error', (err: NodeJS.ErrnoException) => {
     if (err.code === 'EADDRINUSE') {
-      console.log(`Port ${port} in use, trying ${port + 1}...`);
+      console.log(`⚠️  Port ${port} in use, trying ${port + 1}...`);
       startServer(port + 1, attempt + 1);
     } else {
-      console.error('Server error:', err);
+      console.error('❌ Server error:', err);
       process.exit(1);
     }
   });
 
   server.on('listening', async () => {
-    console.log(`PagePulser server running on http://localhost:${port}`);
+    console.log(`🛡️  PagePulser server running on http://localhost:${port}`);
     console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
-    await testRedisConnection().catch(() => console.warn('Redis not available — rate limiting will fail open'));
-
-    // Start trial expiry worker
-    const trialWorker = createTrialWorker({ pool });
-    trialWorker.start().catch((err) => console.error('Trial worker failed to start:', err));
-
-    // Start campaign worker
-    const campaignWorker = createCampaignWorker({ pool });
-    campaignWorker.start().catch((err) => console.error('Campaign worker failed to start:', err));
-
-    // Start discovery worker
-    const discoveryWorker = createDiscoveryWorker({ pool });
-    discoveryWorker.start().catch((err) => console.error('Discovery worker failed to start:', err));
-
-    // Start cold prospect worker
-    const coldProspectWorker = createColdProspectWorker({ pool });
-    coldProspectWorker.start().catch((err) => console.error('Cold prospect worker failed to start:', err));
+    await testRedisConnection().catch(() => console.warn('⚠️  Redis not available — rate limiting will fail open'));
   });
 };
 
 // Graceful shutdown
 const shutdown = (signal: string) => {
-  console.log(`\nReceived ${signal}, shutting down...`);
+  console.log(`\n📥 Received ${signal}, shutting down...`);
 
+  // Force exit after 3 seconds if graceful shutdown fails
   setTimeout(() => {
-    console.log('Forcing exit...');
+    console.log('⚠️  Forcing exit...');
     process.exit(0);
   }, 3000).unref();
 
   if (serverRef) {
     serverRef.close(() => {
-      pool.end().finally(() => {
+      Promise.all([pool.end(), shutdownPdfBrowser()]).finally(() => {
         process.exit(0);
       });
     });
   } else {
-    pool.end().finally(() => {
+    Promise.all([pool.end(), shutdownPdfBrowser()]).finally(() => {
       process.exit(0);
     });
   }

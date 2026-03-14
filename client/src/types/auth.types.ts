@@ -46,6 +46,8 @@ export interface RegisterData {
   lastName: string;
   companyName?: string;
   acceptedTos?: boolean;
+  referralCode?: string;
+  earlyAccessChannel?: 'email' | 'social';
 }
 
 export interface PasswordResetRequestData {

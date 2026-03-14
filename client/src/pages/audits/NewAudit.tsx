@@ -348,9 +348,13 @@ export default function NewAuditPage() {
         }
       }
 
+      // Get competitor ID if present (for linking audit to competitor)
+      const competitorProfileId = searchParams.get('competitor') || undefined;
+
       const response = await auditsApi.start({
         targetUrl: normalizedUrl,
         siteId: siteIdParam || undefined,
+        competitorProfileId,
         options,
         consent,
       });

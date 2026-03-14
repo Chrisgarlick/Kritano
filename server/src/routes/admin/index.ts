@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import type { Response } from 'express';
 import http from 'http';
-import { Pool } from 'pg';
 import { z } from 'zod';
 import { authenticate } from '../../middleware/auth.middleware.js';
 import { requireSuperAdmin, logAdminActivity, type AdminRequest } from '../../middleware/admin.middleware.js';
@@ -22,30 +21,17 @@ import {
 } from '../../services/admin.service.js';
 import { bugReportService } from '../../services/bug-report.service.js';
 import { featureRequestService } from '../../services/feature-request.service.js';
+import { adminCrmRouter } from './crm.js';
+import { adminEmailRouter } from './email.js';
+import { adminCmsRouter } from './cms.js';
 import { adminAnalyticsRouter } from './analytics.js';
+import { adminMarketingRouter } from './marketing.js';
+import { adminColdProspectsRouter } from './cold-prospects.js';
+import { adminReferralsRouter } from './referrals.js';
 import { adminSettingsRouter } from './settings.js';
 import { adminComingSoonRouter } from './coming-soon.js';
 import { adminSeoRouter } from './seo.js';
 import { adminEarlyAccessRouter } from './early-access.js';
-import { adminCrmRouter } from './crm.js';
-import { adminEmailRouter } from './email.js';
-import { adminCmsRouter } from './cms.js';
-import { adminMarketingRouter } from './marketing.js';
-import { adminColdProspectsRouter } from './cold-prospects.js';
-import { adminReferralsRouter } from './referrals.js';
-import {
-  getAdminSchedulesList,
-  getAdminScheduleStats,
-  adminGetScheduleById,
-  adminUpdateSchedule,
-  adminDeleteSchedule,
-} from '../../services/schedule.service.js';
-
-let pool: Pool;
-
-export function setPool(dbPool: Pool): void {
-  pool = dbPool;
-}
 
 const router = Router();
 
@@ -69,6 +55,10 @@ router.use('/early-access', adminEarlyAccessRouter);
 // Dashboard & Analytics
 // =============================================
 
+/**
+ * GET /api/admin/dashboard
+ * Get dashboard statistics
+ */
 router.get('/dashboard', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const stats = await getDashboardStats();
@@ -81,6 +71,10 @@ router.get('/dashboard', async (req: AdminRequest, res: Response): Promise<void>
   }
 });
 
+/**
+ * GET /api/admin/analytics
+ * Get analytics history
+ */
 router.get('/analytics', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const days = parseInt(req.query.days as string) || 30;
@@ -97,6 +91,10 @@ router.get('/analytics', async (req: AdminRequest, res: Response): Promise<void>
 // User Management
 // =============================================
 
+/**
+ * GET /api/admin/users
+ * List all users
+ */
 router.get('/users', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -122,6 +120,10 @@ router.get('/users', async (req: AdminRequest, res: Response): Promise<void> => 
   }
 });
 
+/**
+ * GET /api/admin/users/:userId
+ * Get user details
+ */
 router.get('/users/:userId', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
@@ -143,6 +145,10 @@ const updateUserSchema = z.object({
   is_super_admin: z.boolean().optional(),
 });
 
+/**
+ * PATCH /api/admin/users/:userId
+ * Update user (e.g., super admin status)
+ */
 router.patch(
   '/users/:userId',
   validateBody(updateUserSchema),
@@ -178,10 +184,15 @@ router.patch(
   }
 );
 
+/**
+ * DELETE /api/admin/users/:userId
+ * Delete a user
+ */
 router.delete('/users/:userId', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const { userId } = req.params;
 
+    // Prevent self-deletion
     if (userId === req.admin!.id) {
       res.status(400).json({ error: 'Cannot delete yourself', code: 'CANNOT_DELETE_SELF' });
       return;
@@ -215,6 +226,10 @@ router.delete('/users/:userId', async (req: AdminRequest, res: Response): Promis
 // Organization Management
 // =============================================
 
+/**
+ * GET /api/admin/organizations
+ * List all organizations
+ */
 router.get('/organizations', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -241,6 +256,10 @@ router.get('/organizations', async (req: AdminRequest, res: Response): Promise<v
   }
 });
 
+/**
+ * GET /api/admin/organizations/:orgId
+ * Get organization details
+ */
 router.get('/organizations/:orgId', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const { orgId } = req.params;
@@ -263,6 +282,10 @@ const updateOrgSubscriptionSchema = z.object({
   status: z.enum(['active', 'past_due', 'canceled', 'trialing', 'paused']).optional(),
 });
 
+/**
+ * PATCH /api/admin/organizations/:orgId/subscription
+ * Update organization subscription (tier, status)
+ */
 router.patch(
   '/organizations/:orgId/subscription',
   validateBody(updateOrgSubscriptionSchema),
@@ -313,6 +336,10 @@ router.patch(
 // Activity Log
 // =============================================
 
+/**
+ * GET /api/admin/activity
+ * Get admin activity log
+ */
 router.get('/activity', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -340,7 +367,12 @@ router.get('/activity', async (req: AdminRequest, res: Response): Promise<void> 
 // Check admin status (for frontend)
 // =============================================
 
+/**
+ * GET /api/admin/check
+ * Check if current user is a super admin
+ */
 router.get('/check', async (req: AdminRequest, res: Response): Promise<void> => {
+  // If we get here, user is already verified as super admin by middleware
   res.json({
     isAdmin: true,
     admin: req.admin,
@@ -353,16 +385,19 @@ router.get('/check', async (req: AdminRequest, res: Response): Promise<void> => 
 
 const WORKER_HEALTH_URL = `http://localhost:${process.env.WORKER_HEALTH_PORT || '3001'}`;
 
+/**
+ * Proxy a request to the worker health server.
+ */
 function proxyWorkerRequest(path: string, method: 'GET' | 'POST' = 'GET'): Promise<{ status: number; data: unknown }> {
   return new Promise((resolve) => {
-    const req = http.request(`${WORKER_HEALTH_URL}${path}`, { method, timeout: 5000 }, (workerRes) => {
+    const req = http.request(`${WORKER_HEALTH_URL}${path}`, { method, timeout: 5000 }, (res) => {
       let body = '';
-      workerRes.on('data', (chunk) => { body += chunk; });
-      workerRes.on('end', () => {
+      res.on('data', (chunk) => { body += chunk; });
+      res.on('end', () => {
         try {
-          resolve({ status: workerRes.statusCode || 200, data: JSON.parse(body) });
+          resolve({ status: res.statusCode || 200, data: JSON.parse(body) });
         } catch {
-          resolve({ status: workerRes.statusCode || 500, data: { raw: body } });
+          resolve({ status: res.statusCode || 500, data: { raw: body } });
         }
       });
     });
@@ -377,6 +412,10 @@ function proxyWorkerRequest(path: string, method: 'GET' | 'POST' = 'GET'): Promi
   });
 }
 
+/**
+ * GET /api/admin/worker/status
+ * Get detailed worker status.
+ */
 router.get('/worker/status', async (_req: AdminRequest, res: Response): Promise<void> => {
   try {
     const result = await proxyWorkerRequest('/status');
@@ -387,6 +426,10 @@ router.get('/worker/status', async (_req: AdminRequest, res: Response): Promise<
   }
 });
 
+/**
+ * GET /api/admin/worker/health
+ * Quick worker health check.
+ */
 router.get('/worker/health', async (_req: AdminRequest, res: Response): Promise<void> => {
   try {
     const result = await proxyWorkerRequest('/health');
@@ -397,6 +440,11 @@ router.get('/worker/health', async (_req: AdminRequest, res: Response): Promise<
   }
 });
 
+/**
+ * POST /api/admin/worker/restart
+ * Trigger a graceful worker restart.
+ * The worker process exits and the process manager (PM2/Docker/systemd) restarts it.
+ */
 router.post('/worker/restart', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     await logAdminActivity(
@@ -422,15 +470,33 @@ router.post('/worker/restart', async (req: AdminRequest, res: Response): Promise
   }
 });
 
+/**
+ * GET /api/admin/worker/queue
+ * Get detailed queue backlog — all pending and processing jobs with user info.
+ */
 router.get('/worker/queue', async (_req: AdminRequest, res: Response): Promise<void> => {
   try {
     const result = await pool.query(`
       SELECT
-        j.id, j.target_url, j.target_domain, j.status, j.max_pages,
-        j.pages_found, j.pages_crawled, j.pages_audited, j.current_url,
-        j.total_issues, j.critical_issues, j.worker_id, j.error_message,
-        j.created_at, j.started_at, j.locked_at,
-        u.email as user_email, u.first_name as user_first_name, u.last_name as user_last_name
+        j.id,
+        j.target_url,
+        j.target_domain,
+        j.status,
+        j.max_pages,
+        j.pages_found,
+        j.pages_crawled,
+        j.pages_audited,
+        j.current_url,
+        j.total_issues,
+        j.critical_issues,
+        j.worker_id,
+        j.error_message,
+        j.created_at,
+        j.started_at,
+        j.locked_at,
+        u.email as user_email,
+        u.first_name as user_first_name,
+        u.last_name as user_last_name
       FROM audit_jobs j
       JOIN users u ON j.user_id = u.id
       WHERE j.status IN ('pending', 'discovering', 'ready', 'processing')
@@ -439,17 +505,28 @@ router.get('/worker/queue', async (_req: AdminRequest, res: Response): Promise<v
         j.created_at ASC
     `);
 
+    // Also get recent failed jobs (last 24h)
     const failedResult = await pool.query(`
-      SELECT j.id, j.target_url, j.target_domain, j.status, j.error_message,
-             j.created_at, j.started_at, j.completed_at,
-             u.email as user_email, u.first_name as user_first_name
+      SELECT
+        j.id,
+        j.target_url,
+        j.target_domain,
+        j.status,
+        j.error_message,
+        j.created_at,
+        j.started_at,
+        j.completed_at,
+        u.email as user_email,
+        u.first_name as user_first_name
       FROM audit_jobs j
       JOIN users u ON j.user_id = u.id
-      WHERE j.status = 'failed' AND j.completed_at > NOW() - INTERVAL '24 hours'
+      WHERE j.status = 'failed'
+        AND j.completed_at > NOW() - INTERVAL '24 hours'
       ORDER BY j.completed_at DESC
       LIMIT 20
     `);
 
+    // Get summary counts
     const countsResult = await pool.query(`
       SELECT
         COUNT(*) FILTER (WHERE status = 'pending') as pending,
@@ -485,6 +562,10 @@ router.get('/worker/queue', async (_req: AdminRequest, res: Response): Promise<v
   }
 });
 
+/**
+ * POST /api/admin/worker/queue/:id/cancel
+ * Admin-cancel any audit job (pending or processing).
+ */
 router.post('/worker/queue/:id/cancel', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const jobId = req.params.id;
@@ -518,6 +599,10 @@ router.post('/worker/queue/:id/cancel', async (req: AdminRequest, res: Response)
   }
 });
 
+/**
+ * POST /api/admin/worker/queue/cancel-all
+ * Cancel all pending jobs.
+ */
 router.post('/worker/queue/cancel-all', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const result = await pool.query(
@@ -547,6 +632,10 @@ router.post('/worker/queue/cancel-all', async (req: AdminRequest, res: Response)
 // Bug Reports Management
 // =============================================
 
+/**
+ * GET /api/admin/bug-reports
+ * List all bug reports (paginated, filterable)
+ */
 router.get('/bug-reports', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -556,7 +645,14 @@ router.get('/bug-reports', async (req: AdminRequest, res: Response): Promise<voi
     const category = req.query.category as string | undefined;
     const search = req.query.search as string | undefined;
 
-    const result = await bugReportService.listAll({ page, limit, status, severity, category, search });
+    const result = await bugReportService.listAll({
+      page,
+      limit,
+      status,
+      severity,
+      category,
+      search,
+    });
 
     res.json({
       items: result.items,
@@ -571,6 +667,10 @@ router.get('/bug-reports', async (req: AdminRequest, res: Response): Promise<voi
   }
 });
 
+/**
+ * GET /api/admin/bug-reports/stats
+ * Get bug report statistics for dashboard
+ */
 router.get('/bug-reports/stats', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const stats = await bugReportService.getStats();
@@ -581,6 +681,10 @@ router.get('/bug-reports/stats', async (req: AdminRequest, res: Response): Promi
   }
 });
 
+/**
+ * GET /api/admin/bug-reports/:id
+ * Get a single bug report with comments
+ */
 router.get('/bug-reports/:id', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const report = await bugReportService.getWithComments(req.params.id);
@@ -605,6 +709,10 @@ const updateBugReportSchema = z.object({
   assignedTo: z.string().uuid().nullable().optional(),
 });
 
+/**
+ * PATCH /api/admin/bug-reports/:id
+ * Update a bug report (status, priority, notes)
+ */
 router.patch('/bug-reports/:id', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const data = updateBugReportSchema.parse(req.body);
@@ -615,7 +723,14 @@ router.patch('/bug-reports/:id', async (req: AdminRequest, res: Response): Promi
       return;
     }
 
-    await logAdminActivity(req.admin!.id, 'update_bug_report', 'bug_report', req.params.id, data, req);
+    await logAdminActivity(
+      req.admin!.id,
+      'update_bug_report',
+      'bug_report',
+      req.params.id,
+      data,
+      req
+    );
 
     res.json({ report });
   } catch (error) {
@@ -628,6 +743,10 @@ router.patch('/bug-reports/:id', async (req: AdminRequest, res: Response): Promi
   }
 });
 
+/**
+ * POST /api/admin/bug-reports/:id/comments
+ * Add an admin comment to a bug report
+ */
 router.post('/bug-reports/:id/comments', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const { content } = z.object({ content: z.string().min(1).max(2000) }).parse(req.body);
@@ -654,11 +773,22 @@ router.post('/bug-reports/:id/comments', async (req: AdminRequest, res: Response
   }
 });
 
+/**
+ * DELETE /api/admin/bug-reports/:id
+ * Soft delete a bug report
+ */
 router.delete('/bug-reports/:id', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     await bugReportService.softDelete(req.params.id);
 
-    await logAdminActivity(req.admin!.id, 'delete_bug_report', 'bug_report', req.params.id, {}, req);
+    await logAdminActivity(
+      req.admin!.id,
+      'delete_bug_report',
+      'bug_report',
+      req.params.id,
+      {},
+      req
+    );
 
     res.json({ success: true });
   } catch (error) {
@@ -671,6 +801,10 @@ router.delete('/bug-reports/:id', async (req: AdminRequest, res: Response): Prom
 // Feature Requests Management
 // =============================================
 
+/**
+ * GET /api/admin/feature-requests
+ * List all feature requests (paginated, filterable)
+ */
 router.get('/feature-requests', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -680,7 +814,14 @@ router.get('/feature-requests', async (req: AdminRequest, res: Response): Promis
     const category = req.query.category as string | undefined;
     const search = req.query.search as string | undefined;
 
-    const result = await featureRequestService.listAll({ page, limit, status, impact, category, search });
+    const result = await featureRequestService.listAll({
+      page,
+      limit,
+      status,
+      impact,
+      category,
+      search,
+    });
 
     res.json({
       items: result.items,
@@ -695,6 +836,10 @@ router.get('/feature-requests', async (req: AdminRequest, res: Response): Promis
   }
 });
 
+/**
+ * GET /api/admin/feature-requests/stats
+ * Get feature request statistics for dashboard
+ */
 router.get('/feature-requests/stats', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const stats = await featureRequestService.getStats();
@@ -705,6 +850,10 @@ router.get('/feature-requests/stats', async (req: AdminRequest, res: Response): 
   }
 });
 
+/**
+ * GET /api/admin/feature-requests/:id
+ * Get a single feature request with comments
+ */
 router.get('/feature-requests/:id', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const request = await featureRequestService.getWithComments(req.params.id);
@@ -729,6 +878,10 @@ const updateFeatureRequestSchema = z.object({
   assignedTo: z.string().uuid().nullable().optional(),
 });
 
+/**
+ * PATCH /api/admin/feature-requests/:id
+ * Update a feature request (status, priority, notes)
+ */
 router.patch('/feature-requests/:id', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const data = updateFeatureRequestSchema.parse(req.body);
@@ -739,7 +892,14 @@ router.patch('/feature-requests/:id', async (req: AdminRequest, res: Response): 
       return;
     }
 
-    await logAdminActivity(req.admin!.id, 'update_feature_request', 'feature_request', req.params.id, data, req);
+    await logAdminActivity(
+      req.admin!.id,
+      'update_feature_request',
+      'feature_request',
+      req.params.id,
+      data,
+      req
+    );
 
     res.json({ request });
   } catch (error) {
@@ -752,6 +912,10 @@ router.patch('/feature-requests/:id', async (req: AdminRequest, res: Response): 
   }
 });
 
+/**
+ * POST /api/admin/feature-requests/:id/comments
+ * Add an admin comment to a feature request
+ */
 router.post('/feature-requests/:id/comments', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const { content } = z.object({ content: z.string().min(1).max(2000) }).parse(req.body);
@@ -778,11 +942,22 @@ router.post('/feature-requests/:id/comments', async (req: AdminRequest, res: Res
   }
 });
 
+/**
+ * DELETE /api/admin/feature-requests/:id
+ * Soft delete a feature request
+ */
 router.delete('/feature-requests/:id', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     await featureRequestService.softDelete(req.params.id);
 
-    await logAdminActivity(req.admin!.id, 'delete_feature_request', 'feature_request', req.params.id, {}, req);
+    await logAdminActivity(
+      req.admin!.id,
+      'delete_feature_request',
+      'feature_request',
+      req.params.id,
+      {},
+      req
+    );
 
     res.json({ success: true });
   } catch (error) {
@@ -791,10 +966,22 @@ router.delete('/feature-requests/:id', async (req: AdminRequest, res: Response):
   }
 });
 
-// =============================================
-// Scheduled Audits Admin
-// =============================================
+// ============================================================
+// SCHEDULED AUDITS ADMIN ENDPOINTS
+// ============================================================
 
+import {
+  getAdminSchedulesList,
+  getAdminScheduleStats,
+  adminGetScheduleById,
+  adminUpdateSchedule,
+  adminDeleteSchedule,
+} from '../../services/schedule.service.js';
+
+/**
+ * GET /admin/schedules/stats
+ * Aggregate schedule statistics
+ */
 router.get('/schedules/stats', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const stats = await getAdminScheduleStats();
@@ -805,6 +992,10 @@ router.get('/schedules/stats', async (req: AdminRequest, res: Response): Promise
   }
 });
 
+/**
+ * GET /admin/schedules
+ * List all schedules with user/site info
+ */
 router.get('/schedules', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const status = req.query.status as string | undefined;
@@ -820,6 +1011,10 @@ router.get('/schedules', async (req: AdminRequest, res: Response): Promise<void>
   }
 });
 
+/**
+ * GET /admin/schedules/:id
+ * Get schedule detail
+ */
 router.get('/schedules/:id', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const schedule = await adminGetScheduleById(req.params.id);
@@ -834,6 +1029,10 @@ router.get('/schedules/:id', async (req: AdminRequest, res: Response): Promise<v
   }
 });
 
+/**
+ * PATCH /admin/schedules/:id
+ * Admin override (force enable/disable, set max failures)
+ */
 router.patch('/schedules/:id', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     const { enabled, paused_reason, max_consecutive_failures } = req.body as {
@@ -869,6 +1068,10 @@ router.patch('/schedules/:id', async (req: AdminRequest, res: Response): Promise
   }
 });
 
+/**
+ * DELETE /admin/schedules/:id
+ * Admin delete a schedule
+ */
 router.delete('/schedules/:id', async (req: AdminRequest, res: Response): Promise<void> => {
   try {
     await adminDeleteSchedule(req.params.id);

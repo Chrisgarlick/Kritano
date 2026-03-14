@@ -56,6 +56,14 @@ function extractName(val: string | { name?: string } | undefined): string | null
   return null;
 }
 
+function extractImage(val: string | { url?: string } | string[] | undefined): string | null {
+  if (!val) return null;
+  if (typeof val === 'string') return val;
+  if (Array.isArray(val)) return val[0] || null;
+  if (typeof val === 'object' && val.url) return val.url;
+  return null;
+}
+
 function extractAddress(val: string | { streetAddress?: string; addressLocality?: string } | undefined): string | null {
   if (!val) return null;
   if (typeof val === 'string') return val;

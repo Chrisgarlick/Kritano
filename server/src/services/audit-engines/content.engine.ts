@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Content Analysis Engine
  * Orchestrates all content analysis modules to produce comprehensive content quality scores.

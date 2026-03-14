@@ -1,5 +1,4 @@
-// @ts-nocheck
-
+import { chromium, Browser, BrowserContext, Page, Response } from 'playwright';
 import * as cheerio from 'cheerio';
 import type {
   SpiderConfig,

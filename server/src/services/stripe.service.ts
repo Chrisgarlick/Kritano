@@ -4,9 +4,13 @@
 
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2026-02-25.clover',
-});
+const stripeKey = process.env.STRIPE_SECRET_KEY;
+if (!stripeKey) {
+  console.warn('⚠️  STRIPE_SECRET_KEY not set — Stripe features will be unavailable');
+}
+const stripe = stripeKey
+  ? new Stripe(stripeKey, { apiVersion: '2026-02-25.clover' })
+  : null;
 
 // Tier → Stripe Price ID (env vars)
 export const TIER_PRICE_MAP: Record<string, string> = {
@@ -22,6 +26,11 @@ export function getTierForPriceId(priceId: string): string | null {
     if (id === priceId) return tier;
   }
   return null;
+}
+
+function requireStripe(): Stripe {
+  if (!stripe) throw new Error('Stripe is not configured — set STRIPE_SECRET_KEY');
+  return stripe;
 }
 
 interface CheckoutOptions {
@@ -61,11 +70,11 @@ export async function createCheckoutSession(opts: CheckoutOptions): Promise<Stri
     params.discounts = [{ coupon: process.env.STRIPE_COUPON_EARLY_ACCESS }];
   }
 
-  return stripe.checkout.sessions.create(params);
+  return requireStripe().checkout.sessions.create(params);
 }
 
 export async function createPortalSession(customerId: string, returnUrl: string): Promise<Stripe.BillingPortal.Session> {
-  return stripe.billingPortal.sessions.create({
+  return requireStripe().billingPortal.sessions.create({
     customer: customerId,
     return_url: returnUrl,
   });
@@ -73,5 +82,5 @@ export async function createPortalSession(customerId: string, returnUrl: string)
 
 export function constructWebhookEvent(rawBody: Buffer, signature: string): Stripe.Event {
   const secret = process.env.STRIPE_WEBHOOK_SECRET || '';
-  return stripe.webhooks.constructEvent(rawBody, signature, secret);
+  return requireStripe().webhooks.constructEvent(rawBody, signature, secret);
 }

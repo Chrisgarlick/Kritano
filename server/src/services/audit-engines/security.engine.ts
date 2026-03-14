@@ -1,5 +1,4 @@
-// @ts-nocheck
-
+import * as cheerio from 'cheerio';
 import * as tls from 'tls';
 import type { SecurityFinding, Severity } from '../../types/finding.types';
 import type { CrawlResult, CookieInfo } from '../../types/spider.types';

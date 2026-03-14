@@ -1,6 +1,5 @@
-// @ts-nocheck
-
-/** E-E-A-T Signal Detection Module
+/**
+ * E-E-A-T Signal Detection Module
  * Detects Experience, Expertise, Authoritativeness, and Trustworthiness signals
  * via regex/cheerio pattern matching — no API calls, runs in <10ms per page.
  */

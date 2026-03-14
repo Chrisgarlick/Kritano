@@ -57,11 +57,17 @@ export function SeoProvider({ children }: { children: ReactNode }) {
   return createElement(SeoContext.Provider, { value: { overrides, loaded } }, children);
 }
 
+/**
+ * Returns the SEO override for a given path, or undefined if none exists.
+ */
 export function useSeoOverride(path: string): SeoOverride | undefined {
   const { overrides } = useContext(SeoContext);
   return overrides.get(path);
 }
 
+/**
+ * Returns all overrides (for the admin SEO page).
+ */
 export function useSeoOverrides(): SeoContextValue {
   return useContext(SeoContext);
 }

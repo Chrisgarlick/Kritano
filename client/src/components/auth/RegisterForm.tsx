@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -49,6 +49,10 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 export function RegisterForm() {
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const referralCode = searchParams.get('ref') || undefined;
+  const eaParam = searchParams.get('ea');
+  const earlyAccessChannel = (eaParam === 'email' || eaParam === 'social') ? eaParam : undefined;
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -65,16 +69,22 @@ export function RegisterForm() {
     setIsLoading(true);
 
     try {
-      await registerUser({
+      const result = await registerUser({
         email: data.email,
         password: data.password,
         firstName: data.firstName,
         lastName: data.lastName,
         companyName: data.companyName,
         acceptedTos: data.acceptedTos,
+        referralCode,
+        earlyAccessChannel,
       });
 
-      navigate('/register/success', { state: { email: data.email } });
+      if (earlyAccessChannel && (result as any)?.earlyAccess) {
+        navigate('/register/early-access-success', { state: { email: data.email } });
+      } else {
+        navigate('/register/success', { state: { email: data.email } });
+      }
     } catch (err) {
       const axiosError = err as AxiosError<ErrorResponse>;
       const errorData = axiosError.response?.data;
@@ -97,6 +107,20 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {earlyAccessChannel && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-800">
+          <p className="font-semibold mb-1">Founding Member Benefits</p>
+          <ul className="list-disc list-inside space-y-0.5 text-amber-700">
+            <li>30-day free Agency trial (full access)</li>
+            <li>50% lifetime discount when you subscribe</li>
+          </ul>
+        </div>
+      )}
+      {referralCode && !earlyAccessChannel && (
+        <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-3 text-sm text-indigo-700">
+          You were referred by a friend! Complete registration and your first audit to earn bonus audits.
+        </div>
+      )}
       {error && <Alert variant="error">{error}</Alert>}
 
       <fieldset className="grid grid-cols-2 gap-4">

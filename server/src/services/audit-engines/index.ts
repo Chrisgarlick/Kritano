@@ -1,5 +1,4 @@
-// @ts-nocheck
-
+import { Pool } from 'pg';
 import { Page } from 'playwright';
 import { SeoEngine, createSeoEngine } from './seo.engine';
 import { AccessibilityEngine, createAccessibilityEngine, WcagConfig } from './accessibility.engine';

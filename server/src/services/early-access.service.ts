@@ -170,6 +170,7 @@ export async function activateAll(adminId: string): Promise<{ activated: number;
 
   let activated = 0;
   let skipped = 0;
+  const appUrl = process.env.APP_URL || 'https://pagepulser.com';
 
   for (const user of result.rows) {
     try {
@@ -180,18 +181,34 @@ export async function activateAll(adminId: string): Promise<{ activated: number;
         [user.id]
       );
 
-      // Send early_access_activated email
-      sendTemplate({
-        templateSlug: 'trial_started',
-        to: { userId: user.id, email: user.email, firstName: user.first_name || '' },
-        variables: {
-          tierName: 'Agency (Early Access)',
-          trialEndDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-          featureHighlight1: '30-day free Agency trial',
-          featureHighlight2: 'Founding member lifetime discount',
-          featureHighlight3: 'Full access to all features',
-        },
-      }).catch(err => console.error('Failed to send early_access_activated email:', err));
+      // Send activation email
+      try {
+        const trialEnd = new Date();
+        trialEnd.setDate(trialEnd.getDate() + 30);
+        const trialEndDate = trialEnd.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+
+        await sendTemplate({
+          templateSlug: 'early_access_activated',
+          to: {
+            userId: user.id,
+            email: user.email,
+            firstName: user.first_name || 'there',
+          },
+          variables: {
+            firstName: user.first_name || 'there',
+            tierName: 'Agency',
+            trialEndDate,
+            discountPercent: String(user.discount_percent || 50),
+            loginUrl: `${appUrl}/login`,
+          },
+        });
+      } catch (emailErr) {
+        console.error(`Failed to send early_access_activated email to ${user.email}:`, emailErr);
+      }
 
       activated++;
     } catch (err) {

@@ -1,5 +1,4 @@
-// @ts-nocheck
-
+import * as cheerio from 'cheerio';
 import type { Page } from 'playwright';
 import type { PerformanceFinding, Severity } from '../../types/finding.types';
 import type { CrawlResult, ResourceInfo } from '../../types/spider.types';

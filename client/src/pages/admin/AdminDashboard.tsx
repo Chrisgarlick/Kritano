@@ -4,15 +4,12 @@ import { adminApi } from '../../services/api';
 import type {
   WorkerStatus,
   QueueBacklog,
+  CrmStats,
+  CrmTriggerStats,
+  EmailAnalyticsTotals,
+  CmsStatsResponse,
   AdminRevenueAnalytics,
 } from '../../services/api';
-
-// CRM/Email stats types
-type CrmStats = { total: number; avg_score: number; by_status: Record<string, number> };
-type CrmTriggerStats = { pending: number; sent: number; dismissed: number; total: number; actioned: number; by_type: Record<string, number> };
-type EmailAnalyticsTotals = { sent: number; delivered: number; opened: number; clicked: number; bounced: number; complained: number };
-// [Phase 11] CMS stats
-type CmsStatsResponse = { totalPosts: number; published: number; drafts: number; totalViews: number; totalMedia: number };
 import { AdminLayout } from '../../components/layout/AdminLayout';
 import { useToast } from '../../components/ui/Toast';
 import type { DashboardStats, SystemHealth, AnalyticsDataPoint } from '../../types/admin.types';
@@ -71,7 +68,7 @@ export default function AdminDashboardPage() {
   const [crmStats, setCrmStats] = useState<CrmStats | null>(null);
   const [triggerStats, setTriggerStats] = useState<CrmTriggerStats | null>(null);
   const [emailTotals, setEmailTotals] = useState<EmailAnalyticsTotals | null>(null);
-  const [_cmsStats, _setCmsStats] = useState<CmsStatsResponse | null>(null);
+  const [cmsStats, setCmsStats] = useState<CmsStatsResponse | null>(null);
   const [revenue, setRevenue] = useState<AdminRevenueAnalytics | null>(null);
 
   useEffect(() => {
@@ -114,16 +111,18 @@ export default function AdminDashboardPage() {
   };
 
   const loadModuleSummaries = async () => {
-    const [revRes, crmRes, trigRes, emailRes] = await Promise.allSettled([
-      adminApi.getRevenueAnalytics(),
+    const [crmRes, trigRes, emailRes, cmsRes, revRes] = await Promise.allSettled([
       adminApi.getCrmStats(),
       adminApi.getTriggerStats(),
-      adminApi.getEmailAnalytics(),
+      adminApi.getEmailAnalytics(7),
+      adminApi.getCmsStats(),
+      adminApi.getRevenueAnalytics(),
     ]);
+    if (crmRes.status === 'fulfilled') setCrmStats(crmRes.value.data.stats);
+    if (trigRes.status === 'fulfilled') setTriggerStats(trigRes.value.data.stats);
+    if (emailRes.status === 'fulfilled') setEmailTotals(emailRes.value.data.totals);
+    if (cmsRes.status === 'fulfilled') setCmsStats(cmsRes.value.data);
     if (revRes.status === 'fulfilled') setRevenue(revRes.value.data);
-    if (crmRes.status === 'fulfilled') setCrmStats(crmRes.value.data?.stats || null);
-    if (trigRes.status === 'fulfilled') setTriggerStats(trigRes.value.data?.stats || null);
-    if (emailRes.status === 'fulfilled') setEmailTotals(emailRes.value.data?.totals || null);
   };
 
   const handleRestart = async () => {
@@ -178,9 +177,11 @@ export default function AdminDashboardPage() {
   const paidSubscribers = revenue
     ? Object.entries(revenue.byTier)
         .filter(([tier]) => tier !== 'free')
-        .reduce((sum, [, t]) => sum + (t?.count ?? 0), 0)
+        .reduce((sum, [, t]) => sum + t.count, 0)
     : 0;
-  const netMrr = revenue?.mrr ?? 0;
+  const netMrr = revenue
+    ? (revenue.newThisMonth.mrrGained ?? 0) - (revenue.churnThisMonth.mrrLost ?? 0)
+    : 0;
 
   const maxChartVal = analytics.length > 0
     ? Math.max(...analytics.map(d => d.new_users + d.audits_today), 1)
@@ -483,20 +484,20 @@ export default function AdminDashboardPage() {
             iconBg="bg-violet-500/10"
             title="CMS"
             link="/admin/cms/posts"
-            loading={!_cmsStats}
+            loading={!cmsStats}
           >
-            {_cmsStats && (
+            {cmsStats && (
               <>
                 <div className="mb-3">
-                  <span className="text-2xl font-bold text-white tabular-nums">{_cmsStats.published}</span>
+                  <span className="text-2xl font-bold text-white tabular-nums">{cmsStats.published}</span>
                   <span className="text-xs text-slate-500 ml-2">published</span>
                 </div>
                 <div className="space-y-2">
-                  <ModuleRow label="Total views" value={formatNumber(_cmsStats.totalViews)} icon={Eye} />
-                  {_cmsStats.drafts > 0 && (
-                    <ModuleAlert icon={Send} color="indigo" text={`${_cmsStats.drafts} drafts`} />
+                  <ModuleRow label="Total views" value={formatNumber(cmsStats.totalViews)} icon={Eye} />
+                  {cmsStats.drafts > 0 && (
+                    <ModuleAlert icon={Send} color="indigo" text={`${cmsStats.drafts} drafts`} />
                   )}
-                  <ModuleRow label="Media files" value={String(_cmsStats.totalMedia)} />
+                  <ModuleRow label="Media files" value={String(cmsStats.totalMedia)} />
                 </div>
               </>
             )}

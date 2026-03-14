@@ -28,15 +28,17 @@ import {
   incrementVerificationAttempt,
   isSiteVerified,
   getSiteOwnerTierLimits,
+  transferSiteOwnership,
 } from '../../services/site.service.js';
 import {
   getSiteShares,
-  getSiteInvitations,
-  shareByEmail,
+  createShare,
   updateSharePermission,
   removeShare,
+  getSiteInvitations,
   createInvitation,
   cancelInvitation,
+  shareByEmail,
   findUserByEmail,
 } from '../../services/site-sharing.service.js';
 
@@ -532,279 +534,6 @@ router.post(
 );
 
 // =============================================
-// SITE VERIFICATION
-// =============================================
-
-/**
- * POST /api/sites/:siteId/verification-token
- * Generate a verification token (returns existing token unless regenerate=true)
- */
-router.post(
-  '/:siteId/verification-token',
-  loadSite,
-  requireSitePermission('admin'),
-  async (req: Request, res: Response): Promise<void> => {
-    try {
-      const siteReq = req as SiteRequest;
-      const siteId = siteReq.siteId!;
-      const { regenerate } = req.body;
-
-      const token = await generateVerificationToken(siteId, regenerate === true);
-
-      res.json({
-        token,
-        instructions: {
-          dns: {
-            type: 'TXT',
-            name: '_pagepulser',
-            value: token,
-          },
-          file: {
-            path: `/.well-known/pagepulser-verification.txt`,
-            content: token,
-          },
-        },
-      });
-    } catch (error: unknown) {
-      console.error('Generate token error:', error);
-      res.status(500).json({ error: 'Failed to generate verification token' });
-    }
-  }
-);
-
-/**
- * POST /api/sites/:siteId/extract-branding
- * Extract colors and fonts from the site's homepage
- */
-router.post(
-  '/:siteId/extract-branding',
-  loadSite,
-  requireSitePermission('admin'),
-  async (req: Request, res: Response): Promise<void> => {
-    try {
-      const siteReq = req as SiteRequest;
-      const site = siteReq.site!;
-
-      // Fetch the homepage
-      const url = `https://${site.domain}`;
-      let html: string;
-
-      try {
-        const response = await fetch(url, {
-          signal: AbortSignal.timeout(15000),
-          headers: {
-            'User-Agent': 'PagePulser/1.0 (Branding Extractor)',
-          },
-        });
-
-        if (!response.ok) {
-          res.status(400).json({ error: `Failed to fetch site: ${response.status}` });
-          return;
-        }
-
-        html = await response.text();
-      } catch (fetchError) {
-        res.status(400).json({ error: 'Could not reach the website' });
-        return;
-      }
-
-      // Extract colors from CSS and inline styles
-      const colorCounts = new Map<string, number>();
-
-      // Helper to normalize and count colors
-      const addColor = (color: string) => {
-        // Normalize to lowercase hex
-        let normalized = color.toLowerCase().trim();
-
-        // Convert 3-digit hex to 6-digit
-        if (/^#[0-9a-f]{3}$/i.test(normalized)) {
-          normalized = `#${normalized[1]}${normalized[1]}${normalized[2]}${normalized[2]}${normalized[3]}${normalized[3]}`;
-        }
-
-        // Skip if not valid hex
-        if (!/^#[0-9a-f]{6}$/i.test(normalized)) return;
-
-        // Skip black, white, and near-black/white colors
-        const r = parseInt(normalized.slice(1, 3), 16);
-        const g = parseInt(normalized.slice(3, 5), 16);
-        const b = parseInt(normalized.slice(5, 7), 16);
-
-        // Skip very dark or very light colors
-        const brightness = (r + g + b) / 3;
-        if (brightness < 20 || brightness > 240) return;
-
-        // Skip grays (where r, g, b are very close)
-        const maxDiff = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
-        if (maxDiff < 15) return;
-
-        colorCounts.set(normalized, (colorCounts.get(normalized) || 0) + 1);
-      };
-
-      // Extract hex colors
-      const hexPattern = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/g;
-      let match;
-      while ((match = hexPattern.exec(html)) !== null) {
-        addColor(match[0]);
-      }
-
-      // Extract rgb/rgba colors and convert to hex
-      const rgbPattern = /rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/gi;
-      while ((match = rgbPattern.exec(html)) !== null) {
-        const r = parseInt(match[1], 10);
-        const g = parseInt(match[2], 10);
-        const b = parseInt(match[3], 10);
-        if (r <= 255 && g <= 255 && b <= 255) {
-          const hex = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-          addColor(hex);
-        }
-      }
-
-      // Sort by frequency and get top colors
-      const sortedColors = [...colorCounts.entries()]
-        .sort((a, b) => b[1] - a[1])
-        .map(([color]) => color);
-
-      // Try to extract meta theme-color
-      const themeColorMatch = html.match(/<meta[^>]*name=["']theme-color["'][^>]*content=["']([^"']+)["']/i)
-        || html.match(/<meta[^>]*content=["']([^"']+)["'][^>]*name=["']theme-color["']/i);
-
-      if (themeColorMatch) {
-        const themeColor = themeColorMatch[1];
-        // Add theme color as high priority
-        if (themeColor.startsWith('#')) {
-          // Move to front if it exists, or add it
-          const idx = sortedColors.indexOf(themeColor.toLowerCase());
-          if (idx > 0) {
-            sortedColors.splice(idx, 1);
-            sortedColors.unshift(themeColor.toLowerCase());
-          } else if (idx === -1) {
-            sortedColors.unshift(themeColor.toLowerCase());
-          }
-        }
-      }
-
-      // Extract site title for company name suggestion
-      const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
-      const ogSiteNameMatch = html.match(/<meta[^>]*property=["']og:site_name["'][^>]*content=["']([^"']+)["']/i)
-        || html.match(/<meta[^>]*content=["']([^"']+)["'][^>]*property=["']og:site_name["']/i);
-
-      let companyName = '';
-      if (ogSiteNameMatch) {
-        companyName = ogSiteNameMatch[1].trim();
-      } else if (titleMatch) {
-        // Clean up title (often has " - Company" or "| Company" format)
-        let title = titleMatch[1].trim();
-        // Take the last part after | or -
-        const parts = title.split(/\s*[|\-\u2013\u2014]\s*/);
-        if (parts.length > 1) {
-          companyName = parts[parts.length - 1].trim();
-        } else {
-          companyName = title;
-        }
-      }
-
-      // Assign colors to primary, secondary, accent
-      const palette = {
-        primary: sortedColors[0] || '#4f46e5',
-        secondary: sortedColors[1] || sortedColors[0] || '#6366f1',
-        accent: sortedColors[2] || sortedColors[1] || '#f59e0b',
-      };
-
-      res.json({
-        palette,
-        companyName,
-        allColors: sortedColors.slice(0, 10), // Return top 10 for user to choose
-      });
-    } catch (error: unknown) {
-      console.error('Extract branding error:', error);
-      res.status(500).json({ error: 'Failed to extract branding' });
-    }
-  }
-);
-
-/**
- * POST /api/sites/:siteId/verify
- * Verify site ownership
- */
-router.post(
-  '/:siteId/verify',
-  loadSite,
-  requireSitePermission('admin'),
-  async (req: Request, res: Response): Promise<void> => {
-    try {
-      const siteReq = req as SiteRequest;
-      const siteId = siteReq.siteId!;
-      const site = siteReq.site!;
-      const { method } = req.body;
-
-      if (!['dns', 'file'].includes(method)) {
-        res.status(400).json({ error: 'Method must be "dns" or "file"' });
-        return;
-      }
-
-      // Check if already verified
-      if (site.verified) {
-        res.json({ verified: true, message: 'Site is already verified' });
-        return;
-      }
-
-      if (!site.verification_token) {
-        res.status(400).json({ error: 'No verification token generated. Generate one first.' });
-        return;
-      }
-
-      // Increment attempt counter
-      await incrementVerificationAttempt(siteId);
-
-      let verified = false;
-
-      if (method === 'dns') {
-        // Check DNS TXT record
-        try {
-          const dns = await import('dns/promises');
-          const records = await dns.resolveTxt(`_pagepulser.${site.domain}`);
-          verified = records.some(r => r.join('').includes(site.verification_token!));
-        } catch {
-          // DNS lookup failed
-          verified = false;
-        }
-      } else {
-        // Check file
-        try {
-          const url = `https://${site.domain}/.well-known/pagepulser-verification.txt`;
-          const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
-          if (response.ok) {
-            const text = await response.text();
-            verified = text.trim() === site.verification_token;
-          }
-        } catch {
-          // File fetch failed
-          verified = false;
-        }
-      }
-
-      if (verified) {
-        await markSiteVerified(siteId, method);
-        res.json({
-          verified: true,
-          message: 'Site verified successfully!',
-        });
-      } else {
-        res.json({
-          verified: false,
-          message: method === 'dns'
-            ? `Could not find verification TXT record at _pagepulser.${site.domain}`
-            : `Could not find verification file at https://${site.domain}/.well-known/pagepulser-verification.txt`,
-        });
-      }
-    } catch (error: unknown) {
-      console.error('Verify site error:', error);
-      res.status(500).json({ error: 'Failed to verify site' });
-    }
-  }
-);
-
-// =============================================
 // SITE SHARING
 // =============================================
 
@@ -1032,6 +761,7 @@ router.post(
         return;
       }
 
+      // Check if user already exists - if so, create direct share instead
       const existingUser = await findUserByEmail(email);
       if (existingUser) {
         res.status(400).json({
@@ -1089,6 +819,329 @@ router.delete(
     } catch (error: unknown) {
       console.error('Cancel invitation error:', error);
       const message = error instanceof Error ? error.message : 'Failed to cancel invitation';
+      res.status(400).json({ error: message });
+    }
+  }
+);
+
+// =============================================
+// SITE VERIFICATION
+// =============================================
+
+/**
+ * POST /api/sites/:siteId/verification-token
+ * Generate a verification token (returns existing token unless regenerate=true)
+ */
+router.post(
+  '/:siteId/verification-token',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const { regenerate } = req.body;
+
+      const token = await generateVerificationToken(siteId, regenerate === true);
+
+      res.json({
+        token,
+        instructions: {
+          dns: {
+            type: 'TXT',
+            name: '_pagepulser',
+            value: token,
+          },
+          file: {
+            path: `/.well-known/pagepulser-verification.txt`,
+            content: token,
+          },
+        },
+      });
+    } catch (error: unknown) {
+      console.error('Generate token error:', error);
+      res.status(500).json({ error: 'Failed to generate verification token' });
+    }
+  }
+);
+
+/**
+ * POST /api/sites/:siteId/extract-branding
+ * Extract colors and fonts from the site's homepage
+ */
+router.post(
+  '/:siteId/extract-branding',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const site = siteReq.site!;
+
+      // Fetch the homepage
+      const url = `https://${site.domain}`;
+      let html: string;
+
+      try {
+        const response = await fetch(url, {
+          signal: AbortSignal.timeout(15000),
+          headers: {
+            'User-Agent': 'PagePulser/1.0 (Branding Extractor)',
+          },
+        });
+
+        if (!response.ok) {
+          res.status(400).json({ error: `Failed to fetch site: ${response.status}` });
+          return;
+        }
+
+        html = await response.text();
+      } catch (fetchError) {
+        res.status(400).json({ error: 'Could not reach the website' });
+        return;
+      }
+
+      // Extract colors from CSS and inline styles
+      const colorCounts = new Map<string, number>();
+
+      // Helper to normalize and count colors
+      const addColor = (color: string) => {
+        // Normalize to lowercase hex
+        let normalized = color.toLowerCase().trim();
+
+        // Convert 3-digit hex to 6-digit
+        if (/^#[0-9a-f]{3}$/i.test(normalized)) {
+          normalized = `#${normalized[1]}${normalized[1]}${normalized[2]}${normalized[2]}${normalized[3]}${normalized[3]}`;
+        }
+
+        // Skip if not valid hex
+        if (!/^#[0-9a-f]{6}$/i.test(normalized)) return;
+
+        // Skip black, white, and near-black/white colors
+        const r = parseInt(normalized.slice(1, 3), 16);
+        const g = parseInt(normalized.slice(3, 5), 16);
+        const b = parseInt(normalized.slice(5, 7), 16);
+
+        // Skip very dark or very light colors
+        const brightness = (r + g + b) / 3;
+        if (brightness < 20 || brightness > 240) return;
+
+        // Skip grays (where r, g, b are very close)
+        const maxDiff = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+        if (maxDiff < 15) return;
+
+        colorCounts.set(normalized, (colorCounts.get(normalized) || 0) + 1);
+      };
+
+      // Extract hex colors
+      const hexPattern = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/g;
+      let match;
+      while ((match = hexPattern.exec(html)) !== null) {
+        addColor(match[0]);
+      }
+
+      // Extract rgb/rgba colors and convert to hex
+      const rgbPattern = /rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/gi;
+      while ((match = rgbPattern.exec(html)) !== null) {
+        const r = parseInt(match[1], 10);
+        const g = parseInt(match[2], 10);
+        const b = parseInt(match[3], 10);
+        if (r <= 255 && g <= 255 && b <= 255) {
+          const hex = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+          addColor(hex);
+        }
+      }
+
+      // Sort by frequency and get top colors
+      const sortedColors = [...colorCounts.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .map(([color]) => color);
+
+      // Try to extract meta theme-color
+      const themeColorMatch = html.match(/<meta[^>]*name=["']theme-color["'][^>]*content=["']([^"']+)["']/i)
+        || html.match(/<meta[^>]*content=["']([^"']+)["'][^>]*name=["']theme-color["']/i);
+
+      if (themeColorMatch) {
+        const themeColor = themeColorMatch[1];
+        // Add theme color as high priority
+        if (themeColor.startsWith('#')) {
+          // Move to front if it exists, or add it
+          const idx = sortedColors.indexOf(themeColor.toLowerCase());
+          if (idx > 0) {
+            sortedColors.splice(idx, 1);
+            sortedColors.unshift(themeColor.toLowerCase());
+          } else if (idx === -1) {
+            sortedColors.unshift(themeColor.toLowerCase());
+          }
+        }
+      }
+
+      // Extract site title for company name suggestion
+      const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+      const ogSiteNameMatch = html.match(/<meta[^>]*property=["']og:site_name["'][^>]*content=["']([^"']+)["']/i)
+        || html.match(/<meta[^>]*content=["']([^"']+)["'][^>]*property=["']og:site_name["']/i);
+
+      let companyName = '';
+      if (ogSiteNameMatch) {
+        companyName = ogSiteNameMatch[1].trim();
+      } else if (titleMatch) {
+        // Clean up title (often has " - Company" or "| Company" format)
+        let title = titleMatch[1].trim();
+        // Take the last part after | or -
+        const parts = title.split(/\s*[|\-–—]\s*/);
+        if (parts.length > 1) {
+          companyName = parts[parts.length - 1].trim();
+        } else {
+          companyName = title;
+        }
+      }
+
+      // Assign colors to primary, secondary, accent
+      const palette = {
+        primary: sortedColors[0] || '#4f46e5',
+        secondary: sortedColors[1] || sortedColors[0] || '#6366f1',
+        accent: sortedColors[2] || sortedColors[1] || '#f59e0b',
+      };
+
+      res.json({
+        palette,
+        companyName,
+        allColors: sortedColors.slice(0, 10), // Return top 10 for user to choose
+      });
+    } catch (error: unknown) {
+      console.error('Extract branding error:', error);
+      res.status(500).json({ error: 'Failed to extract branding' });
+    }
+  }
+);
+
+/**
+ * POST /api/sites/:siteId/verify
+ * Verify site ownership
+ */
+router.post(
+  '/:siteId/verify',
+  loadSite,
+  requireSitePermission('admin'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const site = siteReq.site!;
+      const { method } = req.body;
+
+      if (!['dns', 'file'].includes(method)) {
+        res.status(400).json({ error: 'Method must be "dns" or "file"' });
+        return;
+      }
+
+      // Check if already verified
+      if (site.verified) {
+        res.json({ verified: true, message: 'Site is already verified' });
+        return;
+      }
+
+      if (!site.verification_token) {
+        res.status(400).json({ error: 'No verification token generated. Generate one first.' });
+        return;
+      }
+
+      // Increment attempt counter
+      await incrementVerificationAttempt(siteId);
+
+      let verified = false;
+
+      if (method === 'dns') {
+        // Check DNS TXT record
+        try {
+          const dns = await import('dns/promises');
+          const records = await dns.resolveTxt(`_pagepulser.${site.domain}`);
+          verified = records.some(r => r.join('').includes(site.verification_token!));
+        } catch {
+          // DNS lookup failed
+          verified = false;
+        }
+      } else {
+        // Check file
+        try {
+          const url = `https://${site.domain}/.well-known/pagepulser-verification.txt`;
+          const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+          if (response.ok) {
+            const text = await response.text();
+            verified = text.trim() === site.verification_token;
+          }
+        } catch {
+          // File fetch failed
+          verified = false;
+        }
+      }
+
+      if (verified) {
+        await markSiteVerified(siteId, method);
+        res.json({
+          verified: true,
+          message: 'Site verified successfully!',
+        });
+      } else {
+        res.json({
+          verified: false,
+          message: method === 'dns'
+            ? `Could not find verification TXT record at _pagepulser.${site.domain}`
+            : `Could not find verification file at https://${site.domain}/.well-known/pagepulser-verification.txt`,
+        });
+      }
+    } catch (error: unknown) {
+      console.error('Verify site error:', error);
+      res.status(500).json({ error: 'Failed to verify site' });
+    }
+  }
+);
+
+// =============================================
+// SITE OWNERSHIP TRANSFER
+// =============================================
+
+/**
+ * POST /api/sites/:siteId/transfer
+ * Transfer site ownership to another user (by email)
+ */
+router.post(
+  '/:siteId/transfer',
+  loadSite,
+  requireSiteOwner,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const currentOwnerId = req.user!.id;
+      const { email } = req.body;
+
+      if (!email) {
+        res.status(400).json({ error: 'Email of the new owner is required' });
+        return;
+      }
+
+      // Find target user
+      const targetUser = await findUserByEmail(email);
+      if (!targetUser) {
+        res.status(404).json({ error: 'No user found with that email address' });
+        return;
+      }
+
+      const updatedSite = await transferSiteOwnership(siteId, currentOwnerId, targetUser.id);
+
+      res.json({
+        site: {
+          id: updatedSite.id,
+          name: updatedSite.name,
+          domain: updatedSite.domain,
+          ownerId: updatedSite.owner_id,
+        },
+        message: `Ownership transferred to ${email}`,
+      });
+    } catch (error: unknown) {
+      console.error('Transfer ownership error:', error);
+      const message = error instanceof Error ? error.message : 'Failed to transfer ownership';
       res.status(400).json({ error: message });
     }
   }

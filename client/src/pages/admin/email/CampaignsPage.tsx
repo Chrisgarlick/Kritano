@@ -226,7 +226,7 @@ export default function CampaignsPage() {
                       <span className="text-sm text-slate-300">{campaign.template_name || '—'}</span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_BADGE[campaign.status as CampaignStatus]}`}>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_BADGE[campaign.status]}`}>
                         {campaign.status}
                       </span>
                     </td>

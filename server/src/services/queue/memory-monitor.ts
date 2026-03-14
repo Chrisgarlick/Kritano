@@ -1,6 +1,7 @@
 import os from 'os';
 
-const DEFAULT_MEMORY_THRESHOLD = 85; // percent
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+const DEFAULT_MEMORY_THRESHOLD = IS_PRODUCTION ? 85 : 98; // dev machines run hot
 const MEMORY_THRESHOLD = parseInt(process.env.WORKER_MEMORY_THRESHOLD || String(DEFAULT_MEMORY_THRESHOLD), 10);
 
 export function getMemoryUsage(): { usedPercent: number; freeMB: number; totalMB: number } {

@@ -1,5 +1,4 @@
-// @ts-nocheck
-
+import * as cheerio from 'cheerio';
 import type { SeoFinding, Severity } from '../../types/finding.types';
 import type { CrawlResult } from '../../types/spider.types';
 

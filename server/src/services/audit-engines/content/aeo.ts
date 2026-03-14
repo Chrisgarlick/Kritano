@@ -1,6 +1,5 @@
-// @ts-nocheck
-
-/** AEO (Answer Engine Optimization) — AI Citability Audit
+/**
+ * AEO (Answer Engine Optimization) — AI Citability Audit
  * Detects how likely an AI model is to cite a page as a primary source,
  * based on three pillars: Nugget Extraction, Factual Density, and Source Authority.
  * No API calls — runs via regex/cheerio pattern matching in <10ms per page.

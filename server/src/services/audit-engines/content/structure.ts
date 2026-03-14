@@ -1,6 +1,5 @@
-// @ts-nocheck
-
-/** Structure Analysis Module
+/**
+ * Structure Analysis Module
  * Analyzes content organization, heading hierarchy, and paragraph structure
  */
 

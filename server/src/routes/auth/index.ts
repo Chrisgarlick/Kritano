@@ -21,8 +21,12 @@ import {
   verifyEmailSchema,
 } from '../../schemas/auth.schemas.js';
 import { getDeviceInfo, getClientIp } from '../../utils/ip.utils.js';
+import { recalculateScore } from '../../services/lead-scoring.service.js';
+import { checkTriggers } from '../../services/crm-trigger.service.js';
+import { resolveReferralCode, createReferral, checkAndQualifyReferral } from '../../services/referral.service.js';
+import { isEarlyAccessEnabled, claimSpot } from '../../services/early-access.service.js';
+import { sendTemplate } from '../../services/email-template.service.js';
 import { COOKIE_CONFIG, REFRESH_TOKEN_CONFIG, JWT_CONFIG } from '../../config/auth.config.js';
-import { claimSpot } from '../../services/early-access.service.js';
 import type {
   RegisterInput,
   LoginInput,
@@ -30,6 +34,8 @@ import type {
   PasswordResetInput,
   VerifyEmailInput,
 } from '../../schemas/auth.schemas.js';
+import { recordTosAcceptance } from '../../services/consent.service.js';
+import { TOS_VERSION } from '../../constants/consent.constants.js';
 
 const router = Router();
 
@@ -78,16 +84,17 @@ router.post(
       // Create user
       const user = await userService.create(input);
 
-      // Claim early access spot if applicable
-      if (input.earlyAccessChannel) {
-        try {
-          const claimed = await claimSpot(user.id, input.earlyAccessChannel);
-          if (claimed) {
-            console.log(`Early access spot claimed for ${user.email} via ${input.earlyAccessChannel}`);
-          }
-        } catch (eaError) {
-          console.error('Failed to claim early access spot:', eaError);
-        }
+      // Record ToS acceptance
+      try {
+        await recordTosAcceptance(
+          user.id,
+          getClientIp(req),
+          req.get('user-agent'),
+          TOS_VERSION
+        );
+      } catch (tosError) {
+        console.error('Failed to record ToS acceptance:', tosError);
+        // Don't fail registration if ToS recording fails
       }
 
       // Send verification email
@@ -99,6 +106,57 @@ router.post(
         // Don't fail registration if email fails - user can resend later
       }
 
+      // CRM: Recalculate lead score on registration
+      recalculateScore(user.id).catch(err => console.error('CRM score recalc failed:', err));
+
+      // Handle early access claim if channel provided
+      let earlyAccess = false;
+      if (input.earlyAccessChannel) {
+        try {
+          const eaEnabled = await isEarlyAccessEnabled();
+          if (eaEnabled) {
+            const claimed = await claimSpot(user.id, input.earlyAccessChannel);
+            earlyAccess = claimed;
+
+            if (claimed) {
+              // Send confirmation email (non-blocking)
+              const { getSetting } = await import('../../services/system-settings.service.js');
+              const discountPercent = Number(await getSetting('early_access_discount_percent')) || 50;
+
+              sendTemplate({
+                templateSlug: 'early_access_confirmed',
+                to: {
+                  userId: user.id,
+                  email: user.email,
+                  firstName: user.first_name || 'there',
+                },
+                variables: {
+                  firstName: user.first_name || 'there',
+                  tierName: 'Agency',
+                  discountPercent: String(discountPercent),
+                },
+              }).catch((err: unknown) => console.error('Failed to send early_access_confirmed email:', err));
+            }
+          }
+        } catch (eaErr) {
+          console.error('Early access processing error:', eaErr);
+          // Don't fail registration if early access fails
+        }
+      }
+
+      // Handle referral code if provided
+      if (input.referralCode) {
+        try {
+          const referrer = await resolveReferralCode(input.referralCode);
+          if (referrer && referrer.userId !== user.id) {
+            await createReferral(referrer.userId, user.id, input.referralCode, getClientIp(req));
+          }
+        } catch (refErr) {
+          console.error('Referral processing error:', refErr);
+          // Don't fail registration if referral fails
+        }
+      }
+
       res.status(201).json({
         message: 'Account created. Please check your email to verify your account.',
         user: {
@@ -107,6 +165,7 @@ router.post(
           firstName: user.first_name,
           lastName: user.last_name,
         },
+        earlyAccess,
       });
     } catch (error) {
       console.error('Registration error:', error);
@@ -480,6 +539,12 @@ router.post(
 
       // Update user's email verification status
       await userService.verifyEmail(result.userId!);
+
+      // CRM: Recalculate lead score on email verification
+      recalculateScore(result.userId!).catch(err => console.error('CRM score recalc failed:', err));
+
+      // Check if referral can qualify (email now verified)
+      checkAndQualifyReferral(result.userId!).catch(err => console.error('Referral qualification check failed:', err));
 
       res.json({
         message: 'Email verified successfully. You can now log in.',

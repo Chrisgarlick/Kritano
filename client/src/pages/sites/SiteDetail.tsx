@@ -5,12 +5,15 @@ import { Button } from '../../components/ui/Button';
 import { Alert } from '../../components/ui/Alert';
 import { SkeletonCard } from '../../components/ui/Skeleton';
 import { useToast } from '../../components/ui/Toast';
-import { sitesApi } from '../../services/api';
+import { sitesApi, analyticsApi } from '../../services/api';
+import { ScoreLineChart, IssueTrendChart, DateRangePicker } from '../../components/analytics';
+import type { ScoreHistory, IssueTrends, TimeRange } from '../../types/analytics.types';
 import { formatDate } from '../../utils/format';
 import { getScoreColor } from '../../utils/constants';
-import type { SiteWithStats, ScoreHistoryEntry, SiteUrl, SitePermission } from '../../types/site.types';
+import type { SiteWithStats, ScoreHistoryEntry, SiteUrl, SiteShare, SiteInvitation, SitePermission, MemberLimit } from '../../types/site.types';
+import { PERMISSION_INFO } from '../../types/site.types';
 
-type TabType = 'overview' | 'audits' | 'urls' | 'settings';
+type TabType = 'overview' | 'audits' | 'urls' | 'analytics' | 'sharing' | 'settings';
 
 interface Audit {
   id: string;
@@ -138,6 +141,25 @@ export default function SiteDetailPage() {
   const [urlsPagination, setUrlsPagination] = useState({ total: 0, limit: 20, offset: 0 });
   const [discoveringPages, setDiscoveringPages] = useState(false);
 
+  // Sharing state
+  const [shares, setShares] = useState<SiteShare[]>([]);
+  const [invitations, setInvitations] = useState<SiteInvitation[]>([]);
+  const [memberLimit, setMemberLimit] = useState<MemberLimit | null>(null);
+  const [sharingLoading, setSharingLoading] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [invitePermission, setInvitePermission] = useState<SitePermission>('viewer');
+  const [inviting, setInviting] = useState(false);
+  const [showTransferModal, setShowTransferModal] = useState(false);
+  const [transferEmail, setTransferEmail] = useState('');
+  const [transferring, setTransferring] = useState(false);
+
+  // Analytics state
+  const [analyticsData, setAnalyticsData] = useState<ScoreHistory | null>(null);
+  const [issueTrends, setIssueTrends] = useState<IssueTrends | null>(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
+  const [analyticsRange, setAnalyticsRange] = useState<TimeRange>('30d');
+
   // Verification state
   const [verifying, setVerifying] = useState(false);
   const [verificationInstructions, setVerificationInstructions] = useState<any>(null);
@@ -196,6 +218,43 @@ export default function SiteDetailPage() {
     }
   }, [siteId, urlsPagination.limit, urlsPagination.offset]);
 
+  const fetchSharing = useCallback(async () => {
+    if (!siteId) return;
+    try {
+      setSharingLoading(true);
+      const [sharesRes, invitationsRes] = await Promise.all([
+        sitesApi.getShares(siteId),
+        sitesApi.getInvitations(siteId),
+      ]);
+      setShares(sharesRes.data.shares);
+      setInvitations(invitationsRes.data.invitations);
+      if (sharesRes.data.memberLimit) {
+        setMemberLimit(sharesRes.data.memberLimit);
+      }
+    } catch (err: any) {
+      console.error('Failed to fetch sharing:', err);
+    } finally {
+      setSharingLoading(false);
+    }
+  }, [siteId]);
+
+  const fetchAnalytics = useCallback(async () => {
+    if (!siteId) return;
+    try {
+      setAnalyticsLoading(true);
+      const [scoresRes, issuesRes] = await Promise.all([
+        analyticsApi.getSiteScores(siteId, { range: analyticsRange }),
+        analyticsApi.getSiteIssues(siteId, { range: analyticsRange }),
+      ]);
+      setAnalyticsData(scoresRes.data);
+      setIssueTrends(issuesRes.data);
+    } catch (err: any) {
+      console.error('Failed to fetch analytics:', err);
+    } finally {
+      setAnalyticsLoading(false);
+    }
+  }, [siteId, analyticsRange]);
+
   useEffect(() => {
     fetchSite();
   }, [fetchSite]);
@@ -205,8 +264,18 @@ export default function SiteDetailPage() {
       fetchAudits();
     } else if (activeTab === 'urls') {
       fetchUrls();
+    } else if (activeTab === 'sharing') {
+      fetchSharing();
+    } else if (activeTab === 'analytics') {
+      fetchAnalytics();
     }
-  }, [activeTab, fetchAudits, fetchUrls]);
+  }, [activeTab, fetchAudits, fetchUrls, fetchSharing, fetchAnalytics]);
+
+  useEffect(() => {
+    if (activeTab === 'analytics') {
+      fetchAnalytics();
+    }
+  }, [analyticsRange, activeTab, fetchAnalytics]);
 
   const handleDiscoverPages = async () => {
     if (!siteId) return;
@@ -232,6 +301,69 @@ export default function SiteDetailPage() {
       navigate('/sites');
     } catch (err: any) {
       toast(err.response?.data?.error || 'Failed to delete site', 'error');
+    }
+  };
+
+  const handleInvite = async () => {
+    if (!siteId || !inviteEmail.trim()) return;
+    try {
+      setInviting(true);
+      // Use the shares endpoint which handles both existing users (direct share)
+      // and non-existing users (creates invitation) via shareByEmail
+      const response = await sitesApi.shareByEmail(siteId, {
+        email: inviteEmail.trim(),
+        permission: invitePermission,
+      });
+      toast(response.data.message || 'User invited', 'success');
+      setShowInviteModal(false);
+      setInviteEmail('');
+      setInvitePermission('viewer');
+      fetchSharing();
+    } catch (err: any) {
+      toast(err.response?.data?.error || 'Failed to invite user', 'error');
+    } finally {
+      setInviting(false);
+    }
+  };
+
+  const handleRemoveShare = async (shareId: string) => {
+    if (!siteId) return;
+    if (!confirm('Remove this user\'s access to the site?')) return;
+    try {
+      await sitesApi.removeShare(siteId, shareId);
+      toast('Access removed', 'success');
+      fetchSharing();
+    } catch (err: any) {
+      toast(err.response?.data?.error || 'Failed to remove access', 'error');
+    }
+  };
+
+  const handleCancelInvitation = async (invitationId: string) => {
+    if (!siteId) return;
+    try {
+      await sitesApi.cancelInvitation(siteId, invitationId);
+      toast('Invitation cancelled', 'success');
+      fetchSharing();
+    } catch (err: any) {
+      toast(err.response?.data?.error || 'Failed to cancel invitation', 'error');
+    }
+  };
+
+  const handleTransferOwnership = async () => {
+    if (!siteId || !transferEmail.trim()) return;
+    if (!confirm(`Transfer ownership of "${site?.name}" to ${transferEmail}? You will become an admin on this site.`)) return;
+    try {
+      setTransferring(true);
+      const response = await sitesApi.transferOwnership(siteId, transferEmail.trim());
+      toast(response.data.message, 'success');
+      setShowTransferModal(false);
+      setTransferEmail('');
+      fetchSite();
+      fetchSharing();
+    } catch (err: any) {
+      toast(err.response?.data?.error || 'Failed to transfer ownership', 'error');
+    } finally {
+      setTransferring(false);
     }
   };
 
@@ -295,6 +427,8 @@ export default function SiteDetailPage() {
     { id: 'overview', label: 'Overview' },
     { id: 'audits', label: 'Audits' },
     { id: 'urls', label: 'URLs' },
+    { id: 'analytics', label: 'Analytics' },
+    { id: 'sharing', label: 'Sharing', requirePermission: ['owner', 'admin'] },
     { id: 'settings', label: 'Settings', requirePermission: ['owner', 'admin'] },
   ];
 
@@ -324,7 +458,7 @@ export default function SiteDetailPage() {
                 </span>
               )}
               <span className="px-2 py-0.5 text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full capitalize">
-                {site.permission}
+                {PERMISSION_INFO[site.permission].label}
               </span>
             </div>
             <p className="text-slate-500 dark:text-slate-400 mt-1">{site.domain}</p>
@@ -617,6 +751,196 @@ export default function SiteDetailPage() {
           </div>
         )}
 
+        {activeTab === 'sharing' && canManage && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-medium text-slate-900 dark:text-white">Site Access</h3>
+                {memberLimit && (
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    {memberLimit.max !== null
+                      ? `${memberLimit.used} / ${memberLimit.max} member${memberLimit.max !== 1 ? 's' : ''} used`
+                      : `${memberLimit.used} member${memberLimit.used !== 1 ? 's' : ''}`
+                    }
+                  </p>
+                )}
+              </div>
+              <div className="flex gap-2">
+                {site.permission === 'owner' && (
+                  <Button variant="outline" onClick={() => setShowTransferModal(true)}>
+                    Transfer Ownership
+                  </Button>
+                )}
+                <div className="relative group">
+                  <Button
+                    onClick={() => setShowInviteModal(true)}
+                    disabled={memberLimit !== null && memberLimit.max !== null && memberLimit.used >= memberLimit.max}
+                  >
+                    Invite User
+                  </Button>
+                  {memberLimit !== null && memberLimit.max !== null && memberLimit.used >= memberLimit.max && (
+                    <div className="absolute bottom-full right-0 mb-2 px-3 py-2 text-xs text-white bg-slate-800 dark:bg-slate-600 rounded shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      {memberLimit.max === 0
+                        ? 'Site sharing is not available on your plan. Upgrade to invite members.'
+                        : 'Member limit reached. Upgrade to add more.'}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {sharingLoading ? (
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-400">
+                Loading...
+              </div>
+            ) : (
+              <>
+                {/* Current Shares */}
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700">
+                  <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+                    <h4 className="font-medium text-slate-900 dark:text-white">
+                      Users with Access
+                      {memberLimit && memberLimit.max !== null && (
+                        <span className="ml-2 text-sm font-normal text-slate-500 dark:text-slate-400">
+                          ({shares.length}/{memberLimit.max})
+                        </span>
+                      )}
+                    </h4>
+                  </div>
+                  {shares.length === 0 ? (
+                    <div className="p-6 text-center text-slate-500 dark:text-slate-400">
+                      No users have been shared access yet
+                    </div>
+                  ) : (
+                    <ul className="divide-y divide-slate-200 dark:divide-slate-700">
+                      {shares.map(share => (
+                        <li key={share.id} className="px-6 py-4 flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-slate-900 dark:text-white">
+                              {share.userFirstName} {share.userLastName}
+                            </p>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">{share.userEmail}</p>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="px-2 py-1 text-xs rounded-full bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 capitalize">
+                              {share.permission}
+                            </span>
+                            {site.permission === 'owner' && (
+                              <button
+                                onClick={() => handleRemoveShare(share.id)}
+                                className="text-red-600 dark:text-red-400 text-sm hover:underline"
+                              >
+                                Remove
+                              </button>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {/* Pending Invitations */}
+                {invitations.length > 0 && (
+                  <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700">
+                    <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+                      <h4 className="font-medium text-slate-900 dark:text-white">Pending Invitations</h4>
+                    </div>
+                    <ul className="divide-y divide-slate-200 dark:divide-slate-700">
+                      {invitations.map(invitation => (
+                        <li key={invitation.id} className="px-6 py-4 flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-slate-900 dark:text-white">{invitation.email}</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                              Expires {formatDate(invitation.expiresAt)}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="px-2 py-1 text-xs rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 capitalize">
+                              {invitation.permission}
+                            </span>
+                            <button
+                              onClick={() => handleCancelInvitation(invitation.id)}
+                              className="text-red-600 dark:text-red-400 text-sm hover:underline"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'analytics' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-slate-900 dark:text-white">Score History & Trends</h3>
+              <DateRangePicker value={analyticsRange} onChange={setAnalyticsRange} />
+            </div>
+
+            {analyticsLoading ? (
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-8 text-center">
+                <div className="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-4" />
+                <p className="text-slate-500 dark:text-slate-400">Loading analytics...</p>
+              </div>
+            ) : !analyticsData || analyticsData.scores.length === 0 ? (
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-8 text-center">
+                <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No analytics data yet</h3>
+                <p className="text-slate-500 dark:text-slate-400 mb-4">Run some audits to see score trends.</p>
+              </div>
+            ) : (
+              <>
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
+                  <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-4">Score Progression</h4>
+                  <ScoreLineChart
+                    data={analyticsData.scores}
+                    height={350}
+                    onPointClick={(auditId) => navigate(`/audits/${auditId}`)}
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
+                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-4">Average Scores</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      {(['seo', 'accessibility', 'security', 'performance', 'content'] as const).map(category => (
+                        <div key={category} className="text-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                          <div className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
+                            {category === 'accessibility' ? 'A11y' : category}
+                          </div>
+                          <div className={`text-2xl font-bold ${
+                            analyticsData.summary.averages[category] !== null
+                              ? analyticsData.summary.averages[category]! >= 70 ? 'text-emerald-600' : 'text-amber-600'
+                              : 'text-slate-300 dark:text-slate-600'
+                          }`}>
+                            {analyticsData.summary.averages[category] ?? '-'}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
+                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-4">Issue Trends</h4>
+                    {issueTrends && issueTrends.trends.length > 0 ? (
+                      <IssueTrendChart data={issueTrends.trends} height={200} />
+                    ) : (
+                      <div className="h-[200px] flex items-center justify-center text-slate-400 dark:text-slate-500">
+                        No issue data available
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
         {activeTab === 'settings' && canManage && (
           <div className="space-y-6">
             {/* Domain Verification */}
@@ -794,6 +1118,100 @@ export default function SiteDetailPage() {
         )}
       </div>
 
+      {/* Invite Modal */}
+      {showInviteModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Invite User</h2>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="inviteEmail" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="inviteEmail"
+                  value={inviteEmail}
+                  onChange={e => setInviteEmail(e.target.value)}
+                  placeholder="user@example.com"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+              <div>
+                <label htmlFor="invitePermission" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                  Permission Level
+                </label>
+                <select
+                  id="invitePermission"
+                  value={invitePermission}
+                  onChange={e => setInvitePermission(e.target.value as SitePermission)}
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                  <option value="viewer">Viewer - View audits and analytics</option>
+                  <option value="editor">Editor - Run audits and add URLs</option>
+                  <option value="admin">Admin - Manage settings and sharing</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex justify-end gap-3 mt-6">
+              <Button variant="outline" onClick={() => setShowInviteModal(false)}>
+                Cancel
+              </Button>
+              <Button
+                onClick={handleInvite}
+                isLoading={inviting}
+                disabled={!inviteEmail.trim()}
+              >
+                Send Invitation
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Transfer Ownership Modal */}
+      {showTransferModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Transfer Ownership</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+              Transfer this site to another user. You will become an admin on the site after transfer.
+            </p>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="transferEmail" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                  New Owner's Email
+                </label>
+                <input
+                  type="email"
+                  id="transferEmail"
+                  value={transferEmail}
+                  onChange={e => setTransferEmail(e.target.value)}
+                  placeholder="newowner@example.com"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+              <div className="p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                <p className="text-sm text-amber-800 dark:text-amber-300">
+                  The new owner's subscription tier will determine the available audit features for this site. Your role will change to Admin.
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-end gap-3 mt-6">
+              <Button variant="outline" onClick={() => { setShowTransferModal(false); setTransferEmail(''); }}>
+                Cancel
+              </Button>
+              <Button
+                onClick={handleTransferOwnership}
+                isLoading={transferring}
+                disabled={!transferEmail.trim()}
+              >
+                Transfer Ownership
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 }

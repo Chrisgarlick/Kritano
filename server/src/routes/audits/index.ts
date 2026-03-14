@@ -2054,8 +2054,182 @@ router.delete('/archive/old', authenticate, async (req: Request, res: Response):
 });
 
 // ============================================================
-// SCHEDULED AUDITS ENDPOINTS (Phase 7)
+// SCHEDULED AUDITS ENDPOINTS
 // ============================================================
+
+import {
+  createSchedule,
+  updateSchedule,
+  deleteSchedule,
+  getScheduleById,
+  getSchedulesByUser,
+  toggleSchedule,
+  getScheduleRunHistory,
+} from '../../services/schedule.service.js';
+
+const createScheduleSchema = z.object({
+  targetUrl: z.string().url(),
+  name: z.string().max(255).optional(),
+  frequency: z.enum(['daily', 'weekly', 'biweekly', 'monthly', 'custom']),
+  cronExpression: z.string().max(100).optional(),
+  config: z.record(z.unknown()).optional(),
+  notifyOnCompletion: z.boolean().optional(),
+  notifyOnFailure: z.boolean().optional(),
+  timezone: z.string().max(100).optional(),
+  dayOfWeek: z.number().int().min(0).max(6).optional(),
+  hourOfDay: z.number().int().min(0).max(23).optional(),
+});
+
+const updateScheduleSchema = z.object({
+  name: z.string().max(255).optional(),
+  frequency: z.enum(['daily', 'weekly', 'biweekly', 'monthly', 'custom']).optional(),
+  cronExpression: z.string().max(100).optional(),
+  config: z.record(z.unknown()).optional(),
+  notifyOnCompletion: z.boolean().optional(),
+  notifyOnFailure: z.boolean().optional(),
+  timezone: z.string().max(100).optional(),
+  dayOfWeek: z.number().int().min(0).max(6).optional(),
+  hourOfDay: z.number().int().min(0).max(23).optional(),
+});
+
+/**
+ * POST /api/audits/schedules
+ * Create an audit schedule (tier-gated: starter+)
+ */
+router.post('/schedules', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const parsed = createScheduleSchema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten(), code: 'VALIDATION_ERROR' });
+      return;
+    }
+
+    const schedule = await createSchedule(userId, parsed.data);
+    res.status(201).json({ schedule });
+  } catch (error: any) {
+    console.error('Create schedule error:', error);
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Failed to create schedule', code: 'SCHEDULE_FAILED' });
+  }
+});
+
+/**
+ * GET /api/audits/schedules
+ * List user's audit schedules (optional ?siteId= filter)
+ */
+router.get('/schedules', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const siteId = req.query.siteId as string | undefined;
+    const schedules = await getSchedulesByUser(userId, siteId);
+    res.json({ schedules });
+  } catch (error) {
+    console.error('List schedules error:', error);
+    res.status(500).json({ error: 'Failed to list schedules', code: 'LIST_SCHEDULES_FAILED' });
+  }
+});
+
+/**
+ * GET /api/audits/schedules/:scheduleId
+ * Get schedule detail with site info
+ */
+router.get('/schedules/:scheduleId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const schedule = await getScheduleById(userId, req.params.scheduleId);
+    if (!schedule) {
+      res.status(404).json({ error: 'Schedule not found', code: 'SCHEDULE_NOT_FOUND' });
+      return;
+    }
+
+    // Include last 10 runs
+    const { runs } = await getScheduleRunHistory(schedule.id, userId, 10, 0);
+    res.json({ schedule, recentRuns: runs });
+  } catch (error) {
+    console.error('Get schedule error:', error);
+    res.status(500).json({ error: 'Failed to get schedule', code: 'GET_SCHEDULE_FAILED' });
+  }
+});
+
+/**
+ * PATCH /api/audits/schedules/:scheduleId
+ * Update schedule settings
+ */
+router.patch('/schedules/:scheduleId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const parsed = updateScheduleSchema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten(), code: 'VALIDATION_ERROR' });
+      return;
+    }
+
+    const schedule = await updateSchedule(userId, req.params.scheduleId, parsed.data);
+    res.json({ schedule });
+  } catch (error: any) {
+    console.error('Update schedule error:', error);
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Failed to update schedule', code: 'UPDATE_SCHEDULE_FAILED' });
+  }
+});
+
+/**
+ * DELETE /api/audits/schedules/:scheduleId
+ * Delete an audit schedule
+ */
+router.delete('/schedules/:scheduleId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    await deleteSchedule(userId, req.params.scheduleId);
+    res.json({ message: 'Schedule deleted' });
+  } catch (error: any) {
+    console.error('Delete schedule error:', error);
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Failed to delete schedule', code: 'DELETE_SCHEDULE_FAILED' });
+  }
+});
+
+/**
+ * POST /api/audits/schedules/:scheduleId/toggle
+ * Enable or disable a schedule
+ */
+router.post('/schedules/:scheduleId/toggle', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const { enabled } = req.body as { enabled: boolean };
+    if (typeof enabled !== 'boolean') {
+      res.status(400).json({ error: 'enabled (boolean) is required', code: 'VALIDATION_ERROR' });
+      return;
+    }
+
+    const schedule = await toggleSchedule(userId, req.params.scheduleId, enabled);
+    res.json({ schedule });
+  } catch (error: any) {
+    console.error('Toggle schedule error:', error);
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Failed to toggle schedule', code: 'TOGGLE_SCHEDULE_FAILED' });
+  }
+});
+
+/**
+ * GET /api/audits/schedules/:scheduleId/runs
+ * Paginated run history for a schedule
+ */
+router.get('/schedules/:scheduleId/runs', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const { runs, total } = await getScheduleRunHistory(req.params.scheduleId, userId, limit, offset);
+    res.json({ runs, total, limit, offset });
+  } catch (error: any) {
+    console.error('Schedule runs error:', error);
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Failed to get runs', code: 'SCHEDULE_RUNS_FAILED' });
+  }
+});
 
 // ============================================================
 // FILE EXTRACTION / ASSETS ENDPOINTS

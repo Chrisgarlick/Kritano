@@ -815,6 +815,15 @@ export class AuditWorkerService {
   }
 
   /**
+   * Mark page as crawled
+   */
+  private async markPageCrawled(pageId: string): Promise<void> {
+    await this.pool.query(`
+      UPDATE audit_pages SET crawl_status = 'crawled', crawled_at = NOW() WHERE id = $1
+    `, [pageId]);
+  }
+
+  /**
    * Store discovered assets for a page (upsert + junction rows)
    */
   private async storeAssets(auditJobId: string, pageId: string, assets: DiscoveredAsset[]): Promise<void> {
@@ -860,15 +869,6 @@ export class AuditWorkerService {
         console.log(`   ⚠️ Failed to store asset ${asset.url}: ${err instanceof Error ? err.message : err}`);
       }
     }
-  }
-
-  /**
-   * Mark page as crawled
-   */
-  private async markPageCrawled(pageId: string): Promise<void> {
-    await this.pool.query(`
-      UPDATE audit_pages SET crawl_status = 'crawled', crawled_at = NOW() WHERE id = $1
-    `, [pageId]);
   }
 
   /**

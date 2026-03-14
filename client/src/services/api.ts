@@ -1,9 +1,12 @@
 import axios, { type AxiosInstance, type AxiosError } from 'axios';
 import type { ErrorResponse } from '../types/auth.types';
+import type { Audit, Finding, AuditPage, StartAuditInput, Pagination, FindingsSummary, PagesSummary, PageDetailResponse } from '../types/audit.types';
 import type {
   Site,
   SiteWithStats,
   SiteUrl,
+  SiteShare,
+  SiteInvitation,
   SitePermission,
   CreateSiteInput,
   UpdateSiteInput,
@@ -11,8 +14,17 @@ import type {
   ScoreHistoryEntry,
   Subscription,
   TierLimits,
+  UsageStats,
   VerificationInstructions,
+  MemberLimit,
 } from '../types/site.types';
+import type {
+  MarketingCampaign,
+  MarketingContent,
+  MarketingContentStats,
+  CreateMarketingContentInput,
+  CreateMarketingCampaignInput,
+} from '../types/admin.types';
 
 // Get CSRF token from cookie
 function getCsrfToken(): string | null {
@@ -94,12 +106,17 @@ api.interceptors.response.use(
         }
       }
 
-      // For other auth errors, redirect to login (unless on public pages)
-      const publicPaths = ['/', '/login', '/register'];
+      // For other auth errors (AUTH_REQUIRED, TOKEN_INVALID, etc.), redirect to login
+      // But don't redirect if we're on auth pages or public pages
+      const publicPaths = ['/', '/login', '/register', '/about', '/services', '/pricing', '/contact', '/blog'];
       const currentPath = window.location.pathname;
       const isPublicPage = publicPaths.includes(currentPath) ||
                            currentPath.startsWith('/login') ||
-                           currentPath.startsWith('/register');
+                           currentPath.startsWith('/register') ||
+                           currentPath.startsWith('/blog/') ||
+                           currentPath.startsWith('/services/') ||
+                           currentPath.startsWith('/email/unsubscribe') ||
+                           currentPath.startsWith('/site-invitations/');
       if (!isPublicPage) {
         window.location.href = '/login';
       }
@@ -120,7 +137,8 @@ export const authApi = {
     firstName: string;
     lastName: string;
     companyName?: string;
-    acceptedTos?: boolean;
+    referralCode?: string;
+    earlyAccessChannel?: 'email' | 'social';
   }) => api.post('/auth/register', data),
 
   logout: () => api.post('/auth/logout'),
@@ -145,47 +163,18 @@ export const authApi = {
   getSessions: () => api.get('/auth/sessions'),
 };
 
-// User API functions
-export const userApi = {
-  getSubscription: () =>
-    api.get<{ subscription: Subscription | null; limits: TierLimits | null }>('/subscription'),
-
-  startTrial: (tier: string) =>
-    api.post('/subscription/start-trial', { tier }),
-
-  getUsage: () =>
-    api.get('/usage'),
-};
-
-// Billing API functions
-export const billingApi = {
-  createCheckout: (tier: string) =>
-    api.post<{ url: string }>('/subscription/checkout', { tier }),
-
-  createPortal: () =>
-    api.post<{ url: string }>('/subscription/portal'),
-};
-
-// Early Access API functions
-export const earlyAccessApi = {
-  getStatus: () =>
-    api.get<{ enabled: boolean; spotsRemaining: number; maxSpots: number; isFull: boolean }>('/early-access/status'),
-};
-
-// Coming Soon API functions
-export const comingSoonApi = {
-  getStatus: () =>
-    api.get<{ enabled: boolean; headline: string; description: string }>('/coming-soon/status'),
-
-  signup: (data: { email: string; name?: string }) =>
-    api.post('/coming-soon/signup', data),
-};
-
-// Audit API functions
+// Audits API functions
 export const auditsApi = {
-  start: (data: { targetUrl: string; siteId?: string; options?: object; consent?: { accepted: boolean; dontShowAgain?: boolean } }) =>
-    api.post('/audits', data),
+  // Start a new audit
+  start: (data: StartAuditInput & { consent?: { accepted: boolean; dontShowAgain?: boolean } }) =>
+    api.post<{ audit: Audit }>('/audits', {
+      targetUrl: data.targetUrl,
+      siteId: data.siteId,
+      options: data.options,
+      consent: data.consent,
+    }),
 
+  // Check domain verification status before audit
   getDomainStatus: (url: string) =>
     api.get<{
       domain: string;
@@ -200,66 +189,104 @@ export const auditsApi = {
       } | null;
     }>('/audits/domain-status', { params: { url } }),
 
+  // List all audits for current user
   list: (params?: { status?: string; limit?: number; offset?: number; siteId?: string }) =>
-    api.get('/audits', { params }),
+    api.get<{ audits: Audit[]; pagination: Pagination }>('/audits', { params }),
 
+  // Get a single audit by ID
   get: (id: string) =>
-    api.get(`/audits/${id}`),
+    api.get<{ audit: Audit }>(`/audits/${id}`),
 
-  getFindings: (id: string, params?: { category?: string; severity?: string; limit?: number; page?: number }) =>
-    api.get(`/audits/${id}/findings`, { params }),
+  // Get findings for an audit
+  getFindings: (
+    id: string,
+    params?: {
+      category?: string;
+      severity?: string;
+      page?: number;
+      limit?: number;
+    }
+  ) =>
+    api.get<{ findings: Finding[]; summary: FindingsSummary; pagination: Pagination }>(
+      `/audits/${id}/findings`,
+      { params }
+    ),
 
+  // Get broken links for an audit
   getBrokenLinks: (id: string) =>
-    api.get(`/audits/${id}/broken-links`),
+    api.get<{ brokenLinks: Finding[]; total: number }>(`/audits/${id}/broken-links`),
 
-  getPages: (id: string, params?: { status?: string; limit?: number; page?: number }) =>
-    api.get(`/audits/${id}/pages`, { params }),
+  // Get pages for an audit
+  getPages: (
+    id: string,
+    params?: {
+      status?: string;
+      page?: number;
+      limit?: number;
+    }
+  ) =>
+    api.get<{ pages: AuditPage[]; summary: PagesSummary; pagination: Pagination }>(
+      `/audits/${id}/pages`,
+      { params }
+    ),
 
+  // Get a single page with full details and findings
   getPage: (auditId: string, pageId: string) =>
-    api.get(`/audits/${auditId}/pages/${pageId}`),
+    api.get<PageDetailResponse>(`/audits/${auditId}/pages/${pageId}`),
 
-  dismiss: (auditId: string, findingId: string, status: 'dismissed' | 'active') =>
-    api.patch(`/audits/${auditId}/findings/${findingId}/dismiss`, { status }),
-
-  bulkDismiss: (auditId: string, ruleId: string, message: string, status?: 'dismissed' | 'active') =>
-    api.patch(`/audits/${auditId}/findings/bulk-dismiss`, { ruleId, message, status }),
-
+  // Re-run an audit with same config (#41)
   rerun: (id: string) =>
-    api.post(`/audits/${id}/rerun`),
+    api.post<{ audit: Audit }>(`/audits/${id}/rerun`),
 
+  // Check URL reachability (#44)
   checkUrl: (url: string) =>
     api.get<{ reachable: boolean; status?: number; error?: string; finalUrl?: string }>('/audits/check-url', { params: { url } }),
 
-  cancel: (id: string) =>
-    api.post(`/audits/${id}/cancel`),
-
-  delete: (id: string) =>
-    api.delete(`/audits/${id}`),
-
+  // Get recent URLs for autocomplete (#45)
   getRecentUrls: () =>
     api.get<{ urls: Array<{ target_url: string; target_domain: string }> }>('/audits/recent-urls'),
 
+  // Cancel a running audit
+  cancel: (id: string) =>
+    api.post<{ audit: Audit }>(`/audits/${id}/cancel`),
+
+  // Delete an audit
+  delete: (id: string) =>
+    api.delete(`/audits/${id}`),
+
+  // Dismiss/reactivate a finding
   dismissFinding: (auditId: string, findingId: string, status: 'dismissed' | 'active') =>
     api.patch(`/audits/${auditId}/findings/${findingId}/dismiss`, { status }),
 
+  // Bulk dismiss by rule
+  bulkDismiss: (auditId: string, ruleId: string, message: string, status: 'dismissed' | 'active') =>
+    api.patch(`/audits/${auditId}/findings/bulk-dismiss`, { ruleId, message, status }),
+
+  // Export CSV
   exportCsv: (id: string) =>
     api.get(`/audits/${id}/export/csv`, { responseType: 'blob' }),
 
+  // Export JSON
   exportJson: (id: string) =>
     api.get(`/audits/${id}/export/json`, { responseType: 'blob' }),
 
+  // Export Markdown
   exportMarkdown: (id: string) =>
     api.get(`/audits/${id}/export/markdown`, { responseType: 'blob' }),
 
+  // Export HTML
   exportHtml: (id: string) =>
     api.get(`/audits/${id}/export/html`, { responseType: 'blob' }),
 
+  // Export PDF (#47)
   exportPdf: (id: string) =>
     api.get(`/audits/${id}/export/pdf`, { responseType: 'blob' }),
 
+  // Score history
   getScoreHistory: (id: string) =>
     api.get<{ history: Array<{ id: string; created_at: string; seo_score: number | null; accessibility_score: number | null; security_score: number | null; performance_score: number | null }> }>(`/audits/${id}/score-history`),
 
+  // Index exposure (Google dorking) findings
   getIndexExposure: (id: string) =>
     api.get<{
       total: number;
@@ -281,6 +308,7 @@ export const auditsApi = {
       scanPerformed: boolean;
     }>(`/audits/${id}/index-exposure`),
 
+  // Schema summary (structured data across all pages)
   getSchemaSummary: (id: string) =>
     api.get<{
       hasStructuredData: boolean;
@@ -295,27 +323,26 @@ export const auditsApi = {
         id: string;
         url: string;
         title: string | null;
-        metaDescription: string | null;
         jsonLdCount: number;
         hasOg: boolean;
         hasTc: boolean;
         detectedTypes: string[];
         detectedPageType: string | null;
-        ogData: Record<string, unknown> | null;
-        tcData: Record<string, unknown> | null;
-        jsonLdItems: Array<Record<string, unknown>> | null;
       }>;
     }>(`/audits/${id}/schema-summary`),
 
+  // Generate JSON-LD for a page (Starter+ tier)
   generateSchema: (auditId: string, pageId: string) =>
     api.post<{ jsonLd: string; pageType: string }>(`/audits/${auditId}/pages/${pageId}/generate-schema`),
 
+  // Generate JSON-LD for all pages in an audit (Starter+ tier)
   generateSchemaAll: (auditId: string) =>
     api.post<{
       pages: Array<{ pageId: string; url: string; title: string | null; pageType: string; jsonLd: string }>;
       combined: string;
     }>(`/audits/${auditId}/generate-schema-all`),
 
+  // File extraction / assets
   getAssets: (id: string, params?: { type?: string; search?: string; sort?: string; order?: string; limit?: number; offset?: number }) =>
     api.get(`/audits/${id}/assets`, { params }),
 
@@ -331,21 +358,99 @@ export const auditsApi = {
       page_count: number; html_element: string | null; html_attribute: string | null;
     }> }>(`/audits/${auditId}/pages/${pageId}/assets`),
 
-  createProgressStream: (id: string) =>
-    new EventSource(`/api/audits/${id}/stream`, { withCredentials: true } as EventSourceInit),
+  // Create SSE connection for real-time progress
+  createProgressStream: (id: string): EventSource => {
+    const url = `/api/audits/${id}/stream`;
+    return new EventSource(url, { withCredentials: true });
+  },
 };
 
-// Sites API functions
+// API Key types
+export interface ApiKey {
+  id: string;
+  name: string;
+  keyPrefix: string;
+  scopes: string[];
+  rateLimitTier: string;
+  lastUsedAt: string | null;
+  lastUsedIp: string | null;
+  requestCount: number;
+  isActive: boolean;
+  expiresAt: string | null;
+  revokedAt: string | null;
+  revokedReason: string | null;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface ApiKeyStats {
+  totalRequests: number;
+  requestsToday: number;
+  requestsThisWeek: number;
+  avgResponseTime: number;
+  topEndpoints: { path: string; count: number }[];
+}
+
+export interface CreateApiKeyResponse {
+  message: string;
+  key: ApiKey;
+  secretKey: string;
+  warning: string;
+}
+
+// API Keys API functions
+export const apiKeysApi = {
+  // List all API keys
+  list: () =>
+    api.get<{ keys: ApiKey[] }>('/api-keys'),
+
+  // Create a new API key
+  create: (data: { name: string; scopes?: string[]; expiresInDays?: number }) =>
+    api.post<CreateApiKeyResponse>('/api-keys', data),
+
+  // Get a specific API key
+  get: (keyId: string) =>
+    api.get<{ key: ApiKey }>(`/api-keys/${keyId}`),
+
+  // Get API key usage stats
+  getStats: (keyId: string) =>
+    api.get<{ stats: ApiKeyStats }>(`/api-keys/${keyId}/stats`),
+
+  // Update an API key
+  update: (keyId: string, data: { name?: string; scopes?: string[] }) =>
+    api.patch<{ message: string; key: ApiKey }>(`/api-keys/${keyId}`, data),
+
+  // Revoke an API key
+  revoke: (keyId: string, reason?: string) =>
+    api.post<{ message: string }>(`/api-keys/${keyId}/revoke`, { reason }),
+
+  // Delete an API key
+  delete: (keyId: string) =>
+    api.delete<{ message: string }>(`/api-keys/${keyId}`),
+
+  // Get available scopes
+  getScopes: () =>
+    api.get<{ scopes: Array<{ id: string; name: string; description: string }> }>('/api-keys/scopes/available'),
+
+  // Get rate limit tiers info
+  getTiers: () =>
+    api.get<{ tiers: Array<{ name: string; requestsPerMinute: number; requestsPerDay: number | string; concurrentAudits: number }> }>('/api-keys/tiers/info'),
+};
+
+// Sites API (User-Centric - no org prefix)
 export const sitesApi = {
+  // List all sites (owned + shared)
   list: () =>
     api.get<{
       sites: SiteWithStats[];
       usage: SiteUsage & { canAddMore: boolean };
     }>('/sites'),
 
+  // Create a site
   create: (data: CreateSiteInput) =>
     api.post<{ site: Site }>('/sites', data),
 
+  // Get site detail
   get: (siteId: string) =>
     api.get<{
       site: SiteWithStats;
@@ -354,12 +459,15 @@ export const sitesApi = {
       scoreHistory: ScoreHistoryEntry[];
     }>(`/sites/${siteId}`),
 
+  // Update a site
   update: (siteId: string, data: UpdateSiteInput) =>
     api.patch<{ site: Site }>(`/sites/${siteId}`, data),
 
+  // Delete a site
   delete: (siteId: string) =>
     api.delete(`/sites/${siteId}`),
 
+  // Get site audits
   getAudits: (siteId: string, params: { limit?: number; offset?: number; status?: string } = {}) => {
     const searchParams = new URLSearchParams();
     if (params.limit) searchParams.set('limit', String(params.limit));
@@ -389,11 +497,16 @@ export const sitesApi = {
     }>(`/sites/${siteId}/audits${query ? `?${query}` : ''}`);
   },
 
+  // =============================================
+  // Site URLs
+  // =============================================
+
+  // Get site URLs
   getUrls: (siteId: string, params?: {
     search?: string;
     limit?: number;
     offset?: number;
-    sortBy?: string;
+    sortBy?: 'url_path' | 'last_audited_at' | 'priority' | 'last_seo_score' | 'last_accessibility_score' | 'last_security_score' | 'last_performance_score' | 'last_content_score';
     sortOrder?: 'asc' | 'desc';
   }) => {
     const searchParams = new URLSearchParams();
@@ -409,36 +522,96 @@ export const sitesApi = {
     }>(`/sites/${siteId}/urls${query ? `?${query}` : ''}`);
   },
 
+  // Get URL count
   getUrlsCount: (siteId: string) =>
     api.get<{ count: number }>(`/sites/${siteId}/urls-count`),
 
+  // Add URL manually
   addUrl: (siteId: string, url: string) =>
     api.post<{ url: SiteUrl }>(`/sites/${siteId}/urls`, { url }),
 
+  // Get single URL detail
   getUrl: (siteId: string, urlId: string) =>
     api.get<{ url: SiteUrl }>(`/sites/${siteId}/urls/${urlId}`),
 
+  // Get audits for a specific URL
   getUrlAudits: (siteId: string, urlId: string, params?: { limit?: number; offset?: number }) => {
     const searchParams = new URLSearchParams();
     if (params?.limit) searchParams.set('limit', String(params.limit));
     if (params?.offset) searchParams.set('offset', String(params.offset));
     const query = searchParams.toString();
-    return api.get(`/sites/${siteId}/urls/${urlId}/audits${query ? `?${query}` : ''}`);
+    return api.get<{
+      audits: Audit[];
+      pagination: { total: number; limit: number; offset: number };
+    }>(`/sites/${siteId}/urls/${urlId}/audits${query ? `?${query}` : ''}`);
   },
 
+  // Discover pages from sitemap
   discoverPages: (siteId: string) =>
     api.post<{
       message: string;
-      urlsDiscovered: number;
+      pagesDiscovered: number;
       errors?: string[];
-    }>(`/sites/${siteId}/discover-urls`),
+    }>(`/sites/${siteId}/discover-pages`),
 
+  // =============================================
+  // Site Sharing
+  // =============================================
+
+  // Get site shares (includes member limit info)
+  getShares: (siteId: string) =>
+    api.get<{ shares: SiteShare[]; memberLimit: MemberLimit }>(`/sites/${siteId}/shares`),
+
+  // Create share (direct user ID)
+  createShare: (siteId: string, data: { userId: string; permission: SitePermission }) =>
+    api.post<{ share: SiteShare }>(`/sites/${siteId}/shares`, data),
+
+  // Share by email (handles both existing users and invitations)
+  shareByEmail: (siteId: string, data: { email: string; permission: SitePermission }) =>
+    api.post<{ type: 'share' | 'invitation'; message: string; share?: SiteShare; invitation?: SiteInvitation }>(
+      `/sites/${siteId}/shares`,
+      data
+    ),
+
+  // Update share permission
+  updateShare: (siteId: string, shareId: string, data: { permission: SitePermission }) =>
+    api.patch<{ share: SiteShare }>(`/sites/${siteId}/shares/${shareId}`, data),
+
+  // Remove share
+  removeShare: (siteId: string, shareId: string) =>
+    api.delete(`/sites/${siteId}/shares/${shareId}`),
+
+  // Get site invitations
+  getInvitations: (siteId: string) =>
+    api.get<{ invitations: SiteInvitation[] }>(`/sites/${siteId}/invitations`),
+
+  // Create invitation (by email)
+  invite: (siteId: string, data: { email: string; permission: SitePermission }) =>
+    api.post<{ invitation: SiteInvitation }>(`/sites/${siteId}/invitations`, data),
+
+  // Cancel invitation
+  cancelInvitation: (siteId: string, invitationId: string) =>
+    api.delete(`/sites/${siteId}/invitations/${invitationId}`),
+
+  // Transfer ownership
+  transferOwnership: (siteId: string, email: string) =>
+    api.post<{ site: { id: string; name: string; domain: string; ownerId: string }; message: string }>(
+      `/sites/${siteId}/transfer`,
+      { email }
+    ),
+
+  // =============================================
+  // Site Verification
+  // =============================================
+
+  // Generate verification token (returns existing unless regenerate=true)
   generateVerificationToken: (siteId: string, regenerate: boolean = false) =>
     api.post<{
       token: string;
       instructions: VerificationInstructions;
     }>(`/sites/${siteId}/verification-token`, { regenerate }),
 
+  // Verify site
   verify: (siteId: string, method: 'dns' | 'file') =>
     api.post<{
       verified: boolean;
@@ -447,522 +620,142 @@ export const sitesApi = {
       details?: string;
     }>(`/sites/${siteId}/verify`, { method }),
 
+  // Extract branding colors from site
   extractBranding: (siteId: string) =>
     api.post<{
-      palette: { primary: string; secondary: string; accent: string };
+      palette: {
+        primary: string;
+        secondary: string;
+        accent: string;
+      };
       companyName: string;
       allColors: string[];
     }>(`/sites/${siteId}/extract-branding`),
 
-  // Sharing
-  getShares: (siteId: string) =>
+  // Get scanner info (for whitelisting)
+  getScannerInfo: () =>
     api.get<{
-      shares: Array<{
+      userAgent: string;
+      botInfoUrl: string;
+      ips: string[];
+      verificationHeader: string;
+      rateLimitProfiles: Array<{ id: string; label: string; description: string }>;
+    }>('/sites/scanner-info'),
+};
+
+// Site Invitations API (public routes)
+export const siteInvitationsApi = {
+  // Get invitation details by token
+  get: (token: string) =>
+    api.get<{
+      invitation: {
         id: string;
-        userId: string;
         email: string;
-        name: string;
-        permission: string;
-        invitedAt: string;
-        acceptedAt: string | null;
-      }>;
-      memberLimit: { used: number; max: number | null; tier: string };
-    }>(`/sites/${siteId}/shares`),
+        permission: SitePermission;
+        siteName: string;
+        siteDomain: string;
+        invitedBy: string;
+        expiresAt: string;
+        createdAt: string;
+      };
+    }>(`/site-invitations/${token}`),
 
-  shareByEmail: (siteId: string, email: string, permission: string) =>
-    api.post(`/sites/${siteId}/shares`, { email, permission }),
+  // Accept invitation (requires auth)
+  accept: (token: string) =>
+    api.post<{
+      success: boolean;
+      message: string;
+      share: { id: string; siteId: string; permission: SitePermission };
+    }>(`/site-invitations/${token}/accept`),
 
-  updateShare: (siteId: string, shareId: string, permission: string) =>
-    api.patch(`/sites/${siteId}/shares/${shareId}`, { permission }),
+  // Decline invitation (public)
+  decline: (token: string) =>
+    api.post<{ success: boolean; message: string }>(`/site-invitations/${token}/decline`),
 
-  removeShare: (siteId: string, shareId: string) =>
-    api.delete(`/sites/${siteId}/shares/${shareId}`),
-
-  getInvitations: (siteId: string) =>
+  // Get pending invitations for current user
+  getPendingForMe: () =>
     api.get<{
       invitations: Array<{
         id: string;
-        email: string;
-        permission: string;
-        status: string;
+        token: string;
+        permission: SitePermission;
+        siteName: string;
+        siteDomain: string;
         invitedBy: string;
         expiresAt: string;
         createdAt: string;
       }>;
-    }>(`/sites/${siteId}/invitations`),
-
-  createInvitation: (siteId: string, email: string, permission: string) =>
-    api.post(`/sites/${siteId}/invitations`, { email, permission }),
-
-  cancelInvitation: (siteId: string, invitationId: string) =>
-    api.delete(`/sites/${siteId}/invitations/${invitationId}`),
+    }>('/site-invitations/pending/me'),
 };
 
-// Site Invitations API functions
-export const siteInvitationsApi = {
-  get: (token: string) =>
-    api.get(`/invitations/${token}`),
-
-  accept: (token: string) =>
-    api.post(`/invitations/${token}/accept`),
-
-  decline: (token: string) =>
-    api.post(`/invitations/${token}/decline`),
-
-  getPending: () =>
-    api.get<{
-      invitations: Array<{
-        id: string;
-        email: string;
-        permission: string;
-        siteName: string;
-        siteDomain: string;
-        inviterName: string;
-        expiresAt: string;
-        token: string;
-      }>;
-    }>('/invitations/pending/me'),
-};
-
-// Organizations API functions
+// Organizations API
 export const organizationsApi = {
   list: () =>
-    api.get('/organizations'),
-
-  create: (data: { name: string; slug?: string }) =>
-    api.post('/organizations', data),
+    api.get<{ organizations: Array<{ id: string; name: string; role: string; subscription: { tier: string } }> }>('/organizations'),
 
   get: (orgId: string) =>
-    api.get(`/organizations/${orgId}`),
+    api.get<{
+      organization: { id: string; name: string; settings: Record<string, unknown> };
+      tierLimits: Record<string, unknown> | null;
+    }>(`/organizations/${orgId}`),
 
-  update: (orgId: string, data: { name?: string; slug?: string }) =>
+  create: (data: { name: string; slug?: string }) =>
+    api.post<{ organization: { id: string; name: string; settings: Record<string, unknown> } }>('/organizations', data),
+
+  update: (orgId: string, data: Record<string, unknown>) =>
     api.patch(`/organizations/${orgId}`, data),
-
-  delete: (orgId: string) =>
-    api.delete(`/organizations/${orgId}`),
-
-  getMembers: (orgId: string) =>
-    api.get(`/organizations/${orgId}/members`),
-
-  inviteMember: (orgId: string, data: { email: string; role?: string }) =>
-    api.post(`/organizations/${orgId}/members`, data),
-
-  removeMember: (orgId: string, memberId: string) =>
-    api.delete(`/organizations/${orgId}/members/${memberId}`),
-
-  updateMemberRole: (orgId: string, memberId: string, role: string) =>
-    api.patch(`/organizations/${orgId}/members/${memberId}`, { role }),
-
-  getSubscription: (orgId: string) =>
-    api.get(`/organizations/${orgId}/subscription`),
 };
 
-// Consent API functions
-export const consentApi = {
-  logCookieConsent: (data: {
-    consent_version: string;
-    categories: Record<string, boolean>;
-    action: string;
-    page_url: string;
-  }) => api.post<{ success: boolean; logged_at: string }>('/consent/cookies', data),
+// User API (subscription, usage)
+export const userApi = {
+  // Get current user's subscription
+  getSubscription: () =>
+    api.get<{ subscription: Subscription; limits: TierLimits }>('/subscription'),
+
+  // Get current user's usage
+  getUsage: () =>
+    api.get<{ usage: UsageStats; limits: TierLimits }>('/usage'),
+
+  // Start a free trial on a paid tier
+  startTrial: (tier: 'starter' | 'pro' | 'agency') =>
+    api.post<{ subscription: Subscription }>('/subscription/start-trial', { tier }),
 };
 
-// Schedule types
-export type ScheduleFrequency = 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'custom';
+// Billing API (Stripe checkout + portal)
+export const billingApi = {
+  createCheckout: (tier: string) =>
+    api.post<{ url: string }>('/subscription/checkout', { tier }),
 
-export interface AuditScheduleSummary {
-  id: string;
-  user_id: string;
-  site_id: string | null;
-  name: string | null;
-  target_url: string;
-  target_domain: string;
-  frequency: ScheduleFrequency;
-  cron_expression: string;
-  next_run_at: string | null;
-  last_run_at: string | null;
-  last_status: string | null;
-  enabled: boolean;
-  paused_reason: string | null;
-  run_count: number;
-  consecutive_failures: number;
-  timezone: string;
-  created_at: string;
-  site_name?: string;
-  site_verified?: boolean;
-}
-
-export interface AuditScheduleDetail extends AuditScheduleSummary {
-  config: Record<string, unknown>;
-  last_audit_id: string | null;
-  failure_count: number;
-  max_consecutive_failures: number;
-  paused_at: string | null;
-  notify_on_completion: boolean;
-  notify_on_failure: boolean;
-  updated_at: string;
-}
-
-export interface ScheduleRunSummary {
-  id: string;
-  status: string;
-  target_url: string;
-  created_at: string;
-  completed_at: string | null;
-  seo_score: number | null;
-  accessibility_score: number | null;
-  security_score: number | null;
-  performance_score: number | null;
-  total_issues: number | null;
-}
-
-export interface CreateSchedulePayload {
-  targetUrl: string;
-  name?: string;
-  frequency: ScheduleFrequency;
-  cronExpression?: string;
-  config?: Record<string, unknown>;
-  notifyOnCompletion?: boolean;
-  notifyOnFailure?: boolean;
-  timezone?: string;
-  dayOfWeek?: number;
-  hourOfDay?: number;
-}
-
-export interface UpdateSchedulePayload {
-  name?: string;
-  frequency?: ScheduleFrequency;
-  cronExpression?: string;
-  config?: Record<string, unknown>;
-  notifyOnCompletion?: boolean;
-  notifyOnFailure?: boolean;
-  timezone?: string;
-  dayOfWeek?: number;
-  hourOfDay?: number;
-}
-
-// Schedules API functions
-export const schedulesApi = {
-  list: (siteId?: string) => {
-    const params = siteId ? `?siteId=${siteId}` : '';
-    return api.get<{ schedules: AuditScheduleSummary[] }>(`/audits/schedules${params}`);
-  },
-
-  get: (id: string) =>
-    api.get<{ schedule: AuditScheduleDetail; recentRuns: ScheduleRunSummary[] }>(`/audits/schedules/${id}`),
-
-  create: (data: CreateSchedulePayload) =>
-    api.post<{ schedule: AuditScheduleDetail }>('/audits/schedules', data),
-
-  update: (id: string, data: UpdateSchedulePayload) =>
-    api.patch<{ schedule: AuditScheduleDetail }>(`/audits/schedules/${id}`, data),
-
-  delete: (id: string) =>
-    api.delete(`/audits/schedules/${id}`),
-
-  toggle: (id: string, enabled: boolean) =>
-    api.post<{ schedule: AuditScheduleDetail }>(`/audits/schedules/${id}/toggle`, { enabled }),
-
-  getRuns: (id: string, limit = 20, offset = 0) =>
-    api.get<{ runs: ScheduleRunSummary[]; total: number }>(`/audits/schedules/${id}/runs?limit=${limit}&offset=${offset}`),
+  createPortal: () =>
+    api.post<{ url: string }>('/subscription/portal'),
 };
 
-// Analytics API functions
-import type {
-  ScoreHistory,
-  IssueTrends,
-  AuditComparison,
-  SiteComparison,
-  TimeRange,
-  GroupBy,
-  UserOverview,
-  UrlAnalytics,
-  UrlComparison,
-  UserAuditedUrl,
-} from '../types/analytics.types';
-
-export const analyticsApi = {
-  getSiteScores: (siteId: string, options?: { range?: TimeRange; from?: string; to?: string }) =>
-    api.get<ScoreHistory>(`/analytics/sites/${siteId}/scores`, { params: options }),
-
-  getSiteIssues: (siteId: string, options?: { range?: TimeRange; groupBy?: GroupBy }) =>
-    api.get<IssueTrends>(`/analytics/sites/${siteId}/issues`, { params: options }),
-
-  compareAudits: (auditIds: string[]) =>
-    api.get<AuditComparison>('/analytics/compare', { params: { audits: auditIds.join(',') } }),
-
-  compareSites: (siteIds: string[]) =>
-    api.get<SiteComparison>('/analytics/compare-sites', { params: { sites: siteIds.join(',') } }),
-
-  getUserOverview: () =>
-    api.get<UserOverview>('/analytics/overview'),
-
-  getUrlAnalytics: (siteId: string, urlId: string) =>
-    api.get<UrlAnalytics>(`/analytics/sites/${siteId}/urls/${urlId}`),
-
-  getUrlScores: (siteId: string, urlId: string, options?: { range?: TimeRange }) =>
-    api.get<ScoreHistory>(`/analytics/sites/${siteId}/urls/${urlId}/scores`, { params: options }),
-
-  getUserUrls: (search?: string, limit?: number) =>
-    api.get<UserAuditedUrl[]>('/analytics/user-urls', { params: { search, limit } }),
-
-  compareUrls: (urlSpecs: [{ siteId: string; urlId: string }, { siteId: string; urlId: string }]) =>
-    api.get<UrlComparison>('/analytics/compare-urls', {
-      params: { urls: urlSpecs.map(s => `${s.siteId}:${s.urlId}`).join(',') },
-    }),
-};
-
-// CRM & Email types
-export interface CrmLead {
-  id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  lead_score: number;
-  lead_status: string;
-  lead_score_updated_at: string;
-  email_verified: boolean;
-  last_login_at: string | null;
-  created_at: string;
-  tier: string;
-  total_audits: number;
-  completed_audits: number;
-  total_sites: number;
-  verified_domains: number;
-  team_members: number;
-  has_exported_pdf: boolean;
-}
-
-export interface CrmStats {
-  total: number;
-  avg_score: number;
-  by_status: Record<string, number>;
-}
-
-export interface CrmTrigger {
-  id: string;
-  user_id: string;
-  trigger_type: string;
-  status: string;
-  context: Record<string, unknown>;
-  created_at: string;
-  actioned_at: string | null;
-  actioned_by: string | null;
-  user_email?: string;
-  user_first_name?: string;
-  user_last_name?: string;
-  user_lead_score?: number;
-  user_lead_status?: string;
-}
-
-export interface CrmTriggerStats {
-  total: number;
-  pending: number;
-  sent: number;
-  dismissed: number;
-  actioned: number;
-  by_type: Record<string, number>;
-}
-
-export interface CrmTimelineEvent {
-  event: string;
-  detail: string;
-  timestamp: string;
-}
-
-export interface CrmMembership {
-  site_id: string;
-  site_name: string;
-  site_domain: string;
-  role: string;
-  tier: string;
-  verified: boolean;
-  last_audit_at: string | null;
-  audit_count: number;
-}
-
-export interface CrmOutreachRecord {
-  id: string;
-  template_id: string;
-  subject: string;
-  status: string;
-  created_at: string;
-  template_name?: string;
-  template_slug?: string;
-  sent_by_email?: string;
-}
-
-export interface EmailCampaignItem {
-  id: string;
-  name: string;
-  description: string | null;
-  template_id: string;
-  status: string;
-  segment: Record<string, unknown>;
-  audience_count: number;
-  scheduled_at: string | null;
-  started_at: string | null;
-  completed_at: string | null;
-  stats: {
-    total: number;
-    queued: number;
-    sent: number;
-    delivered: number;
-    opened: number;
-    clicked: number;
-    bounced: number;
-    complained: number;
-    failed: number;
-  };
-  send_rate_per_second: number;
-  max_recipients: number;
-  created_at: string;
-  template_name?: string;
-  template_slug?: string;
-}
-
-export interface CampaignSegment {
-  tiers?: string[];
-  leadStatuses?: string[];
-  minLeadScore?: number;
-  maxLeadScore?: number;
-  verifiedDomain?: boolean;
-  auditCountMin?: number;
-  auditCountMax?: number;
-  lastLoginAfter?: string;
-  lastLoginBefore?: string;
-  registeredAfter?: string;
-  registeredBefore?: string;
-  excludeUserIds?: string[];
-}
-
-export type CampaignStatus = 'draft' | 'scheduled' | 'sending' | 'paused' | 'sent' | 'cancelled' | 'failed';
-
-export interface EmailSendRecord {
-  id: string;
-  to_email: string;
-  status: string;
-  resend_message_id?: string;
-  sent_at: string | null;
-  opened_at: string | null;
-  clicked_at: string | null;
-  error_message?: string;
-  created_at: string;
-}
-
-export interface EmailAnalyticsDay {
-  date: string;
-  sent: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  bounced: number;
-  complained: number;
-}
-
-export interface EmailAnalyticsTotals {
-  sent: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  bounced: number;
-  complained: number;
-}
-
-export interface TemplatePerformanceItem {
-  template_id: string;
-  template_name: string;
-  template_slug: string;
-  total_sent: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  bounced: number;
-  delivery_rate: number;
-  open_rate: number;
-  click_rate: number;
-}
-
-// Admin API types - import for use in adminApi + re-export for admin pages
+// Admin API (super admin only)
 import type {
   DashboardStats,
   SystemHealth,
-  AnalyticsDataPoint,
   AdminUser,
   AdminOrganization,
   AdminActivity,
-  Pagination,
-  AdminSubscriptionTier,
-  AdminSubscriptionStatus,
-  WorkerStatus,
-  QueueBacklog,
-  AdminFunnelAnalytics,
-  AdminFunnelStage,
-  AdminGlobalTrends,
-  AdminTopIssue,
-  AdminRevenueAnalytics,
-  AdminTierRevenue,
-  BugReport,
-  BugReportComment,
-  BugReportStats,
-  AdminScheduleItem,
-  AdminScheduleStats,
-  AdminScoreDistribution,
-  AdminTierAuditBreakdown,
-  MarketingCampaign,
-  MarketingContent,
-  MarketingContentStats,
-  CreateMarketingContentInput,
-  CreateMarketingCampaignInput,
-  MarketingPlatform,
-  MarketingContentStatus,
+  AnalyticsDataPoint,
+  SubscriptionTier as AdminSubscriptionTier,
+  SubscriptionStatus as AdminSubscriptionStatus,
 } from '../types/admin.types';
 
-export type {
-  DashboardStats,
-  SystemHealth,
-  AnalyticsDataPoint,
-  AdminUser,
-  AdminOrganization,
-  AdminActivity,
-  Pagination,
-  AdminSubscriptionTier,
-  AdminSubscriptionStatus,
-  WorkerStatus,
-  QueueBacklog,
-  AdminFunnelAnalytics,
-  AdminFunnelStage,
-  AdminGlobalTrends,
-  AdminTopIssue,
-  AdminRevenueAnalytics,
-  AdminTierRevenue,
-  BugReport,
-  BugReportComment,
-  BugReportStats,
-  AdminScheduleItem,
-  AdminScheduleStats,
-  AdminScoreDistribution,
-  AdminTierAuditBreakdown,
-  MarketingCampaign,
-  MarketingContent,
-  MarketingContentStats,
-  CreateMarketingContentInput,
-  CreateMarketingCampaignInput,
-  MarketingPlatform,
-  MarketingContentStatus,
-};
-
-// Admin API functions
 export const adminApi = {
+  // Check admin status
   check: () =>
     api.get<{ isAdmin: boolean; admin: { id: string; email: string } }>('/admin/check'),
 
+  // Dashboard
   getDashboard: () =>
     api.get<{ stats: DashboardStats; health: SystemHealth }>('/admin/dashboard'),
 
+  // Analytics
   getAnalytics: (days: number = 30) =>
     api.get<{ analytics: AnalyticsDataPoint[] }>(`/admin/analytics?days=${days}`),
 
+  // Founder Analytics (Phase 6)
   getFunnelAnalytics: (range: string = '30d') =>
     api.get<AdminFunnelAnalytics>(`/admin/analytics/funnel?range=${range}`),
 
@@ -972,6 +765,7 @@ export const adminApi = {
   getRevenueAnalytics: () =>
     api.get<AdminRevenueAnalytics>('/admin/analytics/revenue'),
 
+  // Users
   listUsers: (params: { page?: number; limit?: number; search?: string; sortBy?: string; sortOrder?: string } = {}) => {
     const searchParams = new URLSearchParams();
     if (params.page) searchParams.set('page', String(params.page));
@@ -991,6 +785,7 @@ export const adminApi = {
   deleteUser: (userId: string) =>
     api.delete<{ success: boolean }>(`/admin/users/${userId}`),
 
+  // Organizations (kept for admin but deprecated)
   listOrganizations: (params: { page?: number; limit?: number; search?: string; tier?: string; sortBy?: string; sortOrder?: string } = {}) => {
     const searchParams = new URLSearchParams();
     if (params.page) searchParams.set('page', String(params.page));
@@ -1008,6 +803,7 @@ export const adminApi = {
   updateSubscription: (orgId: string, data: { tier?: AdminSubscriptionTier; status?: AdminSubscriptionStatus }) =>
     api.patch<{ organization: AdminOrganization }>(`/admin/organizations/${orgId}/subscription`, data),
 
+  // Activity log
   getActivityLog: (params: { page?: number; limit?: number; adminId?: string } = {}) => {
     const searchParams = new URLSearchParams();
     if (params.page) searchParams.set('page', String(params.page));
@@ -1016,6 +812,91 @@ export const adminApi = {
     return api.get<{ activities: AdminActivity[]; pagination: Pagination }>(`/admin/activity?${searchParams.toString()}`);
   },
 
+  // Email Templates
+  listTemplates: (params: { page?: number; limit?: number; category?: string; is_system?: boolean; search?: string } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.category) searchParams.set('category', params.category);
+    if (params.is_system !== undefined) searchParams.set('is_system', String(params.is_system));
+    if (params.search) searchParams.set('search', params.search);
+    return api.get<{ templates: EmailTemplateListItem[]; pagination: Pagination }>(`/admin/email/templates?${searchParams.toString()}`);
+  },
+
+  getTemplate: (id: string) =>
+    api.get<{ template: EmailTemplateDetail }>(`/admin/email/templates/${id}`),
+
+  createTemplate: (data: CreateEmailTemplateInput) =>
+    api.post<{ template: EmailTemplateDetail }>('/admin/email/templates', data),
+
+  updateTemplate: (id: string, data: Partial<CreateEmailTemplateInput>) =>
+    api.put<{ template: EmailTemplateDetail }>(`/admin/email/templates/${id}`, data),
+
+  deleteTemplate: (id: string) =>
+    api.delete<{ success: boolean }>(`/admin/email/templates/${id}`),
+
+  previewTemplate: (id: string, variables?: Record<string, string>) =>
+    api.post<{ html: string }>(`/admin/email/templates/${id}/preview`, { variables }),
+
+  testSendTemplate: (id: string, variables?: Record<string, string>) =>
+    api.post<{ success: boolean; sentTo: string }>(`/admin/email/templates/${id}/test`, { variables }),
+
+  duplicateTemplate: (id: string, slug: string, name: string) =>
+    api.post<{ template: EmailTemplateDetail }>(`/admin/email/templates/${id}/duplicate`, { slug, name }),
+
+  // CRM - Leads
+  getLeads: (params: { status?: string; search?: string; sort?: string; order?: string; page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.status) searchParams.set('status', params.status);
+    if (params.search) searchParams.set('search', params.search);
+    if (params.sort) searchParams.set('sort', params.sort);
+    if (params.order) searchParams.set('order', params.order);
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ leads: CrmLead[]; pagination: Pagination }>(`/admin/crm/leads?${searchParams.toString()}`);
+  },
+
+  getLead: (userId: string) =>
+    api.get<{ lead: CrmLead; timeline: CrmTimelineEvent[]; memberships: CrmMembership[]; outreach: CrmOutreachRecord[] }>(`/admin/crm/leads/${userId}`),
+
+  recalcLeadScore: (userId: string) =>
+    api.post<{ score: number; status: string }>(`/admin/crm/leads/${userId}/recalc`),
+
+  getCrmStats: () =>
+    api.get<{ stats: CrmStats }>('/admin/crm/stats'),
+
+  getLeadMemberships: (userId: string) =>
+    api.get<{ memberships: CrmMembership[] }>(`/admin/crm/leads/${userId}/memberships`),
+
+  // CRM - Triggers
+  getTriggers: (params: { status?: string; type?: string; page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.status) searchParams.set('status', params.status);
+    if (params.type) searchParams.set('type', params.type);
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ triggers: CrmTrigger[]; pagination: Pagination }>(`/admin/crm/triggers?${searchParams.toString()}`);
+  },
+
+  actionTrigger: (triggerId: string, status: 'sent' | 'dismissed' | 'actioned') =>
+    api.patch<{ trigger: CrmTrigger }>(`/admin/crm/triggers/${triggerId}`, { status }),
+
+  getTriggerStats: () =>
+    api.get<{ stats: CrmTriggerStats }>('/admin/crm/triggers/stats'),
+
+  // CRM - Outreach
+  sendOutreach: (userId: string, templateSlug: string, variables?: Record<string, string>) =>
+    api.post<{ success: boolean; sentTo: string }>(`/admin/crm/outreach/${userId}`, { templateSlug, variables }),
+
+  getOutreachHistory: (params: { userId?: string; page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.userId) searchParams.set('userId', params.userId);
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ sends: CrmOutreachRecord[]; pagination: Pagination }>(`/admin/crm/outreach?${searchParams.toString()}`);
+  },
+
+  // Worker management
   getWorkerStatus: () =>
     api.get<WorkerStatus>('/admin/worker/status'),
 
@@ -1034,106 +915,68 @@ export const adminApi = {
   cancelAllPending: () =>
     api.post<{ success: boolean; cancelled: number }>('/admin/worker/queue/cancel-all'),
 
-  // CRM stats
-  getCrmStats: () =>
-    api.get('/admin/crm/stats'),
-
-  getTriggerStats: () =>
-    api.get('/admin/crm/triggers/stats'),
-
-  // Email analytics
-  getEmailAnalytics: (days: number = 30) =>
-    api.get(`/admin/email/analytics?days=${days}`),
-
-  // CRM Leads
-  getLeads: (params?: { status?: string; search?: string; sort?: string; order?: string; page?: number; limit?: number }) =>
-    api.get('/admin/crm/leads', { params }),
-
-  getLead: (userId: string) =>
-    api.get(`/admin/crm/leads/${userId}`),
-
-  recalcLeadScore: (userId: string) =>
-    api.post(`/admin/crm/leads/${userId}/recalc`),
-
-  sendOutreach: (userId: string, templateSlugOrData: string | { templateSlug: string; variables?: Record<string, string> }) =>
-    api.post(`/admin/crm/outreach/${userId}`, typeof templateSlugOrData === 'string' ? { templateSlug: templateSlugOrData } : templateSlugOrData),
-
-  // CRM Triggers
-  getTriggers: (params?: { status?: string; type?: string; userId?: string; page?: number; limit?: number }) =>
-    api.get('/admin/crm/triggers', { params }),
-
-  actionTrigger: (id: string, status: string) =>
-    api.patch(`/admin/crm/triggers/${id}`, { status }),
-
-  // Email Templates
-  listTemplates: (params?: { category?: string; is_system?: string; search?: string; page?: number; limit?: number }) =>
-    api.get('/admin/email/templates', { params }),
-
-  getTemplate: (id: string) =>
-    api.get(`/admin/email/templates/${id}`),
-
-  createTemplate: (data: Record<string, unknown>) =>
-    api.post('/admin/email/templates', data),
-
-  updateTemplate: (id: string, data: Record<string, unknown>) =>
-    api.put(`/admin/email/templates/${id}`, data),
-
-  deleteTemplate: (id: string) =>
-    api.delete(`/admin/email/templates/${id}`),
-
-  previewTemplate: (id: string, variables?: Record<string, string>) =>
-    api.post(`/admin/email/templates/${id}/preview`, { variables }),
-
-  testSendTemplate: (id: string, variables?: Record<string, string>) =>
-    api.post(`/admin/email/templates/${id}/test`, { variables }),
-
-  duplicateTemplate: (id: string, slugOrData: string | { slug: string; name: string }, name?: string) =>
-    api.post(`/admin/email/templates/${id}/duplicate`, typeof slugOrData === 'string' ? { slug: slugOrData, name: name! } : slugOrData),
-
   // Email Campaigns
-  listCampaigns: (params?: { status?: string; search?: string; page?: number; limit?: number }) =>
-    api.get('/admin/email/campaigns', { params }),
+  listCampaigns: (params: { page?: number; limit?: number; status?: string; search?: string } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.status) searchParams.set('status', params.status);
+    if (params.search) searchParams.set('search', params.search);
+    return api.get<{ campaigns: EmailCampaignItem[]; pagination: Pagination }>(`/admin/email/campaigns?${searchParams.toString()}`);
+  },
 
   getCampaign: (id: string) =>
-    api.get(`/admin/email/campaigns/${id}`),
+    api.get<{ campaign: EmailCampaignItem }>(`/admin/email/campaigns/${id}`),
 
-  createCampaign: (data: Record<string, unknown>) =>
-    api.post('/admin/email/campaigns', data),
+  createCampaign: (data: CreateEmailCampaignInput) =>
+    api.post<{ campaign: EmailCampaignItem }>('/admin/email/campaigns', data),
 
-  updateCampaign: (id: string, data: Record<string, unknown>) =>
-    api.put(`/admin/email/campaigns/${id}`, data),
+  updateCampaign: (id: string, data: Partial<CreateEmailCampaignInput>) =>
+    api.put<{ campaign: EmailCampaignItem }>(`/admin/email/campaigns/${id}`, data),
 
   deleteCampaign: (id: string) =>
-    api.delete(`/admin/email/campaigns/${id}`),
+    api.delete<{ success: boolean }>(`/admin/email/campaigns/${id}`),
 
   launchCampaign: (id: string) =>
-    api.post(`/admin/email/campaigns/${id}/launch`),
+    api.post<{ campaign: EmailCampaignItem }>(`/admin/email/campaigns/${id}/launch`),
 
-  scheduleCampaign: (id: string, scheduledAt: string) =>
-    api.post(`/admin/email/campaigns/${id}/schedule`, { scheduled_at: scheduledAt }),
+  scheduleCampaign: (id: string, scheduled_at: string) =>
+    api.post<{ campaign: EmailCampaignItem }>(`/admin/email/campaigns/${id}/schedule`, { scheduled_at }),
 
   pauseCampaign: (id: string) =>
-    api.post(`/admin/email/campaigns/${id}/pause`),
+    api.post<{ campaign: EmailCampaignItem }>(`/admin/email/campaigns/${id}/pause`),
 
   resumeCampaign: (id: string) =>
-    api.post(`/admin/email/campaigns/${id}/resume`),
+    api.post<{ campaign: EmailCampaignItem }>(`/admin/email/campaigns/${id}/resume`),
 
   cancelCampaign: (id: string) =>
-    api.post(`/admin/email/campaigns/${id}/cancel`),
+    api.post<{ campaign: EmailCampaignItem }>(`/admin/email/campaigns/${id}/cancel`),
 
-  getCampaignAudienceCount: (segment: CampaignSegment | Record<string, unknown>) =>
-    api.post('/admin/email/campaigns/audience-count', { segment }),
+  getCampaignAudienceCount: (segment: CampaignSegment) =>
+    api.post<{ count: number }>('/admin/email/campaigns/audience-count', { segment }),
 
-  getCampaignSends: (id: string, params?: { status?: string; page?: number; limit?: number }) =>
-    api.get(`/admin/email/campaigns/${id}/sends`, { params }),
+  getCampaignSends: (id: string, params: { page?: number; limit?: number; status?: string } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.status) searchParams.set('status', params.status);
+    return api.get<{ sends: EmailSendRecord[]; pagination: Pagination }>(`/admin/email/campaigns/${id}/sends?${searchParams.toString()}`);
+  },
 
-  // Email Sends
-  getSends: (params?: { status?: string; campaignId?: string; page?: number; limit?: number }) =>
-    api.get('/admin/email/sends', { params }),
+  getEmailSends: (params: { page?: number; limit?: number; status?: string; campaignId?: string } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.status) searchParams.set('status', params.status);
+    if (params.campaignId) searchParams.set('campaignId', params.campaignId);
+    return api.get<{ sends: EmailSendRecord[]; pagination: Pagination }>(`/admin/email/sends?${searchParams.toString()}`);
+  },
 
-  // Email Analytics - Template Performance
+  getEmailAnalytics: (days: number = 30) =>
+    api.get<{ totals: EmailAnalyticsTotals; daily: EmailAnalyticsDay[] }>(`/admin/email/analytics?days=${days}`),
+
   getTemplatePerformance: () =>
-    api.get('/admin/email/analytics/templates'),
+    api.get<{ templates: TemplatePerformanceItem[] }>('/admin/email/analytics/templates'),
 
   // CMS - Posts
   listPosts: (params: { status?: string; category?: string; search?: string; page?: number; limit?: number } = {}) => {
@@ -1296,38 +1139,566 @@ export const adminApi = {
     api.patch<{ content: MarketingContent }>(`/admin/marketing/content/${id}/status`, { status }),
 };
 
-// Admin Bug Reports API
-export const adminBugReportsApi = {
-  list: (params?: { page?: number; limit?: number; status?: string; severity?: string; category?: string; search?: string }) =>
-    api.get<{ items: BugReport[]; total: number; page: number; limit: number; pages: number }>('/admin/bug-reports', { params }),
+// Email template types (client-side)
+interface EmailTemplateListItem {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  subject: string;
+  category: string;
+  is_system: boolean;
+  is_active: boolean;
+  branding_mode: string;
+  created_at: string;
+  updated_at: string;
+}
 
+interface EmailTemplateDetail extends EmailTemplateListItem {
+  preview_text: string | null;
+  blocks: unknown[];
+  compiled_html: string | null;
+  compiled_at: string | null;
+  variables: string[];
+  created_by: string | null;
+}
+
+interface CreateEmailTemplateInput {
+  slug: string;
+  name: string;
+  description?: string;
+  subject: string;
+  preview_text?: string;
+  blocks: unknown[];
+  category: string;
+  variables?: string[];
+  branding_mode?: string;
+  is_active?: boolean;
+}
+
+// =============================================
+// Email Campaign Types
+// =============================================
+
+export type CampaignStatus = 'draft' | 'scheduled' | 'sending' | 'paused' | 'sent' | 'cancelled' | 'failed';
+
+export interface CampaignSegment {
+  tiers?: string[];
+  leadStatuses?: string[];
+  minLeadScore?: number;
+  maxLeadScore?: number;
+  verifiedDomain?: boolean;
+  auditCountMin?: number;
+  auditCountMax?: number;
+  lastLoginAfter?: string;
+  lastLoginBefore?: string;
+  registeredAfter?: string;
+  registeredBefore?: string;
+  excludeUserIds?: string[];
+}
+
+export interface CampaignStats {
+  total: number;
+  queued: number;
+  sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  bounced: number;
+  complained: number;
+  failed: number;
+}
+
+export interface EmailCampaignItem {
+  id: string;
+  name: string;
+  description: string | null;
+  template_id: string;
+  status: CampaignStatus;
+  segment: CampaignSegment;
+  audience_count: number;
+  scheduled_at: string | null;
+  started_at: string | null;
+  completed_at: string | null;
+  cancelled_at: string | null;
+  stats: CampaignStats;
+  send_rate_per_second: number;
+  max_recipients: number;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+  template_name?: string;
+  template_slug?: string;
+}
+
+export interface CreateEmailCampaignInput {
+  name: string;
+  description?: string;
+  template_id: string;
+  segment?: CampaignSegment;
+  send_rate_per_second?: number;
+  max_recipients?: number;
+}
+
+export interface EmailSendRecord {
+  id: string;
+  to_email: string;
+  subject?: string;
+  status: string;
+  resend_message_id: string | null;
+  sent_at: string | null;
+  opened_at: string | null;
+  clicked_at: string | null;
+  error_message: string | null;
+  created_at: string;
+  campaign_id?: string;
+  template_name?: string;
+  template_slug?: string;
+}
+
+export interface EmailAnalyticsTotals {
+  sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  bounced: number;
+  complained: number;
+}
+
+export interface EmailAnalyticsDay {
+  date: string;
+  sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  bounced: number;
+  complained: number;
+}
+
+export interface TemplatePerformanceItem {
+  template_id: string;
+  template_name: string;
+  template_slug: string;
+  total_sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  bounced: number;
+  delivery_rate: number;
+  open_rate: number;
+  click_rate: number;
+}
+
+// =============================================
+// Worker Types
+// =============================================
+
+export interface WorkerStatus {
+  status: string;
+  uptime: number;
+  workerId: string;
+  isProcessing: boolean;
+  stats: {
+    jobsProcessed: number;
+    jobsFailed: number;
+    lastJobTime: string | null;
+  };
+  queue24h: {
+    pending: number;
+    discovering: number;
+    ready: number;
+    processing: number;
+    completed: number;
+    failed: number;
+  };
+  memory?: {
+    usedPercent: number;
+    freeMB: number;
+    totalMB: number;
+    threshold: number;
+    effectiveConcurrency: number;
+  };
+}
+
+export interface QueueJob {
+  id: string;
+  target_url: string;
+  target_domain: string;
+  status: 'pending' | 'discovering' | 'ready' | 'processing';
+  max_pages: number;
+  pages_found: number;
+  pages_crawled: number;
+  pages_audited: number;
+  current_url: string | null;
+  total_issues: number;
+  critical_issues: number;
+  worker_id: string | null;
+  error_message: string | null;
+  created_at: string;
+  started_at: string | null;
+  locked_at: string | null;
+  user_email: string;
+  user_first_name: string;
+  user_last_name: string;
+}
+
+export interface QueueFailedJob {
+  id: string;
+  target_url: string;
+  target_domain: string;
+  status: 'failed';
+  error_message: string | null;
+  created_at: string;
+  started_at: string | null;
+  completed_at: string | null;
+  user_email: string;
+  user_first_name: string;
+}
+
+export interface QueueBacklog {
+  jobs: QueueJob[];
+  recentFailed: QueueFailedJob[];
+  counts: {
+    pending: number;
+    discovering: number;
+    ready: number;
+    processing: number;
+    completed24h: number;
+    failed24h: number;
+    avgDurationSeconds: number | null;
+  };
+}
+
+// =============================================
+// CRM Types
+// =============================================
+
+export interface CrmLead {
+  id: string;
+  email: string;
+  first_name: string | null;
+  last_name: string | null;
+  lead_score: number;
+  lead_status: string;
+  lead_score_updated_at: string | null;
+  email_verified: boolean;
+  last_login_at: string | null;
+  created_at: string;
+  tier: string;
+  total_audits: number;
+  completed_audits: number;
+  total_sites: number;
+  verified_domains: number;
+  team_members: number;
+  has_exported_pdf: boolean;
+}
+
+export interface CrmTimelineEvent {
+  event: string;
+  detail: string;
+  timestamp: string;
+}
+
+export interface CrmMembership {
+  site_id: string;
+  site_name: string;
+  site_domain: string;
+  role: string;
+  tier: string;
+  verified: boolean;
+  last_audit_at: string | null;
+  audit_count: number;
+}
+
+export interface CrmOutreachRecord {
+  id: string;
+  template_id: string;
+  user_id?: string;
+  subject: string;
+  status: string;
+  created_at: string;
+  template_name: string | null;
+  template_slug: string | null;
+  sent_by_email: string | null;
+  user_email?: string;
+  user_first_name?: string;
+}
+
+export interface CrmStats {
+  total: number;
+  avg_score: number;
+  by_status: Record<string, number>;
+}
+
+export interface CrmTrigger {
+  id: string;
+  user_id: string;
+  trigger_type: string;
+  status: string;
+  context: Record<string, unknown>;
+  created_at: string;
+  actioned_at: string | null;
+  actioned_by: string | null;
+  user_email?: string;
+  user_first_name?: string;
+  user_last_name?: string;
+  user_lead_score?: number;
+  user_lead_status?: string;
+}
+
+export interface CrmTriggerStats {
+  total: number;
+  pending: number;
+  sent: number;
+  dismissed: number;
+  actioned: number;
+  by_type: Record<string, number>;
+}
+
+// =============================================
+// Email Preferences API (user-facing)
+// =============================================
+
+export interface EmailPreferences {
+  user_id: string;
+  transactional: boolean;
+  audit_notifications: boolean;
+  product_updates: boolean;
+  educational: boolean;
+  marketing: boolean;
+  unsubscribed_all: boolean;
+  updated_at: string;
+}
+
+export const emailPreferencesApi = {
+  getMyPreferences: () =>
+    api.get<{ preferences: EmailPreferences }>('/email/my-preferences'),
+
+  updateMyPreferences: (prefs: Partial<Omit<EmailPreferences, 'user_id' | 'transactional' | 'updated_at'>>) =>
+    api.put<{ preferences: EmailPreferences }>('/email/my-preferences', prefs),
+
+  unsubscribeWithToken: (token: string) =>
+    api.get<{ success: boolean; message: string }>(`/email/unsubscribe?token=${encodeURIComponent(token)}`),
+
+  getPreferencesWithToken: (token: string) =>
+    api.get<{ preferences: EmailPreferences }>(`/email/preferences?token=${encodeURIComponent(token)}`),
+
+  updatePreferencesWithToken: (token: string, prefs: Partial<Omit<EmailPreferences, 'user_id' | 'transactional' | 'updated_at'>>) =>
+    api.post<{ preferences: EmailPreferences }>(`/email/preferences?token=${encodeURIComponent(token)}`, prefs),
+};
+
+// =============================================
+// Analytics API
+// =============================================
+
+import type {
+  ScoreHistory,
+  IssueTrends,
+  AuditComparison,
+  SiteComparison,
+  TimeRange,
+  GroupBy,
+  UserOverview,
+  UrlAnalytics,
+  UrlComparison,
+  UserAuditedUrl,
+} from '../types/analytics.types';
+
+export const analyticsApi = {
+  // Get score history for a site
+  getSiteScores: (siteId: string, options?: { range?: TimeRange; from?: string; to?: string }) =>
+    api.get<ScoreHistory>(`/analytics/sites/${siteId}/scores`, { params: options }),
+
+  // Get issue trends for a site
+  getSiteIssues: (siteId: string, options?: { range?: TimeRange; groupBy?: GroupBy }) =>
+    api.get<IssueTrends>(`/analytics/sites/${siteId}/issues`, { params: options }),
+
+  // Compare multiple audits
+  compareAudits: (auditIds: string[]) =>
+    api.get<AuditComparison>('/analytics/compare', { params: { audits: auditIds.join(',') } }),
+
+  // Compare multiple sites
+  compareSites: (siteIds: string[]) =>
+    api.get<SiteComparison>('/analytics/compare-sites', { params: { sites: siteIds.join(',') } }),
+
+  // Get user analytics overview
+  getUserOverview: () =>
+    api.get<UserOverview>('/analytics/overview'),
+
+  // Get full analytics for a specific URL
+  getUrlAnalytics: (siteId: string, urlId: string) =>
+    api.get<UrlAnalytics>(`/analytics/sites/${siteId}/urls/${urlId}`),
+
+  // Get score history for a specific URL
+  getUrlScores: (siteId: string, urlId: string, options?: { range?: TimeRange }) =>
+    api.get<ScoreHistory>(`/analytics/sites/${siteId}/urls/${urlId}/scores`, { params: options }),
+
+  // Get all audited URLs across user's sites (for URL comparison picker)
+  getUserUrls: (search?: string, limit?: number) =>
+    api.get<UserAuditedUrl[]>('/analytics/user-urls', { params: { search, limit } }),
+
+  // Compare two URLs side-by-side
+  compareUrls: (urlSpecs: [{ siteId: string; urlId: string }, { siteId: string; urlId: string }]) =>
+    api.get<UrlComparison>('/analytics/compare-urls', {
+      params: { urls: urlSpecs.map(s => `${s.siteId}:${s.urlId}`).join(',') },
+    }),
+};
+
+// =============================================
+// Bug Reports API
+// =============================================
+
+export interface CreateBugReportInput {
+  title: string;
+  description: string;
+  severity: 'critical' | 'major' | 'minor' | 'trivial';
+  category: 'ui' | 'functionality' | 'performance' | 'data' | 'security' | 'other';
+  pageUrl?: string;
+  browserInfo?: {
+    name: string;
+    version: string;
+    os: string;
+  };
+  screenSize?: string;
+  screenshotUrl?: string;
+  screenshotKey?: string;
+}
+
+export interface BugReport {
+  id: string;
+  user_id: string;
+  title: string;
+  description: string;
+  severity: 'critical' | 'major' | 'minor' | 'trivial';
+  category: string;
+  page_url: string | null;
+  status: 'open' | 'in_progress' | 'resolved' | 'closed';
+  priority: 'urgent' | 'high' | 'medium' | 'low' | null;
+  created_at: string;
+  updated_at: string;
+  resolved_at: string | null;
+  reporter_email?: string;
+}
+
+export interface BugReportComment {
+  id: string;
+  bug_report_id: string;
+  user_id: string;
+  is_admin_comment: boolean;
+  content: string;
+  created_at: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
+}
+
+export interface BugReportStats {
+  total: number;
+  open: number;
+  in_progress: number;
+  resolved: number;
+  critical_open: number;
+  last_7_days: number;
+  last_24_hours: number;
+}
+
+export const bugReportsApi = {
+  // Create a new bug report
+  create: (data: CreateBugReportInput) =>
+    api.post<{ report: BugReport }>('/bug-reports', data),
+
+  // List my bug reports
+  listMine: (params?: { page?: number; limit?: number; status?: string }) =>
+    api.get<{ items: BugReport[]; total: number; page: number; limit: number }>('/bug-reports/mine', { params }),
+
+  // Get a single bug report
+  getById: (id: string) =>
+    api.get<{ report: BugReport }>(`/bug-reports/${id}`),
+
+  // Get comments for a bug report
+  getComments: (id: string) =>
+    api.get<{ comments: BugReportComment[] }>(`/bug-reports/${id}/comments`),
+
+  // Add a comment to a bug report
+  addComment: (id: string, content: string) =>
+    api.post<{ comment: BugReportComment }>(`/bug-reports/${id}/comments`, { content }),
+};
+
+// =============================================
+// Admin Bug Reports API
+// =============================================
+
+export const adminBugReportsApi = {
+  // List all bug reports
+  list: (params?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    severity?: string;
+    category?: string;
+    search?: string;
+  }) => api.get<{
+    items: BugReport[];
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
+  }>('/admin/bug-reports', { params }),
+
+  // Get bug report stats
   getStats: () =>
     api.get<BugReportStats>('/admin/bug-reports/stats'),
 
+  // Get a single bug report with comments
   getById: (id: string) =>
     api.get<{ report: BugReport & { comments: BugReportComment[] } }>(`/admin/bug-reports/${id}`),
 
-  update: (id: string, data: { status?: string; priority?: string | null; adminNotes?: string; resolutionNotes?: string; assignedTo?: string | null }) =>
-    api.patch<{ report: BugReport }>(`/admin/bug-reports/${id}`, data),
+  // Update a bug report
+  update: (id: string, data: {
+    status?: 'open' | 'in_progress' | 'resolved' | 'closed';
+    priority?: 'urgent' | 'high' | 'medium' | 'low' | null;
+    adminNotes?: string;
+    resolutionNotes?: string;
+    assignedTo?: string | null;
+  }) => api.patch<{ report: BugReport }>(`/admin/bug-reports/${id}`, data),
 
+  // Add admin comment
   addComment: (id: string, content: string) =>
     api.post<{ comment: BugReportComment }>(`/admin/bug-reports/${id}/comments`, { content }),
 
+  // Delete a bug report
   delete: (id: string) =>
     api.delete<{ success: boolean }>(`/admin/bug-reports/${id}`),
 };
 
-// Admin Feature Requests API
+// =============================================
+// Feature Requests API
+// =============================================
+
+export interface CreateFeatureRequestInput {
+  title: string;
+  description: string;
+  impact: 'nice_to_have' | 'would_be_helpful' | 'important' | 'critical_for_workflow';
+  category: 'accessibility' | 'reporting' | 'ui_ux' | 'integrations' | 'performance' | 'other';
+  pageUrl?: string;
+  browserInfo?: {
+    name: string;
+    version: string;
+    os: string;
+  };
+  screenSize?: string;
+}
+
 export interface FeatureRequest {
   id: string;
   user_id: string;
   title: string;
   description: string;
-  impact: string;
+  impact: 'nice_to_have' | 'would_be_helpful' | 'important' | 'critical_for_workflow';
   category: string;
   page_url: string | null;
-  status: string;
-  priority: string | null;
+  status: 'submitted' | 'under_review' | 'planned' | 'in_progress' | 'completed' | 'declined';
+  priority: 'urgent' | 'high' | 'medium' | 'low' | null;
   created_at: string;
   updated_at: string;
   completed_at: string | null;
@@ -1357,227 +1728,76 @@ export interface FeatureRequestStats {
   last_24_hours: number;
 }
 
-export const adminFeatureRequestsApi = {
-  list: (params?: { page?: number; limit?: number; status?: string; impact?: string; category?: string; search?: string }) =>
-    api.get<{ items: FeatureRequest[]; total: number; page: number; limit: number; pages: number }>('/admin/feature-requests', { params }),
+export const featureRequestsApi = {
+  // Create a new feature request
+  create: (data: CreateFeatureRequestInput) =>
+    api.post<{ request: FeatureRequest }>('/feature-requests', data),
 
+  // List my feature requests
+  listMine: (params?: { page?: number; limit?: number; status?: string }) =>
+    api.get<{ items: FeatureRequest[]; total: number; page: number; limit: number }>('/feature-requests/mine', { params }),
+
+  // Get a single feature request
+  getById: (id: string) =>
+    api.get<{ request: FeatureRequest }>(`/feature-requests/${id}`),
+
+  // Get comments for a feature request
+  getComments: (id: string) =>
+    api.get<{ comments: FeatureRequestComment[] }>(`/feature-requests/${id}/comments`),
+
+  // Add a comment to a feature request
+  addComment: (id: string, content: string) =>
+    api.post<{ comment: FeatureRequestComment }>(`/feature-requests/${id}/comments`, { content }),
+};
+
+// =============================================
+// Admin Feature Requests API
+// =============================================
+
+export const adminFeatureRequestsApi = {
+  // List all feature requests
+  list: (params?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    impact?: string;
+    category?: string;
+    search?: string;
+  }) => api.get<{
+    items: FeatureRequest[];
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
+  }>('/admin/feature-requests', { params }),
+
+  // Get feature request stats
   getStats: () =>
     api.get<FeatureRequestStats>('/admin/feature-requests/stats'),
 
+  // Get a single feature request with comments
   getById: (id: string) =>
     api.get<{ request: FeatureRequest & { comments: FeatureRequestComment[] } }>(`/admin/feature-requests/${id}`),
 
-  update: (id: string, data: { status?: string; priority?: string | null; adminNotes?: string; resolutionNotes?: string; assignedTo?: string | null }) =>
-    api.patch<{ request: FeatureRequest }>(`/admin/feature-requests/${id}`, data),
+  // Update a feature request
+  update: (id: string, data: {
+    status?: 'submitted' | 'under_review' | 'planned' | 'in_progress' | 'completed' | 'declined';
+    priority?: 'urgent' | 'high' | 'medium' | 'low' | null;
+    adminNotes?: string;
+    resolutionNotes?: string;
+    assignedTo?: string | null;
+  }) => api.patch<{ request: FeatureRequest }>(`/admin/feature-requests/${id}`, data),
 
+  // Add admin comment
   addComment: (id: string, content: string) =>
     api.post<{ comment: FeatureRequestComment }>(`/admin/feature-requests/${id}/comments`, { content }),
 
+  // Delete a feature request
   delete: (id: string) =>
     api.delete<{ success: boolean }>(`/admin/feature-requests/${id}`),
 };
 
-// Admin Schedules API
-export const adminSchedulesApi = {
-  list: (params?: { page?: number; limit?: number; status?: string; search?: string }) =>
-    api.get('/admin/schedules', { params }),
-
-  getStats: () =>
-    api.get('/admin/schedules/stats'),
-
-  get: (id: string) =>
-    api.get(`/admin/schedules/${id}`),
-
-  getById: (id: string) =>
-    api.get(`/admin/schedules/${id}`),
-
-  update: (id: string, data: { enabled?: boolean; paused_reason?: string | null; max_consecutive_failures?: number }) =>
-    api.patch(`/admin/schedules/${id}`, data),
-
-  delete: (id: string) =>
-    api.delete(`/admin/schedules/${id}`),
-};
-
-// Admin SEO API
-export const adminSeoApi = {
-  list: () =>
-    api.get('/admin/seo'),
-
-  upsert: (data: {
-    route_path: string;
-    title?: string | null;
-    description?: string | null;
-    keywords?: string | null;
-    og_title?: string | null;
-    og_description?: string | null;
-    og_image?: string | null;
-    og_type?: string | null;
-    twitter_card?: string | null;
-    canonical_url?: string | null;
-    featured_image?: string | null;
-    structured_data?: Record<string, unknown> | null;
-    noindex?: boolean;
-  }) => api.put('/admin/seo', data),
-
-  remove: (route_path: string) =>
-    api.delete('/admin/seo', { data: { route_path } }),
-};
-
-// Admin Settings API
-export const adminSettingsApi = {
-  getAll: () =>
-    api.get('/admin/settings'),
-
-  update: (key: string, value: unknown) =>
-    api.put('/admin/settings', { key, value }),
-};
-
-// Admin Coming Soon API
-export const adminComingSoonApi = {
-  getSignups: (params?: { page?: number; limit?: number; search?: string }) =>
-    api.get('/admin/coming-soon/signups', { params }),
-
-  listSignups: (params?: { page?: number; limit?: number; search?: string }) =>
-    api.get('/admin/coming-soon/signups', { params }),
-
-  deleteSignup: (id: string) =>
-    api.delete(`/admin/coming-soon/signups/${id}`),
-
-  exportSignups: () =>
-    api.get('/admin/coming-soon/signups/export', { responseType: 'blob' }),
-
-  getStats: () =>
-    api.get('/admin/coming-soon/stats'),
-};
-
-// Admin Early Access API
-export const adminEarlyAccessApi = {
-  getStats: () =>
-    api.get('/admin/early-access/stats'),
-
-  getUsers: (params?: { page?: number; limit?: number; search?: string }) =>
-    api.get('/admin/early-access/users', { params }),
-
-  activate: () =>
-    api.post('/admin/early-access/activate', { confirm: true }),
-
-  exportUsers: () =>
-    api.get('/admin/early-access/users/export', { responseType: 'blob' }),
-};
-
-// Admin CRM API
-export const adminCrmApi = {
-  getLeads: (params?: { status?: string; search?: string; sort?: string; order?: string; page?: number; limit?: number }) =>
-    api.get('/admin/crm/leads', { params }),
-
-  getLead: (userId: string) =>
-    api.get(`/admin/crm/leads/${userId}`),
-
-  recalculateScore: (userId: string) =>
-    api.post(`/admin/crm/leads/${userId}/recalc`),
-
-  getStats: () =>
-    api.get('/admin/crm/stats'),
-
-  getMemberships: (userId: string) =>
-    api.get(`/admin/crm/leads/${userId}/memberships`),
-
-  getTriggers: (params?: { status?: string; type?: string; userId?: string; page?: number; limit?: number }) =>
-    api.get('/admin/crm/triggers', { params }),
-
-  actionTrigger: (triggerId: string, status: 'sent' | 'dismissed' | 'actioned') =>
-    api.patch(`/admin/crm/triggers/${triggerId}`, { status }),
-
-  getTriggerStats: () =>
-    api.get('/admin/crm/triggers/stats'),
-
-  sendOutreach: (userId: string, data: { templateSlug: string; variables?: Record<string, string> }) =>
-    api.post(`/admin/crm/outreach/${userId}`, data),
-
-  getOutreach: (params?: { userId?: string; page?: number; limit?: number }) =>
-    api.get('/admin/crm/outreach', { params }),
-};
-
-// Admin Email API
-export const adminEmailApi = {
-  // Templates
-  listTemplates: (params?: { category?: string; is_system?: string; search?: string; page?: number; limit?: number }) =>
-    api.get('/admin/email/templates', { params }),
-
-  getTemplate: (id: string) =>
-    api.get(`/admin/email/templates/${id}`),
-
-  createTemplate: (data: Record<string, unknown>) =>
-    api.post('/admin/email/templates', data),
-
-  updateTemplate: (id: string, data: Record<string, unknown>) =>
-    api.put(`/admin/email/templates/${id}`, data),
-
-  deleteTemplate: (id: string) =>
-    api.delete(`/admin/email/templates/${id}`),
-
-  previewTemplate: (id: string, variables?: Record<string, string>) =>
-    api.post(`/admin/email/templates/${id}/preview`, { variables }),
-
-  testSendTemplate: (id: string, variables?: Record<string, string>) =>
-    api.post(`/admin/email/templates/${id}/test`, { variables }),
-
-  duplicateTemplate: (id: string, data: { slug: string; name: string }) =>
-    api.post(`/admin/email/templates/${id}/duplicate`, data),
-
-  // Campaigns
-  listCampaigns: (params?: { status?: string; search?: string; page?: number; limit?: number }) =>
-    api.get('/admin/email/campaigns', { params }),
-
-  getCampaign: (id: string) =>
-    api.get(`/admin/email/campaigns/${id}`),
-
-  createCampaign: (data: Record<string, unknown>) =>
-    api.post('/admin/email/campaigns', data),
-
-  updateCampaign: (id: string, data: Record<string, unknown>) =>
-    api.put(`/admin/email/campaigns/${id}`, data),
-
-  deleteCampaign: (id: string) =>
-    api.delete(`/admin/email/campaigns/${id}`),
-
-  launchCampaign: (id: string) =>
-    api.post(`/admin/email/campaigns/${id}/launch`),
-
-  scheduleCampaign: (id: string, scheduledAt: string) =>
-    api.post(`/admin/email/campaigns/${id}/schedule`, { scheduled_at: scheduledAt }),
-
-  pauseCampaign: (id: string) =>
-    api.post(`/admin/email/campaigns/${id}/pause`),
-
-  resumeCampaign: (id: string) =>
-    api.post(`/admin/email/campaigns/${id}/resume`),
-
-  cancelCampaign: (id: string) =>
-    api.post(`/admin/email/campaigns/${id}/cancel`),
-
-  getAudienceCount: (segment: Record<string, unknown>) =>
-    api.post('/admin/email/campaigns/audience-count', { segment }),
-
-  getCampaignSends: (id: string, params?: { status?: string; page?: number; limit?: number }) =>
-    api.get(`/admin/email/campaigns/${id}/sends`, { params }),
-
-  // Sends
-  getSends: (params?: { status?: string; campaignId?: string; page?: number; limit?: number }) =>
-    api.get('/admin/email/sends', { params }),
-
-  // Analytics
-  getAnalytics: (days: number = 30) =>
-    api.get(`/admin/email/analytics?days=${days}`),
-
-  getTemplatePerformance: () =>
-    api.get('/admin/email/analytics/templates'),
-};
-
-// =============================================
-// Blog CMS Types
-// =============================================
-
+// Blog CMS types
 export type BlogPostCategory =
   | 'seo' | 'accessibility' | 'security' | 'performance'
   | 'content-quality' | 'structured-data' | 'eeat' | 'aeo'
@@ -1694,6 +1914,7 @@ export interface CmsStatsResponse {
   }>;
 }
 
+// CMS Extras types (Phase 5)
 export interface AuditAdviceTemplate {
   id: string;
   rule_id: string;
@@ -1796,6 +2017,21 @@ export interface UpdateSuccessStoryInput {
   display_order?: number;
 }
 
+// Public announcements API (user-facing)
+export const announcementsApi = {
+  getActive: () =>
+    api.get<{ announcements: AnnouncementItem[] }>('/announcements/active'),
+
+  dismiss: (id: string) =>
+    api.post<{ success: boolean }>(`/announcements/${id}/dismiss`),
+};
+
+// Public success stories API
+export const publicApi = {
+  getSuccessStories: (limit: number = 6) =>
+    api.get<{ stories: SuccessStoryItem[] }>(`/public/success-stories?limit=${limit}`),
+};
+
 // Public blog API
 export const blogApi = {
   listPosts: (params: { category?: string; tag?: string; page?: number; limit?: number } = {}) => {
@@ -1815,6 +2051,212 @@ export const blogApi = {
 
   getRelatedPosts: (slug: string) =>
     api.get<{ posts: BlogPostSummary[] }>(`/blog/posts/${slug}/related`),
+};
+
+// Cookie consent API (public, no auth)
+export const consentApi = {
+  logCookieConsent: (data: {
+    consent_version: string;
+    categories: Record<string, boolean>;
+    action: string;
+    page_url: string;
+  }) => api.post<{ success: boolean; logged_at: string }>('/consent/cookies', data),
+};
+
+// =============================================
+// Admin Analytics Types (Phase 6)
+// =============================================
+
+export interface AdminFunnelStage {
+  name: string;
+  count: number;
+  conversionFromPrevious: number | null;
+}
+
+export interface AdminFunnelAnalytics {
+  range: string;
+  stages: AdminFunnelStage[];
+}
+
+export interface AdminTopIssue {
+  ruleId: string;
+  ruleName: string;
+  category: string;
+  severity: string;
+  affectedAudits: number;
+  percentage: number;
+}
+
+export interface AdminScoreDistribution {
+  avg: number;
+  median: number;
+  p10: number;
+  p90: number;
+}
+
+export interface AdminTierAuditBreakdown {
+  audits: number;
+  avgScore: number;
+}
+
+export interface AdminGlobalTrends {
+  range: string;
+  totalAuditsCompleted: number;
+  totalPagesScanned: number;
+  topIssues: AdminTopIssue[];
+  scoreDistribution: Record<string, AdminScoreDistribution>;
+  tierBreakdown: Record<string, AdminTierAuditBreakdown>;
+}
+
+export interface AdminTierRevenue {
+  count: number;
+  mrr: number;
+}
+
+export interface AdminRevenueAnalytics {
+  mrr: number;
+  arr: number;
+  byTier: Record<string, AdminTierRevenue>;
+  churnThisMonth: { count: number; mrrLost?: number };
+  newThisMonth: { count: number; mrrGained?: number };
+}
+
+// =============================================
+// Scheduled Audits Types & API
+// =============================================
+
+export type ScheduleFrequency = 'daily' | 'weekly' | 'biweekly' | 'monthly' | 'custom';
+
+export interface AuditScheduleSummary {
+  id: string;
+  user_id: string;
+  site_id: string | null;
+  name: string | null;
+  target_url: string;
+  target_domain: string;
+  frequency: ScheduleFrequency;
+  cron_expression: string;
+  next_run_at: string | null;
+  last_run_at: string | null;
+  last_status: string | null;
+  enabled: boolean;
+  paused_reason: string | null;
+  run_count: number;
+  consecutive_failures: number;
+  timezone: string;
+  created_at: string;
+  site_name?: string;
+  site_verified?: boolean;
+}
+
+export interface AuditScheduleDetail extends AuditScheduleSummary {
+  config: Record<string, unknown>;
+  last_audit_id: string | null;
+  failure_count: number;
+  max_consecutive_failures: number;
+  paused_at: string | null;
+  notify_on_completion: boolean;
+  notify_on_failure: boolean;
+  updated_at: string;
+}
+
+export interface ScheduleRunSummary {
+  id: string;
+  status: string;
+  target_url: string;
+  created_at: string;
+  completed_at: string | null;
+  seo_score: number | null;
+  accessibility_score: number | null;
+  security_score: number | null;
+  performance_score: number | null;
+  total_issues: number | null;
+}
+
+export interface CreateSchedulePayload {
+  targetUrl: string;
+  name?: string;
+  frequency: ScheduleFrequency;
+  cronExpression?: string;
+  config?: Record<string, unknown>;
+  notifyOnCompletion?: boolean;
+  notifyOnFailure?: boolean;
+  timezone?: string;
+  dayOfWeek?: number;
+  hourOfDay?: number;
+}
+
+export interface UpdateSchedulePayload {
+  name?: string;
+  frequency?: ScheduleFrequency;
+  cronExpression?: string;
+  config?: Record<string, unknown>;
+  notifyOnCompletion?: boolean;
+  notifyOnFailure?: boolean;
+  timezone?: string;
+  dayOfWeek?: number;
+  hourOfDay?: number;
+}
+
+export const schedulesApi = {
+  list: (siteId?: string) => {
+    const params = siteId ? `?siteId=${siteId}` : '';
+    return api.get<{ schedules: AuditScheduleSummary[] }>(`/audits/schedules${params}`);
+  },
+
+  get: (id: string) =>
+    api.get<{ schedule: AuditScheduleDetail; recentRuns: ScheduleRunSummary[] }>(`/audits/schedules/${id}`),
+
+  create: (data: CreateSchedulePayload) =>
+    api.post<{ schedule: AuditScheduleDetail }>('/audits/schedules', data),
+
+  update: (id: string, data: UpdateSchedulePayload) =>
+    api.patch<{ schedule: AuditScheduleDetail }>(`/audits/schedules/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/audits/schedules/${id}`),
+
+  toggle: (id: string, enabled: boolean) =>
+    api.post<{ schedule: AuditScheduleDetail }>(`/audits/schedules/${id}/toggle`, { enabled }),
+
+  getRuns: (id: string, limit = 20, offset = 0) =>
+    api.get<{ runs: ScheduleRunSummary[]; total: number }>(`/audits/schedules/${id}/runs?limit=${limit}&offset=${offset}`),
+};
+
+export interface AdminScheduleStats {
+  total: number;
+  active: number;
+  paused: number;
+  disabled: number;
+  ranToday: number;
+}
+
+export interface AdminScheduleItem extends AuditScheduleSummary {
+  user_email: string;
+  first_name: string;
+}
+
+export const adminSchedulesApi = {
+  list: (params: { status?: string; search?: string; page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.status) searchParams.set('status', params.status);
+    if (params.search) searchParams.set('search', params.search);
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ schedules: AdminScheduleItem[]; total: number }>(`/admin/schedules?${searchParams.toString()}`);
+  },
+
+  getStats: () =>
+    api.get<{ stats: AdminScheduleStats }>('/admin/schedules/stats'),
+
+  get: (id: string) =>
+    api.get<{ schedule: AdminScheduleItem }>(`/admin/schedules/${id}`),
+
+  update: (id: string, data: { enabled?: boolean; paused_reason?: string | null; max_consecutive_failures?: number }) =>
+    api.patch<{ schedule: AdminScheduleItem }>(`/admin/schedules/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete(`/admin/schedules/${id}`),
 };
 
 // =============================================
@@ -1982,6 +2424,7 @@ export const coldProspectsApi = {
   importJson: (prospects: unknown[]) =>
     api.post<{ imported: number; duplicates: number; errors: number }>('/admin/cold-prospects/import-json', { prospects }),
 
+  // Outreach
   getOutreachStats: () =>
     api.get<{ stats: OutreachStats }>('/admin/cold-prospects/outreach-stats'),
 
@@ -1997,146 +2440,7 @@ export const coldProspectsApi = {
     api.post<{ enabled: boolean }>('/admin/cold-prospects/pause-outreach'),
 };
 
-// =============================================
-// API Keys
-// =============================================
-
-export interface ApiKey {
-  id: string;
-  name: string;
-  keyPrefix: string;
-  scopes: string[];
-  rateLimitTier: string;
-  lastUsedAt: string | null;
-  lastUsedIp: string | null;
-  requestCount: number;
-  isActive: boolean;
-  expiresAt: string | null;
-  revokedAt: string | null;
-  revokedReason: string | null;
-  createdAt: string;
-  updatedAt?: string;
-}
-
-export interface ApiKeyStats {
-  totalRequests: number;
-  requestsToday: number;
-  requestsThisWeek: number;
-  avgResponseTime: number;
-  topEndpoints: { path: string; count: number }[];
-}
-
-export interface CreateApiKeyResponse {
-  message: string;
-  key: ApiKey;
-  secretKey: string;
-  warning: string;
-}
-
-export const apiKeysApi = {
-  list: () =>
-    api.get<{ keys: ApiKey[] }>('/api-keys'),
-
-  create: (data: { name: string; scopes?: string[]; expiresInDays?: number }) =>
-    api.post<CreateApiKeyResponse>('/api-keys', data),
-
-  get: (keyId: string) =>
-    api.get<{ key: ApiKey }>(`/api-keys/${keyId}`),
-
-  getStats: (keyId: string) =>
-    api.get<{ stats: ApiKeyStats }>(`/api-keys/${keyId}/stats`),
-
-  update: (keyId: string, data: { name?: string; scopes?: string[] }) =>
-    api.patch<{ message: string; key: ApiKey }>(`/api-keys/${keyId}`, data),
-
-  revoke: (keyId: string, reason?: string) =>
-    api.post<{ message: string }>(`/api-keys/${keyId}/revoke`, { reason }),
-
-  delete: (keyId: string) =>
-    api.delete<{ message: string }>(`/api-keys/${keyId}`),
-
-  getScopes: () =>
-    api.get<{ scopes: Array<{ id: string; name: string; description: string }> }>('/api-keys/scopes/available'),
-
-  getTiers: () =>
-    api.get<{ tiers: Array<{ name: string; requestsPerMinute: number; requestsPerDay: number | string; concurrentAudits: number }> }>('/api-keys/tiers/info'),
-};
-
-// =============================================
-// Bug Reports (user-facing)
-// =============================================
-
-export interface CreateBugReportInput {
-  title: string;
-  description: string;
-  severity: 'critical' | 'major' | 'minor' | 'trivial';
-  category: 'ui' | 'functionality' | 'performance' | 'data' | 'security' | 'other';
-  pageUrl?: string;
-  browserInfo?: {
-    name: string;
-    version: string;
-    os: string;
-  };
-  screenSize?: string;
-  screenshotUrl?: string;
-  screenshotKey?: string;
-}
-
-export const bugReportsApi = {
-  create: (data: CreateBugReportInput) =>
-    api.post<{ report: BugReport }>('/bug-reports', data),
-
-  listMine: (params?: { page?: number; limit?: number; status?: string }) =>
-    api.get<{ items: BugReport[]; total: number; page: number; limit: number }>('/bug-reports/mine', { params }),
-
-  getById: (id: string) =>
-    api.get<{ report: BugReport }>(`/bug-reports/${id}`),
-
-  getComments: (id: string) =>
-    api.get<{ comments: BugReportComment[] }>(`/bug-reports/${id}/comments`),
-
-  addComment: (id: string, content: string) =>
-    api.post<{ comment: BugReportComment }>(`/bug-reports/${id}/comments`, { content }),
-};
-
-// =============================================
-// Feature Requests (user-facing)
-// =============================================
-
-export interface CreateFeatureRequestInput {
-  title: string;
-  description: string;
-  impact: 'nice_to_have' | 'would_be_helpful' | 'important' | 'critical_for_workflow';
-  category: 'accessibility' | 'reporting' | 'ui_ux' | 'integrations' | 'performance' | 'other';
-  pageUrl?: string;
-  browserInfo?: {
-    name: string;
-    version: string;
-    os: string;
-  };
-  screenSize?: string;
-}
-
-export const featureRequestsApi = {
-  create: (data: CreateFeatureRequestInput) =>
-    api.post<{ request: FeatureRequest }>('/feature-requests', data),
-
-  listMine: (params?: { page?: number; limit?: number; status?: string }) =>
-    api.get<{ items: FeatureRequest[]; total: number; page: number; limit: number }>('/feature-requests/mine', { params }),
-
-  getById: (id: string) =>
-    api.get<{ request: FeatureRequest }>(`/feature-requests/${id}`),
-
-  getComments: (id: string) =>
-    api.get<{ comments: FeatureRequestComment[] }>(`/feature-requests/${id}/comments`),
-
-  addComment: (id: string, content: string) =>
-    api.post<{ comment: FeatureRequestComment }>(`/feature-requests/${id}/comments`, { content }),
-};
-
-// =============================================
-// Referrals
-// =============================================
+// ─── Referrals API ─────────────────────────────────────
 
 export const referralsApi = {
   getCode: () =>
@@ -2221,14 +2525,113 @@ export const adminReferralsApi = {
     api.patch('/admin/referrals/config', { key, value }),
 };
 
-// Email Preferences API (user-facing)
-export const emailPreferencesApi = {
-  get: () =>
-    api.get('/email/my-preferences'),
-
-  update: (prefs: { audit_notifications?: boolean; product_updates?: boolean; educational?: boolean; marketing?: boolean; unsubscribed_all?: boolean }) =>
-    api.put('/email/my-preferences', prefs),
-
-  unsubscribeWithToken: (token: string) =>
-    api.post('/email/unsubscribe', { token }),
+// Coming Soon (public, no auth)
+export const comingSoonApi = {
+  getStatus: () =>
+    api.get<{ enabled: boolean; headline: string; description: string }>('/coming-soon/status'),
+  signup: (data: { email: string; name?: string }) =>
+    api.post('/coming-soon/signup', data),
 };
+
+// Admin System Settings
+export const adminSettingsApi = {
+  getAll: () =>
+    api.get<{ settings: Record<string, unknown> }>('/admin/settings'),
+  update: (key: string, value: unknown) =>
+    api.patch('/admin/settings', { key, value }),
+};
+
+// Admin Coming Soon Signups
+export const adminComingSoonApi = {
+  listSignups: (params?: { page?: number; search?: string }) =>
+    api.get<{
+      signups: Array<{ id: string; email: string; name: string | null; ip_address: string | null; created_at: string }>;
+      pagination: { page: number; limit: number; total: number; pages: number };
+    }>('/admin/coming-soon/signups', { params }),
+  exportSignups: () =>
+    api.get('/admin/coming-soon/signups/export', { responseType: 'blob' }),
+  deleteSignup: (id: string) =>
+    api.delete(`/admin/coming-soon/signups/${id}`),
+};
+
+// Admin SEO Management
+export const adminSeoApi = {
+  list: () =>
+    api.get<{ entries: Array<{
+      id: string;
+      route_path: string;
+      title: string | null;
+      description: string | null;
+      keywords: string | null;
+      og_title: string | null;
+      og_description: string | null;
+      og_image: string | null;
+      og_type: string;
+      twitter_card: string;
+      canonical_url: string | null;
+      featured_image: string | null;
+      structured_data: Record<string, unknown> | null;
+      noindex: boolean;
+      updated_at: string;
+      updated_by: string | null;
+    }> }>('/admin/seo'),
+
+  upsert: (data: {
+    route_path: string;
+    title?: string | null;
+    description?: string | null;
+    keywords?: string | null;
+    og_title?: string | null;
+    og_description?: string | null;
+    og_image?: string | null;
+    og_type?: string | null;
+    twitter_card?: string | null;
+    canonical_url?: string | null;
+    featured_image?: string | null;
+    structured_data?: Record<string, unknown> | null;
+    noindex?: boolean;
+  }) => api.put('/admin/seo', data),
+
+  remove: (route_path: string) =>
+    api.delete('/admin/seo', { data: { route_path } }),
+};
+
+// Public SEO entries
+export const seoApi = {
+  getAll: () =>
+    api.get<{ entries: Array<{
+      route_path: string;
+      title: string | null;
+      description: string | null;
+      keywords: string | null;
+      og_title: string | null;
+      og_description: string | null;
+      og_image: string | null;
+      og_type: string;
+      twitter_card: string;
+      canonical_url: string | null;
+      featured_image: string | null;
+      structured_data: Record<string, unknown> | null;
+      noindex: boolean;
+    }> }>('/seo'),
+};
+
+// Early Access (public)
+export const earlyAccessApi = {
+  getStatus: () =>
+    api.get<{ enabled: boolean; spotsRemaining: number; maxSpots: number; isFull: boolean }>('/early-access/status'),
+};
+
+// Admin Early Access
+export const adminEarlyAccessApi = {
+  getStats: () =>
+    api.get('/admin/early-access/stats'),
+  getUsers: (params?: { page?: number; limit?: number; search?: string }) =>
+    api.get('/admin/early-access/users', { params }),
+  activate: () =>
+    api.post('/admin/early-access/activate', { confirm: true }),
+  exportUsers: () =>
+    api.get('/admin/early-access/users/export', { responseType: 'blob' }),
+};
+
+export default api;

@@ -1,6 +1,5 @@
-// @ts-nocheck
-
-/** Keyword Analysis Module
+/**
+ * Keyword Analysis Module
  * Analyzes keyword density, placement, variations, and stuffing
  */
 

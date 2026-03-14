@@ -35,7 +35,7 @@ export function createTrialWorker(_config: TrialWorkerConfig) {
   return {
     async start(): Promise<void> {
       running = true;
-      console.log('Trial worker started (polling every 5m)');
+      console.log('🔔 Trial worker started (polling every 5m)');
       poll();
     },
 
@@ -45,7 +45,7 @@ export function createTrialWorker(_config: TrialWorkerConfig) {
         clearTimeout(timer);
         timer = null;
       }
-      console.log('Trial worker stopped');
+      console.log('🔔 Trial worker stopped');
     },
   };
 }

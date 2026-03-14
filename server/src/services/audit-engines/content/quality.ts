@@ -1,6 +1,5 @@
-// @ts-nocheck
-
-/** Quality Analysis Module
+/**
+ * Quality Analysis Module
  * Analyzes content depth, uniqueness, multimedia, and freshness
  */
 

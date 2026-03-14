@@ -99,6 +99,7 @@ export async function startTrial(
     [userId, tier, trialEnd.toISOString()]
   );
 
+  // If ON CONFLICT didn't work (no unique constraint on user_id), fall back to upsert
   let subscriptionId: string;
   let finalTrialEnd: string;
 
@@ -143,21 +144,34 @@ export async function startTrial(
     month: 'long',
     day: 'numeric',
   });
-  sendTemplate({
-    templateSlug: 'trial_started',
-    to: { userId, email: user.email, firstName: user.first_name || '' },
-    variables: {
-      tierName: tierInfo.name,
-      trialEndDate,
-      featureHighlight1: tierInfo.highlights[0] || '',
-      featureHighlight2: tierInfo.highlights[1] || '',
-      featureHighlight3: tierInfo.highlights[2] || '',
-    },
-  }).catch(err => console.error('Failed to send trial_started email:', err));
 
-  // Fire CRM trigger: trial_started
-  fireTrigger(userId, 'trial_started', { tier, trialEnd: finalTrialEnd })
-    .catch(err => console.error('Failed to fire trial_started trigger:', err));
+  try {
+    await sendTemplate({
+      templateSlug: 'trial_started',
+      to: {
+        userId,
+        email: user.email,
+        firstName: user.first_name || 'there',
+      },
+      variables: {
+        firstName: user.first_name || 'there',
+        tierName: tierInfo.name,
+        trialEndDate,
+        featureHighlight1: tierInfo.highlights[0],
+        featureHighlight2: tierInfo.highlights[1],
+        featureHighlight3: tierInfo.highlights[2],
+      },
+    });
+  } catch (err) {
+    console.error('Failed to send trial_started email:', err);
+  }
+
+  // Fire CRM trigger
+  try {
+    await fireTrigger(userId, 'trial_started', { tier, trialEnd: finalTrialEnd });
+  } catch (err) {
+    console.error('Failed to fire trial_started trigger:', err);
+  }
 
   return { subscriptionId, trialEnd: finalTrialEnd };
 }
@@ -189,12 +203,19 @@ export async function checkTrialExpiry(): Promise<void> {
       });
       const tierInfo = TIER_FEATURES[row.tier] || { name: row.tier };
 
-      // Send trial_expiring email
-      sendTemplate({
+      await sendTemplate({
         templateSlug: 'trial_expiring',
-        to: { userId: row.user_id, email: row.email, firstName: row.first_name || '' },
-        variables: { tierName: tierInfo.name, trialEndDate },
-      }).catch(err => console.error('Failed to send trial_expiring email:', err));
+        to: {
+          userId: row.user_id,
+          email: row.email,
+          firstName: row.first_name || 'there',
+        },
+        variables: {
+          firstName: row.first_name || 'there',
+          tierName: tierInfo.name,
+          trialEndDate,
+        },
+      });
 
       // Mark warning as sent
       await pool.query(
@@ -202,13 +223,14 @@ export async function checkTrialExpiry(): Promise<void> {
         [row.id]
       );
 
-      // Fire CRM trigger: trial_expiring
-      fireTrigger(row.user_id, 'trial_expiring', { tier: row.tier, trialEnd: row.trial_end })
-        .catch(err => console.error('Failed to fire trial_expiring trigger:', err));
+      await fireTrigger(row.user_id, 'trial_expiring', {
+        tier: row.tier,
+        trialEnd: row.trial_end,
+      });
 
-      console.log(`Trial expiry warning processed for ${row.email}`);
+      console.log(`⏳ Trial expiry warning sent to ${row.email}`);
     } catch (err) {
-      console.error(`Failed to process trial warning for subscription ${row.id}:`, err);
+      console.error(`Failed to send trial warning for subscription ${row.id}:`, err);
     }
   }
 
@@ -235,18 +257,25 @@ export async function checkTrialExpiry(): Promise<void> {
         [row.id]
       );
 
-      // Send trial_expired email
-      sendTemplate({
+      await sendTemplate({
         templateSlug: 'trial_expired',
-        to: { userId: row.user_id, email: row.email, firstName: row.first_name || '' },
-        variables: { tierName: tierInfo.name },
-      }).catch(err => console.error('Failed to send trial_expired email:', err));
+        to: {
+          userId: row.user_id,
+          email: row.email,
+          firstName: row.first_name || 'there',
+        },
+        variables: {
+          firstName: row.first_name || 'there',
+          tierName: tierInfo.name,
+        },
+      });
 
-      // Fire CRM trigger: trial_expired
-      fireTrigger(row.user_id, 'trial_expired', { tier: originalTier })
-        .catch(err => console.error('Failed to fire trial_expired trigger:', err));
+      await fireTrigger(row.user_id, 'trial_expired', {
+        tier: originalTier,
+        trialEnd: row.trial_end,
+      });
 
-      console.log(`Trial expired for ${row.email} — downgraded from ${originalTier} to free`);
+      console.log(`🔻 Trial expired for ${row.email} — downgraded from ${originalTier} to free`);
     } catch (err) {
       console.error(`Failed to process trial expiry for subscription ${row.id}:`, err);
     }
