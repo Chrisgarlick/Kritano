@@ -25,6 +25,7 @@ const NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
+  { href: '/docs', label: 'API Docs' },
 ];
 
 const FOOTER_LINKS = {
@@ -39,6 +40,7 @@ const FOOTER_LINKS = {
     { href: '/contact', label: 'Contact' },
   ],
   resources: [
+    { href: '/docs', label: 'API Docs' },
     { href: '/blog?category=guides', label: 'Guides' },
     { href: '/blog?category=case-studies', label: 'Case Studies' },
     { href: '/blog?category=product-updates', label: 'Product Updates' },

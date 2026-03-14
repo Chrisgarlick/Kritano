@@ -1,6 +1,6 @@
 # PagePulser — Phased Deployment Plan
 
-> **Purpose**: Break the entire PagePulser codebase into 12 standalone branches that can be pushed to GitHub incrementally. Each phase builds on the previous one, progressing from bare-bones MVP to the full production platform.
+> **Purpose**: Break the entire PagePulser codebase into standalone branches that can be pushed to GitHub incrementally. Each phase builds on the previous one, progressing from bare-bones MVP to the full production platform.
 
 ---
 
@@ -19,6 +19,7 @@ phase-9    Admin Panel
 phase-10   Email System & CRM
 phase-11   CMS, Blog & Marketing Content
 phase-12   Public API, Referrals & Final Polish
+phase-13   Public API Docs SPA & API Key Rebrand
 ```
 
 ---
@@ -179,6 +180,81 @@ Developer API, referral program, and production readiness.
 
 ---
 
+## Phase 13 — Public API Docs SPA & API Key Rebrand
+
+**Branch**: `phase-13`
+
+Replaces the inline HTML API documentation with proper React SPA pages and rebrands API key prefixes from `aa_` to `pp_` (PagePulser).
+
+### Included
+
+#### Public API Documentation Pages (6 pages)
+- **Shared components**: `DocsLayout` (sidebar nav + mobile collapse), `CodeBlock` (dark code block with copy button), `EndpointCard` (expandable method badge + path + examples), `ParamTable` (parameter reference table)
+- **`/docs`** — Overview page with hero, step-by-step getting started guide, base URL, scopes table, endpoints-at-a-glance
+- **`/docs/authentication`** — API key format, both auth header methods, scopes-to-endpoint mapping, all auth error responses (401/403 with exact JSON), key management guide
+- **`/docs/rate-limits`** — Tier limits table, rate limit headers explained, 429 handling with JavaScript retry example, concurrent audit limits with `AUDIT_LIMIT_REACHED` error
+- **`/docs/errors`** — All HTTP status codes, error response format (standard, validation with `details` array, scope with `requiredScopes`/`yourScopes`), full error code reference table, troubleshooting FAQ
+- **`/docs/endpoints`** — All 7 v1 endpoints with full request/response examples, parameter tables, status lifecycle diagram, polling guidance, per-endpoint error responses
+- **`/docs/objects`** — Audit object (all fields including `config`, `_links`, `progress.currentUrl`), Finding object (all 6 categories, 5 severity levels, 3 statuses), Pagination object, status lifecycle with per-state descriptions
+
+#### Routing & Navigation
+- 6 public routes added to `App.tsx` (no auth required)
+- 6 entries added to `routeRegistry.ts` (category: `public`) for admin SEO manager visibility
+- "API Docs" link added to `PublicLayout` nav bar and footer resources section
+- All pages use `PageSeo` with `useOverrides={true}` for admin SEO control
+
+#### Server Changes
+- `GET /api/docs` replaced with 301 redirect to `/docs` (removed 2000+ line inline HTML)
+- `GET /api/v1/info` documentation URL changed from `docs.pagepulser.io/api` to `/docs`
+
+#### API Key Prefix Rebrand (`aa_` → `pp_`)
+- `apiKey.service.ts` — Key generation now produces `pp_live_` prefix
+- `apiAuth.middleware.ts` — Auth header detection updated to check for `pp_live_`
+- Migration `015_create_api_keys.sql` — Comment updated
+- All documentation files updated (`API_DOCS.md`, `INNOVATION.md`, `test.md`)
+- All 6 frontend docs pages use `pp_live_` in examples
+
+#### Content Corrections (from original inline docs)
+- Added missing `content` and `file-extraction` check types to Create Audit
+- Added missing `respectRobotsTxt` and `includeSubdomains` options
+- Added missing audit statuses: `discovering`, `ready`
+- Added missing finding severity: `info`
+- Added missing finding categories: `content`, `structured-data`
+- Added missing finding status: `acknowledged`
+- Removed non-existent `_links.pages` reference
+- Noted `findings:write` and `exports:read` scopes as reserved/future
+
+### Files Created
+```
+client/src/components/docs/DocsLayout.tsx
+client/src/components/docs/CodeBlock.tsx
+client/src/components/docs/EndpointCard.tsx
+client/src/components/docs/ParamTable.tsx
+client/src/pages/docs/DocsOverviewPage.tsx
+client/src/pages/docs/DocsAuthPage.tsx
+client/src/pages/docs/DocsRateLimitsPage.tsx
+client/src/pages/docs/DocsErrorsPage.tsx
+client/src/pages/docs/DocsEndpointsPage.tsx
+client/src/pages/docs/DocsObjectsPage.tsx
+```
+
+### Files Modified
+```
+client/src/App.tsx
+client/src/config/routeRegistry.ts
+client/src/components/layout/PublicLayout.tsx
+server/src/routes/docs/index.ts
+server/src/routes/v1/index.ts
+server/src/services/apiKey.service.ts
+server/src/middleware/apiAuth.middleware.ts
+server/src/db/migrations/015_create_api_keys.sql
+docs/API_DOCS.md
+docs/INNOVATION.md
+docs/test.md
+```
+
+---
+
 ## Summary
 
 | Phase | Key Deliverable | Depends On |
@@ -195,5 +271,6 @@ Developer API, referral program, and production readiness.
 | 10 | Email campaigns, CRM, lead scoring | Phase 9 |
 | 11 | Blog, CMS, cold prospects, marketing | Phase 10 |
 | 12 | Public API, referrals, launch polish | Phase 11 |
+| 13 | API Docs SPA, API key rebrand (pp_) | Phase 12 |
 
 Each branch is **cumulative** — Phase N includes everything from Phases 1 through N-1.

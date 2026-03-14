@@ -75,6 +75,12 @@ import BlogPostDetail from './pages/blog/PostDetailPage';
 import ApiKeysPage from './pages/settings/ApiKeys';
 import ReferralDashboard from './pages/referrals/ReferralDashboard';
 import AdminReferralsDashboard from './pages/admin/referrals/AdminReferralsDashboard';
+import DocsOverviewPage from './pages/docs/DocsOverviewPage';
+import DocsAuthPage from './pages/docs/DocsAuthPage';
+import DocsRateLimitsPage from './pages/docs/DocsRateLimitsPage';
+import DocsErrorsPage from './pages/docs/DocsErrorsPage';
+import DocsEndpointsPage from './pages/docs/DocsEndpointsPage';
+import DocsObjectsPage from './pages/docs/DocsObjectsPage';
 
 function App() {
   return (
@@ -98,6 +104,12 @@ function App() {
                 <Route path="/email/unsubscribe" element={<UnsubscribePage />} />
                 <Route path="/blog" element={<BlogPostList />} />
                 <Route path="/blog/:slug" element={<BlogPostDetail />} />
+                <Route path="/docs" element={<DocsOverviewPage />} />
+                <Route path="/docs/authentication" element={<DocsAuthPage />} />
+                <Route path="/docs/rate-limits" element={<DocsRateLimitsPage />} />
+                <Route path="/docs/errors" element={<DocsErrorsPage />} />
+                <Route path="/docs/endpoints" element={<DocsEndpointsPage />} />
+                <Route path="/docs/objects" element={<DocsObjectsPage />} />
 
                 {/* Protected routes */}
                 <Route

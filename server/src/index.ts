@@ -23,6 +23,8 @@ import { apiKeysRouter } from './routes/api-keys/index.js';
 import bugReportsRouter from './routes/bug-reports/index.js';
 import featureRequestsRouter from './routes/feature-requests/index.js';
 import { referralsRouter } from './routes/referrals/index.js';
+import { docsRouter } from './routes/docs/index.js';
+import { v1Router, setPool as setV1Pool } from './routes/v1/index.js';
 import { setPool as setSiteServicePool } from './services/site.service.js';
 import { setPool as setDomainVerificationPool } from './services/domain-verification.service.js';
 import { setPool as setConsentServicePool } from './services/consent.service.js';
@@ -163,6 +165,13 @@ app.use('/api/feature-requests', featureRequestsRouter);
 
 // Referrals routes
 app.use('/api/referrals', referralsRouter);
+
+// API docs redirect
+app.use('/api/docs', docsRouter);
+
+// Public API v1
+setV1Pool(pool);
+app.use('/api/v1', v1Router);
 
 // 404 handler
 app.use((req, res) => {
