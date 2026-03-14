@@ -32,6 +32,7 @@ import { adminEmailRouter } from './email.js';
 import { adminCmsRouter } from './cms.js';
 import { adminMarketingRouter } from './marketing.js';
 import { adminColdProspectsRouter } from './cold-prospects.js';
+import { adminReferralsRouter } from './referrals.js';
 import {
   getAdminSchedulesList,
   getAdminScheduleStats,
@@ -58,7 +59,7 @@ router.use('/cms', adminCmsRouter);
 router.use('/analytics', adminAnalyticsRouter);
 router.use('/marketing', adminMarketingRouter);
 router.use('/cold-prospects', adminColdProspectsRouter);
-// [Phase 12] router.use('/referrals', adminReferralsRouter);
+router.use('/referrals', adminReferralsRouter);
 router.use('/settings', adminSettingsRouter);
 router.use('/coming-soon', adminComingSoonRouter);
 router.use('/seo', adminSeoRouter);

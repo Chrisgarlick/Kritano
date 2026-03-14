@@ -72,6 +72,9 @@ import AdminMarketingContentEditor from './pages/admin/marketing/ContentEditorPa
 import AdminMarketingCampaigns from './pages/admin/marketing/CampaignsPage';
 import BlogPostList from './pages/blog/PostListPage';
 import BlogPostDetail from './pages/blog/PostDetailPage';
+import ApiKeysPage from './pages/settings/ApiKeys';
+import ReferralDashboard from './pages/referrals/ReferralDashboard';
+import AdminReferralsDashboard from './pages/admin/referrals/AdminReferralsDashboard';
 
 function App() {
   return (
@@ -117,6 +120,7 @@ function App() {
                 >
                   <Route index element={<Navigate to="/settings/profile" replace />} />
                   <Route path="profile" element={<ProfilePage />} />
+                  <Route path="api-keys" element={<ApiKeysPage />} />
                 </Route>
 
                 {/* Legacy profile route redirect */}
@@ -171,6 +175,16 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                {/* Referrals */}
+                <Route
+                  path="/referrals"
+                  element={
+                    <ProtectedRoute>
+                      <ReferralDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+
                 {/* Schedule routes */}
                 <Route
                   path="/schedules"
@@ -273,6 +287,8 @@ function App() {
                 <Route path="/admin/marketing/content/new" element={<AdminRoute><AdminMarketingContentEditor /></AdminRoute>} />
                 <Route path="/admin/marketing/content/:id" element={<AdminRoute><AdminMarketingContentEditor /></AdminRoute>} />
                 <Route path="/admin/marketing/campaigns" element={<AdminRoute><AdminMarketingCampaigns /></AdminRoute>} />
+
+                <Route path="/admin/referrals" element={<AdminRoute><AdminReferralsDashboard /></AdminRoute>} />
 
                 {/* 404 */}
                 <Route path="*" element={<NotFoundPage />} />

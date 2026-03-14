@@ -19,6 +19,10 @@ import { createCampaignWorker } from './services/queue/campaign-worker.service.j
 import { blogRouter } from './routes/blog.js';
 import { createDiscoveryWorker } from './services/queue/discovery-worker.service.js';
 import { createColdProspectWorker } from './services/queue/cold-prospect-worker.service.js';
+import { apiKeysRouter } from './routes/api-keys/index.js';
+import bugReportsRouter from './routes/bug-reports/index.js';
+import featureRequestsRouter from './routes/feature-requests/index.js';
+import { referralsRouter } from './routes/referrals/index.js';
 import { setPool as setSiteServicePool } from './services/site.service.js';
 import { setPool as setDomainVerificationPool } from './services/domain-verification.service.js';
 import { setPool as setConsentServicePool } from './services/consent.service.js';
@@ -149,6 +153,16 @@ app.use('/api/analytics', analyticsRouter);
 
 // Blog routes (public)
 app.use('/api/blog', blogRouter);
+
+// API keys routes
+app.use('/api/api-keys', apiKeysRouter);
+
+// Bug reports & feature requests (user-facing)
+app.use('/api/bug-reports', bugReportsRouter);
+app.use('/api/feature-requests', featureRequestsRouter);
+
+// Referrals routes
+app.use('/api/referrals', referralsRouter);
 
 // 404 handler
 app.use((req, res) => {

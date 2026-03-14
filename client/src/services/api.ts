@@ -1997,6 +1997,230 @@ export const coldProspectsApi = {
     api.post<{ enabled: boolean }>('/admin/cold-prospects/pause-outreach'),
 };
 
+// =============================================
+// API Keys
+// =============================================
+
+export interface ApiKey {
+  id: string;
+  name: string;
+  keyPrefix: string;
+  scopes: string[];
+  rateLimitTier: string;
+  lastUsedAt: string | null;
+  lastUsedIp: string | null;
+  requestCount: number;
+  isActive: boolean;
+  expiresAt: string | null;
+  revokedAt: string | null;
+  revokedReason: string | null;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface ApiKeyStats {
+  totalRequests: number;
+  requestsToday: number;
+  requestsThisWeek: number;
+  avgResponseTime: number;
+  topEndpoints: { path: string; count: number }[];
+}
+
+export interface CreateApiKeyResponse {
+  message: string;
+  key: ApiKey;
+  secretKey: string;
+  warning: string;
+}
+
+export const apiKeysApi = {
+  list: () =>
+    api.get<{ keys: ApiKey[] }>('/api-keys'),
+
+  create: (data: { name: string; scopes?: string[]; expiresInDays?: number }) =>
+    api.post<CreateApiKeyResponse>('/api-keys', data),
+
+  get: (keyId: string) =>
+    api.get<{ key: ApiKey }>(`/api-keys/${keyId}`),
+
+  getStats: (keyId: string) =>
+    api.get<{ stats: ApiKeyStats }>(`/api-keys/${keyId}/stats`),
+
+  update: (keyId: string, data: { name?: string; scopes?: string[] }) =>
+    api.patch<{ message: string; key: ApiKey }>(`/api-keys/${keyId}`, data),
+
+  revoke: (keyId: string, reason?: string) =>
+    api.post<{ message: string }>(`/api-keys/${keyId}/revoke`, { reason }),
+
+  delete: (keyId: string) =>
+    api.delete<{ message: string }>(`/api-keys/${keyId}`),
+
+  getScopes: () =>
+    api.get<{ scopes: Array<{ id: string; name: string; description: string }> }>('/api-keys/scopes/available'),
+
+  getTiers: () =>
+    api.get<{ tiers: Array<{ name: string; requestsPerMinute: number; requestsPerDay: number | string; concurrentAudits: number }> }>('/api-keys/tiers/info'),
+};
+
+// =============================================
+// Bug Reports (user-facing)
+// =============================================
+
+export interface CreateBugReportInput {
+  title: string;
+  description: string;
+  severity: 'critical' | 'major' | 'minor' | 'trivial';
+  category: 'ui' | 'functionality' | 'performance' | 'data' | 'security' | 'other';
+  pageUrl?: string;
+  browserInfo?: {
+    name: string;
+    version: string;
+    os: string;
+  };
+  screenSize?: string;
+  screenshotUrl?: string;
+  screenshotKey?: string;
+}
+
+export const bugReportsApi = {
+  create: (data: CreateBugReportInput) =>
+    api.post<{ report: BugReport }>('/bug-reports', data),
+
+  listMine: (params?: { page?: number; limit?: number; status?: string }) =>
+    api.get<{ items: BugReport[]; total: number; page: number; limit: number }>('/bug-reports/mine', { params }),
+
+  getById: (id: string) =>
+    api.get<{ report: BugReport }>(`/bug-reports/${id}`),
+
+  getComments: (id: string) =>
+    api.get<{ comments: BugReportComment[] }>(`/bug-reports/${id}/comments`),
+
+  addComment: (id: string, content: string) =>
+    api.post<{ comment: BugReportComment }>(`/bug-reports/${id}/comments`, { content }),
+};
+
+// =============================================
+// Feature Requests (user-facing)
+// =============================================
+
+export interface CreateFeatureRequestInput {
+  title: string;
+  description: string;
+  impact: 'nice_to_have' | 'would_be_helpful' | 'important' | 'critical_for_workflow';
+  category: 'accessibility' | 'reporting' | 'ui_ux' | 'integrations' | 'performance' | 'other';
+  pageUrl?: string;
+  browserInfo?: {
+    name: string;
+    version: string;
+    os: string;
+  };
+  screenSize?: string;
+}
+
+export const featureRequestsApi = {
+  create: (data: CreateFeatureRequestInput) =>
+    api.post<{ request: FeatureRequest }>('/feature-requests', data),
+
+  listMine: (params?: { page?: number; limit?: number; status?: string }) =>
+    api.get<{ items: FeatureRequest[]; total: number; page: number; limit: number }>('/feature-requests/mine', { params }),
+
+  getById: (id: string) =>
+    api.get<{ request: FeatureRequest }>(`/feature-requests/${id}`),
+
+  getComments: (id: string) =>
+    api.get<{ comments: FeatureRequestComment[] }>(`/feature-requests/${id}/comments`),
+
+  addComment: (id: string, content: string) =>
+    api.post<{ comment: FeatureRequestComment }>(`/feature-requests/${id}/comments`, { content }),
+};
+
+// =============================================
+// Referrals
+// =============================================
+
+export const referralsApi = {
+  getCode: () =>
+    api.get<{ code: string; link: string }>('/referrals/code'),
+
+  getStats: () =>
+    api.get<{ stats: {
+      totalReferred: number;
+      pendingCount: number;
+      qualifiedCount: number;
+      rewardedCount: number;
+      voidedCount: number;
+      totalBonusAuditsEarned: number;
+      bonusAuditsRemaining: number;
+      referralCode: string;
+      referralLink: string;
+    } }>('/referrals/stats'),
+
+  list: (page: number = 1, limit: number = 20) =>
+    api.get<{ referrals: Array<{
+      id: string;
+      referred_email: string;
+      referred_name: string;
+      status: string;
+      referrer_reward_value: number | null;
+      created_at: string;
+      qualified_at: string | null;
+      rewarded_at: string | null;
+    }>; pagination: { page: number; limit: number; total: number; pages: number } }>(
+      `/referrals/list?page=${page}&limit=${limit}`
+    ),
+
+  invite: (emails: string[]) =>
+    api.post<{ sent: number; errors: string[] }>('/referrals/invite', { emails }),
+};
+
+export const adminReferralsApi = {
+  getStats: () =>
+    api.get<{ stats: {
+      totalReferrals: number;
+      pendingCount: number;
+      qualifiedCount: number;
+      rewardedCount: number;
+      voidedCount: number;
+      conversionRate: number;
+      totalBonusAuditsAwarded: number;
+      topReferrers: Array<{ user_id: string; email: string; name: string; referral_count: number }>;
+    } }>('/admin/referrals/stats'),
+
+  list: (params: { page?: number; limit?: number; status?: string; search?: string } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.status) searchParams.set('status', params.status);
+    if (params.search) searchParams.set('search', params.search);
+    return api.get<{ referrals: Array<{
+      id: string;
+      referrer_email: string;
+      referrer_name: string;
+      referred_email: string;
+      referred_name: string;
+      status: string;
+      referrer_reward_value: number | null;
+      referred_reward_value: number | null;
+      void_reason: string | null;
+      created_at: string;
+      qualified_at: string | null;
+      rewarded_at: string | null;
+      voided_at: string | null;
+    }>; pagination: { page: number; limit: number; total: number; pages: number } }>(
+      `/admin/referrals?${searchParams.toString()}`
+    );
+  },
+
+  void: (id: string, reason: string) =>
+    api.post(`/admin/referrals/${id}/void`, { reason }),
+
+  getConfig: () =>
+    api.get<{ config: { enabled: boolean; maxReferralsPerMonth: number; rewards: Record<string, unknown> } }>('/admin/referrals/config'),
+
+  updateConfig: (key: string, value: unknown) =>
+    api.patch('/admin/referrals/config', { key, value }),
+};
+
 // Email Preferences API (user-facing)
 export const emailPreferencesApi = {
   get: () =>
