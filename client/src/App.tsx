@@ -58,6 +58,20 @@ import AdminCampaignsPage from './pages/admin/email/CampaignsPage';
 import AdminCampaignEditorPage from './pages/admin/email/CampaignEditorPage';
 import AdminEmailAnalyticsPage from './pages/admin/email/EmailAnalyticsPage';
 import UnsubscribePage from './pages/email/UnsubscribePage';
+import AdminPostsPage from './pages/admin/cms/PostsPage';
+import AdminPostEditorPage from './pages/admin/cms/PostEditorPage';
+import AdminMediaPage from './pages/admin/cms/MediaPage';
+import AdminStoriesPage from './pages/admin/cms/StoriesPage';
+import AdminAdvicePage from './pages/admin/cms/AdvicePage';
+import AdminAnnouncementsPage from './pages/admin/cms/AnnouncementsPage';
+import AdminColdProspectsDashboard from './pages/admin/cold-prospects/ColdProspectsDashboard';
+import AdminColdProspectsList from './pages/admin/cold-prospects/ColdProspectsList';
+import AdminColdProspectDetail from './pages/admin/cold-prospects/ColdProspectDetail';
+import AdminMarketingContentList from './pages/admin/marketing/ContentListPage';
+import AdminMarketingContentEditor from './pages/admin/marketing/ContentEditorPage';
+import AdminMarketingCampaigns from './pages/admin/marketing/CampaignsPage';
+import BlogPostList from './pages/blog/PostListPage';
+import BlogPostDetail from './pages/blog/PostDetailPage';
 
 function App() {
   return (
@@ -79,6 +93,8 @@ function App() {
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route path="/invitations/:token" element={<SiteInvitationPage />} />
                 <Route path="/email/unsubscribe" element={<UnsubscribePage />} />
+                <Route path="/blog" element={<BlogPostList />} />
+                <Route path="/blog/:slug" element={<BlogPostDetail />} />
 
                 {/* Protected routes */}
                 <Route
@@ -243,6 +259,20 @@ function App() {
                 <Route path="/admin/email/campaigns/:id" element={<AdminRoute><AdminCampaignEditorPage /></AdminRoute>} />
                 <Route path="/admin/email/campaigns/new" element={<AdminRoute><AdminCampaignEditorPage /></AdminRoute>} />
                 <Route path="/admin/email/analytics" element={<AdminRoute><AdminEmailAnalyticsPage /></AdminRoute>} />
+                <Route path="/admin/cms/posts" element={<AdminRoute><AdminPostsPage /></AdminRoute>} />
+                <Route path="/admin/cms/posts/new" element={<AdminRoute><AdminPostEditorPage /></AdminRoute>} />
+                <Route path="/admin/cms/posts/:id" element={<AdminRoute><AdminPostEditorPage /></AdminRoute>} />
+                <Route path="/admin/cms/media" element={<AdminRoute><AdminMediaPage /></AdminRoute>} />
+                <Route path="/admin/cms/stories" element={<AdminRoute><AdminStoriesPage /></AdminRoute>} />
+                <Route path="/admin/cms/advice" element={<AdminRoute><AdminAdvicePage /></AdminRoute>} />
+                <Route path="/admin/cms/announcements" element={<AdminRoute><AdminAnnouncementsPage /></AdminRoute>} />
+                <Route path="/admin/cold-prospects" element={<AdminRoute><AdminColdProspectsDashboard /></AdminRoute>} />
+                <Route path="/admin/cold-prospects/list" element={<AdminRoute><AdminColdProspectsList /></AdminRoute>} />
+                <Route path="/admin/cold-prospects/:id" element={<AdminRoute><AdminColdProspectDetail /></AdminRoute>} />
+                <Route path="/admin/marketing/content" element={<AdminRoute><AdminMarketingContentList /></AdminRoute>} />
+                <Route path="/admin/marketing/content/new" element={<AdminRoute><AdminMarketingContentEditor /></AdminRoute>} />
+                <Route path="/admin/marketing/content/:id" element={<AdminRoute><AdminMarketingContentEditor /></AdminRoute>} />
+                <Route path="/admin/marketing/campaigns" element={<AdminRoute><AdminMarketingCampaigns /></AdminRoute>} />
 
                 {/* 404 */}
                 <Route path="*" element={<NotFoundPage />} />

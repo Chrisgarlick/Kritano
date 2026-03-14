@@ -16,6 +16,9 @@ import { initializeStripeWebhooks } from './routes/webhooks/stripe.js';
 import { resendWebhookRouter } from './routes/webhooks/resend.js';
 import emailRouter from './routes/email/index.js';
 import { createCampaignWorker } from './services/queue/campaign-worker.service.js';
+import { blogRouter } from './routes/blog.js';
+import { createDiscoveryWorker } from './services/queue/discovery-worker.service.js';
+import { createColdProspectWorker } from './services/queue/cold-prospect-worker.service.js';
 import { setPool as setSiteServicePool } from './services/site.service.js';
 import { setPool as setDomainVerificationPool } from './services/domain-verification.service.js';
 import { setPool as setConsentServicePool } from './services/consent.service.js';
@@ -144,6 +147,9 @@ app.use('/api/audits/schedules', schedulesRouter);
 setAnalyticsPool(pool);
 app.use('/api/analytics', analyticsRouter);
 
+// Blog routes (public)
+app.use('/api/blog', blogRouter);
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
@@ -201,6 +207,14 @@ const startServer = (port: number, attempt: number = 1): void => {
     // Start campaign worker
     const campaignWorker = createCampaignWorker({ pool });
     campaignWorker.start().catch((err) => console.error('Campaign worker failed to start:', err));
+
+    // Start discovery worker
+    const discoveryWorker = createDiscoveryWorker({ pool });
+    discoveryWorker.start().catch((err) => console.error('Discovery worker failed to start:', err));
+
+    // Start cold prospect worker
+    const coldProspectWorker = createColdProspectWorker({ pool });
+    coldProspectWorker.start().catch((err) => console.error('Cold prospect worker failed to start:', err));
   });
 };
 

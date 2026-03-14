@@ -883,7 +883,41 @@ export interface TemplatePerformanceItem {
   click_rate: number;
 }
 
-// Admin API types - re-export for use by admin pages
+// Admin API types - import for use in adminApi + re-export for admin pages
+import type {
+  DashboardStats,
+  SystemHealth,
+  AnalyticsDataPoint,
+  AdminUser,
+  AdminOrganization,
+  AdminActivity,
+  Pagination,
+  AdminSubscriptionTier,
+  AdminSubscriptionStatus,
+  WorkerStatus,
+  QueueBacklog,
+  AdminFunnelAnalytics,
+  AdminFunnelStage,
+  AdminGlobalTrends,
+  AdminTopIssue,
+  AdminRevenueAnalytics,
+  AdminTierRevenue,
+  BugReport,
+  BugReportComment,
+  BugReportStats,
+  AdminScheduleItem,
+  AdminScheduleStats,
+  AdminScoreDistribution,
+  AdminTierAuditBreakdown,
+  MarketingCampaign,
+  MarketingContent,
+  MarketingContentStats,
+  CreateMarketingContentInput,
+  CreateMarketingCampaignInput,
+  MarketingPlatform,
+  MarketingContentStatus,
+} from '../types/admin.types';
+
 export type {
   DashboardStats,
   SystemHealth,
@@ -909,27 +943,14 @@ export type {
   AdminScheduleStats,
   AdminScoreDistribution,
   AdminTierAuditBreakdown,
-} from '../types/admin.types';
-
-import type {
-  DashboardStats,
-  SystemHealth,
-  AnalyticsDataPoint,
-  AdminUser,
-  AdminOrganization,
-  AdminActivity,
-  Pagination,
-  AdminSubscriptionTier,
-  AdminSubscriptionStatus,
-  WorkerStatus,
-  QueueBacklog,
-  AdminFunnelAnalytics,
-  AdminGlobalTrends,
-  AdminRevenueAnalytics,
-  BugReport,
-  BugReportComment,
-  BugReportStats,
-} from '../types/admin.types';
+  MarketingCampaign,
+  MarketingContent,
+  MarketingContentStats,
+  CreateMarketingContentInput,
+  CreateMarketingCampaignInput,
+  MarketingPlatform,
+  MarketingContentStatus,
+};
 
 // Admin API functions
 export const adminApi = {
@@ -1113,6 +1134,166 @@ export const adminApi = {
   // Email Analytics - Template Performance
   getTemplatePerformance: () =>
     api.get('/admin/email/analytics/templates'),
+
+  // CMS - Posts
+  listPosts: (params: { status?: string; category?: string; search?: string; page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.status) searchParams.set('status', params.status);
+    if (params.category) searchParams.set('category', params.category);
+    if (params.search) searchParams.set('search', params.search);
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ posts: BlogPostSummary[]; pagination: Pagination }>(`/admin/cms/posts?${searchParams.toString()}`);
+  },
+
+  getPost: (id: string) =>
+    api.get<{ post: BlogPostDetail }>(`/admin/cms/posts/${id}`),
+
+  createPost: (data: CreateBlogPostInput) =>
+    api.post<{ post: BlogPostDetail }>('/admin/cms/posts', data),
+
+  updatePost: (id: string, data: UpdateBlogPostInput & { revision_note?: string }) =>
+    api.put<{ post: BlogPostDetail }>(`/admin/cms/posts/${id}`, data),
+
+  deletePost: (id: string) =>
+    api.delete<{ success: boolean }>(`/admin/cms/posts/${id}`),
+
+  publishPost: (id: string) =>
+    api.post<{ post: BlogPostDetail }>(`/admin/cms/posts/${id}/publish`),
+
+  unpublishPost: (id: string) =>
+    api.post<{ post: BlogPostDetail }>(`/admin/cms/posts/${id}/unpublish`),
+
+  listRevisions: (postId: string) =>
+    api.get<{ revisions: BlogRevision[] }>(`/admin/cms/posts/${postId}/revisions`),
+
+  restoreRevision: (postId: string, revisionId: string) =>
+    api.post<{ post: BlogPostDetail }>(`/admin/cms/posts/${postId}/revisions/${revisionId}/restore`),
+
+  // CMS - Media
+  listMedia: (params: { page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ media: BlogMediaItem[]; pagination: Pagination }>(`/admin/cms/media?${searchParams.toString()}`);
+  },
+
+  uploadMedia: (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post<BlogMediaUploadResult>('/admin/cms/media', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+
+  deleteMedia: (id: string) =>
+    api.delete<{ success: boolean }>(`/admin/cms/media/${id}`),
+
+  updateMediaAlt: (id: string, alt_text: string) =>
+    api.patch<{ media: BlogMediaItem }>(`/admin/cms/media/${id}`, { alt_text }),
+
+  // CMS - Stats
+  getCmsStats: () =>
+    api.get<CmsStatsResponse>('/admin/cms/stats'),
+
+  // CMS - Advice Templates
+  listAdvice: (params: { category?: string; search?: string; page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.category) searchParams.set('category', params.category);
+    if (params.search) searchParams.set('search', params.search);
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ advice: AuditAdviceTemplate[]; pagination: Pagination }>(`/admin/cms/advice?${searchParams.toString()}`);
+  },
+
+  getAdvice: (ruleId: string) =>
+    api.get<{ advice: AuditAdviceTemplate }>(`/admin/cms/advice/${encodeURIComponent(ruleId)}`),
+
+  upsertAdvice: (ruleId: string, data: UpsertAdviceInput) =>
+    api.put<{ advice: AuditAdviceTemplate }>(`/admin/cms/advice/${encodeURIComponent(ruleId)}`, data),
+
+  deleteAdvice: (ruleId: string) =>
+    api.delete<{ success: boolean }>(`/admin/cms/advice/${encodeURIComponent(ruleId)}`),
+
+  // CMS - Announcements
+  listAnnouncements: (params: { active?: boolean; page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.active !== undefined) searchParams.set('active', String(params.active));
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ announcements: AnnouncementItem[]; pagination: Pagination }>(`/admin/cms/announcements?${searchParams.toString()}`);
+  },
+
+  createAnnouncement: (data: CreateAnnouncementInput) =>
+    api.post<{ announcement: AnnouncementItem }>('/admin/cms/announcements', data),
+
+  updateAnnouncement: (id: string, data: UpdateAnnouncementInput) =>
+    api.put<{ announcement: AnnouncementItem }>(`/admin/cms/announcements/${id}`, data),
+
+  deleteAnnouncement: (id: string) =>
+    api.delete<{ success: boolean }>(`/admin/cms/announcements/${id}`),
+
+  // CMS - Success Stories
+  listStories: (params: { page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ stories: SuccessStoryItem[]; pagination: Pagination }>(`/admin/cms/stories?${searchParams.toString()}`);
+  },
+
+  createStory: (data: CreateSuccessStoryInput) =>
+    api.post<{ story: SuccessStoryItem }>('/admin/cms/stories', data),
+
+  updateStory: (id: string, data: UpdateSuccessStoryInput) =>
+    api.put<{ story: SuccessStoryItem }>(`/admin/cms/stories/${id}`, data),
+
+  deleteStory: (id: string) =>
+    api.delete<{ success: boolean }>(`/admin/cms/stories/${id}`),
+
+  // Marketing - Campaigns
+  listMarketingCampaigns: () =>
+    api.get<{ campaigns: MarketingCampaign[] }>('/admin/marketing/campaigns'),
+
+  createMarketingCampaign: (data: CreateMarketingCampaignInput) =>
+    api.post<{ campaign: MarketingCampaign }>('/admin/marketing/campaigns', data),
+
+  updateMarketingCampaign: (id: string, data: Partial<CreateMarketingCampaignInput>) =>
+    api.patch<{ campaign: MarketingCampaign }>(`/admin/marketing/campaigns/${id}`, data),
+
+  deleteMarketingCampaign: (id: string) =>
+    api.delete<{ success: boolean }>(`/admin/marketing/campaigns/${id}`),
+
+  // Marketing - Content
+  listMarketingContent: (params: { platform?: string; campaign_id?: string; status?: string; search?: string; week_number?: number; day_of_week?: number; page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.platform) searchParams.set('platform', params.platform);
+    if (params.campaign_id) searchParams.set('campaign_id', params.campaign_id);
+    if (params.status) searchParams.set('status', params.status);
+    if (params.search) searchParams.set('search', params.search);
+    if (params.week_number) searchParams.set('week_number', String(params.week_number));
+    if (params.day_of_week) searchParams.set('day_of_week', String(params.day_of_week));
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ content: MarketingContent[]; pagination: Pagination }>(`/admin/marketing/content?${searchParams.toString()}`);
+  },
+
+  getMarketingContentStats: () =>
+    api.get<{ stats: MarketingContentStats }>('/admin/marketing/content/stats'),
+
+  getMarketingContent: (id: string) =>
+    api.get<{ content: MarketingContent }>(`/admin/marketing/content/${id}`),
+
+  createMarketingContent: (data: CreateMarketingContentInput) =>
+    api.post<{ content: MarketingContent }>('/admin/marketing/content', data),
+
+  updateMarketingContent: (id: string, data: Partial<CreateMarketingContentInput>) =>
+    api.patch<{ content: MarketingContent }>(`/admin/marketing/content/${id}`, data),
+
+  deleteMarketingContent: (id: string) =>
+    api.delete<{ success: boolean }>(`/admin/marketing/content/${id}`),
+
+  updateMarketingContentStatus: (id: string, status: string) =>
+    api.patch<{ content: MarketingContent }>(`/admin/marketing/content/${id}/status`, { status }),
 };
 
 // Admin Bug Reports API
@@ -1391,6 +1572,429 @@ export const adminEmailApi = {
 
   getTemplatePerformance: () =>
     api.get('/admin/email/analytics/templates'),
+};
+
+// =============================================
+// Blog CMS Types
+// =============================================
+
+export type BlogPostCategory =
+  | 'seo' | 'accessibility' | 'security' | 'performance'
+  | 'content-quality' | 'structured-data' | 'eeat' | 'aeo'
+  | 'guides' | 'case-studies' | 'product-updates';
+
+export type BlogPostStatus = 'draft' | 'published' | 'archived';
+
+export type BlogBlockType =
+  | 'text' | 'heading' | 'image' | 'two_column' | 'callout'
+  | 'code' | 'quote' | 'divider' | 'embed' | 'cta'
+  | 'stat_highlight' | 'audit_link';
+
+export interface BlogContentBlock {
+  id: string;
+  type: BlogBlockType;
+  props: Record<string, unknown>;
+}
+
+export interface BlogPostSummary {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  excerpt: string;
+  featured_image_url: string | null;
+  category: BlogPostCategory;
+  tags: string[];
+  author_name: string;
+  status: BlogPostStatus;
+  published_at: string | null;
+  reading_time_minutes: number;
+  view_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BlogPostDetail extends BlogPostSummary {
+  featured_image_alt: string | null;
+  content: BlogContentBlock[];
+  author_id: string;
+  seo_title: string | null;
+  seo_description: string | null;
+  related_post_ids: string[];
+}
+
+export interface CreateBlogPostInput {
+  title: string;
+  subtitle?: string | null;
+  excerpt: string;
+  featured_image_url?: string | null;
+  featured_image_alt?: string | null;
+  content: BlogContentBlock[];
+  category: BlogPostCategory;
+  tags?: string[];
+  seo_title?: string | null;
+  seo_description?: string | null;
+}
+
+export type UpdateBlogPostInput = Partial<CreateBlogPostInput> & {
+  related_post_ids?: string[];
+};
+
+export interface BlogRevision {
+  id: string;
+  post_id: string;
+  content: BlogContentBlock[];
+  title: string;
+  revision_note: string | null;
+  created_by: string;
+  created_at: string;
+  editor_email?: string;
+}
+
+export interface BlogMediaItem {
+  id: string;
+  filename: string;
+  storage_key: string;
+  mime_type: string;
+  file_size_bytes: number;
+  width: number | null;
+  height: number | null;
+  alt_text: string | null;
+  thumbnail_key: string | null;
+  webp_key: string | null;
+  uploaded_by: string;
+  created_at: string;
+  url: string;
+  thumbnailUrl: string;
+}
+
+export interface BlogMediaUploadResult {
+  id: string;
+  url: string;
+  thumbnailUrl: string;
+  webpUrl: string;
+  width: number;
+  height: number;
+  fileSizeBytes: number;
+}
+
+export interface CmsStatsResponse {
+  totalPosts: number;
+  published: number;
+  drafts: number;
+  archived: number;
+  totalViews: number;
+  totalMedia: number;
+  topPosts: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    view_count: number;
+    published_at: string;
+  }>;
+}
+
+export interface AuditAdviceTemplate {
+  id: string;
+  rule_id: string;
+  rule_name: string;
+  category: string;
+  severity: string;
+  description: string;
+  recommendation: string;
+  learn_more_url: string | null;
+  is_custom: boolean;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+export interface UpsertAdviceInput {
+  rule_name: string;
+  category: string;
+  severity: string;
+  description: string;
+  recommendation: string;
+  learn_more_url?: string | null;
+}
+
+export type AnnouncementType = 'info' | 'success' | 'warning' | 'maintenance';
+
+export interface AnnouncementItem {
+  id: string;
+  title: string;
+  body: string;
+  type: AnnouncementType;
+  target_tiers: string[] | null;
+  cta_label: string | null;
+  cta_url: string | null;
+  starts_at: string;
+  ends_at: string | null;
+  is_dismissible: boolean;
+  is_active: boolean;
+  created_by: string;
+  created_at: string;
+}
+
+export interface CreateAnnouncementInput {
+  title: string;
+  body: string;
+  type?: AnnouncementType;
+  target_tiers?: string[] | null;
+  cta_label?: string | null;
+  cta_url?: string | null;
+  starts_at?: string;
+  ends_at?: string | null;
+  is_dismissible?: boolean;
+}
+
+export interface UpdateAnnouncementInput {
+  title?: string;
+  body?: string;
+  type?: AnnouncementType;
+  target_tiers?: string[] | null;
+  cta_label?: string | null;
+  cta_url?: string | null;
+  starts_at?: string;
+  ends_at?: string | null;
+  is_dismissible?: boolean;
+  is_active?: boolean;
+}
+
+export interface SuccessStoryItem {
+  id: string;
+  site_id: string | null;
+  domain: string;
+  category: string;
+  score_before: number;
+  score_after: number;
+  headline: string;
+  is_published: boolean;
+  display_order: number;
+  published_at: string | null;
+  created_by: string;
+  created_at: string;
+}
+
+export interface CreateSuccessStoryInput {
+  site_id?: string | null;
+  domain: string;
+  category: string;
+  score_before: number;
+  score_after: number;
+  headline: string;
+  is_published?: boolean;
+  display_order?: number;
+}
+
+export interface UpdateSuccessStoryInput {
+  domain?: string;
+  category?: string;
+  score_before?: number;
+  score_after?: number;
+  headline?: string;
+  is_published?: boolean;
+  display_order?: number;
+}
+
+// Public blog API
+export const blogApi = {
+  listPosts: (params: { category?: string; tag?: string; page?: number; limit?: number } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.category) searchParams.set('category', params.category);
+    if (params.tag) searchParams.set('tag', params.tag);
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    return api.get<{ posts: BlogPostSummary[]; total: number; page: number; totalPages: number }>(`/blog/posts?${searchParams.toString()}`);
+  },
+
+  getPost: (slug: string) =>
+    api.get<{ post: BlogPostDetail }>(`/blog/posts/${slug}`),
+
+  getCategories: () =>
+    api.get<{ categories: Array<{ category: string; count: number }> }>('/blog/categories'),
+
+  getRelatedPosts: (slug: string) =>
+    api.get<{ posts: BlogPostSummary[] }>(`/blog/posts/${slug}/related`),
+};
+
+// =============================================
+// Cold Prospects API
+// =============================================
+
+export interface ColdProspectItem {
+  id: string;
+  domain: string;
+  tld: string;
+  registered_at: string | null;
+  status: string;
+  is_live: boolean;
+  http_status: number | null;
+  has_ssl: boolean;
+  title: string | null;
+  meta_description: string | null;
+  technology_stack: string[];
+  page_count_estimate: number | null;
+  contact_email: string | null;
+  contact_name: string | null;
+  contact_role: string | null;
+  emails: { email: string; name: string | null; role: string | null; source: string; confidence: string }[];
+  contact_page_url: string | null;
+  has_contact_form: boolean;
+  social_links: Record<string, string>;
+  quality_score: number;
+  business_type: string | null;
+  country: string | null;
+  language: string | null;
+  campaign_id: string | null;
+  email_sent_at: string | null;
+  email_opened_at: string | null;
+  email_clicked_at: string | null;
+  converted_user_id: string | null;
+  batch_date: string;
+  source: string;
+  is_excluded: boolean;
+  exclusion_reason: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ColdProspectStats {
+  total: number;
+  byStatus: Record<string, number>;
+  todayImported: number;
+  todayQualified: number;
+  todayContacted: number;
+  withEmail: number;
+  withName: number;
+  conversionRate: number;
+  avgQualityScore: number;
+}
+
+export interface ColdProspectSettings {
+  targetTlds: string[];
+  excludedKeywords: string[];
+  minQualityScore: number;
+  dailyCheckLimit: number;
+  dailyEmailLimit: number;
+  autoOutreachEnabled: boolean;
+  lastFeedDate: string | null;
+}
+
+export interface ColdProspectDailyStats {
+  date: string;
+  imported: number;
+  qualified: number;
+  contacted: number;
+}
+
+export interface OutreachStats {
+  totalSends: number;
+  sent: number;
+  queued: number;
+  failed: number;
+  opened: number;
+  clicked: number;
+  unsubscribed: number;
+  sentToday: number;
+  openRate: number;
+  clickRate: number;
+}
+
+export interface OutreachSend {
+  id: string;
+  prospect_id: string;
+  template_slug: string;
+  to_email: string;
+  subject: string;
+  status: string;
+  error_message: string | null;
+  sent_at: string | null;
+  opened_at: string | null;
+  clicked_at: string | null;
+  created_at: string;
+  domain: string;
+  contact_name: string | null;
+}
+
+export const coldProspectsApi = {
+  list: (params: {
+    status?: string;
+    tld?: string;
+    minScore?: number;
+    maxScore?: number;
+    batchDate?: string;
+    hasEmail?: boolean;
+    hasName?: boolean;
+    search?: string;
+    page?: number;
+    limit?: number;
+    sortBy?: string;
+    sortOrder?: string;
+  } = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.status) searchParams.set('status', params.status);
+    if (params.tld) searchParams.set('tld', params.tld);
+    if (params.minScore !== undefined) searchParams.set('minScore', String(params.minScore));
+    if (params.maxScore !== undefined) searchParams.set('maxScore', String(params.maxScore));
+    if (params.batchDate) searchParams.set('batchDate', params.batchDate);
+    if (params.hasEmail) searchParams.set('hasEmail', 'true');
+    if (params.hasName) searchParams.set('hasName', 'true');
+    if (params.search) searchParams.set('search', params.search);
+    if (params.page) searchParams.set('page', String(params.page));
+    if (params.limit) searchParams.set('limit', String(params.limit));
+    if (params.sortBy) searchParams.set('sortBy', params.sortBy);
+    if (params.sortOrder) searchParams.set('sortOrder', params.sortOrder);
+    return api.get<{ prospects: ColdProspectItem[]; pagination: { page: number; limit: number; total: number; pages: number } }>(
+      `/admin/cold-prospects?${searchParams.toString()}`
+    );
+  },
+
+  get: (id: string) =>
+    api.get<{ prospect: ColdProspectItem }>(`/admin/cold-prospects/${id}`),
+
+  getStats: () =>
+    api.get<{ stats: ColdProspectStats }>('/admin/cold-prospects/stats'),
+
+  getDailyStats: (days: number = 30) =>
+    api.get<{ stats: ColdProspectDailyStats[] }>(`/admin/cold-prospects/daily-stats?days=${days}`),
+
+  getTlds: () =>
+    api.get<{ tlds: string[] }>('/admin/cold-prospects/tlds'),
+
+  getSettings: () =>
+    api.get<{ settings: ColdProspectSettings }>('/admin/cold-prospects/settings'),
+
+  updateSettings: (settings: Partial<ColdProspectSettings>) =>
+    api.put<{ settings: ColdProspectSettings }>('/admin/cold-prospects/settings', settings),
+
+  exclude: (id: string, reason?: string) =>
+    api.delete(`/admin/cold-prospects/${id}${reason ? `?reason=${encodeURIComponent(reason)}` : ''}`),
+
+  retry: (id: string) =>
+    api.post(`/admin/cold-prospects/${id}/retry`),
+
+  bulkExclude: (ids: string[], reason: string) =>
+    api.post<{ excluded: number }>('/admin/cold-prospects/bulk-exclude', { ids, reason }),
+
+  import: (csv: string) =>
+    api.post<{ imported: number; duplicates: number; errors: number }>('/admin/cold-prospects/import', { csv }),
+
+  importJson: (prospects: unknown[]) =>
+    api.post<{ imported: number; duplicates: number; errors: number }>('/admin/cold-prospects/import-json', { prospects }),
+
+  getOutreachStats: () =>
+    api.get<{ stats: OutreachStats }>('/admin/cold-prospects/outreach-stats'),
+
+  getSends: (page?: number, limit?: number) =>
+    api.get<{ sends: OutreachSend[]; pagination: { page: number; limit: number; total: number; pages: number } }>(
+      `/admin/cold-prospects/sends?page=${page || 1}&limit=${limit || 25}`
+    ),
+
+  triggerOutreach: (limit?: number) =>
+    api.post<{ queued: number; sent: number; failed: number }>('/admin/cold-prospects/trigger-outreach', { limit }),
+
+  pauseOutreach: () =>
+    api.post<{ enabled: boolean }>('/admin/cold-prospects/pause-outreach'),
 };
 
 // Email Preferences API (user-facing)
