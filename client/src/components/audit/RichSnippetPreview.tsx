@@ -150,7 +150,7 @@ function BreadcrumbPreview({ url }: { url: string }) {
         <span className="text-emerald-700">{host}</span>
         {segments.map((seg, i) => (
           <span key={i} className="flex items-center gap-1">
-            <span className="text-slate-400">&rsaquo;</span>
+            <span className="text-slate-500">&rsaquo;</span>
             <span className="text-emerald-700">{decodeURIComponent(seg).replace(/-/g, ' ')}</span>
           </span>
         ))}
@@ -199,9 +199,9 @@ function FAQPreview({ questions }: { questions: Array<{ q: string; a: string }> 
           >
             <span className="line-clamp-1">{faq.q}</span>
             {expanded === i ? (
-              <ChevronUp className="w-3.5 h-3.5 text-slate-400 flex-shrink-0 ml-2" />
+              <ChevronUp className="w-3.5 h-3.5 text-slate-500 flex-shrink-0 ml-2" />
             ) : (
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400 flex-shrink-0 ml-2" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-500 flex-shrink-0 ml-2" />
             )}
           </button>
           {expanded === i && (
@@ -210,7 +210,7 @@ function FAQPreview({ questions }: { questions: Array<{ q: string; a: string }> 
         </div>
       ))}
       {questions.length > 3 && (
-        <div className="text-xs text-slate-400 pt-1">+{questions.length - 3} more questions</div>
+        <div className="text-xs text-slate-500 pt-1">+{questions.length - 3} more questions</div>
       )}
     </div>
   );
@@ -293,7 +293,7 @@ function LocalBusinessSnippet({
       <div className="flex items-center gap-3 text-xs text-slate-600 flex-wrap">
         {address && (
           <span className="inline-flex items-center gap-1">
-            <MapPin className="w-3 h-3 text-slate-400" />
+            <MapPin className="w-3 h-3 text-slate-500" />
             {address}
           </span>
         )}
@@ -430,7 +430,7 @@ export function RichSnippetPreview({
 
   return (
     <div className="bg-white rounded-lg border border-slate-200 p-4 max-w-xl">
-      <div className="text-[10px] font-medium uppercase tracking-wider text-slate-400 mb-3">
+      <div className="text-[10px] font-medium uppercase tracking-wider text-slate-500 mb-3">
         Google Search Preview
       </div>
 
@@ -500,7 +500,7 @@ export function RichSnippetPreview({
             {displayDescription}
           </p>
         ) : (
-          <p className="text-sm text-slate-400 leading-relaxed line-clamp-2 italic">
+          <p className="text-sm text-slate-500 leading-relaxed line-clamp-2 italic">
             No meta description available. Google will auto-generate a snippet from page content.
           </p>
         )}
@@ -509,7 +509,7 @@ export function RichSnippetPreview({
         {hasFAQ && faqQuestions.length > 0 && <FAQPreview questions={faqQuestions} />}
         {hasFAQ && faqQuestions.length === 0 && (
           <div className="mt-2 border-t border-slate-200 pt-2">
-            <div className="text-xs text-slate-400 italic">FAQPage schema detected but question data not available in preview</div>
+            <div className="text-xs text-slate-500 italic">FAQPage schema detected but question data not available in preview</div>
           </div>
         )}
       </div>
@@ -517,7 +517,7 @@ export function RichSnippetPreview({
       {/* OG Image preview */}
       {ogData?.image && (
         <div className="mt-3 pt-3 border-t border-slate-100">
-          <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1.5">Social Share Image</div>
+          <div className="text-[10px] text-slate-500 uppercase tracking-wider mb-1.5">Social Share Image</div>
           <div className="rounded-lg border border-slate-200 overflow-hidden bg-slate-50 max-w-[280px]">
             <img
               src={ogData.image}
@@ -527,7 +527,7 @@ export function RichSnippetPreview({
             />
             {(ogData.title || ogData.description || ogData.siteName) && (
               <div className="p-2.5">
-                {ogData.siteName && <div className="text-[10px] text-slate-400 uppercase">{ogData.siteName}</div>}
+                {ogData.siteName && <div className="text-[10px] text-slate-500 uppercase">{ogData.siteName}</div>}
                 {ogData.title && <div className="text-sm font-medium text-slate-800 line-clamp-1">{ogData.title}</div>}
                 {ogData.description && <div className="text-xs text-slate-500 line-clamp-2 mt-0.5">{ogData.description}</div>}
               </div>
@@ -539,7 +539,7 @@ export function RichSnippetPreview({
       {/* Legend */}
       {detectedTypes.length > 0 && (
         <div className="mt-3 pt-3 border-t border-slate-100">
-          <div className="text-[10px] text-slate-400 uppercase tracking-wider mb-1.5">
+          <div className="text-[10px] text-slate-500 uppercase tracking-wider mb-1.5">
             Enabled by your schema
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -585,7 +585,7 @@ export function RichSnippetPreview({
       {/* No schema hint */}
       {detectedTypes.length === 0 && (
         <div className="mt-3 pt-3 border-t border-slate-100">
-          <p className="text-xs text-slate-400 italic">
+          <p className="text-xs text-slate-500 italic">
             No rich results available. Add structured data to unlock enhanced search appearances like star ratings, prices, FAQs, and more.
           </p>
         </div>

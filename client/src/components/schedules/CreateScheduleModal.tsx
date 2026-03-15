@@ -105,7 +105,7 @@ export function CreateScheduleModal({ isOpen, onClose, onCreated, tier = 'free' 
             <CalendarClock className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white">New Schedule</h2>
           </div>
-          <button onClick={onClose} className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+          <button onClick={onClose} className="p-1 text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -128,12 +128,12 @@ export function CreateScheduleModal({ isOpen, onClose, onCreated, tier = 'free' 
               required
               className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
             />
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Domain must be verified</p>
+            <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Domain must be verified</p>
           </div>
 
           {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Schedule Name <span className="text-slate-400">(optional)</span></label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Schedule Name <span className="text-slate-500">(optional)</span></label>
             <input
               type="text"
               value={name}
@@ -167,7 +167,7 @@ export function CreateScheduleModal({ isOpen, onClose, onCreated, tier = 'free' 
                     `}
                   >
                     <span className="text-sm font-medium text-slate-900 dark:text-white">{opt.label}</span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">{opt.description}</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-500">{opt.description}</span>
                     {!allowed && (
                       <span className="absolute top-1 right-1 text-[10px] px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-medium">
                         {opt.minTier}+
@@ -256,7 +256,7 @@ export function CreateScheduleModal({ isOpen, onClose, onCreated, tier = 'free' 
             <button
               type="button"
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400"
+              className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400"
             >
               {showAdvanced ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               Advanced Options

@@ -84,51 +84,41 @@ export async function startTrial(
   const trialEnd = new Date();
   trialEnd.setDate(trialEnd.getDate() + (durationDays ?? TRIAL_DURATION_DAYS));
 
-  const subResult = await pool.query(
-    `INSERT INTO subscriptions (user_id, tier, status, trial_start, trial_end, trial_warning_sent)
-     VALUES ($1, $2, 'trialing', NOW(), $3, false)
-     ON CONFLICT (user_id) WHERE organization_id IS NULL
-     DO UPDATE SET
-       tier = EXCLUDED.tier,
-       status = 'trialing',
-       trial_start = NOW(),
-       trial_end = EXCLUDED.trial_end,
-       trial_warning_sent = false,
-       updated_at = NOW()
-     RETURNING id, trial_end`,
-    [userId, tier, trialEnd.toISOString()]
+  // Get user's organization
+  const orgResult = await pool.query(
+    `SELECT organization_id FROM organization_members WHERE user_id = $1 AND role = 'owner' LIMIT 1`,
+    [userId]
   );
+  const organizationId = orgResult.rows[0]?.organization_id;
+  if (!organizationId) {
+    throw Object.assign(new Error('No organization found for user'), { statusCode: 400 });
+  }
 
-  // If ON CONFLICT didn't work (no unique constraint on user_id), fall back to upsert
+  // Try to update existing subscription first, then insert if none exists
   let subscriptionId: string;
   let finalTrialEnd: string;
 
-  if (subResult.rows.length > 0) {
-    subscriptionId = subResult.rows[0].id;
-    finalTrialEnd = subResult.rows[0].trial_end;
+  const existingFreeSub = await pool.query(
+    `UPDATE subscriptions
+     SET tier = $1, status = 'trialing', trial_start = NOW(), trial_end = $2, trial_warning_sent = false, user_id = $3, updated_at = NOW()
+     WHERE organization_id = $4 AND (tier = 'free' OR status = 'active')
+     RETURNING id, trial_end`,
+    [tier, trialEnd.toISOString(), userId, organizationId]
+  );
+
+  if (existingFreeSub.rows.length > 0) {
+    subscriptionId = existingFreeSub.rows[0].id;
+    finalTrialEnd = existingFreeSub.rows[0].trial_end;
   } else {
-    // Check if there's an existing free sub to update
-    const freeSub = await pool.query(
-      `UPDATE subscriptions
-       SET tier = $2, status = 'trialing', trial_start = NOW(), trial_end = $3, trial_warning_sent = false, updated_at = NOW()
-       WHERE user_id = $1 AND tier = 'free'
+    // Create new subscription
+    const newSub = await pool.query(
+      `INSERT INTO subscriptions (user_id, organization_id, tier, status, trial_start, trial_end, trial_warning_sent)
+       VALUES ($1, $2, $3, 'trialing', NOW(), $4, false)
        RETURNING id, trial_end`,
-      [userId, tier, trialEnd.toISOString()]
+      [userId, organizationId, tier, trialEnd.toISOString()]
     );
-    if (freeSub.rows.length > 0) {
-      subscriptionId = freeSub.rows[0].id;
-      finalTrialEnd = freeSub.rows[0].trial_end;
-    } else {
-      // Create new subscription
-      const newSub = await pool.query(
-        `INSERT INTO subscriptions (user_id, tier, status, trial_start, trial_end, trial_warning_sent)
-         VALUES ($1, $2, 'trialing', NOW(), $3, false)
-         RETURNING id, trial_end`,
-        [userId, tier, trialEnd.toISOString()]
-      );
-      subscriptionId = newSub.rows[0].id;
-      finalTrialEnd = newSub.rows[0].trial_end;
-    }
+    subscriptionId = newSub.rows[0].id;
+    finalTrialEnd = newSub.rows[0].trial_end;
   }
 
   // Mark user as having used trial

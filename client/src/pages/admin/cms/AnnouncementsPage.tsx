@@ -197,11 +197,11 @@ export default function AnnouncementsPage() {
   };
 
   const getStatus = (item: AnnouncementItem): { label: string; cls: string } => {
-    if (!item.is_active) return { label: 'Inactive', cls: 'bg-slate-500/20 text-slate-400' };
+    if (!item.is_active) return { label: 'Inactive', cls: 'bg-slate-500/20 text-slate-500' };
     const now = new Date();
     const start = new Date(item.starts_at);
     if (start > now) return { label: 'Scheduled', cls: 'bg-blue-500/20 text-blue-300' };
-    if (item.ends_at && new Date(item.ends_at) < now) return { label: 'Expired', cls: 'bg-slate-500/20 text-slate-400' };
+    if (item.ends_at && new Date(item.ends_at) < now) return { label: 'Expired', cls: 'bg-slate-500/20 text-slate-500' };
     return { label: 'Active', cls: 'bg-green-500/20 text-green-300' };
   };
 
@@ -224,7 +224,7 @@ export default function AnnouncementsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Announcements</h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               Create and schedule in-app announcements and banners
             </p>
           </div>
@@ -252,7 +252,7 @@ export default function AnnouncementsPage() {
             label="Inactive"
             value={announcements.filter((a) => !a.is_active).length}
             icon={EyeOff}
-            color="text-slate-400"
+            color="text-slate-500"
             bgColor="bg-white/[0.02]"
           />
         </div>
@@ -261,7 +261,7 @@ export default function AnnouncementsPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => fetchAnnouncements()}
-            className="p-2 text-slate-400 hover:text-white transition-colors"
+            className="p-2 text-slate-500 hover:text-white transition-colors"
             title="Refresh"
           >
             <RefreshCw className="w-4 h-4" />
@@ -286,7 +286,7 @@ export default function AnnouncementsPage() {
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg text-center py-16">
               <Megaphone className="w-12 h-12 text-slate-600 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-white mb-1">No announcements yet</h3>
-              <p className="text-sm text-slate-400">Create your first announcement to notify users.</p>
+              <p className="text-sm text-slate-500">Create your first announcement to notify users.</p>
             </div>
           ) : (
             announcements.map((item) => {
@@ -315,7 +315,7 @@ export default function AnnouncementsPage() {
                             {status.label}
                           </span>
                         </div>
-                        <p className="text-sm text-slate-400 mt-1 line-clamp-2">{item.body}</p>
+                        <p className="text-sm text-slate-500 mt-1 line-clamp-2">{item.body}</p>
                         <div className="flex items-center gap-4 mt-2 text-xs text-slate-500">
                           <span>
                             Starts: {new Date(item.starts_at).toLocaleDateString()}
@@ -341,7 +341,7 @@ export default function AnnouncementsPage() {
                     <div className="flex items-center gap-1 shrink-0">
                       <button
                         onClick={() => handleEdit(item)}
-                        className="p-1.5 text-slate-400 hover:text-white transition-colors"
+                        className="p-1.5 text-slate-500 hover:text-white transition-colors"
                         title="Edit"
                       >
                         <Pencil className="w-4 h-4" />
@@ -349,7 +349,7 @@ export default function AnnouncementsPage() {
                       <button
                         onClick={() => handleToggleActive(item)}
                         disabled={actionLoading === item.id}
-                        className="p-1.5 text-slate-400 hover:text-amber-400 transition-colors disabled:opacity-50"
+                        className="p-1.5 text-slate-500 hover:text-amber-400 transition-colors disabled:opacity-50"
                         title={item.is_active ? 'Deactivate' : 'Activate'}
                       >
                         {item.is_active ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -357,7 +357,7 @@ export default function AnnouncementsPage() {
                       <button
                         onClick={() => handleDelete(item.id)}
                         disabled={actionLoading === item.id}
-                        className="p-1.5 text-slate-400 hover:text-red-400 transition-colors disabled:opacity-50"
+                        className="p-1.5 text-slate-500 hover:text-red-400 transition-colors disabled:opacity-50"
                         title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -373,7 +373,7 @@ export default function AnnouncementsPage() {
         {/* Pagination */}
         {pagination.pages > 1 && (
           <div className="flex items-center justify-between pt-2">
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               Showing {(pagination.page - 1) * pagination.limit + 1}&ndash;
               {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
               {pagination.total}
@@ -382,14 +382,14 @@ export default function AnnouncementsPage() {
               <button
                 onClick={() => goToPage(pagination.page - 1)}
                 disabled={pagination.page === 1}
-                className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={() => goToPage(pagination.page + 1)}
                 disabled={pagination.page === pagination.pages}
-                className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -407,7 +407,7 @@ export default function AnnouncementsPage() {
               <h2 className="text-lg font-bold text-white">
                 {editingId ? 'Edit Announcement' : 'New Announcement'}
               </h2>
-              <button onClick={() => setShowEditor(false)} className="p-1 text-slate-400 hover:text-white transition-colors">
+              <button onClick={() => setShowEditor(false)} className="p-1 text-slate-500 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -450,7 +450,7 @@ export default function AnnouncementsPage() {
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${
                           form.type === t.value
                             ? `${TYPE_BADGE[t.value]} border-current`
-                            : 'border-white/[0.06] text-slate-400 hover:text-white hover:border-white/[0.1]'
+                            : 'border-white/[0.06] text-slate-500 hover:text-white hover:border-white/[0.1]'
                         }`}
                       >
                         <Icon className="w-4 h-4" />
@@ -464,7 +464,7 @@ export default function AnnouncementsPage() {
               {/* Target Tiers */}
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1">Target Tiers</label>
-                <label className="flex items-center gap-2 text-sm text-slate-400 mb-2">
+                <label className="flex items-center gap-2 text-sm text-slate-500 mb-2">
                   <input
                     type="checkbox"
                     checked={form.allTiers}
@@ -487,7 +487,7 @@ export default function AnnouncementsPage() {
                         className={`px-3 py-1 rounded-lg text-sm font-medium border transition-colors ${
                           form.target_tiers.includes(tier)
                             ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'
-                            : 'border-white/[0.06] text-slate-400 hover:text-white'
+                            : 'border-white/[0.06] text-slate-500 hover:text-white'
                         }`}
                       >
                         {tier}
@@ -598,7 +598,7 @@ function StatCard({
       </div>
       <div>
         <p className="text-2xl font-bold text-white">{value.toLocaleString()}</p>
-        <p className="text-xs text-slate-400">{label}</p>
+        <p className="text-xs text-slate-500">{label}</p>
       </div>
     </div>
   );

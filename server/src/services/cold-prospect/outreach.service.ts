@@ -16,9 +16,28 @@ export function setPool(dbPool: Pool): void {
 
 const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
-const FOLLOWUP_DELAY_DAYS = 3;
-const DEFAULT_DAILY_LIMIT = 50;
+const DEFAULT_DAILY_LIMIT = 20;
 const SEND_DELAY_MS = 200; // 200ms between sends
+
+// LIA compliance: Only send to generic/role-based business email addresses.
+// Personal named emails (john@, j.smith@) are never contacted.
+const ALLOWED_EMAIL_PREFIXES = [
+  'info', 'hello', 'support', 'contact', 'admin', 'enquiries', 'enquiry',
+  'team', 'sales', 'help', 'office', 'general', 'mail', 'web', 'website',
+  'hi', 'hey', 'business', 'reception', 'feedback', 'press', 'media',
+  'partnerships', 'marketing',
+];
+
+/**
+ * Check if an email is a generic/role-based business address.
+ * Returns false for personal named emails.
+ */
+export function isGenericBusinessEmail(email: string): boolean {
+  const prefix = email.split('@')[0].toLowerCase().replace(/[.\-_+]/g, '');
+  return ALLOWED_EMAIL_PREFIXES.some(allowed =>
+    prefix === allowed || prefix === `${allowed}s`
+  );
+}
 
 // =============================================
 // Queue & Send
@@ -48,7 +67,8 @@ export async function queueOutreachBatch(limit?: number): Promise<{ queued: numb
 
   if (batchSize === 0) return { queued: 0 };
 
-  // Find qualified prospects with email, not yet contacted, not unsubscribed
+  // Find qualified prospects with generic/role-based email, not yet contacted, not unsubscribed.
+  // LIA compliance: Only 1 email per domain, generic addresses only.
   const result = await pool.query(
     `SELECT cp.id, cp.domain, cp.contact_email, cp.contact_name, cp.quality_score
      FROM cold_prospects cp
@@ -70,6 +90,11 @@ export async function queueOutreachBatch(limit?: number): Promise<{ queued: numb
 
   let queued = 0;
   for (const prospect of result.rows) {
+    // LIA compliance: Only send to generic/role-based business addresses
+    if (!isGenericBusinessEmail(prospect.contact_email)) {
+      continue;
+    }
+
     const unsubToken = generateUnsubscribeToken(prospect.contact_email, prospect.id);
     const unsubUrl = `${APP_URL}/api/cold-unsubscribe?token=${unsubToken}`;
 
@@ -153,6 +178,7 @@ export async function processOutreachQueue(batchSize: number = 10): Promise<{ se
         appUrl: APP_URL,
         unsubscribeUrl: unsubUrl,
         currentYear: new Date().getFullYear().toString(),
+        businessAddress: process.env.BUSINESS_ADDRESS || '[Business Address]',
       };
 
       // Compile and send email
@@ -193,43 +219,9 @@ export async function processOutreachQueue(batchSize: number = 10): Promise<{ se
   return { sent, failed };
 }
 
-/**
- * Queue follow-up emails for prospects who haven't opened/clicked after N days.
- */
-export async function queueFollowups(): Promise<{ queued: number }> {
-  const result = await pool.query(
-    `SELECT cps.prospect_id, cp.domain, cp.contact_email, cp.contact_name
-     FROM cold_prospect_sends cps
-     JOIN cold_prospects cp ON cps.prospect_id = cp.id
-     WHERE cps.template_slug = 'cold_outreach_initial'
-       AND cps.status = 'sent'
-       AND cps.sent_at < NOW() - INTERVAL '${FOLLOWUP_DELAY_DAYS} days'
-       AND cps.opened_at IS NULL
-       AND cps.clicked_at IS NULL
-       AND NOT EXISTS (
-         SELECT 1 FROM cold_prospect_sends cps2
-         WHERE cps2.prospect_id = cps.prospect_id
-           AND cps2.template_slug = 'cold_outreach_followup'
-       )
-       AND NOT EXISTS (
-         SELECT 1 FROM cold_prospect_unsubscribes cu
-         WHERE cu.email = cp.contact_email
-       )
-     LIMIT 50`
-  );
-
-  let queued = 0;
-  for (const row of result.rows) {
-    await pool.query(
-      `INSERT INTO cold_prospect_sends (prospect_id, template_slug, to_email, subject, status)
-       VALUES ($1, 'cold_outreach_followup', $2, $3, 'queued')`,
-      [row.prospect_id, row.contact_email, `Following up on ${row.domain}`]
-    );
-    queued++;
-  }
-
-  return { queued };
-}
+// LIA compliance: Follow-ups removed. Each domain receives a maximum of 1 email.
+// The queueFollowups function has been intentionally removed to comply with
+// the Legitimate Interest Assessment (see /docs/cold-prospects-LIA.md).
 
 // =============================================
 // Stats
@@ -349,6 +341,37 @@ export function verifyUnsubscribeToken(token: string): { email: string; prospect
   } catch {
     return null;
   }
+}
+
+// =============================================
+// Data Retention (LIA Compliance)
+// =============================================
+
+/**
+ * Delete cold prospects with no engagement after 6 months.
+ * Required by LIA — see /docs/cold-prospects-LIA.md
+ */
+export async function purgeStaleProspects(): Promise<{ deleted: number }> {
+  // Delete prospects that:
+  // - Were created more than 6 months ago
+  // - Have not converted (no converted_user_id)
+  // - Have either never been contacted, or were contacted but never engaged (no opens/clicks)
+  const result = await pool.query(
+    `WITH stale AS (
+       SELECT cp.id FROM cold_prospects cp
+       WHERE cp.created_at < NOW() - INTERVAL '6 months'
+         AND cp.converted_user_id IS NULL
+         AND NOT EXISTS (
+           SELECT 1 FROM cold_prospect_sends cps
+           WHERE cps.prospect_id = cp.id
+             AND (cps.opened_at IS NOT NULL OR cps.clicked_at IS NOT NULL)
+         )
+     )
+     DELETE FROM cold_prospects WHERE id IN (SELECT id FROM stale)
+     RETURNING id`
+  );
+
+  return { deleted: result.rowCount || 0 };
 }
 
 // =============================================

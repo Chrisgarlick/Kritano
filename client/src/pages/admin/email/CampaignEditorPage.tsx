@@ -19,7 +19,7 @@ import type {
 import type { Pagination } from '../../../types/audit.types';
 import {
   ArrowLeft, ArrowRight, Send, Users, CheckCircle, Clock,
-  Play, Pause, X, ChevronLeft, ChevronRight, Calendar,
+  Play, Pause, X, ChevronLeft, ChevronRight, Calendar, MailX,
 } from 'lucide-react';
 
 const TIERS = ['free', 'starter', 'professional', 'agency', 'enterprise'];
@@ -76,6 +76,9 @@ export default function CampaignEditorPage() {
   const [scheduleMode, setScheduleMode] = useState<'now' | 'later'>('now');
   const [scheduledAt, setScheduledAt] = useState('');
   const [saving, setSaving] = useState(false);
+
+  // Unsubscribe stats
+  const [unsubCount, setUnsubCount] = useState<number | null>(null);
 
   // Detail view state
   const [sends, setSends] = useState<EmailSendRecord[]>([]);
@@ -136,6 +139,10 @@ export default function CampaignEditorPage() {
   useEffect(() => {
     if (step === 1) {
       const timer = setTimeout(() => fetchAudienceCount(segment), 500);
+      // Fetch unsubscribe stats when audience step mounts
+      adminApi.getUnsubscribeStats().then(({ data }) => {
+        setUnsubCount(data.registeredUnsubscribed);
+      }).catch(() => {});
       return () => clearTimeout(timer);
     }
   }, [segment, step, fetchAudienceCount]);
@@ -243,7 +250,7 @@ export default function CampaignEditorPage() {
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Link to="/admin/email/campaigns" className="p-2 text-slate-400 hover:text-white transition-colors">
+              <Link to="/admin/email/campaigns" className="p-2 text-slate-500 hover:text-white transition-colors">
                 <ArrowLeft className="w-4 h-4" />
               </Link>
               <div>
@@ -254,7 +261,7 @@ export default function CampaignEditorPage() {
                   </span>
                 </div>
                 {campaign.description && (
-                  <p className="text-sm text-slate-400 mt-1">{campaign.description}</p>
+                  <p className="text-sm text-slate-500 mt-1">{campaign.description}</p>
                 )}
               </div>
             </div>
@@ -319,7 +326,7 @@ export default function CampaignEditorPage() {
               },
             ].map((stat) => (
               <div key={stat.label} className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-                <div className="text-xs text-slate-400 mb-1">{stat.label}</div>
+                <div className="text-xs text-slate-500 mb-1">{stat.label}</div>
                 <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
                 <div className="text-xs text-slate-500 mt-1">{stat.sub}</div>
               </div>
@@ -329,21 +336,21 @@ export default function CampaignEditorPage() {
           {/* Campaign Info */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-              <div className="text-xs text-slate-400">Template</div>
+              <div className="text-xs text-slate-500">Template</div>
               <div className="text-sm text-white mt-1">{campaign.template_name || '—'}</div>
             </div>
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-              <div className="text-xs text-slate-400">Audience</div>
+              <div className="text-xs text-slate-500">Audience</div>
               <div className="text-sm text-white mt-1">{campaign.audience_count.toLocaleString()} recipients</div>
             </div>
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-              <div className="text-xs text-slate-400">Started</div>
+              <div className="text-xs text-slate-500">Started</div>
               <div className="text-sm text-white mt-1">
                 {campaign.started_at ? new Date(campaign.started_at).toLocaleString() : '—'}
               </div>
             </div>
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-              <div className="text-xs text-slate-400">Completed</div>
+              <div className="text-xs text-slate-500">Completed</div>
               <div className="text-sm text-white mt-1">
                 {campaign.completed_at ? new Date(campaign.completed_at).toLocaleString() : '—'}
               </div>
@@ -365,7 +372,7 @@ export default function CampaignEditorPage() {
                   style={{ width: `${((campaign.stats.sent + campaign.stats.failed) / campaign.stats.total) * 100}%` }}
                 />
               </div>
-              <div className="flex items-center gap-4 mt-2 text-xs text-slate-400">
+              <div className="flex items-center gap-4 mt-2 text-xs text-slate-500">
                 <span>{campaign.stats.queued} queued</span>
                 <span>{campaign.stats.sent} sent</span>
                 <span>{campaign.stats.failed} failed</span>
@@ -392,18 +399,18 @@ export default function CampaignEditorPage() {
             {sendsLoading ? (
               <div className="h-32 bg-white/[0.02] rounded-lg animate-pulse" />
             ) : sends.length === 0 ? (
-              <div className="text-center py-8 text-slate-400 text-sm">No sends yet</div>
+              <div className="text-center py-8 text-slate-500 text-sm">No sends yet</div>
             ) : (
               <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg overflow-hidden">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-white/[0.06]">
-                      <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Email</th>
-                      <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Status</th>
-                      <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Sent</th>
-                      <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Opened</th>
-                      <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Clicked</th>
-                      <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Error</th>
+                      <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Email</th>
+                      <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Status</th>
+                      <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Sent</th>
+                      <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Opened</th>
+                      <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Clicked</th>
+                      <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Error</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -415,13 +422,13 @@ export default function CampaignEditorPage() {
                             {send.status}
                           </span>
                         </td>
-                        <td className="px-4 py-2 text-xs text-slate-400">
+                        <td className="px-4 py-2 text-xs text-slate-500">
                           {send.sent_at ? new Date(send.sent_at).toLocaleString() : '—'}
                         </td>
-                        <td className="px-4 py-2 text-xs text-slate-400">
+                        <td className="px-4 py-2 text-xs text-slate-500">
                           {send.opened_at ? new Date(send.opened_at).toLocaleString() : '—'}
                         </td>
-                        <td className="px-4 py-2 text-xs text-slate-400">
+                        <td className="px-4 py-2 text-xs text-slate-500">
                           {send.clicked_at ? new Date(send.clicked_at).toLocaleString() : '—'}
                         </td>
                         <td className="px-4 py-2 text-xs text-red-400 truncate max-w-[200px]">
@@ -439,17 +446,17 @@ export default function CampaignEditorPage() {
                 <button
                   onClick={() => setSendsPage(p => Math.max(1, p - 1))}
                   disabled={sendsPage === 1}
-                  className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                  className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
-                <span className="text-sm text-slate-400">
+                <span className="text-sm text-slate-500">
                   Page {sendsPage} of {sendsPagination.pages}
                 </span>
                 <button
                   onClick={() => setSendsPage(p => Math.min(sendsPagination!.pages, p + 1))}
                   disabled={sendsPage === sendsPagination.pages}
-                  className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                  className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -478,7 +485,7 @@ export default function CampaignEditorPage() {
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center gap-3">
-          <Link to="/admin/email/campaigns" className="p-2 text-slate-400 hover:text-white transition-colors">
+          <Link to="/admin/email/campaigns" className="p-2 text-slate-500 hover:text-white transition-colors">
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
@@ -518,7 +525,7 @@ export default function CampaignEditorPage() {
           {step === 0 && (
             <div className="space-y-4">
               <h2 className="text-lg font-medium text-white">Choose a Template</h2>
-              <p className="text-sm text-slate-400">Select the email template to use for this campaign.</p>
+              <p className="text-sm text-slate-500">Select the email template to use for this campaign.</p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[400px] overflow-y-auto">
                 {templates.map((t) => (
                   <button
@@ -531,7 +538,7 @@ export default function CampaignEditorPage() {
                     }`}
                   >
                     <div className="text-sm font-medium text-white">{t.name}</div>
-                    <div className="text-xs text-slate-400 mt-1 truncate">{t.subject}</div>
+                    <div className="text-xs text-slate-500 mt-1 truncate">{t.subject}</div>
                     <div className="text-xs text-slate-500 mt-1">{t.category.replace('_', ' ')}</div>
                   </button>
                 ))}
@@ -558,13 +565,21 @@ export default function CampaignEditorPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-medium text-white">Define Audience</h2>
-                  <p className="text-sm text-slate-400">Segment your recipients based on criteria below.</p>
+                  <p className="text-sm text-slate-500">Segment your recipients based on criteria below.</p>
                 </div>
-                <div className="flex items-center gap-2 bg-white/[0.06] rounded-lg px-4 py-2">
-                  <Users className="w-4 h-4 text-indigo-400" />
-                  <span className="text-sm font-medium text-white">
-                    {audienceLoading ? '...' : audienceCount !== null ? audienceCount.toLocaleString() : '—'} recipients
-                  </span>
+                <div className="text-right">
+                  <div className="flex items-center gap-2 bg-white/[0.06] rounded-lg px-4 py-2">
+                    <Users className="w-4 h-4 text-indigo-400" />
+                    <span className="text-sm font-medium text-white">
+                      {audienceLoading ? '...' : audienceCount !== null ? audienceCount.toLocaleString() : '—'} recipients
+                    </span>
+                  </div>
+                  {unsubCount !== null && unsubCount > 0 && (
+                    <div className="flex items-center gap-1.5 mt-1.5 text-xs text-orange-400">
+                      <MailX className="w-3 h-3" />
+                      {unsubCount} user{unsubCount !== 1 ? 's' : ''} auto-excluded (unsubscribed)
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -747,7 +762,7 @@ export default function CampaignEditorPage() {
                     <Send className="w-5 h-5 text-indigo-400" />
                     <div className="text-left">
                       <div className="text-sm font-medium text-white">Send Now</div>
-                      <div className="text-xs text-slate-400">Start sending immediately after review</div>
+                      <div className="text-xs text-slate-500">Start sending immediately after review</div>
                     </div>
                   </button>
                   <button
@@ -761,7 +776,7 @@ export default function CampaignEditorPage() {
                     <Calendar className="w-5 h-5 text-blue-400" />
                     <div className="text-left">
                       <div className="text-sm font-medium text-white">Schedule</div>
-                      <div className="text-xs text-slate-400">Choose a specific date and time</div>
+                      <div className="text-xs text-slate-500">Choose a specific date and time</div>
                     </div>
                   </button>
                 </div>
@@ -792,7 +807,7 @@ export default function CampaignEditorPage() {
                   <h3 className="text-sm font-medium text-slate-300">Campaign</h3>
                   <div className="text-sm text-white">{campaignName || '—'}</div>
                   {campaignDescription && (
-                    <div className="text-xs text-slate-400">{campaignDescription}</div>
+                    <div className="text-xs text-slate-500">{campaignDescription}</div>
                   )}
                 </div>
 
@@ -812,13 +827,13 @@ export default function CampaignEditorPage() {
                     </span>
                   </div>
                   {segment.tiers && segment.tiers.length > 0 && (
-                    <div className="text-xs text-slate-400">Tiers: {segment.tiers.join(', ')}</div>
+                    <div className="text-xs text-slate-500">Tiers: {segment.tiers.join(', ')}</div>
                   )}
                   {segment.leadStatuses && segment.leadStatuses.length > 0 && (
-                    <div className="text-xs text-slate-400">Statuses: {segment.leadStatuses.join(', ')}</div>
+                    <div className="text-xs text-slate-500">Statuses: {segment.leadStatuses.join(', ')}</div>
                   )}
                   {segment.verifiedDomain && (
-                    <div className="text-xs text-slate-400">Verified domains only</div>
+                    <div className="text-xs text-slate-500">Verified domains only</div>
                   )}
                 </div>
 
@@ -865,7 +880,7 @@ export default function CampaignEditorPage() {
           <button
             onClick={() => setStep(s => Math.max(0, s - 1))}
             disabled={step === 0}
-            className="flex items-center gap-2 px-4 py-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> Back
           </button>

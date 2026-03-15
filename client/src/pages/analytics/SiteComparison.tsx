@@ -48,7 +48,7 @@ function SiteSummaryCards({ sites }: { sites: SiteComparisonEntry[] }) {
             </div>
             <div className="grid grid-cols-3 gap-2 text-center">
               <div>
-                <p className="text-xs text-slate-400">Last Audit</p>
+                <p className="text-xs text-slate-500">Last Audit</p>
                 <p className="text-sm font-medium text-slate-700">
                   {site.latestAudit
                     ? new Date(site.latestAudit.completedAt).toLocaleDateString()
@@ -56,13 +56,13 @@ function SiteSummaryCards({ sites }: { sites: SiteComparisonEntry[] }) {
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-400">Issues</p>
+                <p className="text-xs text-slate-500">Issues</p>
                 <p className="text-sm font-medium text-slate-700">
                   {site.latestAudit?.totalIssues ?? 'N/A'}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-400">Categories</p>
+                <p className="text-xs text-slate-500">Categories</p>
                 <p className="text-sm font-medium text-slate-700">{validScores.length}/6</p>
               </div>
             </div>
@@ -74,7 +74,7 @@ function SiteSummaryCards({ sites }: { sites: SiteComparisonEntry[] }) {
 }
 
 function DeltaCell({ value }: { value: number | null }) {
-  if (value === null) return <span className="text-slate-400 text-xs">N/A</span>;
+  if (value === null) return <span className="text-slate-500 text-xs">N/A</span>;
   if (value > 0) return (
     <span className="inline-flex items-center gap-0.5 text-xs font-medium text-emerald-600">
       <TrendingUp className="w-3 h-3" />+{value}
@@ -86,7 +86,7 @@ function DeltaCell({ value }: { value: number | null }) {
     </span>
   );
   return (
-    <span className="inline-flex items-center gap-0.5 text-xs text-slate-400">
+    <span className="inline-flex items-center gap-0.5 text-xs text-slate-500">
       <Minus className="w-3 h-3" />0
     </span>
   );
@@ -113,9 +113,9 @@ function LatestVsAverageTable({ sites }: { sites: SiteComparisonEntry[] }) {
             <th />
             {sites.map(site => (
               <>
-                <th key={`${site.id}-l`} className="text-center py-1 px-2 text-[10px] font-medium text-slate-400 border-l border-slate-100">Latest</th>
-                <th key={`${site.id}-a`} className="text-center py-1 px-2 text-[10px] font-medium text-slate-400">Avg</th>
-                <th key={`${site.id}-d`} className="text-center py-1 px-2 text-[10px] font-medium text-slate-400">Delta</th>
+                <th key={`${site.id}-l`} className="text-center py-1 px-2 text-[10px] font-medium text-slate-500 border-l border-slate-100">Latest</th>
+                <th key={`${site.id}-a`} className="text-center py-1 px-2 text-[10px] font-medium text-slate-500">Avg</th>
+                <th key={`${site.id}-d`} className="text-center py-1 px-2 text-[10px] font-medium text-slate-500">Delta</th>
               </>
             ))}
           </tr>
@@ -160,7 +160,7 @@ function IssueCountComparison({ sites }: { sites: SiteComparisonEntry[] }) {
   const max = Math.max(...sorted.map(s => s.latestAudit?.totalIssues ?? 0), 1);
 
   if (sorted.length === 0) {
-    return <p className="text-sm text-slate-400">No audit data available.</p>;
+    return <p className="text-sm text-slate-500">No audit data available.</p>;
   }
 
   return (
@@ -320,11 +320,11 @@ export function SiteComparisonContent() {
               >
                 <div className="text-sm">
                   <span className="font-medium text-slate-700">{site.name}</span>
-                  <span className="text-slate-400 text-xs ml-1">({site.domain})</span>
+                  <span className="text-slate-500 text-xs ml-1">({site.domain})</span>
                 </div>
                 <button
                   onClick={() => removeSite(site.id)}
-                  className="text-slate-400 hover:text-red-500"
+                  className="text-slate-500 hover:text-red-500"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -332,7 +332,7 @@ export function SiteComparisonContent() {
             ))}
           </div>
         ) : (
-          <p className="text-slate-400 text-sm mb-4">
+          <p className="text-slate-500 text-sm mb-4">
             Select at least 2 sites to compare
           </p>
         )}
@@ -341,9 +341,9 @@ export function SiteComparisonContent() {
         {showSelector && (
           <div className="border border-slate-200 rounded-lg max-h-64 overflow-y-auto">
             {sitesLoading ? (
-              <div className="p-4 text-center text-slate-400">Loading sites...</div>
+              <div className="p-4 text-center text-slate-500">Loading sites...</div>
             ) : availableSites.length === 0 ? (
-              <div className="p-4 text-center text-slate-400">No sites found</div>
+              <div className="p-4 text-center text-slate-500">No sites found</div>
             ) : (
               <div className="divide-y divide-slate-100">
                 {availableSites
@@ -355,7 +355,7 @@ export function SiteComparisonContent() {
                       className="w-full px-4 py-3 text-left hover:bg-slate-50 transition-colors"
                     >
                       <span className="font-medium text-slate-700">{site.name}</span>
-                      <span className="text-slate-400 text-sm ml-2">({site.domain})</span>
+                      <span className="text-slate-500 text-sm ml-2">({site.domain})</span>
                     </button>
                   ))}
               </div>
@@ -404,7 +404,7 @@ export function SiteComparisonContent() {
           {/* Issue Count Comparison */}
           <div className="bg-white rounded-lg border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-4">
-              <BarChart3 className="w-5 h-5 text-slate-400" />
+              <BarChart3 className="w-5 h-5 text-slate-500" />
               <h2 className="text-lg font-medium text-slate-900">Issue Count Comparison</h2>
             </div>
             <IssueCountComparison sites={comparison.sites} />

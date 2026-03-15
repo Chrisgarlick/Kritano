@@ -66,7 +66,7 @@ export default function RegisterPage() {
           <div className="text-center mb-8">
             <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">PagePulser</p>
             <h1 className="mt-4 text-xl font-semibold text-slate-900 dark:text-white">Early Access is Full</h1>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-500">
               All founding member spots have been claimed. Join the waitlist and we'll notify you when we launch.
             </p>
           </div>
@@ -78,7 +78,7 @@ export default function RegisterPage() {
                   <Sparkles className="w-6 h-6 text-emerald-600" />
                 </div>
                 <p className="text-slate-900 dark:text-white font-medium">You're on the list!</p>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">We'll let you know when we launch.</p>
+                <p className="text-sm text-slate-600 dark:text-slate-500 mt-2">We'll let you know when we launch.</p>
               </div>
             ) : (
               <form onSubmit={handleWaitlistSignup} className="space-y-4">
@@ -126,14 +126,14 @@ export default function RegisterPage() {
                 <Sparkles className="w-5 h-5 text-amber-500" />
                 Claim Your Early Access
               </h1>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-500">
                 {eaStatus.spotsRemaining} of 200 founding member spots remaining
               </p>
             </>
           ) : (
             <>
               <h1 className="mt-4 text-xl font-semibold text-slate-900 dark:text-white">Create your account</h1>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-500">
                 Start scanning websites for SEO, accessibility, and security issues
               </p>
             </>

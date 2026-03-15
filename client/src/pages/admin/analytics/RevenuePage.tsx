@@ -18,7 +18,7 @@ import {
 const TIER_ORDER = ['free', 'starter', 'pro', 'agency', 'enterprise'];
 
 const TIER_CONFIG: Record<string, { label: string; color: string; bgColor: string; chartColor: string }> = {
-  free: { label: 'Free', color: 'text-slate-400', bgColor: 'bg-slate-600', chartColor: '#64748b' },
+  free: { label: 'Free', color: 'text-slate-500', bgColor: 'bg-slate-600', chartColor: '#64748b' },
   starter: { label: 'Starter', color: 'text-blue-400', bgColor: 'bg-blue-600', chartColor: '#3b82f6' },
   pro: { label: 'Pro', color: 'text-indigo-400', bgColor: 'bg-indigo-600', chartColor: '#6366f1' },
   agency: { label: 'Agency', color: 'text-purple-400', bgColor: 'bg-purple-600', chartColor: '#a855f7' },
@@ -75,7 +75,7 @@ export default function RevenuePage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Revenue Dashboard</h1>
-              <p className="text-sm text-slate-400">MRR, ARR, and subscriber metrics</p>
+              <p className="text-sm text-slate-500">MRR, ARR, and subscriber metrics</p>
             </div>
           </div>
 
@@ -137,7 +137,7 @@ export default function RevenuePage() {
                 </div>
                 <div className="flex items-baseline gap-3">
                   <span className="text-3xl font-bold text-emerald-400">+{data.newThisMonth.count}</span>
-                  <span className="text-sm text-slate-400">subscribers</span>
+                  <span className="text-sm text-slate-500">subscribers</span>
                 </div>
                 <p className="mt-2 text-sm text-emerald-400/80">
                   +{formatCurrency(data.newThisMonth.mrrGained ?? 0)} MRR gained
@@ -151,7 +151,7 @@ export default function RevenuePage() {
                 </div>
                 <div className="flex items-baseline gap-3">
                   <span className="text-3xl font-bold text-red-400">-{data.churnThisMonth.count}</span>
-                  <span className="text-sm text-slate-400">subscribers</span>
+                  <span className="text-sm text-slate-500">subscribers</span>
                 </div>
                 <p className="mt-2 text-sm text-red-400/80">
                   -{formatCurrency(data.churnThisMonth.mrrLost ?? 0)} MRR lost
@@ -208,7 +208,7 @@ export default function RevenuePage() {
                     {TIER_ORDER.filter((t) => t !== 'free' && data.byTier[t]?.mrr > 0).map((tier) => {
                       const config = TIER_CONFIG[tier];
                       return (
-                        <div key={tier} className="flex items-center gap-1.5 text-xs text-slate-400">
+                        <div key={tier} className="flex items-center gap-1.5 text-xs text-slate-500">
                           <div className={`w-2.5 h-2.5 rounded-sm ${config.bgColor}`} />
                           {config.label}
                         </div>
@@ -264,7 +264,7 @@ function MetricCard({
         <div className={`p-1.5 rounded-lg ${iconBg}`}>
           <Icon className={`w-4 h-4 ${iconColor}`} />
         </div>
-        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">{label}</span>
+        <span className="text-xs text-slate-500 font-medium uppercase tracking-wide">{label}</span>
       </div>
       <p className="text-3xl font-bold text-white">{value}</p>
       {subtitle && <p className="text-sm text-slate-500 mt-1">{subtitle}</p>}
@@ -295,7 +295,7 @@ function TierRevenueCard({ tier, data, totalMrr }: { tier: string; data: AdminTi
         </div>
 
         {tier !== 'free' && pct > 0 && (
-          <div className="text-xs text-slate-400">{pct}% of MRR</div>
+          <div className="text-xs text-slate-500">{pct}% of MRR</div>
         )}
       </div>
     </div>

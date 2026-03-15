@@ -170,7 +170,7 @@ export default function AdminBugReportDetail() {
       <div className="mb-6">
         <Link
           to="/admin/bug-reports"
-          className="inline-flex items-center text-sm text-slate-400 hover:text-white mb-4"
+          className="inline-flex items-center text-sm text-slate-500 hover:text-white mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
           Back to Bug Reports
@@ -211,7 +211,7 @@ export default function AdminBugReportDetail() {
         <div className="lg:col-span-2 space-y-6">
           {/* Description */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-3">
               Description
             </h3>
             <p className="text-white whitespace-pre-wrap">
@@ -221,7 +221,7 @@ export default function AdminBugReportDetail() {
 
           {/* Context */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">
               Context
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -247,7 +247,7 @@ export default function AdminBugReportDetail() {
                   <Monitor className="w-5 h-5 text-slate-500 mt-0.5" />
                   <div>
                     <p className="text-sm font-medium text-slate-300">Screen Size</p>
-                    <p className="text-sm text-slate-400">{(report as any).screen_size}</p>
+                    <p className="text-sm text-slate-500">{(report as any).screen_size}</p>
                   </div>
                 </div>
               )}
@@ -256,7 +256,7 @@ export default function AdminBugReportDetail() {
                   <Bug className="w-5 h-5 text-slate-500 mt-0.5" />
                   <div>
                     <p className="text-sm font-medium text-slate-300">Browser</p>
-                    <p className="text-sm text-slate-400">
+                    <p className="text-sm text-slate-500">
                       {(report as any).browser_info.name} {(report as any).browser_info.version} / {(report as any).browser_info.os}
                     </p>
                   </div>
@@ -267,7 +267,7 @@ export default function AdminBugReportDetail() {
 
           {/* Comments */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">
               Comments ({report.comments.length})
             </h3>
 
@@ -341,12 +341,12 @@ export default function AdminBugReportDetail() {
         <div className="space-y-6">
           {/* Reporter Info */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">
               Reporter
             </h3>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/[0.06] rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-slate-400" />
+                <User className="w-5 h-5 text-slate-500" />
               </div>
               <div>
                 <p className="text-sm font-medium text-white">
@@ -361,7 +361,7 @@ export default function AdminBugReportDetail() {
 
           {/* Status & Priority */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">
               Manage
             </h3>
             <div className="space-y-4">
@@ -445,7 +445,7 @@ export default function AdminBugReportDetail() {
 
           {/* Timestamps */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">
               Timeline
             </h3>
             <div className="space-y-3 text-sm">

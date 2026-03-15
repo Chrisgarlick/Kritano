@@ -74,7 +74,7 @@ export default function AddBlockMenu({ onAdd }: AddBlockMenuProps) {
                   title={description}
                   className="flex flex-col items-center gap-1.5 rounded-md px-2 py-3 text-slate-300 transition-colors hover:bg-slate-700 hover:text-white"
                 >
-                  <Icon className="h-5 w-5 text-slate-400" />
+                  <Icon className="h-5 w-5 text-slate-500" />
                   <span className="text-xs font-medium">{label}</span>
                 </button>
               ))}

@@ -28,7 +28,7 @@ const STATUS_LABELS: Record<string, { label: string; color: string }> = {
 };
 
 const SEND_STATUS_COLORS: Record<string, string> = {
-  queued: 'text-slate-400',
+  queued: 'text-slate-500',
   sending: 'text-amber-400',
   sent: 'text-emerald-400',
   failed: 'text-red-400',
@@ -243,7 +243,7 @@ export default function ColdProspectsDashboard() {
         {showImport && (
           <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4 mb-6">
             <h3 className="text-sm font-medium text-white mb-2">Manual CSV Import</h3>
-            <p className="text-xs text-slate-400 mb-3">Paste domain names (one per line or CSV with domain column).</p>
+            <p className="text-xs text-slate-500 mb-3">Paste domain names (one per line or CSV with domain column).</p>
             <textarea
               value={csvContent}
               onChange={(e) => setCsvContent(e.target.value)}
@@ -251,7 +251,7 @@ export default function ColdProspectsDashboard() {
               className="w-full h-32 bg-white/[0.03] border border-white/[0.06] rounded-lg p-3 text-sm text-white font-mono placeholder-slate-500 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
             />
             <div className="flex justify-end gap-2 mt-3">
-              <button onClick={() => { setShowImport(false); setCsvContent(''); }} className="px-3 py-1.5 text-sm text-slate-400 hover:text-white">
+              <button onClick={() => { setShowImport(false); setCsvContent(''); }} className="px-3 py-1.5 text-sm text-slate-500 hover:text-white">
                 Cancel
               </button>
               <button
@@ -281,7 +281,7 @@ export default function ColdProspectsDashboard() {
                   className={`flex items-center gap-2 px-3 py-1.5 text-xs rounded-lg transition-colors ${
                     outreachEnabled
                       ? 'bg-amber-600/20 text-amber-400 border border-amber-600/30'
-                      : 'bg-white/[0.06] text-slate-400 border border-white/[0.08]'
+                      : 'bg-white/[0.06] text-slate-500 border border-white/[0.08]'
                   }`}
                 >
                   {togglingOutreach ? (
@@ -326,7 +326,7 @@ export default function ColdProspectsDashboard() {
             )}
 
             {outreachStats && (outreachStats.openRate > 0 || outreachStats.clickRate > 0) && (
-              <div className="flex gap-4 text-xs text-slate-400">
+              <div className="flex gap-4 text-xs text-slate-500">
                 <span>Open rate: <strong className="text-white">{outreachStats.openRate}%</strong></span>
                 <span>Click rate: <strong className="text-white">{outreachStats.clickRate}%</strong></span>
                 <span>Unsubscribed: <strong className="text-white">{outreachStats.unsubscribed}</strong></span>
@@ -337,7 +337,7 @@ export default function ColdProspectsDashboard() {
             {/* Recent sends table */}
             {outreachSends.length > 0 && (
               <div>
-                <h3 className="text-xs font-medium text-slate-400 uppercase mb-2">Recent Sends</h3>
+                <h3 className="text-xs font-medium text-slate-500 uppercase mb-2">Recent Sends</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead>
@@ -353,9 +353,9 @@ export default function ColdProspectsDashboard() {
                       {outreachSends.map((send) => (
                         <tr key={send.id} className="border-b border-slate-800">
                           <td className="py-2 pr-3 text-white">{send.domain}</td>
-                          <td className="py-2 pr-3 text-slate-400">{send.to_email}</td>
-                          <td className="py-2 pr-3 text-slate-400">{send.template_slug.replace('cold_outreach_', '')}</td>
-                          <td className={`py-2 pr-3 font-medium ${SEND_STATUS_COLORS[send.status] || 'text-slate-400'}`}>
+                          <td className="py-2 pr-3 text-slate-500">{send.to_email}</td>
+                          <td className="py-2 pr-3 text-slate-500">{send.template_slug.replace('cold_outreach_', '')}</td>
+                          <td className={`py-2 pr-3 font-medium ${SEND_STATUS_COLORS[send.status] || 'text-slate-500'}`}>
                             {send.status}
                           </td>
                           <td className="py-2 text-slate-500">
@@ -391,7 +391,7 @@ export default function ColdProspectsDashboard() {
               <div key={s.label} className="bg-white/[0.02] p-4 rounded-lg border border-white/[0.06]">
                 <div className="flex items-center gap-2 mb-1">
                   <s.icon className={`w-4 h-4 ${s.color}`} />
-                  <span className="text-xs text-slate-400">{s.label}</span>
+                  <span className="text-xs text-slate-500">{s.label}</span>
                 </div>
                 <p className={`text-lg font-bold ${s.color}`}>{s.value}</p>
               </div>
@@ -418,7 +418,7 @@ export default function ColdProspectsDashboard() {
                       <div className={`w-10 h-10 rounded-full ${info.color} flex items-center justify-center mb-2`}>
                         <span className="text-xs font-bold text-white">{count > 999 ? `${(count / 1000).toFixed(1)}k` : count}</span>
                       </div>
-                      <span className="text-xs text-slate-400">{info.label}</span>
+                      <span className="text-xs text-slate-500">{info.label}</span>
                       <span className="text-[10px] text-slate-500">{pct}%</span>
                     </Link>
                     {idx < 7 && <ArrowRight className="w-3 h-3 text-slate-600 flex-shrink-0" />}
@@ -463,7 +463,7 @@ export default function ColdProspectsDashboard() {
             className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4 hover:border-indigo-500/50 transition-colors"
           >
             <h3 className="text-sm font-medium text-white mb-1">Qualified with Email</h3>
-            <p className="text-xs text-slate-400">Ready for outreach - has verified email and good quality score</p>
+            <p className="text-xs text-slate-500">Ready for outreach - has verified email and good quality score</p>
             <span className="text-indigo-400 text-xs mt-2 inline-block">View prospects &rarr;</span>
           </Link>
           <Link
@@ -471,7 +471,7 @@ export default function ColdProspectsDashboard() {
             className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4 hover:border-indigo-500/50 transition-colors"
           >
             <h3 className="text-sm font-medium text-white mb-1">With Name + Email</h3>
-            <p className="text-xs text-slate-400">Best leads - has a person's name and email address</p>
+            <p className="text-xs text-slate-500">Best leads - has a person's name and email address</p>
             <span className="text-indigo-400 text-xs mt-2 inline-block">View prospects &rarr;</span>
           </Link>
           <Link
@@ -479,7 +479,7 @@ export default function ColdProspectsDashboard() {
             className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4 hover:border-indigo-500/50 transition-colors"
           >
             <h3 className="text-sm font-medium text-white mb-1">All Prospects</h3>
-            <p className="text-xs text-slate-400">Browse the full pipeline with filters</p>
+            <p className="text-xs text-slate-500">Browse the full pipeline with filters</p>
             <span className="text-indigo-400 text-xs mt-2 inline-block">View all &rarr;</span>
           </Link>
         </div>
@@ -490,7 +490,7 @@ export default function ColdProspectsDashboard() {
             <h2 className="text-sm font-semibold text-white mb-4">Pipeline Settings</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Target TLDs</label>
+                <label className="block text-xs text-slate-500 mb-1">Target TLDs</label>
                 <input
                   type="text"
                   value={(settingsForm.targetTlds || []).join(', ')}
@@ -499,7 +499,7 @@ export default function ColdProspectsDashboard() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Excluded Keywords</label>
+                <label className="block text-xs text-slate-500 mb-1">Excluded Keywords</label>
                 <input
                   type="text"
                   value={(settingsForm.excludedKeywords || []).join(', ')}
@@ -508,7 +508,7 @@ export default function ColdProspectsDashboard() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Min Quality Score</label>
+                <label className="block text-xs text-slate-500 mb-1">Min Quality Score</label>
                 <input
                   type="number"
                   value={settingsForm.minQualityScore || 30}
@@ -519,7 +519,7 @@ export default function ColdProspectsDashboard() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Daily Check Limit</label>
+                <label className="block text-xs text-slate-500 mb-1">Daily Check Limit</label>
                 <input
                   type="number"
                   value={settingsForm.dailyCheckLimit || 500}
@@ -530,7 +530,7 @@ export default function ColdProspectsDashboard() {
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Daily Email Limit</label>
+                <label className="block text-xs text-slate-500 mb-1">Daily Email Limit</label>
                 <input
                   type="number"
                   value={settingsForm.dailyEmailLimit || 50}
@@ -541,7 +541,7 @@ export default function ColdProspectsDashboard() {
                 />
               </div>
               <div className="flex items-center gap-3">
-                <label className="block text-xs text-slate-400">Auto Outreach</label>
+                <label className="block text-xs text-slate-500">Auto Outreach</label>
                 <button
                   onClick={() => setSettingsForm({ ...settingsForm, autoOutreachEnabled: !settingsForm.autoOutreachEnabled })}
                   className={`relative w-10 h-5 rounded-full transition-colors ${

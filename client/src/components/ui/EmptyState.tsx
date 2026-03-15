@@ -267,8 +267,8 @@ function KeyIcon() {
 function SearchIcon() {
   return (
     <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full">
-      <circle cx="28" cy="28" r="18" className="text-slate-400" />
-      <path d="M42 42l14 14" className="text-slate-400" strokeLinecap="round" strokeWidth="3" />
+      <circle cx="28" cy="28" r="18" className="text-slate-500" />
+      <path d="M42 42l14 14" className="text-slate-500" strokeLinecap="round" strokeWidth="3" />
       <path d="M20 28h16M28 20v16" strokeOpacity="0.3" strokeLinecap="round" />
     </svg>
   );

@@ -294,7 +294,7 @@ export default function DocsEndpointsPage() {
             <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
               {['pending', 'discovering', 'ready', 'processing', 'completed'].map((s, i) => (
                 <span key={s}>
-                  {i > 0 && <span className="text-slate-400 mx-1">&rarr;</span>}
+                  {i > 0 && <span className="text-slate-500 mx-1">&rarr;</span>}
                   <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded">{s}</span>
                 </span>
               ))}

@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export function useKeyboardShortcuts() {
   const navigate = useNavigate();
+  const [showHelp, setShowHelp] = useState(false);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -18,15 +19,20 @@ export function useKeyboardShortcuts() {
         const searchInput = document.querySelector<HTMLInputElement>('input[placeholder*="Search"]');
         searchInput?.focus();
       } else if (e.key === 'Escape') {
-        // Close any open modal (blur active element)
-        (document.activeElement as HTMLElement)?.blur();
+        if (showHelp) {
+          setShowHelp(false);
+        } else {
+          (document.activeElement as HTMLElement)?.blur();
+        }
       } else if (e.key === '?' && e.shiftKey) {
         e.preventDefault();
-        alert('Keyboard Shortcuts:\n\nn - New audit\n/ - Focus search\nEsc - Close / unfocus\n? - Show shortcuts');
+        setShowHelp(prev => !prev);
       }
     };
 
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, [navigate]);
+  }, [navigate, showHelp]);
+
+  return { showHelp, setShowHelp };
 }

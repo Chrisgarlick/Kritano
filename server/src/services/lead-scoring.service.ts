@@ -389,8 +389,9 @@ export async function getLeadProfile(userId: string): Promise<LeadProfile | null
     FROM users u
     LEFT JOIN LATERAL (
       SELECT sub2.tier FROM subscriptions sub2
-      JOIN sites s ON s.organization_id = sub2.organization_id
-      WHERE s.created_by = u.id LIMIT 1
+      JOIN organization_members om ON om.organization_id = sub2.organization_id
+      WHERE om.user_id = u.id AND sub2.status IN ('active', 'trialing')
+      ORDER BY sub2.created_at DESC LIMIT 1
     ) sub ON true
     LEFT JOIN LATERAL (
       SELECT COUNT(*) as total,
@@ -550,7 +551,11 @@ export async function getLeadMemberships(userId: string): Promise<LeadMembership
       COALESCE(audit_count.count, 0) as audit_count
     FROM sites s
     LEFT JOIN site_shares ss ON ss.site_id = s.id AND ss.user_id = $1
-    LEFT JOIN subscriptions sub ON sub.organization_id = s.organization_id
+    LEFT JOIN LATERAL (
+      SELECT tier FROM subscriptions
+      WHERE organization_id = s.organization_id AND status IN ('active', 'trialing')
+      ORDER BY created_at DESC LIMIT 1
+    ) sub ON true
     LEFT JOIN LATERAL (
       SELECT completed_at FROM audit_jobs
       WHERE site_id = s.id AND status = 'completed'

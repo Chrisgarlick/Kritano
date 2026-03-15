@@ -190,7 +190,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
       return (
         <div className="my-6 overflow-hidden rounded-lg border border-slate-200 bg-slate-900">
           {filename && (
-            <div className="border-b border-slate-700 bg-slate-800 px-4 py-2 text-xs font-mono text-slate-400">
+            <div className="border-b border-slate-700 bg-slate-800 px-4 py-2 text-xs font-mono text-slate-500">
               {filename}
             </div>
           )}
@@ -298,7 +298,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
           <p className="font-display text-5xl font-normal text-indigo-600">{stat}</p>
           <p className="mt-3 text-base text-slate-700">{description}</p>
           {source && (
-            <p className="mt-2 text-xs text-slate-400">Source: {source}</p>
+            <p className="mt-2 text-xs text-slate-500">Source: {source}</p>
           )}
         </div>
       );

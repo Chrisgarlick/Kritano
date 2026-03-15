@@ -56,6 +56,12 @@ export function csrfProtection(req: Request, res: Response, next: NextFunction):
     return;
   }
 
+  // Skip CSRF for API v1 endpoints (authenticated via API key, not cookies)
+  if (req.originalUrl.startsWith('/api/v1/')) {
+    next();
+    return;
+  }
+
   const cookieToken = req.cookies?.[CSRF_CONFIG.cookieName];
   const headerToken = req.headers[CSRF_CONFIG.headerName] as string | undefined;
 

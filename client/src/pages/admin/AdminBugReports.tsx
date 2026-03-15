@@ -31,7 +31,7 @@ const severityColors: Record<string, string> = {
   critical: 'text-red-400',
   major: 'text-orange-400',
   minor: 'text-amber-400',
-  trivial: 'text-slate-400',
+  trivial: 'text-slate-500',
 };
 
 export default function AdminBugReports() {
@@ -216,7 +216,7 @@ export default function AdminBugReports() {
                     <td className="px-4 py-4">
                       <div>
                         <p className="font-medium text-white">{report.title}</p>
-                        <p className="text-sm text-slate-400">{report.category}</p>
+                        <p className="text-sm text-slate-500">{report.category}</p>
                       </div>
                     </td>
                     <td className="px-4 py-4">
@@ -229,7 +229,7 @@ export default function AdminBugReports() {
                         {report.status.replace('_', ' ')}
                       </span>
                     </td>
-                    <td className="px-4 py-4 text-sm text-slate-400">
+                    <td className="px-4 py-4 text-sm text-slate-500">
                       {report.reporter_email}
                     </td>
                     <td className="px-4 py-4 text-sm text-slate-500">
@@ -261,7 +261,7 @@ export default function AdminBugReports() {
               <ChevronLeft className="w-4 h-4 mr-1" />
               Previous
             </button>
-            <span className="text-sm text-slate-400">
+            <span className="text-sm text-slate-500">
               Page {page} of {totalPages}
             </span>
             <button

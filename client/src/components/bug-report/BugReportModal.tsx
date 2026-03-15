@@ -164,7 +164,7 @@ export function BugReportModal({ isOpen, onClose }: Props) {
             onClick={handleClose}
             disabled={isSubmitting}
             aria-label="Close"
-            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50"
+            className="p-1 text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50"
           >
             <X className="w-5 h-5" />
           </button>
@@ -177,7 +177,7 @@ export function BugReportModal({ isOpen, onClose }: Props) {
             <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
               Thanks for reporting!
             </h3>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-slate-600 dark:text-slate-500">
               We'll look into this and keep you updated.
             </p>
           </div>
@@ -197,7 +197,7 @@ export function BugReportModal({ isOpen, onClose }: Props) {
                   placeholder="Brief description of the problem"
                   className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600
                            rounded-lg bg-white dark:bg-slate-900
-                           text-slate-900 dark:text-white placeholder-slate-400
+                           text-slate-900 dark:text-white placeholder-slate-500
                            focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                 />
                 {errors.title && (
@@ -233,7 +233,7 @@ export function BugReportModal({ isOpen, onClose }: Props) {
                         <span className="text-sm font-medium text-slate-900 dark:text-white">
                           {option.label}
                         </span>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                        <p className="text-xs text-slate-500 dark:text-slate-500">
                           {option.description}
                         </p>
                       </div>
@@ -276,7 +276,7 @@ export function BugReportModal({ isOpen, onClose }: Props) {
                   placeholder="What happened? What did you expect to happen? Steps to reproduce..."
                   className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600
                            rounded-lg bg-white dark:bg-slate-900
-                           text-slate-900 dark:text-white resize-none placeholder-slate-400
+                           text-slate-900 dark:text-white resize-none placeholder-slate-500
                            focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                 />
                 {errors.description && (
@@ -285,7 +285,7 @@ export function BugReportModal({ isOpen, onClose }: Props) {
               </div>
 
               {/* Context info */}
-              <div className="text-xs text-slate-500 dark:text-slate-400 bg-slate-50
+              <div className="text-xs text-slate-500 dark:text-slate-500 bg-slate-50
                             dark:bg-slate-900 p-3 rounded-lg">
                 <p className="flex items-center gap-1">
                   <AlertCircle className="w-3 h-3" />

@@ -108,15 +108,18 @@ api.interceptors.response.use(
 
       // For other auth errors (AUTH_REQUIRED, TOKEN_INVALID, etc.), redirect to login
       // But don't redirect if we're on auth pages or public pages
-      const publicPaths = ['/', '/login', '/register', '/about', '/services', '/pricing', '/contact', '/blog'];
+      const publicPaths = ['/', '/login', '/register', '/about', '/services', '/pricing', '/contact', '/blog', '/privacy', '/terms', '/docs'];
       const currentPath = window.location.pathname;
       const isPublicPage = publicPaths.includes(currentPath) ||
                            currentPath.startsWith('/login') ||
                            currentPath.startsWith('/register') ||
                            currentPath.startsWith('/blog/') ||
                            currentPath.startsWith('/services/') ||
+                           currentPath.startsWith('/docs/') ||
                            currentPath.startsWith('/email/unsubscribe') ||
-                           currentPath.startsWith('/site-invitations/');
+                           currentPath.startsWith('/site-invitations/') ||
+                           currentPath.startsWith('/auth/callback/') ||
+                           currentPath.startsWith('/auth/oauth/');
       if (!isPublicPage) {
         window.location.href = '/login';
       }
@@ -161,6 +164,21 @@ export const authApi = {
     api.post('/auth/reset-password', { token, password }),
 
   getSessions: () => api.get('/auth/sessions'),
+
+  // OAuth
+  getOAuthUrl: (provider: string, mode?: 'login' | 'link') =>
+    api.get(`/auth/oauth/${provider}/url${mode ? `?mode=${mode}` : ''}`),
+
+  oauthCallback: (provider: string, code: string, state: string) =>
+    api.post(`/auth/oauth/${provider}/callback`, { code, state }),
+
+  getLinkedProviders: () => api.get('/auth/oauth/providers'),
+
+  linkProvider: (provider: string, code: string, state: string) =>
+    api.post(`/auth/oauth/${provider}/link`, { code, state }),
+
+  unlinkProvider: (provider: string) =>
+    api.delete(`/auth/oauth/${provider}`),
 };
 
 // Audits API functions
@@ -977,6 +995,9 @@ export const adminApi = {
 
   getTemplatePerformance: () =>
     api.get<{ templates: TemplatePerformanceItem[] }>('/admin/email/analytics/templates'),
+
+  getUnsubscribeStats: () =>
+    api.get<{ registeredUnsubscribed: number; coldProspectUnsubscribed: number; totalUnsubscribed: number }>('/admin/email/unsubscribe-stats'),
 
   // CMS - Posts
   listPosts: (params: { status?: string; category?: string; search?: string; page?: number; limit?: number } = {}) => {
@@ -2296,6 +2317,7 @@ export interface ColdProspectItem {
   source: string;
   is_excluded: boolean;
   exclusion_reason: string | null;
+  is_unsubscribed?: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -2367,6 +2389,7 @@ export const coldProspectsApi = {
     batchDate?: string;
     hasEmail?: boolean;
     hasName?: boolean;
+    isUnsubscribed?: boolean;
     search?: string;
     page?: number;
     limit?: number;
@@ -2381,6 +2404,7 @@ export const coldProspectsApi = {
     if (params.batchDate) searchParams.set('batchDate', params.batchDate);
     if (params.hasEmail) searchParams.set('hasEmail', 'true');
     if (params.hasName) searchParams.set('hasName', 'true');
+    if (params.isUnsubscribed) searchParams.set('isUnsubscribed', 'true');
     if (params.search) searchParams.set('search', params.search);
     if (params.page) searchParams.set('page', String(params.page));
     if (params.limit) searchParams.set('limit', String(params.limit));
@@ -2632,6 +2656,31 @@ export const adminEarlyAccessApi = {
     api.post('/admin/early-access/activate', { confirm: true }),
   exportUsers: () =>
     api.get('/admin/early-access/users/export', { responseType: 'blob' }),
+};
+
+// Account management (GDPR: data export, deletion)
+export const accountApi = {
+  requestDataExport: (password: string) =>
+    api.post<{ message: string; exportId: string }>('/account/export', { password }),
+
+  getExportStatus: () =>
+    api.get<{ export: {
+      id: string;
+      status: string;
+      createdAt: string;
+      completedAt: string | null;
+      expiresAt: string | null;
+      fileSizeBytes: number | null;
+    } | null }>('/account/export/status'),
+
+  downloadExport: (exportId: string) =>
+    api.get(`/account/export/${exportId}/download`, { responseType: 'blob' }),
+
+  requestAccountDeletion: (password: string, confirmText: string) =>
+    api.post<{ message: string; scheduledFor: string }>('/account/delete', { password, confirmText }),
+
+  cancelAccountDeletion: () =>
+    api.post<{ message: string }>('/account/cancel-deletion'),
 };
 
 export default api;

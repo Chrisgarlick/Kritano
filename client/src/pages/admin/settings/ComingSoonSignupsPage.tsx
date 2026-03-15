@@ -77,7 +77,7 @@ export default function ComingSoonSignupsPage() {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center space-x-2 mb-1">
-              <Link to="/admin/settings" className="text-slate-400 hover:text-white transition">
+              <Link to="/admin/settings" className="text-slate-500 hover:text-white transition">
                 <ArrowLeft className="w-4 h-4" />
               </Link>
               <h1 className="text-3xl font-bold text-white tracking-tight flex items-center space-x-2" style={{ fontFamily: "'Instrument Serif', serif" }}>
@@ -85,7 +85,7 @@ export default function ComingSoonSignupsPage() {
                 <span>Coming Soon Signups</span>
               </h1>
             </div>
-            <p className="text-slate-400">
+            <p className="text-slate-500">
               <Users className="w-4 h-4 inline mr-1" />
               {pagination.total} total signup{pagination.total !== 1 ? 's' : ''}
             </p>
@@ -102,7 +102,7 @@ export default function ComingSoonSignupsPage() {
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
           <input
             type="text"
             placeholder="Search by email or name..."
@@ -116,20 +116,20 @@ export default function ComingSoonSignupsPage() {
         <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg overflow-x-auto">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
+              <Loader2 className="w-6 h-6 animate-spin text-slate-500" />
             </div>
           ) : signups.length === 0 ? (
-            <div className="text-center py-12 text-slate-400">
+            <div className="text-center py-12 text-slate-500">
               {search ? 'No signups match your search.' : 'No signups yet.'}
             </div>
           ) : (
             <table className="w-full min-w-[500px]">
               <thead>
                 <tr className="border-b border-white/[0.06]">
-                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">Email</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">Name</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">IP</th>
-                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">Date</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Email</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Name</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">IP</th>
+                  <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Date</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
@@ -138,8 +138,8 @@ export default function ComingSoonSignupsPage() {
                   <tr key={signup.id} className="hover:bg-white/[0.02]">
                     <td className="px-4 py-3 text-sm text-white font-medium">{signup.email}</td>
                     <td className="px-4 py-3 text-sm text-slate-300">{signup.name || '—'}</td>
-                    <td className="px-4 py-3 text-sm text-slate-400 font-mono text-xs">{signup.ip_address || '—'}</td>
-                    <td className="px-4 py-3 text-sm text-slate-400">
+                    <td className="px-4 py-3 text-sm text-slate-500 font-mono text-xs">{signup.ip_address || '—'}</td>
+                    <td className="px-4 py-3 text-sm text-slate-500">
                       {new Date(signup.created_at).toLocaleDateString('en-GB', {
                         day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
                       })}
@@ -147,7 +147,7 @@ export default function ComingSoonSignupsPage() {
                     <td className="px-4 py-3 text-right">
                       <button
                         onClick={() => handleDelete(signup.id)}
-                        className="text-slate-400 hover:text-red-400 transition"
+                        className="text-slate-500 hover:text-red-400 transition"
                         title="Delete signup"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -170,7 +170,7 @@ export default function ComingSoonSignupsPage() {
             >
               Previous
             </button>
-            <span className="text-sm text-slate-400">
+            <span className="text-sm text-slate-500">
               Page {page} of {pagination.pages}
             </span>
             <button

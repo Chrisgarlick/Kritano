@@ -255,6 +255,8 @@ export class TokenService {
         status: oldTokenData.status,
         role: oldTokenData.role,
         created_at: oldTokenData.user_created_at,
+        deletion_requested_at: oldTokenData.deletion_requested_at ?? null,
+        deletion_scheduled_for: oldTokenData.deletion_scheduled_for ?? null,
       };
 
       // Generate new access token

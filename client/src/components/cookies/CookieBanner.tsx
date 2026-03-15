@@ -53,7 +53,7 @@ export default function CookieBanner() {
                 We use cookies to improve your experience
               </h2>
             </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p className="text-sm text-slate-500 dark:text-slate-500 leading-relaxed">
               We use essential cookies for security and authentication. With your permission,
               we'd also like to use analytics cookies to understand how you use PagePulser so we can make it better.{' '}
               <a href="/privacy" className="text-indigo-600 dark:text-indigo-400 hover:underline">

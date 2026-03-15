@@ -286,12 +286,12 @@ export default function BrandingSettings() {
       <div className="p-6">
         <div className="text-center py-16">
           <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4">
-            <Lock className="w-8 h-8 text-slate-400" />
+            <Lock className="w-8 h-8 text-slate-500" />
           </div>
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
             PDF Branding
           </h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-6">
+          <p className="text-sm text-slate-500 dark:text-slate-500 max-w-md mx-auto mb-6">
             Customize your PDF audit reports with your company's branding, colors, and logo.
             Upgrade to Starter or higher to access this feature.
           </p>
@@ -311,7 +311,7 @@ export default function BrandingSettings() {
       {/* Header */}
       <div>
         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">PDF Report Branding</h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">
           Customize how your exported PDF audit reports look
           {isAgencyPlus && ' — set organization-wide defaults or customize per site'}
         </p>
@@ -329,7 +329,7 @@ export default function BrandingSettings() {
                 <h3 className="text-base font-medium text-slate-900 dark:text-white">
                   Organization Branding
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-slate-500 dark:text-slate-500">
                   Default branding applied to all sites unless overridden
                 </p>
               </div>
@@ -340,7 +340,7 @@ export default function BrandingSettings() {
             {/* Company Name & Logo */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
+                <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1.5">
                   <Type className="w-3.5 h-3.5 inline mr-1 -mt-0.5" />
                   Company Name
                 </label>
@@ -349,11 +349,11 @@ export default function BrandingSettings() {
                   value={orgForm.companyName}
                   onChange={e => setOrgForm(f => ({ ...f, companyName: e.target.value }))}
                   placeholder="Your Company"
-                  className="w-full px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
+                  className="w-full px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
+                <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1.5">
                   <Image className="w-3.5 h-3.5 inline mr-1 -mt-0.5" />
                   Logo URL
                 </label>
@@ -362,7 +362,7 @@ export default function BrandingSettings() {
                   value={orgForm.logoUrl}
                   onChange={e => setOrgForm(f => ({ ...f, logoUrl: e.target.value }))}
                   placeholder="https://example.com/logo.png"
-                  className="w-full px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
+                  className="w-full px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
                 />
               </div>
             </div>
@@ -376,13 +376,13 @@ export default function BrandingSettings() {
                   className="h-8 max-w-[120px] object-contain"
                   onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 />
-                <span className="text-xs text-slate-500 dark:text-slate-400">Logo preview — appears in PDF header</span>
+                <span className="text-xs text-slate-500 dark:text-slate-500">Logo preview — appears in PDF header</span>
               </div>
             )}
 
             {/* Footer Text */}
             <div>
-              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1.5">
                 PDF Footer Text
               </label>
               <input
@@ -390,16 +390,16 @@ export default function BrandingSettings() {
                 value={orgForm.footerText}
                 onChange={e => setOrgForm(f => ({ ...f, footerText: e.target.value }))}
                 placeholder="Prepared by Your Agency"
-                className="w-full px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
+                className="w-full px-3 py-2 text-sm border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
               />
-              <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">
+              <p className="text-[11px] text-slate-500 dark:text-slate-500 mt-1">
                 Shown at the bottom of every PDF page. Leave blank to use "Generated by PagePulser".
               </p>
             </div>
 
             {/* Colors */}
             <div>
-              <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+              <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-2">
                 Brand Colors
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -417,7 +417,7 @@ export default function BrandingSettings() {
               <button
                 type="button"
                 onClick={() => setOrgForm(DEFAULT_BRANDING)}
-                className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+                className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-300 transition-colors"
               >
                 Reset to defaults
               </button>
@@ -443,7 +443,7 @@ export default function BrandingSettings() {
               <h3 className="text-base font-medium text-slate-900 dark:text-white">
                 Site Branding
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-500">
                 {isAgencyPlus
                   ? 'Toggle each site between organization branding or custom site branding'
                   : 'Customize PDF branding for each verified site'}
@@ -455,12 +455,12 @@ export default function BrandingSettings() {
         {verifiedSites.length === 0 ? (
           <div className="p-8 text-center">
             <div className="w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4">
-              <ShieldCheck className="w-7 h-7 text-slate-400" />
+              <ShieldCheck className="w-7 h-7 text-slate-500" />
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+            <p className="text-sm text-slate-600 dark:text-slate-500 mb-1">
               No verified sites
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-slate-500">
               Verify a domain in{' '}
               <a href="/settings/sites" className="text-indigo-600 dark:text-indigo-400 hover:underline">
                 My Sites
@@ -492,7 +492,7 @@ export default function BrandingSettings() {
                           </span>
                         )}
                         {isAgencyPlus && (
-                          <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                          <div className="text-[11px] text-slate-500 dark:text-slate-500 mt-0.5">
                             {useOrg ? 'Using organization branding' : 'Using site-specific branding'}
                           </div>
                         )}
@@ -508,7 +508,7 @@ export default function BrandingSettings() {
                           className={`flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors ${
                             useOrg
                               ? 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400'
-                              : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                              : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-500'
                           }`}
                           title={useOrg ? 'Switch to site-specific branding' : 'Switch to organization branding'}
                         >
@@ -564,7 +564,7 @@ export default function BrandingSettings() {
                         {/* Company Name & Logo */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                            <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1">
                               Company Name
                             </label>
                             <input
@@ -572,11 +572,11 @@ export default function BrandingSettings() {
                               value={siteForm.companyName}
                               onChange={e => setSiteForm(f => ({ ...f, companyName: e.target.value }))}
                               placeholder="Your Company"
-                              className="w-full px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                              className="w-full px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                             />
                           </div>
                           <div>
-                            <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                            <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1">
                               Logo URL
                             </label>
                             <input
@@ -584,7 +584,7 @@ export default function BrandingSettings() {
                               value={siteForm.logoUrl}
                               onChange={e => setSiteForm(f => ({ ...f, logoUrl: e.target.value }))}
                               placeholder="https://..."
-                              className="w-full px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                              className="w-full px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                             />
                           </div>
                         </div>
@@ -598,14 +598,14 @@ export default function BrandingSettings() {
                               className="h-7 max-w-[100px] object-contain"
                               onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
                             />
-                            <span className="text-xs text-slate-500 dark:text-slate-400">Logo preview</span>
+                            <span className="text-xs text-slate-500 dark:text-slate-500">Logo preview</span>
                           </div>
                         )}
 
                         {/* Footer Text (agency+ only) */}
                         {isAgencyPlus && (
                           <div>
-                            <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                            <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1">
                               PDF Footer Text
                             </label>
                             <input
@@ -613,7 +613,7 @@ export default function BrandingSettings() {
                               value={siteForm.footerText}
                               onChange={e => setSiteForm(f => ({ ...f, footerText: e.target.value }))}
                               placeholder="Prepared by Your Agency"
-                              className="w-full px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                              className="w-full px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                             />
                           </div>
                         )}
@@ -628,7 +628,7 @@ export default function BrandingSettings() {
                         {/* Extracted Colors */}
                         {extractedColors.length > 0 && (
                           <div>
-                            <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                            <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-2">
                               Colors found on site (click to apply)
                             </label>
                             <div className="flex flex-wrap gap-1.5">
@@ -649,11 +649,11 @@ export default function BrandingSettings() {
                                     style={{ backgroundColor: color }}
                                     title={`${color} — Click to apply`}
                                   />
-                                  <span className="text-[9px] font-mono text-slate-400">{color.slice(1, 4)}</span>
+                                  <span className="text-[9px] font-mono text-slate-500">{color.slice(1, 4)}</span>
                                 </div>
                               ))}
                             </div>
-                            <p className="text-[10px] text-slate-400 mt-1.5">
+                            <p className="text-[10px] text-slate-500 mt-1.5">
                               Click multiple times to cycle: Primary, Secondary, Accent
                             </p>
                           </div>
@@ -670,7 +670,7 @@ export default function BrandingSettings() {
                               setSiteForm(DEFAULT_BRANDING);
                               setExtractedColors([]);
                             }}
-                            className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300"
+                            className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-300"
                           >
                             Reset to defaults
                           </button>
@@ -749,7 +749,7 @@ export default function BrandingSettings() {
 function ColorInput({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+      <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1">
         {label}
       </label>
       <div className="flex items-center gap-2">
@@ -802,7 +802,7 @@ function BrandingPreview({ form, label }: { form: BrandingForm; label: string })
       </div>
       {form.footerText && (
         <div className="px-3 py-1.5 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
-          <span className="text-[10px] text-slate-400">{form.footerText}</span>
+          <span className="text-[10px] text-slate-500">{form.footerText}</span>
         </div>
       )}
     </div>

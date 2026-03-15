@@ -112,7 +112,7 @@ export default function DocsObjectsPage() {
             <div className="flex flex-wrap items-center gap-1 text-xs font-mono mb-3">
               {['pending', 'discovering', 'ready', 'processing', 'completed'].map((s, i) => (
                 <span key={s} className="flex items-center">
-                  {i > 0 && <span className="text-slate-400 mx-1.5">&rarr;</span>}
+                  {i > 0 && <span className="text-slate-500 mx-1.5">&rarr;</span>}
                   <span className="bg-white border border-slate-200 text-slate-700 px-2.5 py-1 rounded shadow-sm">{s}</span>
                 </span>
               ))}

@@ -173,7 +173,7 @@ export default function ContentListPage() {
             <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Marketing Content</h1>
             {stats && (
               <div className="flex items-center gap-3 mt-2">
-                <span className="text-sm text-slate-400">{stats.total} total items</span>
+                <span className="text-sm text-slate-500">{stats.total} total items</span>
                 <span className="text-slate-600">·</span>
                 {PLATFORMS.map(p => {
                   const count = stats.by_platform[p.value] || 0;
@@ -199,7 +199,7 @@ export default function ContentListPage() {
         {/* Filters */}
         <div className="flex flex-wrap gap-3">
           <div className="relative flex-1 min-w-[200px] max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <input
               type="text"
               value={search}
@@ -284,7 +284,7 @@ export default function ContentListPage() {
         ) : content.length === 0 ? (
           <div className="text-center py-16 bg-white/[0.02] border border-white/[0.06] rounded-lg">
             <Share2 className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-            <p className="text-sm text-slate-400">No content found</p>
+            <p className="text-sm text-slate-500">No content found</p>
             {hasFilters && (
               <button
                 onClick={() => { setPlatform(''); setCampaignId(''); setStatus(''); setSearch(''); setWeekNumber(0); setDayOfWeek(0); }}
@@ -300,14 +300,14 @@ export default function ContentListPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-white/[0.06] text-left">
-                    <th className="px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider w-16">Week</th>
-                    <th className="px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider w-16">Day</th>
-                    <th className="px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider w-24">Platform</th>
-                    <th className="px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">Content</th>
-                    <th className="px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider w-28">Campaign</th>
-                    <th className="px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider w-24">Status</th>
-                    <th className="px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider w-16 text-right">Chars</th>
-                    <th className="px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider w-28 text-right">Actions</th>
+                    <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider w-16">Week</th>
+                    <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider w-16">Day</th>
+                    <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider w-24">Platform</th>
+                    <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Content</th>
+                    <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider w-28">Campaign</th>
+                    <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider w-24">Status</th>
+                    <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider w-16 text-right">Chars</th>
+                    <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider w-28 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/[0.04]">
@@ -354,7 +354,7 @@ export default function ContentListPage() {
                             {item.title && (
                               <div className="text-sm font-medium text-white truncate mb-0.5">{item.title}</div>
                             )}
-                            <div className="text-xs text-slate-400 truncate">
+                            <div className="text-xs text-slate-500 truncate">
                               {item.preview || item.body.slice(0, 120)}
                             </div>
                           </Link>
@@ -401,14 +401,14 @@ export default function ContentListPage() {
                           <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button
                               onClick={() => handleCopy(item.body)}
-                              className="p-1.5 text-slate-400 hover:text-white hover:bg-white/[0.06] rounded transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-white hover:bg-white/[0.06] rounded transition-colors"
                               title="Copy content"
                             >
                               <Copy className="w-3.5 h-3.5" />
                             </button>
                             <Link
                               to={`/admin/marketing/content/${item.id}/edit`}
-                              className="p-1.5 text-slate-400 hover:text-white hover:bg-white/[0.06] rounded transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-white hover:bg-white/[0.06] rounded transition-colors"
                               title="Edit"
                             >
                               <Pencil className="w-3.5 h-3.5" />
@@ -423,7 +423,7 @@ export default function ContentListPage() {
                                 </button>
                                 <button
                                   onClick={() => setDeleteId(null)}
-                                  className="px-2 py-1 text-xs text-slate-400 hover:text-white transition-colors"
+                                  className="px-2 py-1 text-xs text-slate-500 hover:text-white transition-colors"
                                 >
                                   No
                                 </button>
@@ -431,7 +431,7 @@ export default function ContentListPage() {
                             ) : (
                               <button
                                 onClick={() => setDeleteId(item.id)}
-                                className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+                                className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
                                 title="Delete"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -451,21 +451,21 @@ export default function ContentListPage() {
         {/* Pagination */}
         {pagination.pages > 1 && (
           <div className="flex items-center justify-between">
-            <span className="text-sm text-slate-400">
+            <span className="text-sm text-slate-500">
               Page {pagination.page} of {pagination.pages} ({pagination.total} items)
             </span>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
                 disabled={pagination.page <= 1}
-                className="p-2 text-slate-400 hover:text-white disabled:opacity-50 disabled:hover:text-slate-400 transition-colors"
+                className="p-2 text-slate-500 hover:text-white disabled:opacity-50 disabled:hover:text-slate-500 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
                 disabled={pagination.page >= pagination.pages}
-                className="p-2 text-slate-400 hover:text-white disabled:opacity-50 disabled:hover:text-slate-400 transition-colors"
+                className="p-2 text-slate-500 hover:text-white disabled:opacity-50 disabled:hover:text-slate-500 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>

@@ -9,7 +9,7 @@ export function setPool(dbPool: Pool): void {
   pool = dbPool;
 }
 
-const APP_URL = process.env.APP_URL || 'http://localhost:5173';
+const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 
 function generateCode(): string {
   return 'REF-' + crypto.randomBytes(4).toString('hex');

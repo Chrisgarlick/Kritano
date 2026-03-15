@@ -88,7 +88,7 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
 
   if (error) {
     return (
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-8 text-center text-slate-500 dark:text-slate-400">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-8 text-center text-slate-500 dark:text-slate-500">
         {error}
       </div>
     );
@@ -106,7 +106,7 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
             <h3 className="text-base font-semibold text-slate-900 dark:text-white">
               Index Exposure Detection
             </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-slate-500 dark:text-slate-500">
               Available on Pro plan and above
             </p>
           </div>
@@ -116,11 +116,11 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
           <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
             What is Index Exposure?
           </h4>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+          <p className="text-sm text-slate-600 dark:text-slate-500 mb-3">
             Google dorking detects when sensitive files and pages on your site have been indexed by Google,
             making them discoverable by anyone with a search query.
           </p>
-          <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-1.5">
+          <ul className="text-sm text-slate-600 dark:text-slate-500 space-y-1.5">
             <li className="flex items-start gap-2">
               <span className="text-indigo-500 mt-0.5">&#8226;</span>
               Exposed .env files, database dumps, and git repositories
@@ -162,7 +162,7 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
             <h3 className="text-base font-semibold text-slate-900 dark:text-white">
               No Exposed URLs Found
             </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-slate-500 dark:text-slate-500">
               {data?.scanPerformed
                 ? 'Google has not indexed any sensitive URLs for this domain.'
                 : 'Index exposure scan was not performed for this audit.'}
@@ -171,7 +171,7 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
         </div>
 
         <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-slate-600 dark:text-slate-500">
             This check uses Google Custom Search to detect indexed sensitive files, admin panels,
             staging environments, and other URLs that should not be publicly discoverable.
           </p>
@@ -195,7 +195,7 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
             <h3 className="text-base font-semibold text-slate-900 dark:text-white">
               {total} Exposed URL{total !== 1 ? 's' : ''} Found in Google Index
             </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-slate-500 dark:text-slate-500">
               These URLs are indexed by Google and discoverable via search queries
             </p>
           </div>
@@ -210,12 +210,12 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
                   ? sev === 'critical' ? 'text-red-600 dark:text-red-400'
                     : sev === 'serious' ? 'text-orange-600 dark:text-orange-400'
                     : sev === 'moderate' ? 'text-amber-600 dark:text-amber-400'
-                    : 'text-slate-600 dark:text-slate-400'
+                    : 'text-slate-600 dark:text-slate-500'
                   : 'text-slate-300 dark:text-slate-600'
               }`}>
                 {bySeverity[sev]}
               </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400 capitalize">{sev}</div>
+              <div className="text-xs text-slate-500 dark:text-slate-500 capitalize">{sev}</div>
             </div>
           ))}
         </div>
@@ -223,7 +223,7 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
         {/* Category Breakdown */}
         {Object.keys(byCategory).length > 0 && (
           <div>
-            <h4 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+            <h4 className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-2">
               By Category
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -256,7 +256,7 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
                 <SeverityBadge severity={finding.severity as Severity} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="inline-flex px-2 py-0.5 text-[10px] font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                    <span className="inline-flex px-2 py-0.5 text-[10px] font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500">
                       {CATEGORY_LABELS[category] || category}
                     </span>
                   </div>
@@ -275,7 +275,7 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
               </div>
 
               {finding.description && (
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                <p className="text-sm text-slate-600 dark:text-slate-500 mb-3">
                   {finding.description}
                 </p>
               )}
@@ -283,8 +283,8 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
               {finding.recommendation && (
                 <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3">
                   <div className="flex items-start gap-2">
-                    <Search className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                    <Search className="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0" />
+                    <p className="text-xs text-slate-600 dark:text-slate-500">
                       {finding.recommendation}
                     </p>
                   </div>

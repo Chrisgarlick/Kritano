@@ -15,7 +15,7 @@ const router = Router();
 // All referral routes require authentication
 router.use(authenticate);
 
-const APP_URL = process.env.APP_URL || 'http://localhost:5173';
+const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 
 /**
  * GET /api/referrals/code

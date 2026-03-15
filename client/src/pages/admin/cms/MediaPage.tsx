@@ -178,7 +178,7 @@ export default function MediaPage() {
         <div>
           <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Media Library</h1>
           {pagination && (
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               {pagination.total} {pagination.total === 1 ? 'file' : 'files'} total
             </p>
           )}
@@ -222,7 +222,7 @@ export default function MediaPage() {
               isDragging ? 'text-indigo-400' : 'text-slate-500'
             }`}
           />
-          <p className={`text-sm ${isDragging ? 'text-indigo-300' : 'text-slate-400'}`}>
+          <p className={`text-sm ${isDragging ? 'text-indigo-300' : 'text-slate-500'}`}>
             {isDragging
               ? 'Drop your image here to upload'
               : 'Drag and drop an image here, or click Upload above'}
@@ -248,7 +248,7 @@ export default function MediaPage() {
             <FileImage className="w-8 h-8 text-slate-500" />
           </div>
           <h3 className="text-lg font-semibold text-white mb-1">No media yet</h3>
-          <p className="text-sm text-slate-400 mb-6 max-w-sm">
+          <p className="text-sm text-slate-500 mb-6 max-w-sm">
             Upload images to use in blog posts and pages. Images are automatically optimised for the web.
           </p>
           <button
@@ -287,7 +287,7 @@ export default function MediaPage() {
                     {item.filename}
                   </p>
                   <div className="flex items-center justify-between mt-1.5">
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-slate-500">
                       {item.width && item.height
                         ? `${item.width}x${item.height}`
                         : 'Unknown'}
@@ -307,7 +307,7 @@ export default function MediaPage() {
           {/* Pagination */}
           {pagination && pagination.pages > 1 && (
             <div className="flex items-center justify-between mt-8">
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-slate-500">
                 Page {pagination.page} of {pagination.pages}
               </p>
               <div className="flex items-center space-x-2">
@@ -383,7 +383,7 @@ export default function MediaPage() {
               </h3>
               <button
                 onClick={closePreview}
-                className="p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+                className="p-1.5 rounded-md text-slate-500 hover:text-white hover:bg-white/[0.06] transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>

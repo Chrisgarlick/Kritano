@@ -89,7 +89,7 @@ function SiteCard({ site, onClick }: SiteCardProps) {
       <div className="grid grid-cols-5 sm:grid-cols-6 gap-1 sm:gap-2 mb-3">
         {(['seo', 'accessibility', 'security', 'performance', 'content', 'structuredData'] as const).map(cat => (
           <div key={cat} className={`text-center ${cat === 'structuredData' ? 'hidden sm:block' : ''}`}>
-            <div className="text-[10px] text-slate-400 uppercase">
+            <div className="text-[10px] text-slate-500 uppercase">
               {cat === 'accessibility' ? 'A11y' : cat === 'structuredData' ? 'Sch' : cat.slice(0, 3)}
             </div>
             <div className="text-sm font-medium">
@@ -101,7 +101,7 @@ function SiteCard({ site, onClick }: SiteCardProps) {
 
       <div className="flex items-center justify-between pt-2 border-t border-slate-100">
         <TrendBadge trend={trend} />
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-500">
           {site.stats.totalAudits} audit{site.stats.totalAudits !== 1 ? 's' : ''}
         </span>
       </div>
@@ -126,11 +126,11 @@ function SiteSelector({ sites, value, onChange, placeholder = 'Select a site...'
         onClick={() => setIsOpen(!isOpen)}
         className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors min-w-[200px]"
       >
-        <Globe className="w-4 h-4 text-slate-400" />
+        <Globe className="w-4 h-4 text-slate-500" />
         <span className="flex-1 text-left truncate">
           {selectedSite ? selectedSite.name : placeholder}
         </span>
-        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
@@ -382,7 +382,7 @@ export default function AnalyticsDashboard() {
                         <span className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">
                           {activity.siteName}
                         </span>
-                        <span className="text-xs text-slate-400">{activity.domain}</span>
+                        <span className="text-xs text-slate-500">{activity.domain}</span>
                       </div>
 
                       {/* Scan type and details */}
@@ -429,7 +429,7 @@ export default function AnalyticsDashboard() {
                             {activity.totalIssues} issue{activity.totalIssues !== 1 ? 's' : ''}
                           </span>
                         )}
-                        <span className="inline-flex items-center gap-1 text-slate-400">
+                        <span className="inline-flex items-center gap-1 text-slate-500">
                           <User className="w-3 h-3" />
                           {activity.startedBy.name || activity.startedBy.email.split('@')[0]}
                         </span>
@@ -437,7 +437,7 @@ export default function AnalyticsDashboard() {
 
                       {/* URL for single-url audits */}
                       {activity.url && (
-                        <p className="text-xs text-slate-400 mt-1 truncate font-mono">
+                        <p className="text-xs text-slate-500 mt-1 truncate font-mono">
                           {activity.url}
                         </p>
                       )}
@@ -457,7 +457,7 @@ export default function AnalyticsDashboard() {
                       </div>
 
                       {/* Timestamp */}
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-slate-500">
                         {format(parseISO(activity.completedAt), 'MMM d, h:mm a')}
                       </span>
                     </div>
@@ -467,7 +467,7 @@ export default function AnalyticsDashboard() {
                   <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-50">
                     {(['seo', 'accessibility', 'security', 'performance', 'content', 'structuredData'] as const).map(cat => (
                       <div key={cat} className="flex items-center gap-1.5">
-                        <span className="text-[10px] text-slate-400 uppercase w-8">
+                        <span className="text-[10px] text-slate-500 uppercase w-8">
                           {cat === 'accessibility' ? 'A11y' : cat === 'structuredData' ? 'Sch' : cat.slice(0, 3)}
                         </span>
                         <span

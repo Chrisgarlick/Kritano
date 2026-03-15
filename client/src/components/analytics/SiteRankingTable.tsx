@@ -30,7 +30,7 @@ function calculateOverallScore(scores: {
 
 function ScoreCell({ score }: { score: number | null }) {
   if (score === null) {
-    return <span className="text-slate-400">N/A</span>;
+    return <span className="text-slate-500">N/A</span>;
   }
 
   return (
@@ -175,7 +175,7 @@ export function SiteRankingTable({ sites, onSiteClick }: SiteRankingTableProps) 
                       {overallScore}
                     </span>
                   ) : (
-                    <span className="text-slate-400">N/A</span>
+                    <span className="text-slate-500">N/A</span>
                   )}
                 </td>
                 <td className="py-3 px-4 text-center">
@@ -184,7 +184,7 @@ export function SiteRankingTable({ sites, onSiteClick }: SiteRankingTableProps) 
                       {site.latestAudit.totalIssues}
                     </span>
                   ) : (
-                    <span className="text-slate-400">-</span>
+                    <span className="text-slate-500">-</span>
                   )}
                 </td>
                 <td className="py-3 px-4 text-center">
@@ -194,7 +194,7 @@ export function SiteRankingTable({ sites, onSiteClick }: SiteRankingTableProps) 
                       {new Date(completedAt).toLocaleDateString()}
                     </span>
                   ) : (
-                    <span className="text-slate-400">-</span>
+                    <span className="text-slate-500">-</span>
                   )}
                 </td>
               </tr>

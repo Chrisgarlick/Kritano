@@ -103,7 +103,7 @@ export const categoryLabels: Record<FindingCategory, string> = {
  * Get score color class based on score value
  */
 export function getScoreColor(score: number | null): string {
-  if (score === null) return 'text-slate-400';
+  if (score === null) return 'text-slate-500';
   if (score >= 90) return 'text-emerald-600';
   if (score >= 70) return 'text-amber-600';
   if (score >= 50) return 'text-orange-600';

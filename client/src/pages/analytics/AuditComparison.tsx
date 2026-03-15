@@ -71,11 +71,11 @@ function AuditSummaryCards({ audits }: { audits: AuditSummary[] }) {
             </div>
             <div className="grid grid-cols-2 gap-2 text-center">
               <div>
-                <p className="text-xs text-slate-400">Pages</p>
+                <p className="text-xs text-slate-500">Pages</p>
                 <p className="text-sm font-medium text-slate-700">{audit.pagesCrawled}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-400">Issues</p>
+                <p className="text-xs text-slate-500">Issues</p>
                 <p className="text-sm font-medium text-slate-700">{audit.issues.total}</p>
               </div>
             </div>
@@ -110,7 +110,7 @@ function SeverityBreakdown({ audits }: { audits: AuditSummary[] }) {
                 {idx + 1}
               </span>
               <span className="text-sm font-medium text-slate-700 truncate">{audit.siteName}</span>
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-slate-500">
                 {new Date(audit.completedAt).toLocaleDateString()}
               </span>
               <span className="text-xs text-slate-500 ml-auto">{uniqueTotal(audit)} unique issues</span>
@@ -163,9 +163,9 @@ function SeverityBreakdown({ audits }: { audits: AuditSummary[] }) {
               const delta = last - first;
               return (
                 <div key={sev} className="text-center">
-                  <p className="text-xs text-slate-400 mb-0.5">{SEVERITY_LABELS[sev]}</p>
+                  <p className="text-xs text-slate-500 mb-0.5">{SEVERITY_LABELS[sev]}</p>
                   <span className={`inline-flex items-center gap-0.5 text-sm font-medium ${
-                    delta > 0 ? 'text-red-600' : delta < 0 ? 'text-emerald-600' : 'text-slate-400'
+                    delta > 0 ? 'text-red-600' : delta < 0 ? 'text-emerald-600' : 'text-slate-500'
                   }`}>
                     {delta > 0 ? <TrendingUp className="w-3.5 h-3.5" /> :
                      delta < 0 ? <TrendingDown className="w-3.5 h-3.5" /> :
@@ -323,16 +323,16 @@ export function AuditComparisonContent() {
                 </span>
                 <div className="text-sm">
                   <span className="font-medium text-slate-700">{audit.siteName}</span>
-                  <span className="text-slate-400 mx-1">&middot;</span>
+                  <span className="text-slate-500 mx-1">&middot;</span>
                   <span className="text-slate-500">
                     {new Date(audit.completedAt).toLocaleDateString()}
                   </span>
-                  <span className="text-slate-400 mx-1">&middot;</span>
+                  <span className="text-slate-500 mx-1">&middot;</span>
                   <span className="text-slate-500">{audit.pagesCrawled} pages</span>
                 </div>
                 <button
                   onClick={() => removeAudit(audit.id)}
-                  className="text-slate-400 hover:text-red-500"
+                  className="text-slate-500 hover:text-red-500"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -340,7 +340,7 @@ export function AuditComparisonContent() {
             ))}
           </div>
         ) : (
-          <p className="text-slate-400 text-sm mb-4">
+          <p className="text-slate-500 text-sm mb-4">
             Select at least 2 audits to compare
           </p>
         )}
@@ -349,9 +349,9 @@ export function AuditComparisonContent() {
         {showSelector && (
           <div className="border border-slate-200 rounded-lg max-h-80 overflow-y-auto">
             {auditsLoading ? (
-              <div className="p-4 text-center text-slate-400">Loading audits...</div>
+              <div className="p-4 text-center text-slate-500">Loading audits...</div>
             ) : availableAudits.length === 0 ? (
-              <div className="p-4 text-center text-slate-400">No completed audits found</div>
+              <div className="p-4 text-center text-slate-500">No completed audits found</div>
             ) : (
               <div className="divide-y divide-slate-100">
                 {availableAudits
@@ -366,7 +366,7 @@ export function AuditComparisonContent() {
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
                             <span className="font-medium text-slate-700">{audit.siteName}</span>
-                            <span className="text-slate-400 text-xs">({audit.domain})</span>
+                            <span className="text-slate-500 text-xs">({audit.domain})</span>
                           </div>
                           <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500">
                             <span>{audit.pagesCrawled} pages</span>

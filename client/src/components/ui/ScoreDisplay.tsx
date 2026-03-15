@@ -115,7 +115,7 @@ export function ScoreDisplay({
 
       {/* Description */}
       {description && (
-        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 text-center">
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-500 text-center">
           {description}
         </p>
       )}

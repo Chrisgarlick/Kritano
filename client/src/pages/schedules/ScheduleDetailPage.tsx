@@ -26,7 +26,7 @@ function formatDate(d: string | null) {
 
 function getStatusBadge(schedule: AuditScheduleDetail) {
   if (schedule.paused_reason) return { label: 'Paused', cls: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' };
-  if (!schedule.enabled) return { label: 'Disabled', cls: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400' };
+  if (!schedule.enabled) return { label: 'Disabled', cls: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500' };
   return { label: 'Active', cls: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' };
 }
 
@@ -119,7 +119,7 @@ export default function ScheduleDetailPage() {
         {/* Back link */}
         <Link
           to="/schedules"
-          className="inline-flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-4"
+          className="inline-flex items-center gap-1 text-sm text-slate-500 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
           Schedules
@@ -136,7 +136,7 @@ export default function ScheduleDetailPage() {
                 {statusBadge.label}
               </span>
             </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
+            <p className="text-sm text-slate-500 dark:text-slate-500 mt-1 flex items-center gap-1">
               {schedule.target_url}
               <a href={schedule.target_url} target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600">
                 <ExternalLink className="w-3 h-3" />
@@ -166,7 +166,7 @@ export default function ScheduleDetailPage() {
         {/* Info Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
           <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-1">
+            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-500 mb-1">
               <CalendarClock className="w-4 h-4" />
               <span className="text-xs">Frequency</span>
             </div>
@@ -175,7 +175,7 @@ export default function ScheduleDetailPage() {
             </p>
           </div>
           <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-1">
+            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-500 mb-1">
               <Clock className="w-4 h-4" />
               <span className="text-xs">Next Run</span>
             </div>
@@ -184,14 +184,14 @@ export default function ScheduleDetailPage() {
             </p>
           </div>
           <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-1">
+            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-500 mb-1">
               <Activity className="w-4 h-4" />
               <span className="text-xs">Total Runs</span>
             </div>
             <p className="text-sm font-semibold text-slate-900 dark:text-white">{schedule.run_count}</p>
           </div>
           <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-1">
+            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-500 mb-1">
               <CheckCircle2 className="w-4 h-4" />
               <span className="text-xs">Success Rate</span>
             </div>
@@ -209,27 +209,27 @@ export default function ScheduleDetailPage() {
           </h2>
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <span className="text-slate-500 dark:text-slate-400">Cron</span>
+              <span className="text-slate-500 dark:text-slate-500">Cron</span>
               <p className="font-mono text-slate-900 dark:text-white">{schedule.cron_expression}</p>
             </div>
             <div>
-              <span className="text-slate-500 dark:text-slate-400">Timezone</span>
+              <span className="text-slate-500 dark:text-slate-500">Timezone</span>
               <p className="text-slate-900 dark:text-white">{schedule.timezone}</p>
             </div>
             <div>
-              <span className="text-slate-500 dark:text-slate-400">Last Run</span>
+              <span className="text-slate-500 dark:text-slate-500">Last Run</span>
               <p className="text-slate-900 dark:text-white">{formatDate(schedule.last_run_at)}</p>
             </div>
             <div>
-              <span className="text-slate-500 dark:text-slate-400">Created</span>
+              <span className="text-slate-500 dark:text-slate-500">Created</span>
               <p className="text-slate-900 dark:text-white">{formatDate(schedule.created_at)}</p>
             </div>
             <div>
-              <span className="text-slate-500 dark:text-slate-400">Notify on completion</span>
+              <span className="text-slate-500 dark:text-slate-500">Notify on completion</span>
               <p className="text-slate-900 dark:text-white">{schedule.notify_on_completion ? 'Yes' : 'No'}</p>
             </div>
             <div>
-              <span className="text-slate-500 dark:text-slate-400">Notify on failure</span>
+              <span className="text-slate-500 dark:text-slate-500">Notify on failure</span>
               <p className="text-slate-900 dark:text-white">{schedule.notify_on_failure ? 'Yes' : 'No'}</p>
             </div>
           </div>
@@ -243,7 +243,7 @@ export default function ScheduleDetailPage() {
             </h2>
           </div>
           {allRuns.length === 0 ? (
-            <div className="px-6 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
+            <div className="px-6 py-8 text-center text-sm text-slate-500 dark:text-slate-500">
               No runs yet. The schedule will execute at the next scheduled time.
             </div>
           ) : (
@@ -251,13 +251,13 @@ export default function ScheduleDetailPage() {
               <table className="w-full text-sm">
                 <thead className="bg-slate-50 dark:bg-slate-900/50">
                   <tr>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400">Status</th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400">Date</th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400">SEO</th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400">A11y</th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400">Security</th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400">Perf</th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400">Issues</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-500">Status</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-500">Date</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-500">SEO</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-500">A11y</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-500">Security</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-500">Perf</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-500">Issues</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
@@ -280,7 +280,7 @@ export default function ScheduleDetailPage() {
                           </span>
                         </Link>
                       </td>
-                      <td className="px-4 py-2.5 text-xs text-slate-600 dark:text-slate-400">
+                      <td className="px-4 py-2.5 text-xs text-slate-600 dark:text-slate-500">
                         {formatDate(run.created_at)}
                       </td>
                       <td className="px-4 py-2.5 text-xs font-medium text-slate-700 dark:text-slate-300">
@@ -309,7 +309,7 @@ export default function ScheduleDetailPage() {
         {/* Danger Zone */}
         <div className="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-900/50 rounded-lg p-6">
           <h2 className="text-sm font-semibold text-red-700 dark:text-red-400 mb-2">Danger Zone</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
+          <p className="text-xs text-slate-500 dark:text-slate-500 mb-4">
             Permanently delete this schedule. Run history will be preserved in your audit list.
           </p>
           <button

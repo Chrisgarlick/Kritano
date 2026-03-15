@@ -126,7 +126,7 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-700 hover:text-white"
+            className="rounded-md p-1.5 text-slate-500 transition-colors hover:bg-slate-700 hover:text-white"
           >
             <X className="h-5 w-5" />
           </button>
@@ -147,12 +147,12 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
             {uploading ? (
               <>
                 <Loader2 className="h-8 w-8 animate-spin text-indigo-400" />
-                <p className="text-sm text-slate-400">Uploading...</p>
+                <p className="text-sm text-slate-500">Uploading...</p>
               </>
             ) : (
               <>
                 <Upload className="h-8 w-8 text-slate-500" />
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-slate-500">
                   Drag and drop an image, or{' '}
                   <button
                     type="button"
@@ -186,7 +186,7 @@ export default function MediaPicker({ isOpen, onClose, onSelect }: MediaPickerPr
         <div className="flex-1 overflow-y-auto px-6 py-4">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+              <Loader2 className="h-6 w-6 animate-spin text-slate-500" />
             </div>
           ) : media.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-2 py-12 text-slate-500">

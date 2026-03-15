@@ -6,7 +6,7 @@ export interface User {
   email: string;
   email_verified: boolean;
   email_verified_at: Date | null;
-  password_hash: string;
+  password_hash: string | null;
   password_changed_at: Date;
   first_name: string;
   last_name: string;
@@ -20,9 +20,11 @@ export interface User {
   created_at: Date;
   updated_at: Date;
   deleted_at: Date | null;
+  deletion_requested_at: Date | null;
+  deletion_scheduled_for: Date | null;
 }
 
-export type UserStatus = 'pending_verification' | 'active' | 'suspended' | 'deleted';
+export type UserStatus = 'pending_verification' | 'active' | 'suspended' | 'deleted' | 'pending_deletion';
 export type UserRole = 'user' | 'admin' | 'super_admin';
 
 // Safe user object (without sensitive fields)
@@ -36,6 +38,8 @@ export interface SafeUser {
   status: UserStatus;
   role: UserRole;
   created_at: Date;
+  deletion_requested_at: Date | null;
+  deletion_scheduled_for: Date | null;
 }
 
 // Refresh token types
@@ -106,6 +110,12 @@ export type AuditEventType =
   | 'account_locked'
   | 'account_unlocked'
   | 'suspicious_activity'
+  // OAuth events
+  | 'oauth_login'
+  | 'oauth_register'
+  | 'oauth_link'
+  | 'oauth_unlink'
+  | 'oauth_auto_link'
   // Audit job events
   | 'audit_created'
   | 'audit_started'
@@ -195,4 +205,49 @@ export interface LoginInput {
 export interface PasswordResetInput {
   token: string;
   password: string;
+}
+
+// OAuth types
+export type OAuthProvider = 'google' | 'facebook';
+
+export interface OAuthProfile {
+  provider: OAuthProvider;
+  providerUserId: string;
+  email: string | null;
+  emailVerified: boolean;
+  firstName: string | null;
+  lastName: string | null;
+  name: string | null;
+  avatarUrl: string | null;
+  rawProfile: Record<string, unknown>;
+}
+
+export interface OAuthTokens {
+  accessToken: string;
+  refreshToken: string | null;
+  expiresAt: Date | null;
+}
+
+export interface OAuthProviderRecord {
+  id: string;
+  user_id: string;
+  provider: OAuthProvider;
+  provider_user_id: string;
+  email: string | null;
+  name: string | null;
+  avatar_url: string | null;
+  access_token: string | null;
+  refresh_token: string | null;
+  token_expires_at: Date | null;
+  raw_profile: Record<string, unknown> | null;
+  linked_at: Date;
+  updated_at: Date;
+}
+
+export interface OAuthProviderSummary {
+  provider: OAuthProvider;
+  email: string | null;
+  name: string | null;
+  avatarUrl: string | null;
+  linkedAt: Date;
 }

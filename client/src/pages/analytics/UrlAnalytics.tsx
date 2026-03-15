@@ -105,14 +105,14 @@ export default function UrlAnalytics() {
           <Link to="/analytics" className="text-indigo-600 hover:text-indigo-700">
             Analytics
           </Link>
-          <ChevronRight className="w-4 h-4 text-slate-400" />
+          <ChevronRight className="w-4 h-4 text-slate-500" />
           <Link
             to={`/analytics/sites/${siteId}`}
             className="text-indigo-600 hover:text-indigo-700"
           >
             {site.name}
           </Link>
-          <ChevronRight className="w-4 h-4 text-slate-400" />
+          <ChevronRight className="w-4 h-4 text-slate-500" />
           <span className="text-slate-900 font-mono text-xs bg-slate-100 px-2 py-1 rounded">
             {data.url.urlPath || '/'}
           </span>

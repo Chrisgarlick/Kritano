@@ -12,6 +12,7 @@ import LoginPage from './pages/auth/Login';
 import RegisterPage from './pages/auth/Register';
 import RegisterSuccessPage from './pages/auth/RegisterSuccess';
 import VerifyEmailPage from './pages/auth/VerifyEmail';
+import OAuthCallbackPage from './pages/auth/OAuthCallback';
 import DashboardPage from './pages/dashboard/Dashboard';
 import AuditListPage from './pages/audits/AuditList';
 import NewAuditPage from './pages/audits/NewAudit';
@@ -125,6 +126,7 @@ function App() {
                 <Route path="/register/success" element={<RegisterSuccessPage />} />
                 <Route path="/register/early-access-success" element={<EarlyAccessSuccessPage />} />
                 <Route path="/verify-email" element={<VerifyEmailPage />} />
+                <Route path="/auth/callback/:provider" element={<OAuthCallbackPage />} />
 
                 {/* Site invitation routes (public with token) */}
                 <Route path="/site-invitations/:token" element={<SiteInvitationPage />} />

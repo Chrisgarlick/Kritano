@@ -22,7 +22,7 @@ export default function Terms() {
           <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
             Terms of Service
           </h1>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-500">
             Effective date: 8 March 2026
           </p>
         </div>

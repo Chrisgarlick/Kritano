@@ -31,6 +31,7 @@ export async function getProspects(filters: ColdProspectFilters): Promise<{ pros
     batchDate,
     hasEmail,
     hasName,
+    isUnsubscribed,
     search,
     page = 1,
     limit = 25,
@@ -38,45 +39,49 @@ export async function getProspects(filters: ColdProspectFilters): Promise<{ pros
     sortOrder = 'desc',
   } = filters;
 
-  const conditions: string[] = ['is_excluded = FALSE'];
+  const conditions: string[] = ['(cp.is_excluded = FALSE OR cp.exclusion_reason = \'unsubscribed\')'];
   const params: unknown[] = [];
   let paramIdx = 1;
 
+  if (isUnsubscribed) {
+    conditions.push(`EXISTS (SELECT 1 FROM cold_prospect_unsubscribes cu WHERE cu.email = cp.contact_email)`);
+  }
+
   if (status) {
-    conditions.push(`status = $${paramIdx++}`);
+    conditions.push(`cp.status = $${paramIdx++}`);
     params.push(status);
   }
 
   if (tld) {
-    conditions.push(`tld = $${paramIdx++}`);
+    conditions.push(`cp.tld = $${paramIdx++}`);
     params.push(tld);
   }
 
   if (minScore !== undefined) {
-    conditions.push(`quality_score >= $${paramIdx++}`);
+    conditions.push(`cp.quality_score >= $${paramIdx++}`);
     params.push(minScore);
   }
 
   if (maxScore !== undefined) {
-    conditions.push(`quality_score <= $${paramIdx++}`);
+    conditions.push(`cp.quality_score <= $${paramIdx++}`);
     params.push(maxScore);
   }
 
   if (batchDate) {
-    conditions.push(`batch_date = $${paramIdx++}`);
+    conditions.push(`cp.batch_date = $${paramIdx++}`);
     params.push(batchDate);
   }
 
   if (hasEmail) {
-    conditions.push('contact_email IS NOT NULL');
+    conditions.push('cp.contact_email IS NOT NULL');
   }
 
   if (hasName) {
-    conditions.push('contact_name IS NOT NULL');
+    conditions.push('cp.contact_name IS NOT NULL');
   }
 
   if (search) {
-    conditions.push(`(domain ILIKE $${paramIdx} OR contact_email ILIKE $${paramIdx} OR contact_name ILIKE $${paramIdx} OR title ILIKE $${paramIdx})`);
+    conditions.push(`(cp.domain ILIKE $${paramIdx} OR cp.contact_email ILIKE $${paramIdx} OR cp.contact_name ILIKE $${paramIdx} OR cp.title ILIKE $${paramIdx})`);
     params.push(`%${search}%`);
     paramIdx++;
   }
@@ -92,13 +97,15 @@ export async function getProspects(filters: ColdProspectFilters): Promise<{ pros
 
   const [prospectsResult, countResult] = await Promise.all([
     pool.query(
-      `SELECT * FROM cold_prospects ${where}
+      `SELECT cp.*,
+        EXISTS (SELECT 1 FROM cold_prospect_unsubscribes cu WHERE cu.email = cp.contact_email) AS is_unsubscribed
+       FROM cold_prospects cp ${where}
        ORDER BY ${safeSort} ${safeOrder}
        LIMIT $${paramIdx} OFFSET $${paramIdx + 1}`,
       [...params, limit, offset]
     ),
     pool.query(
-      `SELECT COUNT(*) FROM cold_prospects ${where}`,
+      `SELECT COUNT(*) FROM cold_prospects cp ${where}`,
       params
     ),
   ]);

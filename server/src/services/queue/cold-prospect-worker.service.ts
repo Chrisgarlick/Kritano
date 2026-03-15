@@ -35,7 +35,7 @@ import {
   setPool as setOutreachPool,
   queueOutreachBatch,
   processOutreachQueue,
-  queueFollowups,
+  purgeStaleProspects,
 } from '../cold-prospect/outreach.service.js';
 import { getSetting } from '../system-settings.service.js';
 
@@ -45,6 +45,7 @@ const MX_CHECK_MS = 2 * 60 * 1000;             // MX filter every 2 minutes (fas
 const DOMAIN_CHECK_MS = 5 * 60 * 1000;         // Check domains every 5 minutes
 const EMAIL_EXTRACT_MS = 5 * 60 * 1000;        // Extract emails every 5 minutes
 const OUTREACH_MS = 10 * 60 * 1000;             // Outreach every 10 minutes
+const RETENTION_CLEANUP_MS = 24 * 60 * 60 * 1000; // Data retention cleanup every 24 hours
 
 interface ColdProspectWorkerConfig {
   pool: Pool;
@@ -58,6 +59,7 @@ export function createColdProspectWorker(config: ColdProspectWorkerConfig) {
   let domainTimer: ReturnType<typeof setTimeout> | null = null;
   let emailTimer: ReturnType<typeof setTimeout> | null = null;
   let outreachTimer: ReturnType<typeof setTimeout> | null = null;
+  let retentionTimer: ReturnType<typeof setTimeout> | null = null;
 
   // Initialize all service pools
   setNrdFeedPool(pool);
@@ -206,18 +208,32 @@ export function createColdProspectWorker(config: ColdProspectWorkerConfig) {
       if (result.sent > 0 || result.failed > 0) {
         console.log(`📨 Cold outreach: ${result.sent} sent, ${result.failed} failed`);
       }
-
-      // Queue follow-ups
-      const followups = await queueFollowups();
-      if (followups.queued > 0) {
-        console.log(`📨 Cold outreach: ${followups.queued} follow-ups queued`);
-      }
     } catch (err) {
       console.error('📨 Cold outreach poll error:', err);
     }
 
     if (running) {
       outreachTimer = setTimeout(pollOutreach, OUTREACH_MS);
+    }
+  }
+
+  /**
+   * LIA compliance: Purge cold prospects with no engagement after 6 months
+   */
+  async function pollRetentionCleanup(): Promise<void> {
+    if (!running) return;
+
+    try {
+      const result = await purgeStaleProspects();
+      if (result.deleted > 0) {
+        console.log(`🗑️ Cold prospect retention cleanup: ${result.deleted} stale prospects deleted`);
+      }
+    } catch (err) {
+      console.error('🗑️ Retention cleanup error:', err);
+    }
+
+    if (running) {
+      retentionTimer = setTimeout(pollRetentionCleanup, RETENTION_CLEANUP_MS);
     }
   }
 
@@ -230,6 +246,7 @@ export function createColdProspectWorker(config: ColdProspectWorkerConfig) {
       console.log('   Domain checker: every 5 minutes');
       console.log('   Email extractor: every 5 minutes');
       console.log('   Outreach: every 10 minutes');
+      console.log('   Retention cleanup: every 24 hours');
 
       // Stagger start times
       pollNrdFeed();
@@ -237,6 +254,7 @@ export function createColdProspectWorker(config: ColdProspectWorkerConfig) {
       setTimeout(pollDomainChecker, 30 * 1000);   // Start 30s after
       setTimeout(pollEmailExtractor, 60 * 1000);  // Start 60s after
       setTimeout(pollOutreach, 90 * 1000);         // Start 90s after
+      setTimeout(pollRetentionCleanup, 120 * 1000); // Start 2min after
     },
 
     async stop(): Promise<void> {
@@ -246,6 +264,7 @@ export function createColdProspectWorker(config: ColdProspectWorkerConfig) {
       if (domainTimer) { clearTimeout(domainTimer); domainTimer = null; }
       if (emailTimer) { clearTimeout(emailTimer); emailTimer = null; }
       if (outreachTimer) { clearTimeout(outreachTimer); outreachTimer = null; }
+      if (retentionTimer) { clearTimeout(retentionTimer); retentionTimer = null; }
       console.log('🎯 Cold prospect worker stopped');
     },
   };

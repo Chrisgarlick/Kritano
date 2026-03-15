@@ -232,11 +232,11 @@ export default function AdminDashboardPage() {
       {/* Worker Status */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Worker Process</h2>
+          <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Worker Process</h2>
           <div className="flex items-center space-x-2">
             <button
               onClick={loadWorkerStatus}
-              className="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-slate-200 hover:bg-white/[0.06] transition-all duration-200"
+              className="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white/[0.04] border border-white/[0.06] text-slate-500 hover:text-slate-200 hover:bg-white/[0.06] transition-all duration-200"
             >
               <RefreshCw className="w-3 h-3" />
               <span>Refresh</span>
@@ -331,7 +331,7 @@ export default function AdminDashboardPage() {
                     {workerStatus.memory.freeMB.toLocaleString()} MB free / {workerStatus.memory.totalMB.toLocaleString()} MB
                   </span>
                   <span className="text-[11px] text-slate-600 shrink-0">
-                    Concurrency: <span className="text-slate-400 font-mono">{workerStatus.memory.effectiveConcurrency}</span>
+                    Concurrency: <span className="text-slate-500 font-mono">{workerStatus.memory.effectiveConcurrency}</span>
                   </span>
                 </div>
               </>
@@ -398,7 +398,7 @@ export default function AdminDashboardPage() {
                 <div key={tier.label} className="flex items-center justify-between">
                   <div className="flex items-center space-x-2.5">
                     <div className={`w-1.5 h-1.5 rounded-full ${tier.color}`} />
-                    <span className="text-sm text-slate-400">{tier.label}</span>
+                    <span className="text-sm text-slate-500">{tier.label}</span>
                   </div>
                   <span className="text-sm font-medium text-slate-200 tabular-nums">{tier.count}</span>
                 </div>
@@ -420,7 +420,7 @@ export default function AdminDashboardPage() {
 
       {/* Module Summaries */}
       <div className="mb-8">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Modules</h2>
+        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Modules</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* CRM */}
           <ModuleCard
@@ -588,7 +588,7 @@ export default function AdminDashboardPage() {
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setShowRestartConfirm(false)} />
           <div className="relative admin-card w-full max-w-md mx-4 p-6 shadow-2xl">
             <h3 className="text-base font-semibold text-white mb-2">Restart Worker?</h3>
-            <p className="text-sm text-slate-400 mb-4">
+            <p className="text-sm text-slate-500 mb-4">
               This will gracefully shut down the worker process. Any in-progress audits will be interrupted and retried when the worker restarts.
             </p>
             <p className="text-xs text-amber-400/80 mb-6">
@@ -597,7 +597,7 @@ export default function AdminDashboardPage() {
             <div className="flex items-center justify-end space-x-3">
               <button
                 onClick={() => setShowRestartConfirm(false)}
-                className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-all duration-200"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-200 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-all duration-200"
               >
                 Cancel
               </button>
@@ -861,7 +861,7 @@ function QueueBacklogPanel({
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Audit Queue</h2>
+        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Audit Queue</h2>
         <div className="flex items-center gap-2">
           {data.counts.pending > 1 && (
             <button
@@ -875,7 +875,7 @@ function QueueBacklogPanel({
           )}
           <button
             onClick={onRefresh}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-slate-200 hover:bg-white/[0.06] transition-all duration-200"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white/[0.04] border border-white/[0.06] text-slate-500 hover:text-slate-200 hover:bg-white/[0.06] transition-all duration-200"
           >
             <RefreshCw className="w-3 h-3" />
             <span>Refresh</span>
@@ -968,7 +968,7 @@ function QueueBacklogPanel({
                       <div className="mt-2.5 ml-6">
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-[10px] text-slate-500">{job.pages_crawled}/{job.pages_found || '?'} pages &middot; {job.pages_audited} audited &middot; {job.total_issues} issues</span>
-                          <span className="text-[10px] text-slate-400 font-mono">{progress}%</span>
+                          <span className="text-[10px] text-slate-500 font-mono">{progress}%</span>
                         </div>
                         <div className="w-full bg-white/[0.06] rounded-full h-1.5">
                           <div className="bg-indigo-500 h-1.5 rounded-full transition-all duration-500" style={{ width: `${Math.max(2, progress)}%` }} />

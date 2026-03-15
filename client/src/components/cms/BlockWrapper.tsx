@@ -48,7 +48,7 @@ export default function BlockWrapper({
           </button>
 
           {/* Type badge */}
-          <span className="rounded bg-slate-700 px-2 py-0.5 text-xs font-medium text-slate-400">
+          <span className="rounded bg-slate-700 px-2 py-0.5 text-xs font-medium text-slate-500">
             {typeLabels[block.type] || block.type}
           </span>
         </div>

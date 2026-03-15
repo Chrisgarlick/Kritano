@@ -38,7 +38,7 @@ function ScoreCard({ label, score, prevScore }: { label: string; score: number |
   if (score === null) {
     return (
       <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-4">
-        <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">{label}</div>
+        <div className="text-sm text-slate-500 dark:text-slate-500 mb-1">{label}</div>
         <div className="text-2xl font-bold text-slate-300 dark:text-slate-600">-</div>
       </div>
     );
@@ -48,7 +48,7 @@ function ScoreCard({ label, score, prevScore }: { label: string; score: number |
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-4">
-      <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">{label}</div>
+      <div className="text-sm text-slate-500 dark:text-slate-500 mb-1">{label}</div>
       <div className={`text-2xl font-bold ${getScoreColor(score)}`}>
         {score}
         {diff !== null && diff !== 0 && (
@@ -64,7 +64,7 @@ function ScoreCard({ label, score, prevScore }: { label: string; score: number |
 function ScoreHistoryChart({ history }: { history: ScoreHistoryEntry[] }) {
   if (history.length === 0) {
     return (
-      <div className="text-center py-8 text-slate-400 dark:text-slate-500">
+      <div className="text-center py-8 text-slate-500 dark:text-slate-500">
         No score history yet
       </div>
     );
@@ -99,7 +99,7 @@ function ScoreHistoryChart({ history }: { history: ScoreHistoryEntry[] }) {
 
           return (
             <div key={cat} className="flex-1 min-w-[120px]">
-              <div className="text-xs text-slate-500 dark:text-slate-400 mb-2 capitalize">{cat}</div>
+              <div className="text-xs text-slate-500 dark:text-slate-500 mb-2 capitalize">{cat}</div>
               <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full h-16">
                 <polyline
                   fill="none"
@@ -108,7 +108,7 @@ function ScoreHistoryChart({ history }: { history: ScoreHistoryEntry[] }) {
                   points={points}
                 />
               </svg>
-              <div className="text-xs text-slate-400 dark:text-slate-500 text-center">
+              <div className="text-xs text-slate-500 dark:text-slate-500 text-center">
                 {data[data.length - 1]}
               </div>
             </div>
@@ -260,9 +260,10 @@ export default function SiteDetailPage() {
   }, [fetchSite]);
 
   useEffect(() => {
-    if (activeTab === 'audits') {
+    if (activeTab === 'overview' || activeTab === 'audits') {
       fetchAudits();
-    } else if (activeTab === 'urls') {
+    }
+    if (activeTab === 'urls') {
       fetchUrls();
     } else if (activeTab === 'sharing') {
       fetchSharing();
@@ -447,7 +448,7 @@ export default function SiteDetailPage() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+            <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-500 mb-2">
               <Link to="/sites" className="hover:text-indigo-600">&larr; Sites</Link>
             </div>
             <div className="flex items-center gap-3">
@@ -461,9 +462,9 @@ export default function SiteDetailPage() {
                 {PERMISSION_INFO[site.permission].label}
               </span>
             </div>
-            <p className="text-slate-500 dark:text-slate-400 mt-1">{site.domain}</p>
+            <p className="text-slate-500 dark:text-slate-500 mt-1">{site.domain}</p>
             {site.description && (
-              <p className="text-sm text-slate-400 dark:text-slate-500 mt-2">{site.description}</p>
+              <p className="text-sm text-slate-500 dark:text-slate-500 mt-2">{site.description}</p>
             )}
           </div>
           <div className="flex gap-2">
@@ -498,7 +499,7 @@ export default function SiteDetailPage() {
                 className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
                     ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400'
-                    : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
+                    : 'border-transparent text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
                 }`}
               >
                 {tab.label}
@@ -518,21 +519,21 @@ export default function SiteDetailPage() {
                 <h3 className="font-medium text-slate-900 dark:text-white mb-4">Quick Stats</h3>
                 <dl className="space-y-3">
                   <div className="flex justify-between">
-                    <dt className="text-slate-500 dark:text-slate-400">Total Audits</dt>
+                    <dt className="text-slate-500 dark:text-slate-500">Total Audits</dt>
                     <dd className="font-medium text-slate-900 dark:text-white">{site.stats.totalAudits}</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="text-slate-500 dark:text-slate-400">URLs Tracked</dt>
+                    <dt className="text-slate-500 dark:text-slate-500">URLs Tracked</dt>
                     <dd className="font-medium text-slate-900 dark:text-white">{site.stats.urlCount}</dd>
                   </div>
                   {site.stats.lastAuditAt && (
                     <div className="flex justify-between">
-                      <dt className="text-slate-500 dark:text-slate-400">Last Audit</dt>
+                      <dt className="text-slate-500 dark:text-slate-500">Last Audit</dt>
                       <dd className="font-medium text-slate-900 dark:text-white">{formatDate(site.stats.lastAuditAt)}</dd>
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <dt className="text-slate-500 dark:text-slate-400">Created</dt>
+                    <dt className="text-slate-500 dark:text-slate-500">Created</dt>
                     <dd className="font-medium text-slate-900 dark:text-white">{formatDate(site.createdAt)}</dd>
                   </div>
                 </dl>
@@ -542,9 +543,9 @@ export default function SiteDetailPage() {
               <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
                 <h3 className="font-medium text-slate-900 dark:text-white mb-4">Recent Audits</h3>
                 {audits.length === 0 && !auditsLoading ? (
-                  <p className="text-slate-400 dark:text-slate-500 text-sm">No audits yet</p>
+                  <p className="text-slate-500 dark:text-slate-500 text-sm">No audits yet</p>
                 ) : auditsLoading ? (
-                  <p className="text-slate-400 dark:text-slate-500 text-sm">Loading...</p>
+                  <p className="text-slate-500 dark:text-slate-500 text-sm">Loading...</p>
                 ) : (
                   <ul className="space-y-3">
                     {audits.slice(0, 5).map(audit => (
@@ -582,7 +583,7 @@ export default function SiteDetailPage() {
         {activeTab === 'audits' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-500 dark:text-slate-400">
+              <span className="text-sm text-slate-500 dark:text-slate-500">
                 {auditsPagination.total} total audits
               </span>
               {canEdit && (
@@ -594,11 +595,11 @@ export default function SiteDetailPage() {
 
             <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700">
               {auditsLoading ? (
-                <div className="p-8 text-center text-slate-400 dark:text-slate-500">Loading audits...</div>
+                <div className="p-8 text-center text-slate-500 dark:text-slate-500">Loading audits...</div>
               ) : audits.length === 0 ? (
                 <div className="p-8 text-center">
                   <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No audits yet</h3>
-                  <p className="text-slate-500 dark:text-slate-400 mb-4">Run your first audit to see results.</p>
+                  <p className="text-slate-500 dark:text-slate-500 mb-4">Run your first audit to see results.</p>
                   {canEdit && (
                     <Button onClick={() => navigate(`/audits/new?domain=${encodeURIComponent(site.domain)}&siteId=${site.id}`)}>
                       Run First Audit
@@ -609,12 +610,12 @@ export default function SiteDetailPage() {
                 <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
                   <thead className="bg-slate-50 dark:bg-slate-900/50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Date</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">SEO</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">A11y</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Security</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Perf</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Date</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">SEO</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">A11y</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Security</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Perf</th>
                       <th className="px-6 py-3"></th>
                     </tr>
                   </thead>
@@ -670,7 +671,7 @@ export default function SiteDetailPage() {
         {activeTab === 'urls' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-500 dark:text-slate-400">
+              <span className="text-sm text-slate-500 dark:text-slate-500">
                 {urlsPagination.total} URLs tracked
               </span>
               {canEdit && (
@@ -686,11 +687,11 @@ export default function SiteDetailPage() {
 
             <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700">
               {urlsLoading ? (
-                <div className="p-8 text-center text-slate-400 dark:text-slate-500">Loading URLs...</div>
+                <div className="p-8 text-center text-slate-500 dark:text-slate-500">Loading URLs...</div>
               ) : urls.length === 0 ? (
                 <div className="p-8 text-center">
                   <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No URLs tracked yet</h3>
-                  <p className="text-slate-500 dark:text-slate-400 mb-4">
+                  <p className="text-slate-500 dark:text-slate-500 mb-4">
                     URLs are discovered automatically when you run audits or discover from sitemap.
                   </p>
                   {canEdit && (
@@ -703,11 +704,11 @@ export default function SiteDetailPage() {
                 <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
                   <thead className="bg-slate-50 dark:bg-slate-900/50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">URL Path</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Source</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Audits</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Last Audit</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Scores</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">URL Path</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Source</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Audits</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Last Audit</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Scores</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
@@ -727,10 +728,10 @@ export default function SiteDetailPage() {
                             {url.source}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-500">
                           {url.auditCount}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-500">
                           {url.lastAuditedAt ? formatDate(url.lastAuditedAt) : '-'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -757,7 +758,7 @@ export default function SiteDetailPage() {
               <div>
                 <h3 className="text-lg font-medium text-slate-900 dark:text-white">Site Access</h3>
                 {memberLimit && (
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                  <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">
                     {memberLimit.max !== null
                       ? `${memberLimit.used} / ${memberLimit.max} member${memberLimit.max !== 1 ? 's' : ''} used`
                       : `${memberLimit.used} member${memberLimit.used !== 1 ? 's' : ''}`
@@ -790,7 +791,7 @@ export default function SiteDetailPage() {
             </div>
 
             {sharingLoading ? (
-              <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-400">
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500">
                 Loading...
               </div>
             ) : (
@@ -801,14 +802,14 @@ export default function SiteDetailPage() {
                     <h4 className="font-medium text-slate-900 dark:text-white">
                       Users with Access
                       {memberLimit && memberLimit.max !== null && (
-                        <span className="ml-2 text-sm font-normal text-slate-500 dark:text-slate-400">
+                        <span className="ml-2 text-sm font-normal text-slate-500 dark:text-slate-500">
                           ({shares.length}/{memberLimit.max})
                         </span>
                       )}
                     </h4>
                   </div>
                   {shares.length === 0 ? (
-                    <div className="p-6 text-center text-slate-500 dark:text-slate-400">
+                    <div className="p-6 text-center text-slate-500 dark:text-slate-500">
                       No users have been shared access yet
                     </div>
                   ) : (
@@ -819,7 +820,7 @@ export default function SiteDetailPage() {
                             <p className="text-sm font-medium text-slate-900 dark:text-white">
                               {share.userFirstName} {share.userLastName}
                             </p>
-                            <p className="text-sm text-slate-500 dark:text-slate-400">{share.userEmail}</p>
+                            <p className="text-sm text-slate-500 dark:text-slate-500">{share.userEmail}</p>
                           </div>
                           <div className="flex items-center gap-4">
                             <span className="px-2 py-1 text-xs rounded-full bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 capitalize">
@@ -851,7 +852,7 @@ export default function SiteDetailPage() {
                         <li key={invitation.id} className="px-6 py-4 flex items-center justify-between">
                           <div>
                             <p className="text-sm font-medium text-slate-900 dark:text-white">{invitation.email}</p>
-                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                            <p className="text-xs text-slate-500 dark:text-slate-500">
                               Expires {formatDate(invitation.expiresAt)}
                             </p>
                           </div>
@@ -886,12 +887,12 @@ export default function SiteDetailPage() {
             {analyticsLoading ? (
               <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-8 text-center">
                 <div className="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-4" />
-                <p className="text-slate-500 dark:text-slate-400">Loading analytics...</p>
+                <p className="text-slate-500 dark:text-slate-500">Loading analytics...</p>
               </div>
             ) : !analyticsData || analyticsData.scores.length === 0 ? (
               <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-8 text-center">
                 <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No analytics data yet</h3>
-                <p className="text-slate-500 dark:text-slate-400 mb-4">Run some audits to see score trends.</p>
+                <p className="text-slate-500 dark:text-slate-500 mb-4">Run some audits to see score trends.</p>
               </div>
             ) : (
               <>
@@ -910,7 +911,7 @@ export default function SiteDetailPage() {
                     <div className="grid grid-cols-2 gap-4">
                       {(['seo', 'accessibility', 'security', 'performance', 'content'] as const).map(category => (
                         <div key={category} className="text-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                          <div className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
+                          <div className="text-xs text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">
                             {category === 'accessibility' ? 'A11y' : category}
                           </div>
                           <div className={`text-2xl font-bold ${
@@ -930,7 +931,7 @@ export default function SiteDetailPage() {
                     {issueTrends && issueTrends.trends.length > 0 ? (
                       <IssueTrendChart data={issueTrends.trends} height={200} />
                     ) : (
-                      <div className="h-[200px] flex items-center justify-center text-slate-400 dark:text-slate-500">
+                      <div className="h-[200px] flex items-center justify-center text-slate-500 dark:text-slate-500">
                         No issue data available
                       </div>
                     )}
@@ -966,7 +967,7 @@ export default function SiteDetailPage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <p className="text-slate-600 dark:text-slate-400">
+                  <p className="text-slate-600 dark:text-slate-500">
                     Verify your domain ownership to unlock multi-page audits and faster scanning.
                   </p>
 
@@ -976,35 +977,35 @@ export default function SiteDetailPage() {
                     </Button>
                   ) : (
                     <div className="space-y-4">
-                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                      <p className="text-sm text-slate-500 dark:text-slate-500">
                         Choose one of the methods below to prove you own <span className="font-medium text-slate-700 dark:text-slate-300">{site.domain}</span>. You only need to complete one.
                       </p>
 
                       {/* DNS Option */}
                       <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
                         <h4 className="font-medium text-slate-900 dark:text-white mb-1">Option 1: DNS TXT Record</h4>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+                        <p className="text-sm text-slate-500 dark:text-slate-500 mb-3">
                           Best if you have access to your domain's DNS settings (e.g. Cloudflare, GoDaddy, Namecheap, Route 53).
                         </p>
 
                         <div className="space-y-3">
                           <div>
-                            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Record type</p>
+                            <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">Record type</p>
                             <code className="block p-2 bg-slate-100 dark:bg-slate-900 rounded text-sm font-mono">TXT</code>
                           </div>
                           <div>
-                            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Host / Name</p>
+                            <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">Host / Name</p>
                             <code className="block p-2 bg-slate-100 dark:bg-slate-900 rounded text-sm font-mono">_pagepulser</code>
                           </div>
                           <div>
-                            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Value</p>
+                            <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">Value</p>
                             <code className="block p-2 bg-slate-100 dark:bg-slate-900 rounded text-sm font-mono break-all">
                               {verificationInstructions.instructions.dns.value}
                             </code>
                           </div>
                         </div>
 
-                        <details className="mt-3 text-sm text-slate-500 dark:text-slate-400">
+                        <details className="mt-3 text-sm text-slate-500 dark:text-slate-500">
                           <summary className="cursor-pointer hover:text-slate-700 dark:hover:text-slate-300 font-medium">
                             Step-by-step guide
                           </summary>
@@ -1032,26 +1033,26 @@ export default function SiteDetailPage() {
                       {/* File Option */}
                       <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
                         <h4 className="font-medium text-slate-900 dark:text-white mb-1">Option 2: Verification File</h4>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+                        <p className="text-sm text-slate-500 dark:text-slate-500 mb-3">
                           Best if you have SSH or FTP access to your web server.
                         </p>
 
                         <div className="space-y-3">
                           <div>
-                            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">File URL (must be publicly accessible)</p>
+                            <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">File URL (must be publicly accessible)</p>
                             <code className="block p-2 bg-slate-100 dark:bg-slate-900 rounded text-sm font-mono break-all">
                               https://{site.domain}{verificationInstructions.instructions.file.path}
                             </code>
                           </div>
                           <div>
-                            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">File contents (paste this exact token)</p>
+                            <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">File contents (paste this exact token)</p>
                             <code className="block p-2 bg-slate-100 dark:bg-slate-900 rounded text-sm font-mono break-all">
                               {verificationInstructions.instructions.file.content}
                             </code>
                           </div>
                         </div>
 
-                        <details className="mt-3 text-sm text-slate-500 dark:text-slate-400">
+                        <details className="mt-3 text-sm text-slate-500 dark:text-slate-500">
                           <summary className="cursor-pointer hover:text-slate-700 dark:hover:text-slate-300 font-medium">
                             Step-by-step guide
                           </summary>
@@ -1091,12 +1092,12 @@ export default function SiteDetailPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium text-slate-700 dark:text-slate-300">Ignore robots.txt</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Allow scanner to access pages blocked by robots.txt</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-500">Allow scanner to access pages blocked by robots.txt</p>
                     </div>
                     <span className={`px-2 py-1 text-xs rounded-full ${
                       site.ignoreRobotsTxt
                         ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
-                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
+                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-500'
                     }`}>
                       {site.ignoreRobotsTxt ? 'Enabled' : 'Disabled'}
                     </span>
@@ -1104,9 +1105,9 @@ export default function SiteDetailPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium text-slate-700 dark:text-slate-300">Rate Limit Profile</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Scanner request frequency</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-500">Scanner request frequency</p>
                     </div>
-                    <span className="px-2 py-1 text-xs rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 capitalize">
+                    <span className="px-2 py-1 text-xs rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-500 capitalize">
                       {site.rateLimitProfile}
                     </span>
                   </div>
@@ -1174,7 +1175,7 @@ export default function SiteDetailPage() {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Transfer Ownership</h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+            <p className="text-sm text-slate-500 dark:text-slate-500 mb-4">
               Transfer this site to another user. You will become an admin on the site after transfer.
             </p>
             <div className="space-y-4">

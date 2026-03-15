@@ -18,6 +18,7 @@ import { blogRouter } from './blog.js';
 import { referralsRouter } from './referrals/index.js';
 import { cookieConsentRouter } from './consent/cookie-consent.js';
 import { seoRouter } from './seo.js';
+import { accountRouter } from './account/index.js';
 import { setPool as setSiteServicePool, getUserTierLimits, getUserSiteUsage } from '../services/site.service.js';
 import { startTrial } from '../services/trial.service.js';
 import { pool } from '../db/index.js';
@@ -106,6 +107,53 @@ router.use('/consent/cookies', cookieConsentRouter);
 // Public SEO entries (no auth, cached)
 router.use('/seo', seoRouter);
 
+// Account management (GDPR: data export, deletion)
+router.use('/account', accountRouter);
+
+// Contact form (public, no auth)
+const contactAttempts = new Map<string, { count: number; resetAt: number }>();
+
+router.post('/contact', async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Rate limit: 3 per IP per 15 minutes
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    const now = Date.now();
+    const entry = contactAttempts.get(ip);
+    if (entry && entry.resetAt > now) {
+      if (entry.count >= 3) {
+        res.status(429).json({ error: 'Too many contact submissions. Please try again later.' });
+        return;
+      }
+      entry.count++;
+    } else {
+      contactAttempts.set(ip, { count: 1, resetAt: now + 15 * 60 * 1000 });
+    }
+
+    const schema = z.object({
+      name: z.string().min(1).max(200),
+      email: z.string().email().max(255),
+      subject: z.string().max(200).optional(),
+      message: z.string().min(1).max(5000),
+    });
+    const { name, email, subject, message } = schema.parse(req.body);
+
+    await pool.query(
+      `INSERT INTO contact_submissions (name, email, subject, message, ip_address)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [name, email, subject || null, message, ip]
+    );
+
+    res.json({ success: true, message: 'Thank you! We\'ll get back to you within one business day.' });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      res.status(400).json({ error: 'Please fill in all required fields correctly.' });
+      return;
+    }
+    console.error('Contact form error:', error);
+    res.status(500).json({ error: 'Failed to send message. Please try again.' });
+  }
+});
+
 // Public success stories (no auth)
 router.get('/public/success-stories', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -189,6 +237,7 @@ router.get('/subscription', authenticate, async (req: Request, res: Response): P
         maxPagesPerAudit: (tierLimits?.max_pages_per_audit as number) || 100,
         maxAuditDepth: (tierLimits?.max_audit_depth as number) || 5,
         concurrentAudits: (tierLimits?.concurrent_audits as number) || 3,
+        maxAuditsPerMonth: (tierLimits?.max_audits_per_month as number | null) ?? null,
         availableChecks: (tierLimits?.available_checks as string[]) || ['seo', 'accessibility', 'security', 'performance', 'content'],
       },
     });

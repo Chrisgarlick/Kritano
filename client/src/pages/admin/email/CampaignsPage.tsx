@@ -118,7 +118,7 @@ export default function CampaignsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Email Campaigns</h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               {total} campaign{total !== 1 ? 's' : ''} — send targeted emails to segmented audiences
             </p>
           </div>
@@ -141,7 +141,7 @@ export default function CampaignsPage() {
           ].map((stat) => (
             <div key={stat.label} className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
               <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
-              <div className="text-xs text-slate-400 mt-1">{stat.label}</div>
+              <div className="text-xs text-slate-500 mt-1">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -169,7 +169,7 @@ export default function CampaignsPage() {
           </select>
           <button
             onClick={fetchCampaigns}
-            className="p-2 text-slate-400 hover:text-white transition-colors"
+            className="p-2 text-slate-500 hover:text-white transition-colors"
             title="Refresh"
           >
             <RefreshCw className="w-4 h-4" />
@@ -187,7 +187,7 @@ export default function CampaignsPage() {
           <div className="text-center py-16">
             <Send className="w-12 h-12 text-slate-600 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-white mb-1">No campaigns found</h3>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               {search || statusFilter ? 'Try adjusting your filters.' : 'Create your first campaign to get started.'}
             </p>
           </div>
@@ -196,14 +196,14 @@ export default function CampaignsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/[0.06]">
-                  <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Campaign</th>
-                  <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Template</th>
-                  <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Status</th>
-                  <th className="text-right text-xs font-medium text-slate-400 px-4 py-3">Audience</th>
-                  <th className="text-right text-xs font-medium text-slate-400 px-4 py-3">Open Rate</th>
-                  <th className="text-right text-xs font-medium text-slate-400 px-4 py-3">Click Rate</th>
-                  <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Date</th>
-                  <th className="text-right text-xs font-medium text-slate-400 px-4 py-3">Actions</th>
+                  <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Campaign</th>
+                  <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Template</th>
+                  <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Status</th>
+                  <th className="text-right text-xs font-medium text-slate-500 px-4 py-3">Audience</th>
+                  <th className="text-right text-xs font-medium text-slate-500 px-4 py-3">Open Rate</th>
+                  <th className="text-right text-xs font-medium text-slate-500 px-4 py-3">Click Rate</th>
+                  <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Date</th>
+                  <th className="text-right text-xs font-medium text-slate-500 px-4 py-3">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -247,7 +247,7 @@ export default function CampaignsPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-slate-500">
                         {campaign.scheduled_at
                           ? new Date(campaign.scheduled_at).toLocaleDateString()
                           : new Date(campaign.created_at).toLocaleDateString()}
@@ -259,7 +259,7 @@ export default function CampaignsPage() {
                           <>
                             <Link
                               to={`/admin/email/campaigns/${campaign.id}`}
-                              className="p-1.5 text-slate-400 hover:text-white transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-white transition-colors"
                               title="Edit"
                             >
                               <Pencil className="w-3.5 h-3.5" />
@@ -267,7 +267,7 @@ export default function CampaignsPage() {
                             <button
                               onClick={() => handleAction(campaign.id, 'launch')}
                               disabled={actionLoading === campaign.id}
-                              className="p-1.5 text-slate-400 hover:text-green-400 transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-green-400 transition-colors"
                               title="Launch"
                             >
                               <Play className="w-3.5 h-3.5" />
@@ -275,7 +275,7 @@ export default function CampaignsPage() {
                             <button
                               onClick={() => handleAction(campaign.id, 'delete')}
                               disabled={actionLoading === campaign.id}
-                              className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-red-400 transition-colors"
                               title="Delete"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -287,7 +287,7 @@ export default function CampaignsPage() {
                             <button
                               onClick={() => handleAction(campaign.id, 'pause')}
                               disabled={actionLoading === campaign.id}
-                              className="p-1.5 text-slate-400 hover:text-orange-400 transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-orange-400 transition-colors"
                               title="Pause"
                             >
                               <Pause className="w-3.5 h-3.5" />
@@ -295,7 +295,7 @@ export default function CampaignsPage() {
                             <button
                               onClick={() => handleAction(campaign.id, 'cancel')}
                               disabled={actionLoading === campaign.id}
-                              className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-red-400 transition-colors"
                               title="Cancel"
                             >
                               <X className="w-3.5 h-3.5" />
@@ -307,7 +307,7 @@ export default function CampaignsPage() {
                             <button
                               onClick={() => handleAction(campaign.id, 'resume')}
                               disabled={actionLoading === campaign.id}
-                              className="p-1.5 text-slate-400 hover:text-green-400 transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-green-400 transition-colors"
                               title="Resume"
                             >
                               <Play className="w-3.5 h-3.5" />
@@ -315,7 +315,7 @@ export default function CampaignsPage() {
                             <button
                               onClick={() => handleAction(campaign.id, 'cancel')}
                               disabled={actionLoading === campaign.id}
-                              className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-red-400 transition-colors"
                               title="Cancel"
                             >
                               <X className="w-3.5 h-3.5" />
@@ -326,7 +326,7 @@ export default function CampaignsPage() {
                           <button
                             onClick={() => handleAction(campaign.id, 'cancel')}
                             disabled={actionLoading === campaign.id}
-                            className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+                            className="p-1.5 text-slate-500 hover:text-red-400 transition-colors"
                             title="Cancel"
                           >
                             <X className="w-3.5 h-3.5" />
@@ -335,7 +335,7 @@ export default function CampaignsPage() {
                         {(campaign.status === 'sent' || campaign.status === 'cancelled' || campaign.status === 'failed') && (
                           <Link
                             to={`/admin/email/campaigns/${campaign.id}`}
-                            className="p-1.5 text-slate-400 hover:text-white transition-colors"
+                            className="p-1.5 text-slate-500 hover:text-white transition-colors"
                             title="View"
                           >
                             <Eye className="w-3.5 h-3.5" />
@@ -356,17 +356,17 @@ export default function CampaignsPage() {
             <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+              className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="text-sm text-slate-400">
+            <span className="text-sm text-slate-500">
               Page {page} of {totalPages}
             </span>
             <button
               onClick={() => setPage(p => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+              className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

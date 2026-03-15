@@ -88,7 +88,7 @@ export default function ScheduleListPage() {
               <CalendarClock className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
               Scheduled Audits
             </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">
               Automate recurring audits on your verified sites
             </p>
           </div>
@@ -114,11 +114,11 @@ export default function ScheduleListPage() {
               { label: 'Total', value: stats.total, color: 'text-slate-900 dark:text-white' },
               { label: 'Active', value: stats.active, color: 'text-emerald-600 dark:text-emerald-400' },
               { label: 'Paused', value: stats.paused, color: 'text-amber-600 dark:text-amber-400' },
-              { label: 'Disabled', value: stats.disabled, color: 'text-slate-500 dark:text-slate-400' },
+              { label: 'Disabled', value: stats.disabled, color: 'text-slate-500 dark:text-slate-500' },
             ].map((s) => (
               <div key={s.label} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-3 text-center">
                 <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{s.label}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-500">{s.label}</p>
               </div>
             ))}
           </div>
@@ -135,7 +135,7 @@ export default function ScheduleListPage() {
                   px-3 py-1.5 text-xs font-medium rounded-md transition-colors
                   ${filter === tab.key
                     ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    : 'text-slate-600 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white'
                   }
                 `}
               >
@@ -144,7 +144,7 @@ export default function ScheduleListPage() {
             ))}
           </div>
           <div className="relative flex-1 max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <input
               type="text"
               value={search}
@@ -166,7 +166,7 @@ export default function ScheduleListPage() {
             <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-1">
               {schedules.length === 0 ? 'No schedules yet' : 'No matching schedules'}
             </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-slate-500 dark:text-slate-500">
               {schedules.length === 0
                 ? 'Create your first scheduled audit to automate recurring checks.'
                 : 'Try adjusting your filters or search term.'}

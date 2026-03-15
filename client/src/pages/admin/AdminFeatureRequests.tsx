@@ -33,7 +33,7 @@ const impactColors: Record<string, string> = {
   critical_for_workflow: 'text-red-400',
   important: 'text-orange-400',
   would_be_helpful: 'text-amber-400',
-  nice_to_have: 'text-slate-400',
+  nice_to_have: 'text-slate-500',
 };
 
 const impactLabels: Record<string, string> = {
@@ -225,7 +225,7 @@ export default function AdminFeatureRequests() {
                     <td className="px-4 py-4">
                       <div>
                         <p className="font-medium text-white">{request.title}</p>
-                        <p className="text-sm text-slate-400">{request.category.replace('_', '/')}</p>
+                        <p className="text-sm text-slate-500">{request.category.replace('_', '/')}</p>
                       </div>
                     </td>
                     <td className="px-4 py-4">
@@ -238,7 +238,7 @@ export default function AdminFeatureRequests() {
                         {request.status.replace(/_/g, ' ')}
                       </span>
                     </td>
-                    <td className="px-4 py-4 text-sm text-slate-400">
+                    <td className="px-4 py-4 text-sm text-slate-500">
                       {request.reporter_email}
                     </td>
                     <td className="px-4 py-4 text-sm text-slate-500">
@@ -270,7 +270,7 @@ export default function AdminFeatureRequests() {
               <ChevronLeft className="w-4 h-4 mr-1" />
               Previous
             </button>
-            <span className="text-sm text-slate-400">
+            <span className="text-sm text-slate-500">
               Page {page} of {totalPages}
             </span>
             <button

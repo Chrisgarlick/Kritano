@@ -154,7 +154,7 @@ export default function SiteListPage() {
 
             <div className="flex items-center gap-3">
               {usage && (
-                <span className="text-sm text-slate-500 dark:text-slate-400 tabular-nums">
+                <span className="text-sm text-slate-500 dark:text-slate-500 tabular-nums">
                   {usage.sites} / {usage.maxSites ?? '∞'} sites
                 </span>
               )}
@@ -196,18 +196,18 @@ export default function SiteListPage() {
             <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-reveal-up stagger-1">
               {/* Search */}
               <div className="relative w-full sm:w-72">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                 <input
                   type="text"
                   placeholder="Search sites..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-8 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                  className="w-full pl-9 pr-8 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-600"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -263,7 +263,7 @@ export default function SiteListPage() {
             {viewMode === 'list' && (
               <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden animate-reveal-up stagger-2">
                 {/* List Header */}
-                <div className="hidden sm:flex items-center gap-4 px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <div className="hidden sm:flex items-center gap-4 px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider">
                   <span className="w-8"></span>
                   <span className="flex-1">Site</span>
                   <span className="w-20">Status</span>
@@ -338,7 +338,7 @@ export default function SiteListPage() {
                   value={newName}
                   onChange={e => setNewName(e.target.value)}
                   placeholder="My Website"
-                  className="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
+                  className="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
                 />
               </div>
               <div>
@@ -351,15 +351,15 @@ export default function SiteListPage() {
                   value={newDomain}
                   onChange={e => setNewDomain(e.target.value)}
                   placeholder="example.com"
-                  className="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors font-mono text-sm"
+                  className="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors font-mono text-sm"
                 />
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5">
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1.5">
                   Enter the domain without http:// or www.
                 </p>
               </div>
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                  Description <span className="text-slate-400">(optional)</span>
+                  Description <span className="text-slate-500">(optional)</span>
                 </label>
                 <textarea
                   id="description"
@@ -367,7 +367,7 @@ export default function SiteListPage() {
                   onChange={e => setNewDescription(e.target.value)}
                   placeholder="Brief description of this site..."
                   rows={2}
-                  className="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors resize-none"
+                  className="w-full px-3 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors resize-none"
                 />
               </div>
             </div>

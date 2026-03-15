@@ -119,7 +119,7 @@ export default function CampaignsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Marketing Campaigns</h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               Manage campaign labels for organizing social content
             </p>
           </div>
@@ -138,7 +138,7 @@ export default function CampaignsPage() {
             <h3 className="text-sm font-medium text-white mb-4">New Campaign</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="text-xs font-medium text-slate-400 mb-1.5 block">Name</label>
+                <label className="text-xs font-medium text-slate-500 mb-1.5 block">Name</label>
                 <input
                   type="text"
                   value={newName}
@@ -149,7 +149,7 @@ export default function CampaignsPage() {
                 />
               </div>
               <div>
-                <label className="text-xs font-medium text-slate-400 mb-1.5 block">Color</label>
+                <label className="text-xs font-medium text-slate-500 mb-1.5 block">Color</label>
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5 flex-wrap">
                     {PRESET_COLORS.map(c => (
@@ -166,7 +166,7 @@ export default function CampaignsPage() {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-medium text-slate-400 mb-1.5 block">Description</label>
+                <label className="text-xs font-medium text-slate-500 mb-1.5 block">Description</label>
                 <input
                   type="text"
                   value={newDescription}
@@ -180,7 +180,7 @@ export default function CampaignsPage() {
             <div className="flex justify-end gap-2 mt-4">
               <button
                 onClick={() => setShowCreate(false)}
-                className="px-3 py-2 text-sm text-slate-400 hover:text-white transition-colors"
+                className="px-3 py-2 text-sm text-slate-500 hover:text-white transition-colors"
               >
                 Cancel
               </button>
@@ -200,12 +200,12 @@ export default function CampaignsPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/[0.06]">
-                <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Name</th>
-                <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Color</th>
-                <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Description</th>
-                <th className="text-center text-xs font-medium text-slate-400 px-4 py-3">Content</th>
-                <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Created</th>
-                <th className="text-right text-xs font-medium text-slate-400 px-4 py-3">Actions</th>
+                <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Name</th>
+                <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Color</th>
+                <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Description</th>
+                <th className="text-center text-xs font-medium text-slate-500 px-4 py-3">Content</th>
+                <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Created</th>
+                <th className="text-right text-xs font-medium text-slate-500 px-4 py-3">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -221,7 +221,7 @@ export default function CampaignsPage() {
                 <tr>
                   <td colSpan={6} className="px-4 py-12 text-center">
                     <Tags className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-                    <p className="text-sm text-slate-400">No campaigns yet</p>
+                    <p className="text-sm text-slate-500">No campaigns yet</p>
                     <p className="text-xs text-slate-500 mt-1">Create a campaign to organise your content</p>
                   </td>
                 </tr>
@@ -276,7 +276,7 @@ export default function CampaignsPage() {
                             </button>
                             <button
                               onClick={() => setEditId(null)}
-                              className="p-1.5 text-slate-400 hover:text-white transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-white transition-colors"
                               title="Cancel"
                             >
                               <X className="w-4 h-4" />
@@ -296,12 +296,12 @@ export default function CampaignsPage() {
                           />
                         </td>
                         <td className="px-4 py-3">
-                          <span className="text-sm text-slate-400">
+                          <span className="text-sm text-slate-500">
                             {campaign.description || <span className="text-slate-600">—</span>}
                           </span>
                         </td>
                         <td className="px-4 py-3 text-center">
-                          <span className="inline-flex items-center gap-1 text-xs text-slate-400">
+                          <span className="inline-flex items-center gap-1 text-xs text-slate-500">
                             <FileText className="w-3 h-3" />
                             {campaign.content_count ?? 0}
                           </span>
@@ -323,7 +323,7 @@ export default function CampaignsPage() {
                               </button>
                               <button
                                 onClick={() => setDeleteId(null)}
-                                className="px-2 py-1 text-xs text-slate-400 hover:text-white transition-colors"
+                                className="px-2 py-1 text-xs text-slate-500 hover:text-white transition-colors"
                               >
                                 Cancel
                               </button>
@@ -332,14 +332,14 @@ export default function CampaignsPage() {
                             <div className="flex items-center justify-end gap-1">
                               <button
                                 onClick={() => startEdit(campaign)}
-                                className="p-1.5 text-slate-400 hover:text-white transition-colors"
+                                className="p-1.5 text-slate-500 hover:text-white transition-colors"
                                 title="Edit"
                               >
                                 <Pencil className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => setDeleteId(campaign.id)}
-                                className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+                                className="p-1.5 text-slate-500 hover:text-red-400 transition-colors"
                                 title="Delete"
                               >
                                 <Trash2 className="w-4 h-4" />

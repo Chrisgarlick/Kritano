@@ -101,7 +101,7 @@ export default function SystemSettingsPage() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
+          <Loader2 className="w-6 h-6 animate-spin text-slate-500" />
         </div>
       </AdminLayout>
     );
@@ -117,7 +117,7 @@ export default function SystemSettingsPage() {
               <Settings className="w-6 h-6" />
               <span>System Settings</span>
             </h1>
-            <p className="text-slate-400 mt-1">Manage app-wide configuration</p>
+            <p className="text-slate-500 mt-1">Manage app-wide configuration</p>
           </div>
         </div>
 
@@ -128,7 +128,7 @@ export default function SystemSettingsPage() {
               <Zap className="w-5 h-5 text-amber-400" />
               <span>Trigger Automation</span>
             </h2>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               When enabled, CRM triggers automatically send their mapped email template to the user.
               Disabled triggers create pending records for manual review.
             </p>
@@ -174,7 +174,7 @@ export default function SystemSettingsPage() {
                 <Rocket className="w-5 h-5 text-amber-400" />
                 <span>Early Access</span>
               </h2>
-              <p className="text-sm text-slate-400 mt-1">
+              <p className="text-sm text-slate-500 mt-1">
                 When enabled, users can claim founding member spots via <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">/register?ea=email</code> or <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">/register?ea=social</code>.
               </p>
             </div>
@@ -239,7 +239,7 @@ export default function SystemSettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold text-white">Coming Soon Mode</h2>
-              <p className="text-sm text-slate-400 mt-1">
+              <p className="text-sm text-slate-500 mt-1">
                 When enabled, all public pages show a coming soon landing page with email capture.
                 Admin routes remain accessible.
               </p>

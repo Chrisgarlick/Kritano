@@ -169,6 +169,7 @@ export default function Services() {
                     </Link>
                     <Link
                       to={`/services/${service.id}`}
+                      aria-label={`Learn more about ${service.title}`}
                       className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors"
                     >
                       Learn more

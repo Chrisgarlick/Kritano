@@ -11,7 +11,7 @@ const CATEGORIES: ScoreCategory[] = ['seo', 'accessibility', 'security', 'perfor
 
 function DeltaIndicator({ delta }: { delta: number | null }) {
   if (delta === null) {
-    return <span className="text-slate-400 text-sm">N/A</span>;
+    return <span className="text-slate-500 text-sm">N/A</span>;
   }
 
   if (delta > 0) {
@@ -33,7 +33,7 @@ function DeltaIndicator({ delta }: { delta: number | null }) {
   }
 
   return (
-    <span className="inline-flex items-center gap-1 text-slate-400 text-sm">
+    <span className="inline-flex items-center gap-1 text-slate-500 text-sm">
       <Minus className="w-4 h-4" />
       0
     </span>
@@ -45,7 +45,7 @@ function ScoreBar({ score, maxWidth = 100 }: { score: number | null; maxWidth?: 
     return (
       <div className="flex items-center gap-2">
         <div className="h-6 bg-slate-100 rounded" style={{ width: maxWidth }} />
-        <span className="text-sm text-slate-400 font-medium w-8">N/A</span>
+        <span className="text-sm text-slate-500 font-medium w-8">N/A</span>
       </div>
     );
   }
@@ -148,7 +148,7 @@ export function ScoreComparisonTable({ audits, scoreDeltas }: ScoreComparisonBar
             {audits.map(audit => (
               <th key={audit.id} className="text-center py-3 px-4 text-sm font-medium text-slate-600">
                 <div className="truncate max-w-[100px]">{audit.siteName}</div>
-                <div className="text-xs text-slate-400 font-normal">
+                <div className="text-xs text-slate-500 font-normal">
                   {new Date(audit.completedAt).toLocaleDateString()}
                 </div>
               </th>

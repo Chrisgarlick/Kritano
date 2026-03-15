@@ -34,7 +34,7 @@ const SEVERITY_COLORS: Record<string, string> = {
   serious: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
   moderate: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
   minor: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-  info: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
+  info: 'bg-slate-500/20 text-slate-500 border-slate-500/30',
 };
 
 const TIER_COLORS: Record<string, string> = {
@@ -91,7 +91,7 @@ export default function TrendsPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Global Trends</h1>
-              <p className="text-sm text-slate-400">Platform-wide audit trends and issue patterns</p>
+              <p className="text-sm text-slate-500">Platform-wide audit trends and issue patterns</p>
             </div>
           </div>
 
@@ -125,11 +125,11 @@ export default function TrendsPage() {
             {/* Summary Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-white/[0.01] border border-white/[0.04] rounded-xl p-5">
-                <p className="text-xs text-slate-400 font-medium uppercase tracking-wide mb-1">Audits Completed</p>
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wide mb-1">Audits Completed</p>
                 <p className="text-3xl font-bold text-white">{formatNumber(data.totalAuditsCompleted)}</p>
               </div>
               <div className="bg-white/[0.01] border border-white/[0.04] rounded-xl p-5">
-                <p className="text-xs text-slate-400 font-medium uppercase tracking-wide mb-1">Pages Scanned</p>
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wide mb-1">Pages Scanned</p>
                 <p className="text-3xl font-bold text-white">{formatNumber(data.totalPagesScanned)}</p>
               </div>
             </div>
@@ -154,18 +154,18 @@ export default function TrendsPage() {
                 Top Issues ({data.topIssues.length})
               </h2>
               {data.topIssues.length === 0 ? (
-                <p className="text-slate-400 text-sm py-4">No issue data available for this period.</p>
+                <p className="text-slate-500 text-sm py-4">No issue data available for this period.</p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-white/[0.04]">
-                        <th className="text-left text-xs font-medium text-slate-400 uppercase tracking-wide pb-3 pr-4">#</th>
-                        <th className="text-left text-xs font-medium text-slate-400 uppercase tracking-wide pb-3 pr-4">Issue</th>
-                        <th className="text-left text-xs font-medium text-slate-400 uppercase tracking-wide pb-3 pr-4">Category</th>
-                        <th className="text-left text-xs font-medium text-slate-400 uppercase tracking-wide pb-3 pr-4">Severity</th>
-                        <th className="text-right text-xs font-medium text-slate-400 uppercase tracking-wide pb-3 pr-4">Affected Audits</th>
-                        <th className="text-right text-xs font-medium text-slate-400 uppercase tracking-wide pb-3">% of Audits</th>
+                        <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wide pb-3 pr-4">#</th>
+                        <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wide pb-3 pr-4">Issue</th>
+                        <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wide pb-3 pr-4">Category</th>
+                        <th className="text-left text-xs font-medium text-slate-500 uppercase tracking-wide pb-3 pr-4">Severity</th>
+                        <th className="text-right text-xs font-medium text-slate-500 uppercase tracking-wide pb-3 pr-4">Affected Audits</th>
+                        <th className="text-right text-xs font-medium text-slate-500 uppercase tracking-wide pb-3">% of Audits</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -182,7 +182,7 @@ export default function TrendsPage() {
             <div className="bg-white/[0.01] border border-white/[0.04] rounded-xl p-6">
               <h2 className="text-lg font-semibold text-white mb-4">Tier Breakdown</h2>
               {Object.keys(data.tierBreakdown).length === 0 ? (
-                <p className="text-slate-400 text-sm py-4">No tier data available for this period.</p>
+                <p className="text-slate-500 text-sm py-4">No tier data available for this period.</p>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                   {['free', 'starter', 'pro', 'agency', 'enterprise'].map((tier) => {
@@ -209,7 +209,7 @@ function ScoreDistributionCard({ category, distribution }: { category: string; d
   return (
     <div className="bg-white/[0.02] rounded-lg p-4">
       <div className="flex items-center gap-2 mb-3">
-        <Icon className={`w-4 h-4 ${config?.color ?? 'text-slate-400'}`} />
+        <Icon className={`w-4 h-4 ${config?.color ?? 'text-slate-500'}`} />
         <span className="text-sm font-medium text-slate-200">{config?.label ?? category}</span>
       </div>
 
@@ -220,15 +220,15 @@ function ScoreDistributionCard({ category, distribution }: { category: string; d
 
       <div className="space-y-1.5">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-slate-400">Median</span>
+          <span className="text-slate-500">Median</span>
           <span className={`font-medium ${getScoreColor(distribution.median)}`}>{distribution.median}</span>
         </div>
         <div className="flex items-center justify-between text-xs">
-          <span className="text-slate-400">P10 (worst)</span>
+          <span className="text-slate-500">P10 (worst)</span>
           <span className={`font-medium ${getScoreColor(distribution.p10)}`}>{distribution.p10}</span>
         </div>
         <div className="flex items-center justify-between text-xs">
-          <span className="text-slate-400">P90 (best)</span>
+          <span className="text-slate-500">P90 (best)</span>
           <span className={`font-medium ${getScoreColor(distribution.p90)}`}>{distribution.p90}</span>
         </div>
       </div>
@@ -300,7 +300,7 @@ function TierBreakdownCard({ tier, data, totalAudits }: { tier: string; data: Ad
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-400">Avg Score:</span>
+          <span className="text-xs text-slate-500">Avg Score:</span>
           <span className={`text-sm font-bold ${getScoreColor(data.avgScore)}`}>{data.avgScore}</span>
         </div>
 

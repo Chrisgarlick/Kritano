@@ -41,6 +41,7 @@ import {
 } from '../../services/email-campaign.service.js';
 import type { TemplateCategory, BrandingMode } from '../../types/email-template.types.js';
 import type { CampaignStatus } from '../../types/email-campaign.types.js';
+import { pool } from '../../db/index.js';
 
 const router = Router();
 
@@ -749,6 +750,35 @@ router.get('/analytics/templates', async (_req: AdminRequest, res: Response): Pr
   } catch (error) {
     console.error('Admin template performance error:', error);
     res.status(500).json({ error: 'Failed to get template performance', code: 'TEMPLATE_PERF_ERROR' });
+  }
+});
+
+// =============================================
+// Unsubscribe Stats
+// =============================================
+
+/**
+ * GET /api/admin/email/unsubscribe-stats
+ * Aggregate counts of unsubscribed users and cold prospects.
+ */
+router.get('/unsubscribe-stats', async (_req: AdminRequest, res: Response): Promise<void> => {
+  try {
+    const [regResult, coldResult] = await Promise.all([
+      pool.query(`SELECT COUNT(*) FROM email_preferences WHERE unsubscribed_all = true`),
+      pool.query(`SELECT COUNT(*) FROM cold_prospect_unsubscribes`),
+    ]);
+
+    const registeredUnsubscribed = parseInt(regResult.rows[0].count, 10);
+    const coldProspectUnsubscribed = parseInt(coldResult.rows[0].count, 10);
+
+    res.json({
+      registeredUnsubscribed,
+      coldProspectUnsubscribed,
+      totalUnsubscribed: registeredUnsubscribed + coldProspectUnsubscribed,
+    });
+  } catch (error) {
+    console.error('Unsubscribe stats error:', error);
+    res.status(500).json({ error: 'Failed to get unsubscribe stats', code: 'UNSUBSCRIBE_STATS_ERROR' });
   }
 });
 

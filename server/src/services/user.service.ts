@@ -1,7 +1,7 @@
 import { pool } from '../db/index.js';
 import { passwordService } from './password.service.js';
 import { LOCKOUT_CONFIG } from '../config/auth.config.js';
-import type { User, SafeUser, RegisterInput } from '../types/auth.types.js';
+import type { User, SafeUser, RegisterInput, OAuthProfile } from '../types/auth.types.js';
 
 /**
  * User service for managing user accounts.
@@ -162,6 +162,36 @@ export class UserService {
   }
 
   /**
+   * Create a new user from OAuth profile (no password)
+   */
+  async createOAuthUser(profile: OAuthProfile): Promise<SafeUser> {
+    const result = await pool.query<User>(
+      `INSERT INTO users (email, password_hash, first_name, last_name, email_verified, email_verified_at, status, avatar_url)
+       VALUES ($1, NULL, $2, $3, TRUE, NOW(), 'active', $4)
+       RETURNING *`,
+      [
+        profile.email!.toLowerCase(),
+        profile.firstName || '',
+        profile.lastName || '',
+        profile.avatarUrl,
+      ]
+    );
+
+    return this.toSafeUser(result.rows[0]);
+  }
+
+  /**
+   * Check if user has a password set
+   */
+  async hasPassword(userId: string): Promise<boolean> {
+    const result = await pool.query<{ password_hash: string | null }>(
+      `SELECT password_hash FROM users WHERE id = $1`,
+      [userId]
+    );
+    return result.rows[0]?.password_hash != null;
+  }
+
+  /**
    * Convert User to SafeUser (remove sensitive fields)
    */
   toSafeUser(user: User): SafeUser {
@@ -175,6 +205,8 @@ export class UserService {
       status: user.status,
       role: user.role,
       created_at: user.created_at,
+      deletion_requested_at: user.deletion_requested_at,
+      deletion_scheduled_for: user.deletion_scheduled_for,
     };
   }
 }

@@ -262,7 +262,7 @@ export default function Pricing() {
                 <h3 className={`text-base font-semibold mb-1 ${plan.popular ? 'text-white' : 'text-slate-900'}`}>
                   {plan.name}
                 </h3>
-                <p className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-400' : 'text-slate-500'}`}>
+                <p className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-500' : 'text-slate-500'}`}>
                   {plan.description}
                 </p>
               </div>
@@ -273,7 +273,7 @@ export default function Pricing() {
                   {plan.price}
                 </span>
                 {plan.priceDetail && (
-                  <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-400' : 'text-slate-500'}`}>
+                  <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-500' : 'text-slate-500'}`}>
                     {plan.priceDetail}
                   </span>
                 )}
@@ -338,7 +338,7 @@ export default function Pricing() {
                   {COMPARISON_SECTIONS.map((section) => (
                     <>
                       <tr key={section.title}>
-                        <td colSpan={6} className="pt-6 pb-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                        <td colSpan={6} className="pt-6 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           {section.title}
                         </td>
                       </tr>
@@ -441,9 +441,9 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
       >
         <span className="font-semibold text-slate-900 text-sm pr-4">{question}</span>
         {open ? (
-          <ChevronUp className="w-5 h-5 text-slate-400 flex-shrink-0" />
+          <ChevronUp className="w-5 h-5 text-slate-500 flex-shrink-0" />
         ) : (
-          <ChevronDown className="w-5 h-5 text-slate-400 flex-shrink-0" />
+          <ChevronDown className="w-5 h-5 text-slate-500 flex-shrink-0" />
         )}
       </button>
       {open && (

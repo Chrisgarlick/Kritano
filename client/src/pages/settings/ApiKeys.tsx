@@ -138,7 +138,7 @@ export default function ApiKeysPage() {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Your API Keys</h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-sm text-slate-500 dark:text-slate-500">
             {activeKeys.length} active key{activeKeys.length !== 1 ? 's' : ''} (max 10)
           </p>
         </div>
@@ -158,7 +158,7 @@ export default function ApiKeysPage() {
       {loading && (
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 text-center">
           <div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full mx-auto"></div>
-          <p className="text-slate-500 dark:text-slate-400 mt-4">Loading API keys...</p>
+          <p className="text-slate-500 dark:text-slate-500 mt-4">Loading API keys...</p>
         </div>
       )}
 
@@ -179,12 +179,12 @@ export default function ApiKeysPage() {
                       </div>
                       <div>
                         <h4 className="text-sm font-medium text-slate-900 dark:text-white">{key.name}</h4>
-                        <code className="text-xs bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-slate-600 dark:text-slate-400">
+                        <code className="text-xs bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-slate-600 dark:text-slate-500">
                           {key.keyPrefix}...
                         </code>
                       </div>
                     </div>
-                    <div className="mt-2 flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 ml-11">
+                    <div className="mt-2 flex items-center gap-4 text-xs text-slate-500 dark:text-slate-500 ml-11">
                       <span>Created {formatRelativeTime(key.createdAt)}</span>
                       <span className="text-slate-300 dark:text-slate-600">|</span>
                       <span>Last used {formatRelativeTime(key.lastUsedAt)}</span>
@@ -212,10 +212,10 @@ export default function ApiKeysPage() {
       {!loading && activeKeys.length === 0 && (
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-12 text-center">
           <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4">
-            <Key className="w-8 h-8 text-slate-400" />
+            <Key className="w-8 h-8 text-slate-500" />
           </div>
           <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No API keys yet</h3>
-          <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-sm mx-auto">
+          <p className="text-slate-500 dark:text-slate-500 mb-6 max-w-sm mx-auto">
             Create your first API key to start integrating PagePulser with your applications.
           </p>
           <Button onClick={() => setShowCreateModal(true)}>
@@ -229,7 +229,7 @@ export default function ApiKeysPage() {
       {!loading && revokedKeys.length > 0 && (
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-            <h3 className="text-base font-medium text-slate-500 dark:text-slate-400">
+            <h3 className="text-base font-medium text-slate-500 dark:text-slate-500">
               Revoked Keys ({revokedKeys.length})
             </h3>
           </div>
@@ -240,10 +240,10 @@ export default function ApiKeysPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
-                        <Key className="w-4 h-4 text-slate-400" />
+                        <Key className="w-4 h-4 text-slate-500" />
                       </div>
                       <div>
-                        <h4 className="text-sm font-medium text-slate-500 dark:text-slate-400 line-through">
+                        <h4 className="text-sm font-medium text-slate-500 dark:text-slate-500 line-through">
                           {key.name}
                         </h4>
                         <div className="flex items-center gap-2 mt-0.5">
@@ -256,7 +256,7 @@ export default function ApiKeysPage() {
                         </div>
                       </div>
                     </div>
-                    <p className="mt-1.5 text-xs text-slate-400 ml-11">
+                    <p className="mt-1.5 text-xs text-slate-500 ml-11">
                       Revoked {formatRelativeTime(key.revokedAt)}
                     </p>
                   </div>
@@ -298,7 +298,7 @@ export default function ApiKeysPage() {
                       className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                       autoFocus
                     />
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
                       Give your key a descriptive name to remember what it's used for.
                     </p>
                   </div>

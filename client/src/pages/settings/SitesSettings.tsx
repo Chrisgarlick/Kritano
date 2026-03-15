@@ -243,7 +243,7 @@ export default function SitesSettings() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">My Sites</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">
             Manage your domains and verification status
           </p>
         </div>
@@ -271,7 +271,7 @@ export default function SitesSettings() {
                 <div className="text-sm font-medium text-slate-900 dark:text-white">
                   {usage.sites} of {usage.maxSites} sites used
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">
+                <div className="text-xs text-slate-500 dark:text-slate-500">
                   {tierLimits.tier.charAt(0).toUpperCase() + tierLimits.tier.slice(1)} plan
                 </div>
               </div>
@@ -305,9 +305,9 @@ export default function SitesSettings() {
         {ownedSites.length === 0 ? (
           <div className="p-8 text-center">
             <div className="w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4">
-              <Globe className="w-7 h-7 text-slate-400" />
+              <Globe className="w-7 h-7 text-slate-500" />
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            <p className="text-sm text-slate-600 dark:text-slate-500 mb-4">
               No sites yet. Add a site manually or run an audit to create one automatically.
             </p>
             <div className="flex items-center justify-center gap-3">
@@ -346,7 +346,7 @@ export default function SitesSettings() {
                       {site.verified ? (
                         <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                       ) : (
-                        <Shield className="w-5 h-5 text-slate-400" />
+                        <Shield className="w-5 h-5 text-slate-500" />
                       )}
                     </div>
                     <div>
@@ -360,7 +360,7 @@ export default function SitesSettings() {
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                      <div className="text-xs text-slate-500 dark:text-slate-500 mt-0.5">
                         {site.stats.totalAudits} audit{site.stats.totalAudits !== 1 ? 's' : ''} · {site.stats.urlCount} URL{site.stats.urlCount !== 1 ? 's' : ''}
                       </div>
                     </div>
@@ -388,7 +388,7 @@ export default function SitesSettings() {
                         className={`p-1.5 transition-colors rounded ${
                           brandingSiteId === site.id
                             ? 'text-indigo-600 bg-indigo-50'
-                            : 'text-slate-400 hover:text-indigo-500'
+                            : 'text-slate-500 hover:text-indigo-500'
                         }`}
                         title="PDF branding"
                       >
@@ -397,7 +397,7 @@ export default function SitesSettings() {
                     )}
                     <button
                       onClick={() => setDeletingSiteId(site.id)}
-                      className="p-1.5 text-slate-400 hover:text-red-500 transition-colors"
+                      className="p-1.5 text-slate-500 hover:text-red-500 transition-colors"
                       title="Delete site"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -427,7 +427,7 @@ export default function SitesSettings() {
                         className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                           verificationMethod === 'file'
                             ? 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-400'
-                            : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                            : 'text-slate-600 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
                         }`}
                       >
                         File Upload
@@ -437,7 +437,7 @@ export default function SitesSettings() {
                         className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                           verificationMethod === 'dns'
                             ? 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-400'
-                            : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                            : 'text-slate-600 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
                         }`}
                       >
                         DNS Record
@@ -446,7 +446,7 @@ export default function SitesSettings() {
 
                     {verificationMethod === 'file' ? (
                       <div className="space-y-3">
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                        <p className="text-sm text-slate-600 dark:text-slate-500">
                           Create a file at the following path on your website:
                         </p>
                         <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 font-mono text-sm">
@@ -456,13 +456,13 @@ export default function SitesSettings() {
                             </span>
                             <button
                               onClick={() => handleCopy(verificationInstructions.file.path, 'path')}
-                              className="text-slate-400 hover:text-slate-600"
+                              className="text-slate-500 hover:text-slate-600"
                             >
                               {copied === 'path' ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                             </button>
                           </div>
                         </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                        <p className="text-sm text-slate-600 dark:text-slate-500">
                           With this content:
                         </p>
                         <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 font-mono text-sm">
@@ -472,7 +472,7 @@ export default function SitesSettings() {
                             </span>
                             <button
                               onClick={() => handleCopy(verificationToken!, 'token')}
-                              className="text-slate-400 hover:text-slate-600 flex-shrink-0 ml-2"
+                              className="text-slate-500 hover:text-slate-600 flex-shrink-0 ml-2"
                             >
                               {copied === 'token' ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                             </button>
@@ -481,7 +481,7 @@ export default function SitesSettings() {
                       </div>
                     ) : (
                       <div className="space-y-3">
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                        <p className="text-sm text-slate-600 dark:text-slate-500">
                           Add a TXT record to your DNS settings:
                         </p>
                         <div className="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 space-y-2">
@@ -494,7 +494,7 @@ export default function SitesSettings() {
                             </div>
                             <button
                               onClick={() => handleCopy(verificationInstructions.dns.name, 'dnsName')}
-                              className="text-slate-400 hover:text-slate-600"
+                              className="text-slate-500 hover:text-slate-600"
                             >
                               {copied === 'dnsName' ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                             </button>
@@ -508,13 +508,13 @@ export default function SitesSettings() {
                             </div>
                             <button
                               onClick={() => handleCopy(verificationToken!, 'dnsValue')}
-                              className="text-slate-400 hover:text-slate-600 flex-shrink-0 ml-2"
+                              className="text-slate-500 hover:text-slate-600 flex-shrink-0 ml-2"
                             >
                               {copied === 'dnsValue' ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                             </button>
                           </div>
                         </div>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                        <p className="text-xs text-slate-500 dark:text-slate-500">
                           DNS changes may take up to 24 hours to propagate.
                         </p>
                       </div>
@@ -584,7 +584,7 @@ export default function SitesSettings() {
                         <h4 className="text-sm font-medium text-slate-900 dark:text-white mb-1">
                           PDF Report Branding
                         </h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                        <p className="text-xs text-slate-500 dark:text-slate-500">
                           Customize exported PDF reports with your company branding
                         </p>
                       </div>
@@ -606,7 +606,7 @@ export default function SitesSettings() {
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1">
                             Company Name
                           </label>
                           <input
@@ -618,7 +618,7 @@ export default function SitesSettings() {
                           />
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1">
                             Logo URL
                           </label>
                           <input
@@ -633,7 +633,7 @@ export default function SitesSettings() {
 
                       <div className="grid grid-cols-3 gap-3">
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1">
                             Primary
                           </label>
                           <div className="flex items-center gap-2">
@@ -652,7 +652,7 @@ export default function SitesSettings() {
                           </div>
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1">
                             Secondary
                           </label>
                           <div className="flex items-center gap-2">
@@ -671,7 +671,7 @@ export default function SitesSettings() {
                           </div>
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-1">
                             Accent
                           </label>
                           <div className="flex items-center gap-2">
@@ -694,7 +694,7 @@ export default function SitesSettings() {
                       {/* Extracted Colors Palette */}
                       {extractedColors.length > 0 && (
                         <div>
-                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                          <label className="block text-xs font-medium text-slate-600 dark:text-slate-500 mb-2">
                             Colors found on site (click to apply)
                           </label>
                           <div className="flex flex-wrap gap-1.5">
@@ -716,11 +716,11 @@ export default function SitesSettings() {
                                   style={{ backgroundColor: color }}
                                   title={`${color} - Click to apply`}
                                 />
-                                <span className="text-[9px] font-mono text-slate-400">{color.slice(1, 4)}</span>
+                                <span className="text-[9px] font-mono text-slate-500">{color.slice(1, 4)}</span>
                               </div>
                             ))}
                           </div>
-                          <p className="text-[10px] text-slate-400 mt-1.5">
+                          <p className="text-[10px] text-slate-500 mt-1.5">
                             Tip: Click a color multiple times to cycle through Primary → Secondary → Accent
                           </p>
                         </div>
@@ -748,7 +748,7 @@ export default function SitesSettings() {
                         <button
                           type="button"
                           onClick={handleResetBranding}
-                          className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400"
+                          className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-500"
                         >
                           Reset to defaults
                         </button>
@@ -798,7 +798,7 @@ export default function SitesSettings() {
                       {site.verified ? (
                         <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                       ) : (
-                        <Shield className="w-5 h-5 text-slate-400" />
+                        <Shield className="w-5 h-5 text-slate-500" />
                       )}
                     </div>
                     <div>
@@ -806,11 +806,11 @@ export default function SitesSettings() {
                         <span className="font-medium text-slate-900 dark:text-white">
                           {site.domain}
                         </span>
-                        <span className="px-2 py-0.5 text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full capitalize">
+                        <span className="px-2 py-0.5 text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500 rounded-full capitalize">
                           {site.permission}
                         </span>
                       </div>
-                      <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                      <div className="text-xs text-slate-500 dark:text-slate-500 mt-0.5">
                         Shared by owner
                       </div>
                     </div>
@@ -870,7 +870,7 @@ export default function SitesSettings() {
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                   Add Site
                 </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
+                <p className="text-sm text-slate-500 dark:text-slate-500">
                   Add a new website to manage
                 </p>
               </div>
@@ -887,7 +887,7 @@ export default function SitesSettings() {
                   value={newSiteName}
                   onChange={(e) => setNewSiteName(e.target.value)}
                   placeholder="My Website"
-                  className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
+                  className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
                 />
               </div>
               <div>
@@ -900,9 +900,9 @@ export default function SitesSettings() {
                   value={newSiteDomain}
                   onChange={(e) => setNewSiteDomain(e.target.value)}
                   placeholder="example.com"
-                  className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors font-mono text-sm"
+                  className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors font-mono text-sm"
                 />
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5">
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1.5">
                   Enter the domain without http:// or www
                 </p>
               </div>

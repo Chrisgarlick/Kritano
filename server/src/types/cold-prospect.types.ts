@@ -88,6 +88,7 @@ export interface ColdProspectFilters {
   batchDate?: string;
   hasEmail?: boolean;
   hasName?: boolean;
+  isUnsubscribed?: boolean;
   search?: string;
   page?: number;
   limit?: number;

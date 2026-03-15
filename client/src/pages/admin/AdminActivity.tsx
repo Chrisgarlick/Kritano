@@ -75,7 +75,7 @@ export default function AdminActivityPage() {
                         <span className="text-slate-500">by</span>
                         <span className="text-white">{activity.admin_email}</span>
                       </div>
-                      <div className="mt-1 text-sm text-slate-400">
+                      <div className="mt-1 text-sm text-slate-500">
                         <span className="capitalize">{activity.target_type}</span>
                         {activity.target_id && (
                           <span className="ml-1 font-mono text-xs text-slate-500">
@@ -84,13 +84,13 @@ export default function AdminActivityPage() {
                         )}
                       </div>
                       {Object.keys(activity.details).length > 0 && (
-                        <div className="mt-2 text-xs font-mono bg-white/[0.03] rounded p-2 text-slate-400">
+                        <div className="mt-2 text-xs font-mono bg-white/[0.03] rounded p-2 text-slate-500">
                           {JSON.stringify(activity.details, null, 2)}
                         </div>
                       )}
                     </div>
                     <div className="text-right text-sm">
-                      <div className="text-slate-400">
+                      <div className="text-slate-500">
                         {new Date(activity.created_at).toLocaleDateString()}
                       </div>
                       <div className="text-slate-500">
@@ -112,7 +112,7 @@ export default function AdminActivityPage() {
         {/* Pagination */}
         {pagination.pages > 1 && (
           <div className="flex justify-between items-center mt-4">
-            <div className="text-sm text-slate-400">
+            <div className="text-sm text-slate-500">
               Page {pagination.page} of {pagination.pages}
             </div>
             <div className="flex space-x-2">

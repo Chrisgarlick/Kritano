@@ -64,7 +64,7 @@ export default function UnsubscribePage() {
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                 Processing...
               </h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-sm text-slate-500 dark:text-slate-500">
                 Updating your email preferences.
               </p>
             </div>
@@ -76,7 +76,7 @@ export default function UnsubscribePage() {
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                 Unsubscribed
               </h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+              <p className="text-sm text-slate-600 dark:text-slate-500 mb-6">
                 {message || 'You have been unsubscribed from all marketing emails. You will still receive essential account emails.'}
               </p>
 
@@ -92,7 +92,7 @@ export default function UnsubscribePage() {
                 )}
                 <Link
                   to="/"
-                  className="flex items-center justify-center gap-2 w-full px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 text-sm transition-colors"
+                  className="flex items-center justify-center gap-2 w-full px-4 py-2 text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back to PagePulser
@@ -107,7 +107,7 @@ export default function UnsubscribePage() {
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                 Something Went Wrong
               </h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+              <p className="text-sm text-slate-600 dark:text-slate-500 mb-6">
                 {message}
               </p>
 
@@ -129,7 +129,7 @@ export default function UnsubscribePage() {
                 </Link>
                 <Link
                   to="/"
-                  className="flex items-center justify-center gap-2 w-full px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 text-sm transition-colors"
+                  className="flex items-center justify-center gap-2 w-full px-4 py-2 text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back to PagePulser
@@ -140,11 +140,11 @@ export default function UnsubscribePage() {
 
           {status === 'no-token' && (
             <div className="text-center">
-              <MailX className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+              <MailX className="w-12 h-12 text-slate-500 mx-auto mb-4" />
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                 Invalid Link
               </h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">
+              <p className="text-sm text-slate-600 dark:text-slate-500 mb-6">
                 This unsubscribe link is missing required information. Please use the link from your email, or manage your preferences from your account settings.
               </p>
 
@@ -158,7 +158,7 @@ export default function UnsubscribePage() {
                 </Link>
                 <Link
                   to="/"
-                  className="flex items-center justify-center gap-2 w-full px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 text-sm transition-colors"
+                  className="flex items-center justify-center gap-2 w-full px-4 py-2 text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back to PagePulser
@@ -168,7 +168,7 @@ export default function UnsubscribePage() {
           )}
         </div>
 
-        <p className="text-center text-xs text-slate-400 dark:text-slate-500 mt-6">
+        <p className="text-center text-xs text-slate-500 dark:text-slate-500 mt-6">
           &copy; {new Date().getFullYear()} PagePulser. All rights reserved.
         </p>
       </div>

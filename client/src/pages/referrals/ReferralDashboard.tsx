@@ -103,7 +103,7 @@ export default function ReferralDashboard() {
       <main className="flex-1 p-6 lg:p-8 max-w-5xl mx-auto w-full">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Referrals</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-slate-500 dark:text-slate-500 mt-1">
             Invite friends and earn bonus audits for every successful referral.
           </p>
         </div>
@@ -122,7 +122,7 @@ export default function ReferralDashboard() {
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Your Referral Link</h2>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">Share this link to earn bonus audits</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-500">Share this link to earn bonus audits</p>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -150,7 +150,7 @@ export default function ReferralDashboard() {
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-2">
                   Milestone Progress
                 </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+                <p className="text-sm text-slate-500 dark:text-slate-500 mb-3">
                   {nextMilestone === 5
                     ? 'Reach 5 qualified referrals for a free month of Starter!'
                     : 'Reach 10 qualified referrals for a free month of Pro!'}
@@ -161,10 +161,10 @@ export default function ReferralDashboard() {
                     style={{ width: `${Math.min((qualifiedCount / nextMilestone) * 100, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
                   {qualifiedCount} / {nextMilestone} referrals
                 </p>
-                <p className="text-xs text-slate-400 dark:text-slate-500 mt-3">
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-3">
                   A referral qualifies when the invited user <strong className="text-slate-600 dark:text-slate-300">verifies their email</strong> and <strong className="text-slate-600 dark:text-slate-300">completes their first audit</strong>.
                 </p>
               </div>
@@ -176,7 +176,7 @@ export default function ReferralDashboard() {
                 <Send className="w-4 h-4" />
                 Invite by Email
               </h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+              <p className="text-sm text-slate-500 dark:text-slate-500 mb-4">
                 Enter up to 5 email addresses separated by commas.
               </p>
               <div className="flex gap-2">
@@ -210,7 +210,7 @@ export default function ReferralDashboard() {
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Your Referrals</h3>
               </div>
               {referrals.length === 0 ? (
-                <div className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                <div className="px-6 py-12 text-center text-slate-500 dark:text-slate-500">
                   No referrals yet. Share your link to get started!
                 </div>
               ) : (
@@ -218,10 +218,10 @@ export default function ReferralDashboard() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-                        <th className="text-left text-xs font-medium text-slate-500 dark:text-slate-400 px-6 py-3">User</th>
-                        <th className="text-left text-xs font-medium text-slate-500 dark:text-slate-400 px-6 py-3">Status</th>
-                        <th className="text-left text-xs font-medium text-slate-500 dark:text-slate-400 px-6 py-3">Reward</th>
-                        <th className="text-left text-xs font-medium text-slate-500 dark:text-slate-400 px-6 py-3">Date</th>
+                        <th className="text-left text-xs font-medium text-slate-500 dark:text-slate-500 px-6 py-3">User</th>
+                        <th className="text-left text-xs font-medium text-slate-500 dark:text-slate-500 px-6 py-3">Status</th>
+                        <th className="text-left text-xs font-medium text-slate-500 dark:text-slate-500 px-6 py-3">Reward</th>
+                        <th className="text-left text-xs font-medium text-slate-500 dark:text-slate-500 px-6 py-3">Date</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
@@ -232,7 +232,7 @@ export default function ReferralDashboard() {
                           <tr key={ref.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
                             <td className="px-6 py-3">
                               <div className="text-sm font-medium text-slate-900 dark:text-white">{ref.referred_name}</div>
-                              <div className="text-xs text-slate-500 dark:text-slate-400">{ref.referred_email}</div>
+                              <div className="text-xs text-slate-500 dark:text-slate-500">{ref.referred_email}</div>
                             </td>
                             <td className="px-6 py-3">
                               <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${status.color}`}>
@@ -243,7 +243,7 @@ export default function ReferralDashboard() {
                             <td className="px-6 py-3 text-sm text-slate-700 dark:text-slate-300">
                               {ref.referrer_reward_value ? `+${ref.referrer_reward_value} audits` : '-'}
                             </td>
-                            <td className="px-6 py-3 text-sm text-slate-500 dark:text-slate-400">
+                            <td className="px-6 py-3 text-sm text-slate-500 dark:text-slate-500">
                               {new Date(ref.created_at).toLocaleDateString()}
                             </td>
                           </tr>
@@ -278,7 +278,7 @@ function StatCard({ label, value, icon: Icon, color = 'slate' }: { label: string
     <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-4">
       <div className="flex items-center gap-2 mb-2">
         <Icon className={`w-4 h-4 text-${color}-500`} />
-        <span className="text-xs font-medium text-slate-500 dark:text-slate-400">{label}</span>
+        <span className="text-xs font-medium text-slate-500 dark:text-slate-500">{label}</span>
       </div>
       <p className="text-2xl font-bold text-slate-900 dark:text-white">{value}</p>
     </div>
@@ -293,7 +293,7 @@ function Step({ number, title, description }: { number: number; title: string; d
       </div>
       <div>
         <h4 className="text-sm font-medium text-slate-900 dark:text-white">{title}</h4>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{description}</p>
+        <p className="text-xs text-slate-500 dark:text-slate-500 mt-0.5">{description}</p>
       </div>
     </div>
   );

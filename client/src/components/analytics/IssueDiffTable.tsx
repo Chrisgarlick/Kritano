@@ -90,7 +90,7 @@ export function IssueDiffTable({
                   <tr key={issue.ruleId}>
                     <td className="py-2 px-4">
                       <span className="text-sm text-slate-700">{issue.ruleName}</span>
-                      <span className="ml-2 text-xs text-slate-400 font-mono">{issue.ruleId}</span>
+                      <span className="ml-2 text-xs text-slate-500 font-mono">{issue.ruleId}</span>
                     </td>
                     <td className="py-2 px-4">
                       <SeverityBadge severity={issue.severity} />
@@ -135,7 +135,7 @@ export function IssueDiffTable({
                   <tr key={issue.ruleId}>
                     <td className="py-2 px-4">
                       <span className="text-sm text-slate-700">{issue.ruleName}</span>
-                      <span className="ml-2 text-xs text-slate-400 font-mono">{issue.ruleId}</span>
+                      <span className="ml-2 text-xs text-slate-500 font-mono">{issue.ruleId}</span>
                     </td>
                     <td className="py-2 px-4">
                       <SeverityBadge severity={issue.severity} />
@@ -183,7 +183,7 @@ export function IssueDiffTable({
                   <tr key={issue.ruleId}>
                     <td className="py-2 px-4">
                       <span className="text-sm text-slate-700">{issue.ruleName}</span>
-                      <span className="ml-2 text-xs text-slate-400 font-mono">{issue.ruleId}</span>
+                      <span className="ml-2 text-xs text-slate-500 font-mono">{issue.ruleId}</span>
                     </td>
                     <td className="py-2 px-4">
                       <SeverityBadge severity={issue.severity} />

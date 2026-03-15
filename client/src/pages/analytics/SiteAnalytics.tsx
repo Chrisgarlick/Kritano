@@ -23,7 +23,7 @@ function TrendIcon({ trend, light = false }: { trend: TrendDirection; light?: bo
   if (trend === 'down') {
     return <TrendingDown className={`w-4 h-4 ${light ? 'text-white/80' : 'text-red-500'}`} />;
   }
-  return <Minus className={`w-4 h-4 ${light ? 'text-white/60' : 'text-slate-400'}`} />;
+  return <Minus className={`w-4 h-4 ${light ? 'text-white/60' : 'text-slate-500'}`} />;
 }
 
 function ScoreSummaryCard({
@@ -196,7 +196,7 @@ export default function SiteAnalytics() {
           <Link to="/analytics" className="text-indigo-600 hover:text-indigo-700">
             Analytics
           </Link>
-          <ChevronRight className="w-4 h-4 text-slate-400" />
+          <ChevronRight className="w-4 h-4 text-slate-500" />
           <span className="text-slate-900 font-medium">{site.name}</span>
         </nav>
 

@@ -73,13 +73,13 @@ export default function AdminSchedulesPage() {
               { label: 'Total', value: stats.total, icon: CalendarClock, color: 'text-white' },
               { label: 'Active', value: stats.active, icon: CheckCircle2, color: 'text-emerald-400' },
               { label: 'Paused', value: stats.paused, icon: Pause, color: 'text-amber-400' },
-              { label: 'Disabled', value: stats.disabled, icon: XCircle, color: 'text-slate-400' },
+              { label: 'Disabled', value: stats.disabled, icon: XCircle, color: 'text-slate-500' },
               { label: 'Ran Today', value: stats.ranToday, icon: Activity, color: 'text-indigo-400' },
             ].map((s) => (
               <div key={s.label} className="bg-white/[0.02] p-4 rounded-lg border border-white/[0.06]">
                 <div className="flex items-center gap-2 mb-1">
                   <s.icon className={`w-4 h-4 ${s.color}`} />
-                  <span className="text-xs text-slate-400">{s.label}</span>
+                  <span className="text-xs text-slate-500">{s.label}</span>
                 </div>
                 <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
               </div>
@@ -123,12 +123,12 @@ export default function AdminSchedulesPage() {
             <table className="w-full text-sm min-w-[600px]">
               <thead className="bg-white/[0.03]">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Domain / Name</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">User</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Frequency</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Runs</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400">Next Run</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500">Domain / Name</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500">User</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500">Frequency</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500">Runs</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500">Next Run</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/[0.06]">
@@ -152,13 +152,13 @@ export default function AdminSchedulesPage() {
                           <CheckCircle2 className="w-3 h-3" /> Active
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-400">
+                        <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-500">
                           <XCircle className="w-3 h-3" /> Disabled
                         </span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-xs text-slate-300">{s.run_count}</td>
-                    <td className="px-4 py-3 text-xs text-slate-400">{formatDate(s.next_run_at)}</td>
+                    <td className="px-4 py-3 text-xs text-slate-500">{formatDate(s.next_run_at)}</td>
                   </tr>
                 ))}
                 {schedules.length === 0 && (
@@ -174,22 +174,22 @@ export default function AdminSchedulesPage() {
             {/* Pagination */}
             {totalPages > 1 && (
               <div className="flex items-center justify-between px-4 py-3 border-t border-white/[0.06]">
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-slate-500">
                   Showing {((page - 1) * limit) + 1}-{Math.min(page * limit, total)} of {total}
                 </span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setPage(Math.max(1, page - 1))}
                     disabled={page === 1}
-                    className="p-1 text-slate-400 hover:text-white disabled:opacity-50"
+                    className="p-1 text-slate-500 hover:text-white disabled:opacity-50"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <span className="text-xs text-slate-400">Page {page} of {totalPages}</span>
+                  <span className="text-xs text-slate-500">Page {page} of {totalPages}</span>
                   <button
                     onClick={() => setPage(Math.min(totalPages, page + 1))}
                     disabled={page === totalPages}
-                    className="p-1 text-slate-400 hover:text-white disabled:opacity-50"
+                    className="p-1 text-slate-500 hover:text-white disabled:opacity-50"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>

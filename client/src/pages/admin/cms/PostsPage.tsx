@@ -206,7 +206,7 @@ export default function PostsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Blog Posts</h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               {stats.total} post{stats.total !== 1 ? 's' : ''} total &mdash; create and manage blog content
             </p>
           </div>
@@ -272,7 +272,7 @@ export default function PostsPage() {
           </select>
           <button
             onClick={() => fetchPosts()}
-            className="p-2 text-slate-400 hover:text-white transition-colors"
+            className="p-2 text-slate-500 hover:text-white transition-colors"
             title="Refresh"
           >
             <RefreshCw className="w-4 h-4" />
@@ -304,7 +304,7 @@ export default function PostsPage() {
             <div className="text-center py-16">
               <FileText className="w-12 h-12 text-slate-600 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-white mb-1">No posts found</h3>
-              <p className="text-sm text-slate-400 mb-4">
+              <p className="text-sm text-slate-500 mb-4">
                 {search || statusFilter || categoryFilter
                   ? 'Try adjusting your filters.'
                   : 'Create your first blog post to get started.'}
@@ -322,7 +322,7 @@ export default function PostsPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-white/[0.06] text-left text-sm text-slate-400">
+                  <tr className="border-b border-white/[0.06] text-left text-sm text-slate-500">
                     <th className="px-6 py-3 font-medium">Title</th>
                     <th className="px-6 py-3 font-medium">Category</th>
                     <th className="px-6 py-3 font-medium">Status</th>
@@ -345,7 +345,7 @@ export default function PostsPage() {
                             {post.title}
                           </div>
                           {post.subtitle && (
-                            <div className="text-sm text-slate-400 truncate">
+                            <div className="text-sm text-slate-500 truncate">
                               {post.subtitle}
                             </div>
                           )}
@@ -385,7 +385,7 @@ export default function PostsPage() {
                       </td>
 
                       {/* Reading Time */}
-                      <td className="px-6 py-4 text-right text-sm text-slate-400">
+                      <td className="px-6 py-4 text-right text-sm text-slate-500">
                         <span className="inline-flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5 text-slate-500" />
                           {post.reading_time_minutes} min
@@ -393,7 +393,7 @@ export default function PostsPage() {
                       </td>
 
                       {/* Date */}
-                      <td className="px-6 py-4 text-sm text-slate-400 whitespace-nowrap">
+                      <td className="px-6 py-4 text-sm text-slate-500 whitespace-nowrap">
                         {post.published_at
                           ? new Date(post.published_at).toLocaleDateString()
                           : new Date(post.updated_at).toLocaleDateString()}
@@ -407,7 +407,7 @@ export default function PostsPage() {
                         <div className="flex justify-end items-center gap-1">
                           <Link
                             to={`/admin/cms/posts/${post.id}/edit`}
-                            className="p-1.5 text-slate-400 hover:text-white transition-colors"
+                            className="p-1.5 text-slate-500 hover:text-white transition-colors"
                             title="Edit"
                           >
                             <Pencil className="w-4 h-4" />
@@ -416,7 +416,7 @@ export default function PostsPage() {
                             <button
                               onClick={() => handleUnpublish(post)}
                               disabled={actionLoading === post.id}
-                              className="p-1.5 text-slate-400 hover:text-amber-400 transition-colors disabled:opacity-50"
+                              className="p-1.5 text-slate-500 hover:text-amber-400 transition-colors disabled:opacity-50"
                               title="Unpublish"
                             >
                               <EyeOff className="w-4 h-4" />
@@ -425,7 +425,7 @@ export default function PostsPage() {
                             <button
                               onClick={() => handlePublish(post)}
                               disabled={actionLoading === post.id}
-                              className="p-1.5 text-slate-400 hover:text-green-400 transition-colors disabled:opacity-50"
+                              className="p-1.5 text-slate-500 hover:text-green-400 transition-colors disabled:opacity-50"
                               title="Publish"
                             >
                               <Eye className="w-4 h-4" />
@@ -434,7 +434,7 @@ export default function PostsPage() {
                           <button
                             onClick={() => handleDelete(post)}
                             disabled={actionLoading === post.id}
-                            className="p-1.5 text-slate-400 hover:text-red-400 transition-colors disabled:opacity-50"
+                            className="p-1.5 text-slate-500 hover:text-red-400 transition-colors disabled:opacity-50"
                             title="Delete"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -452,7 +452,7 @@ export default function PostsPage() {
         {/* Pagination */}
         {pagination.pages > 1 && (
           <div className="flex items-center justify-between pt-2">
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               Showing {(pagination.page - 1) * pagination.limit + 1}&ndash;
               {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
               {pagination.total}
@@ -461,7 +461,7 @@ export default function PostsPage() {
               <button
                 onClick={() => goToPage(pagination.page - 1)}
                 disabled={pagination.page === 1}
-                className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -477,7 +477,7 @@ export default function PostsPage() {
                       className={`w-8 h-8 rounded text-sm font-medium transition-colors ${
                         num === pagination.page
                           ? 'bg-indigo-600 text-white'
-                          : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
+                          : 'text-slate-500 hover:text-white hover:bg-white/[0.06]'
                       }`}
                     >
                       {num}
@@ -488,7 +488,7 @@ export default function PostsPage() {
               <button
                 onClick={() => goToPage(pagination.page + 1)}
                 disabled={pagination.page === pagination.pages}
-                className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -522,7 +522,7 @@ function StatCard({
       </div>
       <div>
         <p className="text-2xl font-bold text-white">{value.toLocaleString()}</p>
-        <p className="text-xs text-slate-400">{label}</p>
+        <p className="text-xs text-slate-500">{label}</p>
       </div>
     </div>
   );

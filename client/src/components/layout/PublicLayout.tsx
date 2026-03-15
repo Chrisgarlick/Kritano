@@ -99,7 +99,7 @@ export function PublicLayout({ children }: Props) {
             </Link>
 
             {/* Desktop nav links */}
-            <div className="hidden md:flex items-center gap-10">
+            <div className="hidden lg:flex items-center gap-10">
               {/* Services dropdown — first item */}
               <div
                 ref={servicesDropdownRef}
@@ -342,9 +342,9 @@ export function PublicLayout({ children }: Props) {
 
             {/* Product links */}
             <div>
-              <h4 className="font-semibold text-sm text-slate-900 mb-4 uppercase tracking-wider">
+              <h2 className="font-semibold text-sm text-slate-900 mb-4 uppercase tracking-wider">
                 Product
-              </h4>
+              </h2>
               <ul className="space-y-3">
                 {FOOTER_LINKS.product.map(link => (
                   <li key={link.href}>
@@ -358,9 +358,9 @@ export function PublicLayout({ children }: Props) {
 
             {/* Company links */}
             <div>
-              <h4 className="font-semibold text-sm text-slate-900 mb-4 uppercase tracking-wider">
+              <h2 className="font-semibold text-sm text-slate-900 mb-4 uppercase tracking-wider">
                 Company
-              </h4>
+              </h2>
               <ul className="space-y-3">
                 {FOOTER_LINKS.company.map(link => (
                   <li key={link.href}>
@@ -374,9 +374,9 @@ export function PublicLayout({ children }: Props) {
 
             {/* Resources links */}
             <div>
-              <h4 className="font-semibold text-sm text-slate-900 mb-4 uppercase tracking-wider">
+              <h2 className="font-semibold text-sm text-slate-900 mb-4 uppercase tracking-wider">
                 Resources
-              </h4>
+              </h2>
               <ul className="space-y-3">
                 {FOOTER_LINKS.resources.map(link => (
                   <li key={link.href}>

@@ -25,7 +25,7 @@ const DEFAULTS: ProspectSettings = {
   excluded_keywords: [],
   min_quality_score: 50,
   daily_check_limit: 5000,
-  daily_email_limit: 50,
+  daily_email_limit: 20,
   auto_outreach_enabled: false,
   last_feed_date: null,
 };

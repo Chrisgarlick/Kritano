@@ -374,7 +374,7 @@ export default function PostEditorPage() {
           <div className="flex items-center gap-3">
             <Link
               to="/admin/cms/posts"
-              className="p-2 text-slate-400 hover:text-white transition-colors"
+              className="p-2 text-slate-500 hover:text-white transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
@@ -518,7 +518,7 @@ export default function PostEditorPage() {
                 {blocks.length === 0 && (
                   <div className="text-center py-12 bg-white/[0.02] border border-white/[0.06] border-dashed rounded-lg">
                     <FileText className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-                    <p className="text-sm text-slate-400">
+                    <p className="text-sm text-slate-500">
                       Add your first content block to get started
                     </p>
                   </div>
@@ -532,7 +532,7 @@ export default function PostEditorPage() {
             <div className="space-y-4">
               {/* Excerpt */}
               <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-                <label className="text-xs font-medium text-slate-400 mb-2 block">Excerpt</label>
+                <label className="text-xs font-medium text-slate-500 mb-2 block">Excerpt</label>
                 <textarea
                   value={excerpt}
                   onChange={e => setExcerpt(e.target.value)}
@@ -546,7 +546,7 @@ export default function PostEditorPage() {
 
               {/* Category */}
               <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-                <label className="text-xs font-medium text-slate-400 mb-2 block">Category</label>
+                <label className="text-xs font-medium text-slate-500 mb-2 block">Category</label>
                 <select
                   value={category}
                   onChange={e => setCategory(e.target.value as BlogPostCategory)}
@@ -560,7 +560,7 @@ export default function PostEditorPage() {
 
               {/* Tags */}
               <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-                <label className="text-xs font-medium text-slate-400 mb-2 block">Tags</label>
+                <label className="text-xs font-medium text-slate-500 mb-2 block">Tags</label>
                 <div className="flex flex-wrap gap-1.5 mb-2">
                   {tags.map(tag => (
                     <span
@@ -597,7 +597,7 @@ export default function PostEditorPage() {
               {/* Related Posts */}
               {!isNew && (
                 <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-                  <label className="text-xs font-medium text-slate-400 mb-2 block">
+                  <label className="text-xs font-medium text-slate-500 mb-2 block">
                     <Link2 className="w-3.5 h-3.5 inline mr-1" />
                     Related Posts
                   </label>
@@ -644,7 +644,7 @@ export default function PostEditorPage() {
                         </div>
                       )}
                       {relatedSearching && relatedSearch && (
-                        <div className="absolute z-10 mt-1 w-full bg-white/[0.02] border border-white/[0.08] rounded-lg p-3 text-xs text-slate-400">
+                        <div className="absolute z-10 mt-1 w-full bg-white/[0.02] border border-white/[0.08] rounded-lg p-3 text-xs text-slate-500">
                           Searching...
                         </div>
                       )}
@@ -658,7 +658,7 @@ export default function PostEditorPage() {
 
               {/* Featured Image */}
               <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-                <label className="text-xs font-medium text-slate-400 mb-2 block">Featured Image</label>
+                <label className="text-xs font-medium text-slate-500 mb-2 block">Featured Image</label>
                 {featuredImageUrl ? (
                   <div className="space-y-2">
                     <img src={featuredImageUrl} alt={featuredImageAlt} className="w-full rounded" />
@@ -672,7 +672,7 @@ export default function PostEditorPage() {
                 ) : (
                   <button
                     onClick={() => setShowMediaPicker(true)}
-                    className="w-full py-8 border border-dashed border-white/[0.08] rounded-lg text-slate-400 hover:text-white hover:border-slate-500 transition-colors flex flex-col items-center gap-2"
+                    className="w-full py-8 border border-dashed border-white/[0.08] rounded-lg text-slate-500 hover:text-white hover:border-slate-500 transition-colors flex flex-col items-center gap-2"
                   >
                     <ImageIcon className="w-6 h-6" />
                     <span className="text-xs">Choose image</span>
@@ -729,11 +729,11 @@ export default function PostEditorPage() {
               {/* Post Info */}
               {post && (
                 <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4 space-y-2">
-                  <div className="flex items-center gap-2 text-xs text-slate-400">
+                  <div className="flex items-center gap-2 text-xs text-slate-500">
                     <Clock className="w-3.5 h-3.5" />
                     <span>{post.reading_time_minutes} min read</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-400">
+                  <div className="flex items-center gap-2 text-xs text-slate-500">
                     <Eye className="w-3.5 h-3.5" />
                     <span>{post.view_count} views</span>
                   </div>

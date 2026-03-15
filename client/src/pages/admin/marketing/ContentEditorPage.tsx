@@ -35,16 +35,16 @@ const PLATFORMS: {
   activeColor: string;
   limit: number | null;
 }[] = [
-  { value: 'twitter', label: 'Twitter/X', icon: '𝕏', color: 'border-white/[0.06] text-slate-400', activeColor: 'border-sky-500 bg-sky-500/10 text-sky-300', limit: 280 },
-  { value: 'linkedin', label: 'LinkedIn', icon: 'in', color: 'border-white/[0.06] text-slate-400', activeColor: 'border-blue-500 bg-blue-500/10 text-blue-300', limit: 3000 },
-  { value: 'instagram', label: 'Instagram', icon: '📷', color: 'border-white/[0.06] text-slate-400', activeColor: 'border-pink-500 bg-pink-500/10 text-pink-300', limit: 2200 },
-  { value: 'facebook', label: 'Facebook', icon: 'f', color: 'border-white/[0.06] text-slate-400', activeColor: 'border-blue-600 bg-blue-600/10 text-blue-300', limit: 63206 },
-  { value: 'threads', label: 'Threads', icon: '@', color: 'border-white/[0.06] text-slate-400', activeColor: 'border-slate-400 bg-slate-500/10 text-slate-200', limit: 500 },
-  { value: 'other', label: 'Other', icon: '•', color: 'border-white/[0.06] text-slate-400', activeColor: 'border-slate-400 bg-slate-500/10 text-slate-200', limit: null },
+  { value: 'twitter', label: 'Twitter/X', icon: '𝕏', color: 'border-white/[0.06] text-slate-500', activeColor: 'border-sky-500 bg-sky-500/10 text-sky-300', limit: 280 },
+  { value: 'linkedin', label: 'LinkedIn', icon: 'in', color: 'border-white/[0.06] text-slate-500', activeColor: 'border-blue-500 bg-blue-500/10 text-blue-300', limit: 3000 },
+  { value: 'instagram', label: 'Instagram', icon: '📷', color: 'border-white/[0.06] text-slate-500', activeColor: 'border-pink-500 bg-pink-500/10 text-pink-300', limit: 2200 },
+  { value: 'facebook', label: 'Facebook', icon: 'f', color: 'border-white/[0.06] text-slate-500', activeColor: 'border-blue-600 bg-blue-600/10 text-blue-300', limit: 63206 },
+  { value: 'threads', label: 'Threads', icon: '@', color: 'border-white/[0.06] text-slate-500', activeColor: 'border-slate-400 bg-slate-500/10 text-slate-200', limit: 500 },
+  { value: 'other', label: 'Other', icon: '•', color: 'border-white/[0.06] text-slate-500', activeColor: 'border-slate-400 bg-slate-500/10 text-slate-200', limit: null },
 ];
 
 const STATUS_OPTIONS: { value: MarketingContentStatus; label: string; color: string }[] = [
-  { value: 'draft', label: 'Draft', color: 'text-slate-400' },
+  { value: 'draft', label: 'Draft', color: 'text-slate-500' },
   { value: 'ready', label: 'Ready', color: 'text-amber-400' },
   { value: 'posted', label: 'Posted', color: 'text-green-400' },
   { value: 'archived', label: 'Archived', color: 'text-slate-500' },
@@ -193,7 +193,7 @@ export default function ContentEditorPage() {
           <div className="flex items-center gap-3">
             <Link
               to="/admin/marketing/content"
-              className="p-2 text-slate-400 hover:text-white transition-colors"
+              className="p-2 text-slate-500 hover:text-white transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
@@ -235,7 +235,7 @@ export default function ContentEditorPage() {
               </button>
               <button
                 onClick={() => setShowDelete(false)}
-                className="px-3 py-1.5 text-sm text-slate-400 hover:text-white transition-colors"
+                className="px-3 py-1.5 text-sm text-slate-500 hover:text-white transition-colors"
               >
                 Cancel
               </button>
@@ -249,7 +249,7 @@ export default function ContentEditorPage() {
           <div className="lg:col-span-2 space-y-4">
             {/* Platform selector */}
             <div>
-              <label className="text-xs font-medium text-slate-400 mb-2 block">Platform</label>
+              <label className="text-xs font-medium text-slate-500 mb-2 block">Platform</label>
               <div className="flex flex-wrap gap-2">
                 {PLATFORMS.map(p => (
                   <button
@@ -268,7 +268,7 @@ export default function ContentEditorPage() {
 
             {/* Title */}
             <div>
-              <label className="text-xs font-medium text-slate-400 mb-1.5 block">Title (optional)</label>
+              <label className="text-xs font-medium text-slate-500 mb-1.5 block">Title (optional)</label>
               <input
                 type="text"
                 value={title}
@@ -281,7 +281,7 @@ export default function ContentEditorPage() {
 
             {/* Body */}
             <div>
-              <label className="text-xs font-medium text-slate-400 mb-1.5 block">Content</label>
+              <label className="text-xs font-medium text-slate-500 mb-1.5 block">Content</label>
               <textarea
                 value={body}
                 onChange={e => setBody(e.target.value)}
@@ -343,7 +343,7 @@ export default function ContentEditorPage() {
           <div className="space-y-4">
             {/* Status */}
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-              <label className="text-xs font-medium text-slate-400 mb-2 block">Status</label>
+              <label className="text-xs font-medium text-slate-500 mb-2 block">Status</label>
               <div className="space-y-1.5">
                 {STATUS_OPTIONS.map(s => (
                   <label
@@ -370,7 +370,7 @@ export default function ContentEditorPage() {
 
             {/* Campaign */}
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-              <label className="text-xs font-medium text-slate-400 mb-2 block">Campaign</label>
+              <label className="text-xs font-medium text-slate-500 mb-2 block">Campaign</label>
               <select
                 value={campaignIdVal}
                 onChange={e => setCampaignIdVal(e.target.value)}
@@ -391,7 +391,7 @@ export default function ContentEditorPage() {
 
             {/* Schedule (Week / Day) */}
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-              <label className="text-xs font-medium text-slate-400 mb-2 flex items-center gap-1.5">
+              <label className="text-xs font-medium text-slate-500 mb-2 flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5" />
                 Schedule
               </label>
@@ -427,7 +427,7 @@ export default function ContentEditorPage() {
 
             {/* Preview card */}
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
-              <label className="text-xs font-medium text-slate-400 mb-3 block">Preview</label>
+              <label className="text-xs font-medium text-slate-500 mb-3 block">Preview</label>
               <div className="bg-white rounded-lg p-4 text-sm text-slate-800">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
@@ -439,7 +439,7 @@ export default function ContentEditorPage() {
                   </div>
                 </div>
                 <p className="text-slate-700 text-sm whitespace-pre-wrap break-words leading-relaxed">
-                  {body || <span className="text-slate-400 italic">Your content will appear here...</span>}
+                  {body || <span className="text-slate-500 italic">Your content will appear here...</span>}
                 </p>
               </div>
             </div>

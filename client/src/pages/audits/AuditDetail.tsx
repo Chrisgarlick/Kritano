@@ -106,7 +106,7 @@ function EnhancedScoreCard({ score, category }: { score: number | null; category
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 animate-reveal-up">
         <div className="text-center">
           <div className="text-2xl font-semibold text-slate-300 dark:text-slate-600">—</div>
-          <div className="text-sm text-slate-500 dark:text-slate-400 mt-1 capitalize">{categoryLabel}</div>
+          <div className="text-sm text-slate-500 dark:text-slate-500 mt-1 capitalize">{categoryLabel}</div>
         </div>
       </div>
     );
@@ -144,7 +144,7 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
             )}
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
-            <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap tabular-nums">
+            <span className="text-xs text-slate-500 dark:text-slate-500 whitespace-nowrap tabular-nums">
               {group.affectedPages.length} page{group.affectedPages.length !== 1 ? 's' : ''}
             </span>
             <button
@@ -152,7 +152,7 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
               className={`text-xs px-2.5 py-1 rounded-lg font-medium transition-colors ${
                 group.dismissed
                   ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-900/50'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               {group.dismissed ? 'Restore' : 'Dismiss'}
@@ -165,7 +165,7 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
           {group.rule_name}
         </Heading>
         {group.description && (
-          <Body size="sm" className="text-slate-600 dark:text-slate-400">
+          <Body size="sm" className="text-slate-600 dark:text-slate-500">
             {group.description}
           </Body>
         )}
@@ -183,7 +183,7 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
 
         {/* Show snippet if consistent across all pages */}
         {hasConsistentSnippet && uniqueSnippets.size > 0 && (
-          <pre className="mt-4 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-xs text-slate-600 dark:text-slate-400 overflow-x-auto font-mono border border-slate-100 dark:border-slate-700">
+          <pre className="mt-4 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-xs text-slate-600 dark:text-slate-500 overflow-x-auto font-mono border border-slate-100 dark:border-slate-700">
             {[...uniqueSnippets][0]}
           </pre>
         )}
@@ -193,6 +193,7 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
             href={group.help_url}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`Learn more about ${group.rule_name}`}
             className="mt-4 inline-flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium"
           >
             Learn more
@@ -207,13 +208,13 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-controls={`affected-pages-${group.key}`}
-          className="w-full px-5 py-3 flex items-center justify-between text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+          className="w-full px-5 py-3 flex items-center justify-between text-sm text-slate-600 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
         >
           <span className="font-medium">
             Affected Pages ({group.affectedPages.length})
           </span>
           <ChevronDown
-            className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           />
         </button>
 
@@ -233,18 +234,18 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
                         {page.page_url}
                       </a>
                     ) : (
-                      <span className="text-xs text-slate-400 dark:text-slate-500">Site-level issue</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-500">Site-level issue</span>
                     )}
                   </div>
                   {/* Show page-specific message (e.g., score details) */}
                   {page.message && (
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
                       {page.message}
                     </p>
                   )}
                   {/* Show per-page snippet if snippets vary */}
                   {!hasConsistentSnippet && page.snippet && (
-                    <pre className="mt-2 p-2 bg-slate-50 dark:bg-slate-800/50 rounded text-xs text-slate-500 dark:text-slate-400 overflow-x-auto font-mono">
+                    <pre className="mt-2 p-2 bg-slate-50 dark:bg-slate-800/50 rounded text-xs text-slate-500 dark:text-slate-500 overflow-x-auto font-mono">
                       {page.snippet}
                     </pre>
                   )}
@@ -325,7 +326,7 @@ function PageAccordion({ page, auditId }: { page: AuditPage; auditId: string }) 
 
           {/* Chevron */}
           <svg
-            className={`w-5 h-5 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            className={`w-5 h-5 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -724,19 +725,25 @@ export default function AuditDetailPage() {
     };
 
     eventSource.onerror = () => {
-      console.error('SSE connection error');
-      // Show toast only once per connection attempt (E3)
-      if (!sseErrorShown.current) {
-        sseErrorShown.current = true;
-        toast('Real-time updates disconnected. Refresh to see latest progress.', 'warning');
-      }
       eventSource.close();
+      // Only show error toast if audit is still running (not on natural completion close)
+      if (!sseErrorShown.current) {
+        // Check current audit status via DOM to avoid stale closure
+        setAudit(prev => {
+          if (prev && ['pending', 'discovering', 'ready', 'processing'].includes(prev.status)) {
+            sseErrorShown.current = true;
+            toast('Real-time updates disconnected. Refresh to see latest progress.', 'warning');
+          }
+          return prev;
+        });
+      }
     };
 
     return () => {
       eventSource.close();
     };
-  }, [id, audit?.status, fetchAudit, fetchFindings, fetchPages, fetchBrokenLinks, activeTab, toast]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, audit?.status, toast]);
 
   const handleCancel = async () => {
     if (!id || !confirm('Are you sure you want to cancel this audit?')) return;
@@ -823,7 +830,7 @@ export default function AuditDetailPage() {
         {/* Back link */}
         <Link
           to="/sites"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 mb-4 group"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200 mb-4 group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           Back to Sites
@@ -912,6 +919,24 @@ export default function AuditDetailPage() {
                   }}
                 >
                   HTML
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  leftIcon={<FileDown className="w-4 h-4" />}
+                  onClick={() => {
+                    auditsApi.exportJson(id!).then(res => {
+                      const url = URL.createObjectURL(res.data);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = `audit-${audit.target_domain}.json`;
+                      a.click();
+                      URL.revokeObjectURL(url);
+                      toast('JSON exported', 'success');
+                    }).catch(() => toast('Export failed', 'error'));
+                  }}
+                >
+                  JSON
                 </Button>
                 <Button
                   variant="outline"
@@ -1116,11 +1141,11 @@ export default function AuditDetailPage() {
                   <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1">
                     {statusTitle}
                   </h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                  <p className="text-sm text-slate-500 dark:text-slate-500">
                     {statusDescription}
                   </p>
                   {(audit.status === 'pending' || audit.status === 'ready') && waitSeconds !== null && (
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                    <p className="text-sm text-slate-500 dark:text-slate-500 mt-0.5">
                       Estimated wait: <span className="font-medium text-slate-700 dark:text-slate-300">{formatWait(waitSeconds)}</span>
                     </p>
                   )}
@@ -1137,7 +1162,7 @@ export default function AuditDetailPage() {
                       <span className={`text-xs ${
                         i < currentStep ? 'font-medium text-slate-700 dark:text-slate-300' :
                         i === currentStep ? 'font-medium text-indigo-600 dark:text-indigo-400' :
-                        'text-slate-400 dark:text-slate-500'
+                        'text-slate-500 dark:text-slate-500'
                       }`}>{step.label}</span>
                     </div>
                   </Fragment>
@@ -1145,7 +1170,7 @@ export default function AuditDetailPage() {
               </div>
 
               <div className="mt-5 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-slate-500 dark:text-slate-500">
                   We'll email you when your audit is complete. You can safely leave this page — your audit will continue running in the background.
                 </p>
               </div>
@@ -1168,7 +1193,7 @@ export default function AuditDetailPage() {
                 <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1">
                   Scanning your site
                 </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
+                <p className="text-sm text-slate-500 dark:text-slate-500">
                   Crawling pages and running audit checks...
                 </p>
               </div>
@@ -1189,27 +1214,27 @@ export default function AuditDetailPage() {
             <div className="grid grid-cols-3 gap-4 mb-3">
               <div className="text-center">
                 <div className="text-lg font-semibold text-slate-900 dark:text-white tabular-nums">
-                  {audit.pages_crawled}<span className="text-slate-400 dark:text-slate-500 font-normal text-sm">/{audit.pages_found || '?'}</span>
+                  {audit.pages_crawled}<span className="text-slate-500 dark:text-slate-500 font-normal text-sm">/{audit.pages_found || '?'}</span>
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">Pages crawled</div>
+                <div className="text-xs text-slate-500 dark:text-slate-500">Pages crawled</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-semibold text-slate-900 dark:text-white tabular-nums">
                   {audit.pages_audited}
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">Pages audited</div>
+                <div className="text-xs text-slate-500 dark:text-slate-500">Pages audited</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-semibold text-slate-900 dark:text-white tabular-nums">
                   {audit.total_issues}
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400">Issues found</div>
+                <div className="text-xs text-slate-500 dark:text-slate-500">Issues found</div>
               </div>
             </div>
 
             {/* Current URL */}
             {audit.current_url && (
-              <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/50 rounded-lg px-3 py-2">
+              <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/50 rounded-lg px-3 py-2">
                 <svg className="w-3.5 h-3.5 flex-shrink-0 animate-pulse" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
                 </svg>
@@ -1250,7 +1275,7 @@ export default function AuditDetailPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                   </svg>
                 </div>
-                <span className="text-xs text-slate-400 dark:text-slate-500">Complete</span>
+                <span className="text-xs text-slate-500 dark:text-slate-500">Complete</span>
               </div>
             </div>
           </div>
@@ -1291,7 +1316,7 @@ export default function AuditDetailPage() {
                 className={`relative px-4 py-3 text-sm font-medium transition-colors whitespace-nowrap ${
                   isActive
                     ? 'text-indigo-600 dark:text-indigo-400'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+                    : 'text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200'
                 }`}
               >
                 {tabLabels[tab]}
@@ -1299,7 +1324,7 @@ export default function AuditDetailPage() {
                   <span className={`ml-1.5 px-1.5 py-0.5 text-xs rounded-full ${
                     isActive
                       ? 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-500'
                   }`}>
                     {count}
                   </span>
@@ -1381,7 +1406,7 @@ export default function AuditDetailPage() {
                     <div key={i} className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800 last:border-0">
                       <div className="flex items-center gap-2">
                         <span className="text-lg">{item.icon}</span>
-                        <Body size="sm" className="text-slate-600 dark:text-slate-400">{item.label}</Body>
+                        <Body size="sm" className="text-slate-600 dark:text-slate-500">{item.label}</Body>
                       </div>
                       <span className={`text-lg font-semibold tabular-nums ${item.danger ? 'text-red-600 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>
                         {item.value}
@@ -1431,31 +1456,31 @@ export default function AuditDetailPage() {
             </Heading>
             <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Target URL</dt>
+                <dt className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">Target URL</dt>
                 <dd className="text-sm font-medium text-slate-900 dark:text-white truncate">{audit.target_url}</dd>
               </div>
               <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Domain</dt>
+                <dt className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">Domain</dt>
                 <dd className="text-sm font-medium text-slate-900 dark:text-white">{audit.target_domain}</dd>
               </div>
               <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Started</dt>
+                <dt className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">Started</dt>
                 <dd className="text-sm font-medium text-slate-900 dark:text-white">{formatDate(audit.started_at)}</dd>
               </div>
               <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Completed</dt>
+                <dt className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">Completed</dt>
                 <dd className="text-sm font-medium text-slate-900 dark:text-white">{formatDate(audit.completed_at)}</dd>
               </div>
               <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">URLs Discovered</dt>
+                <dt className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">URLs Discovered</dt>
                 <dd className="text-sm font-medium text-slate-900 dark:text-white">{audit.pages_found}</dd>
               </div>
               <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                <dt className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Pages Crawled</dt>
+                <dt className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">Pages Crawled</dt>
                 <dd className="text-sm font-medium text-slate-900 dark:text-white">
                   {audit.pages_crawled}
                   {audit.pages_found > audit.pages_crawled && (
-                    <span className="text-xs text-slate-400 dark:text-slate-500 ml-1">(max limit)</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-500 ml-1">(max limit)</span>
                   )}
                 </dd>
               </div>

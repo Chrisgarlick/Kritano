@@ -80,7 +80,7 @@ export default function AdminScheduleDetailPage() {
     return (
       <AdminLayout>
         <div className="text-center py-20">
-          <p className="text-slate-400">Schedule not found</p>
+          <p className="text-slate-500">Schedule not found</p>
         </div>
       </AdminLayout>
     );
@@ -91,7 +91,7 @@ export default function AdminScheduleDetailPage() {
       <div className="p-6 max-w-4xl">
         <Link
           to="/admin/schedules"
-          className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-indigo-400 mb-4"
+          className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-indigo-400 mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
           All Schedules
@@ -104,7 +104,7 @@ export default function AdminScheduleDetailPage() {
               <CalendarClock className="w-5 h-5 text-indigo-400" />
               {schedule.name || schedule.target_domain}
             </h1>
-            <p className="text-sm text-slate-400 mt-1">{schedule.target_url}</p>
+            <p className="text-sm text-slate-500 mt-1">{schedule.target_url}</p>
           </div>
           <div className="flex gap-2">
             <button
@@ -141,7 +141,7 @@ export default function AdminScheduleDetailPage() {
             <div key={item.label} className="bg-white/[0.02] p-4 rounded-lg border border-white/[0.06]">
               <div className="flex items-center gap-2 mb-1">
                 <item.icon className="w-3.5 h-3.5 text-slate-500" />
-                <span className="text-xs text-slate-400">{item.label}</span>
+                <span className="text-xs text-slate-500">{item.label}</span>
               </div>
               <p className="text-sm font-medium text-white truncate">{item.value}</p>
             </div>
@@ -170,11 +170,11 @@ export default function AdminScheduleDetailPage() {
             <table className="w-full text-sm">
               <thead className="bg-white/[0.03]">
                 <tr>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-400">Status</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-400">Date</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-400">SEO</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-400">A11y</th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-400">Issues</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500">Status</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500">Date</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500">SEO</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500">A11y</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-slate-500">Issues</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/[0.06]">
@@ -192,7 +192,7 @@ export default function AdminScheduleDetailPage() {
                         <span className="text-xs text-slate-300 capitalize">{run.status}</span>
                       </span>
                     </td>
-                    <td className="px-4 py-2.5 text-xs text-slate-400">{formatDate(run.created_at)}</td>
+                    <td className="px-4 py-2.5 text-xs text-slate-500">{formatDate(run.created_at)}</td>
                     <td className="px-4 py-2.5 text-xs text-slate-300">{run.seo_score ?? '-'}</td>
                     <td className="px-4 py-2.5 text-xs text-slate-300">{run.accessibility_score ?? '-'}</td>
                     <td className="px-4 py-2.5 text-xs text-slate-300">{run.total_issues ?? '-'}</td>

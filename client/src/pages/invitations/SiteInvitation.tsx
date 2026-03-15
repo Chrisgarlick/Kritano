@@ -93,7 +93,7 @@ export default function SiteInvitationPage() {
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto" />
-          <p className="mt-4 text-slate-600 dark:text-slate-400">Loading invitation...</p>
+          <p className="mt-4 text-slate-600 dark:text-slate-500">Loading invitation...</p>
         </div>
       </div>
     );
@@ -110,7 +110,7 @@ export default function SiteInvitationPage() {
             </svg>
           </div>
           <h1 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Invalid Invitation</h1>
-          <p className="text-slate-600 dark:text-slate-400 mb-6">{error}</p>
+          <p className="text-slate-600 dark:text-slate-500 mb-6">{error}</p>
           <Link to="/" className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
             Go to homepage
           </Link>
@@ -144,7 +144,7 @@ export default function SiteInvitationPage() {
                 </svg>
               </div>
               <h1 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Invitation Expired</h1>
-              <p className="text-slate-600 dark:text-slate-400 mb-6">
+              <p className="text-slate-600 dark:text-slate-500 mb-6">
                 This invitation has expired. Please contact the site owner for a new invitation.
               </p>
               <Link to="/" className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
@@ -166,29 +166,29 @@ export default function SiteInvitationPage() {
 
             {/* Invitation Details */}
             <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 mb-6">
-              <p className="text-slate-600 dark:text-slate-400 text-center">
+              <p className="text-slate-600 dark:text-slate-500 text-center">
                 {invitation.invitedBy} has invited you to access
               </p>
               <p className="text-lg font-semibold text-slate-900 dark:text-white text-center mt-1">
                 {invitation.siteName}
               </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400 text-center">
+              <p className="text-sm text-slate-500 dark:text-slate-500 text-center">
                 {invitation.siteDomain}
               </p>
               <div className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-600">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate-500 dark:text-slate-400">Permission Level:</span>
+                  <span className="text-slate-500 dark:text-slate-500">Permission Level:</span>
                   <span className="font-medium text-slate-900 dark:text-white capitalize">
                     {permissionInfo.label}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
                   {permissionInfo.description}
                 </p>
               </div>
               <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-600">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate-500 dark:text-slate-400">Invited as:</span>
+                  <span className="text-slate-500 dark:text-slate-500">Invited as:</span>
                   <span className="font-medium text-slate-900 dark:text-white">{invitation.email}</span>
                 </div>
               </div>
@@ -223,7 +223,7 @@ export default function SiteInvitationPage() {
             </div>
 
             {/* Expiry Notice */}
-            <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-4">
+            <p className="text-xs text-slate-500 dark:text-slate-500 text-center mt-4">
               This invitation expires on {new Date(invitation.expiresAt).toLocaleDateString()}
             </p>
           </>

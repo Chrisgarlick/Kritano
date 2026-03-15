@@ -127,7 +127,7 @@ export function Body({
       className={`
         font-sans font-normal ${bodySizes[size]}
         ${muted
-          ? 'text-slate-500 dark:text-slate-400'
+          ? 'text-slate-500 dark:text-slate-500'
           : 'text-slate-700 dark:text-slate-300'}
         ${className}
       `}
@@ -168,7 +168,7 @@ export function Mono({
         font-mono ${monoSizes[size]}
         ${highlight
           ? 'bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-indigo-600 dark:text-indigo-400'
-          : 'text-slate-600 dark:text-slate-400'}
+          : 'text-slate-600 dark:text-slate-500'}
         ${className}
       `}
     >
@@ -191,7 +191,7 @@ export function Label({ children, className = '' }: LabelProps) {
     <span
       className={`
         font-sans font-medium text-xs uppercase tracking-wider
-        text-slate-500 dark:text-slate-400
+        text-slate-500 dark:text-slate-500
         ${className}
       `}
     >

@@ -177,7 +177,7 @@ export default function AdminFeatureRequestDetail() {
       <div className="mb-6">
         <Link
           to="/admin/feature-requests"
-          className="inline-flex items-center text-sm text-slate-400 hover:text-white mb-4"
+          className="inline-flex items-center text-sm text-slate-500 hover:text-white mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
           Back to Feature Requests
@@ -218,7 +218,7 @@ export default function AdminFeatureRequestDetail() {
         <div className="lg:col-span-2 space-y-6">
           {/* Description */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-3">
               Description
             </h3>
             <p className="text-white whitespace-pre-wrap">
@@ -228,7 +228,7 @@ export default function AdminFeatureRequestDetail() {
 
           {/* Context */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">
               Context
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -237,7 +237,7 @@ export default function AdminFeatureRequestDetail() {
                   <Globe className="w-5 h-5 text-slate-500 mt-0.5" />
                   <div>
                     <p className="text-sm font-medium text-slate-300">Page URL</p>
-                    <p className="text-sm text-slate-400 break-all">{request.page_url}</p>
+                    <p className="text-sm text-slate-500 break-all">{request.page_url}</p>
                   </div>
                 </div>
               )}
@@ -245,7 +245,7 @@ export default function AdminFeatureRequestDetail() {
                 <Lightbulb className="w-5 h-5 text-slate-500 mt-0.5" />
                 <div>
                   <p className="text-sm font-medium text-slate-300">Category</p>
-                  <p className="text-sm text-slate-400">{request.category.replace(/_/g, '/')}</p>
+                  <p className="text-sm text-slate-500">{request.category.replace(/_/g, '/')}</p>
                 </div>
               </div>
             </div>
@@ -253,7 +253,7 @@ export default function AdminFeatureRequestDetail() {
 
           {/* Comments */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">
               Comments ({request.comments.length})
             </h3>
 
@@ -327,12 +327,12 @@ export default function AdminFeatureRequestDetail() {
         <div className="space-y-6">
           {/* Reporter Info */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">
               Requester
             </h3>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/[0.06] rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-slate-400" />
+                <User className="w-5 h-5 text-slate-500" />
               </div>
               <div>
                 <p className="text-sm font-medium text-white">
@@ -347,7 +347,7 @@ export default function AdminFeatureRequestDetail() {
 
           {/* Status & Priority */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">
               Manage
             </h3>
             <div className="space-y-4">
@@ -433,7 +433,7 @@ export default function AdminFeatureRequestDetail() {
 
           {/* Timestamps */}
           <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-6">
-            <h3 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">
               Timeline
             </h3>
             <div className="space-y-3 text-sm">

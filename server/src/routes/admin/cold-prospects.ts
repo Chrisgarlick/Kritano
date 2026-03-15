@@ -50,6 +50,7 @@ router.get('/', async (req: AdminRequest, res: Response): Promise<void> => {
       batchDate: req.query.batchDate as string | undefined,
       hasEmail: req.query.hasEmail === 'true',
       hasName: req.query.hasName === 'true',
+      isUnsubscribed: req.query.isUnsubscribed === 'true',
       search: req.query.search as string | undefined,
       page: parseInt(req.query.page as string) || 1,
       limit: Math.min(parseInt(req.query.limit as string) || 25, 100),

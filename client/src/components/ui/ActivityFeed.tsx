@@ -136,7 +136,7 @@ export function ActivityFeed({
     return (
       <div className={`flex flex-col items-center justify-center py-8 ${className}`}>
         <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3">
-          <Clock className="w-6 h-6 text-slate-400" />
+          <Clock className="w-6 h-6 text-slate-500" />
         </div>
         <Body muted className="text-center">No recent activity</Body>
       </div>
@@ -192,7 +192,7 @@ export function ActivityFeed({
 
               {/* Timestamp */}
               {showTimestamps && (
-                <span className="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap pt-1.5">
+                <span className="text-xs text-slate-500 dark:text-slate-500 whitespace-nowrap pt-1.5">
                   {formatRelativeTime(activity.timestamp)}
                 </span>
               )}
@@ -257,7 +257,7 @@ export function CompactActivityList({
                 {activity.message}
               </Body>
             </div>
-            <span className="text-xs text-slate-400 whitespace-nowrap">
+            <span className="text-xs text-slate-500 whitespace-nowrap">
               {formatRelativeTime(activity.timestamp)}
             </span>
           </div>

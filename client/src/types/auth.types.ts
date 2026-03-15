@@ -1,4 +1,14 @@
 // User types
+export type OAuthProvider = 'google' | 'facebook';
+
+export interface OAuthProviderSummary {
+  provider: OAuthProvider;
+  email: string | null;
+  name: string | null;
+  avatarUrl: string | null;
+  linkedAt: string;
+}
+
 export interface User {
   id: string;
   email: string;
@@ -8,6 +18,10 @@ export interface User {
   emailVerified: boolean;
   role: UserRole;
   createdAt?: string;
+  hasPassword?: boolean;
+  linkedProviders?: OAuthProviderSummary[];
+  deletionRequestedAt?: string | null;
+  deletionScheduledFor?: string | null;
 }
 
 export type UserRole = 'user' | 'admin' | 'super_admin';

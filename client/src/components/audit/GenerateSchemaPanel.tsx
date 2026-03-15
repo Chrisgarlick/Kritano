@@ -85,12 +85,12 @@ function SchemaTypeInfo({ types }: { types: string[] }) {
   return (
     <div className="mb-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
       <div className="flex items-start gap-2">
-        <Info className="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0" />
+        <Info className="w-3.5 h-3.5 text-slate-500 mt-0.5 shrink-0" />
         <div className="space-y-1">
           {types.map(type => (
             <div key={type} className="flex items-center gap-2 text-xs">
               <span className="font-medium text-slate-700 dark:text-slate-300">{type}</span>
-              <span className="text-slate-500 dark:text-slate-400">
+              <span className="text-slate-500 dark:text-slate-500">
                 — {SCHEMA_DESCRIPTIONS[type] || 'Structured data markup'}
               </span>
             </div>
@@ -142,11 +142,11 @@ export function GenerateSchemaPanel({ auditId, pages, isFreeUser }: GenerateSche
   if (isFreeUser) {
     return (
       <div className="mt-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 p-6 text-center">
-        <Lock className="w-8 h-8 text-slate-400 dark:text-slate-500 mx-auto mb-3" />
+        <Lock className="w-8 h-8 text-slate-500 dark:text-slate-500 mx-auto mb-3" />
         <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
           Generate Structured Data
         </p>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+        <p className="text-sm text-slate-500 dark:text-slate-500 mb-4">
           Upgrade to Starter to automatically generate JSON-LD structured data for your pages.
         </p>
         <Button variant="primary" size="sm" onClick={() => window.location.href = '/settings/billing'}>
@@ -166,7 +166,7 @@ export function GenerateSchemaPanel({ auditId, pages, isFreeUser }: GenerateSche
           </h3>
         </div>
         {pages.length > 0 && (
-          <span className="text-xs text-slate-500 dark:text-slate-400">
+          <span className="text-xs text-slate-500 dark:text-slate-500">
             {pages.length} page{pages.length !== 1 ? 's' : ''}
           </span>
         )}
@@ -174,7 +174,7 @@ export function GenerateSchemaPanel({ auditId, pages, isFreeUser }: GenerateSche
 
       {!generatedPages && (
         <>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+          <p className="text-sm text-slate-600 dark:text-slate-500 mb-4">
             Generate JSON-LD schema for all {pages.length} page{pages.length !== 1 ? 's' : ''}.
             Each page gets the appropriate schema type with cross-references linking back to your homepage.
           </p>
@@ -218,14 +218,14 @@ export function GenerateSchemaPanel({ auditId, pages, isFreeUser }: GenerateSche
                   className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                 >
                   {isExpanded
-                    ? <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
-                    : <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+                    ? <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
+                    : <ChevronRight className="w-4 h-4 text-slate-500 shrink-0" />
                   }
                   <div className="flex-1 min-w-0">
                     <div className="text-sm font-medium text-slate-900 dark:text-white truncate">
                       {gp.title || displayPath}
                     </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400 font-mono truncate">
+                    <div className="text-xs text-slate-500 dark:text-slate-500 font-mono truncate">
                       {displayPath}
                     </div>
                   </div>
@@ -245,7 +245,7 @@ export function GenerateSchemaPanel({ auditId, pages, isFreeUser }: GenerateSche
                   <div className="px-4 pb-4 border-t border-slate-100 dark:border-slate-800 pt-3">
                     <SchemaTypeInfo types={types} />
                     <CodeBlock code={gp.jsonLd} />
-                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-500">
                       Add this to <code className="px-1 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-xs">&lt;head&gt;</code> of <span className="font-medium">{displayPath}</span>.
                       Replace placeholder comments with your actual data.
                     </p>

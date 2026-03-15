@@ -9,6 +9,7 @@ import { Button } from '../ui/Button';
 import { Alert } from '../ui/Alert';
 import type { AxiosError } from 'axios';
 import type { ErrorResponse } from '../../types/auth.types';
+import { SocialButtons } from './SocialButtons';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -45,7 +46,9 @@ export function LoginForm() {
       const axiosError = err as AxiosError<ErrorResponse>;
       const errorData = axiosError.response?.data;
 
-      if (errorData?.code === 'ACCOUNT_LOCKED') {
+      if (errorData?.code === 'SSO_ONLY_ACCOUNT') {
+        setError('This account uses social sign-in. Please sign in with Google or Facebook, or set a password from your account settings.');
+      } else if (errorData?.code === 'ACCOUNT_LOCKED') {
         setError(`Account locked. Please try again in ${Math.ceil((errorData.retryAfter || 900) / 60)} minutes.`);
       } else if (errorData?.code === 'INVALID_CREDENTIALS') {
         setError('Invalid email or password.');
@@ -60,6 +63,18 @@ export function LoginForm() {
   };
 
   return (
+    <div className="space-y-6">
+      <SocialButtons mode="login" />
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-slate-200 dark:border-slate-700" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-500">or continue with email</span>
+        </div>
+      </div>
+
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {error && <Alert variant="error">{error}</Alert>}
 
@@ -99,5 +114,6 @@ export function LoginForm() {
         </Link>
       </p>
     </form>
+    </div>
   );
 }

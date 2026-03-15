@@ -98,13 +98,13 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
               </div>
               <button
                 onClick={() => setSlotA(null)}
-                className="text-slate-400 hover:text-red-500 flex-shrink-0"
+                className="text-slate-500 hover:text-red-500 flex-shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <p className="text-sm text-slate-400">Select a URL from the list below</p>
+            <p className="text-sm text-slate-500">Select a URL from the list below</p>
           )}
         </div>
 
@@ -119,13 +119,13 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
               </div>
               <button
                 onClick={() => setSlotB(null)}
-                className="text-slate-400 hover:text-red-500 flex-shrink-0"
+                className="text-slate-500 hover:text-red-500 flex-shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <p className="text-sm text-slate-400">Select a second URL to compare</p>
+            <p className="text-sm text-slate-500">Select a second URL to compare</p>
           )}
         </div>
       </div>
@@ -144,7 +144,7 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
 
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
         <input
           type="text"
           placeholder="Search URLs, sites..."
@@ -159,12 +159,12 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
         {urlsLoading ? (
           <div className="p-8 text-center">
             <div className="animate-spin w-6 h-6 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-2" />
-            <p className="text-sm text-slate-400">Loading URLs...</p>
+            <p className="text-sm text-slate-500">Loading URLs...</p>
           </div>
         ) : groupedUrls.length === 0 ? (
           <div className="p-8 text-center">
             <Link2 className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               {search ? 'No URLs match your search' : 'No audited URLs found'}
             </p>
           </div>
@@ -176,7 +176,7 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
                   <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     {group.siteName}
                   </span>
-                  <span className="text-xs text-slate-400 ml-2">({group.siteDomain})</span>
+                  <span className="text-xs text-slate-500 ml-2">({group.siteDomain})</span>
                 </div>
                 {group.urls.map(u => {
                   const selected = isSelected(u.urlId);
@@ -196,7 +196,7 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
                       <div className="flex items-center justify-between gap-3">
                         <div className="min-w-0 flex-1">
                           <p className="text-sm text-slate-700 truncate">{u.urlPath || '/'}</p>
-                          <p className="text-xs text-slate-400 truncate">{u.url}</p>
+                          <p className="text-xs text-slate-500 truncate">{u.url}</p>
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
                           {u.seoScore !== null && (
@@ -215,7 +215,7 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
                               Content {u.contentScore}
                             </span>
                           )}
-                          <span className="text-xs text-slate-400">
+                          <span className="text-xs text-slate-500">
                             {new Date(u.lastAuditedAt).toLocaleDateString()}
                           </span>
                           {selected && (

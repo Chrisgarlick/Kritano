@@ -34,7 +34,7 @@ export default function DocsLayout({ children }: Props) {
     <nav className="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
       {SIDEBAR_SECTIONS.map(section => (
         <div key={section.title} className="px-4 py-4 border-b border-slate-100 last:border-b-0">
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3">{section.title}</div>
+          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-3">{section.title}</div>
           <div className="space-y-1">
             {section.links.map(link => {
               const Icon = link.icon;

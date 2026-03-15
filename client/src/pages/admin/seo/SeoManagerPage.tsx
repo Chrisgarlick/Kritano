@@ -173,7 +173,7 @@ export default function SeoManagerPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>SEO Manager</h1>
-            <p className="text-slate-400 mt-1">
+            <p className="text-slate-500 mt-1">
               Manage meta tags, Open Graph data and structured data for all routes.
             </p>
           </div>
@@ -205,7 +205,7 @@ export default function SeoManagerPage() {
                 className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                   categoryFilter === cat
                     ? 'bg-indigo-600 text-white'
-                    : 'bg-white/[0.02] text-slate-400 hover:bg-white/[0.06] hover:text-white'
+                    : 'bg-white/[0.02] text-slate-500 hover:bg-white/[0.06] hover:text-white'
                 }`}
               >
                 {cat === 'all' ? 'All' : cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -219,7 +219,7 @@ export default function SeoManagerPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => handleBulkNoindex(categoryFilter)}
-              className="px-3 py-1.5 text-xs font-medium rounded-md bg-white/[0.02] text-slate-400 hover:bg-white/[0.06] hover:text-white border border-white/[0.06] transition-colors"
+              className="px-3 py-1.5 text-xs font-medium rounded-md bg-white/[0.02] text-slate-500 hover:bg-white/[0.06] hover:text-white border border-white/[0.06] transition-colors"
             >
               <EyeOff className="h-3 w-3 inline mr-1" />
               Mark all {categoryFilter} routes as noindex
@@ -229,7 +229,7 @@ export default function SeoManagerPage() {
 
         {/* Routes list */}
         {loading ? (
-          <div className="text-center py-12 text-slate-400">Loading…</div>
+          <div className="text-center py-12 text-slate-500">Loading…</div>
         ) : (
           <div className="space-y-1">
             {filteredRoutes.map((route) => {
@@ -251,7 +251,7 @@ export default function SeoManagerPage() {
                     )}
                     <Globe className="h-4 w-4 text-slate-500 shrink-0" />
                     <code className="text-sm text-white font-mono">{route.path}</code>
-                    <span className="text-sm text-slate-400">{route.label}</span>
+                    <span className="text-sm text-slate-500">{route.label}</span>
                     <span className={`ml-auto text-xs px-2 py-0.5 rounded border ${categoryBadgeClasses[route.category]}`}>
                       {route.category}
                     </span>
@@ -278,7 +278,7 @@ export default function SeoManagerPage() {
                           <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider">Meta Tags</h3>
 
                           <div>
-                            <label className="block text-xs font-medium text-slate-400 mb-1">
+                            <label className="block text-xs font-medium text-slate-500 mb-1">
                               Title <span className="text-slate-600">(max 200 chars)</span>
                             </label>
                             <input
@@ -292,7 +292,7 @@ export default function SeoManagerPage() {
                           </div>
 
                           <div>
-                            <label className="block text-xs font-medium text-slate-400 mb-1">
+                            <label className="block text-xs font-medium text-slate-500 mb-1">
                               Description <span className="text-slate-600">(max 500 chars)</span>
                             </label>
                             <textarea
@@ -306,7 +306,7 @@ export default function SeoManagerPage() {
                           </div>
 
                           <div>
-                            <label className="block text-xs font-medium text-slate-400 mb-1">Keywords</label>
+                            <label className="block text-xs font-medium text-slate-500 mb-1">Keywords</label>
                             <input
                               type="text"
                               value={form.keywords || ''}
@@ -321,7 +321,7 @@ export default function SeoManagerPage() {
 
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <label className="block text-xs font-medium text-slate-400 mb-1">OG Title</label>
+                              <label className="block text-xs font-medium text-slate-500 mb-1">OG Title</label>
                               <input
                                 type="text"
                                 value={form.og_title || ''}
@@ -332,7 +332,7 @@ export default function SeoManagerPage() {
                               />
                             </div>
                             <div>
-                              <label className="block text-xs font-medium text-slate-400 mb-1">OG Type</label>
+                              <label className="block text-xs font-medium text-slate-500 mb-1">OG Type</label>
                               <select
                                 value={form.og_type || 'website'}
                                 onChange={(e) => setForm({ ...form, og_type: e.target.value })}
@@ -347,7 +347,7 @@ export default function SeoManagerPage() {
                           </div>
 
                           <div>
-                            <label className="block text-xs font-medium text-slate-400 mb-1">OG Description</label>
+                            <label className="block text-xs font-medium text-slate-500 mb-1">OG Description</label>
                             <textarea
                               value={form.og_description || ''}
                               onChange={(e) => setForm({ ...form, og_description: e.target.value })}
@@ -359,7 +359,7 @@ export default function SeoManagerPage() {
                           </div>
 
                           <div>
-                            <label className="block text-xs font-medium text-slate-400 mb-1">OG Image URL</label>
+                            <label className="block text-xs font-medium text-slate-500 mb-1">OG Image URL</label>
                             <input
                               type="text"
                               value={form.og_image || ''}
@@ -373,7 +373,7 @@ export default function SeoManagerPage() {
                           <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider pt-2">Featured Image</h3>
 
                           <div>
-                            <label className="block text-xs font-medium text-slate-400 mb-1">
+                            <label className="block text-xs font-medium text-slate-500 mb-1">
                               Featured Image URL <span className="text-slate-600">(hero/banner image for the page)</span>
                             </label>
                             <input
@@ -402,7 +402,7 @@ export default function SeoManagerPage() {
 
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <label className="block text-xs font-medium text-slate-400 mb-1">Twitter Card</label>
+                              <label className="block text-xs font-medium text-slate-500 mb-1">Twitter Card</label>
                               <select
                                 value={form.twitter_card || 'summary_large_image'}
                                 onChange={(e) => setForm({ ...form, twitter_card: e.target.value })}
@@ -426,7 +426,7 @@ export default function SeoManagerPage() {
                           </div>
 
                           <div>
-                            <label className="block text-xs font-medium text-slate-400 mb-1">Canonical URL</label>
+                            <label className="block text-xs font-medium text-slate-500 mb-1">Canonical URL</label>
                             <input
                               type="text"
                               value={form.canonical_url || ''}
@@ -438,7 +438,7 @@ export default function SeoManagerPage() {
                           </div>
 
                           <div>
-                            <label className="block text-xs font-medium text-slate-400 mb-1">
+                            <label className="block text-xs font-medium text-slate-500 mb-1">
                               Structured Data (JSON-LD)
                             </label>
                             <textarea
@@ -496,7 +496,7 @@ export default function SeoManagerPage() {
                               <div className="text-sm text-white font-medium truncate">
                                 {form.og_title || previewTitle || route.defaultTitle}
                               </div>
-                              <div className="text-xs text-slate-400 line-clamp-2">
+                              <div className="text-xs text-slate-500 line-clamp-2">
                                 {form.og_description || previewDescription || route.defaultDescription}
                               </div>
                             </div>
@@ -536,7 +536,7 @@ export default function SeoManagerPage() {
 
                         <button
                           onClick={() => setExpandedPath(null)}
-                          className="inline-flex items-center gap-2 px-4 py-2 text-slate-400 hover:text-white text-sm transition-colors ml-auto"
+                          className="inline-flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-white text-sm transition-colors ml-auto"
                         >
                           <X className="h-4 w-4" /> Cancel
                         </button>
@@ -550,7 +550,7 @@ export default function SeoManagerPage() {
         )}
 
         {filteredRoutes.length === 0 && !loading && (
-          <div className="text-center py-12 text-slate-400">
+          <div className="text-center py-12 text-slate-500">
             No routes match your search.
           </div>
         )}

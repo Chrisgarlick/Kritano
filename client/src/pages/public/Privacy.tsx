@@ -22,8 +22,8 @@ export default function Privacy() {
           <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
             Privacy Policy
           </h1>
-          <p className="text-sm text-slate-400">
-            Effective date: 8 March 2026
+          <p className="text-sm text-slate-500">
+            Effective date: 14 March 2026
           </p>
         </div>
       </section>
@@ -43,20 +43,39 @@ export default function Privacy() {
           </p>
 
           <h2>2. Information We Collect</h2>
+
           <h3>Account Data</h3>
           <p>
             When you register, we collect your name, email address, and organisation name. If you subscribe
-            to a paid plan, our payment processor collects billing information on our behalf.
+            to a paid plan, our payment processor (Stripe) collects billing information on our behalf &mdash;
+            we do not store credit card numbers or bank details.
           </p>
+
           <h3>Scan Results</h3>
           <p>
             When you run an audit, we collect and store the URLs scanned, audit findings (SEO, accessibility,
-            security, performance), page screenshots, and metadata such as response times and HTTP headers.
+            security, performance, content quality, structured data), and metadata such as response times,
+            HTTP headers, and page sizes. All scan data is collected from publicly accessible web pages only.
           </p>
+
           <h3>Usage Data</h3>
           <p>
             We automatically collect information about how you interact with the Service, including pages
-            visited, features used, browser type, device information, and IP address.
+            visited, features used, browser type, device information, and IP address. We also generate device
+            fingerprints from your browser and device characteristics to detect unauthorised access to your
+            account. These fingerprints are not used for cross-site tracking.
+          </p>
+
+          <h3>API Usage Data</h3>
+          <p>
+            If you use our API, we log request metadata including endpoints accessed, IP addresses, response
+            times, and request counts for security monitoring and usage tracking.
+          </p>
+
+          <h3>Referral Data</h3>
+          <p>
+            If you participate in our referral programme, we collect referral codes and IP addresses to prevent
+            fraud and track reward eligibility.
           </p>
 
           <h2>3. Cookies &amp; Tracking Technologies</h2>
@@ -143,9 +162,14 @@ export default function Privacy() {
           <h2>4. How We Use Your Data</h2>
           <ul>
             <li><strong>Service delivery:</strong> To run audits, generate reports, and provide your dashboard experience.</li>
-            <li><strong>Service improvement:</strong> To understand usage patterns and improve features.</li>
+            <li><strong>Service improvement:</strong> To understand usage patterns and improve features. We analyse your usage
+              patterns (such as login frequency, audits run, and features used) to understand engagement and improve our
+              service. This analysis may influence the communications we send you.</li>
             <li><strong>Security:</strong> To detect and prevent fraud, abuse, and unauthorised access.</li>
-            <li><strong>Communication:</strong> To send transactional emails (audit completions, account updates) and, with your consent, marketing communications.</li>
+            <li><strong>Communication:</strong> To send transactional emails (audit completions, account updates) and, with
+              your consent, marketing communications. We track email delivery, opens, and clicks to measure the effectiveness
+              of our communications. You can opt out of non-essential emails via your email preferences or the unsubscribe
+              link included in every email.</li>
           </ul>
 
           <h2>5. Scan Data</h2>
@@ -162,17 +186,28 @@ export default function Privacy() {
             <li><strong>Enterprise:</strong> Unlimited</li>
           </ul>
 
-          <h2>6. Data Sharing</h2>
+          <h2>6. Data Sharing &amp; Sub-processors</h2>
           <p>
             We do not sell your personal data to third parties. We share data only with:
           </p>
           <ul>
-            <li><strong>Infrastructure providers:</strong> Cloud hosting, database, and email delivery services that process data on our behalf under strict data processing agreements.</li>
+            <li><strong>Stripe</strong> (payment processing, USA): Processes subscription payments and billing. Subject to{' '}
+              <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe&apos;s Privacy Policy</a>.</li>
+            <li><strong>Resend</strong> (email delivery, USA): Delivers transactional and marketing emails on our behalf.</li>
+            <li><strong>Sentry</strong> (error monitoring, USA): Receives sanitised error reports to help us fix bugs.
+              Sensitive data such as cookies is filtered before transmission.</li>
             <li><strong>Analytics providers:</strong> Only when you have consented to analytics cookies.</li>
             <li><strong>Legal requirements:</strong> When required by law, regulation, or legal process.</li>
           </ul>
 
-          <h2>7. Consent Logging</h2>
+          <h2>7. International Data Transfers</h2>
+          <p>
+            Your data may be transferred to and processed in countries outside the UK/EEA, including the
+            United States, where our sub-processors operate. We ensure appropriate safeguards are in place
+            for any such transfers, including Standard Contractual Clauses (SCCs) where required.
+          </p>
+
+          <h2>8. Consent Logging</h2>
           <p>
             In compliance with GDPR and UK-GDPR, we maintain an audit trail of all consent actions. Each
             consent record includes the consent version, action taken (accepted, rejected, or customised),
@@ -180,58 +215,89 @@ export default function Privacy() {
             for the duration required by applicable regulations.
           </p>
 
-          <h2>8. Your Rights (GDPR / UK-GDPR)</h2>
+          <h2>9. Publicly Available Business Data</h2>
+          <p>
+            We collect publicly available business contact information (such as generic email addresses
+            like info@ and hello@) from newly registered domain listings. This data is used solely for
+            one-time B2B outreach to inform website owners about our auditing services. We do not collect
+            personal or named email addresses for this purpose. Each domain is contacted a maximum of once,
+            and data is automatically deleted after 6 months if there is no engagement. Recipients can
+            unsubscribe instantly via the link included in every outreach email.
+          </p>
+
+          <h2>10. Your Rights (GDPR / UK-GDPR)</h2>
           <p>Under data protection law, you have the right to:</p>
           <ul>
-            <li><strong>Access:</strong> Request a copy of the personal data we hold about you.</li>
+            <li><strong>Access:</strong> Request a copy of the personal data we hold about you. You can download a complete export of your data at any time from your <Link to="/settings/profile">account settings</Link>.</li>
             <li><strong>Rectification:</strong> Request correction of inaccurate personal data.</li>
-            <li><strong>Erasure:</strong> Request deletion of your personal data ("right to be forgotten").</li>
-            <li><strong>Portability:</strong> Request your data in a structured, machine-readable format.</li>
+            <li><strong>Erasure:</strong> Request deletion of your personal data ("right to be forgotten"). You can delete your account from your <Link to="/settings/profile">account settings</Link>. Deletion includes a 30-day grace period during which you can cancel.</li>
+            <li><strong>Portability:</strong> Request your data in a structured, machine-readable format. Our self-service data export provides your data in JSON format within a ZIP archive.</li>
             <li><strong>Object:</strong> Object to processing of your personal data for certain purposes.</li>
             <li><strong>Withdraw consent:</strong> Withdraw consent at any time where processing is based on consent.</li>
           </ul>
           <p>
-            To exercise any of these rights, please <Link to="/contact">contact us</Link>. We will respond
-            within 30 days.
+            Most of these rights can be exercised directly through your <Link to="/settings/profile">account settings</Link>.
+            For any other requests, please <Link to="/contact">contact us</Link>. We will respond within 30 days.
           </p>
 
-          <h2>9. Data Retention</h2>
+          <h2>11. Automated Decision-Making</h2>
           <p>
-            We retain your account data for as long as your account is active. After account deletion, we
-            retain anonymised usage data for analytical purposes. Audit data retention follows the tier-based
-            schedule outlined in Section 5. Consent logs are retained for the duration required by applicable
-            regulations (typically 3 years).
+            We do not make decisions based solely on automated processing that produce legal effects or
+            similarly significantly affect you. We use automated lead scoring to personalise communications,
+            but this does not restrict your access to any features or services.
           </p>
 
-          <h2>10. Security Measures</h2>
+          <h2>12. Data Retention</h2>
+          <p>
+            We retain your account data for as long as your account is active. You can request deletion of your
+            account at any time from your <Link to="/settings/profile">account settings</Link>. After you request
+            deletion, there is a 30-day grace period during which you can cancel. After this period, your account
+            and all associated data are permanently deleted. Specific retention periods:
+          </p>
+          <ul>
+            <li><strong>Audit data:</strong> Tier-based schedule as outlined in Section 5.</li>
+            <li><strong>Authentication logs:</strong> 1 year.</li>
+            <li><strong>API request logs:</strong> 90 days.</li>
+            <li><strong>Email send logs:</strong> 1 year.</li>
+            <li><strong>Consent records:</strong> Archived in anonymised form and retained for the duration required by applicable regulations (typically 3 years), even after account deletion, for legal compliance.</li>
+            <li><strong>Cold outreach data:</strong> 6 months if no engagement, then automatically deleted.</li>
+            <li><strong>Data exports:</strong> Available for download for 24 hours after generation, then automatically deleted.</li>
+          </ul>
+
+          <h2>13. Security Measures</h2>
           <p>We protect your data with the following measures:</p>
           <ul>
             <li>Authentication tokens stored in HttpOnly, Secure cookies with SameSite=Strict.</li>
             <li>All data transmitted over HTTPS with TLS 1.2 or higher.</li>
-            <li>Passwords hashed using bcrypt with appropriate cost factors.</li>
+            <li>Passwords hashed using industry-standard algorithms.</li>
             <li>CSRF protection on all state-changing requests.</li>
             <li>Regular security audits and dependency updates.</li>
             <li>Data encrypted at rest in our databases.</li>
           </ul>
 
-          <h2>11. Children</h2>
+          <h2>14. Children</h2>
           <p>
             PagePulser is not intended for use by anyone under the age of 16. We do not knowingly collect
             personal data from children. If you believe a child under 16 has provided us with personal data,
             please <Link to="/contact">contact us</Link> and we will delete it promptly.
           </p>
 
-          <h2>12. Policy Changes</h2>
+          <h2>15. Policy Changes</h2>
           <p>
             We may update this Privacy Policy from time to time. All versions are dated. Material changes
             will be communicated via email or in-app notification at least 14 days before they take effect.
             Continued use of the Service after changes take effect constitutes acceptance.
           </p>
 
-          <h2>13. Contact Us</h2>
+          <h2>16. Contact Us</h2>
           <p>
             If you have questions about this Privacy Policy or wish to exercise your data protection rights,
             please <Link to="/contact">contact us</Link>.
+          </p>
+          <p>
+            If you are unhappy with how we have handled your data, you have the right to lodge a complaint
+            with the Information Commissioner&apos;s Office (ICO) at{' '}
+            <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer">ico.org.uk</a>.
           </p>
         </div>
       </section>

@@ -35,7 +35,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 const STATUS_STAT_COLORS: Record<string, { bg: string; text: string; icon: string }> = {
-  new: { bg: 'bg-white/[0.02]', text: 'text-slate-300', icon: 'text-slate-400' },
+  new: { bg: 'bg-white/[0.02]', text: 'text-slate-300', icon: 'text-slate-500' },
   activated: { bg: 'bg-white/[0.02]', text: 'text-blue-300', icon: 'text-blue-400' },
   engaged: { bg: 'bg-white/[0.02]', text: 'text-green-300', icon: 'text-green-400' },
   power_user: { bg: 'bg-white/[0.02]', text: 'text-purple-300', icon: 'text-purple-400' },
@@ -226,7 +226,7 @@ export default function LeadsPage() {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>CRM Leads</h1>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               {pagination.total > 0
                 ? `${pagination.total} lead${pagination.total === 1 ? '' : 's'} tracked`
                 : 'Manage your growth pipeline'}
@@ -248,7 +248,7 @@ export default function LeadsPage() {
         {/* Total */}
         <Tooltip content="Total number of leads across all statuses">
           <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-3 cursor-help">
-            <div className="text-xs text-slate-400 mb-1">Total</div>
+            <div className="text-xs text-slate-500 mb-1">Total</div>
             {isStatsLoading ? (
               <div className="h-6 w-12 bg-white/[0.06] rounded animate-pulse" />
             ) : (
@@ -264,7 +264,7 @@ export default function LeadsPage() {
               <div className={`${colors.bg} border border-white/[0.06] rounded-lg p-3 cursor-help`}>
                 <div className="flex items-center gap-1.5 mb-1">
                   <span className={colors.icon}>{STATUS_ICONS[status]}</span>
-                  <span className="text-xs text-slate-400 truncate">{formatStatusLabel(status)}</span>
+                  <span className="text-xs text-slate-500 truncate">{formatStatusLabel(status)}</span>
                 </div>
                 {isStatsLoading ? (
                   <div className="h-6 w-8 bg-white/[0.06] rounded animate-pulse" />
@@ -342,7 +342,7 @@ export default function LeadsPage() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-white/[0.06] text-left text-sm text-slate-400">
+              <tr className="border-b border-white/[0.06] text-left text-sm text-slate-500">
                 <th className="px-6 py-3 font-medium">User</th>
                 <th className="px-6 py-3 font-medium">Score</th>
                 <th className="px-6 py-3 font-medium">Status</th>
@@ -389,7 +389,7 @@ export default function LeadsPage() {
                             ? `${lead.first_name ?? ''} ${lead.last_name ?? ''}`.trim()
                             : lead.email}
                         </div>
-                        <div className="text-sm text-slate-400">{lead.email}</div>
+                        <div className="text-sm text-slate-500">{lead.email}</div>
                       </div>
                     </td>
 
@@ -428,7 +428,7 @@ export default function LeadsPage() {
 
                     {/* Last Login */}
                     <td className="px-6 py-4">
-                      <span className="text-sm text-slate-400">
+                      <span className="text-sm text-slate-500">
                         {formatRelativeDate(lead.last_login_at)}
                       </span>
                     </td>
@@ -443,7 +443,7 @@ export default function LeadsPage() {
       {/* Pagination */}
       {pagination.pages > 1 && (
         <div className="flex flex-col sm:flex-row items-center justify-between mt-4 gap-3">
-          <div className="text-sm text-slate-400">
+          <div className="text-sm text-slate-500">
             Showing {(pagination.page - 1) * pagination.limit + 1}
             {' '}-{' '}
             {Math.min(pagination.page * pagination.limit, pagination.total)}
@@ -477,7 +477,7 @@ export default function LeadsPage() {
                     className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
                       pageNum === pagination.page
                         ? 'bg-indigo-600 text-white'
-                        : 'bg-white/[0.02] text-slate-400 hover:bg-white/[0.06] border border-white/[0.06]'
+                        : 'bg-white/[0.02] text-slate-500 hover:bg-white/[0.06] border border-white/[0.06]'
                     }`}
                   >
                     {pageNum}

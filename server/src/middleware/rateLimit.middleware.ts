@@ -104,4 +104,5 @@ export const loginRateLimiter = createRateLimiter(RATE_LIMIT_CONFIG.login);
 export const registerRateLimiter = createRateLimiter(RATE_LIMIT_CONFIG.register);
 export const passwordResetRateLimiter = createRateLimiter(RATE_LIMIT_CONFIG.passwordReset);
 export const verifyEmailRateLimiter = createRateLimiter(RATE_LIMIT_CONFIG.verifyEmail);
+export const oauthRateLimiter = createRateLimiter(RATE_LIMIT_CONFIG.oauth);
 export const globalRateLimiter = createRateLimiter(RATE_LIMIT_CONFIG.global);

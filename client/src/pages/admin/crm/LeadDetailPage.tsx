@@ -113,7 +113,7 @@ function getTimelineIconColor(eventType: string): string {
   if (eventType === 'domain_verified') return 'text-emerald-400 bg-emerald-500/20';
   if (eventType === 'team_member_added') return 'text-purple-400 bg-purple-500/20';
   if (eventType.startsWith('trigger_')) return 'text-orange-400 bg-orange-500/20';
-  return 'text-slate-400 bg-slate-500/20';
+  return 'text-slate-500 bg-slate-500/20';
 }
 
 function getOutreachStatusClasses(status: string): string {
@@ -249,7 +249,7 @@ export default function LeadDetailPage() {
       <div className="mb-8">
         <Link
           to="/admin/crm/leads"
-          className="inline-flex items-center space-x-1.5 text-sm text-slate-400 hover:text-white transition-colors mb-4"
+          className="inline-flex items-center space-x-1.5 text-sm text-slate-500 hover:text-white transition-colors mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to leads</span>
@@ -264,7 +264,7 @@ export default function LeadDetailPage() {
             <div>
               <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>{displayName}</h1>
               <div className="flex items-center space-x-3 mt-1">
-                <span className="text-sm text-slate-400">{lead.email}</span>
+                <span className="text-sm text-slate-500">{lead.email}</span>
                 {lead.email_verified ? (
                   <span className="inline-flex items-center space-x-1 text-xs text-green-400">
                     <ShieldCheck className="w-3.5 h-3.5" />
@@ -356,7 +356,7 @@ export default function LeadDetailPage() {
       {/* ----------------------------------------------------------------- */}
       <section className="mb-8">
         <h2 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
-          <Clock className="w-5 h-5 text-slate-400" />
+          <Clock className="w-5 h-5 text-slate-500" />
           <span>Activity Timeline</span>
         </h2>
         <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-6">
@@ -400,7 +400,7 @@ export default function LeadDetailPage() {
       {/* ----------------------------------------------------------------- */}
       <section className="mb-8">
         <h2 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
-          <Globe className="w-5 h-5 text-slate-400" />
+          <Globe className="w-5 h-5 text-slate-500" />
           <span>Sites &amp; Memberships</span>
         </h2>
         <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg overflow-hidden">
@@ -413,22 +413,22 @@ export default function LeadDetailPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-white/[0.06]">
-                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Site Domain
                     </th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Role
                     </th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Tier
                     </th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Verified
                     </th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Last Audit
                     </th>
-                    <th className="text-right px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-right px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Audits
                     </th>
                   </tr>
@@ -461,7 +461,7 @@ export default function LeadDetailPage() {
                           <X className="w-4 h-4 text-slate-600" />
                         )}
                       </td>
-                      <td className="px-4 py-3 text-slate-400 text-xs">
+                      <td className="px-4 py-3 text-slate-500 text-xs">
                         {formatDate(m.last_audit_at)}
                       </td>
                       <td className="px-4 py-3 text-right text-slate-300 font-medium">
@@ -482,7 +482,7 @@ export default function LeadDetailPage() {
       <section className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-white flex items-center space-x-2">
-            <Send className="w-5 h-5 text-slate-400" />
+            <Send className="w-5 h-5 text-slate-500" />
             <span>Outreach History</span>
           </h2>
           <button
@@ -507,19 +507,19 @@ export default function LeadDetailPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-white/[0.06]">
-                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Template
                     </th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Subject
                     </th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Sent By
                     </th>
-                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <th className="text-left px-4 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Date
                     </th>
                   </tr>
@@ -538,10 +538,10 @@ export default function LeadDetailPage() {
                           {o.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-slate-400 text-xs">
+                      <td className="px-4 py-3 text-slate-500 text-xs">
                         {o.sent_by_email || '--'}
                       </td>
-                      <td className="px-4 py-3 text-slate-400 text-xs">
+                      <td className="px-4 py-3 text-slate-500 text-xs">
                         {formatDate(o.created_at)}
                       </td>
                     </tr>
@@ -602,13 +602,13 @@ export default function LeadDetailPage() {
               <h3 className="text-lg font-semibold text-white">Send Outreach Email</h3>
               <button
                 onClick={() => setShowOutreachModal(false)}
-                className="text-slate-400 hover:text-white transition-colors"
+                className="text-slate-500 hover:text-white transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="text-sm text-slate-400 mb-4">
+            <p className="text-sm text-slate-500 mb-4">
               Send an email to <span className="text-slate-200 font-medium">{lead.email}</span> using
               a template slug.
             </p>
@@ -685,7 +685,7 @@ function StatCard({
     <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-5">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-slate-400">{label}</p>
+          <p className="text-sm text-slate-500">{label}</p>
           <p className="text-2xl font-bold text-white mt-1">{value}</p>
         </div>
         <div className="w-10 h-10 rounded-lg bg-white/[0.03] flex items-center justify-center">

@@ -73,6 +73,7 @@ export default function NewAuditPage() {
 
   // User tier for feature gating
   const [userTier, setUserTier] = useState<string>('free');
+  const [tierMaxPages, setTierMaxPages] = useState<number>(500);
   const canUseFileExtraction = userTier !== 'free';
 
   // Domain verification status for preset restrictions
@@ -113,6 +114,8 @@ export default function NewAuditPage() {
     userApi.getSubscription().then(res => {
       const tier = (res.data?.subscription as any)?.tier || 'free';
       setUserTier(tier);
+      const maxPages = (res.data?.limits as any)?.maxPagesPerAudit;
+      if (maxPages) setTierMaxPages(maxPages);
     }).catch(() => {
       // Default to free
     });
@@ -281,7 +284,7 @@ export default function NewAuditPage() {
   };
 
   const presets: { label: string; description: string; opts: Partial<AuditOptions>; requiresVerification?: boolean }[] = [
-    { label: 'Single Page', description: 'Audit this URL only', opts: { maxPages: 1, maxDepth: 0, checkSeo: true, checkAccessibility: true, checkSecurity: true, checkPerformance: true } },
+    { label: 'Single Page', description: 'Audit this URL only', opts: { maxPages: 1, maxDepth: 1, checkSeo: true, checkAccessibility: true, checkSecurity: true, checkPerformance: true } },
     { label: 'Quick Scan', description: '10 pages, SEO + Security', opts: { maxPages: 10, maxDepth: 2, checkSeo: true, checkAccessibility: false, checkSecurity: true, checkPerformance: false }, requiresVerification: true },
     { label: 'Full Audit', description: 'All categories, 100 pages', opts: { maxPages: 100, maxDepth: 5, checkSeo: true, checkAccessibility: true, checkSecurity: true, checkPerformance: true }, requiresVerification: true },
     { label: 'Accessibility', description: 'WCAG 2.2 AA, 50 pages', opts: { maxPages: 50, maxDepth: 3, checkSeo: false, checkAccessibility: true, checkSecurity: false, checkPerformance: false, wcagVersion: '2.2', wcagLevel: 'AA' }, requiresVerification: true },
@@ -464,7 +467,7 @@ export default function NewAuditPage() {
                       }}
                       onMouseEnter={() => setAutocompleteIndex(idx)}
                     >
-                      <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <span className="text-sm text-slate-700 truncate">{u.target_url}</span>
@@ -487,10 +490,10 @@ export default function NewAuditPage() {
                   </svg>
                   Browse Known URLs
                   {knownPagesCount !== null && knownPagesCount > 0 && (
-                    <span className="text-slate-400">({knownPagesCount})</span>
+                    <span className="text-slate-500">({knownPagesCount})</span>
                   )}
                 </button>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-slate-500">
                   from sitemap and previous audits
                 </span>
               </div>
@@ -501,7 +504,7 @@ export default function NewAuditPage() {
               <div className="flex items-center gap-2">
                 {urlStatus === 'checking' && (
                   <>
-                    <svg className="w-4 h-4 text-slate-400 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-slate-500 animate-spin" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -584,15 +587,15 @@ export default function NewAuditPage() {
                   }`}
                   title={disabled ? 'Verify this domain to enable multi-page audits' : undefined}
                 >
-                  <div className={`text-sm font-medium ${disabled ? 'text-slate-400' : 'text-slate-900'}`}>
+                  <div className={`text-sm font-medium ${disabled ? 'text-slate-500' : 'text-slate-900'}`}>
                     {p.label}
                   </div>
-                  <div className={`text-xs mt-1 ${disabled ? 'text-slate-400' : 'text-slate-500'}`}>
+                  <div className={`text-xs mt-1 ${disabled ? 'text-slate-500' : 'text-slate-500'}`}>
                     {p.description}
                   </div>
                   {disabled && (
                     <div className="absolute top-1 right-1">
-                      <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                       </svg>
                     </div>
@@ -650,9 +653,9 @@ export default function NewAuditPage() {
                       <input
                         type="number"
                         min={1}
-                        max={500}
+                        max={tierMaxPages}
                         value={options.maxPages}
-                        onChange={(e) => updateOption('maxPages', parseInt(e.target.value) || 50)}
+                        onChange={(e) => updateOption('maxPages', Math.min(parseInt(e.target.value) || 50, tierMaxPages))}
                         className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       />
                     </div>
@@ -762,7 +765,7 @@ export default function NewAuditPage() {
                       <div className="ml-3 flex-1">
                         <div className="flex items-center gap-1.5">
                           <span className="text-sm font-medium text-slate-900">File Extraction</span>
-                          {!canUseFileExtraction && <Lock className="w-3.5 h-3.5 text-slate-400" />}
+                          {!canUseFileExtraction && <Lock className="w-3.5 h-3.5 text-slate-500" />}
                         </div>
                         <p className="text-xs text-slate-500">
                           {canUseFileExtraction ? 'Discover all files & assets' : 'Starter plan required'}

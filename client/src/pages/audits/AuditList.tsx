@@ -101,7 +101,7 @@ export default function AuditListPage() {
 
     return (
       <span
-        className="ml-1 text-slate-400"
+        className="ml-1 text-slate-500"
         aria-label={`Sort ${direction}`}
         aria-hidden={!isActive}
       >

@@ -89,14 +89,14 @@ export function ScoreChart({
       const data = payload[0].payload;
       return (
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg px-3 py-2">
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-slate-500 dark:text-slate-500">
             {formatDate(data.date)}
           </p>
           <p className="text-lg font-semibold text-slate-900 dark:text-white">
             {data.score}
           </p>
           {data.label && (
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
               {data.label}
             </p>
           )}
@@ -155,7 +155,7 @@ export function ScoreChart({
             axisLine={false}
             tickLine={false}
             tick={{ fontSize: 12 }}
-            className="text-slate-500 dark:text-slate-400"
+            className="text-slate-500 dark:text-slate-500"
           />
 
           <YAxis
@@ -163,7 +163,7 @@ export function ScoreChart({
             axisLine={false}
             tickLine={false}
             tick={{ fontSize: 12 }}
-            className="text-slate-500 dark:text-slate-400"
+            className="text-slate-500 dark:text-slate-500"
             ticks={[0, 25, 50, 75, 100]}
           />
 
@@ -263,7 +263,7 @@ export function MultiScoreChart({
       const data = payload[0].payload;
       return (
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg px-3 py-2">
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+          <p className="text-xs text-slate-500 dark:text-slate-500 mb-2">
             {formatDate(data.date)}
           </p>
           <div className="space-y-1">
@@ -320,7 +320,7 @@ export function MultiScoreChart({
             axisLine={false}
             tickLine={false}
             tick={{ fontSize: 12 }}
-            className="text-slate-500 dark:text-slate-400"
+            className="text-slate-500 dark:text-slate-500"
           />
 
           <YAxis
@@ -328,7 +328,7 @@ export function MultiScoreChart({
             axisLine={false}
             tickLine={false}
             tick={{ fontSize: 12 }}
-            className="text-slate-500 dark:text-slate-400"
+            className="text-slate-500 dark:text-slate-500"
             ticks={[0, 25, 50, 75, 100]}
           />
 
@@ -378,7 +378,7 @@ export function ChartLegend({
             className="w-3 h-3 rounded-full"
             style={{ backgroundColor: categoryConfig[category].color }}
           />
-          <span className="text-sm text-slate-600 dark:text-slate-400">
+          <span className="text-sm text-slate-600 dark:text-slate-500">
             {categoryConfig[category].name}
           </span>
         </div>

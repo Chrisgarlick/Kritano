@@ -77,7 +77,7 @@ export function SettingsLayout() {
                     flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-[1px]
                     ${isActive
                       ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400 dark:border-indigo-400'
-                      : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300'
+                      : 'border-transparent text-slate-600 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white hover:border-slate-300'
                     }
                   `}
                 >

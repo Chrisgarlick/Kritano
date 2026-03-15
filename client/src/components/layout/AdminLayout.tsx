@@ -175,7 +175,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         className="md:hidden fixed top-4 left-4 z-40 p-2.5 bg-[#141620]/90 backdrop-blur-xl rounded-xl shadow-lg border border-white/[0.06]"
         aria-label="Open admin menu"
       >
-        <Menu className="w-4 h-4 text-slate-400" />
+        <Menu className="w-4 h-4 text-slate-500" />
       </button>
 
       {/* Mobile Overlay */}
@@ -245,7 +245,7 @@ function NavGroupSection({
     <div>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500/80 hover:text-slate-400 transition-colors duration-200"
+        className="w-full flex items-center justify-between px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500/80 hover:text-slate-500 transition-colors duration-200"
       >
         {group.label}
         <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${isOpen ? '' : '-rotate-90'}`} />
@@ -262,7 +262,7 @@ function NavGroupSection({
                 className={`group relative flex items-center space-x-2.5 px-3 py-[7px] rounded-lg text-[13px] transition-all duration-200 ${
                   active
                     ? 'bg-indigo-500/[0.12] text-indigo-200 font-medium'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+                    : 'text-slate-500 hover:text-slate-200 hover:bg-white/[0.04]'
                 }`}
               >
                 {/* Active indicator bar */}
@@ -270,7 +270,7 @@ function NavGroupSection({
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 bg-indigo-400 rounded-r-full" />
                 )}
                 <Icon className={`w-[15px] h-[15px] flex-shrink-0 transition-colors duration-200 ${
-                  active ? 'text-indigo-400' : 'text-slate-500 group-hover:text-slate-400'
+                  active ? 'text-indigo-400' : 'text-slate-500 group-hover:text-slate-500'
                 }`} />
                 <span>{item.label}</span>
               </Link>

@@ -118,14 +118,14 @@ export default function CookiePreferencesModal() {
             ref={closeRef}
             onClick={closePreferences}
             aria-label="Close cookie preferences"
-            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="p-1.5 text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Description */}
-        <p className="text-sm text-slate-500 dark:text-slate-400 px-6 mt-3 leading-relaxed">
+        <p className="text-sm text-slate-500 dark:text-slate-500 px-6 mt-3 leading-relaxed">
           We use cookies and similar technologies to help personalise content and provide a better experience.
           You can manage your preferences below.
         </p>
@@ -150,7 +150,7 @@ export default function CookiePreferencesModal() {
                   </span>
 
                   {info.required ? (
-                    <span className="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">
+                    <span className="text-xs text-slate-500 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">
                       Always On
                     </span>
                   ) : (
@@ -172,10 +172,10 @@ export default function CookiePreferencesModal() {
                   )}
                 </div>
 
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                <p className="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">
                   {info.description}
                 </p>
-                <p className="text-xs text-slate-400 dark:text-slate-500 mt-1.5">
+                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1.5">
                   Cookies: {info.cookies.join(', ')}
                 </p>
               </div>
@@ -199,7 +199,7 @@ export default function CookiePreferencesModal() {
           </button>
         </div>
 
-        <p className="px-6 pb-4 text-xs text-slate-400 dark:text-slate-500 text-center">
+        <p className="px-6 pb-4 text-xs text-slate-500 dark:text-slate-500 text-center">
           You can change your preferences at any time from the footer.
         </p>
       </div>

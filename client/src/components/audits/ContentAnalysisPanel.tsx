@@ -131,7 +131,7 @@ function getContentTypeLabel(type: string | null | undefined): string {
 function InfoTooltip({ text }: { text: string }) {
   return (
     <span className="relative group/tip inline-flex">
-      <Info className="w-3 h-3 text-slate-400 dark:text-slate-500 cursor-help" />
+      <Info className="w-3 h-3 text-slate-500 dark:text-slate-500 cursor-help" />
       <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 px-2.5 py-1.5 text-[11px] leading-snug text-white bg-slate-800 dark:bg-slate-700 rounded-md shadow-lg whitespace-normal w-48 text-center opacity-0 invisible group-hover/tip:opacity-100 group-hover/tip:visible transition-all duration-150 pointer-events-none z-50">
         {text}
         <span className="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-4 border-transparent border-t-slate-800 dark:border-t-slate-700" />
@@ -142,7 +142,7 @@ function InfoTooltip({ text }: { text: string }) {
 
 // Score color helper
 function getScoreColor(score: number | null | undefined): string {
-  if (score === null || score === undefined) return 'text-slate-400';
+  if (score === null || score === undefined) return 'text-slate-500';
   if (score >= 90) return 'text-emerald-600 dark:text-emerald-400';
   if (score >= 70) return 'text-blue-600 dark:text-blue-400';
   if (score >= 50) return 'text-amber-600 dark:text-amber-400';
@@ -244,7 +244,7 @@ export function ContentAnalysisPanel({
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
                 Content Analysis
               </h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-sm text-slate-500 dark:text-slate-500">
                 Quality, readability & engagement metrics
               </p>
             </div>
@@ -256,9 +256,9 @@ export function ContentAnalysisPanel({
               </div>
             )}
             {expanded ? (
-              <ChevronUp className="w-5 h-5 text-slate-400" />
+              <ChevronUp className="w-5 h-5 text-slate-500" />
             ) : (
-              <ChevronDown className="w-5 h-5 text-slate-400" />
+              <ChevronDown className="w-5 h-5 text-slate-500" />
             )}
           </div>
         </div>
@@ -287,7 +287,7 @@ export function ContentAnalysisPanel({
                         {item.label}
                       </span>
                     </div>
-                    <div className="text-2xl font-bold text-slate-400">
+                    <div className="text-2xl font-bold text-slate-500">
                       72
                     </div>
                     <div className="text-xs text-slate-500 mt-1">
@@ -311,7 +311,7 @@ export function ContentAnalysisPanel({
                 className={`rounded-lg p-4 ${getScoreBgColor(item.score)}`}
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <Icon className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                  <Icon className="w-4 h-4 text-slate-500 dark:text-slate-500" />
                   <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                     {item.label}
                   </span>
@@ -320,7 +320,7 @@ export function ContentAnalysisPanel({
                 <div className={`text-2xl font-bold ${getScoreColor(item.score)}`}>
                   {item.score ?? '—'}
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
                   {item.description}
                 </div>
               </div>
@@ -339,7 +339,7 @@ export function ContentAnalysisPanel({
             {/* Flesch-Kincaid Grade */}
             <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="text-sm text-slate-600 dark:text-slate-500">
                   Grade Level
                 </span>
                 <span className={`text-lg font-bold ${readingLevel.color}`}>
@@ -351,7 +351,7 @@ export function ContentAnalysisPanel({
                 <span className={`font-medium ${readingLevel.color}`}>
                   {readingLevel.level}
                 </span>
-                <span className="text-slate-500 dark:text-slate-400">
+                <span className="text-slate-500 dark:text-slate-500">
                   {readingLevel.audience}
                 </span>
               </div>
@@ -360,7 +360,7 @@ export function ContentAnalysisPanel({
             {/* Flesch Reading Ease */}
             <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-sm text-slate-600 dark:text-slate-400">
+                <span className="text-sm text-slate-600 dark:text-slate-500">
                   Reading Ease
                 </span>
                 <span className={`text-lg font-bold ${fleschEase.color}`}>
@@ -372,7 +372,7 @@ export function ContentAnalysisPanel({
                 <span className={`font-medium ${fleschEase.color}`}>
                   {fleschEase.label}
                 </span>
-                <span className="text-slate-500 dark:text-slate-400">
+                <span className="text-slate-500 dark:text-slate-500">
                   0-100 scale
                 </span>
               </div>
@@ -404,12 +404,12 @@ export function ContentAnalysisPanel({
                 return (
                   <div key={pillar.label} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3">
                     <div className="flex items-center gap-1.5 mb-2">
-                      <PillarIcon className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
-                      <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                      <PillarIcon className="w-3.5 h-3.5 text-slate-500 dark:text-slate-500" />
+                      <span className="text-xs font-medium text-slate-600 dark:text-slate-500">
                         {pillar.label}
                       </span>
                       <InfoTooltip text={pillar.tooltip} />
-                      <span className="text-[10px] text-slate-400 dark:text-slate-500 ml-auto">
+                      <span className="text-[10px] text-slate-500 dark:text-slate-500 ml-auto">
                         {pillar.weight}
                       </span>
                     </div>
@@ -433,10 +433,10 @@ export function ContentAnalysisPanel({
                         {pillarEvidence.map((ev, i) => (
                           <div key={i} className="flex items-start gap-1.5">
                             <Check className="w-3 h-3 text-emerald-500 flex-shrink-0 mt-0.5" />
-                            <div className="text-[11px] leading-snug text-slate-600 dark:text-slate-400">
+                            <div className="text-[11px] leading-snug text-slate-600 dark:text-slate-500">
                               <span className="font-medium">{ev.label}</span>
                               {ev.text && (
-                                <span className="text-slate-400 dark:text-slate-500 block italic mt-0.5 line-clamp-2">
+                                <span className="text-slate-500 dark:text-slate-500 block italic mt-0.5 line-clamp-2">
                                   {ev.text}
                                 </span>
                               )}
@@ -452,7 +452,7 @@ export function ContentAnalysisPanel({
 
             {/* Trust Signals Checklist */}
             <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-              <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-3">
+              <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-500 uppercase tracking-wider mb-3">
                 Trust Signals
               </h5>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -473,11 +473,11 @@ export function ContentAnalysisPanel({
                     <span className={`text-sm flex items-center gap-1.5 ${
                       signal.value
                         ? 'text-slate-700 dark:text-slate-300'
-                        : 'text-slate-400 dark:text-slate-500'
+                        : 'text-slate-500 dark:text-slate-500'
                     }`}>
                       {signal.label}
                       {'count' in signal && signal.count != null && signal.count > 0 && (
-                        <span className="text-xs text-slate-400 dark:text-slate-500">
+                        <span className="text-xs text-slate-500 dark:text-slate-500">
                           ({signal.count})
                         </span>
                       )}
@@ -517,7 +517,7 @@ export function ContentAnalysisPanel({
           <div className="grid grid-cols-3 gap-4">
             {/* Word Count */}
             <div className="text-center">
-              <div className="flex items-center justify-center gap-1 text-slate-500 dark:text-slate-400 mb-1">
+              <div className="flex items-center justify-center gap-1 text-slate-500 dark:text-slate-500 mb-1">
                 <AlignLeft className="w-4 h-4" />
                 <span className="text-xs">Words</span>
               </div>
@@ -528,7 +528,7 @@ export function ContentAnalysisPanel({
 
             {/* Reading Time */}
             <div className="text-center">
-              <div className="flex items-center justify-center gap-1 text-slate-500 dark:text-slate-400 mb-1">
+              <div className="flex items-center justify-center gap-1 text-slate-500 dark:text-slate-500 mb-1">
                 <Clock className="w-4 h-4" />
                 <span className="text-xs">Read Time</span>
               </div>
@@ -539,7 +539,7 @@ export function ContentAnalysisPanel({
 
             {/* Content Type */}
             <div className="text-center">
-              <div className="flex items-center justify-center gap-1 text-slate-500 dark:text-slate-400 mb-1">
+              <div className="flex items-center justify-center gap-1 text-slate-500 dark:text-slate-500 mb-1">
                 <Type className="w-4 h-4" />
                 <span className="text-xs">Type</span>
               </div>
@@ -604,7 +604,7 @@ function LockedSection({ icon: Icon, title, description }: { icon: React.Element
           <Icon className="w-4 h-4" />
           {title}
         </h4>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mb-3 max-w-xs mx-auto">
+        <p className="text-xs text-slate-500 dark:text-slate-500 mb-3 max-w-xs mx-auto">
           {description}
         </p>
         <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 group-hover:bg-indigo-700 text-white text-xs font-medium rounded-lg transition-colors">
@@ -636,12 +636,12 @@ function EeatRecommendations({ findings }: { findings: ContentFinding[] }) {
     serious: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
     moderate: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
     minor: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-    info: 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400',
+    info: 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-500',
   };
 
   return (
     <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-      <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+      <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
         <Shield className="w-3.5 h-3.5" />
         E-E-A-T Recommendations ({findings.length})
       </h5>
@@ -662,7 +662,7 @@ function EeatRecommendations({ findings }: { findings: ContentFinding[] }) {
                 {finding.severity}
               </span>
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mb-1.5">{finding.message}</p>
+            <p className="text-xs text-slate-600 dark:text-slate-500 mb-1.5">{finding.message}</p>
             {finding.recommendation && (
               <p className="text-xs text-indigo-700 dark:text-indigo-400">
                 {finding.recommendation}
@@ -748,12 +748,12 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
           return (
             <div key={pillar.label} className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3">
               <div className="flex items-center gap-1.5 mb-2">
-                <PillarIcon className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
-                <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                <PillarIcon className="w-3.5 h-3.5 text-slate-500 dark:text-slate-500" />
+                <span className="text-xs font-medium text-slate-600 dark:text-slate-500">
                   {pillar.label}
                 </span>
                 <InfoTooltip text={pillar.tooltip} />
-                <span className="text-[10px] text-slate-400 dark:text-slate-500 ml-auto">
+                <span className="text-[10px] text-slate-500 dark:text-slate-500 ml-auto">
                   {pillar.weight}
                 </span>
               </div>
@@ -779,7 +779,7 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
       {/* Simulated AI Response */}
       {bestNugget && (
         <div className="bg-gradient-to-br from-slate-50 to-indigo-50/30 dark:from-slate-800/50 dark:to-indigo-900/10 rounded-lg p-4 mb-4 border border-slate-200 dark:border-slate-700">
-          <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
             <Bot className="w-3.5 h-3.5" />
             Simulated AI Response
           </h5>
@@ -796,7 +796,7 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
                     <>One source suggests that <span className="italic">"{bestNugget.text}"</span> — though this may need further verification.</>
                   ) : (
                     <>
-                      <span className="text-slate-400 dark:text-slate-500">
+                      <span className="text-slate-500 dark:text-slate-500">
                         AI models are unlikely to cite this page. With improvements, a response could look like:
                       </span>
                       {' '}<span className="italic">"{bestNugget.text}"</span>
@@ -804,14 +804,14 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
                   )}
                 </p>
                 {metrics.aeo_tier !== 'ignored' && (
-                  <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">
+                  <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
                     Source: your page
                   </p>
                 )}
               </div>
             </div>
           </div>
-          <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-2">
+          <p className="text-[10px] text-slate-500 dark:text-slate-500 mt-2">
             This is a simulation of how an AI might reference your content based on the best extractable nugget.
           </p>
         </div>
@@ -820,7 +820,7 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
       {/* AI-Ready Nuggets */}
       {nuggets.length > 0 && (
         <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4 mb-4">
-          <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
             <Quote className="w-3.5 h-3.5" />
             AI-Ready Nuggets ({nuggets.length})
           </h5>
@@ -836,7 +836,7 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
                     <span className={`inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium rounded ${typeConfig.color}`}>
                       {typeConfig.label}
                     </span>
-                    <span className="text-[10px] text-slate-400 dark:text-slate-500">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-500">
                       {nugget.wordCount} words
                     </span>
                   </div>
@@ -871,7 +871,7 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
       {/* AEO Recommendations */}
       {findings.length > 0 && (
         <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-          <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+          <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
             <BarChart3 className="w-3.5 h-3.5" />
             AEO Recommendations ({findings.length})
           </h5>
@@ -890,12 +890,12 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
                     finding.severity === 'serious' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400' :
                     finding.severity === 'moderate' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
                     finding.severity === 'minor' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
-                    'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'
+                    'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-500'
                   }`}>
                     {finding.severity}
                   </span>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mb-1.5">{finding.message}</p>
+                <p className="text-xs text-slate-600 dark:text-slate-500 mb-1.5">{finding.message}</p>
                 {finding.recommendation && (
                   <p className="text-xs text-indigo-700 dark:text-indigo-400">
                     {finding.recommendation}
@@ -1073,7 +1073,7 @@ export function ContentIssuesSummary({ issues, className = '' }: ContentIssuesSu
         {categories.map((cat) => (
           <div key={cat.key} className="flex items-center gap-3">
             <div className={`w-2 h-2 rounded-full ${cat.color}`} />
-            <span className="text-sm text-slate-600 dark:text-slate-400 flex-1">
+            <span className="text-sm text-slate-600 dark:text-slate-500 flex-1">
               {cat.label}
             </span>
             <span className="text-sm font-medium text-slate-900 dark:text-white tabular-nums">

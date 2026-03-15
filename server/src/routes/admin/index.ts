@@ -32,6 +32,7 @@ import { adminSettingsRouter } from './settings.js';
 import { adminComingSoonRouter } from './coming-soon.js';
 import { adminSeoRouter } from './seo.js';
 import { adminEarlyAccessRouter } from './early-access.js';
+import { pool } from '../../db/index.js';
 
 const router = Router();
 

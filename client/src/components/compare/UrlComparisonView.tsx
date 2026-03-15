@@ -30,7 +30,7 @@ interface UrlComparisonViewProps {
 }
 
 function ScoreBadge({ score, label }: { score: number | null; label?: string }) {
-  if (score === null) return <span className="text-sm text-slate-400">N/A</span>;
+  if (score === null) return <span className="text-sm text-slate-500">N/A</span>;
   return (
     <div className="text-center">
       {label && <div className="text-xs text-slate-500 mb-1">{label}</div>}
@@ -45,8 +45,8 @@ function ScoreBadge({ score, label }: { score: number | null; label?: string }) 
 }
 
 function DeltaIndicator({ delta }: { delta: number | null }) {
-  if (delta === null) return <span className="text-xs text-slate-400">--</span>;
-  if (Math.abs(delta) < 1) return <Minus className="w-4 h-4 text-slate-400 mx-auto" />;
+  if (delta === null) return <span className="text-xs text-slate-500">--</span>;
+  if (Math.abs(delta) < 1) return <Minus className="w-4 h-4 text-slate-500 mx-auto" />;
   if (delta > 0) {
     return (
       <span className="inline-flex items-center gap-0.5 text-xs font-medium text-emerald-600">
@@ -84,7 +84,7 @@ function TrustSignalRow({ label, valueA, valueB }: { label: string; valueA: bool
       <div className="flex items-center gap-8">
         <span className="w-16 text-center">
           {valueA === null ? (
-            <span className="text-slate-400">--</span>
+            <span className="text-slate-500">--</span>
           ) : valueA ? (
             <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" />
           ) : (
@@ -93,7 +93,7 @@ function TrustSignalRow({ label, valueA, valueB }: { label: string; valueA: bool
         </span>
         <span className="w-16 text-center">
           {valueB === null ? (
-            <span className="text-slate-400">--</span>
+            <span className="text-slate-500">--</span>
           ) : valueB ? (
             <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" />
           ) : (
@@ -167,7 +167,7 @@ function CollapsibleSection({ title, icon, children, defaultOpen = false, badge 
           <h2 className="text-lg font-medium text-slate-900">{title}</h2>
           {badge}
         </div>
-        {open ? <ChevronDown className="w-5 h-5 text-slate-400" /> : <ChevronRight className="w-5 h-5 text-slate-400" />}
+        {open ? <ChevronDown className="w-5 h-5 text-slate-500" /> : <ChevronRight className="w-5 h-5 text-slate-500" />}
       </button>
       {open && <div className="px-6 pb-6 -mt-2">{children}</div>}
     </div>
@@ -188,7 +188,7 @@ function formatMs(ms: number | null): string {
 }
 
 function ResponseTimeColor({ ms }: { ms: number | null }) {
-  if (ms === null) return <span className="text-slate-400">--</span>;
+  if (ms === null) return <span className="text-slate-500">--</span>;
   const color = ms < 500 ? 'text-emerald-600' : ms < 1500 ? 'text-amber-600' : 'text-red-600';
   return <span className={`font-medium ${color}`}>{formatMs(ms)}</span>;
 }
@@ -349,7 +349,7 @@ export function UrlComparisonView({ comparison }: UrlComparisonViewProps) {
                 <tr>
                   <td className="py-3 text-sm text-slate-700">
                     Response Time
-                    <span className="text-xs text-slate-400 ml-1">(green &lt;500ms)</span>
+                    <span className="text-xs text-slate-500 ml-1">(green &lt;500ms)</span>
                   </td>
                   <td className="py-3 text-center text-sm">
                     <ResponseTimeColor ms={a.httpPerformance.responseTimeMs} />
@@ -413,7 +413,7 @@ export function UrlComparisonView({ comparison }: UrlComparisonViewProps) {
             <tbody className="divide-y divide-slate-100">
               <tr>
                 <td className="py-3 text-sm text-slate-700">
-                  Title <span className="text-xs text-slate-400">(50-60 chars)</span>
+                  Title <span className="text-xs text-slate-500">(50-60 chars)</span>
                 </td>
                 <td className="py-3 px-2">
                   <div className="text-sm text-slate-700 truncate max-w-[250px]" title={a.meta.title || ''}>
@@ -430,7 +430,7 @@ export function UrlComparisonView({ comparison }: UrlComparisonViewProps) {
               </tr>
               <tr>
                 <td className="py-3 text-sm text-slate-700">
-                  Meta Description <span className="text-xs text-slate-400">(150-160)</span>
+                  Meta Description <span className="text-xs text-slate-500">(150-160)</span>
                 </td>
                 <td className="py-3 px-2">
                   <div className="text-sm text-slate-700 truncate max-w-[250px]" title={a.meta.metaDescription || ''}>
@@ -448,10 +448,10 @@ export function UrlComparisonView({ comparison }: UrlComparisonViewProps) {
               <tr>
                 <td className="py-3 text-sm text-slate-700">H1</td>
                 <td className="py-3 px-2 text-sm text-slate-700 truncate max-w-[250px]" title={a.meta.h1Text || ''}>
-                  {a.meta.h1Text || <span className="text-slate-400">--</span>}
+                  {a.meta.h1Text || <span className="text-slate-500">--</span>}
                 </td>
                 <td className="py-3 px-2 text-sm text-slate-700 truncate max-w-[250px]" title={b.meta.h1Text || ''}>
-                  {b.meta.h1Text || <span className="text-slate-400">--</span>}
+                  {b.meta.h1Text || <span className="text-slate-500">--</span>}
                 </td>
               </tr>
               <tr>
@@ -712,7 +712,7 @@ function HeaderCard({ snapshot, label }: { snapshot: UrlPageSnapshot; label: str
             {snapshot.urlPath || '/'}
           </h3>
           <p className="text-xs text-slate-500 mt-0.5">{snapshot.siteName} ({snapshot.siteDomain})</p>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-500 mt-0.5">
             Audited {new Date(snapshot.auditedAt).toLocaleDateString()}
           </p>
         </div>
@@ -735,7 +735,7 @@ function HeaderCard({ snapshot, label }: { snapshot: UrlPageSnapshot; label: str
 }
 
 function TierBadge({ tier, label }: { tier: string | null; label: string }) {
-  if (!tier) return <span className="text-sm text-slate-400">{label}: No tier</span>;
+  if (!tier) return <span className="text-sm text-slate-500">{label}: No tier</span>;
 
   const tierStyles: Record<string, string> = {
     'ghost-content': 'bg-slate-100 text-slate-600',
@@ -757,7 +757,7 @@ function TierBadge({ tier, label }: { tier: string | null; label: string }) {
 }
 
 function StatusCodeBadge({ code }: { code: number | null }) {
-  if (code === null) return <span className="text-slate-400">--</span>;
+  if (code === null) return <span className="text-slate-500">--</span>;
   const color = code >= 200 && code < 300 ? 'text-emerald-600 bg-emerald-50' :
     code >= 300 && code < 400 ? 'text-amber-600 bg-amber-50' :
     'text-red-600 bg-red-50';
@@ -964,7 +964,7 @@ function EvidenceSection({ evidenceA, evidenceB }: {
                 </div>
               );
             })}
-            {evidenceA.length === 0 && <p className="text-xs text-slate-400">No evidence items found</p>}
+            {evidenceA.length === 0 && <p className="text-xs text-slate-500">No evidence items found</p>}
           </div>
           <div>
             <div className="text-xs font-medium text-emerald-600 uppercase tracking-wider mb-2">URL B</div>
@@ -991,7 +991,7 @@ function EvidenceSection({ evidenceA, evidenceB }: {
                 </div>
               );
             })}
-            {evidenceB.length === 0 && <p className="text-xs text-slate-400">No evidence items found</p>}
+            {evidenceB.length === 0 && <p className="text-xs text-slate-500">No evidence items found</p>}
           </div>
         </div>
       )}
@@ -1069,14 +1069,14 @@ function NuggetsSection({ nuggetsA, nuggetsB }: {
               <div className="text-xs font-medium text-indigo-600 uppercase tracking-wider mb-2">URL A Nuggets</div>
               <div className="space-y-1.5 max-h-64 overflow-y-auto">
                 {nuggetsA.length === 0 ? (
-                  <p className="text-xs text-slate-400">No nuggets found</p>
+                  <p className="text-xs text-slate-500">No nuggets found</p>
                 ) : nuggetsA.map((nugget, idx) => (
                   <div key={idx} className="bg-slate-50 rounded px-3 py-2 text-xs">
                     <div className="flex items-center gap-1.5 mb-0.5">
                       <span className={`font-medium px-1.5 py-0.5 rounded ${typeBadgeColor[nugget.type] || 'bg-slate-100 text-slate-600'}`}>
                         {nugget.type}
                       </span>
-                      <span className="text-slate-400">{nugget.wordCount} words</span>
+                      <span className="text-slate-500">{nugget.wordCount} words</span>
                     </div>
                     <p className="text-slate-600 line-clamp-2">{nugget.text}</p>
                   </div>
@@ -1087,14 +1087,14 @@ function NuggetsSection({ nuggetsA, nuggetsB }: {
               <div className="text-xs font-medium text-emerald-600 uppercase tracking-wider mb-2">URL B Nuggets</div>
               <div className="space-y-1.5 max-h-64 overflow-y-auto">
                 {nuggetsB.length === 0 ? (
-                  <p className="text-xs text-slate-400">No nuggets found</p>
+                  <p className="text-xs text-slate-500">No nuggets found</p>
                 ) : nuggetsB.map((nugget, idx) => (
                   <div key={idx} className="bg-slate-50 rounded px-3 py-2 text-xs">
                     <div className="flex items-center gap-1.5 mb-0.5">
                       <span className={`font-medium px-1.5 py-0.5 rounded ${typeBadgeColor[nugget.type] || 'bg-slate-100 text-slate-600'}`}>
                         {nugget.type}
                       </span>
-                      <span className="text-slate-400">{nugget.wordCount} words</span>
+                      <span className="text-slate-500">{nugget.wordCount} words</span>
                     </div>
                     <p className="text-slate-600 line-clamp-2">{nugget.text}</p>
                   </div>
@@ -1158,14 +1158,14 @@ function FindingsDiffView({ diff, labelA, labelB }: {
               activeTab === tab.id ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-700'
             }`}
           >
-            {tab.label} <span className="text-xs text-slate-400 ml-1">({tab.count})</span>
+            {tab.label} <span className="text-xs text-slate-500 ml-1">({tab.count})</span>
           </button>
         ))}
       </div>
 
       {/* Findings list */}
       {activeFindings.length === 0 ? (
-        <p className="text-sm text-slate-400 text-center py-4">No findings in this category</p>
+        <p className="text-sm text-slate-500 text-center py-4">No findings in this category</p>
       ) : (
         <div className="space-y-2 max-h-96 overflow-y-auto">
           {activeFindings.map((finding, idx) => (
@@ -1189,7 +1189,7 @@ function FindingRow({ finding }: { finding: UrlFindingItem }) {
         <SeverityBadge severity={finding.severity} />
         <CategoryBadge category={finding.category} />
         <span className="text-sm font-medium text-slate-700 flex-1 truncate">{finding.ruleName}</span>
-        {expanded ? <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" /> : <ChevronRight className="w-4 h-4 text-slate-400 flex-shrink-0" />}
+        {expanded ? <ChevronDown className="w-4 h-4 text-slate-500 flex-shrink-0" /> : <ChevronRight className="w-4 h-4 text-slate-500 flex-shrink-0" />}
       </button>
       {expanded && (
         <div className="px-3 pb-3 text-sm border-t border-slate-100 pt-2">
@@ -1213,7 +1213,7 @@ function KeywordCard({ snapshot, label }: { snapshot: UrlPageSnapshot; label: st
     return (
       <div className="bg-slate-50 rounded-lg p-4">
         <div className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">{label}</div>
-        <p className="text-sm text-slate-400">No keyword data available</p>
+        <p className="text-sm text-slate-500">No keyword data available</p>
       </div>
     );
   }
@@ -1258,7 +1258,7 @@ function KeywordCard({ snapshot, label }: { snapshot: UrlPageSnapshot; label: st
             ) : (
               <XCircle className="w-3.5 h-3.5 text-slate-300" />
             )}
-            <span className={p.value ? 'text-slate-700' : 'text-slate-400'}>{p.label}</span>
+            <span className={p.value ? 'text-slate-700' : 'text-slate-500'}>{p.label}</span>
           </div>
         ))}
       </div>
@@ -1277,7 +1277,7 @@ function ReadabilityRow({ label, valueA, valueB, format, optimal }: {
     <tr>
       <td className="py-3 text-sm text-slate-700">
         {label}
-        {optimal && <span className="text-xs text-slate-400 ml-1">(optimal: {optimal})</span>}
+        {optimal && <span className="text-xs text-slate-500 ml-1">(optimal: {optimal})</span>}
       </td>
       <td className="py-3 text-center text-sm font-medium text-slate-700">{format(valueA)}</td>
       <td className="py-3 text-center text-sm font-medium text-slate-700">{format(valueB)}</td>

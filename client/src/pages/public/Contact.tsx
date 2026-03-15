@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { PublicLayout } from '../../components/layout/PublicLayout';
 import PageSeo from '../../components/seo/PageSeo';
 import { Mail, MapPin, Clock, Send, CheckCircle, Loader2 } from 'lucide-react';
+import { api } from '../../services/api';
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -31,10 +32,14 @@ export default function Contact() {
     }
 
     setSubmitting(true);
-    // Simulate submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setSubmitting(false);
-    setSubmitted(true);
+    try {
+      await api.post('/contact', form);
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Failed to send message. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -98,7 +103,7 @@ export default function Contact() {
                       onChange={e => setForm({ ...form, name: e.target.value })}
                       placeholder="Your name"
                       className="w-full px-4 py-3 border border-slate-300 rounded-lg bg-white
-                               text-slate-900 placeholder-slate-400
+                               text-slate-900 placeholder-slate-500
                                focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500
                                transition-colors"
                     />
@@ -116,7 +121,7 @@ export default function Contact() {
                       onChange={e => setForm({ ...form, email: e.target.value })}
                       placeholder="you@company.com"
                       className="w-full px-4 py-3 border border-slate-300 rounded-lg bg-white
-                               text-slate-900 placeholder-slate-400
+                               text-slate-900 placeholder-slate-500
                                focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500
                                transition-colors"
                     />
@@ -158,7 +163,7 @@ export default function Contact() {
                     onChange={e => setForm({ ...form, message: e.target.value })}
                     placeholder="How can we help?"
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg bg-white
-                             text-slate-900 placeholder-slate-400 resize-none
+                             text-slate-900 placeholder-slate-500 resize-none
                              focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500
                              transition-colors"
                   />

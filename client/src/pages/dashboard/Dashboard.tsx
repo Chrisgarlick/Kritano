@@ -184,7 +184,7 @@ export default function DashboardPage() {
               <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
                 <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-slate-400" />
+                    <Activity className="w-5 h-5 text-slate-500" />
                     <Heading size="sm" as="h3">Recent Audits</Heading>
                   </div>
                   <Link
@@ -212,7 +212,7 @@ export default function DashboardPage() {
                               />
                             ) : (
                               <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                                <Activity className="w-4 h-4 text-slate-400" />
+                                <Activity className="w-4 h-4 text-slate-500" />
                               </div>
                             )}
 
@@ -229,7 +229,7 @@ export default function DashboardPage() {
                           <div className="flex items-center gap-4 flex-shrink-0">
                             <StatusBadge status={audit.status} size="sm" />
                             {audit.total_issues > 0 && (
-                              <span className="text-sm text-slate-500 dark:text-slate-400 tabular-nums">
+                              <span className="text-sm text-slate-500 dark:text-slate-500 tabular-nums">
                                 {audit.total_issues} issue{audit.total_issues !== 1 ? 's' : ''}
                               </span>
                             )}

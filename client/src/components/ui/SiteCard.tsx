@@ -107,7 +107,7 @@ export function SiteCard({
               <CompactScore score={score} />
             ) : (
               <div className="w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                <Globe className="w-6 h-6 text-slate-400" />
+                <Globe className="w-6 h-6 text-slate-500" />
               </div>
             )}
           </div>
@@ -131,7 +131,7 @@ export function SiteCard({
         {/* Stats Row */}
         <div className="mt-4 flex items-center justify-between">
           {/* Last Audit */}
-          <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+          <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-500">
             <Clock className="w-4 h-4" />
             <span className="text-sm">{lastAuditTime}</span>
           </div>
@@ -156,7 +156,7 @@ export function SiteCard({
               <StatusBadge status={latestAudit.status} size="sm" />
             )
           ) : (
-            <span className="text-sm text-slate-400">No audits yet</span>
+            <span className="text-sm text-slate-500">No audits yet</span>
           )}
         </div>
 
@@ -206,7 +206,7 @@ export function SiteCard({
 // Mini score display for category breakdown
 function CategoryMiniScore({ label, score }: { label: string; score: number | null }) {
   const getScoreColor = (s: number | null): string => {
-    if (s === null) return 'text-slate-400';
+    if (s === null) return 'text-slate-500';
     if (s >= 90) return 'text-emerald-600 dark:text-emerald-400';
     if (s >= 70) return 'text-amber-600 dark:text-amber-400';
     if (s >= 50) return 'text-orange-600 dark:text-orange-400';
@@ -215,7 +215,7 @@ function CategoryMiniScore({ label, score }: { label: string; score: number | nu
 
   return (
     <div className="text-center">
-      <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">{label}</p>
+      <p className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">{label}</p>
       <p className={`text-sm font-semibold tabular-nums ${getScoreColor(score)}`}>
         {score !== null ? score : '—'}
       </p>
@@ -312,7 +312,7 @@ export function SiteListItem({
         <CompactScore score={score} />
       ) : (
         <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-          <Globe className="w-4 h-4 text-slate-400" />
+          <Globe className="w-4 h-4 text-slate-500" />
         </div>
       )}
 
@@ -338,13 +338,13 @@ export function SiteListItem({
 
       {/* Issues */}
       {latestAudit?.total_issues ? (
-        <span className="text-sm text-slate-500 dark:text-slate-400 tabular-nums">
+        <span className="text-sm text-slate-500 dark:text-slate-500 tabular-nums">
           {latestAudit.total_issues} issue{latestAudit.total_issues !== 1 ? 's' : ''}
         </span>
       ) : null}
 
       {/* Last Audit Time */}
-      <span className="text-sm text-slate-400 tabular-nums w-20 text-right">
+      <span className="text-sm text-slate-500 tabular-nums w-20 text-right">
         {latestAudit ? getRelativeTime(latestAudit.completed_at || latestAudit.created_at) : 'Never'}
       </span>
 

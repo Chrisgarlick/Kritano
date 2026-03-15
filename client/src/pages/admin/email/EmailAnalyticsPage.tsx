@@ -88,7 +88,7 @@ export default function EmailAnalyticsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Email Analytics</h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               Track delivery rates, opens, clicks, and bounces across all emails.
             </p>
           </div>
@@ -100,7 +100,7 @@ export default function EmailAnalyticsPage() {
                 className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
                   days === p.value
                     ? 'bg-indigo-600 text-white'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-slate-500 hover:text-white'
                 }`}
               >
                 {p.label}
@@ -121,14 +121,14 @@ export default function EmailAnalyticsPage() {
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Send className="w-4 h-4 text-indigo-400" />
-                <span className="text-xs text-slate-400">Total Sent</span>
+                <span className="text-xs text-slate-500">Total Sent</span>
               </div>
               <div className="text-2xl font-bold text-white">{totals.sent.toLocaleString()}</div>
             </div>
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Eye className="w-4 h-4 text-green-400" />
-                <span className="text-xs text-slate-400">Avg Open Rate</span>
+                <span className="text-xs text-slate-500">Avg Open Rate</span>
               </div>
               <div className="text-2xl font-bold text-green-400">
                 {totals.sent > 0 ? formatRate((totals.opened / totals.sent) * 100) : '—'}
@@ -137,7 +137,7 @@ export default function EmailAnalyticsPage() {
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <MousePointerClick className="w-4 h-4 text-blue-400" />
-                <span className="text-xs text-slate-400">Avg Click Rate</span>
+                <span className="text-xs text-slate-500">Avg Click Rate</span>
               </div>
               <div className="text-2xl font-bold text-blue-400">
                 {totals.sent > 0 ? formatRate((totals.clicked / totals.sent) * 100) : '—'}
@@ -146,7 +146,7 @@ export default function EmailAnalyticsPage() {
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="w-4 h-4 text-red-400" />
-                <span className="text-xs text-slate-400">Bounce Rate</span>
+                <span className="text-xs text-slate-500">Bounce Rate</span>
               </div>
               <div className="text-2xl font-bold text-red-400">
                 {totals.sent > 0 ? formatRate((totals.bounced / totals.sent) * 100) : '—'}
@@ -159,7 +159,7 @@ export default function EmailAnalyticsPage() {
         <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-6">
           <h2 className="text-sm font-medium text-slate-300 mb-4">Delivery Over Time</h2>
           {daily.length === 0 ? (
-            <div className="text-center py-12 text-slate-400 text-sm">No data for this period</div>
+            <div className="text-center py-12 text-slate-500 text-sm">No data for this period</div>
           ) : (
             <div className="space-y-2">
               {/* Chart */}
@@ -204,7 +204,7 @@ export default function EmailAnalyticsPage() {
                       <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:block z-10">
                         <div className="bg-white/[0.03] border border-white/[0.06] rounded-lg px-3 py-2 text-xs whitespace-nowrap shadow-lg">
                           <div className="text-slate-300 font-medium">{day.date}</div>
-                          <div className="text-slate-400 mt-1">Sent: {sent}</div>
+                          <div className="text-slate-500 mt-1">Sent: {sent}</div>
                           <div className="text-indigo-400">Delivered: {delivered}</div>
                           <div className="text-red-400">Bounced: {bounced}</div>
                         </div>
@@ -218,15 +218,15 @@ export default function EmailAnalyticsPage() {
               <div className="flex items-center justify-center gap-4 pt-2">
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 rounded-sm bg-indigo-500" />
-                  <span className="text-xs text-slate-400">Delivered</span>
+                  <span className="text-xs text-slate-500">Delivered</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 rounded-sm bg-red-500/60" />
-                  <span className="text-xs text-slate-400">Bounced</span>
+                  <span className="text-xs text-slate-500">Bounced</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-3 h-3 rounded-sm bg-slate-600" />
-                  <span className="text-xs text-slate-400">Pending</span>
+                  <span className="text-xs text-slate-500">Pending</span>
                 </div>
               </div>
             </div>
@@ -239,15 +239,15 @@ export default function EmailAnalyticsPage() {
           {templates.length === 0 ? (
             <div className="text-center py-12 bg-white/[0.02] border border-white/[0.06] rounded-lg">
               <BarChart3 className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-              <p className="text-sm text-slate-400">No email sends recorded yet</p>
+              <p className="text-sm text-slate-500">No email sends recorded yet</p>
             </div>
           ) : (
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg overflow-hidden">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-white/[0.06]">
-                    <th className="text-left text-xs font-medium text-slate-400 px-4 py-3">Template</th>
-                    <th className="text-right text-xs font-medium text-slate-400 px-4 py-3">
+                    <th className="text-left text-xs font-medium text-slate-500 px-4 py-3">Template</th>
+                    <th className="text-right text-xs font-medium text-slate-500 px-4 py-3">
                       <button
                         onClick={() => handleTemplateSort('total_sent')}
                         className="flex items-center gap-1 ml-auto hover:text-white transition-colors"
@@ -256,7 +256,7 @@ export default function EmailAnalyticsPage() {
                         <ArrowUpDown className="w-3 h-3" />
                       </button>
                     </th>
-                    <th className="text-right text-xs font-medium text-slate-400 px-4 py-3">
+                    <th className="text-right text-xs font-medium text-slate-500 px-4 py-3">
                       <button
                         onClick={() => handleTemplateSort('delivery_rate')}
                         className="flex items-center gap-1 ml-auto hover:text-white transition-colors"
@@ -265,7 +265,7 @@ export default function EmailAnalyticsPage() {
                         <ArrowUpDown className="w-3 h-3" />
                       </button>
                     </th>
-                    <th className="text-right text-xs font-medium text-slate-400 px-4 py-3">
+                    <th className="text-right text-xs font-medium text-slate-500 px-4 py-3">
                       <button
                         onClick={() => handleTemplateSort('open_rate')}
                         className="flex items-center gap-1 ml-auto hover:text-white transition-colors"
@@ -274,7 +274,7 @@ export default function EmailAnalyticsPage() {
                         <ArrowUpDown className="w-3 h-3" />
                       </button>
                     </th>
-                    <th className="text-right text-xs font-medium text-slate-400 px-4 py-3">
+                    <th className="text-right text-xs font-medium text-slate-500 px-4 py-3">
                       <button
                         onClick={() => handleTemplateSort('click_rate')}
                         className="flex items-center gap-1 ml-auto hover:text-white transition-colors"

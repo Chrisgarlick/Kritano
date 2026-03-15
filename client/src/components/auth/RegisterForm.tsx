@@ -9,6 +9,7 @@ import { Button } from '../ui/Button';
 import { Alert } from '../ui/Alert';
 import type { AxiosError } from 'axios';
 import type { ErrorResponse } from '../../types/auth.types';
+import { SocialButtons } from './SocialButtons';
 
 const registerSchema = z.object({
   firstName: z
@@ -121,6 +122,17 @@ export function RegisterForm() {
           You were referred by a friend! Complete registration and your first audit to earn bonus audits.
         </div>
       )}
+      <SocialButtons mode="register" />
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-slate-200 dark:border-slate-700" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-500">or register with email</span>
+        </div>
+      </div>
+
       {error && <Alert variant="error">{error}</Alert>}
 
       <fieldset className="grid grid-cols-2 gap-4">

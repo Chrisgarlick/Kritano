@@ -198,7 +198,7 @@ export default function StoriesPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Success Stories</h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               Showcase customer audit score improvements on the public site
             </p>
           </div>
@@ -215,7 +215,7 @@ export default function StoriesPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard label="Total" value={pagination.total} icon={Trophy} color="text-white" bgColor="bg-white/[0.03]" />
           <StatCard label="Published" value={publishedCount} icon={Eye} color="text-green-400" bgColor="bg-green-500/10" />
-          <StatCard label="Drafts" value={pagination.total - publishedCount} icon={EyeOff} color="text-slate-400" bgColor="bg-white/[0.02]" />
+          <StatCard label="Drafts" value={pagination.total - publishedCount} icon={EyeOff} color="text-slate-500" bgColor="bg-white/[0.02]" />
           <StatCard label="Avg. Improvement" value={avgImprovement} icon={TrendingUp} color="text-amber-400" bgColor="bg-amber-500/10" suffix="pts" />
         </div>
 
@@ -223,7 +223,7 @@ export default function StoriesPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => fetchStories()}
-            className="p-2 text-slate-400 hover:text-white transition-colors"
+            className="p-2 text-slate-500 hover:text-white transition-colors"
             title="Refresh"
           >
             <RefreshCw className="w-4 h-4" />
@@ -247,7 +247,7 @@ export default function StoriesPage() {
           <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg text-center py-16">
             <Trophy className="w-12 h-12 text-slate-600 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-white mb-1">No success stories yet</h3>
-            <p className="text-sm text-slate-400">Create stories to showcase on the public site.</p>
+            <p className="text-sm text-slate-500">Create stories to showcase on the public site.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -271,7 +271,7 @@ export default function StoriesPage() {
                           Published
                         </span>
                       ) : (
-                        <span className="inline-flex px-2 py-0.5 text-xs rounded-full font-medium bg-slate-500/20 text-slate-400">
+                        <span className="inline-flex px-2 py-0.5 text-xs rounded-full font-medium bg-slate-500/20 text-slate-500">
                           Draft
                         </span>
                       )}
@@ -280,7 +280,7 @@ export default function StoriesPage() {
                   </div>
 
                   {/* Domain */}
-                  <p className="text-sm text-slate-400 font-mono mb-1">{story.domain}</p>
+                  <p className="text-sm text-slate-500 font-mono mb-1">{story.domain}</p>
 
                   {/* Headline */}
                   <h3 className="font-medium text-white mb-3">{story.headline}</h3>
@@ -313,7 +313,7 @@ export default function StoriesPage() {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleEdit(story)}
-                        className="p-1.5 text-slate-400 hover:text-white transition-colors"
+                        className="p-1.5 text-slate-500 hover:text-white transition-colors"
                         title="Edit"
                       >
                         <Pencil className="w-4 h-4" />
@@ -321,7 +321,7 @@ export default function StoriesPage() {
                       <button
                         onClick={() => handleTogglePublish(story)}
                         disabled={actionLoading === story.id}
-                        className="p-1.5 text-slate-400 hover:text-amber-400 transition-colors disabled:opacity-50"
+                        className="p-1.5 text-slate-500 hover:text-amber-400 transition-colors disabled:opacity-50"
                         title={story.is_published ? 'Unpublish' : 'Publish'}
                       >
                         {story.is_published ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -329,7 +329,7 @@ export default function StoriesPage() {
                       <button
                         onClick={() => handleDelete(story.id)}
                         disabled={actionLoading === story.id}
-                        className="p-1.5 text-slate-400 hover:text-red-400 transition-colors disabled:opacity-50"
+                        className="p-1.5 text-slate-500 hover:text-red-400 transition-colors disabled:opacity-50"
                         title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -345,7 +345,7 @@ export default function StoriesPage() {
         {/* Pagination */}
         {pagination.pages > 1 && (
           <div className="flex items-center justify-between pt-2">
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               Showing {(pagination.page - 1) * pagination.limit + 1}&ndash;
               {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
               {pagination.total}
@@ -354,14 +354,14 @@ export default function StoriesPage() {
               <button
                 onClick={() => goToPage(pagination.page - 1)}
                 disabled={pagination.page === 1}
-                className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={() => goToPage(pagination.page + 1)}
                 disabled={pagination.page === pagination.pages}
-                className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -379,7 +379,7 @@ export default function StoriesPage() {
               <h2 className="text-lg font-bold text-white">
                 {editingId ? 'Edit Story' : 'New Success Story'}
               </h2>
-              <button onClick={() => setShowEditor(false)} className="p-1 text-slate-400 hover:text-white transition-colors">
+              <button onClick={() => setShowEditor(false)} className="p-1 text-slate-500 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -527,9 +527,9 @@ function StatCard({
       </div>
       <div>
         <p className="text-2xl font-bold text-white">
-          {value.toLocaleString()}{suffix && <span className="text-sm font-normal text-slate-400 ml-1">{suffix}</span>}
+          {value.toLocaleString()}{suffix && <span className="text-sm font-normal text-slate-500 ml-1">{suffix}</span>}
         </p>
-        <p className="text-xs text-slate-400">{label}</p>
+        <p className="text-xs text-slate-500">{label}</p>
       </div>
     </div>
   );

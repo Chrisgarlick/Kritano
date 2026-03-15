@@ -221,7 +221,7 @@ export default function TemplateEditorPage() {
           <div className="flex items-center gap-3">
             <Link
               to="/admin/email/templates"
-              className="p-2 text-slate-400 hover:text-white transition-colors"
+              className="p-2 text-slate-500 hover:text-white transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
@@ -229,7 +229,7 @@ export default function TemplateEditorPage() {
               {isNew ? 'New Template' : `Edit: ${name}`}
             </h1>
             {isSystem && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-400">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-500">
                 System
               </span>
             )}
@@ -274,7 +274,7 @@ export default function TemplateEditorPage() {
               <h3 className="text-sm font-semibold text-white">Template Settings</h3>
 
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Name</label>
+                <label className="block text-xs text-slate-500 mb-1">Name</label>
                 <input
                   value={name}
                   onChange={e => setName(e.target.value)}
@@ -284,7 +284,7 @@ export default function TemplateEditorPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Slug</label>
+                <label className="block text-xs text-slate-500 mb-1">Slug</label>
                 <input
                   value={slug}
                   onChange={e => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '_'))}
@@ -295,7 +295,7 @@ export default function TemplateEditorPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Subject</label>
+                <label className="block text-xs text-slate-500 mb-1">Subject</label>
                 <input
                   value={subject}
                   onChange={e => setSubject(e.target.value)}
@@ -305,7 +305,7 @@ export default function TemplateEditorPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Preview Text</label>
+                <label className="block text-xs text-slate-500 mb-1">Preview Text</label>
                 <input
                   value={previewText}
                   onChange={e => setPreviewText(e.target.value)}
@@ -315,7 +315,7 @@ export default function TemplateEditorPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Category</label>
+                <label className="block text-xs text-slate-500 mb-1">Category</label>
                 <select
                   value={category}
                   onChange={e => setCategory(e.target.value)}
@@ -328,7 +328,7 @@ export default function TemplateEditorPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Variables (comma-separated)</label>
+                <label className="block text-xs text-slate-500 mb-1">Variables (comma-separated)</label>
                 <input
                   value={variables}
                   onChange={e => setVariables(e.target.value)}
@@ -338,7 +338,7 @@ export default function TemplateEditorPage() {
               </div>
 
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Description</label>
+                <label className="block text-xs text-slate-500 mb-1">Description</label>
                 <textarea
                   value={description}
                   onChange={e => setDescription(e.target.value)}
@@ -359,7 +359,7 @@ export default function TemplateEditorPage() {
                     <button
                       key={bt.type}
                       onClick={() => addBlock(bt.type)}
-                      className="flex items-center gap-1.5 px-2 py-1.5 text-xs text-slate-400 hover:text-white hover:bg-white/[0.04] rounded transition-colors"
+                      className="flex items-center gap-1.5 px-2 py-1.5 text-xs text-slate-500 hover:text-white hover:bg-white/[0.04] rounded transition-colors"
                     >
                       <Icon className="w-3.5 h-3.5 flex-shrink-0" />
                       {bt.label}
@@ -386,20 +386,20 @@ export default function TemplateEditorPage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setPreviewMode('desktop')}
-                      className={`p-1.5 rounded ${previewMode === 'desktop' ? 'text-white bg-white/[0.06]' : 'text-slate-400'}`}
+                      className={`p-1.5 rounded ${previewMode === 'desktop' ? 'text-white bg-white/[0.06]' : 'text-slate-500'}`}
                     >
                       <Monitor className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setPreviewMode('mobile')}
-                      className={`p-1.5 rounded ${previewMode === 'mobile' ? 'text-white bg-white/[0.06]' : 'text-slate-400'}`}
+                      className={`p-1.5 rounded ${previewMode === 'mobile' ? 'text-white bg-white/[0.06]' : 'text-slate-500'}`}
                     >
                       <Smartphone className="w-4 h-4" />
                     </button>
                   </div>
                   <button
                     onClick={() => setShowPreview(false)}
-                    className="text-xs text-slate-400 hover:text-white"
+                    className="text-xs text-slate-500 hover:text-white"
                   >
                     Back to Editor
                   </button>
@@ -504,7 +504,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
       {block.type === 'text' && (
         <>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Content</label>
+            <label className="block text-xs text-slate-500 mb-1">Content</label>
             <textarea
               value={String(block.content || '')}
               onChange={e => onChange({ content: e.target.value })}
@@ -514,7 +514,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-xs text-slate-400 mb-1">Font Size</label>
+              <label className="block text-xs text-slate-500 mb-1">Font Size</label>
               <select
                 value={String(block.fontSize || 'md')}
                 onChange={e => onChange({ fontSize: e.target.value })}
@@ -527,7 +527,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
               </select>
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">Align</label>
+              <label className="block text-xs text-slate-500 mb-1">Align</label>
               <select
                 value={String(block.align || 'left')}
                 onChange={e => onChange({ align: e.target.value })}
@@ -540,7 +540,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
             </div>
           </div>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Color</label>
+            <label className="block text-xs text-slate-500 mb-1">Color</label>
             <input
               value={String(block.color || '')}
               onChange={e => onChange({ color: e.target.value || undefined })}
@@ -554,7 +554,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
       {block.type === 'button' && (
         <>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Label</label>
+            <label className="block text-xs text-slate-500 mb-1">Label</label>
             <input
               value={String(block.label || '')}
               onChange={e => onChange({ label: e.target.value })}
@@ -562,7 +562,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
             />
           </div>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">URL (supports {'{{variables}}'})</label>
+            <label className="block text-xs text-slate-500 mb-1">URL (supports {'{{variables}}'})</label>
             <input
               value={String(block.href || '')}
               onChange={e => onChange({ href: e.target.value })}
@@ -570,7 +570,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
             />
           </div>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Align</label>
+            <label className="block text-xs text-slate-500 mb-1">Align</label>
             <select
               value={String(block.align || 'center')}
               onChange={e => onChange({ align: e.target.value })}
@@ -587,7 +587,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
       {block.type === 'hero_image' && (
         <>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Image URL</label>
+            <label className="block text-xs text-slate-500 mb-1">Image URL</label>
             <input
               value={String(block.src || '')}
               onChange={e => onChange({ src: e.target.value })}
@@ -595,7 +595,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
             />
           </div>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Alt Text</label>
+            <label className="block text-xs text-slate-500 mb-1">Alt Text</label>
             <input
               value={String(block.alt || '')}
               onChange={e => onChange({ alt: e.target.value })}
@@ -603,7 +603,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
             />
           </div>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Link (optional)</label>
+            <label className="block text-xs text-slate-500 mb-1">Link (optional)</label>
             <input
               value={String(block.href || '')}
               onChange={e => onChange({ href: e.target.value || undefined })}
@@ -616,7 +616,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
       {block.type === 'header' && (
         <>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Company Name (leave blank for branding default)</label>
+            <label className="block text-xs text-slate-500 mb-1">Company Name (leave blank for branding default)</label>
             <input
               value={String(block.companyName || '')}
               onChange={e => onChange({ companyName: e.target.value || undefined })}
@@ -624,7 +624,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
             />
           </div>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Background Color</label>
+            <label className="block text-xs text-slate-500 mb-1">Background Color</label>
             <input
               value={String(block.backgroundColor || '')}
               onChange={e => onChange({ backgroundColor: e.target.value || undefined })}
@@ -638,7 +638,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
       {block.type === 'footer' && (
         <>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Footer Text</label>
+            <label className="block text-xs text-slate-500 mb-1">Footer Text</label>
             <input
               value={String(block.text || '')}
               onChange={e => onChange({ text: e.target.value || undefined })}
@@ -647,7 +647,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
             />
           </div>
           <div>
-            <label className="flex items-center gap-2 text-xs text-slate-400 cursor-pointer">
+            <label className="flex items-center gap-2 text-xs text-slate-500 cursor-pointer">
               <input
                 type="checkbox"
                 checked={block.includeUnsubscribe as boolean}
@@ -662,7 +662,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
 
       {block.type === 'spacer' && (
         <div>
-          <label className="block text-xs text-slate-400 mb-1">Height</label>
+          <label className="block text-xs text-slate-500 mb-1">Height</label>
           <input
             value={String(block.height || '20px')}
             onChange={e => onChange({ height: e.target.value })}

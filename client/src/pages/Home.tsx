@@ -155,7 +155,7 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-6 opacity-25">
               {['Acme Corp', 'Meridian', 'NorthStar', 'Velocity', 'Apex Digital'].map(name => (
-                <span key={name} className="text-xl font-semibold text-slate-400 tracking-tight">
+                <span key={name} className="text-xl font-semibold text-slate-500 tracking-tight">
                   {name}
                 </span>
               ))}
@@ -442,7 +442,7 @@ function StatItem({ value, label }: { value: string; label: string }) {
   return (
     <div className="text-center">
       <p className="font-display text-4xl lg:text-5xl text-white mb-2">{value}</p>
-      <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">{label}</p>
+      <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">{label}</p>
     </div>
   );
 }

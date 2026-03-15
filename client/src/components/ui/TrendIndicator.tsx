@@ -59,7 +59,7 @@ export function TrendIndicator({
     const isStable = direction === 'stable';
 
     if (isStable) {
-      return 'text-slate-500 dark:text-slate-400';
+      return 'text-slate-500 dark:text-slate-500';
     }
 
     // For normal metrics (higher is better)
@@ -117,7 +117,7 @@ export function TrendIndicator({
     >
       <IconComponent />
       {showDelta && formattedDelta && <span>{formattedDelta}</span>}
-      {label && <span className="text-slate-500 dark:text-slate-400 font-normal">{label}</span>}
+      {label && <span className="text-slate-500 dark:text-slate-500 font-normal">{label}</span>}
     </span>
   );
 }
@@ -165,7 +165,7 @@ export function TrendBadge({
     const isStable = direction === 'stable';
 
     if (isStable) {
-      return 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400';
+      return 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500';
     }
 
     if (!invertColors) {

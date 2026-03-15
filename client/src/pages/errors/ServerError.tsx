@@ -133,7 +133,7 @@ export default function ServerErrorPage({
         {/* Error details (if provided) */}
         {error && (
           <div className="mb-6 p-4 bg-slate-100 dark:bg-slate-900 rounded-lg text-left max-w-md mx-auto">
-            <Body size="sm" className="font-mono text-slate-600 dark:text-slate-400 break-all">
+            <Body size="sm" className="font-mono text-slate-600 dark:text-slate-500 break-all">
               {error}
             </Body>
           </div>

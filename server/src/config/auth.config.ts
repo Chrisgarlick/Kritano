@@ -53,6 +53,11 @@ export const RATE_LIMIT_CONFIG = {
     maxAttempts: 15,
     blockDurationMs: 15 * 60 * 1000, // 15 minutes
   },
+  oauth: {
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    maxAttempts: 5,
+    blockDurationMs: 15 * 60 * 1000, // 15 minutes
+  },
   global: {
     windowMs: 60 * 1000, // 1 minute
     maxAttempts: 100,
@@ -84,6 +89,14 @@ export const COOKIE_CONFIG = {
   sameSite: 'strict' as const,
   path: '/',
   // domain is set dynamically based on environment
+};
+
+// OAuth state cookie configuration (sameSite: lax for cross-origin redirects)
+export const OAUTH_STATE_COOKIE_CONFIG = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax' as const,
+  path: '/',
 };
 
 // CSRF configuration

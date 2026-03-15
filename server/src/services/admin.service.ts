@@ -49,6 +49,7 @@ export interface UserListItem {
   created_at: string;
   last_login_at: string | null;
   organization_count: number;
+  unsubscribed_all: boolean;
 }
 
 export interface OrganizationListItem {
@@ -233,8 +234,10 @@ export async function listUsers(
       u.is_super_admin,
       u.created_at,
       u.last_login_at,
-      (SELECT COUNT(*) FROM organization_members om WHERE om.user_id = u.id) as organization_count
+      (SELECT COUNT(*) FROM organization_members om WHERE om.user_id = u.id) as organization_count,
+      COALESCE(ep.unsubscribed_all, false) AS unsubscribed_all
      FROM users u
+     LEFT JOIN email_preferences ep ON ep.user_id = u.id
      ${whereClause}
      ORDER BY u.${sortColumn} ${order}
      LIMIT $${params.length + 1} OFFSET $${params.length + 2}`,
@@ -258,8 +261,10 @@ export async function getUserDetails(userId: string): Promise<UserListItem | nul
       u.is_super_admin,
       u.created_at,
       u.last_login_at,
-      (SELECT COUNT(*) FROM organization_members om WHERE om.user_id = u.id) as organization_count
+      (SELECT COUNT(*) FROM organization_members om WHERE om.user_id = u.id) as organization_count,
+      COALESCE(ep.unsubscribed_all, false) AS unsubscribed_all
      FROM users u
+     LEFT JOIN email_preferences ep ON ep.user_id = u.id
      WHERE u.id = $1`,
     [userId]
   );

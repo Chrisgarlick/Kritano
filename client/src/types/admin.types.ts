@@ -46,6 +46,7 @@ export interface AdminUser {
   created_at: string;
   last_login_at: string | null;
   organization_count: number;
+  unsubscribed_all: boolean;
 }
 
 export interface AdminOrganization {

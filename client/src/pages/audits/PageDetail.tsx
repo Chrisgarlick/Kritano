@@ -16,7 +16,7 @@ import type { AuditAsset } from '../../types/audit.types';
 
 function ScoreCircle({ score, label }: { score: number | null; label: string }) {
   const getScoreColor = (s: number | null) => {
-    if (s === null) return { bg: 'bg-slate-100', text: 'text-slate-400', ring: 'ring-slate-200' };
+    if (s === null) return { bg: 'bg-slate-100', text: 'text-slate-500', ring: 'ring-slate-200' };
     if (s >= 90) return { bg: 'bg-emerald-50', text: 'text-emerald-600', ring: 'ring-emerald-200' };
     if (s >= 70) return { bg: 'bg-amber-50', text: 'text-amber-600', ring: 'ring-amber-200' };
     if (s >= 50) return { bg: 'bg-orange-50', text: 'text-orange-600', ring: 'ring-orange-200' };
@@ -363,7 +363,7 @@ export default function PageDetailPage() {
             onClick={() => setAssetsExpanded(!assetsExpanded)}
             className="flex items-center gap-2 w-full text-left bg-white border border-slate-200 rounded-lg px-4 py-3 hover:bg-slate-50 transition-colors"
           >
-            {assetsExpanded ? <ChevronDown className="w-4 h-4 text-slate-400" /> : <ChevronRight className="w-4 h-4 text-slate-400" />}
+            {assetsExpanded ? <ChevronDown className="w-4 h-4 text-slate-500" /> : <ChevronRight className="w-4 h-4 text-slate-500" />}
             <File className="w-4 h-4 text-indigo-500" />
             <span className="text-sm font-medium text-slate-900">Files & Assets</span>
             <span className="ml-auto text-xs text-slate-500">{pageAssets.length} file{pageAssets.length !== 1 ? 's' : ''}</span>
@@ -389,7 +389,7 @@ export default function PageDetailPage() {
                     return (
                       <tr key={asset.id} className="hover:bg-slate-50">
                         <td className="px-4 py-2">
-                          <Icon className="w-4 h-4 text-slate-400" />
+                          <Icon className="w-4 h-4 text-slate-500" />
                         </td>
                         <td className="px-4 py-2">
                           <div className="flex items-center gap-2">
@@ -397,7 +397,7 @@ export default function PageDetailPage() {
                             {asset.file_extension && (
                               <span className="px-1 py-0.5 text-[10px] font-mono bg-slate-100 text-slate-500 rounded">.{asset.file_extension}</span>
                             )}
-                            <a href={asset.url} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-indigo-500">
+                            <a href={asset.url} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-indigo-500">
                               <ExternalLink className="w-3 h-3" />
                             </a>
                           </div>
@@ -506,7 +506,7 @@ export default function PageDetailPage() {
                     <span className="text-sm text-slate-600">{categoryFindings.length} issues</span>
                   </div>
                   <svg
-                    className={`w-5 h-5 text-slate-400 transition-transform ${expandedCategories.has(category) ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 text-slate-500 transition-transform ${expandedCategories.has(category) ? 'rotate-180' : ''}`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -569,6 +569,7 @@ export default function PageDetailPage() {
                             href={finding.help_url}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-label={`Learn more about ${finding.rule_name}`}
                             className="mt-2 inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800"
                           >
                             Learn more

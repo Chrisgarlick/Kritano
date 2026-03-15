@@ -90,7 +90,7 @@ function ComparisonBar({ category, data }: { category: ScoreCategory; data: Comp
           </div>
         </div>
       ) : (
-        <div className="text-sm text-slate-400 py-2">No data available</div>
+        <div className="text-sm text-slate-500 py-2">No data available</div>
       )}
     </div>
   );

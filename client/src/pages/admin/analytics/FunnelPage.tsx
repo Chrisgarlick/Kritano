@@ -72,7 +72,7 @@ export default function FunnelPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Conversion Funnel</h1>
-              <p className="text-sm text-slate-400">Track user progression from signup to paid subscriber</p>
+              <p className="text-sm text-slate-500">Track user progression from signup to paid subscriber</p>
             </div>
           </div>
 
@@ -131,7 +131,7 @@ export default function FunnelPage() {
                     <div key={stage.name} className="bg-white/[0.01] border border-white/[0.04] rounded-xl p-5">
                       <div className="flex items-center gap-2 mb-3">
                         <TrendingDown className="w-4 h-4 text-red-400" />
-                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">
+                        <span className="text-xs text-slate-500 font-medium uppercase tracking-wide">
                           {prev.name} → {stage.name}
                         </span>
                       </div>
@@ -139,7 +139,7 @@ export default function FunnelPage() {
                         <span className="text-2xl font-bold text-red-400">{dropOffPct}%</span>
                         <span className="text-sm text-slate-500">drop-off</span>
                       </div>
-                      <p className="text-sm text-slate-400 mt-1">
+                      <p className="text-sm text-slate-500 mt-1">
                         {formatNumber(dropOff)} users lost
                       </p>
                     </div>
@@ -151,7 +151,7 @@ export default function FunnelPage() {
             {/* Summary Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white/[0.01] border border-white/[0.04] rounded-xl p-5">
-                <p className="text-xs text-slate-400 font-medium uppercase tracking-wide mb-1">Overall Conversion</p>
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wide mb-1">Overall Conversion</p>
                 <p className="text-3xl font-bold text-indigo-400">
                   {data.stages[0].count > 0
                     ? `${Math.round((data.stages[data.stages.length - 1].count / data.stages[0].count) * 1000) / 10}%`
@@ -161,7 +161,7 @@ export default function FunnelPage() {
               </div>
 
               <div className="bg-white/[0.01] border border-white/[0.04] rounded-xl p-5">
-                <p className="text-xs text-slate-400 font-medium uppercase tracking-wide mb-1">Biggest Drop-off</p>
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wide mb-1">Biggest Drop-off</p>
                 {(() => {
                   let maxDrop = 0;
                   let maxDropLabel = '';
@@ -183,7 +183,7 @@ export default function FunnelPage() {
               </div>
 
               <div className="bg-white/[0.01] border border-white/[0.04] rounded-xl p-5">
-                <p className="text-xs text-slate-400 font-medium uppercase tracking-wide mb-1">Activation Rate</p>
+                <p className="text-xs text-slate-500 font-medium uppercase tracking-wide mb-1">Activation Rate</p>
                 <p className="text-3xl font-bold text-emerald-400">
                   {data.stages[0].count > 0 && data.stages.length >= 3
                     ? `${Math.round((data.stages[2].count / data.stages[0].count) * 1000) / 10}%`
@@ -229,7 +229,7 @@ function FunnelStageRow({
             <div className="flex items-center gap-3">
               <span className="text-lg font-bold text-white">{formatNumber(stage.count)}</span>
               {stage.conversionFromPrevious !== null && (
-                <span className="text-xs font-medium text-slate-400 bg-white/[0.03] px-2 py-0.5 rounded">
+                <span className="text-xs font-medium text-slate-500 bg-white/[0.03] px-2 py-0.5 rounded">
                   {stage.conversionFromPrevious}%
                 </span>
               )}

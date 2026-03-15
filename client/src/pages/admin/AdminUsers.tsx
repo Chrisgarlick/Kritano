@@ -3,7 +3,7 @@ import { adminApi } from '../../services/api';
 import { AdminLayout } from '../../components/layout/AdminLayout';
 import { useToast } from '../../components/ui/Toast';
 import type { AdminUser, Pagination } from '../../types/admin.types';
-import { Search, Loader2, ShieldCheck, ShieldX, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Loader2, ShieldCheck, ShieldX, Trash2, ChevronLeft, ChevronRight, MailX } from 'lucide-react';
 
 export default function AdminUsersPage() {
   const { toast } = useToast();
@@ -144,9 +144,15 @@ export default function AdminUsersPage() {
                             Unverified
                           </span>
                         )}
+                        {user.unsubscribed_all && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium bg-orange-500/10 text-orange-300 border border-orange-500/20 rounded-md w-fit">
+                            <MailX className="w-2.5 h-2.5" />
+                            Unsub
+                          </span>
+                        )}
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-sm text-slate-400 tabular-nums">{user.organization_count}</td>
+                    <td className="px-5 py-3.5 text-sm text-slate-500 tabular-nums">{user.organization_count}</td>
                     <td className="px-5 py-3.5 text-xs text-slate-500 tabular-nums">
                       {new Date(user.created_at).toLocaleDateString()}
                     </td>

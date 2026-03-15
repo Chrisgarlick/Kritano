@@ -138,7 +138,7 @@ export default function AdminOrganizationsPage() {
           ) : (
             <table className="w-full min-w-[700px]">
               <thead>
-                <tr className="border-b border-white/[0.06] text-left text-sm text-slate-400">
+                <tr className="border-b border-white/[0.06] text-left text-sm text-slate-500">
                   <th className="px-6 py-3 font-medium">Organization</th>
                   <th className="px-6 py-3 font-medium">Owner</th>
                   <th className="px-6 py-3 font-medium">Subscription</th>
@@ -154,7 +154,7 @@ export default function AdminOrganizationsPage() {
                     <td className="px-6 py-4">
                       <div>
                         <div className="font-medium text-white">{org.name}</div>
-                        <div className="text-sm text-slate-400">{org.slug}</div>
+                        <div className="text-sm text-slate-500">{org.slug}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -173,7 +173,7 @@ export default function AdminOrganizationsPage() {
                     </td>
                     <td className="px-6 py-4 text-slate-300">{org.member_count}</td>
                     <td className="px-6 py-4 text-slate-300">{org.audit_count}</td>
-                    <td className="px-6 py-4 text-slate-400 text-sm">
+                    <td className="px-6 py-4 text-slate-500 text-sm">
                       {new Date(org.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4">
@@ -196,7 +196,7 @@ export default function AdminOrganizationsPage() {
         {/* Pagination */}
         {pagination.pages > 1 && (
           <div className="flex justify-between items-center mt-4">
-            <div className="text-sm text-slate-400">
+            <div className="text-sm text-slate-500">
               Page {pagination.page} of {pagination.pages}
             </div>
             <div className="flex space-x-2">

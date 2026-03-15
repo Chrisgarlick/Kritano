@@ -31,11 +31,11 @@ export function SiteSelector({
         onClick={() => setIsOpen(!isOpen)}
         className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors min-w-[200px]"
       >
-        <Globe className="w-4 h-4 text-slate-400" />
+        <Globe className="w-4 h-4 text-slate-500" />
         <span className="flex-1 text-left truncate">
           {currentSite ? currentSite.name : placeholder}
         </span>
-        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (

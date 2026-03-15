@@ -17,7 +17,7 @@ const textareaClasses =
 const selectClasses =
   'rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-white transition-colors focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20';
 
-const labelClasses = 'block text-xs font-medium text-slate-400 mb-1';
+const labelClasses = 'block text-xs font-medium text-slate-500 mb-1';
 
 export default function BlockRenderer({ block, onUpdate }: BlockRendererProps) {
   const { type, props } = block;
@@ -412,7 +412,7 @@ export default function BlockRenderer({ block, onUpdate }: BlockRendererProps) {
     default: {
       return (
         <div className="rounded-md border border-dashed border-slate-600 bg-slate-900/50 p-4 text-sm text-slate-500">
-          No editor available for block type: <code className="text-slate-400">{type}</code>
+          No editor available for block type: <code className="text-slate-500">{type}</code>
         </div>
       );
     }

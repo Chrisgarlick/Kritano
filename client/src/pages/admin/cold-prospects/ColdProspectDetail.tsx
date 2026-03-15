@@ -3,14 +3,14 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   Crosshair, Globe, Mail, User, Shield, ExternalLink,
   RotateCcw, Trash2, Loader2, ArrowLeft, Code, MessageSquare,
-  Facebook, Linkedin, Twitter, Instagram, Youtube,
+  Facebook, Linkedin, Twitter, Instagram, Youtube, MailX,
 } from 'lucide-react';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
 import { coldProspectsApi, type ColdProspectItem } from '../../../services/api';
 import { useToast } from '../../../components/ui/Toast';
 
 const STATUS_BADGES: Record<string, { label: string; className: string }> = {
-  pending: { label: 'Pending', className: 'bg-slate-600/20 text-slate-400' },
+  pending: { label: 'Pending', className: 'bg-slate-600/20 text-slate-500' },
   checking: { label: 'Checking', className: 'bg-indigo-600/20 text-indigo-400' },
   live: { label: 'Live', className: 'bg-sky-600/20 text-sky-400' },
   extracting: { label: 'Extracting', className: 'bg-violet-600/20 text-violet-400' },
@@ -85,7 +85,7 @@ export default function ColdProspectDetail() {
   if (!prospect) {
     return (
       <AdminLayout>
-        <div className="p-6 text-center text-slate-400">Prospect not found</div>
+        <div className="p-6 text-center text-slate-500">Prospect not found</div>
       </AdminLayout>
     );
   }
@@ -97,7 +97,7 @@ export default function ColdProspectDetail() {
       <div className="p-6 max-w-4xl">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <Link to="/admin/cold-prospects/list" className="p-1.5 text-slate-400 hover:text-white rounded hover:bg-white/[0.06]">
+          <Link to="/admin/cold-prospects/list" className="p-1.5 text-slate-500 hover:text-white rounded hover:bg-white/[0.06]">
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <Globe className="w-5 h-5 text-indigo-400" />
@@ -141,19 +141,19 @@ export default function ColdProspectDetail() {
             </h2>
             <dl className="space-y-3">
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">Domain</dt>
+                <dt className="text-xs text-slate-500">Domain</dt>
                 <dd className="text-sm text-white">{prospect.domain}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">TLD</dt>
+                <dt className="text-xs text-slate-500">TLD</dt>
                 <dd className="text-sm text-white">.{prospect.tld}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">Registered</dt>
+                <dt className="text-xs text-slate-500">Registered</dt>
                 <dd className="text-sm text-white">{prospect.registered_at || '-'}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">SSL</dt>
+                <dt className="text-xs text-slate-500">SSL</dt>
                 <dd className="text-sm">
                   {prospect.has_ssl ? (
                     <span className="flex items-center gap-1 text-emerald-400"><Shield className="w-3 h-3" /> Yes</span>
@@ -163,35 +163,35 @@ export default function ColdProspectDetail() {
                 </dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">HTTP Status</dt>
+                <dt className="text-xs text-slate-500">HTTP Status</dt>
                 <dd className="text-sm text-white">{prospect.http_status || '-'}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">Pages (est.)</dt>
+                <dt className="text-xs text-slate-500">Pages (est.)</dt>
                 <dd className="text-sm text-white">{prospect.page_count_estimate || '-'}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">Language</dt>
+                <dt className="text-xs text-slate-500">Language</dt>
                 <dd className="text-sm text-white">{prospect.language || '-'}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">Quality Score</dt>
+                <dt className="text-xs text-slate-500">Quality Score</dt>
                 <dd className={`text-sm font-bold ${
                   prospect.quality_score >= 60 ? 'text-emerald-400' :
-                  prospect.quality_score >= 30 ? 'text-amber-400' : 'text-slate-400'
+                  prospect.quality_score >= 30 ? 'text-amber-400' : 'text-slate-500'
                 }`}>
                   {prospect.quality_score}/100
                 </dd>
               </div>
               {prospect.title && (
                 <div>
-                  <dt className="text-xs text-slate-400 mb-1">Title</dt>
+                  <dt className="text-xs text-slate-500 mb-1">Title</dt>
                   <dd className="text-sm text-white">{prospect.title}</dd>
                 </div>
               )}
               {prospect.meta_description && (
                 <div>
-                  <dt className="text-xs text-slate-400 mb-1">Description</dt>
+                  <dt className="text-xs text-slate-500 mb-1">Description</dt>
                   <dd className="text-xs text-slate-300 leading-relaxed">{prospect.meta_description}</dd>
                 </div>
               )}
@@ -204,6 +204,13 @@ export default function ColdProspectDetail() {
               <Mail className="w-4 h-4 text-emerald-400" />
               Contact Info
             </h2>
+
+            {prospect.is_unsubscribed && (
+              <div className="flex items-center gap-2 mb-4 px-3 py-2.5 bg-orange-600/10 border border-orange-500/20 rounded-lg">
+                <MailX className="w-4 h-4 text-orange-400 flex-shrink-0" />
+                <span className="text-xs text-orange-400">This contact has opted out of all emails. They will not receive outreach.</span>
+              </div>
+            )}
 
             {/* Primary contact */}
             {prospect.contact_email ? (
@@ -220,7 +227,7 @@ export default function ColdProspectDetail() {
                     <User className="w-4 h-4 text-sky-400" />
                     <span className="text-sm text-white">{prospect.contact_name}</span>
                     {prospect.contact_role && (
-                      <span className="text-xs text-slate-400">({prospect.contact_role})</span>
+                      <span className="text-xs text-slate-500">({prospect.contact_role})</span>
                     )}
                   </div>
                 )}
@@ -234,19 +241,19 @@ export default function ColdProspectDetail() {
             {/* All emails found */}
             {prospect.emails && prospect.emails.length > 0 && (
               <div className="mb-4">
-                <h3 className="text-xs text-slate-400 mb-2">All Emails Found ({prospect.emails.length})</h3>
+                <h3 className="text-xs text-slate-500 mb-2">All Emails Found ({prospect.emails.length})</h3>
                 <div className="space-y-2">
                   {prospect.emails.map((e, idx) => (
                     <div key={idx} className="flex items-center justify-between bg-white/[0.01] rounded px-3 py-2">
                       <div>
                         <span className="text-xs text-white">{e.email}</span>
-                        {e.name && <span className="text-[10px] text-slate-400 ml-2">({e.name})</span>}
+                        {e.name && <span className="text-[10px] text-slate-500 ml-2">({e.name})</span>}
                       </div>
                       <div className="flex items-center gap-2">
                         <span className={`text-[10px] px-1.5 py-0.5 rounded ${
                           e.confidence === 'high' ? 'bg-emerald-600/20 text-emerald-400' :
                           e.confidence === 'medium' ? 'bg-amber-600/20 text-amber-400' :
-                          'bg-slate-600/20 text-slate-400'
+                          'bg-slate-600/20 text-slate-500'
                         }`}>
                           {e.confidence}
                         </span>
@@ -274,7 +281,7 @@ export default function ColdProspectDetail() {
             {/* Social links */}
             {Object.keys(prospect.social_links || {}).length > 0 && (
               <div>
-                <h3 className="text-xs text-slate-400 mb-2">Social Media</h3>
+                <h3 className="text-xs text-slate-500 mb-2">Social Media</h3>
                 <div className="flex flex-wrap gap-2">
                   {Object.entries(prospect.social_links).map(([platform, url]) => {
                     const Icon = SOCIAL_ICONS[platform] || Globe;
@@ -318,33 +325,33 @@ export default function ColdProspectDetail() {
           {/* Metadata */}
           <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-5">
             <h2 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-              <Crosshair className="w-4 h-4 text-slate-400" />
+              <Crosshair className="w-4 h-4 text-slate-500" />
               Pipeline Info
             </h2>
             <dl className="space-y-3">
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">Source</dt>
+                <dt className="text-xs text-slate-500">Source</dt>
                 <dd className="text-sm text-white">{prospect.source}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">Batch Date</dt>
+                <dt className="text-xs text-slate-500">Batch Date</dt>
                 <dd className="text-sm text-white">{prospect.batch_date}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">Added</dt>
+                <dt className="text-xs text-slate-500">Added</dt>
                 <dd className="text-sm text-white">
                   {new Date(prospect.created_at).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}
                 </dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-xs text-slate-400">Last Updated</dt>
+                <dt className="text-xs text-slate-500">Last Updated</dt>
                 <dd className="text-sm text-white">
                   {new Date(prospect.updated_at).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                 </dd>
               </div>
               {prospect.email_sent_at && (
                 <div className="flex justify-between">
-                  <dt className="text-xs text-slate-400">Email Sent</dt>
+                  <dt className="text-xs text-slate-500">Email Sent</dt>
                   <dd className="text-sm text-white">
                     {new Date(prospect.email_sent_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </dd>
@@ -352,7 +359,7 @@ export default function ColdProspectDetail() {
               )}
               {prospect.email_opened_at && (
                 <div className="flex justify-between">
-                  <dt className="text-xs text-slate-400">Email Opened</dt>
+                  <dt className="text-xs text-slate-500">Email Opened</dt>
                   <dd className="text-sm text-emerald-400">
                     {new Date(prospect.email_opened_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </dd>

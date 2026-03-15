@@ -515,6 +515,67 @@ router.delete(
 );
 
 // ===========================================
+// Sites Endpoints
+// ===========================================
+
+/**
+ * GET /api/v1/sites
+ * List user's sites
+ */
+router.get(
+  '/sites',
+  requireScope('audits:read'),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const apiReq = req as ApiAuthenticatedRequest;
+      const userId = apiReq.apiUserId;
+      const { page = '1', limit = '20' } = req.query;
+
+      const pageNum = Math.max(1, parseInt(page as string, 10) || 1);
+      const limitNum = Math.min(100, Math.max(1, parseInt(limit as string, 10) || 20));
+      const offset = (pageNum - 1) * limitNum;
+
+      const result = await pool.query(
+        `SELECT id, domain, name, verified, created_at
+         FROM sites
+         WHERE COALESCE(owner_id, created_by) = $1
+         ORDER BY created_at DESC
+         LIMIT $2 OFFSET $3`,
+        [userId, limitNum, offset]
+      );
+
+      const countResult = await pool.query<{ count: string }>(
+        `SELECT COUNT(*) as count FROM sites WHERE COALESCE(owner_id, created_by) = $1`,
+        [userId]
+      );
+      const total = parseInt(countResult.rows[0].count, 10);
+
+      res.json({
+        sites: result.rows.map(s => ({
+          id: s.id,
+          domain: s.domain,
+          name: s.name,
+          verified: s.verified,
+          createdAt: s.created_at,
+        })),
+        pagination: {
+          page: pageNum,
+          limit: limitNum,
+          total,
+          pages: Math.ceil(total / limitNum),
+        },
+      });
+    } catch (error) {
+      console.error('API: List sites error:', error);
+      res.status(500).json({
+        error: 'Failed to list sites',
+        code: 'LIST_SITES_FAILED',
+      });
+    }
+  }
+);
+
+// ===========================================
 // Info Endpoint
 // ===========================================
 

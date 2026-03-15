@@ -80,19 +80,19 @@ export function KeywordAnalysisPanel({ keywordData, className = '' }: KeywordAna
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
                 Keyword Analysis
               </h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-sm text-slate-500 dark:text-slate-500">
                 Placement, density & optimization for <span className="font-medium text-indigo-600 dark:text-indigo-400">{keywordData.keyword}</span>
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+            <span className="text-sm font-medium text-slate-600 dark:text-slate-500">
               {placementCount}/{placements.length} placements
             </span>
             {expanded ? (
-              <ChevronUp className="w-5 h-5 text-slate-400" />
+              <ChevronUp className="w-5 h-5 text-slate-500" />
             ) : (
-              <ChevronDown className="w-5 h-5 text-slate-400" />
+              <ChevronDown className="w-5 h-5 text-slate-500" />
             )}
           </div>
         </div>
@@ -117,7 +117,7 @@ export function KeywordAnalysisPanel({ keywordData, className = '' }: KeywordAna
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Placement Checklist */}
             <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-              <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-3">
+              <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-500 uppercase tracking-wider mb-3">
                 Keyword Placement ({placementCount}/{placements.length})
               </h5>
               <div className="space-y-1.5">
@@ -131,7 +131,7 @@ export function KeywordAnalysisPanel({ keywordData, className = '' }: KeywordAna
                     <span className={`text-sm ${
                       placement.value
                         ? 'text-slate-700 dark:text-slate-300'
-                        : 'text-slate-400 dark:text-slate-500'
+                        : 'text-slate-500 dark:text-slate-500'
                     }`}>
                       {placement.label}
                     </span>
@@ -144,7 +144,7 @@ export function KeywordAnalysisPanel({ keywordData, className = '' }: KeywordAna
             <div className="space-y-4">
               {/* Density Meter */}
               <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-500 uppercase tracking-wider mb-3">
                   Keyword Density
                 </h5>
                 <div className="flex items-baseline gap-2 mb-2">
@@ -167,7 +167,7 @@ export function KeywordAnalysisPanel({ keywordData, className = '' }: KeywordAna
                     style={{ left: '20%', right: '60%' }}
                   />
                 </div>
-                <div className="flex justify-between text-[10px] text-slate-400 dark:text-slate-500 mt-1">
+                <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-500 mt-1">
                   <span>0%</span>
                   <span>1-2% optimal</span>
                   <span>5%+</span>
@@ -177,7 +177,7 @@ export function KeywordAnalysisPanel({ keywordData, className = '' }: KeywordAna
               {/* Occurrences */}
               <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                  <h5 className="text-xs font-semibold text-slate-600 dark:text-slate-500 uppercase tracking-wider">
                     Occurrences
                   </h5>
                   <span className="text-lg font-bold text-slate-900 dark:text-white">
@@ -186,12 +186,12 @@ export function KeywordAnalysisPanel({ keywordData, className = '' }: KeywordAna
                 </div>
                 {keywordData.variationsUsed.length > 0 && (
                   <div>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Variations: </span>
+                    <span className="text-xs text-slate-500 dark:text-slate-500">Variations: </span>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {keywordData.variationsUsed.map((v, i) => (
                         <span
                           key={i}
-                          className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
+                          className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-500"
                         >
                           {v}
                         </span>

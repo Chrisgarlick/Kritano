@@ -127,7 +127,7 @@ export default function AdminEarlyAccessPage() {
           <div className="flex items-center space-x-2">
             <button
               onClick={handleExport}
-              className="flex items-center space-x-1.5 px-3 py-2 text-xs font-medium rounded-lg bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-slate-200 hover:bg-white/[0.06] transition-all duration-200"
+              className="flex items-center space-x-1.5 px-3 py-2 text-xs font-medium rounded-lg bg-white/[0.04] border border-white/[0.06] text-slate-500 hover:text-slate-200 hover:bg-white/[0.06] transition-all duration-200"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export</span>
@@ -191,7 +191,7 @@ export default function AdminEarlyAccessPage() {
 
       {/* Share Links */}
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 mb-6">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Share Links</h2>
+        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Share Links</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {['email', 'social'].map((channel) => (
             <div key={channel} className="flex items-center justify-between bg-white/[0.02] border border-white/[0.04] rounded-lg px-4 py-3">
@@ -269,7 +269,7 @@ export default function AdminEarlyAccessPage() {
                     <td className="px-5 py-3 text-sm text-white">
                       {user.firstName} {user.lastName}
                     </td>
-                    <td className="px-5 py-3 text-sm text-slate-400">{user.email}</td>
+                    <td className="px-5 py-3 text-sm text-slate-500">{user.email}</td>
                     <td className="px-5 py-3">
                       <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium border ${
                         user.channel === 'email'
@@ -334,7 +334,7 @@ export default function AdminEarlyAccessPage() {
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setShowConfirm(false)} />
           <div className="relative rounded-xl border border-white/[0.08] bg-[#141620] p-6 max-w-md w-full shadow-2xl">
             <h3 className="text-base font-semibold text-white mb-2">Activate Early Access</h3>
-            <p className="text-sm text-slate-400 mb-4">
+            <p className="text-sm text-slate-500 mb-4">
               This will start a <strong className="text-white">30-day Agency trial</strong> for
               all <strong className="text-white">{stats?.claimed || 0} founding members</strong> and
               send them an activation email.
@@ -346,7 +346,7 @@ export default function AdminEarlyAccessPage() {
               <button
                 onClick={() => setShowConfirm(false)}
                 disabled={activating}
-                className="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-all duration-200"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-200 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-all duration-200"
               >
                 Cancel
               </button>

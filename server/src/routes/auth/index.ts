@@ -27,6 +27,8 @@ import { resolveReferralCode, createReferral, checkAndQualifyReferral } from '..
 import { isEarlyAccessEnabled, claimSpot } from '../../services/early-access.service.js';
 import { sendTemplate } from '../../services/email-template.service.js';
 import { COOKIE_CONFIG, REFRESH_TOKEN_CONFIG, JWT_CONFIG } from '../../config/auth.config.js';
+import { oauthRouter } from './oauth.js';
+import { oauthService } from '../../services/oauth.service.js';
 import type {
   RegisterInput,
   LoginInput,
@@ -38,6 +40,9 @@ import { recordTosAcceptance } from '../../services/consent.service.js';
 import { TOS_VERSION } from '../../constants/consent.constants.js';
 
 const router = Router();
+
+// Register OAuth sub-router
+router.use('/oauth', oauthRouter);
 
 /**
  * POST /api/auth/register
@@ -241,6 +246,15 @@ router.post(
         return;
       }
 
+      // Check if user has a password (SSO-only accounts don't)
+      if (!user.password_hash) {
+        res.status(400).json({
+          error: 'This account uses social sign-in. Please sign in with Google or Facebook, or set a password from your account settings.',
+          code: 'SSO_ONLY_ACCOUNT',
+        });
+        return;
+      }
+
       // Verify password
       t = Date.now();
       const passwordValid = await passwordService.verify(input.password, user.password_hash);
@@ -318,6 +332,7 @@ router.post(
           lastName: safeUser.last_name,
           emailVerified: safeUser.email_verified,
           role: safeUser.role,
+          createdAt: safeUser.created_at,
         },
         expiresIn: JWT_CONFIG.accessTokenExpiry,
       });
@@ -452,6 +467,19 @@ router.post('/refresh', async (req: Request, res: Response): Promise<void> => {
 });
 
 /**
+ * GET /api/auth/config
+ * Public auth configuration (which login methods are available)
+ */
+router.get('/config', (_req: Request, res: Response): void => {
+  res.json({
+    oauth: {
+      google: !!process.env.GOOGLE_CLIENT_ID,
+      facebook: !!process.env.FACEBOOK_APP_ID,
+    },
+  });
+});
+
+/**
  * GET /api/auth/me
  * Get current authenticated user
  */
@@ -467,6 +495,12 @@ router.get('/me', authenticate, async (req: Request, res: Response): Promise<voi
       return;
     }
 
+    // Get OAuth info
+    const [hasPassword, linkedProviders] = await Promise.all([
+      userService.hasPassword(user.id),
+      oauthService.getLinkedProviders(user.id),
+    ]);
+
     res.json({
       user: {
         id: user.id,
@@ -477,6 +511,8 @@ router.get('/me', authenticate, async (req: Request, res: Response): Promise<voi
         emailVerified: user.email_verified,
         role: user.role,
         createdAt: user.created_at,
+        hasPassword,
+        linkedProviders,
       },
     });
   } catch (error) {

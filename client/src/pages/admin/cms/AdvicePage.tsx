@@ -188,7 +188,7 @@ export default function AdvicePage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Advice Editor</h1>
-            <p className="text-sm text-slate-400 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               Manage contextual advice snippets that appear alongside audit findings
             </p>
           </div>
@@ -256,7 +256,7 @@ export default function AdvicePage() {
           </select>
           <button
             onClick={() => fetchAdvice()}
-            className="p-2 text-slate-400 hover:text-white transition-colors"
+            className="p-2 text-slate-500 hover:text-white transition-colors"
             title="Refresh"
           >
             <RefreshCw className="w-4 h-4" />
@@ -282,7 +282,7 @@ export default function AdvicePage() {
             <div className="text-center py-16">
               <BookOpen className="w-12 h-12 text-slate-600 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-white mb-1">No advice templates found</h3>
-              <p className="text-sm text-slate-400 mb-4">
+              <p className="text-sm text-slate-500 mb-4">
                 {search || categoryFilter
                   ? 'Try adjusting your filters.'
                   : 'Create your first custom advice template.'}
@@ -292,7 +292,7 @@ export default function AdvicePage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-white/[0.06] text-left text-sm text-slate-400">
+                  <tr className="border-b border-white/[0.06] text-left text-sm text-slate-500">
                     <th className="px-6 py-3 font-medium">Rule</th>
                     <th className="px-6 py-3 font-medium">Category</th>
                     <th className="px-6 py-3 font-medium">Severity</th>
@@ -330,14 +330,14 @@ export default function AdvicePage() {
                             <span className="text-xs text-slate-500">Default</span>
                           )}
                         </td>
-                        <td className="px-6 py-4 text-sm text-slate-400 whitespace-nowrap">
+                        <td className="px-6 py-4 text-sm text-slate-500 whitespace-nowrap">
                           {new Date(item.updated_at).toLocaleDateString()}
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex justify-end items-center gap-1">
                             <button
                               onClick={() => handleEdit(item)}
-                              className="p-1.5 text-slate-400 hover:text-white transition-colors"
+                              className="p-1.5 text-slate-500 hover:text-white transition-colors"
                               title="Edit"
                             >
                               <Pencil className="w-4 h-4" />
@@ -345,7 +345,7 @@ export default function AdvicePage() {
                             {item.is_custom && (
                               <button
                                 onClick={() => handleDelete(item.rule_id)}
-                                className="p-1.5 text-slate-400 hover:text-red-400 transition-colors"
+                                className="p-1.5 text-slate-500 hover:text-red-400 transition-colors"
                                 title="Revert to default"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -365,7 +365,7 @@ export default function AdvicePage() {
         {/* Pagination */}
         {pagination.pages > 1 && (
           <div className="flex items-center justify-between pt-2">
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               Showing {(pagination.page - 1) * pagination.limit + 1}&ndash;
               {Math.min(pagination.page * pagination.limit, pagination.total)} of{' '}
               {pagination.total}
@@ -374,7 +374,7 @@ export default function AdvicePage() {
               <button
                 onClick={() => goToPage(pagination.page - 1)}
                 disabled={pagination.page === 1}
-                className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -388,7 +388,7 @@ export default function AdvicePage() {
                       className={`w-8 h-8 rounded text-sm font-medium transition-colors ${
                         num === pagination.page
                           ? 'bg-indigo-600 text-white'
-                          : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
+                          : 'text-slate-500 hover:text-white hover:bg-white/[0.06]'
                       }`}
                     >
                       {num}
@@ -399,7 +399,7 @@ export default function AdvicePage() {
               <button
                 onClick={() => goToPage(pagination.page + 1)}
                 disabled={pagination.page === pagination.pages}
-                className="p-2 text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                className="p-2 text-slate-500 hover:text-white disabled:opacity-30 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -417,7 +417,7 @@ export default function AdvicePage() {
               <h2 className="text-lg font-bold text-white">
                 {editingRuleId ? 'Edit Advice' : 'New Advice Template'}
               </h2>
-              <button onClick={() => setShowEditor(false)} className="p-1 text-slate-400 hover:text-white transition-colors">
+              <button onClick={() => setShowEditor(false)} className="p-1 text-slate-500 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -561,7 +561,7 @@ function StatCard({
       </div>
       <div>
         <p className="text-2xl font-bold text-white">{value.toLocaleString()}</p>
-        <p className="text-xs text-slate-400">{label}</p>
+        <p className="text-xs text-slate-500">{label}</p>
       </div>
     </div>
   );

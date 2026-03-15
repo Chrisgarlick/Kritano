@@ -281,7 +281,7 @@ export default function TriggersPage() {
         <StatsCard
           label="Dismissed"
           value={stats?.dismissed ?? '-'}
-          icon={<XCircle className="w-5 h-5 text-slate-400" />}
+          icon={<XCircle className="w-5 h-5 text-slate-500" />}
           loading={isStatsLoading}
         />
       </div>
@@ -289,7 +289,7 @@ export default function TriggersPage() {
       {/* By-type breakdown */}
       {stats && stats.by_type && Object.keys(stats.by_type).length > 0 && (
         <div className="bg-white/[0.02] rounded-lg border border-white/[0.06] p-4 mb-6">
-          <h3 className="text-sm font-medium text-slate-400 mb-3">By Trigger Type</h3>
+          <h3 className="text-sm font-medium text-slate-500 mb-3">By Trigger Type</h3>
           <div className="flex flex-wrap gap-2">
             {Object.entries(stats.by_type).map(([type, count]) => {
               const cfg = getTriggerConfig(type);
@@ -311,7 +311,7 @@ export default function TriggersPage() {
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
         <div className="flex items-center space-x-2">
           <Search className="w-4 h-4 text-slate-500" />
-          <span className="text-sm text-slate-400">Filters:</span>
+          <span className="text-sm text-slate-500">Filters:</span>
         </div>
         <select
           value={statusFilter}
@@ -353,7 +353,7 @@ export default function TriggersPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-white/[0.06] text-left text-sm text-slate-400">
+                <tr className="border-b border-white/[0.06] text-left text-sm text-slate-500">
                   <th className="px-4 py-3 font-medium">Type</th>
                   <th className="px-4 py-3 font-medium">User</th>
                   <th className="px-4 py-3 font-medium hidden lg:table-cell">Context</th>
@@ -391,7 +391,7 @@ export default function TriggersPage() {
                           >
                             {userName || 'Unknown User'}
                           </Link>
-                          <div className="text-sm text-slate-400 truncate">
+                          <div className="text-sm text-slate-500 truncate">
                             {trigger.user_email ?? '-'}
                           </div>
                           {trigger.user_lead_score !== undefined && (
@@ -407,7 +407,7 @@ export default function TriggersPage() {
 
                       {/* Context (hidden on small screens) */}
                       <td className="px-4 py-3 hidden lg:table-cell">
-                        <span className="text-xs text-slate-400 font-mono break-all">
+                        <span className="text-xs text-slate-500 font-mono break-all">
                           {trigger.context
                             ? truncateContext(trigger.context)
                             : '-'}
@@ -416,7 +416,7 @@ export default function TriggersPage() {
 
                       {/* Created */}
                       <td className="px-4 py-3">
-                        <span className="text-sm text-slate-400 whitespace-nowrap" title={formatDateTime(trigger.created_at)}>
+                        <span className="text-sm text-slate-500 whitespace-nowrap" title={formatDateTime(trigger.created_at)}>
                           {formatDate(trigger.created_at)}
                         </span>
                       </td>
@@ -474,7 +474,7 @@ export default function TriggersPage() {
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-4">
-          <span className="text-sm text-slate-400">
+          <span className="text-sm text-slate-500">
             Page {page} of {totalPages} ({total} total)
           </span>
           <div className="flex items-center space-x-2">
@@ -527,7 +527,7 @@ function StatsCard({
       }`}
     >
       <div className="flex items-center justify-between mb-2">
-        <span className="text-sm text-slate-400">{label}</span>
+        <span className="text-sm text-slate-500">{label}</span>
         {icon}
       </div>
       {loading ? (
