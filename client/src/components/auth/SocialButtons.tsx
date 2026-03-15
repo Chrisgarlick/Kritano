@@ -62,7 +62,8 @@ export function SocialButtons({ mode }: SocialButtonsProps) {
   const label = mode === 'login' ? 'Sign in' : 'Sign up';
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
+      <div className="space-y-3">
       {providers.google && (
         <button
           type="button"
@@ -85,6 +86,15 @@ export function SocialButtons({ mode }: SocialButtonsProps) {
           {loadingProvider === 'facebook' ? 'Redirecting...' : `${label} with Facebook`}
         </button>
       )}
+      </div>
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-slate-200 dark:border-slate-700" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-500">or continue with email</span>
+        </div>
+      </div>
     </div>
   );
 }

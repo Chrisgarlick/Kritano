@@ -66,15 +66,6 @@ export function LoginForm() {
     <div className="space-y-6">
       <SocialButtons mode="login" />
 
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-slate-200 dark:border-slate-700" />
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-500">or continue with email</span>
-        </div>
-      </div>
-
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {error && <Alert variant="error">{error}</Alert>}
 
