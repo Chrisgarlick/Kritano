@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=450" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --video-duration: 36s; --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1); }
+    html { width: 450px; height: 800px; overflow: hidden; background: #0F172A; }
+    body { width: 1080px; height: 1920px; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; position: relative; transform: scale(0.41667); transform-origin: top left; }
+    .canvas { width: 1080px; height: 1920px; position: relative; overflow: hidden; background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%); }
+    .atmosphere { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .content { position: relative; z-index: 1; height: calc(1920px - 60px); }
+    .scene { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 240px 100px 100px; display: flex; flex-direction: column; }
+    .scene--center { justify-content: center; align-items: center; text-align: center; padding-top: 100px; }
+    .brand-reserve { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; justify-content: center; z-index: 2; }
+
+    @keyframes drift-indigo { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(80px,120px) scale(1.2); } }
+    @keyframes drift-amber { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-60px,-80px) scale(1.15); } }
+    @keyframes grid-breathe { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
+    @keyframes wordmark-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; } }
+
+    /* Scene A: Hook (0-7s = 0-19%) */
+    @keyframes sa-label { 0% { opacity:0;transform:translateY(30px); } 4% { opacity:1;transform:translateY(0); } 15% { opacity:1;transform:translateY(0); } 20% { opacity:0;transform:translateY(-20px); } 22% { opacity:0;transform:translateY(30px); } 100% { opacity:0;transform:translateY(30px); } }
+    @keyframes sa-head { 0% { opacity:0;transform:translateY(40px); } 2% { opacity:0;transform:translateY(40px); } 7% { opacity:1;transform:translateY(0); } 15% { opacity:1;transform:translateY(0); } 20% { opacity:0;transform:translateY(-20px); } 22% { opacity:0;transform:translateY(40px); } 100% { opacity:0;transform:translateY(40px); } }
+    @keyframes sa-sub { 0% { opacity:0;transform:translateY(30px); } 5% { opacity:0;transform:translateY(30px); } 10% { opacity:1;transform:translateY(0); } 14% { opacity:1;transform:translateY(0); } 19% { opacity:0;transform:translateY(-20px); } 21% { opacity:0;transform:translateY(30px); } 100% { opacity:0;transform:translateY(30px); } }
+
+    /* Scene B: Dashboard card (6-20s = 17-56%) */
+    @keyframes sb-card { 0% { opacity:0;transform:translateY(60px) scale(0.95); } 17% { opacity:0;transform:translateY(60px) scale(0.95); } 23% { opacity:1;transform:translateY(0) scale(1); } 50% { opacity:1;transform:translateY(0) scale(1); } 56% { opacity:0;transform:translateY(-30px) scale(0.97); } 58% { opacity:0;transform:translateY(60px) scale(0.95); } 100% { opacity:0;transform:translateY(60px) scale(0.95); } }
+    @keyframes scan-bar { 0%,23% { transform:scaleX(0); } 42% { transform:scaleX(1); } 55% { transform:scaleX(1); } 56% { transform:scaleX(0); } 100% { transform:scaleX(0); } }
+    @keyframes scan-text { 0%,23% { opacity:0; } 25% { opacity:1; } 40% { opacity:1; } 42% { opacity:0; } 100% { opacity:0; } }
+    @keyframes result-appear { 0%,41% { opacity:0; } 43% { opacity:1; } 55% { opacity:1; } 56% { opacity:0; } 100% { opacity:0; } }
+    @keyframes pulse-dot { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+    /* Score ring fill */
+    @keyframes ring-fill { 0%,41% { stroke-dashoffset: 603; } 48% { stroke-dashoffset: 109; } 55% { stroke-dashoffset: 109; } 56% { stroke-dashoffset: 603; } 100% { stroke-dashoffset: 603; } }
+    /* Category bars */
+    @keyframes bar1 { 0%,43% { transform:scaleX(0); } 47% { transform:scaleX(0.87); } 55% { transform:scaleX(0.87); } 56% { transform:scaleX(0); } 100% { transform:scaleX(0); } }
+    @keyframes bar2 { 0%,44% { transform:scaleX(0); } 48% { transform:scaleX(0.92); } 55% { transform:scaleX(0.92); } 56% { transform:scaleX(0); } 100% { transform:scaleX(0); } }
+    @keyframes bar3 { 0%,45% { transform:scaleX(0); } 49% { transform:scaleX(0.71); } 55% { transform:scaleX(0.71); } 56% { transform:scaleX(0); } 100% { transform:scaleX(0); } }
+    @keyframes bar4 { 0%,46% { transform:scaleX(0); } 50% { transform:scaleX(0.95); } 55% { transform:scaleX(0.95); } 56% { transform:scaleX(0); } 100% { transform:scaleX(0); } }
+    @keyframes bar5 { 0%,47% { transform:scaleX(0); } 51% { transform:scaleX(0.83); } 55% { transform:scaleX(0.83); } 56% { transform:scaleX(0); } 100% { transform:scaleX(0); } }
+
+    /* Scene C: Highlights (20-29s = 56-81%) */
+    @keyframes sc-item1 { 0% { opacity:0;transform:translateX(-25px); } 56% { opacity:0;transform:translateX(-25px); } 60% { opacity:1;transform:translateX(0); } 75% { opacity:1;transform:translateX(0); } 80% { opacity:0;transform:translateX(15px); } 82% { opacity:0;transform:translateX(-25px); } 100% { opacity:0;transform:translateX(-25px); } }
+    @keyframes sc-item2 { 0% { opacity:0;transform:translateX(-25px); } 59% { opacity:0;transform:translateX(-25px); } 63% { opacity:1;transform:translateX(0); } 74% { opacity:1;transform:translateX(0); } 79% { opacity:0;transform:translateX(15px); } 81% { opacity:0;transform:translateX(-25px); } 100% { opacity:0;transform:translateX(-25px); } }
+    @keyframes sc-item3 { 0% { opacity:0;transform:translateX(-25px); } 62% { opacity:0;transform:translateX(-25px); } 66% { opacity:1;transform:translateX(0); } 73% { opacity:1;transform:translateX(0); } 78% { opacity:0;transform:translateX(15px); } 80% { opacity:0;transform:translateX(-25px); } 100% { opacity:0;transform:translateX(-25px); } }
+
+    /* Scene D: CTA (29-35s = 81-97%) */
+    @keyframes sd-line1 { 0% { opacity:0;transform:translateY(30px); } 81% { opacity:0;transform:translateY(30px); } 85% { opacity:1;transform:translateY(0); } 92% { opacity:1;transform:translateY(0); } 97% { opacity:0;transform:translateY(-20px); } 99% { opacity:0;transform:translateY(30px); } 100% { opacity:0;transform:translateY(30px); } }
+    @keyframes sd-line2 { 0% { opacity:0;transform:translateY(30px); } 83% { opacity:0;transform:translateY(30px); } 87% { opacity:1;transform:translateY(0); } 91% { opacity:1;transform:translateY(0); } 96% { opacity:0;transform:translateY(-20px); } 98% { opacity:0;transform:translateY(30px); } 100% { opacity:0;transform:translateY(30px); } }
+    @keyframes sd-btn { 0% { opacity:0;transform:translateY(20px) scale(0.95); } 85% { opacity:0;transform:translateY(20px) scale(0.95); } 89% { opacity:1;transform:translateY(0) scale(1); } 94% { opacity:1;transform:translateY(0) scale(1); } 97% { opacity:0;transform:translateY(-15px) scale(0.97); } 99% { opacity:0;transform:translateY(20px) scale(0.95); } 100% { opacity:0;transform:translateY(20px) scale(0.95); } }
+    @keyframes btn-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); } 50% { box-shadow: 0 0 0 14px rgba(251,191,36,0.12); } }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="atmosphere">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;animation:grid-breathe 6s ease-in-out infinite;"></div>
+      <div style="position:absolute;top:-150px;right:-100px;width:700px;height:700px;background:rgba(99,102,241,0.12);border-radius:50%;filter:blur(120px);animation:drift-indigo 8s ease-in-out infinite;"></div>
+      <div style="position:absolute;bottom:200px;left:-120px;width:500px;height:500px;background:rgba(251,191,36,0.06);border-radius:50%;filter:blur(100px);animation:drift-amber 10s ease-in-out infinite;"></div>
+    </div>
+
+    <div class="content">
+      <!-- Scene A: Hook -->
+      <div class="scene">
+        <p style="font-size:26px;font-weight:600;color:#818CF8;text-transform:uppercase;letter-spacing:0.12em;opacity:0;animation:sa-label var(--video-duration) var(--ease-smooth) infinite;">PagePulser</p>
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:80px;font-weight:400;color:#FFFFFF;line-height:1.1;margin-top:28px;opacity:0;animation:sa-head var(--video-duration) var(--ease-smooth) infinite;">One scan. Five scores. Zero guesswork.</h1>
+        <p style="font-size:38px;font-weight:400;color:#94A3B8;margin-top:28px;opacity:0;animation:sa-sub var(--video-duration) var(--ease-smooth) infinite;">Watch what happens when we audit a site.</p>
+      </div>
+
+      <!-- Scene B: Dashboard simulation -->
+      <div class="scene" style="padding-top:180px;align-items:center;">
+        <div style="opacity:0;animation:sb-card var(--video-duration) var(--ease-smooth) infinite;">
+          <div style="width:840px;background:#1E293B;border:1px solid rgba(255,255,255,0.08);border-radius:24px;overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,0.4);">
+            <!-- Header -->
+            <div style="padding:24px 36px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:10px;height:10px;border-radius:50%;background:#10B981;animation:pulse-dot 1.5s ease-in-out infinite;"></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#CBD5E1;">yoursite.com</span>
+              </div>
+              <!-- Scanning / Complete stacked -->
+              <div style="position:relative;height:28px;width:200px;">
+                <span style="position:absolute;top:0;right:0;font-size:20px;font-weight:500;color:#818CF8;opacity:0;animation:scan-text var(--video-duration) var(--ease-smooth) infinite;">Scanning...</span>
+                <span style="position:absolute;top:0;right:0;font-size:20px;font-weight:600;color:#10B981;opacity:0;animation:result-appear var(--video-duration) var(--ease-smooth) infinite;">Audit complete</span>
+              </div>
+            </div>
+            <!-- Progress bar -->
+            <div style="height:3px;background:rgba(255,255,255,0.05);">
+              <div style="width:100%;height:100%;background:linear-gradient(90deg,#818CF8,#4F46E5);transform-origin:left;transform:scaleX(0);animation:scan-bar var(--video-duration) var(--ease-smooth) infinite;"></div>
+            </div>
+            <!-- Body: Score ring + categories -->
+            <div style="padding:36px;display:flex;gap:40px;align-items:center;">
+              <!-- Score ring -->
+              <div style="flex-shrink:0;">
+                <svg width="200" height="200" viewBox="0 0 200 200">
+                  <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
+                  <circle cx="100" cy="100" r="88" fill="none" stroke="#F59E0B" stroke-width="8" stroke-linecap="round" stroke-dasharray="553" stroke-dashoffset="553" transform="rotate(-90 100 100)" style="animation:ring-fill var(--video-duration) var(--ease-smooth) infinite;"/>
+                  <text x="100" y="112" text-anchor="middle" font-family="'Instrument Serif',Georgia,serif" font-size="64" fill="#FFFFFF" style="opacity:0;animation:result-appear var(--video-duration) var(--ease-smooth) infinite;">82</text>
+                  <text x="100" y="140" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="18" fill="#64748B" style="opacity:0;animation:result-appear var(--video-duration) var(--ease-smooth) infinite;">OVERALL</text>
+                </svg>
+              </div>
+              <!-- Category bars -->
+              <div style="flex:1;display:flex;flex-direction:column;gap:16px;">
+                <div style="display:flex;align-items:center;gap:16px;">
+                  <span style="width:80px;font-size:16px;font-weight:600;color:#8B5CF6;text-transform:uppercase;letter-spacing:0.05em;">SEO</span>
+                  <div style="flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#8B5CF6;border-radius:4px;transform-origin:left;transform:scaleX(0);animation:bar1 var(--video-duration) var(--ease-smooth) infinite;"></div></div>
+                  <span style="width:36px;font-family:'JetBrains Mono',monospace;font-size:18px;color:#CBD5E1;text-align:right;opacity:0;animation:result-appear var(--video-duration) var(--ease-smooth) infinite;">87</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                  <span style="width:80px;font-size:16px;font-weight:600;color:#10B981;text-transform:uppercase;letter-spacing:0.05em;">A11Y</span>
+                  <div style="flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#10B981;border-radius:4px;transform-origin:left;transform:scaleX(0);animation:bar2 var(--video-duration) var(--ease-smooth) infinite;"></div></div>
+                  <span style="width:36px;font-family:'JetBrains Mono',monospace;font-size:18px;color:#CBD5E1;text-align:right;opacity:0;animation:result-appear var(--video-duration) var(--ease-smooth) infinite;">92</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                  <span style="width:80px;font-size:16px;font-weight:600;color:#EF4444;text-transform:uppercase;letter-spacing:0.05em;">Security</span>
+                  <div style="flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#EF4444;border-radius:4px;transform-origin:left;transform:scaleX(0);animation:bar3 var(--video-duration) var(--ease-smooth) infinite;"></div></div>
+                  <span style="width:36px;font-family:'JetBrains Mono',monospace;font-size:18px;color:#CBD5E1;text-align:right;opacity:0;animation:result-appear var(--video-duration) var(--ease-smooth) infinite;">71</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                  <span style="width:80px;font-size:16px;font-weight:600;color:#0EA5E9;text-transform:uppercase;letter-spacing:0.05em;">Perf</span>
+                  <div style="flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#0EA5E9;border-radius:4px;transform-origin:left;transform:scaleX(0);animation:bar4 var(--video-duration) var(--ease-smooth) infinite;"></div></div>
+                  <span style="width:36px;font-family:'JetBrains Mono',monospace;font-size:18px;color:#CBD5E1;text-align:right;opacity:0;animation:result-appear var(--video-duration) var(--ease-smooth) infinite;">95</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                  <span style="width:80px;font-size:16px;font-weight:600;color:#F59E0B;text-transform:uppercase;letter-spacing:0.05em;">Content</span>
+                  <div style="flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;"><div style="width:100%;height:100%;background:#F59E0B;border-radius:4px;transform-origin:left;transform:scaleX(0);animation:bar5 var(--video-duration) var(--ease-smooth) infinite;"></div></div>
+                  <span style="width:36px;font-family:'JetBrains Mono',monospace;font-size:18px;color:#CBD5E1;text-align:right;opacity:0;animation:result-appear var(--video-duration) var(--ease-smooth) infinite;">83</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene C: Highlights -->
+      <div class="scene" style="padding-top:360px;">
+        <p style="font-size:26px;font-weight:600;color:#818CF8;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:40px;opacity:0;animation:sc-item1 var(--video-duration) var(--ease-smooth) infinite;">What we found</p>
+        <div style="display:flex;flex-direction:column;gap:24px;">
+          <div style="display:flex;align-items:center;gap:20px;opacity:0;animation:sc-item1 var(--video-duration) var(--ease-smooth) infinite;">
+            <span style="width:14px;height:14px;border-radius:50%;background:#10B981;flex-shrink:0;"></span>
+            <p style="font-size:38px;font-weight:400;color:#CBD5E1;">92 accessibility score — above average</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;opacity:0;animation:sc-item2 var(--video-duration) var(--ease-smooth) infinite;">
+            <span style="width:14px;height:14px;border-radius:50%;background:#EF4444;flex-shrink:0;"></span>
+            <p style="font-size:38px;font-weight:400;color:#CBD5E1;">Security headers missing — 3 critical</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;opacity:0;animation:sc-item3 var(--video-duration) var(--ease-smooth) infinite;">
+            <span style="width:14px;height:14px;border-radius:50%;background:#F59E0B;flex-shrink:0;"></span>
+            <p style="font-size:38px;font-weight:400;color:#CBD5E1;">Performance excellent — 95/100</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene D: CTA -->
+      <div class="scene scene--center">
+        <p style="font-size:44px;font-weight:300;color:#94A3B8;opacity:0;animation:sd-line1 var(--video-duration) var(--ease-smooth) infinite;">Want to see yours?</p>
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:88px;font-weight:400;color:#FFFFFF;margin-top:20px;opacity:0;animation:sd-line2 var(--video-duration) var(--ease-smooth) infinite;">Join the waitlist.</p>
+        <div style="margin-top:48px;padding:20px 56px;background:#FBBF24;border-radius:14px;opacity:0;animation:sd-btn var(--video-duration) var(--ease-smooth) infinite, btn-glow 2s ease-in-out infinite;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:#0F172A;">pagepulser.com</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-reserve">
+      <span style="font-family:'Outfit',sans-serif;font-weight:600;font-size:18px;letter-spacing:0.15em;text-transform:uppercase;color:#64748B;animation:wordmark-pulse 4s ease-in-out infinite;">PagePulser</span>
+    </div>
+  </div>
+</body>
+</html>

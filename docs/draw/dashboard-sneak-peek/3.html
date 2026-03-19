@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(135deg, #4F46E5 0%, #312E81 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:0;right:0;width:500px;height:500px;background:rgba(99,102,241,0.3);border-radius:50%;filter:blur(120px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+
+      <p style="font-size:16px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Coming Soon</p>
+
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#FFFFFF;line-height:1.1;margin-bottom:24px;">Sneak peek at what we've been building. Stay tuned.</h1>
+
+      <!-- Floating UI mockup pieces — arranged as overlapping cards -->
+      <div style="position:relative;height:520px;">
+        <!-- Big score card -->
+        <div style="position:absolute;top:0;left:0;width:380px;background:rgba(255,255,255,0.95);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,0.15);padding:28px;z-index:2;">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+            <svg width="72" height="72" viewBox="0 0 72 72">
+              <circle cx="36" cy="36" r="30" fill="none" stroke="#E2E8F0" stroke-width="5"/>
+              <circle cx="36" cy="36" r="30" fill="none" stroke="#10B981" stroke-width="5" stroke-linecap="round" stroke-dasharray="189" stroke-dashoffset="25" transform="rotate(-90 36 36)"/>
+              <text x="36" y="42" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="24" fill="#0F172A">87</text>
+            </svg>
+            <div>
+              <p style="font-size:11px;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;">Overall Health</p>
+              <p style="font-size:16px;font-weight:600;color:#0F172A;">Good — 2 areas to improve</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:#64748B;"><span style="width:6px;height:6px;border-radius:50%;background:#EF4444;display:inline-block;"></span>3 Critical</span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:#64748B;"><span style="width:6px;height:6px;border-radius:50%;background:#F97316;display:inline-block;"></span>7 Serious</span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:#64748B;"><span style="width:6px;height:6px;border-radius:50%;background:#F59E0B;display:inline-block;"></span>12 Moderate</span>
+          </div>
+        </div>
+
+        <!-- Category scores card -->
+        <div style="position:absolute;top:60px;right:0;width:360px;background:rgba(255,255,255,0.95);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,0.15);padding:24px;z-index:1;">
+          <p style="font-size:11px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:16px;">Category Scores</p>
+          <div style="display:flex;justify-content:space-between;">
+            <div style="text-align:center;">
+              <svg width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="#E2E8F0" stroke-width="3"/><circle cx="22" cy="22" r="18" fill="none" stroke="#8B5CF6" stroke-width="3" stroke-dasharray="113" stroke-dashoffset="9" transform="rotate(-90 22 22)"/><text x="22" y="27" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="14" fill="#0F172A">92</text></svg>
+              <p style="font-size:10px;color:#64748B;margin-top:4px;">SEO</p>
+            </div>
+            <div style="text-align:center;">
+              <svg width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="#E2E8F0" stroke-width="3"/><circle cx="22" cy="22" r="18" fill="none" stroke="#10B981" stroke-width="3" stroke-dasharray="113" stroke-dashoffset="25" transform="rotate(-90 22 22)"/><text x="22" y="27" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="14" fill="#0F172A">78</text></svg>
+              <p style="font-size:10px;color:#64748B;margin-top:4px;">A11Y</p>
+            </div>
+            <div style="text-align:center;">
+              <svg width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="#E2E8F0" stroke-width="3"/><circle cx="22" cy="22" r="18" fill="none" stroke="#EF4444" stroke-width="3" stroke-dasharray="113" stroke-dashoffset="6" transform="rotate(-90 22 22)"/><text x="22" y="27" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="14" fill="#0F172A">95</text></svg>
+              <p style="font-size:10px;color:#64748B;margin-top:4px;">Security</p>
+            </div>
+            <div style="text-align:center;">
+              <svg width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="#E2E8F0" stroke-width="3"/><circle cx="22" cy="22" r="18" fill="none" stroke="#0EA5E9" stroke-width="3" stroke-dasharray="113" stroke-dashoffset="19" transform="rotate(-90 22 22)"/><text x="22" y="27" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="14" fill="#0F172A">83</text></svg>
+              <p style="font-size:10px;color:#64748B;margin-top:4px;">Perf</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Issue card -->
+        <div style="position:absolute;bottom:40px;left:60px;width:440px;background:rgba(255,255,255,0.95);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,0.15);padding:20px 24px;z-index:3;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:#EF4444;"></div>
+            <span style="font-size:13px;font-weight:600;color:#0F172A;">Missing alt text on 12 images</span>
+            <span style="margin-left:auto;font-size:11px;font-weight:500;color:#EF4444;">Critical</span>
+          </div>
+          <p style="font-size:12px;color:#64748B;line-height:1.4;padding-left:18px;">Screen readers cannot describe these images to visually impaired users.</p>
+        </div>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

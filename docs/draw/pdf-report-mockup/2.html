@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:-100px;right:-60px;width:450px;height:450px;background:rgba(99,102,241,0.12);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+      <p style="font-size:16px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Reporting</p>
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#FFFFFF;line-height:1.08;margin-bottom:8px;">Reports your clients will actually read.</h1>
+      <p style="font-size:18px;color:#64748B;line-height:1.4;margin-bottom:20px;">Every finding explained. Every fix described. Ready to share.</p>
+
+      <!-- Stacked PDF pages effect -->
+      <!-- Back page (shadow) -->
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:0;margin-left:12px;margin-bottom:-520px;height:520px;"></div>
+      <!-- Front page -->
+      <div style="background:rgba(255,255,255,0.95);border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,0.2);overflow:hidden;position:relative;">
+        <!-- Header -->
+        <div style="padding:16px 22px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;background:#FFFFFF;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-family:'Instrument Serif',Georgia,serif;font-size:14px;color:#4F46E5;">PagePulser</span>
+            <span style="font-size:11px;color:#94A3B8;">Accessibility Findings</span>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#94A3B8;">example.com</span>
+        </div>
+
+        <!-- Content -->
+        <div style="padding:18px 22px;background:#FFFFFF;">
+          <!-- Finding with expanded detail -->
+          <div style="margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#EF4444;"></div>
+              <span style="font-size:13px;font-weight:600;color:#0F172A;">Missing alt text on 12 images</span>
+              <span style="margin-left:auto;font-size:10px;font-weight:500;color:#EF4444;background:#FEF2F2;padding:2px 6px;border-radius:3px;">Critical</span>
+            </div>
+            <div style="margin-left:12px;background:#F8FAFC;border-radius:6px;padding:12px 14px;margin-bottom:8px;">
+              <p style="font-size:11px;font-weight:600;color:#64748B;margin-bottom:6px;">WHY THIS MATTERS</p>
+              <p style="font-size:11px;color:#334155;line-height:1.4;">Screen readers announce images without alt text as "image" or read the file name. 285 million visually impaired users rely on alt text to understand your content.</p>
+            </div>
+            <div style="margin-left:12px;background:#F0FDF4;border-radius:6px;padding:12px 14px;">
+              <p style="font-size:11px;font-weight:600;color:#059669;margin-bottom:6px;">HOW TO FIX</p>
+              <p style="font-size:11px;color:#334155;line-height:1.4;">Add descriptive alt text for content images. Use empty alt="" for decorative images. Keep descriptions under 125 characters.</p>
+            </div>
+          </div>
+
+          <!-- Finding 2 compact -->
+          <div style="display:flex;align-items:center;gap:6px;padding:10px 0;border-top:1px solid #F1F5F9;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#F97316;"></div>
+            <span style="font-size:12px;font-weight:600;color:#0F172A;">Colour contrast fails on 8 elements</span>
+            <span style="margin-left:auto;font-size:10px;font-weight:500;color:#F97316;">Serious</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;padding:10px 0;border-top:1px solid #F1F5F9;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#F59E0B;"></div>
+            <span style="font-size:12px;font-weight:600;color:#0F172A;">No heading hierarchy on 2 pages</span>
+            <span style="margin-left:auto;font-size:10px;font-weight:500;color:#D97706;">Moderate</span>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding:8px 22px;background:#F8FAFC;border-top:1px solid #F1F5F9;display:flex;justify-content:space-between;">
+          <span style="font-size:9px;color:#94A3B8;">pagepulser.com</span>
+          <span style="font-size:9px;color:#94A3B8;">Page 5 of 12</span>
+        </div>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #F8FAFC;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Atmospheric: indigo top-left -->
+    <div style="position:absolute;top:-80px;left:-60px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.6;filter:blur(80px);pointer-events:none;"></div>
+    <!-- Atmospheric: amber bottom-right -->
+    <div style="position:absolute;bottom:-40px;right:-60px;width:350px;height:350px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:90px 100px 70px;height:100%;">
+
+      <!-- Label -->
+      <p style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:600;color:#B91C1C;text-transform:uppercase;letter-spacing:0.15em;">
+        Only 3 Days Left
+      </p>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:64px;font-weight:400;color:#0F172A;line-height:1.1;margin-top:16px;">
+        Early access won't<br>last forever.
+      </h1>
+
+      <!-- Body -->
+      <p style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:400;color:#64748B;line-height:1.5;margin-top:20px;max-width:700px;">
+        Once we launch properly, the founding member deal is gone. Here's what you get if you sign up now:
+      </p>
+
+      <!-- Benefits card -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;box-shadow:0 1px 3px rgba(15,23,42,0.08);padding:36px 40px;margin-top:32px;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+          <div style="width:48px;height:48px;background:#EEF2FF;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#4F46E5;">%</span>
+          </div>
+          <div>
+            <p style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:600;color:#0F172A;">50% off every plan, for life</p>
+            <p style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:400;color:#94A3B8;">Locked in forever. Price never goes up.</p>
+          </div>
+        </div>
+        <div style="height:1px;background:#F1F5F9;margin-bottom:24px;"></div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="width:48px;height:48px;background:#ECFDF5;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#10B981;">30</span>
+          </div>
+          <div>
+            <p style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:600;color:#0F172A;">Free Agency trial for 30 days</p>
+            <p style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:400;color:#94A3B8;">Full access to every feature. No card required.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div style="margin-top:32px;">
+        <div style="display:inline-block;background:#4F46E5;border-radius:14px;padding:18px 44px;">
+          <p style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:600;color:#FFFFFF;">
+            Get early access — link in bio
+          </p>
+        </div>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:40px;right:100px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;color:#4F46E5;">
+          PagePulser
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=450" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --video-duration: 36s; --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1); }
+    html { width: 450px; height: 800px; overflow: hidden; background: #F8FAFC; }
+    body { width: 1080px; height: 1920px; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; position: relative; transform: scale(0.41667); transform-origin: top left; }
+    .canvas { width: 1080px; height: 1920px; position: relative; overflow: hidden; background: #F8FAFC; }
+    .atmosphere { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .content { position: relative; z-index: 1; height: calc(1920px - 60px); }
+    .scene { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 280px 100px 100px; display: flex; flex-direction: column; }
+    .scene--center { justify-content: center; align-items: center; text-align: center; padding-top: 100px; }
+    .brand-reserve { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; justify-content: center; z-index: 2; }
+
+    @keyframes drift-indigo { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(80px,120px) scale(1.2); } }
+    @keyframes drift-amber { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-60px,-80px) scale(1.15); } }
+    @keyframes wordmark-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.8; } }
+
+    /* Scene A: Hook (0-5s = 0-14%) */
+    @keyframes sa-label { 0% { opacity:0;transform:translateY(30px); } 3% { opacity:1;transform:translateY(0); } 10% { opacity:1;transform:translateY(0); } 14% { opacity:0;transform:translateY(-20px); } 16% { opacity:0;transform:translateY(30px); } 100% { opacity:0;transform:translateY(30px); } }
+    @keyframes sa-head { 0% { opacity:0;transform:translateY(40px); } 1% { opacity:0;transform:translateY(40px); } 5% { opacity:1;transform:translateY(0); } 10% { opacity:1;transform:translateY(0); } 14% { opacity:0;transform:translateY(-20px); } 16% { opacity:0;transform:translateY(40px); } 100% { opacity:0;transform:translateY(40px); } }
+
+    /* Scene B: Timer + scan (4-21s = 11-58%) */
+    @keyframes sb-wrap { 0% { opacity:0;transform:translateY(40px); } 11% { opacity:0;transform:translateY(40px); } 15% { opacity:1;transform:translateY(0); } 53% { opacity:1;transform:translateY(0); } 58% { opacity:0;transform:translateY(-30px); } 60% { opacity:0;transform:translateY(40px); } 100% { opacity:0;transform:translateY(40px); } }
+
+    /* Timer values stacked */
+    @keyframes t0 { 0%,14% { opacity:0; } 15% { opacity:1; } 19% { opacity:1; } 20% { opacity:0; } 100% { opacity:0; } }
+    @keyframes t1 { 0%,19% { opacity:0; } 20% { opacity:1; } 25% { opacity:1; } 26% { opacity:0; } 100% { opacity:0; } }
+    @keyframes t2 { 0%,25% { opacity:0; } 26% { opacity:1; } 31% { opacity:1; } 32% { opacity:0; } 100% { opacity:0; } }
+    @keyframes t3 { 0%,31% { opacity:0; } 32% { opacity:1; } 37% { opacity:1; } 38% { opacity:0; } 100% { opacity:0; } }
+    @keyframes t4 { 0%,37% { opacity:0; } 38% { opacity:1; } 43% { opacity:1; } 44% { opacity:0; } 100% { opacity:0; } }
+    @keyframes t5 { 0%,43% { opacity:0; } 44% { opacity:1; } 57% { opacity:1; } 58% { opacity:0; } 100% { opacity:0; } }
+
+    /* Scan rows appear staggered with checks */
+    @keyframes r1 { 0%,19% { opacity:0;transform:translateX(-20px); } 22% { opacity:1;transform:translateX(0); } 53% { opacity:1; } 57% { opacity:0;transform:translateX(10px); } 100% { opacity:0;transform:translateX(-20px); } }
+    @keyframes r2 { 0%,25% { opacity:0;transform:translateX(-20px); } 28% { opacity:1;transform:translateX(0); } 53% { opacity:1; } 56% { opacity:0;transform:translateX(10px); } 100% { opacity:0;transform:translateX(-20px); } }
+    @keyframes r3 { 0%,31% { opacity:0;transform:translateX(-20px); } 34% { opacity:1;transform:translateX(0); } 52% { opacity:1; } 55% { opacity:0;transform:translateX(10px); } 100% { opacity:0;transform:translateX(-20px); } }
+    @keyframes r4 { 0%,37% { opacity:0;transform:translateX(-20px); } 40% { opacity:1;transform:translateX(0); } 51% { opacity:1; } 54% { opacity:0;transform:translateX(10px); } 100% { opacity:0;transform:translateX(-20px); } }
+    @keyframes r5 { 0%,43% { opacity:0;transform:translateX(-20px); } 46% { opacity:1;transform:translateX(0); } 50% { opacity:1; } 53% { opacity:0;transform:translateX(10px); } 100% { opacity:0;transform:translateX(-20px); } }
+
+    /* Progress bar */
+    @keyframes scan-bar { 0%,15% { transform:scaleX(0); } 20% { transform:scaleX(0.15); } 26% { transform:scaleX(0.3); } 32% { transform:scaleX(0.5); } 38% { transform:scaleX(0.7); } 44% { transform:scaleX(1); } 57% { transform:scaleX(1); } 58% { transform:scaleX(0); } 100% { transform:scaleX(0); } }
+
+    /* Complete badge */
+    @keyframes complete { 0%,44% { opacity:0;transform:scale(0.8); } 47% { opacity:1;transform:scale(1); } 53% { opacity:1;transform:scale(1); } 57% { opacity:0;transform:scale(0.9); } 100% { opacity:0;transform:scale(0.8); } }
+
+    /* Scene C: Big time reveal (20-30s = 56-83%) */
+    @keyframes sc-time { 0% { opacity:0;transform:scale(0.5);filter:blur(10px); } 56% { opacity:0;transform:scale(0.5);filter:blur(10px); } 62% { opacity:1;transform:scale(1);filter:blur(0); } 77% { opacity:1;transform:scale(1);filter:blur(0); } 83% { opacity:0;transform:scale(1.05);filter:blur(6px); } 85% { opacity:0;transform:scale(0.5);filter:blur(10px); } 100% { opacity:0;transform:scale(0.5);filter:blur(10px); } }
+    @keyframes sc-sub { 0% { opacity:0;transform:translateY(25px); } 61% { opacity:0;transform:translateY(25px); } 66% { opacity:1;transform:translateY(0); } 76% { opacity:1;transform:translateY(0); } 82% { opacity:0;transform:translateY(-15px); } 84% { opacity:0;transform:translateY(25px); } 100% { opacity:0;transform:translateY(25px); } }
+
+    /* Scene D: CTA (30-35s = 83-97%) */
+    @keyframes sd-line1 { 0% { opacity:0;transform:translateY(30px); } 83% { opacity:0;transform:translateY(30px); } 87% { opacity:1;transform:translateY(0); } 93% { opacity:1;transform:translateY(0); } 97% { opacity:0;transform:translateY(-20px); } 99% { opacity:0;transform:translateY(30px); } 100% { opacity:0;transform:translateY(30px); } }
+    @keyframes sd-btn { 0% { opacity:0;transform:translateY(20px) scale(0.95); } 86% { opacity:0;transform:translateY(20px) scale(0.95); } 90% { opacity:1;transform:translateY(0) scale(1); } 92% { opacity:1;transform:translateY(0) scale(1); } 96% { opacity:0;transform:translateY(-15px) scale(0.97); } 98% { opacity:0;transform:translateY(20px) scale(0.95); } 100% { opacity:0;transform:translateY(20px) scale(0.95); } }
+    @keyframes btn-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(79,70,229,0); } 50% { box-shadow: 0 0 0 12px rgba(79,70,229,0.15); } }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="atmosphere">
+      <div style="position:absolute;top:-120px;left:-100px;width:600px;height:600px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(100px);animation:drift-indigo 8s ease-in-out infinite;"></div>
+      <div style="position:absolute;bottom:100px;right:-80px;width:450px;height:450px;background:#FFFBEB;border-radius:50%;opacity:0.6;filter:blur(100px);animation:drift-amber 10s ease-in-out infinite;"></div>
+    </div>
+
+    <div class="content">
+      <!-- Scene A: Hook -->
+      <div class="scene">
+        <p style="font-size:26px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.12em;opacity:0;animation:sa-label var(--video-duration) var(--ease-smooth) infinite;">Speed test</p>
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:84px;font-weight:400;color:#0F172A;line-height:1.1;margin-top:24px;opacity:0;animation:sa-head var(--video-duration) var(--ease-smooth) infinite;">Watch a full audit run in real time.</h1>
+      </div>
+
+      <!-- Scene B: Timer + scan checklist -->
+      <div class="scene" style="padding-top:240px;align-items:center;">
+        <div style="width:780px;opacity:0;animation:sb-wrap var(--video-duration) var(--ease-smooth) infinite;">
+          <!-- URL -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#10B981;"></div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:28px;color:#64748B;">yoursite.com</span>
+          </div>
+
+          <!-- Timer display -->
+          <div style="position:relative;height:120px;margin-bottom:40px;">
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:100px;font-weight:500;color:#0F172A;opacity:0;animation:t0 var(--video-duration) var(--ease-smooth) infinite;">0:00.0</span>
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:100px;font-weight:500;color:#0F172A;opacity:0;animation:t1 var(--video-duration) var(--ease-smooth) infinite;">0:01.8</span>
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:100px;font-weight:500;color:#0F172A;opacity:0;animation:t2 var(--video-duration) var(--ease-smooth) infinite;">0:03.2</span>
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:100px;font-weight:500;color:#0F172A;opacity:0;animation:t3 var(--video-duration) var(--ease-smooth) infinite;">0:05.1</span>
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:100px;font-weight:500;color:#0F172A;opacity:0;animation:t4 var(--video-duration) var(--ease-smooth) infinite;">0:06.9</span>
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:100px;font-weight:500;color:#4F46E5;opacity:0;animation:t5 var(--video-duration) var(--ease-smooth) infinite;">0:08.3</span>
+          </div>
+
+          <!-- Progress bar -->
+          <div style="width:100%;height:6px;background:#E2E8F0;border-radius:3px;overflow:hidden;margin-bottom:40px;">
+            <div style="width:100%;height:100%;background:linear-gradient(90deg,#4F46E5,#818CF8);border-radius:3px;transform-origin:left;transform:scaleX(0);animation:scan-bar var(--video-duration) var(--ease-smooth) infinite;"></div>
+          </div>
+
+          <!-- Scan rows -->
+          <div style="display:flex;flex-direction:column;gap:20px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;opacity:0;animation:r1 var(--video-duration) var(--ease-smooth) infinite;">
+              <div style="display:flex;align-items:center;gap:16px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;"><span style="color:#FFF;font-size:16px;font-weight:700;">&#10003;</span></div>
+                <span style="font-size:32px;font-weight:500;color:#334155;">SEO</span>
+              </div>
+              <span style="font-family:'Instrument Serif',serif;font-size:36px;color:#8B5CF6;">87</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;opacity:0;animation:r2 var(--video-duration) var(--ease-smooth) infinite;">
+              <div style="display:flex;align-items:center;gap:16px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;"><span style="color:#FFF;font-size:16px;font-weight:700;">&#10003;</span></div>
+                <span style="font-size:32px;font-weight:500;color:#334155;">Accessibility</span>
+              </div>
+              <span style="font-family:'Instrument Serif',serif;font-size:36px;color:#10B981;">92</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;opacity:0;animation:r3 var(--video-duration) var(--ease-smooth) infinite;">
+              <div style="display:flex;align-items:center;gap:16px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;"><span style="color:#FFF;font-size:16px;font-weight:700;">&#10003;</span></div>
+                <span style="font-size:32px;font-weight:500;color:#334155;">Security</span>
+              </div>
+              <span style="font-family:'Instrument Serif',serif;font-size:36px;color:#F97316;">71</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;opacity:0;animation:r4 var(--video-duration) var(--ease-smooth) infinite;">
+              <div style="display:flex;align-items:center;gap:16px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;"><span style="color:#FFF;font-size:16px;font-weight:700;">&#10003;</span></div>
+                <span style="font-size:32px;font-weight:500;color:#334155;">Performance</span>
+              </div>
+              <span style="font-family:'Instrument Serif',serif;font-size:36px;color:#10B981;">95</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;opacity:0;animation:r5 var(--video-duration) var(--ease-smooth) infinite;">
+              <div style="display:flex;align-items:center;gap:16px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;"><span style="color:#FFF;font-size:16px;font-weight:700;">&#10003;</span></div>
+                <span style="font-size:32px;font-weight:500;color:#334155;">Content</span>
+              </div>
+              <span style="font-family:'Instrument Serif',serif;font-size:36px;color:#F59E0B;">83</span>
+            </div>
+          </div>
+
+          <!-- Complete badge -->
+          <div style="margin-top:32px;display:inline-flex;align-items:center;gap:12px;padding:12px 28px;background:#ECFDF5;border-radius:12px;opacity:0;animation:complete var(--video-duration) var(--ease-smooth) infinite;">
+            <div style="width:20px;height:20px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;"><span style="color:#FFF;font-size:12px;font-weight:700;">&#10003;</span></div>
+            <span style="font-size:24px;font-weight:600;color:#047857;">Audit complete</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene C: Big time reveal -->
+      <div class="scene scene--center">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:160px;font-weight:700;color:#4F46E5;line-height:1;opacity:0;animation:sc-time var(--video-duration) var(--ease-smooth) infinite;">8.3s</p>
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:64px;font-weight:400;color:#0F172A;margin-top:28px;line-height:1.2;opacity:0;animation:sc-sub var(--video-duration) var(--ease-smooth) infinite;">Full audit.<br/>Five categories.</p>
+      </div>
+
+      <!-- Scene D: CTA -->
+      <div class="scene scene--center">
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:80px;font-weight:400;color:#0F172A;opacity:0;animation:sd-line1 var(--video-duration) var(--ease-smooth) infinite;">Try it yourself.</p>
+        <div style="margin-top:44px;padding:20px 56px;background:#4F46E5;border-radius:14px;opacity:0;animation:sd-btn var(--video-duration) var(--ease-smooth) infinite, btn-pulse 2s ease-in-out infinite;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#FFFFFF;">pagepulser.com</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-reserve">
+      <span style="font-family:'Outfit',sans-serif;font-weight:600;font-size:18px;letter-spacing:0.15em;text-transform:uppercase;color:#94A3B8;animation:wordmark-pulse 4s ease-in-out infinite;">PagePulser</span>
+    </div>
+  </div>
+</body>
+</html>

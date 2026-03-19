@@ -60,6 +60,8 @@ interface ContentMetrics {
   aeo_source_authority_score?: number | null;
   aeo_tier?: string | null;
   aeo_nuggets?: Array<{ text: string; type: string; wordCount: number }> | null;
+  aeo_content_frontloaded?: boolean | null;
+  aeo_content_frontloading_ratio?: number | null;
   // Readability metrics
   flesch_kincaid_grade?: number | null;
   flesch_reading_ease?: number | null;
@@ -775,6 +777,23 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
           );
         })}
       </div>
+
+      {/* Content Front-Loading Indicator */}
+      {metrics.aeo_content_frontloaded != null && (
+        <div className={`flex items-center gap-2 px-3 py-2 rounded-lg mb-4 text-xs font-medium ${
+          metrics.aeo_content_frontloaded
+            ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400'
+            : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'
+        }`}>
+          <span>{metrics.aeo_content_frontloaded ? 'Content is front-loaded' : 'Content is not front-loaded'}</span>
+          {metrics.aeo_content_frontloading_ratio != null && (
+            <span className="text-[10px] opacity-75 ml-auto">
+              {Math.round(metrics.aeo_content_frontloading_ratio * 100)}% in first third
+            </span>
+          )}
+          <InfoTooltip text="AI models often weight early content more heavily and may truncate long pages. Front-loaded content is more likely to be cited." />
+        </div>
+      )}
 
       {/* Simulated AI Response */}
       {bestNugget && (

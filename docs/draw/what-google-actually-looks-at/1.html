@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Grid overlay -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:-100px;right:-60px;width:480px;height:480px;background:rgba(99,102,241,0.15);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-80px;left:-40px;width:350px;height:350px;background:rgba(251,191,36,0.06);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <!-- Slide indicator -->
+    <div style="position:absolute;top:48px;left:90px;right:90px;display:flex;align-items:center;z-index:2;">
+      <div style="display:flex;gap:8px;">
+        <div style="width:32px;height:4px;border-radius:2px;background:#FBBF24;"></div>
+        <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+        <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+        <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+        <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      </div>
+    </div>
+
+    <!-- Content — same flow layout as content slides -->
+    <div style="position:relative;z-index:1;padding:200px 90px 70px;height:100%;">
+
+      <!-- Label -->
+      <p style="font-size:18px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:16px;text-align:center;">
+        SEO Series
+      </p>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:64px;font-weight:400;color:#FFFFFF;line-height:1.1;margin-bottom:24px;text-align:center;">
+        What Google Actually Looks At
+      </h1>
+
+      <!-- Subtitle -->
+      <p style="font-size:24px;font-weight:400;color:#94A3B8;line-height:1.5;margin-bottom:48px;text-align:center;max-width:640px;margin-left:auto;margin-right:auto;">
+        Core Web Vitals explained in plain English — no jargon, just real-world analogies.
+      </p>
+
+      <!-- Three metric pills -->
+      <div style="display:flex;justify-content:center;gap:20px;margin-bottom:48px;">
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px 28px;text-align:center;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:#818CF8;">LCP</span>
+          <span style="display:block;font-size:14px;color:#64748B;margin-top:4px;">Loading</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px 28px;text-align:center;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:#FBBF24;">INP</span>
+          <span style="display:block;font-size:14px;color:#64748B;margin-top:4px;">Interactivity</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px 28px;text-align:center;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:#F87171;">CLS</span>
+          <span style="display:block;font-size:14px;color:#64748B;margin-top:4px;">Stability</span>
+        </div>
+      </div>
+
+      <!-- Swipe hint -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;">
+        <span style="font-size:15px;font-weight:500;color:rgba(255,255,255,0.25);letter-spacing:0.05em;">SWIPE TO LEARN</span>
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="opacity:0.25;">
+          <path d="M7 4l6 6-6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

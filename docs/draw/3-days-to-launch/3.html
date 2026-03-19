@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(135deg, #4F46E5 0%, #312E81 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Grid overlay -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <!-- Lighter glow top-right -->
+    <div style="position:absolute;top:-100px;right:-60px;width:500px;height:500px;background:rgba(129,140,248,0.25);border-radius:50%;filter:blur(120px);pointer-events:none;"></div>
+    <!-- Amber glow bottom-left -->
+    <div style="position:absolute;bottom:-80px;left:-40px;width:350px;height:350px;background:rgba(251,191,36,0.1);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:90px 100px 70px;height:100%;text-align:center;">
+
+      <!-- Urgency pill -->
+      <div style="display:inline-block;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);border-radius:100px;padding:10px 32px;">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#FBBF24;letter-spacing:0.1em;">
+          CLOSING IN 3 DAYS
+        </p>
+      </div>
+
+      <!-- Main message -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:72px;font-weight:400;color:#FFFFFF;line-height:1.1;margin-top:32px;">
+        Half price.<br>For life.
+      </h1>
+
+      <!-- Sub -->
+      <p style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:400;color:rgba(255,255,255,0.6);line-height:1.5;margin-top:20px;max-width:600px;margin-left:auto;margin-right:auto;">
+        Sign up during early access and lock in 50% off every plan — forever. Plus a free 30-day Agency trial.
+      </p>
+
+      <!-- Stat blocks -->
+      <div style="display:flex;gap:20px;margin-top:44px;justify-content:center;">
+        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:28px 40px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#FBBF24;line-height:1;">50%</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;color:rgba(255,255,255,0.5);margin-top:6px;">off for life</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:28px 40px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#FFFFFF;line-height:1;">30</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;color:rgba(255,255,255,0.5);margin-top:6px;">days free</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:28px 40px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#FFFFFF;line-height:1;">3</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;color:rgba(255,255,255,0.5);margin-top:6px;">days left</p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div style="display:inline-block;background:#FBBF24;border-radius:14px;padding:20px 52px;margin-top:40px;">
+        <p style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:700;color:#1E1B4B;">
+          Get early access — link in bio
+        </p>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:40px;left:0;right:0;text-align:center;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;color:#FFFFFF;">
+          PagePulser
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

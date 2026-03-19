@@ -416,7 +416,9 @@ export class AuditEngineCoordinator {
           `aeo_factual_density_score = $${paramIndex + 2}`,
           `aeo_source_authority_score = $${paramIndex + 3}`,
           `aeo_tier = $${paramIndex + 4}`,
-          `aeo_nuggets = $${paramIndex + 5}`
+          `aeo_nuggets = $${paramIndex + 5}`,
+          `aeo_content_frontloaded = $${paramIndex + 6}`,
+          `aeo_content_frontloading_ratio = $${paramIndex + 7}`
         );
         params.push(
           contentAnalysis.subscores.aeo,
@@ -424,9 +426,11 @@ export class AuditEngineCoordinator {
           contentAnalysis.metrics.aeoFactualDensityScore ?? null,
           contentAnalysis.metrics.aeoSourceAuthorityScore ?? null,
           contentAnalysis.metrics.aeoTier ?? null,
-          contentAnalysis.metrics.aeoNuggets ? JSON.stringify(contentAnalysis.metrics.aeoNuggets) : null
+          contentAnalysis.metrics.aeoNuggets ? JSON.stringify(contentAnalysis.metrics.aeoNuggets) : null,
+          contentAnalysis.metrics.aeoContentFrontloaded ?? null,
+          contentAnalysis.metrics.aeoContentFrontloadingRatio ?? null
         );
-        paramIndex += 6;
+        paramIndex += 8;
       }
     }
 

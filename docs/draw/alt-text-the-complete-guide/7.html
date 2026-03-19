@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #F8FAFC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:-60px;left:100px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-40px;right:-40px;width:300px;height:300px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <div style="position:absolute;top:48px;left:90px;right:90px;display:flex;align-items:center;justify-content:space-between;z-index:2;">
+      <div style="display:flex;gap:6px;">
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#F59E0B;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+      </div>
+      <div style="width:48px;height:48px;border-radius:12px;background:#FFFBEB;display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#D97706;">6</span>
+      </div>
+    </div>
+
+    <div style="position:relative;z-index:1;padding:90px 90px 70px;height:100%;">
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:16px;">Common Mistakes</h1>
+      <p style="font-size:20px;color:#64748B;line-height:1.4;margin-bottom:28px;">These are the alt text errors we see most often in audits.</p>
+
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:22px 28px;display:flex;gap:16px;align-items:flex-start;">
+          <span style="font-size:14px;font-weight:700;color:#EF4444;flex-shrink:0;margin-top:2px;">01</span>
+          <div>
+            <p style="font-size:17px;font-weight:600;color:#0F172A;margin-bottom:2px;">Missing alt entirely</p>
+            <p style="font-size:15px;color:#64748B;line-height:1.35;">No alt attribute at all — screen readers read the file name instead</p>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:22px 28px;display:flex;gap:16px;align-items:flex-start;">
+          <span style="font-size:14px;font-weight:700;color:#EF4444;flex-shrink:0;margin-top:2px;">02</span>
+          <div>
+            <p style="font-size:17px;font-weight:600;color:#0F172A;margin-bottom:2px;">Keyword stuffing</p>
+            <p style="font-size:15px;color:#64748B;line-height:1.35;">Using alt text for SEO keywords instead of genuine descriptions</p>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:22px 28px;display:flex;gap:16px;align-items:flex-start;">
+          <span style="font-size:14px;font-weight:700;color:#EF4444;flex-shrink:0;margin-top:2px;">03</span>
+          <div>
+            <p style="font-size:17px;font-weight:600;color:#0F172A;margin-bottom:2px;">Starting with "image of" or "photo of"</p>
+            <p style="font-size:15px;color:#64748B;line-height:1.35;">Screen readers already announce it's an image — don't repeat it</p>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:22px 28px;display:flex;gap:16px;align-items:flex-start;">
+          <span style="font-size:14px;font-weight:700;color:#EF4444;flex-shrink:0;margin-top:2px;">04</span>
+          <div>
+            <p style="font-size:17px;font-weight:600;color:#0F172A;margin-bottom:2px;">Same alt for every image</p>
+            <p style="font-size:15px;color:#64748B;line-height:1.35;">Generic "product image" repeated 50 times helps no one</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -125,6 +125,8 @@ export interface AuditPage {
   aeo_source_authority_score?: number | null;
   aeo_tier?: string | null;
   aeo_nuggets?: Array<{ text: string; type: string; wordCount: number }> | null;
+  aeo_content_frontloaded?: boolean | null;
+  aeo_content_frontloading_ratio?: number | null;
   // Keyword analysis data
   keyword_data?: {
     keyword: string;

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #F8FAFC;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Atmospheric: indigo centre-left -->
+    <div style="position:absolute;top:200px;left:-120px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.6;filter:blur(80px);pointer-events:none;"></div>
+    <!-- Atmospheric: amber bottom-right -->
+    <div style="position:absolute;bottom:-40px;right:-60px;width:350px;height:350px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:90px 100px 70px;height:100%;">
+
+      <!-- Label -->
+      <p style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.15em;">
+        The Journey So Far
+      </p>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:64px;font-weight:400;color:#0F172A;line-height:1.1;margin-top:20px;">
+        What it actually looks like<br>to build a SaaS from scratch.
+      </h1>
+
+      <!-- Fake code/workspace card -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;box-shadow:0 1px 3px rgba(15,23,42,0.1);overflow:hidden;margin-top:36px;">
+        <!-- Terminal header bar -->
+        <div style="padding:14px 20px;background:#1E293B;display:flex;align-items:center;gap:8px;">
+          <div style="width:12px;height:12px;border-radius:50%;background:#EF4444;"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:#FBBF24;"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:#10B981;"></div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#94A3B8;margin-left:12px;">pagepulser/server</span>
+        </div>
+        <!-- Fake code lines -->
+        <div style="padding:24px 28px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:12px;align-items:center;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#94A3B8;">01</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#4F46E5;">import</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#334155;">{ runAudit }</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#4F46E5;">from</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#B45309;">'./engines'</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#94A3B8;">02</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#4F46E5;">import</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#334155;">{ scoreAccessibility }</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#4F46E5;">from</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#B45309;">'./a11y'</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#94A3B8;">03</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#64748B;">// the line that started it all</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#94A3B8;">04</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#4F46E5;">const</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#334155;">results =</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#4F46E5;">await</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#334155;">runAudit(url)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div style="display:flex;gap:24px;margin-top:36px;">
+        <div style="flex:1;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:20px 24px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:40px;font-weight:400;color:#4F46E5;line-height:1;">91</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:500;color:#94A3B8;margin-top:4px;">Migrations</p>
+        </div>
+        <div style="flex:1;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:20px 24px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:40px;font-weight:400;color:#047857;line-height:1;">6</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:500;color:#94A3B8;margin-top:4px;">Audit Engines</p>
+        </div>
+        <div style="flex:1;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:20px 24px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:40px;font-weight:400;color:#B45309;line-height:1;">&infin;</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:500;color:#94A3B8;margin-top:4px;">Coffees</p>
+        </div>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:40px;right:100px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;color:#4F46E5;">
+          PagePulser
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

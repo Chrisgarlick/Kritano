@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=450" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --video-duration: 36s; --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1); }
+    html { width: 450px; height: 800px; overflow: hidden; background: #312E81; }
+    body { width: 1080px; height: 1920px; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; position: relative; transform: scale(0.41667); transform-origin: top left; }
+    .canvas { width: 1080px; height: 1920px; position: relative; overflow: hidden; background: linear-gradient(135deg, #4F46E5 0%, #312E81 100%); background-size: 200% 200%; animation: bg-shift 12s linear infinite; }
+    .atmosphere { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .content { position: relative; z-index: 1; height: calc(1920px - 60px); }
+    .beat { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 100px; }
+    .brand-reserve { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; display: flex; align-items: center; justify-content: center; z-index: 2; }
+
+    @keyframes bg-shift { 0%, 100% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } }
+    @keyframes drift-glow { 0%, 100% { transform: translate(0,0) scale(1); opacity: 0.2; } 50% { transform: translate(60px,80px) scale(1.3); opacity: 0.25; } }
+    @keyframes wordmark-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.5; } }
+
+    /* Persistent timer — visible throughout scan beats (3-22s = 8-61%) */
+    /* Timer sits at top of canvas, separate from beat content */
+    .timer-overlay {
+      position: absolute; top: 100px; left: 0; right: 0;
+      display: flex; justify-content: center; z-index: 3;
+    }
+    @keyframes timer-show { 0%,8% { opacity:0; } 11% { opacity:1; } 55% { opacity:1; } 61% { opacity:0; } 100% { opacity:0; } }
+    @keyframes tt0 { 0%,10% { opacity:0; } 11% { opacity:1; } 17% { opacity:1; } 18% { opacity:0; } 100% { opacity:0; } }
+    @keyframes tt1 { 0%,17% { opacity:0; } 18% { opacity:1; } 24% { opacity:1; } 25% { opacity:0; } 100% { opacity:0; } }
+    @keyframes tt2 { 0%,24% { opacity:0; } 25% { opacity:1; } 31% { opacity:1; } 32% { opacity:0; } 100% { opacity:0; } }
+    @keyframes tt3 { 0%,31% { opacity:0; } 32% { opacity:1; } 38% { opacity:1; } 39% { opacity:0; } 100% { opacity:0; } }
+    @keyframes tt4 { 0%,38% { opacity:0; } 39% { opacity:1; } 45% { opacity:1; } 46% { opacity:0; } 100% { opacity:0; } }
+    @keyframes tt5 { 0%,45% { opacity:0; } 46% { opacity:1; } 60% { opacity:1; } 61% { opacity:0; } 100% { opacity:0; } }
+
+    /* Beat 0: Hook (0-4s = 0-11%) */
+    @keyframes b0 {
+      0% { opacity:0;transform:scale(0.85);filter:blur(8px); }
+      4% { opacity:1;transform:scale(1);filter:blur(0); }
+      8% { opacity:1;transform:scale(1);filter:blur(0); }
+      12% { opacity:0;transform:scale(1.04);filter:blur(6px); }
+      14% { opacity:0;transform:scale(0.85);filter:blur(8px); }
+      100% { opacity:0;transform:scale(0.85);filter:blur(8px); }
+    }
+
+    /* Category flashes during scan — each appears briefly centered */
+    @keyframes cat1 { 0%,14% { opacity:0;transform:translateY(20px); } 17% { opacity:1;transform:translateY(0); } 23% { opacity:1;transform:translateY(0); } 26% { opacity:0;transform:translateY(-15px); } 28% { opacity:0;transform:translateY(20px); } 100% { opacity:0;transform:translateY(20px); } }
+    @keyframes cat2 { 0%,24% { opacity:0;transform:translateY(20px); } 27% { opacity:1;transform:translateY(0); } 33% { opacity:1;transform:translateY(0); } 36% { opacity:0;transform:translateY(-15px); } 38% { opacity:0;transform:translateY(20px); } 100% { opacity:0;transform:translateY(20px); } }
+    @keyframes cat3 { 0%,34% { opacity:0;transform:translateY(20px); } 37% { opacity:1;transform:translateY(0); } 43% { opacity:1;transform:translateY(0); } 46% { opacity:0;transform:translateY(-15px); } 48% { opacity:0;transform:translateY(20px); } 100% { opacity:0;transform:translateY(20px); } }
+    @keyframes cat4 { 0%,44% { opacity:0;transform:translateY(20px); } 47% { opacity:1;transform:translateY(0); } 53% { opacity:1;transform:translateY(0); } 56% { opacity:0;transform:translateY(-15px); } 58% { opacity:0;transform:translateY(20px); } 100% { opacity:0;transform:translateY(20px); } }
+
+    /* Big time reveal (22-30s = 61-83%) */
+    @keyframes time-reveal {
+      0% { opacity:0;transform:scale(0.5);filter:blur(12px); }
+      61% { opacity:0;transform:scale(0.5);filter:blur(12px); }
+      67% { opacity:1;transform:scale(1);filter:blur(0); }
+      77% { opacity:1;transform:scale(1);filter:blur(0); }
+      83% { opacity:0;transform:scale(1.06);filter:blur(8px); }
+      85% { opacity:0;transform:scale(0.5);filter:blur(12px); }
+      100% { opacity:0;transform:scale(0.5);filter:blur(12px); }
+    }
+    @keyframes time-sub {
+      0% { opacity:0;transform:translateY(25px); }
+      65% { opacity:0;transform:translateY(25px); }
+      70% { opacity:1;transform:translateY(0); }
+      76% { opacity:1;transform:translateY(0); }
+      82% { opacity:0;transform:translateY(-15px); }
+      84% { opacity:0;transform:translateY(25px); }
+      100% { opacity:0;transform:translateY(25px); }
+    }
+    @keyframes pulse-glow { 0%, 100% { text-shadow: 0 0 0 transparent; } 50% { text-shadow: 0 0 60px rgba(255,255,255,0.2); } }
+
+    /* CTA (30-35s = 83-97%) */
+    @keyframes cta-a { 0% { opacity:0;transform:translateY(30px); } 83% { opacity:0;transform:translateY(30px); } 87% { opacity:1;transform:translateY(0); } 93% { opacity:1;transform:translateY(0); } 97% { opacity:0;transform:translateY(-20px); } 99% { opacity:0;transform:translateY(30px); } 100% { opacity:0;transform:translateY(30px); } }
+    @keyframes cta-b { 0% { opacity:0;transform:translateY(30px); } 85% { opacity:0;transform:translateY(30px); } 89% { opacity:1;transform:translateY(0); } 92% { opacity:1;transform:translateY(0); } 96% { opacity:0;transform:translateY(-20px); } 98% { opacity:0;transform:translateY(30px); } 100% { opacity:0;transform:translateY(30px); } }
+    @keyframes btn-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); } 50% { box-shadow: 0 0 0 14px rgba(255,255,255,0.1); } }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="atmosphere">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:40px 40px;opacity:0.5;"></div>
+      <div style="position:absolute;top:300px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:rgba(129,140,248,0.15);border-radius:50%;filter:blur(150px);animation:drift-glow 8s ease-in-out infinite;"></div>
+    </div>
+
+    <!-- Persistent timer overlay (visible during scan beats) -->
+    <div class="timer-overlay" style="opacity:0;animation:timer-show var(--video-duration) var(--ease-smooth) infinite;">
+      <div style="padding:16px 40px;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:50px;display:flex;align-items:center;gap:12px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:#10B981;"></div>
+        <div style="position:relative;height:32px;width:90px;">
+          <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#CBD5E1;opacity:0;animation:tt0 var(--video-duration) var(--ease-smooth) infinite;">0.0s</span>
+          <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#CBD5E1;opacity:0;animation:tt1 var(--video-duration) var(--ease-smooth) infinite;">1.8s</span>
+          <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#CBD5E1;opacity:0;animation:tt2 var(--video-duration) var(--ease-smooth) infinite;">3.4s</span>
+          <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#FBBF24;opacity:0;animation:tt3 var(--video-duration) var(--ease-smooth) infinite;">5.1s</span>
+          <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#FBBF24;opacity:0;animation:tt4 var(--video-duration) var(--ease-smooth) infinite;">6.9s</span>
+          <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#10B981;opacity:0;animation:tt5 var(--video-duration) var(--ease-smooth) infinite;">8.3s</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Beat 0: Hook -->
+      <div class="beat">
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:84px;font-weight:400;color:#FFFFFF;line-height:1.15;max-width:800px;opacity:0;animation:b0 var(--video-duration) var(--ease-smooth) infinite;">Watch a full audit. In real time.</p>
+      </div>
+
+      <!-- Category 1: SEO -->
+      <div class="beat">
+        <p style="font-size:28px;font-weight:600;color:#8B5CF6;text-transform:uppercase;letter-spacing:0.15em;opacity:0;animation:cat1 var(--video-duration) var(--ease-smooth) infinite;">SEO</p>
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:180px;font-weight:400;color:#FFFFFF;margin-top:8px;opacity:0;animation:cat1 var(--video-duration) var(--ease-smooth) infinite;">87</p>
+      </div>
+
+      <!-- Category 2: Accessibility -->
+      <div class="beat">
+        <p style="font-size:28px;font-weight:600;color:#10B981;text-transform:uppercase;letter-spacing:0.15em;opacity:0;animation:cat2 var(--video-duration) var(--ease-smooth) infinite;">Accessibility</p>
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:180px;font-weight:400;color:#FFFFFF;margin-top:8px;opacity:0;animation:cat2 var(--video-duration) var(--ease-smooth) infinite;">92</p>
+      </div>
+
+      <!-- Category 3: Security -->
+      <div class="beat">
+        <p style="font-size:28px;font-weight:600;color:#EF4444;text-transform:uppercase;letter-spacing:0.15em;opacity:0;animation:cat3 var(--video-duration) var(--ease-smooth) infinite;">Security</p>
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:180px;font-weight:400;color:#FFFFFF;margin-top:8px;opacity:0;animation:cat3 var(--video-duration) var(--ease-smooth) infinite;">71</p>
+      </div>
+
+      <!-- Category 4: Performance + Content (combined, faster) -->
+      <div class="beat">
+        <div style="display:flex;gap:80px;opacity:0;animation:cat4 var(--video-duration) var(--ease-smooth) infinite;">
+          <div style="text-align:center;">
+            <p style="font-size:24px;font-weight:600;color:#0EA5E9;text-transform:uppercase;letter-spacing:0.15em;">Perf</p>
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:140px;font-weight:400;color:#FFFFFF;margin-top:4px;">95</p>
+          </div>
+          <div style="text-align:center;">
+            <p style="font-size:24px;font-weight:600;color:#F59E0B;text-transform:uppercase;letter-spacing:0.15em;">Content</p>
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:140px;font-weight:400;color:#FFFFFF;margin-top:4px;">83</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Big time reveal -->
+      <div class="beat">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:180px;font-weight:700;color:#FFFFFF;line-height:1;opacity:0;animation:time-reveal var(--video-duration) var(--ease-smooth) infinite, pulse-glow 3s ease-in-out infinite;">8.3s</p>
+        <p style="font-size:44px;font-weight:400;color:rgba(255,255,255,0.6);margin-top:24px;opacity:0;animation:time-sub var(--video-duration) var(--ease-smooth) infinite;">Five categories. One URL. Done.</p>
+      </div>
+
+      <!-- CTA -->
+      <div class="beat">
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:80px;font-weight:400;color:#FFFFFF;opacity:0;animation:cta-a var(--video-duration) var(--ease-smooth) infinite;">Try it yourself.</p>
+        <div style="margin-top:44px;padding:20px 56px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:14px;opacity:0;animation:cta-b var(--video-duration) var(--ease-smooth) infinite, btn-glow 2s ease-in-out infinite;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#FFFFFF;">pagepulser.com</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-reserve">
+      <span style="font-family:'Outfit',sans-serif;font-weight:600;font-size:18px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);animation:wordmark-pulse 4s ease-in-out infinite;">PagePulser</span>
+    </div>
+  </div>
+</body>
+</html>

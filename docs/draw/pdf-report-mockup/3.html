@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: linear-gradient(135deg, #4F46E5 0%, #312E81 100%); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:0;right:0;width:500px;height:500px;background:rgba(99,102,241,0.3);border-radius:50%;filter:blur(120px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+      <p style="font-size:16px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">PDF & CSV Exports</p>
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#FFFFFF;line-height:1.08;margin-bottom:20px;">Every audit. Export-ready.</h1>
+
+      <!-- What's in the report -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
+          <p style="font-size:14px;font-weight:600;color:#FFFFFF;margin-bottom:6px;">Score Summary</p>
+          <p style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.35;">Overall health + category breakdowns with visual score rings</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
+          <p style="font-size:14px;font-weight:600;color:#FFFFFF;margin-bottom:6px;">All Findings</p>
+          <p style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.35;">Every issue with severity, category, affected URLs, and page count</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
+          <p style="font-size:14px;font-weight:600;color:#FFFFFF;margin-bottom:6px;">Fix Guidance</p>
+          <p style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.35;">Plain-English explanations with code examples for each issue</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;">
+          <p style="font-size:14px;font-weight:600;color:#FFFFFF;margin-bottom:6px;">Priority Matrix</p>
+          <p style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.35;">Issues ranked by severity and impact — fix the most important things first</p>
+        </div>
+      </div>
+
+      <!-- Export formats -->
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px 24px;margin-bottom:16px;">
+        <p style="font-size:13px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Export Formats</p>
+        <div style="display:flex;gap:14px;">
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:8px;padding:10px 16px;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:#F87171;">.pdf</span>
+            <span style="font-size:13px;color:rgba(255,255,255,0.5);">Branded report</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:8px;padding:10px 16px;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:#34D399;">.csv</span>
+            <span style="font-size:13px;color:rgba(255,255,255,0.5);">Raw data</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Use cases -->
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:#FBBF24;margin-top:7px;flex-shrink:0;"></div>
+          <span style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.35;">Send branded PDFs to clients after every audit</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:#FBBF24;margin-top:7px;flex-shrink:0;"></div>
+          <span style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.35;">Export CSV data for spreadsheet analysis or JIRA import</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:#FBBF24;margin-top:7px;flex-shrink:0;"></div>
+          <span style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.35;">Keep compliance records for EAA and WCAG audits</span>
+        </div>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

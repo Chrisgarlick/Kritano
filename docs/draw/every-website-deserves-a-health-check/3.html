@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #4F46E5; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:0;right:0;width:500px;height:500px;background:rgba(99,102,241,0.4);border-radius:50%;filter:blur(120px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-80px;left:-40px;width:400px;height:400px;background:rgba(49,46,129,0.5);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:200px 100px 70px;height:100%;text-align:center;">
+
+      <!-- Quote — white on indigo -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:76px;font-weight:400;color:#FFFFFF;line-height:1.15;margin-bottom:36px;max-width:750px;margin-left:auto;margin-right:auto;">Every website deserves a health check.</h1>
+
+      <!-- Simple line -->
+      <div style="width:60px;height:2px;background:rgba(255,255,255,0.25);border-radius:1px;margin:0 auto 24px;"></div>
+
+      <!-- Attribution -->
+      <span style="font-family:'Instrument Serif',Georgia,serif;font-size:26px;color:rgba(255,255,255,0.5);">PagePulser</span>
+
+      <div style="position:absolute;bottom:32px;left:0;right:0;text-align:center;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(255,255,255,0.15);">pagepulser.com</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

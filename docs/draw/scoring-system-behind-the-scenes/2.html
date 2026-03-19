@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:-100px;right:-60px;width:450px;height:450px;background:rgba(99,102,241,0.12);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:80px;width:300px;height:300px;background:rgba(251,191,36,0.05);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+      <p style="font-size:16px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Build in Public</p>
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#FFFFFF;line-height:1.08;margin-bottom:20px;">The challenge of fair scoring.</h1>
+
+      <!-- Code-like scoring breakdown -->
+      <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px 28px;margin-bottom:16px;font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.8;">
+        <p><span style="color:#818CF8;">function</span> <span style="color:#FBBF24;">calculateScore</span><span style="color:#94A3B8;">(audit) {</span></p>
+        <p>&nbsp;&nbsp;<span style="color:#64748B;">// Weight each category</span></p>
+        <p>&nbsp;&nbsp;<span style="color:#94A3B8;">const weights = {</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#8B5CF6;">seo</span>: <span style="color:#10B981;">0.30</span>,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#10B981;">accessibility</span>: <span style="color:#10B981;">0.25</span>,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#EF4444;">security</span>: <span style="color:#10B981;">0.25</span>,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0EA5E9;">performance</span>: <span style="color:#10B981;">0.20</span></p>
+        <p>&nbsp;&nbsp;<span style="color:#94A3B8;">}</span></p>
+        <p>&nbsp;&nbsp;</p>
+        <p>&nbsp;&nbsp;<span style="color:#64748B;">// Severity multipliers</span></p>
+        <p>&nbsp;&nbsp;<span style="color:#94A3B8;">const impact = {</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#EF4444;">critical</span>: <span style="color:#10B981;">4</span>, <span style="color:#F97316;">serious</span>: <span style="color:#10B981;">3</span>,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#F59E0B;">moderate</span>: <span style="color:#10B981;">2</span>, <span style="color:#0EA5E9;">minor</span>: <span style="color:#10B981;">1</span></p>
+        <p>&nbsp;&nbsp;<span style="color:#94A3B8;">}</span></p>
+        <p><span style="color:#94A3B8;">}</span></p>
+      </div>
+
+      <!-- Insight -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px 28px;margin-bottom:16px;">
+        <p style="font-size:14px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">The Hard Question</p>
+        <p style="font-size:18px;color:rgba(255,255,255,0.8);line-height:1.45;">Should 1 critical issue weigh more than 10 minor ones? We think so. A single exposed .env file is worse than 10 missing alt texts — even though the alt text count is higher.</p>
+      </div>
+
+      <!-- Score example -->
+      <div style="display:flex;gap:16px;">
+        <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:36px;color:#10B981;">92</p>
+          <p style="font-size:12px;color:#64748B;margin-top:4px;">0 critical, 2 moderate</p>
+        </div>
+        <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:36px;color:#EF4444;">61</p>
+          <p style="font-size:12px;color:#64748B;margin-top:4px;">1 critical, 0 moderate</p>
+        </div>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

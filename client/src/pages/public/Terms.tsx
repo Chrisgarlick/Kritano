@@ -33,7 +33,7 @@ export default function Terms() {
       </div>
 
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-16">
-        <div className="max-w-3xl prose prose-slate prose-headings:font-display prose-headings:text-slate-900 prose-a:text-indigo-600 prose-a:no-underline hover:prose-a:underline">
+        <div className="max-w-3xl prose prose-slate prose-lg prose-headings:font-display prose-headings:text-slate-900 prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-8 prose-p:text-slate-600 prose-p:leading-relaxed prose-li:text-slate-600 prose-a:text-indigo-600 prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-900">
 
           <h2>1. Acceptance of Terms</h2>
           <p>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Grid overlay -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:-100px;right:-60px;width:450px;height:450px;background:rgba(99,102,241,0.12);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-80px;left:60px;width:350px;height:350px;background:rgba(251,191,36,0.05);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <!-- Content — top-down flow, padding-top:200px for visual centring -->
+    <div style="position:relative;z-index:1;padding:200px 100px 70px;height:100%;text-align:center;">
+
+      <!-- Large open quote mark -->
+      <div style="font-family:'Instrument Serif',Georgia,serif;font-size:140px;color:rgba(99,102,241,0.2);line-height:0.5;margin-bottom:32px;">"</div>
+
+      <!-- Quote -->
+      <blockquote style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#FFFFFF;line-height:1.35;font-style:italic;margin-bottom:48px;max-width:740px;margin-left:auto;margin-right:auto;">
+        The power of the Web is in its universality. Access by everyone regardless of disability is an essential aspect.
+      </blockquote>
+
+      <!-- Divider -->
+      <div style="width:48px;height:2px;background:#FBBF24;border-radius:1px;margin:0 auto 20px;"></div>
+
+      <!-- Attribution -->
+      <p style="font-size:20px;font-weight:600;color:#FBBF24;">Tim Berners-Lee</p>
+      <p style="font-size:16px;color:#64748B;margin-top:6px;">Inventor of the World Wide Web</p>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:32px;right:100px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

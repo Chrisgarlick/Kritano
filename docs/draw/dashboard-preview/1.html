@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #F8FAFC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:-40px;width:300px;height:300px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+      <p style="font-size:16px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Product Preview</p>
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:8px;">Your site's health. At a glance.</h1>
+      <p style="font-size:18px;color:#64748B;line-height:1.4;margin-bottom:24px;">Every score comes with plain-English guidance on what to fix and why it matters.</p>
+
+      <!-- Dashboard mockup -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;box-shadow:0 4px 12px rgba(15,23,42,0.06);overflow:hidden;">
+        <!-- Header bar -->
+        <div style="padding:14px 24px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-family:'Instrument Serif',Georgia,serif;font-size:16px;color:#4F46E5;">PagePulser</span>
+            <span style="width:1px;height:16px;background:#E2E8F0;"></span>
+            <span style="font-size:13px;color:#64748B;">Dashboard</span>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#94A3B8;">example.com</span>
+        </div>
+
+        <!-- Overall score + four category rings -->
+        <div style="padding:28px 24px;display:flex;align-items:center;gap:28px;">
+          <!-- Overall -->
+          <div style="text-align:center;">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="42" fill="none" stroke="#E2E8F0" stroke-width="6"/>
+              <circle cx="50" cy="50" r="42" fill="none" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="32" transform="rotate(-90 50 50)"/>
+              <text x="50" y="56" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="30" fill="#0F172A">88</text>
+            </svg>
+            <p style="font-size:12px;font-weight:600;color:#64748B;margin-top:6px;text-transform:uppercase;letter-spacing:0.05em;">Overall</p>
+          </div>
+          <!-- Divider -->
+          <div style="width:1px;height:80px;background:#E2E8F0;flex-shrink:0;"></div>
+          <!-- Category scores -->
+          <div style="display:flex;gap:20px;flex:1;justify-content:space-around;">
+            <!-- SEO -->
+            <div style="text-align:center;">
+              <svg width="68" height="68" viewBox="0 0 68 68">
+                <circle cx="34" cy="34" r="28" fill="none" stroke="#E2E8F0" stroke-width="4"/>
+                <circle cx="34" cy="34" r="28" fill="none" stroke="#8B5CF6" stroke-width="4" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="14" transform="rotate(-90 34 34)"/>
+                <text x="34" y="39" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="20" fill="#0F172A">92</text>
+              </svg>
+              <p style="font-size:11px;font-weight:600;color:#8B5CF6;margin-top:6px;">SEO</p>
+            </div>
+            <!-- A11Y -->
+            <div style="text-align:center;">
+              <svg width="68" height="68" viewBox="0 0 68 68">
+                <circle cx="34" cy="34" r="28" fill="none" stroke="#E2E8F0" stroke-width="4"/>
+                <circle cx="34" cy="34" r="28" fill="none" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="39" transform="rotate(-90 34 34)"/>
+                <text x="34" y="39" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="20" fill="#0F172A">78</text>
+              </svg>
+              <p style="font-size:11px;font-weight:600;color:#10B981;margin-top:6px;">A11Y</p>
+            </div>
+            <!-- Security -->
+            <div style="text-align:center;">
+              <svg width="68" height="68" viewBox="0 0 68 68">
+                <circle cx="34" cy="34" r="28" fill="none" stroke="#E2E8F0" stroke-width="4"/>
+                <circle cx="34" cy="34" r="28" fill="none" stroke="#EF4444" stroke-width="4" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="9" transform="rotate(-90 34 34)"/>
+                <text x="34" y="39" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="20" fill="#0F172A">95</text>
+              </svg>
+              <p style="font-size:11px;font-weight:600;color:#EF4444;margin-top:6px;">Security</p>
+            </div>
+            <!-- Perf -->
+            <div style="text-align:center;">
+              <svg width="68" height="68" viewBox="0 0 68 68">
+                <circle cx="34" cy="34" r="28" fill="none" stroke="#E2E8F0" stroke-width="4"/>
+                <circle cx="34" cy="34" r="28" fill="none" stroke="#0EA5E9" stroke-width="4" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="30" transform="rotate(-90 34 34)"/>
+                <text x="34" y="39" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="20" fill="#0F172A">83</text>
+              </svg>
+              <p style="font-size:11px;font-weight:600;color:#0EA5E9;margin-top:6px;">Perf</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Issue with guidance -->
+        <div style="padding:0 24px 20px;">
+          <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:18px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <div style="width:7px;height:7px;border-radius:50%;background:#EF4444;"></div>
+              <span style="font-size:13px;font-weight:600;color:#0F172A;">12 images missing alt text</span>
+              <span style="margin-left:auto;font-size:11px;font-weight:500;color:#EF4444;background:#FEF2F2;padding:2px 8px;border-radius:4px;">Critical</span>
+            </div>
+            <p style="font-size:13px;color:#64748B;line-height:1.4;padding-left:15px;">Screen readers can't describe these images. Add descriptive alt text for meaningful images, and empty alt="" for decorative ones.</p>
+          </div>
+        </div>
+
+        <!-- Issues bar -->
+        <div style="padding:12px 24px;background:#F8FAFC;border-top:1px solid #F1F5F9;display:flex;gap:16px;">
+          <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:#64748B;"><span style="width:6px;height:6px;border-radius:50%;background:#EF4444;display:inline-block;"></span>3 Critical</span>
+          <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:#64748B;"><span style="width:6px;height:6px;border-radius:50%;background:#F97316;display:inline-block;"></span>5 Serious</span>
+          <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:#64748B;"><span style="width:6px;height:6px;border-radius:50%;background:#F59E0B;display:inline-block;"></span>9 Moderate</span>
+          <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:#64748B;"><span style="width:6px;height:6px;border-radius:50%;background:#0EA5E9;display:inline-block;"></span>4 Minor</span>
+        </div>
+      </div>
+
+      <!-- Caption -->
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-top:20px;padding:0 4px;">
+        <div style="width:3px;background:#4F46E5;border-radius:2px;flex-shrink:0;min-height:40px;"></div>
+        <p style="font-size:17px;color:#334155;line-height:1.4;font-style:italic;">"We don't just tell you what's broken. We explain why it matters and how to fix it — in plain English."</p>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

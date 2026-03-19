@@ -1095,7 +1095,7 @@ router.get('/:id/pages', authenticate, async (req: Request, res: Response): Prom
              flesch_kincaid_grade, flesch_reading_ease, reading_time_minutes, keyword_data,
              eeat_score, eeat_experience_score, eeat_expertise_score, eeat_authoritativeness_score, eeat_trustworthiness_score,
              has_author_bio, has_author_credentials, citation_count, has_contact_info, has_privacy_policy, has_terms_of_service, eeat_tier, eeat_evidence,
-             aeo_score, aeo_nugget_score, aeo_factual_density_score, aeo_source_authority_score, aeo_tier, aeo_nuggets,
+             aeo_score, aeo_nugget_score, aeo_factual_density_score, aeo_source_authority_score, aeo_tier, aeo_nuggets, aeo_content_frontloaded, aeo_content_frontloading_ratio,
              json_ld_count, has_open_graph, has_twitter_card, detected_schema_types, detected_page_type,
              crawled_at, created_at
       FROM audit_pages
@@ -1183,7 +1183,7 @@ router.get('/:id/pages/:pageId', authenticate, async (req: Request, res: Respons
              flesch_kincaid_grade, flesch_reading_ease, reading_time_minutes, keyword_data,
              eeat_score, eeat_experience_score, eeat_expertise_score, eeat_authoritativeness_score, eeat_trustworthiness_score,
              has_author_bio, has_author_credentials, citation_count, has_contact_info, has_privacy_policy, has_terms_of_service, eeat_tier, eeat_evidence,
-             aeo_score, aeo_nugget_score, aeo_factual_density_score, aeo_source_authority_score, aeo_tier, aeo_nuggets,
+             aeo_score, aeo_nugget_score, aeo_factual_density_score, aeo_source_authority_score, aeo_tier, aeo_nuggets, aeo_content_frontloaded, aeo_content_frontloading_ratio,
              json_ld_count, has_open_graph, has_twitter_card, detected_schema_types, detected_page_type,
              crawled_at, created_at
       FROM audit_pages

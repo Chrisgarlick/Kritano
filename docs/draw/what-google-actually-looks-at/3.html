@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #F8FAFC;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:100px;right:-100px;width:420px;height:420px;background:#EEF2FF;border-radius:50%;opacity:0.6;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-40px;left:60px;width:300px;height:300px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <!-- Slide indicator -->
+    <div style="position:absolute;top:48px;left:90px;right:90px;display:flex;align-items:center;justify-content:space-between;z-index:2;">
+      <div style="display:flex;gap:8px;">
+        <div style="width:32px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:32px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:32px;height:4px;border-radius:2px;background:#FBBF24;"></div>
+        <div style="width:32px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:32px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+      </div>
+      <div style="width:48px;height:48px;border-radius:12px;background:#FFFBEB;display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#D97706;">INP</span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:90px 90px 70px;height:100%;">
+
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:10px;">
+        Interaction to Next Paint
+      </h1>
+
+      <p style="font-size:22px;color:#64748B;line-height:1.4;margin-bottom:36px;">
+        How quickly your site responds when someone clicks, taps, or types.
+      </p>
+
+      <!-- Analogy card -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:32px;margin-bottom:20px;">
+        <p style="font-size:15px;font-weight:600;color:#D97706;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">Real-World Analogy</p>
+        <p style="font-size:24px;color:#334155;line-height:1.5;">
+          You press a lift button. INP is the delay between pressing and the light coming on. Even half a second of nothing feels broken.
+        </p>
+      </div>
+
+      <!-- Thresholds -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:28px 32px;margin-bottom:20px;">
+        <p style="font-size:15px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:18px;">Google's Thresholds</p>
+        <div style="display:flex;gap:16px;">
+          <div style="flex:1;background:#F0FDF4;border-radius:10px;padding:18px;text-align:center;">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#10B981;">≤ 200ms</p>
+            <p style="font-size:14px;color:#64748B;margin-top:6px;">Good</p>
+          </div>
+          <div style="flex:1;background:#FFFBEB;border-radius:10px;padding:18px;text-align:center;">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#F59E0B;">≤ 500ms</p>
+            <p style="font-size:14px;color:#64748B;margin-top:6px;">Needs Work</p>
+          </div>
+          <div style="flex:1;background:#FEF2F2;border-radius:10px;padding:18px;text-align:center;">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#EF4444;">> 500ms</p>
+            <p style="font-size:14px;color:#64748B;margin-top:6px;">Poor</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick tip -->
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:0 4px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#10B981;margin-top:7px;flex-shrink:0;"></div>
+        <p style="font-size:18px;color:#64748B;line-height:1.45;"><strong style="color:#334155;">Quick win:</strong> Break up long JavaScript tasks. Defer non-critical scripts so the main thread stays responsive.</p>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

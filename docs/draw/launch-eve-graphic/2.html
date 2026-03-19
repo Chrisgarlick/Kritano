@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:-100px;right:-60px;width:450px;height:450px;background:rgba(99,102,241,0.15);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-80px;left:80px;width:300px;height:300px;background:rgba(251,191,36,0.06);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:180px 90px 70px;height:100%;text-align:center;">
+      <!-- Label -->
+      <p style="font-size:18px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:28px;">Launch Eve</p>
+
+      <!-- Tomorrow -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:88px;font-weight:400;color:#FFFFFF;line-height:1.05;margin-bottom:16px;">Tomorrow.</h1>
+
+      <p style="font-family:'Instrument Serif',Georgia,serif;font-size:36px;font-weight:400;color:#94A3B8;line-height:1.25;margin-bottom:40px;">Your website health score awaits.</p>
+
+      <!-- Urgency card -->
+      <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:14px;padding:24px 28px;max-width:600px;margin:0 auto 28px;text-align:left;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#EF4444;"></div>
+          <span style="font-size:15px;font-weight:600;color:#F87171;text-transform:uppercase;letter-spacing:0.08em;">Early Access Closing</span>
+        </div>
+        <p style="font-size:18px;color:rgba(255,255,255,0.75);line-height:1.45;">Any remaining early access spots close at launch. No extensions. No discount codes after tomorrow. This is the last window.</p>
+      </div>
+
+      <p style="font-size:16px;color:rgba(255,255,255,0.3);">Link in bio. Last chance.</p>
+
+      <div style="position:absolute;bottom:32px;left:0;right:0;text-align:center;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

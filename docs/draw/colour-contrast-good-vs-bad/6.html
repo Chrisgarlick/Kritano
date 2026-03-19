@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #F8FAFC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:60px;right:-80px;width:380px;height:380px;background:#EEF2FF;border-radius:50%;opacity:0.6;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:80px;width:320px;height:320px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <div style="position:absolute;top:48px;left:90px;right:90px;display:flex;align-items:center;justify-content:space-between;z-index:2;">
+      <div style="display:flex;gap:6px;">
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#8B5CF6;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+      </div>
+      <div style="width:48px;height:48px;border-radius:12px;background:#F5F3FF;display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#7C3AED;">5</span>
+      </div>
+    </div>
+
+    <div style="position:relative;z-index:1;padding:90px 90px 70px;height:100%;">
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:48px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:8px;">The WCAG Rules</h1>
+      <p style="font-size:18px;color:#64748B;margin-bottom:28px;">Quick reference for the contrast ratios you need to hit.</p>
+
+      <!-- AA -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:28px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="background:#EEF2FF;color:#4F46E5;font-size:14px;font-weight:700;padding:4px 12px;border-radius:6px;">AA</span>
+          <span style="font-size:16px;font-weight:600;color:#0F172A;">Minimum — required by law</span>
+        </div>
+        <div style="display:flex;gap:16px;">
+          <div style="flex:1;background:#F8FAFC;border-radius:10px;padding:18px;text-align:center;">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;color:#4F46E5;">4.5:1</p>
+            <p style="font-size:14px;color:#64748B;margin-top:6px;">Normal text</p>
+          </div>
+          <div style="flex:1;background:#F8FAFC;border-radius:10px;padding:18px;text-align:center;">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;color:#4F46E5;">3:1</p>
+            <p style="font-size:14px;color:#64748B;margin-top:6px;">Large text (18pt+)</p>
+          </div>
+          <div style="flex:1;background:#F8FAFC;border-radius:10px;padding:18px;text-align:center;">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;color:#4F46E5;">3:1</p>
+            <p style="font-size:14px;color:#64748B;margin-top:6px;">UI components</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- AAA -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:28px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="background:#F5F3FF;color:#7C3AED;font-size:14px;font-weight:700;padding:4px 12px;border-radius:6px;">AAA</span>
+          <span style="font-size:16px;font-weight:600;color:#0F172A;">Enhanced — best practice</span>
+        </div>
+        <div style="display:flex;gap:16px;">
+          <div style="flex:1;background:#F8FAFC;border-radius:10px;padding:18px;text-align:center;">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;color:#7C3AED;">7:1</p>
+            <p style="font-size:14px;color:#64748B;margin-top:6px;">Normal text</p>
+          </div>
+          <div style="flex:1;background:#F8FAFC;border-radius:10px;padding:18px;text-align:center;">
+            <p style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;color:#7C3AED;">4.5:1</p>
+            <p style="font-size:14px;color:#64748B;margin-top:6px;">Large text (18pt+)</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:0 4px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#4F46E5;margin-top:7px;flex-shrink:0;"></div>
+        <p style="font-size:16px;color:#64748B;line-height:1.35;"><strong style="color:#334155;">AA is the legal requirement.</strong> AAA is the gold standard. Aim for AA minimum, reach for AAA where possible.</p>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

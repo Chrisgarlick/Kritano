@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:-100px;right:-60px;width:450px;height:450px;background:rgba(99,102,241,0.12);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:60px;width:300px;height:300px;background:rgba(251,191,36,0.05);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+
+      <!-- Label -->
+      <p style="font-size:16px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Compliance Alert</p>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:48px;font-weight:400;color:#FFFFFF;line-height:1.1;margin-bottom:8px;">European Accessibility Act</h1>
+
+      <!-- Date callout -->
+      <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:8px 16px;margin-bottom:28px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#EF4444;"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:#F87171;font-weight:500;">Enforcement: 28 June 2025</span>
+      </div>
+
+      <!-- Two-column: Timeline + Who -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+        <!-- Timeline column -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+          <p style="font-size:13px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;">Timeline</p>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#64748B;min-width:44px;">2019</span>
+              <span style="font-size:15px;color:rgba(255,255,255,0.7);">Directive adopted by EU</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#64748B;min-width:44px;">2022</span>
+              <span style="font-size:15px;color:rgba(255,255,255,0.7);">Transposed into national law</span>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#FBBF24;min-width:44px;">2025</span>
+              <span style="font-size:15px;color:#FBBF24;font-weight:500;">Enforcement begins</span>
+            </div>
+          </div>
+        </div>
+        <!-- Who it affects -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+          <p style="font-size:13px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;">Who It Affects</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <span style="font-size:15px;color:rgba(255,255,255,0.7);">E-commerce & retail</span>
+            <span style="font-size:15px;color:rgba(255,255,255,0.7);">Banking & financial services</span>
+            <span style="font-size:15px;color:rgba(255,255,255,0.7);">Transport & travel booking</span>
+            <span style="font-size:15px;color:rgba(255,255,255,0.7);">Telecoms & media</span>
+            <span style="font-size:15px;color:#F87171;font-weight:500;">Any digital product in the EU</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Requirements -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;">
+        <p style="font-size:13px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Key Requirements</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#818CF8;margin-top:6px;flex-shrink:0;"></div>
+            <span style="font-size:15px;color:rgba(255,255,255,0.75);line-height:1.35;">WCAG 2.1 AA compliance</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#818CF8;margin-top:6px;flex-shrink:0;"></div>
+            <span style="font-size:15px;color:rgba(255,255,255,0.75);line-height:1.35;">Screen reader compatible</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#818CF8;margin-top:6px;flex-shrink:0;"></div>
+            <span style="font-size:15px;color:rgba(255,255,255,0.75);line-height:1.35;">Keyboard navigable</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#EF4444;margin-top:6px;flex-shrink:0;"></div>
+            <span style="font-size:15px;color:#F87171;line-height:1.35;font-weight:500;">Fines for non-compliance</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

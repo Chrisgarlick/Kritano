@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #F8FAFC;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Atmospheric: soft indigo top-right -->
+    <div style="position:absolute;top:-100px;right:-80px;width:450px;height:450px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(80px);pointer-events:none;"></div>
+    <!-- Atmospheric: amber bottom-left -->
+    <div style="position:absolute;bottom:-60px;left:-60px;width:350px;height:350px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:90px 100px 70px;height:100%;">
+
+      <!-- Label -->
+      <p style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.15em;">
+        Behind the Scenes
+      </p>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:72px;font-weight:400;color:#0F172A;line-height:1.1;margin-top:20px;">
+        Built with late nights<br>and strong opinions.
+      </h1>
+
+      <!-- Body -->
+      <p style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:400;color:#64748B;line-height:1.55;margin-top:28px;max-width:700px;">
+        PagePulser started with a simple frustration: why is it so hard to get a clear picture of your website's health?
+      </p>
+
+      <!-- Journey timeline — compact milestone cards -->
+      <div style="margin-top:44px;display:flex;flex-direction:column;gap:20px;">
+        <!-- Milestone 1 -->
+        <div style="display:flex;align-items:flex-start;gap:20px;">
+          <div style="min-width:56px;height:56px;background:#EEF2FF;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#4F46E5;">01</span>
+          </div>
+          <div>
+            <p style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:600;color:#334155;">The idea</p>
+            <p style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:400;color:#94A3B8;margin-top:2px;">One scan that actually tells you everything</p>
+          </div>
+        </div>
+        <!-- Milestone 2 -->
+        <div style="display:flex;align-items:flex-start;gap:20px;">
+          <div style="min-width:56px;height:56px;background:#ECFDF5;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#047857;">02</span>
+          </div>
+          <div>
+            <p style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:600;color:#334155;">The build</p>
+            <p style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:400;color:#94A3B8;margin-top:2px;">Six audit engines, thousands of checks</p>
+          </div>
+        </div>
+        <!-- Milestone 3 -->
+        <div style="display:flex;align-items:flex-start;gap:20px;">
+          <div style="min-width:56px;height:56px;background:#FFFBEB;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#B45309;">03</span>
+          </div>
+          <div>
+            <p style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:600;color:#334155;">The launch</p>
+            <p style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:400;color:#94A3B8;margin-top:2px;">7 days and counting...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:40px;right:100px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;color:#4F46E5;">
+          PagePulser
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #F8FAFC;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Atmospheric accents -->
+    <div style="position:absolute;top:-80px;right:-80px;width:420px;height:420px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:-40px;width:320px;height:320px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+
+      <!-- Label -->
+      <p style="font-size:17px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px;">
+        Infographic
+      </p>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:12px;">
+        The Accessibility Gap
+      </h1>
+
+      <!-- Subtitle -->
+      <p style="font-size:22px;color:#64748B;line-height:1.4;margin-bottom:36px;max-width:620px;">
+        Most websites fail basic accessibility checks. The cost is bigger than you think.
+      </p>
+
+      <!-- Stats grid — 2x2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:0;">
+        <!-- Stat 1 -->
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:28px 28px 24px;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#EF4444;line-height:1;">96%</p>
+          <p style="font-size:18px;color:#64748B;margin-top:10px;line-height:1.35;">of homepages have detectable WCAG failures</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#94A3B8;margin-top:8px;">WebAIM Million 2024</p>
+        </div>
+        <!-- Stat 2 -->
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:28px 28px 24px;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#4F46E5;line-height:1;">$13B</p>
+          <p style="font-size:18px;color:#64748B;margin-top:10px;line-height:1.35;">lost annually by retailers from inaccessible sites</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#94A3B8;margin-top:8px;">Click-Away Pound</p>
+        </div>
+        <!-- Stat 3 -->
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:28px 28px 24px;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#F59E0B;line-height:1;">4,600+</p>
+          <p style="font-size:18px;color:#64748B;margin-top:10px;line-height:1.35;">ADA web accessibility lawsuits filed in 2023</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#94A3B8;margin-top:8px;">UsableNet</p>
+        </div>
+        <!-- Stat 4 -->
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:28px 28px 24px;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#0F172A;line-height:1;">1 in 5</p>
+          <p style="font-size:18px;color:#64748B;margin-top:10px;line-height:1.35;">UK adults have a disability affecting web use</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#94A3B8;margin-top:8px;">gov.uk</p>
+        </div>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

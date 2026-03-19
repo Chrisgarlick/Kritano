@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=450" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --video-duration: 36s;
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html {
+      width: 450px;
+      height: 800px;
+      overflow: hidden;
+      background: #312E81;
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      position: relative;
+      transform: scale(0.41667);
+      transform-origin: top left;
+    }
+
+    .canvas {
+      width: 1080px;
+      height: 1920px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #4F46E5 0%, #312E81 100%);
+      background-size: 200% 200%;
+      animation: bg-shift 12s linear infinite;
+    }
+
+    .atmosphere {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      height: calc(1920px - 60px);
+    }
+
+    .beat {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 100px;
+    }
+
+    .brand-reserve {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    /* ── Atmospheric ── */
+    @keyframes bg-shift {
+      0%, 100% { background-position: 0% 0%; }
+      50%      { background-position: 100% 100%; }
+    }
+    @keyframes drift-glow {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.2; }
+      50%      { transform: translate(60px, 80px) scale(1.3); opacity: 0.25; }
+    }
+    @keyframes wordmark-pulse {
+      0%, 100% { opacity: 0.3; }
+      50%      { opacity: 0.5; }
+    }
+
+    /* ── Beat 1: "Tab." (0–5s = 0–14%) ── */
+    @keyframes beat1 {
+      0%       { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+      5%       { opacity: 1; transform: scale(1); filter: blur(0); }
+      11%      { opacity: 1; transform: scale(1); filter: blur(0); }
+      16%      { opacity: 0; transform: scale(1.04); filter: blur(6px); }
+      18%      { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+      100%     { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+    }
+
+    /* ── Beat 2: "Tab." (5–10s = 14–28%) ── */
+    @keyframes beat2 {
+      0%       { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+      14%      { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+      19%      { opacity: 1; transform: scale(1); filter: blur(0); }
+      25%      { opacity: 1; transform: scale(1); filter: blur(0); }
+      30%      { opacity: 0; transform: scale(1.04); filter: blur(6px); }
+      32%      { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+      100%     { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+    }
+
+    /* ── Beat 3: "Tab." (10–14s = 28–39%) ── */
+    @keyframes beat3 {
+      0%       { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+      28%      { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+      33%      { opacity: 1; transform: scale(1); filter: blur(0); }
+      36%      { opacity: 1; transform: scale(1); filter: blur(0); }
+      41%      { opacity: 0; transform: scale(1.04); filter: blur(6px); }
+      43%      { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+      100%     { opacity: 0; transform: scale(0.8); filter: blur(8px); }
+    }
+
+    /* ── Beat 4: "...nothing." (14–20s = 39–56%) ── */
+    @keyframes beat4 {
+      0%       { opacity: 0; transform: translateY(20px); }
+      41%      { opacity: 0; transform: translateY(20px); }
+      46%      { opacity: 1; transform: translateY(0); }
+      53%      { opacity: 1; transform: translateY(0); }
+      58%      { opacity: 0; transform: translateY(-15px); }
+      60%      { opacity: 0; transform: translateY(20px); }
+      100%     { opacity: 0; transform: translateY(20px); }
+    }
+
+    /* ── Beat 5: stat (20–27s = 56–75%) ── */
+    @keyframes beat5-stat {
+      0%       { opacity: 0; transform: scale(0.6); }
+      56%      { opacity: 0; transform: scale(0.6); }
+      61%      { opacity: 1; transform: scale(1); }
+      69%      { opacity: 1; transform: scale(1); }
+      75%      { opacity: 0; transform: scale(0.9); }
+      77%      { opacity: 0; transform: scale(0.6); }
+      100%     { opacity: 0; transform: scale(0.6); }
+    }
+    @keyframes beat5-text {
+      0%       { opacity: 0; transform: translateY(25px); }
+      59%      { opacity: 0; transform: translateY(25px); }
+      64%      { opacity: 1; transform: translateY(0); }
+      68%      { opacity: 1; transform: translateY(0); }
+      73%      { opacity: 0; transform: translateY(-15px); }
+      75%      { opacity: 0; transform: translateY(25px); }
+      100%     { opacity: 0; transform: translateY(25px); }
+    }
+
+    /* ── Beat 6: statement (27–35s = 75–97%) ── */
+    @keyframes beat6a {
+      0%       { opacity: 0; transform: translateY(30px); }
+      75%      { opacity: 0; transform: translateY(30px); }
+      80%      { opacity: 1; transform: translateY(0); }
+      91%      { opacity: 1; transform: translateY(0); }
+      96%      { opacity: 0; transform: translateY(-20px); }
+      98%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+    @keyframes beat6b {
+      0%       { opacity: 0; transform: translateY(30px); }
+      78%      { opacity: 0; transform: translateY(30px); }
+      83%      { opacity: 1; transform: translateY(0); }
+      90%      { opacity: 1; transform: translateY(0); }
+      95%      { opacity: 0; transform: translateY(-20px); }
+      97%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { text-shadow: 0 0 0 transparent; }
+      50%      { text-shadow: 0 0 40px rgba(255, 255, 255, 0.2); }
+    }
+
+    /* Decorative line under "Tab." beats */
+    @keyframes line-flash {
+      0%       { transform: scaleX(0); opacity: 0; }
+      3%       { transform: scaleX(0); opacity: 0; }
+      6%       { transform: scaleX(1); opacity: 0.4; }
+      10%      { transform: scaleX(1); opacity: 0; }
+      100%     { transform: scaleX(0); opacity: 0; }
+    }
+    @keyframes line-flash2 {
+      0%       { transform: scaleX(0); opacity: 0; }
+      17%      { transform: scaleX(0); opacity: 0; }
+      20%      { transform: scaleX(1); opacity: 0.4; }
+      24%      { transform: scaleX(1); opacity: 0; }
+      100%     { transform: scaleX(0); opacity: 0; }
+    }
+    @keyframes line-flash3 {
+      0%       { transform: scaleX(0); opacity: 0; }
+      31%      { transform: scaleX(0); opacity: 0; }
+      34%      { transform: scaleX(1); opacity: 0.4; }
+      38%      { transform: scaleX(1); opacity: 0; }
+      100%     { transform: scaleX(0); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+
+    <!-- Atmospheric background -->
+    <div class="atmosphere">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:40px 40px;opacity:0.5;"></div>
+      <div style="position:absolute;top:200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:rgba(129,140,248,0.15);border-radius:50%;filter:blur(150px);animation:drift-glow 8s ease-in-out infinite;"></div>
+    </div>
+
+    <div class="content">
+
+      <!-- Beat 1: "Tab." -->
+      <div class="beat">
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:120px;font-weight:400;color:#FFFFFF;opacity:0;animation:beat1 var(--video-duration) var(--ease-smooth) infinite;">Tab.</p>
+        <div style="width:80px;height:3px;background:#FFFFFF;margin-top:24px;transform-origin:center;transform:scaleX(0);animation:line-flash var(--video-duration) var(--ease-smooth) infinite;"></div>
+      </div>
+
+      <!-- Beat 2: "Tab." -->
+      <div class="beat">
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:120px;font-weight:400;color:#FFFFFF;opacity:0;animation:beat2 var(--video-duration) var(--ease-smooth) infinite;">Tab.</p>
+        <div style="width:80px;height:3px;background:#FFFFFF;margin-top:24px;transform-origin:center;transform:scaleX(0);animation:line-flash2 var(--video-duration) var(--ease-smooth) infinite;"></div>
+      </div>
+
+      <!-- Beat 3: "Tab." -->
+      <div class="beat">
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:120px;font-weight:400;color:#FFFFFF;opacity:0;animation:beat3 var(--video-duration) var(--ease-smooth) infinite;">Tab.</p>
+        <div style="width:80px;height:3px;background:#FFFFFF;margin-top:24px;transform-origin:center;transform:scaleX(0);animation:line-flash3 var(--video-duration) var(--ease-smooth) infinite;"></div>
+      </div>
+
+      <!-- Beat 4: "...nothing." -->
+      <div class="beat">
+        <p style="font-size:72px;font-weight:300;color:rgba(255,255,255,0.6);letter-spacing:0.05em;opacity:0;animation:beat4 var(--video-duration) var(--ease-smooth) infinite;">...nothing.</p>
+      </div>
+
+      <!-- Beat 5: Stat -->
+      <div class="beat">
+        <p style="font-size:160px;font-weight:700;color:#FFFFFF;line-height:1;opacity:0;animation:beat5-stat var(--video-duration) var(--ease-smooth) infinite;">96%</p>
+        <p style="font-size:40px;font-weight:400;color:rgba(255,255,255,0.7);margin-top:28px;max-width:680px;line-height:1.35;opacity:0;animation:beat5-text var(--video-duration) var(--ease-smooth) infinite;">of websites fail accessibility.</p>
+      </div>
+
+      <!-- Beat 6: Statement -->
+      <div class="beat">
+        <p style="font-size:42px;font-weight:300;color:rgba(255,255,255,0.5);opacity:0;animation:beat6a var(--video-duration) var(--ease-smooth) infinite;">This is why we're building</p>
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:96px;font-weight:400;color:#FFFFFF;margin-top:20px;opacity:0;animation:beat6b var(--video-duration) var(--ease-smooth) infinite, pulse-glow 3s ease-in-out infinite;">PagePulser.</p>
+      </div>
+
+    </div>
+
+    <!-- Brand reserve -->
+    <div class="brand-reserve">
+      <span style="font-family:'Outfit',sans-serif;font-weight:600;font-size:18px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);animation:wordmark-pulse 4s ease-in-out infinite;">PagePulser</span>
+    </div>
+
+  </div>
+</body>
+</html>

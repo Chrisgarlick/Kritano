@@ -33,7 +33,9 @@
       "Bash(echo Hash: $HASH:*)",
       "Bash(echo:*)",
       "Bash(echo Key: $RAWKEY:*)",
-      "mcp__chrome-devtools__lighthouse_audit"
+      "mcp__chrome-devtools__lighthouse_audit",
+      "Bash(grep:*)",
+      "Bash(find:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

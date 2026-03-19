@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%);
+    }
+    .font-display { font-family: 'Instrument Serif', Georgia, serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Grid overlay -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <!-- Indigo glow — top centre -->
+    <div style="position:absolute;top:-150px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:rgba(99,102,241,0.2);border-radius:50%;filter:blur(120px);pointer-events:none;"></div>
+    <!-- Amber glow — bottom right -->
+    <div style="position:absolute;bottom:-80px;right:-60px;width:350px;height:350px;background:rgba(251,191,36,0.08);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:200px 100px 70px;height:100%;text-align:center;">
+
+      <!-- Label -->
+      <p style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:600;color:#818CF8;text-transform:uppercase;letter-spacing:0.2em;">
+        Early Access Open
+      </p>
+
+      <!-- 7 DAYS -->
+      <div style="margin-top:32px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:180px;font-weight:400;color:#FFFFFF;line-height:1;">7</span>
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:100px;font-weight:400;color:#818CF8;line-height:1;margin-left:16px;">days</span>
+      </div>
+
+      <!-- to launch -->
+      <p style="font-family:'Instrument Serif',Georgia,serif;font-size:72px;font-weight:400;color:rgba(255,255,255,0.6);line-height:1;margin-top:4px;">
+        to launch
+      </p>
+
+      <!-- Divider with amber dot -->
+      <div style="display:flex;align-items:center;gap:16px;margin:48px auto;max-width:400px;">
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+        <div style="width:10px;height:10px;border-radius:50%;background:#FBBF24;"></div>
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+      </div>
+
+      <!-- CTA -->
+      <div style="display:inline-block;background:#FBBF24;border-radius:14px;padding:16px 44px;margin-bottom:12px;">
+        <p style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:700;color:#1E1B4B;">
+          Get early access — link in bio
+        </p>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:40px;left:0;right:0;text-align:center;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;color:#FFFFFF;">
+          PagePulser
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

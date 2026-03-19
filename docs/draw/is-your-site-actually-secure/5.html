@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #F8FAFC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:-80px;right:-80px;width:420px;height:420px;background:#EEF2FF;border-radius:50%;opacity:0.6;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-40px;left:-40px;width:300px;height:300px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <div style="position:absolute;top:48px;left:90px;right:90px;display:flex;align-items:center;justify-content:space-between;z-index:2;">
+      <div style="display:flex;gap:6px;">
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#8B5CF6;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+      </div>
+      <div style="width:48px;height:48px;border-radius:12px;background:#F5F3FF;display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#7C3AED;">4</span>
+      </div>
+    </div>
+
+    <div style="position:relative;z-index:1;padding:90px 90px 70px;height:100%;">
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:52px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:12px;">Outdated CMS</h1>
+      <p style="font-size:20px;color:#64748B;line-height:1.4;margin-bottom:28px;">Running an old version of WordPress, Drupal, or Joomla? Every known vulnerability is documented publicly — attackers just need to check your version.</p>
+
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:24px 28px;margin-bottom:14px;">
+        <p style="font-size:14px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Risk Factors</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#8B5CF6;margin-top:7px;flex-shrink:0;"></div>
+            <span style="font-size:16px;color:#334155;line-height:1.35;">CMS core not updated to latest stable version</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#8B5CF6;margin-top:7px;flex-shrink:0;"></div>
+            <span style="font-size:16px;color:#334155;line-height:1.35;">Plugins/themes with known CVEs still active</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#8B5CF6;margin-top:7px;flex-shrink:0;"></div>
+            <span style="font-size:16px;color:#334155;line-height:1.35;">PHP version past end-of-life (7.4 and below)</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:24px 28px;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#10B981;"></div>
+          <span style="font-size:14px;font-weight:600;color:#10B981;text-transform:uppercase;letter-spacing:0.08em;">Fix</span>
+        </div>
+        <p style="font-size:16px;color:#334155;line-height:1.4;">Enable auto-updates for CMS core and plugins. Remove unused plugins and themes entirely. Upgrade to a supported PHP version (8.1+).</p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;padding:0 4px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:36px;color:#8B5CF6;">56%</span>
+        <span style="font-size:15px;color:#64748B;line-height:1.35;">of CMS-based sites run outdated software</span>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

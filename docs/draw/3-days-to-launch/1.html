@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #F8FAFC;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Atmospheric: indigo top-right -->
+    <div style="position:absolute;top:-100px;right:-80px;width:480px;height:480px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(80px);pointer-events:none;"></div>
+    <!-- Atmospheric: amber bottom-left -->
+    <div style="position:absolute;bottom:-60px;left:-60px;width:380px;height:380px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:90px 100px 70px;height:100%;text-align:center;">
+
+      <!-- Urgency pill -->
+      <div style="display:inline-block;background:#FEF2F2;border:1px solid #FECACA;border-radius:100px;padding:8px 28px;">
+        <p style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:600;color:#B91C1C;letter-spacing:0.05em;">
+          EARLY ACCESS CLOSES IN 3 DAYS
+        </p>
+      </div>
+
+      <!-- Big number -->
+      <p style="font-family:'Instrument Serif',Georgia,serif;font-size:240px;font-weight:400;color:#0F172A;line-height:0.85;margin-top:20px;">
+        3
+      </p>
+
+      <!-- Days left -->
+      <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#334155;line-height:1.1;margin-top:12px;">
+        days left
+      </p>
+
+      <!-- Benefits -->
+      <div style="display:flex;gap:20px;margin-top:40px;justify-content:center;">
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:20px 28px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#4F46E5;line-height:1;">50%</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;color:#64748B;margin-top:4px;">off for life</p>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:20px 28px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#4F46E5;line-height:1;">30</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;color:#64748B;margin-top:4px;">days free</p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div style="display:inline-block;background:#4F46E5;border-radius:14px;padding:18px 48px;margin-top:36px;">
+        <p style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:600;color:#FFFFFF;">
+          Get early access — link in bio
+        </p>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:40px;left:0;right:0;text-align:center;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;color:#4F46E5;">
+          PagePulser
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

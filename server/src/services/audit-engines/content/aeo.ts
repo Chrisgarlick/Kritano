@@ -214,6 +214,18 @@ export function analyzeAeo(
     }
   });
 
+  // --- Content front-loading: is substantive content in the first third of the page? ---
+  const bodyText = $('body').text().trim();
+  const bodyWords = bodyText.split(/\s+/).filter(w => w.length > 0);
+  const totalBodyWords = bodyWords.length;
+  const firstThirdLength = Math.floor(totalBodyWords / 3);
+  const wordsInFirstThird = bodyWords.slice(0, firstThirdLength).length;
+  // Ratio of how front-loaded content is (first third should have ~33% of words by definition,
+  // but we check if the first third has at least 100 substantive words)
+  const contentFrontloaded = wordsInFirstThird >= 100;
+  const contentFrontloadingRatio = totalBodyWords > 0 ? wordsInFirstThird / totalBodyWords : 0;
+  const contentFrontloadingScore = contentFrontloaded ? 10 : 5;
+
   // Calculate Nugget Extraction score
   const nuggetScore = Math.min(100,
     Math.min(25, definitionBlockCount * 12.5) +
@@ -221,7 +233,8 @@ export function analyzeAeo(
     Math.min(20, faqSectionCount * 5) +
     Math.min(15, dataTableCount * 7.5) +
     Math.min(10, extractableListCount * 3.3) +
-    Math.min(10, conciseAnswerCount * 2.5)
+    Math.min(10, conciseAnswerCount * 2.5) +
+    contentFrontloadingScore
   );
 
   // =============================================
@@ -479,6 +492,18 @@ export function analyzeAeo(
     });
   }
 
+  if (!contentFrontloaded && wordCount >= 300) {
+    findings.push({
+      ruleId: 'aeo-content-not-frontloaded',
+      ruleName: 'Content Not Front-Loaded',
+      category: 'content-aeo',
+      severity: 'moderate',
+      message: 'Key content is not front-loaded — the first third of the page has fewer than 100 substantive words',
+      description: 'AI models often weight early content more heavily and may truncate long pages. Pages with substantive content near the top are more likely to be cited.',
+      recommendation: 'Move your core message, key definitions, and primary answers to the top of the page. Reduce navigation boilerplate and filler before the main content.',
+    });
+  }
+
   if (semanticCitationCount === 0 && wordCount >= 500) {
     findings.push({
       ruleId: 'aeo-no-semantic-citations',
@@ -523,6 +548,8 @@ export function analyzeAeo(
     hasClaimReviewSchema,
     authoritativeLinkCount,
     semanticCitationCount,
+    contentFrontloaded,
+    contentFrontloadingRatio: Math.round(contentFrontloadingRatio * 100) / 100,
     tier,
     nuggets: nuggets.slice(0, 10),
   };

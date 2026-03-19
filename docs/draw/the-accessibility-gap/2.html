@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Grid overlay -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <!-- Glow -->
+    <div style="position:absolute;top:-100px;right:-60px;width:480px;height:480px;background:rgba(99,102,241,0.15);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-80px;left:100px;width:350px;height:350px;background:rgba(251,191,36,0.06);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:90px 100px 80px;height:100%;">
+
+      <!-- Label -->
+      <p style="font-size:18px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:16px;">
+        The Numbers Don't Lie
+      </p>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:60px;font-weight:400;color:#FFFFFF;line-height:1.1;margin-bottom:48px;">
+        The Accessibility Gap
+      </h1>
+
+      <!-- Giant stat hero -->
+      <div style="text-align:center;margin-bottom:44px;">
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:160px;font-weight:400;color:#FFFFFF;line-height:1;">96<span style="font-size:80px;color:#EF4444;">%</span></p>
+        <p style="font-size:24px;color:#94A3B8;margin-top:8px;">of websites fail basic accessibility checks</p>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#64748B;margin-top:8px;">WebAIM Million 2024</p>
+      </div>
+
+      <!-- Divider -->
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:36px;">
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:#4F46E5;opacity:0.5;"></div>
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+      </div>
+
+      <!-- Supporting stats row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
+        <div style="text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;color:#FBBF24;line-height:1;">$13B</p>
+          <p style="font-size:16px;color:#64748B;margin-top:8px;line-height:1.4;">lost revenue annually from inaccessible retail sites</p>
+        </div>
+        <div style="text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;color:#EF4444;line-height:1;">4,600+</p>
+          <p style="font-size:16px;color:#64748B;margin-top:8px;line-height:1.4;">ADA lawsuits filed in 2023</p>
+        </div>
+        <div style="text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;color:#818CF8;line-height:1;">1 in 5</p>
+          <p style="font-size:16px;color:#64748B;margin-top:8px;line-height:1.4;">UK adults have a disability affecting web use</p>
+        </div>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:40px;right:100px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.2);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #F8FAFC;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:-40px;width:300px;height:300px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+
+      <!-- Label -->
+      <p style="font-size:16px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">EU Legislation</p>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:48px;font-weight:400;color:#0F172A;line-height:1.1;margin-bottom:10px;">European Accessibility Act</h1>
+
+      <!-- Subtitle -->
+      <p style="font-size:20px;color:#64748B;line-height:1.4;margin-bottom:28px;">What you need to know before June 2025.</p>
+
+      <!-- Timeline -->
+      <div style="display:flex;gap:12px;margin-bottom:24px;">
+        <div style="flex:1;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:20px;">
+          <p style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#94A3B8;margin-bottom:6px;">2019</p>
+          <p style="font-size:15px;font-weight:600;color:#0F172A;margin-bottom:4px;">EAA Adopted</p>
+          <p style="font-size:14px;color:#64748B;line-height:1.35;">Directive passed by EU Parliament</p>
+        </div>
+        <div style="flex:1;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:20px;">
+          <p style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#94A3B8;margin-bottom:6px;">2022</p>
+          <p style="font-size:15px;font-weight:600;color:#0F172A;margin-bottom:4px;">Transposed</p>
+          <p style="font-size:14px;color:#64748B;line-height:1.35;">Member states adopt into national law</p>
+        </div>
+        <div style="flex:1;background:#EEF2FF;border:1px solid #C7D2FE;border-radius:12px;padding:20px;">
+          <p style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#4F46E5;margin-bottom:6px;">28 Jun 2025</p>
+          <p style="font-size:15px;font-weight:600;color:#0F172A;margin-bottom:4px;">Enforcement</p>
+          <p style="font-size:14px;color:#4F46E5;line-height:1.35;font-weight:500;">Compliance becomes mandatory</p>
+        </div>
+      </div>
+
+      <!-- Who it affects -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:22px 24px;margin-bottom:16px;">
+        <p style="font-size:14px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Who It Affects</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:8px 14px;font-size:14px;color:#334155;">E-commerce sites</span>
+          <span style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:8px 14px;font-size:14px;color:#334155;">Banking & finance</span>
+          <span style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:8px 14px;font-size:14px;color:#334155;">Transport services</span>
+          <span style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:8px 14px;font-size:14px;color:#334155;">Telecoms</span>
+          <span style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:8px 14px;font-size:14px;color:#334155;">Media & streaming</span>
+          <span style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:8px 14px;font-size:14px;color:#DC2626;font-weight:500;">Any digital product sold in EU</span>
+        </div>
+      </div>
+
+      <!-- Key requirements -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:12px;padding:22px 24px;">
+        <p style="font-size:14px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Key Requirements</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="width:7px;height:7px;border-radius:50%;background:#4F46E5;margin-top:7px;flex-shrink:0;"></div>
+            <p style="font-size:16px;color:#334155;line-height:1.4;">WCAG 2.1 AA compliance for all digital products and services</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="width:7px;height:7px;border-radius:50%;background:#4F46E5;margin-top:7px;flex-shrink:0;"></div>
+            <p style="font-size:16px;color:#334155;line-height:1.4;">Perceivable, operable, understandable, and robust interfaces</p>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="width:7px;height:7px;border-radius:50%;background:#EF4444;margin-top:7px;flex-shrink:0;"></div>
+            <p style="font-size:16px;color:#334155;line-height:1.4;">Penalties set by each member state — fines, service restrictions, legal action</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

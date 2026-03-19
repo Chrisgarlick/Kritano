@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(135deg, #4F46E5 0%, #312E81 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Grid overlay -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:0;right:0;width:500px;height:500px;background:rgba(99,102,241,0.3);border-radius:50%;filter:blur(120px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-80px;left:-40px;width:350px;height:350px;background:rgba(251,191,36,0.06);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <!-- Slide indicator -->
+    <div style="position:absolute;top:48px;left:90px;display:flex;gap:8px;z-index:2;">
+      <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:#FBBF24;"></div>
+    </div>
+
+    <!-- Content — same flow layout as content slides -->
+    <div style="position:relative;z-index:1;padding:200px 90px 70px;height:100%;">
+
+      <!-- Checkmark -->
+      <div style="text-align:center;margin-bottom:32px;">
+        <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.1);display:inline-flex;align-items:center;justify-content:center;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#FFFFFF;line-height:1.12;text-align:center;max-width:680px;margin:0 auto 24px;">
+        Now you know what Google is measuring.
+      </h1>
+
+      <!-- Subtitle -->
+      <p style="font-size:24px;font-weight:400;color:rgba(255,255,255,0.55);line-height:1.5;text-align:center;max-width:560px;margin:0 auto 40px;">
+        PagePulser checks all three Core Web Vitals — and tells you exactly what to fix first.
+      </p>
+
+      <!-- CTA -->
+      <div style="text-align:center;margin-bottom:40px;">
+        <div style="display:inline-block;background:#FFFFFF;border-radius:12px;padding:18px 44px;">
+          <span style="font-size:22px;font-weight:600;color:#4F46E5;">Check Your Core Web Vitals</span>
+        </div>
+      </div>
+
+      <!-- Metric recap -->
+      <div style="display:flex;justify-content:center;gap:32px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:rgba(255,255,255,0.3);">LCP</span>
+        <span style="font-size:15px;color:rgba(255,255,255,0.12);">/</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:rgba(255,255,255,0.3);">INP</span>
+        <span style="font-size:15px;color:rgba(255,255,255,0.12);">/</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:15px;color:rgba(255,255,255,0.3);">CLS</span>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

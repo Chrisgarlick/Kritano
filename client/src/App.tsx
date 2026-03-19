@@ -13,6 +13,8 @@ import RegisterPage from './pages/auth/Register';
 import RegisterSuccessPage from './pages/auth/RegisterSuccess';
 import VerifyEmailPage from './pages/auth/VerifyEmail';
 import OAuthCallbackPage from './pages/auth/OAuthCallback';
+import ForgotPasswordPage from './pages/auth/ForgotPassword';
+import ResetPasswordPage from './pages/auth/ResetPassword';
 import DashboardPage from './pages/dashboard/Dashboard';
 import AuditListPage from './pages/audits/AuditList';
 import NewAuditPage from './pages/audits/NewAudit';
@@ -125,6 +127,8 @@ function App() {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/register/success" element={<RegisterSuccessPage />} />
                 <Route path="/register/early-access-success" element={<EarlyAccessSuccessPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
                 <Route path="/verify-email" element={<VerifyEmailPage />} />
                 <Route path="/auth/callback/:provider" element={<OAuthCallbackPage />} />
 

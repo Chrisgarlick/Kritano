@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #F8FAFC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:-40px;width:300px;height:300px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+      <p style="font-size:16px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Export Feature</p>
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:8px;">Share-ready PDF reports.</h1>
+      <p style="font-size:18px;color:#64748B;line-height:1.4;margin-bottom:20px;">Professional audit reports you can send to clients, stakeholders, or your team.</p>
+
+      <!-- PDF page mockup -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:4px;box-shadow:4px 6px 20px rgba(15,23,42,0.1);padding:0;overflow:hidden;">
+        <!-- PDF header -->
+        <div style="padding:18px 24px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-family:'Instrument Serif',Georgia,serif;font-size:15px;color:#4F46E5;">PagePulser</span>
+            <span style="font-size:12px;color:#94A3B8;">Audit Report</span>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#94A3B8;">19 March 2026</span>
+        </div>
+
+        <!-- Score summary row -->
+        <div style="padding:16px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid #F1F5F9;">
+          <svg width="48" height="48" viewBox="0 0 48 48">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#E2E8F0" stroke-width="3"/>
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="15" transform="rotate(-90 24 24)"/>
+            <text x="24" y="29" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="16" fill="#0F172A">88</text>
+          </svg>
+          <div>
+            <p style="font-size:13px;font-weight:600;color:#0F172A;">example.com — Overall Health: Good</p>
+            <p style="font-size:11px;color:#64748B;">3 critical · 5 serious · 9 moderate · 4 minor</p>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:6px;">
+            <div style="width:32px;height:32px;border-radius:6px;background:#F5F3FF;display:flex;align-items:center;justify-content:center;">
+              <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="50" stroke-dashoffset="4" transform="rotate(-90 10 10)"/><text x="10" y="13" text-anchor="middle" font-family="serif" font-size="8" fill="#0F172A">92</text></svg>
+            </div>
+            <div style="width:32px;height:32px;border-radius:6px;background:#ECFDF5;display:flex;align-items:center;justify-content:center;">
+              <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#10B981" stroke-width="2" stroke-dasharray="50" stroke-dashoffset="11" transform="rotate(-90 10 10)"/><text x="10" y="13" text-anchor="middle" font-family="serif" font-size="8" fill="#0F172A">78</text></svg>
+            </div>
+            <div style="width:32px;height:32px;border-radius:6px;background:#FEF2F2;display:flex;align-items:center;justify-content:center;">
+              <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#EF4444" stroke-width="2" stroke-dasharray="50" stroke-dashoffset="3" transform="rotate(-90 10 10)"/><text x="10" y="13" text-anchor="middle" font-family="serif" font-size="8" fill="#0F172A">95</text></svg>
+            </div>
+            <div style="width:32px;height:32px;border-radius:6px;background:#F0F9FF;display:flex;align-items:center;justify-content:center;">
+              <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="50" stroke-dashoffset="9" transform="rotate(-90 10 10)"/><text x="10" y="13" text-anchor="middle" font-family="serif" font-size="8" fill="#0F172A">83</text></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Findings section -->
+        <div style="padding:16px 24px;">
+          <p style="font-size:11px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Findings</p>
+
+          <!-- Finding 1 -->
+          <div style="border:1px solid #FECACA;border-radius:8px;padding:14px 16px;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#EF4444;"></div>
+              <span style="font-size:12px;font-weight:600;color:#0F172A;">Missing alt text on 12 images</span>
+              <span style="margin-left:auto;font-size:10px;font-weight:500;color:#EF4444;background:#FEF2F2;padding:2px 6px;border-radius:3px;">Critical</span>
+              <span style="font-size:10px;color:#94A3B8;">A11Y</span>
+            </div>
+            <p style="font-size:11px;color:#64748B;line-height:1.35;padding-left:12px;">Screen readers cannot describe these images. Add descriptive alt text for meaningful images.</p>
+          </div>
+
+          <!-- Finding 2 -->
+          <div style="border:1px solid #FED7AA;border-radius:8px;padding:14px 16px;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#F97316;"></div>
+              <span style="font-size:12px;font-weight:600;color:#0F172A;">Colour contrast below 4.5:1 on 8 elements</span>
+              <span style="margin-left:auto;font-size:10px;font-weight:500;color:#F97316;background:#FFF7ED;padding:2px 6px;border-radius:3px;">Serious</span>
+              <span style="font-size:10px;color:#94A3B8;">A11Y</span>
+            </div>
+            <p style="font-size:11px;color:#64748B;line-height:1.35;padding-left:12px;">Use darker text or lighter backgrounds to reach WCAG AA 4.5:1 minimum ratio.</p>
+          </div>
+
+          <!-- Finding 3 -->
+          <div style="border:1px solid #FDE68A;border-radius:8px;padding:14px 16px;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#F59E0B;"></div>
+              <span style="font-size:12px;font-weight:600;color:#0F172A;">No meta description on 3 pages</span>
+              <span style="margin-left:auto;font-size:10px;font-weight:500;color:#D97706;background:#FFFBEB;padding:2px 6px;border-radius:3px;">Moderate</span>
+              <span style="font-size:10px;color:#94A3B8;">SEO</span>
+            </div>
+            <p style="font-size:11px;color:#64748B;line-height:1.35;padding-left:12px;">Add unique meta descriptions under 155 characters with target keyword and CTA.</p>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding:10px 24px;background:#F8FAFC;border-top:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:10px;color:#94A3B8;">Generated by PagePulser · pagepulser.com</span>
+          <span style="font-size:10px;color:#94A3B8;">Page 3 of 12</span>
+        </div>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

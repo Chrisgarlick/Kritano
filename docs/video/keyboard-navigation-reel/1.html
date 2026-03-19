@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=450" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --video-duration: 36s;
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html {
+      width: 450px;
+      height: 800px;
+      overflow: hidden;
+      background: #F8FAFC;
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      position: relative;
+      transform: scale(0.41667);
+      transform-origin: top left;
+    }
+
+    .canvas {
+      width: 1080px;
+      height: 1920px;
+      position: relative;
+      overflow: hidden;
+      background: #F8FAFC;
+    }
+
+    .atmosphere {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      height: calc(1920px - 60px);
+    }
+
+    .scene {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      padding: 320px 100px 100px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scene--center {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    .brand-reserve {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    /* ── Atmospheric ── */
+    @keyframes drift-indigo {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(80px, 120px) scale(1.2); }
+    }
+    @keyframes drift-amber {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(-60px, -80px) scale(1.15); }
+    }
+    @keyframes wordmark-pulse {
+      0%, 100% { opacity: 0.5; }
+      50%      { opacity: 0.8; }
+    }
+
+    /* ── Scene A: Hook (visible 0–8s) ── */
+    @keyframes sa-label {
+      0%       { opacity: 0; transform: translateY(30px); }
+      4%       { opacity: 1; transform: translateY(0); }
+      17%      { opacity: 1; transform: translateY(0); }
+      22%      { opacity: 0; transform: translateY(-20px); }
+      24%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+    @keyframes sa-headline {
+      0%       { opacity: 0; transform: translateY(40px); }
+      2%       { opacity: 0; transform: translateY(40px); }
+      7%       { opacity: 1; transform: translateY(0); }
+      17%      { opacity: 1; transform: translateY(0); }
+      22%      { opacity: 0; transform: translateY(-20px); }
+      24%      { opacity: 0; transform: translateY(40px); }
+      100%     { opacity: 0; transform: translateY(40px); }
+    }
+    @keyframes sa-sub {
+      0%       { opacity: 0; transform: translateY(30px); }
+      5%       { opacity: 0; transform: translateY(30px); }
+      10%      { opacity: 1; transform: translateY(0); }
+      16%      { opacity: 1; transform: translateY(0); }
+      21%      { opacity: 0; transform: translateY(-20px); }
+      23%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+
+    /* ── Scene B: Tab failures (visible 7–18s) ── */
+    @keyframes sb-tab {
+      0%       { opacity: 0; transform: scale(0.85); }
+      19%      { opacity: 0; transform: scale(0.85); }
+      24%      { opacity: 1; transform: scale(1); }
+      44%      { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0; transform: scale(0.9); }
+      52%      { opacity: 0; transform: scale(0.85); }
+      100%     { opacity: 0; transform: scale(0.85); }
+    }
+    @keyframes tab-press {
+      0%, 35%, 100% { transform: translateY(0); }
+      50%           { transform: translateY(3px); }
+    }
+    @keyframes sb-msg1 {
+      0%       { opacity: 0; transform: translateX(-25px); }
+      25%      { opacity: 0; transform: translateX(-25px); }
+      29%      { opacity: 1; transform: translateX(0); }
+      44%      { opacity: 1; transform: translateX(0); }
+      49%      { opacity: 0; transform: translateX(15px); }
+      51%      { opacity: 0; transform: translateX(-25px); }
+      100%     { opacity: 0; transform: translateX(-25px); }
+    }
+    @keyframes sb-msg2 {
+      0%       { opacity: 0; transform: translateX(-25px); }
+      30%      { opacity: 0; transform: translateX(-25px); }
+      34%      { opacity: 1; transform: translateX(0); }
+      43%      { opacity: 1; transform: translateX(0); }
+      48%      { opacity: 0; transform: translateX(15px); }
+      50%      { opacity: 0; transform: translateX(-25px); }
+      100%     { opacity: 0; transform: translateX(-25px); }
+    }
+    @keyframes sb-msg3 {
+      0%       { opacity: 0; transform: translateX(-25px); }
+      34%      { opacity: 0; transform: translateX(-25px); }
+      39%      { opacity: 1; transform: translateX(0); }
+      42%      { opacity: 1; transform: translateX(0); }
+      47%      { opacity: 0; transform: translateX(15px); }
+      49%      { opacity: 0; transform: translateX(-25px); }
+      100%     { opacity: 0; transform: translateX(-25px); }
+    }
+
+    /* ── Scene C: Stat (visible 17–27s) ── */
+    @keyframes sc-label {
+      0%       { opacity: 0; transform: translateY(30px); }
+      47%      { opacity: 0; transform: translateY(30px); }
+      51%      { opacity: 1; transform: translateY(0); }
+      69%      { opacity: 1; transform: translateY(0); }
+      74%      { opacity: 0; transform: translateY(-20px); }
+      76%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+    @keyframes sc-stat {
+      0%       { opacity: 0; transform: scale(0.6); }
+      49%      { opacity: 0; transform: scale(0.6); }
+      56%      { opacity: 1; transform: scale(1); }
+      68%      { opacity: 1; transform: scale(1); }
+      73%      { opacity: 0; transform: scale(0.85); }
+      75%      { opacity: 0; transform: scale(0.6); }
+      100%     { opacity: 0; transform: scale(0.6); }
+    }
+    @keyframes sc-text {
+      0%       { opacity: 0; transform: translateY(30px); }
+      54%      { opacity: 0; transform: translateY(30px); }
+      59%      { opacity: 1; transform: translateY(0); }
+      67%      { opacity: 1; transform: translateY(0); }
+      72%      { opacity: 0; transform: translateY(-20px); }
+      74%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+    @keyframes sc-source {
+      0%       { opacity: 0; transform: translateY(20px); }
+      57%      { opacity: 0; transform: translateY(20px); }
+      62%      { opacity: 0.6; transform: translateY(0); }
+      66%      { opacity: 0.6; transform: translateY(0); }
+      71%      { opacity: 0; transform: translateY(-15px); }
+      73%      { opacity: 0; transform: translateY(20px); }
+      100%     { opacity: 0; transform: translateY(20px); }
+    }
+
+    /* ── Scene D: Statement (visible 26–34s) ── */
+    @keyframes sd-line1 {
+      0%       { opacity: 0; transform: translateY(30px); }
+      72%      { opacity: 0; transform: translateY(30px); }
+      77%      { opacity: 1; transform: translateY(0); }
+      89%      { opacity: 1; transform: translateY(0); }
+      94%      { opacity: 0; transform: translateY(-20px); }
+      96%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+    @keyframes sd-line2 {
+      0%       { opacity: 0; transform: translateY(30px); }
+      75%      { opacity: 0; transform: translateY(30px); }
+      80%      { opacity: 1; transform: translateY(0); }
+      88%      { opacity: 1; transform: translateY(0); }
+      93%      { opacity: 0; transform: translateY(-20px); }
+      95%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+
+    <!-- Atmospheric background -->
+    <div class="atmosphere">
+      <div style="position:absolute;top:-120px;left:-100px;width:600px;height:600px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(100px);animation:drift-indigo 8s ease-in-out infinite;"></div>
+      <div style="position:absolute;bottom:100px;right:-80px;width:450px;height:450px;background:#FFFBEB;border-radius:50%;opacity:0.6;filter:blur(100px);animation:drift-amber 10s ease-in-out infinite;"></div>
+    </div>
+
+    <!-- Content scenes (overlapping, only one visible at a time) -->
+    <div class="content">
+
+      <!-- Scene A: Hook -->
+      <div class="scene">
+        <p style="font-size:26px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.12em;opacity:0;animation:sa-label var(--video-duration) var(--ease-smooth) infinite;">Keyboard only</p>
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:80px;font-weight:400;color:#0F172A;line-height:1.1;margin-top:28px;opacity:0;animation:sa-headline var(--video-duration) var(--ease-smooth) infinite;">Try navigating a website. Without your mouse.</h1>
+        <p style="font-size:42px;font-weight:400;color:#64748B;line-height:1.35;margin-top:36px;max-width:700px;opacity:0;animation:sa-sub var(--video-duration) var(--ease-smooth) infinite;">Most people can't get past the navigation.</p>
+      </div>
+
+      <!-- Scene B: Tab failures -->
+      <div class="scene">
+        <!-- Tab key visual -->
+        <div style="opacity:0;animation:sb-tab var(--video-duration) var(--ease-smooth) infinite;">
+          <div style="display:inline-flex;align-items:center;gap:16px;padding:20px 44px;background:#FFFFFF;border:2px solid #E2E8F0;border-bottom:5px solid #CBD5E1;border-radius:16px;box-shadow:0 2px 12px rgba(15,23,42,0.08);animation:tab-press 1.4s ease-in-out infinite;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:500;color:#334155;">Tab</span>
+            <span style="font-size:36px;color:#94A3B8;">&#8677;</span>
+          </div>
+        </div>
+
+        <!-- Failure messages -->
+        <div style="display:flex;flex-direction:column;gap:28px;margin-top:64px;">
+          <div style="display:flex;align-items:center;gap:20px;opacity:0;animation:sb-msg1 var(--video-duration) var(--ease-smooth) infinite;">
+            <span style="width:14px;height:14px;border-radius:50%;background:#EF4444;flex-shrink:0;"></span>
+            <p style="font-size:40px;font-weight:400;color:#334155;line-height:1.3;">No visible focus indicator.</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;opacity:0;animation:sb-msg2 var(--video-duration) var(--ease-smooth) infinite;">
+            <span style="width:14px;height:14px;border-radius:50%;background:#EF4444;flex-shrink:0;"></span>
+            <p style="font-size:40px;font-weight:400;color:#334155;line-height:1.3;">Trapped in a dropdown menu.</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;opacity:0;animation:sb-msg3 var(--video-duration) var(--ease-smooth) infinite;">
+            <span style="width:14px;height:14px;border-radius:50%;background:#EF4444;flex-shrink:0;"></span>
+            <p style="font-size:40px;font-weight:400;color:#334155;line-height:1.3;">Can't reach the main content.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene C: Stat -->
+      <div class="scene">
+        <p style="font-size:26px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.12em;opacity:0;animation:sc-label var(--video-duration) var(--ease-smooth) infinite;">The reality</p>
+        <p style="font-size:180px;font-weight:700;color:#0F172A;line-height:1;margin-top:24px;opacity:0;animation:sc-stat var(--video-duration) var(--ease-smooth) infinite;">96%</p>
+        <p style="font-size:42px;font-weight:400;color:#475569;line-height:1.4;margin-top:32px;max-width:680px;opacity:0;animation:sc-text var(--video-duration) var(--ease-smooth) infinite;">of the top million websites have detectable accessibility failures.</p>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:24px;color:#94A3B8;margin-top:28px;opacity:0;animation:sc-source var(--video-duration) var(--ease-smooth) infinite;">WebAIM Million, 2024</p>
+      </div>
+
+      <!-- Scene D: Statement -->
+      <div class="scene scene--center">
+        <p style="font-size:44px;font-weight:300;color:#64748B;opacity:0;animation:sd-line1 var(--video-duration) var(--ease-smooth) infinite;">This is why we're building</p>
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:96px;font-weight:400;color:#4F46E5;margin-top:16px;opacity:0;animation:sd-line2 var(--video-duration) var(--ease-smooth) infinite;">PagePulser.</p>
+      </div>
+
+    </div>
+
+    <!-- Brand reserve -->
+    <div class="brand-reserve">
+      <span style="font-family:'Outfit',sans-serif;font-weight:600;font-size:18px;letter-spacing:0.15em;text-transform:uppercase;color:#94A3B8;animation:wordmark-pulse 4s ease-in-out infinite;">PagePulser</span>
+    </div>
+
+  </div>
+</body>
+</html>

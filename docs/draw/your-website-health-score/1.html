@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #F8FAFC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:-40px;width:300px;height:300px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+      <p style="font-size:16px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">How Scoring Works</p>
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:48px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:8px;">Your Website Health Score</h1>
+      <p style="font-size:18px;color:#64748B;line-height:1.4;margin-bottom:24px;">A single number from 0–100 that tells you how healthy your site is.</p>
+
+      <!-- Score ranges -->
+      <div style="display:flex;gap:12px;margin-bottom:20px;">
+        <div style="flex:1;border-radius:12px;overflow:hidden;border:1px solid #A7F3D0;">
+          <div style="background:#ECFDF5;padding:14px 16px;text-align:center;">
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#10B981;">90–100</p>
+          </div>
+          <div style="background:#FFFFFF;padding:12px 16px;text-align:center;">
+            <p style="font-size:14px;font-weight:600;color:#059669;">Excellent</p>
+            <p style="font-size:12px;color:#64748B;margin-top:2px;">Minor tweaks only</p>
+          </div>
+        </div>
+        <div style="flex:1;border-radius:12px;overflow:hidden;border:1px solid #FDE68A;">
+          <div style="background:#FFFBEB;padding:14px 16px;text-align:center;">
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#F59E0B;">70–89</p>
+          </div>
+          <div style="background:#FFFFFF;padding:12px 16px;text-align:center;">
+            <p style="font-size:14px;font-weight:600;color:#D97706;">Good</p>
+            <p style="font-size:12px;color:#64748B;margin-top:2px;">Some areas to improve</p>
+          </div>
+        </div>
+        <div style="flex:1;border-radius:12px;overflow:hidden;border:1px solid #FED7AA;">
+          <div style="background:#FFF7ED;padding:14px 16px;text-align:center;">
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#F97316;">50–69</p>
+          </div>
+          <div style="background:#FFFFFF;padding:12px 16px;text-align:center;">
+            <p style="font-size:14px;font-weight:600;color:#EA580C;">Fair</p>
+            <p style="font-size:12px;color:#64748B;margin-top:2px;">Action required</p>
+          </div>
+        </div>
+        <div style="flex:1;border-radius:12px;overflow:hidden;border:1px solid #FECACA;">
+          <div style="background:#FEF2F2;padding:14px 16px;text-align:center;">
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#EF4444;">0–49</p>
+          </div>
+          <div style="background:#FFFFFF;padding:12px 16px;text-align:center;">
+            <p style="font-size:14px;font-weight:600;color:#DC2626;">Critical</p>
+            <p style="font-size:12px;color:#64748B;margin-top:2px;">Immediate attention</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Four categories -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:22px 24px;margin-bottom:16px;">
+        <p style="font-size:13px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">The Four Categories</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#8B5CF6;flex-shrink:0;"></div>
+            <div>
+              <span style="font-size:15px;font-weight:600;color:#0F172A;">SEO</span>
+              <span style="font-size:13px;color:#64748B;margin-left:6px;">30% weight</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#10B981;flex-shrink:0;"></div>
+            <div>
+              <span style="font-size:15px;font-weight:600;color:#0F172A;">Accessibility</span>
+              <span style="font-size:13px;color:#64748B;margin-left:6px;">25% weight</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#EF4444;flex-shrink:0;"></div>
+            <div>
+              <span style="font-size:15px;font-weight:600;color:#0F172A;">Security</span>
+              <span style="font-size:13px;color:#64748B;margin-left:6px;">25% weight</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#0EA5E9;flex-shrink:0;"></div>
+            <div>
+              <span style="font-size:15px;font-weight:600;color:#0F172A;">Performance</span>
+              <span style="font-size:13px;color:#64748B;margin-left:6px;">20% weight</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tip -->
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:0 4px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#4F46E5;margin-top:7px;flex-shrink:0;"></div>
+        <p style="font-size:16px;color:#64748B;line-height:1.35;"><strong style="color:#334155;">Severity matters more than count.</strong> One critical issue drops your score more than ten minor ones.</p>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

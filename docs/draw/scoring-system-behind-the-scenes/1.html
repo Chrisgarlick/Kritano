@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #F8FAFC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:-40px;width:300px;height:300px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+      <p style="font-size:16px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Behind The Scenes</p>
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:8px;">How We Score Your Website</h1>
+      <p style="font-size:18px;color:#64748B;line-height:1.4;margin-bottom:24px;">The hardest part of building PagePulser? Making the scoring fair.</p>
+
+      <!-- Scoring mockup -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;overflow:hidden;margin-bottom:16px;">
+        <!-- Header -->
+        <div style="padding:16px 24px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:13px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:0.05em;">Scoring Engine v3.2</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#94A3B8;">audit.score.calculate()</span>
+        </div>
+        <!-- Weight distribution -->
+        <div style="padding:20px 24px;">
+          <p style="font-size:12px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px;">Category Weights</p>
+          <!-- SEO -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:#8B5CF6;width:60px;">SEO</span>
+            <div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden;">
+              <div style="width:30%;height:100%;background:#8B5CF6;border-radius:4px;"></div>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#64748B;width:36px;text-align:right;">30%</span>
+          </div>
+          <!-- A11Y -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:#10B981;width:60px;">A11Y</span>
+            <div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden;">
+              <div style="width:25%;height:100%;background:#10B981;border-radius:4px;"></div>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#64748B;width:36px;text-align:right;">25%</span>
+          </div>
+          <!-- Security -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:#EF4444;width:60px;">Security</span>
+            <div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden;">
+              <div style="width:25%;height:100%;background:#EF4444;border-radius:4px;"></div>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#64748B;width:36px;text-align:right;">25%</span>
+          </div>
+          <!-- Perf -->
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:13px;font-weight:600;color:#0EA5E9;width:60px;">Perf</span>
+            <div style="flex:1;height:8px;background:#F1F5F9;border-radius:4px;overflow:hidden;">
+              <div style="width:20%;height:100%;background:#0EA5E9;border-radius:4px;"></div>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#64748B;width:36px;text-align:right;">20%</span>
+          </div>
+        </div>
+        <!-- Severity multipliers -->
+        <div style="padding:16px 24px;background:#F8FAFC;border-top:1px solid #F1F5F9;">
+          <p style="font-size:12px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">Severity Impact</p>
+          <div style="display:flex;gap:12px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#EF4444;"></div>
+              <span style="font-size:12px;color:#64748B;">Critical <span style="font-family:'JetBrains Mono',monospace;color:#EF4444;">×4</span></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#F97316;"></div>
+              <span style="font-size:12px;color:#64748B;">Serious <span style="font-family:'JetBrains Mono',monospace;color:#F97316;">×3</span></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#F59E0B;"></div>
+              <span style="font-size:12px;color:#64748B;">Moderate <span style="font-family:'JetBrains Mono',monospace;color:#F59E0B;">×2</span></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#0EA5E9;"></div>
+              <span style="font-size:12px;color:#64748B;">Minor <span style="font-family:'JetBrains Mono',monospace;color:#0EA5E9;">×1</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div style="display:flex;align-items:flex-start;gap:14px;padding:0 4px;">
+        <div style="width:3px;background:#4F46E5;border-radius:2px;flex-shrink:0;min-height:48px;"></div>
+        <p style="font-size:17px;color:#334155;line-height:1.45;font-style:italic;">"A score of 85 should mean the same thing whether you're running a blog or an e-commerce store with 10,000 pages. That's the hard part."</p>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

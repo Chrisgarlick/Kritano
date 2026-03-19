@@ -11,6 +11,26 @@ services:
       - "5433:5432"  # Using 5433 externally to avoid conflict
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_buffers=128MB"
+      - "-c"
+      - "work_mem=4MB"
+      - "-c"
+      - "effective_cache_size=256MB"
+      - "-c"
+      - "maintenance_work_mem=64MB"
+      - "-c"
+      - "max_connections=50"
+      - "-c"
+      - "statement_timeout=30000"
+      - "-c"
+      - "idle_in_transaction_session_timeout=60000"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U pagepulser -d pagepulser"]
       interval: 10s
@@ -25,6 +45,11 @@ services:
       - "6380:6379"  # Using 6380 externally to avoid conflict
     volumes:
       - redis_data:/data
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s

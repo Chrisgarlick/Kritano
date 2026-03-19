@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #F8FAFC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:-80px;right:-60px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:-40px;width:300px;height:300px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <div style="position:absolute;top:48px;left:90px;right:90px;display:flex;align-items:center;justify-content:space-between;z-index:2;">
+      <div style="display:flex;gap:6px;">
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#4F46E5;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+      </div>
+      <div style="width:48px;height:48px;border-radius:12px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#4F46E5;">1</span>
+      </div>
+    </div>
+
+    <div style="position:relative;z-index:1;padding:90px 90px 70px;height:100%;">
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:52px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:12px;">What Is PagePulser?</h1>
+      <p style="font-size:20px;color:#64748B;line-height:1.4;margin-bottom:28px;">A website intelligence platform that audits your site across four dimensions — and tells you exactly what to fix first.</p>
+
+      <!-- Four pillars -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:24px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:#F5F3FF;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+            <span style="font-size:18px;font-weight:700;color:#8B5CF6;">S</span>
+          </div>
+          <p style="font-size:17px;font-weight:600;color:#0F172A;margin-bottom:4px;">SEO</p>
+          <p style="font-size:14px;color:#64748B;line-height:1.35;">Meta tags, headings, broken links, structured data, Core Web Vitals</p>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:24px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:#ECFDF5;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+            <span style="font-size:18px;font-weight:700;color:#10B981;">A</span>
+          </div>
+          <p style="font-size:17px;font-weight:600;color:#0F172A;margin-bottom:4px;">Accessibility</p>
+          <p style="font-size:14px;color:#64748B;line-height:1.35;">WCAG 2.1 AA, colour contrast, alt text, keyboard navigation, ARIA</p>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:24px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:#FEF2F2;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+            <span style="font-size:18px;font-weight:700;color:#EF4444;">S</span>
+          </div>
+          <p style="font-size:17px;font-weight:600;color:#0F172A;margin-bottom:4px;">Security</p>
+          <p style="font-size:14px;color:#64748B;line-height:1.35;">SSL, mixed content, exposed files, security headers, CMS vulnerabilities</p>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:24px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:#F0F9FF;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+            <span style="font-size:18px;font-weight:700;color:#0EA5E9;">P</span>
+          </div>
+          <p style="font-size:17px;font-weight:600;color:#0F172A;margin-bottom:4px;">Performance</p>
+          <p style="font-size:14px;color:#64748B;line-height:1.35;">Page speed, LCP, INP, CLS, image optimisation, resource loading</p>
+        </div>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

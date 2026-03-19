@@ -368,6 +368,8 @@ export class ContentEngine {
           aeoSourceAuthorityScore: aeoAnalysis.metrics.sourceAuthorityScore,
           aeoTier: aeoAnalysis.metrics.tier,
           aeoNuggets: aeoAnalysis.metrics.nuggets,
+          aeoContentFrontloaded: aeoAnalysis.metrics.contentFrontloaded,
+          aeoContentFrontloadingRatio: aeoAnalysis.metrics.contentFrontloadingRatio,
         }),
 
         // Keyword metrics (optional)

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(135deg, #4F46E5 0%, #312E81 100%);
+    }
+    .font-display { font-family: 'Instrument Serif', Georgia, serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Grid overlay -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <!-- Glow -->
+    <div style="position:absolute;top:0;right:0;width:600px;height:600px;background:rgba(99,102,241,0.3);border-radius:50%;filter:blur(120px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-100px;left:-50px;width:400px;height:400px;background:rgba(251,191,36,0.08);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <!-- Slide indicator — fixed position across all slides -->
+    <div style="position:absolute;top:48px;left:100px;display:flex;gap:8px;z-index:2;">
+      <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:#FBBF24;"></div>
+    </div>
+
+    <!-- Content — vertically centred via padding -->
+    <div style="position:relative;z-index:1;padding:140px 100px 80px;display:flex;flex-direction:column;align-items:center;height:100%;">
+
+      <!-- Checkmark -->
+      <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:36px;flex-shrink:0;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+          <path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:66px;font-weight:400;color:#FFFFFF;line-height:1.1;max-width:680px;text-align:center;">
+        Don't let these issues hide on your site.
+      </h1>
+
+      <!-- Subtitle -->
+      <p style="font-size:26px;font-weight:400;color:rgba(255,255,255,0.6);line-height:1.5;margin-top:24px;max-width:540px;text-align:center;">
+        PagePulser scans for all five — and hundreds more — in under two minutes.
+      </p>
+
+      <!-- CTA pill -->
+      <div style="margin-top:40px;flex-shrink:0;">
+        <div style="display:inline-block;background:#FFFFFF;border-radius:12px;padding:18px 44px;">
+          <span style="font-size:22px;font-weight:600;color:#4F46E5;">Start Your Free Audit</span>
+        </div>
+      </div>
+
+      <!-- Spacer -->
+      <div style="flex:1;"></div>
+
+      <!-- Recap row -->
+      <div style="display:flex;justify-content:center;gap:24px;flex-shrink:0;">
+        <span style="font-size:15px;color:rgba(255,255,255,0.35);">Alt text</span>
+        <span style="font-size:15px;color:rgba(255,255,255,0.15);">/</span>
+        <span style="font-size:15px;color:rgba(255,255,255,0.35);">Contrast</span>
+        <span style="font-size:15px;color:rgba(255,255,255,0.15);">/</span>
+        <span style="font-size:15px;color:rgba(255,255,255,0.35);">Headings</span>
+        <span style="font-size:15px;color:rgba(255,255,255,0.15);">/</span>
+        <span style="font-size:15px;color:rgba(255,255,255,0.35);">Links</span>
+        <span style="font-size:15px;color:rgba(255,255,255,0.15);">/</span>
+        <span style="font-size:15px;color:rgba(255,255,255,0.35);">Labels</span>
+      </div>
+
+      <!-- Branding -->
+      <div style="text-align:center;margin-top:20px;flex-shrink:0;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:22px;color:rgba(255,255,255,0.25);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

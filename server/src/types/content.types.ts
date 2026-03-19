@@ -161,6 +161,8 @@ export interface AeoMetrics {
   hasClaimReviewSchema: boolean;
   authoritativeLinkCount: number;
   semanticCitationCount: number;
+  contentFrontloaded: boolean;
+  contentFrontloadingRatio: number; // 0-1, proportion of words in first third of body
   tier: 'primary-source' | 'general-reference' | 'ignored';
   nuggets: AeoNugget[];
 }
@@ -240,6 +242,8 @@ export interface ContentAnalysisResult {
     aeoSourceAuthorityScore?: number;
     aeoTier?: string;
     aeoNuggets?: AeoNugget[];
+    aeoContentFrontloaded?: boolean;
+    aeoContentFrontloadingRatio?: number;
 
     // Keyword metrics (when applicable)
     keywordDensity?: number;

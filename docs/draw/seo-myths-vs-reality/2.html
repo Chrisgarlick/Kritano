@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:-100px;right:-60px;width:450px;height:450px;background:rgba(99,102,241,0.12);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:80px;width:300px;height:300px;background:rgba(251,191,36,0.05);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+      <p style="font-size:16px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Myth Busting</p>
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:52px;font-weight:400;color:#FFFFFF;line-height:1.08;margin-bottom:24px;">SEO Myths vs Reality</h1>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <!-- Myth 1 -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 24px;display:flex;gap:16px;">
+          <div style="flex-shrink:0;width:44px;height:44px;border-radius:10px;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:18px;color:#F87171;font-weight:700;">✕</span>
+          </div>
+          <div>
+            <p style="font-size:16px;color:#F87171;line-height:1.3;margin-bottom:4px;">"Submit your site to Google to get indexed"</p>
+            <p style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.35;">Google crawls the web automatically. Submission is optional and only useful for brand new sites.</p>
+          </div>
+        </div>
+        <!-- Myth 2 -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 24px;display:flex;gap:16px;">
+          <div style="flex-shrink:0;width:44px;height:44px;border-radius:10px;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:18px;color:#F87171;font-weight:700;">✕</span>
+          </div>
+          <div>
+            <p style="font-size:16px;color:#F87171;line-height:1.3;margin-bottom:4px;">"Stuff keywords everywhere for better rankings"</p>
+            <p style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.35;">Keyword stuffing is a spam signal. Google's AI understands natural language and search intent.</p>
+          </div>
+        </div>
+        <!-- Myth 3 -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 24px;display:flex;gap:16px;">
+          <div style="flex-shrink:0;width:44px;height:44px;border-radius:10px;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:18px;color:#F87171;font-weight:700;">✕</span>
+          </div>
+          <div>
+            <p style="font-size:16px;color:#F87171;line-height:1.3;margin-bottom:4px;">"Meta descriptions boost rankings directly"</p>
+            <p style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.35;">Not a ranking factor — but good meta descriptions improve CTR, which does influence performance.</p>
+          </div>
+        </div>
+        <!-- Myth 4 -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 24px;display:flex;gap:16px;">
+          <div style="flex-shrink:0;width:44px;height:44px;border-radius:10px;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:18px;color:#F87171;font-weight:700;">✕</span>
+          </div>
+          <div>
+            <p style="font-size:16px;color:#F87171;line-height:1.3;margin-bottom:4px;">"HTTPS is optional for SEO"</p>
+            <p style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.35;">HTTPS has been a confirmed Google ranking signal since 2014. HTTP sites are marked "Not Secure".</p>
+          </div>
+        </div>
+        <!-- Myth 5 -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px 24px;display:flex;gap:16px;">
+          <div style="flex-shrink:0;width:44px;height:44px;border-radius:10px;background:rgba(239,68,68,0.15);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:18px;color:#F87171;font-weight:700;">✕</span>
+          </div>
+          <div>
+            <p style="font-size:16px;color:#F87171;line-height:1.3;margin-bottom:4px;">"SEO is a one-off project"</p>
+            <p style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.35;">Google makes ~4,500 algorithm changes per year. SEO requires continuous monitoring and adaptation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #F8FAFC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:60px;right:-80px;width:380px;height:380px;background:#EEF2FF;border-radius:50%;opacity:0.6;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:80px;width:320px;height:320px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <div style="position:absolute;top:48px;left:90px;right:90px;display:flex;align-items:center;justify-content:space-between;z-index:2;">
+      <div style="display:flex;gap:6px;">
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#0EA5E9;"></div>
+        <div style="width:28px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+      </div>
+      <div style="width:48px;height:48px;border-radius:12px;background:#F0F9FF;display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#0284C7;">5</span>
+      </div>
+    </div>
+
+    <div style="position:relative;z-index:1;padding:90px 90px 70px;height:100%;">
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:52px;font-weight:400;color:#0F172A;line-height:1.08;margin-bottom:12px;">Sensitive File Exposure</h1>
+      <p style="font-size:20px;color:#64748B;line-height:1.4;margin-bottom:28px;">Configuration files, backups, and environment variables left publicly accessible. One wrong file and attackers have your database credentials.</p>
+
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:24px 28px;margin-bottom:14px;">
+        <p style="font-size:14px;font-weight:600;color:#0284C7;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Files That Should Never Be Public</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#0284C7;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:6px;padding:6px 12px;">.env</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#0284C7;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:6px;padding:6px 12px;">wp-config.php</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#0284C7;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:6px;padding:6px 12px;">.git/</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#0284C7;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:6px;padding:6px 12px;">database.yml</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#0284C7;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:6px;padding:6px 12px;">*.sql backups</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#0284C7;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:6px;padding:6px 12px;">.DS_Store</span>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:24px 28px;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#10B981;"></div>
+          <span style="font-size:14px;font-weight:600;color:#10B981;text-transform:uppercase;letter-spacing:0.08em;">Fix</span>
+        </div>
+        <p style="font-size:16px;color:#334155;line-height:1.4;">Block access to sensitive files in your web server config. Add them to .gitignore. Use environment variables instead of config files in web root. Run a scan to check what's publicly accessible.</p>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:0 4px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#EF4444;margin-top:7px;flex-shrink:0;"></div>
+        <p style="font-size:16px;color:#64748B;line-height:1.35;"><strong style="color:#334155;">Real risk:</strong> Exposed .env files contain database passwords, API keys, and secret tokens in plain text.</p>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

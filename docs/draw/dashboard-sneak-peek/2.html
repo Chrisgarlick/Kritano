@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:-100px;right:-60px;width:450px;height:450px;background:rgba(99,102,241,0.12);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-60px;left:80px;width:300px;height:300px;background:rgba(251,191,36,0.05);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+
+      <p style="font-size:16px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Behind The Scenes</p>
+
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:48px;font-weight:400;color:#FFFFFF;line-height:1.1;margin-bottom:8px;">Sneak peek at what we've been building.</h1>
+
+      <p style="font-size:20px;color:#64748B;margin-bottom:28px;">Stay tuned.</p>
+
+      <!-- Dashboard mockup — dark version -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;">
+        <!-- Browser chrome -->
+        <div style="padding:12px 16px;background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:8px;">
+          <div style="width:10px;height:10px;border-radius:50%;background:#EF4444;opacity:0.7;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#F59E0B;opacity:0.7;"></div>
+          <div style="width:10px;height:10px;border-radius:50%;background:#10B981;opacity:0.7;"></div>
+          <div style="flex:1;margin-left:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:5px 12px;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#64748B;">app.pagepulser.com/dashboard</span>
+          </div>
+        </div>
+        <!-- Dashboard -->
+        <div style="padding:24px;">
+          <!-- Score cards row -->
+          <div style="display:flex;gap:12px;margin-bottom:16px;">
+            <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:18px;text-align:center;">
+              <svg width="52" height="52" viewBox="0 0 52 52" style="display:block;margin:0 auto 8px;">
+                <circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/>
+                <circle cx="26" cy="26" r="22" fill="none" stroke="#8B5CF6" stroke-width="4" stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="11" transform="rotate(-90 26 26)"/>
+                <text x="26" y="31" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="17" fill="white">92</text>
+              </svg>
+              <p style="font-size:11px;color:#64748B;">SEO</p>
+            </div>
+            <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:18px;text-align:center;">
+              <svg width="52" height="52" viewBox="0 0 52 52" style="display:block;margin:0 auto 8px;">
+                <circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/>
+                <circle cx="26" cy="26" r="22" fill="none" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="30" transform="rotate(-90 26 26)"/>
+                <text x="26" y="31" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="17" fill="white">78</text>
+              </svg>
+              <p style="font-size:11px;color:#64748B;">A11Y</p>
+            </div>
+            <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:18px;text-align:center;">
+              <svg width="52" height="52" viewBox="0 0 52 52" style="display:block;margin:0 auto 8px;">
+                <circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/>
+                <circle cx="26" cy="26" r="22" fill="none" stroke="#EF4444" stroke-width="4" stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="7" transform="rotate(-90 26 26)"/>
+                <text x="26" y="31" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="17" fill="white">95</text>
+              </svg>
+              <p style="font-size:11px;color:#64748B;">Security</p>
+            </div>
+            <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:18px;text-align:center;">
+              <svg width="52" height="52" viewBox="0 0 52 52" style="display:block;margin:0 auto 8px;">
+                <circle cx="26" cy="26" r="22" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4"/>
+                <circle cx="26" cy="26" r="22" fill="none" stroke="#0EA5E9" stroke-width="4" stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="24" transform="rotate(-90 26 26)"/>
+                <text x="26" y="31" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="17" fill="white">83</text>
+              </svg>
+              <p style="font-size:11px;color:#64748B;">Perf</p>
+            </div>
+          </div>
+          <!-- Issues summary -->
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:16px;">
+            <div style="display:flex;align-items:center;gap:20px;font-size:12px;">
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#EF4444;display:inline-block;"></span><span style="color:#94A3B8;">3 Critical</span></span>
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#F97316;display:inline-block;"></span><span style="color:#94A3B8;">7 Serious</span></span>
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#F59E0B;display:inline-block;"></span><span style="color:#94A3B8;">12 Moderate</span></span>
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#0EA5E9;display:inline-block;"></span><span style="color:#94A3B8;">5 Minor</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

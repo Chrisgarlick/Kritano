@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: linear-gradient(135deg, #4F46E5 0%, #312E81 100%); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;top:0;right:0;width:500px;height:500px;background:rgba(99,102,241,0.3);border-radius:50%;filter:blur(120px);pointer-events:none;"></div>
+
+    <div style="position:relative;z-index:1;padding:80px 90px 70px;height:100%;">
+      <p style="font-size:16px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">See It In Action</p>
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;font-weight:400;color:#FFFFFF;line-height:1.08;margin-bottom:20px;">Four scores. One dashboard. Zero jargon.</h1>
+
+      <!-- Centred score rings row -->
+      <div style="display:flex;justify-content:center;gap:28px;margin-bottom:28px;">
+        <div style="text-align:center;">
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="5"/>
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#8B5CF6" stroke-width="5" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="20" transform="rotate(-90 48 48)"/>
+            <text x="48" y="54" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="28" fill="white">92</text>
+          </svg>
+          <p style="font-size:13px;font-weight:600;color:#8B5CF6;margin-top:8px;">SEO</p>
+        </div>
+        <div style="text-align:center;">
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="5"/>
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#10B981" stroke-width="5" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="55" transform="rotate(-90 48 48)"/>
+            <text x="48" y="54" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="28" fill="white">78</text>
+          </svg>
+          <p style="font-size:13px;font-weight:600;color:#10B981;margin-top:8px;">A11Y</p>
+        </div>
+        <div style="text-align:center;">
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="5"/>
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#EF4444" stroke-width="5" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="13" transform="rotate(-90 48 48)"/>
+            <text x="48" y="54" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="28" fill="white">95</text>
+          </svg>
+          <p style="font-size:13px;font-weight:600;color:#EF4444;margin-top:8px;">Security</p>
+        </div>
+        <div style="text-align:center;">
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="5"/>
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#0EA5E9" stroke-width="5" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="43" transform="rotate(-90 48 48)"/>
+            <text x="48" y="54" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="28" fill="white">83</text>
+          </svg>
+          <p style="font-size:13px;font-weight:600;color:#0EA5E9;margin-top:8px;">Perf</p>
+        </div>
+      </div>
+
+      <!-- Guidance cards -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px 22px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#EF4444;"></div>
+            <span style="font-size:14px;font-weight:600;color:#FFFFFF;">12 images missing alt text</span>
+            <span style="margin-left:auto;font-size:11px;color:#EF4444;">Critical</span>
+          </div>
+          <p style="font-size:13px;color:#94A3B8;line-height:1.35;padding-left:14px;">Add descriptive alt text for meaningful images. Use empty alt="" for decorative ones.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px 22px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#F97316;"></div>
+            <span style="font-size:14px;font-weight:600;color:#FFFFFF;">Colour contrast below 4.5:1</span>
+            <span style="margin-left:auto;font-size:11px;color:#F97316;">Serious</span>
+          </div>
+          <p style="font-size:13px;color:#94A3B8;line-height:1.35;padding-left:14px;">Use darker text or lighter backgrounds to reach WCAG AA contrast requirements.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px 22px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#F59E0B;"></div>
+            <span style="font-size:14px;font-weight:600;color:#FFFFFF;">Missing meta description on 3 pages</span>
+            <span style="margin-left:auto;font-size:11px;color:#F59E0B;">Moderate</span>
+          </div>
+          <p style="font-size:13px;color:#94A3B8;line-height:1.35;padding-left:14px;">Add unique meta descriptions under 155 characters with your target keyword and a CTA.</p>
+        </div>
+      </div>
+
+      <p style="font-size:15px;color:rgba(255,255,255,0.3);font-style:italic;">Every issue. Explained. Prioritised. Fixable.</p>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:rgba(255,255,255,0.18);">PagePulser</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

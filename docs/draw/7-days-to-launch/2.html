@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #F8FAFC;
+    }
+    .font-display { font-family: 'Instrument Serif', Georgia, serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Atmospheric: indigo accent top-left -->
+    <div style="position:absolute;top:-60px;left:-80px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.6;filter:blur(80px);pointer-events:none;"></div>
+    <!-- Atmospheric: amber accent centre-right -->
+    <div style="position:absolute;top:300px;right:-100px;width:350px;height:350px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:90px 100px 70px;height:100%;">
+
+      <!-- Label -->
+      <p style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.15em;">
+        Early Access
+      </p>
+
+      <!-- Headline -->
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:72px;font-weight:400;color:#0F172A;line-height:1.1;margin-top:20px;">
+        7 Days<br>to Launch
+      </h1>
+
+      <!-- Body -->
+      <p style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:400;color:#64748B;line-height:1.5;margin-top:24px;max-width:650px;">
+        Get in early and be first to scan your site. Link in bio.
+      </p>
+
+      <!-- Countdown card strip -->
+      <div style="display:flex;gap:16px;margin-top:48px;">
+        <!-- Day boxes -->
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;box-shadow:0 1px 3px rgba(15,23,42,0.08);padding:28px 0;flex:1;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#4F46E5;line-height:1;">0</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:500;color:#94A3B8;margin-top:8px;text-transform:uppercase;letter-spacing:0.05em;">Weeks</p>
+        </div>
+        <div style="background:#FFFFFF;border:2px solid #4F46E5;border-radius:16px;box-shadow:0 4px 16px rgba(79,70,229,0.15);padding:28px 0;flex:1;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#4F46E5;line-height:1;">7</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:500;color:#4F46E5;margin-top:8px;text-transform:uppercase;letter-spacing:0.05em;">Days</p>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;box-shadow:0 1px 3px rgba(15,23,42,0.08);padding:28px 0;flex:1;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#CBD5E1;line-height:1;">0</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:500;color:#94A3B8;margin-top:8px;text-transform:uppercase;letter-spacing:0.05em;">Hours</p>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;box-shadow:0 1px 3px rgba(15,23,42,0.08);padding:28px 0;flex:1;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;color:#CBD5E1;line-height:1;">0</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:500;color:#94A3B8;margin-top:8px;text-transform:uppercase;letter-spacing:0.05em;">Mins</p>
+        </div>
+      </div>
+
+      <!-- Feature pills -->
+      <div style="display:flex;gap:12px;margin-top:40px;flex-wrap:wrap;">
+        <span style="background:#EEF2FF;color:#4F46E5;font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;padding:10px 24px;border-radius:100px;">SEO Audits</span>
+        <span style="background:#ECFDF5;color:#047857;font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;padding:10px 24px;border-radius:100px;">Accessibility</span>
+        <span style="background:#FEF2F2;color:#B91C1C;font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;padding:10px 24px;border-radius:100px;">Security</span>
+        <span style="background:#F0F9FF;color:#0369A1;font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;padding:10px 24px;border-radius:100px;">Performance</span>
+        <span style="background:#FFFBEB;color:#B45309;font-family:'Outfit',sans-serif;font-size:18px;font-weight:500;padding:10px 24px;border-radius:100px;">Content</span>
+      </div>
+
+      <!-- Branding -->
+      <div style="position:absolute;bottom:40px;right:100px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;color:#4F46E5;">
+          PagePulser
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

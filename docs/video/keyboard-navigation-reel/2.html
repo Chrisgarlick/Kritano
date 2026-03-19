@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=450" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --video-duration: 36s;
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html {
+      width: 450px;
+      height: 800px;
+      overflow: hidden;
+      background: #0F172A;
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      position: relative;
+      transform: scale(0.41667);
+      transform-origin: top left;
+    }
+
+    .canvas {
+      width: 1080px;
+      height: 1920px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #1E1B4B 0%, #0F172A 100%);
+    }
+
+    .atmosphere {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      height: calc(1920px - 60px);
+    }
+
+    .scene {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      padding: 260px 100px 100px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scene--center {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    .brand-reserve {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    /* ── Atmospheric ── */
+    @keyframes drift-indigo {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(80px, 120px) scale(1.2); }
+    }
+    @keyframes drift-amber {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(-60px, -80px) scale(1.15); }
+    }
+    @keyframes grid-breathe {
+      0%, 100% { opacity: 0.3; }
+      50%      { opacity: 0.6; }
+    }
+    @keyframes wordmark-pulse {
+      0%, 100% { opacity: 0.4; }
+      50%      { opacity: 0.7; }
+    }
+
+    /* ── Scene A: Hook (0–8s = 0–22%) ── */
+    @keyframes sa-label {
+      0%       { opacity: 0; transform: translateY(30px); }
+      4%       { opacity: 1; transform: translateY(0); }
+      17%      { opacity: 1; transform: translateY(0); }
+      22%      { opacity: 0; transform: translateY(-20px); }
+      24%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+    @keyframes sa-headline {
+      0%       { opacity: 0; transform: translateY(40px); }
+      2%       { opacity: 0; transform: translateY(40px); }
+      7%       { opacity: 1; transform: translateY(0); }
+      17%      { opacity: 1; transform: translateY(0); }
+      22%      { opacity: 0; transform: translateY(-20px); }
+      24%      { opacity: 0; transform: translateY(40px); }
+      100%     { opacity: 0; transform: translateY(40px); }
+    }
+
+    /* ── Scene B: Simulated webpage (7–20s = 19–56%) ── */
+    @keyframes sb-card {
+      0%       { opacity: 0; transform: translateY(50px) scale(0.96); }
+      19%      { opacity: 0; transform: translateY(50px) scale(0.96); }
+      25%      { opacity: 1; transform: translateY(0) scale(1); }
+      50%      { opacity: 1; transform: translateY(0) scale(1); }
+      56%      { opacity: 0; transform: translateY(-30px) scale(0.97); }
+      58%      { opacity: 0; transform: translateY(50px) scale(0.96); }
+      100%     { opacity: 0; transform: translateY(50px) scale(0.96); }
+    }
+
+    /* Focus ring on Home nav item */
+    @keyframes focus-home {
+      0%, 26%   { box-shadow: inset 0 -3px 0 transparent; }
+      27%       { box-shadow: inset 0 -3px 0 #818CF8; }
+      30%       { box-shadow: inset 0 -3px 0 #818CF8; }
+      31%, 100% { box-shadow: inset 0 -3px 0 transparent; }
+    }
+
+    /* Red flash when focus is lost */
+    @keyframes focus-lost-flash {
+      0%, 31%  { background: transparent; }
+      32%      { background: rgba(239, 68, 68, 0.08); }
+      34%      { background: transparent; }
+      35%, 100% { background: transparent; }
+    }
+
+    /* Focus ring on Learn More button */
+    @keyframes focus-btn {
+      0%, 39%   { box-shadow: 0 0 0 0 transparent; }
+      40%       { box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.6); }
+      43%       { box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.6); }
+      44%, 100% { box-shadow: 0 0 0 0 transparent; }
+    }
+
+    /* Tab counters */
+    @keyframes tc1 {
+      0%, 26%  { opacity: 0; }
+      27%      { opacity: 1; }
+      30%      { opacity: 1; }
+      31%      { opacity: 0; }
+      100%     { opacity: 0; }
+    }
+    @keyframes tc2 {
+      0%, 30%  { opacity: 0; }
+      31%      { opacity: 1; }
+      35%      { opacity: 1; }
+      36%      { opacity: 0; }
+      100%     { opacity: 0; }
+    }
+    @keyframes tc3 {
+      0%, 35%  { opacity: 0; }
+      36%      { opacity: 1; }
+      40%      { opacity: 1; }
+      41%      { opacity: 0; }
+      100%     { opacity: 0; }
+    }
+    @keyframes tc4 {
+      0%, 40%  { opacity: 0; }
+      41%      { opacity: 1; }
+      45%      { opacity: 1; }
+      46%      { opacity: 0; }
+      100%     { opacity: 0; }
+    }
+    @keyframes tc5 {
+      0%, 45%  { opacity: 0; }
+      46%      { opacity: 1; }
+      55%      { opacity: 1; }
+      56%      { opacity: 0; }
+      100%     { opacity: 0; }
+    }
+
+    /* "Where did the focus go?" text */
+    @keyframes lost-text {
+      0%       { opacity: 0; transform: translateY(15px); }
+      33%      { opacity: 0; transform: translateY(15px); }
+      36%      { opacity: 1; transform: translateY(0); }
+      50%      { opacity: 1; transform: translateY(0); }
+      55%      { opacity: 0; transform: translateY(-10px); }
+      57%      { opacity: 0; transform: translateY(15px); }
+      100%     { opacity: 0; transform: translateY(15px); }
+    }
+
+    /* Tab key press animation */
+    @keyframes tab-press-dark {
+      0%, 35%, 100% { transform: translateY(0); }
+      50%           { transform: translateY(2px); }
+    }
+
+    /* ── Scene C: Stats (20–28s = 56–78%) ── */
+    @keyframes sc-card1 {
+      0%       { opacity: 0; transform: translateY(40px); }
+      56%      { opacity: 0; transform: translateY(40px); }
+      61%      { opacity: 1; transform: translateY(0); }
+      72%      { opacity: 1; transform: translateY(0); }
+      78%      { opacity: 0; transform: translateY(-25px); }
+      80%      { opacity: 0; transform: translateY(40px); }
+      100%     { opacity: 0; transform: translateY(40px); }
+    }
+    @keyframes sc-card2 {
+      0%       { opacity: 0; transform: translateY(40px); }
+      59%      { opacity: 0; transform: translateY(40px); }
+      64%      { opacity: 1; transform: translateY(0); }
+      71%      { opacity: 1; transform: translateY(0); }
+      77%      { opacity: 0; transform: translateY(-25px); }
+      79%      { opacity: 0; transform: translateY(40px); }
+      100%     { opacity: 0; transform: translateY(40px); }
+    }
+    @keyframes sc-card3 {
+      0%       { opacity: 0; transform: translateY(40px); }
+      62%      { opacity: 0; transform: translateY(40px); }
+      67%      { opacity: 1; transform: translateY(0); }
+      70%      { opacity: 1; transform: translateY(0); }
+      76%      { opacity: 0; transform: translateY(-25px); }
+      78%      { opacity: 0; transform: translateY(40px); }
+      100%     { opacity: 0; transform: translateY(40px); }
+    }
+
+    /* ── Scene D: Statement (28–34s = 78–94%) ── */
+    @keyframes sd-line1 {
+      0%       { opacity: 0; transform: translateY(30px); }
+      78%      { opacity: 0; transform: translateY(30px); }
+      82%      { opacity: 1; transform: translateY(0); }
+      90%      { opacity: 1; transform: translateY(0); }
+      95%      { opacity: 0; transform: translateY(-20px); }
+      97%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+    @keyframes sd-line2 {
+      0%       { opacity: 0; transform: translateY(30px); }
+      80%      { opacity: 0; transform: translateY(30px); }
+      84%      { opacity: 1; transform: translateY(0); }
+      89%      { opacity: 1; transform: translateY(0); }
+      94%      { opacity: 0; transform: translateY(-20px); }
+      96%      { opacity: 0; transform: translateY(30px); }
+      100%     { opacity: 0; transform: translateY(30px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+
+    <!-- Atmospheric background -->
+    <div class="atmosphere">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;animation:grid-breathe 6s ease-in-out infinite;"></div>
+      <div style="position:absolute;top:-150px;right:-100px;width:700px;height:700px;background:rgba(99,102,241,0.12);border-radius:50%;filter:blur(120px);animation:drift-indigo 8s ease-in-out infinite;"></div>
+      <div style="position:absolute;bottom:200px;left:-120px;width:500px;height:500px;background:rgba(251,191,36,0.06);border-radius:50%;filter:blur(100px);animation:drift-amber 10s ease-in-out infinite;"></div>
+    </div>
+
+    <div class="content">
+
+      <!-- Scene A: Hook -->
+      <div class="scene">
+        <p style="font-size:26px;font-weight:600;color:#818CF8;text-transform:uppercase;letter-spacing:0.12em;opacity:0;animation:sa-label var(--video-duration) var(--ease-smooth) infinite;">Keyboard navigation</p>
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:76px;font-weight:400;color:#FFFFFF;line-height:1.12;margin-top:28px;max-width:800px;opacity:0;animation:sa-headline var(--video-duration) var(--ease-smooth) infinite;">Watch me navigate this website using only my keyboard.</h1>
+      </div>
+
+      <!-- Scene B: Simulated webpage -->
+      <div class="scene" style="padding-top:200px;">
+        <!-- Fake webpage card -->
+        <div style="opacity:0;animation:sb-card var(--video-duration) var(--ease-smooth) infinite;">
+          <div style="width:780px;background:#FFFFFF;border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.3);">
+            <!-- Browser chrome -->
+            <div style="padding:16px 24px;background:#F1F5F9;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;gap:12px;">
+              <div style="display:flex;gap:8px;">
+                <span style="width:12px;height:12px;border-radius:50%;background:#EF4444;"></span>
+                <span style="width:12px;height:12px;border-radius:50%;background:#F59E0B;"></span>
+                <span style="width:12px;height:12px;border-radius:50%;background:#10B981;"></span>
+              </div>
+              <div style="flex:1;background:#FFFFFF;border-radius:8px;padding:8px 16px;margin-left:12px;">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#94A3B8;">example.com</span>
+              </div>
+            </div>
+
+            <!-- Nav bar -->
+            <div style="padding:18px 32px;border-bottom:1px solid #F1F5F9;display:flex;gap:32px;animation:focus-lost-flash var(--video-duration) var(--ease-smooth) infinite;">
+              <span style="font-size:16px;font-weight:500;color:#334155;padding:6px 0;animation:focus-home var(--video-duration) var(--ease-smooth) infinite;">Home</span>
+              <span style="font-size:16px;font-weight:500;color:#64748B;padding:6px 0;">About</span>
+              <span style="font-size:16px;font-weight:500;color:#64748B;padding:6px 0;">Services</span>
+              <span style="font-size:16px;font-weight:500;color:#64748B;padding:6px 0;">Contact</span>
+            </div>
+
+            <!-- Hero section -->
+            <div style="padding:40px 32px;">
+              <p style="font-size:28px;font-weight:600;color:#0F172A;line-height:1.3;">Welcome to<br/>our website</p>
+              <p style="font-size:15px;color:#64748B;margin-top:16px;max-width:400px;line-height:1.5;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor.</p>
+              <div style="display:flex;gap:16px;margin-top:24px;">
+                <div style="padding:10px 24px;background:#4F46E5;border-radius:8px;font-size:14px;font-weight:600;color:#FFFFFF;animation:focus-btn var(--video-duration) var(--ease-smooth) infinite;">Learn More</div>
+                <div style="padding:10px 24px;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:8px;font-size:14px;font-weight:500;color:#334155;">Get Started</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab counter + lost focus text -->
+        <div style="margin-top:40px;display:flex;align-items:center;gap:32px;">
+          <!-- Tab key indicator -->
+          <div style="opacity:0;animation:sb-card var(--video-duration) var(--ease-smooth) infinite;">
+            <div style="display:inline-flex;align-items:center;gap:10px;padding:12px 28px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:12px;animation:tab-press-dark 1.4s ease-in-out infinite;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#CBD5E1;">Tab</span>
+              <span style="font-size:24px;color:#64748B;">&#8677;</span>
+            </div>
+          </div>
+
+          <!-- Counter (stacked, one visible at a time) -->
+          <div style="position:relative;width:120px;height:40px;">
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;color:#FBBF24;opacity:0;animation:tc1 var(--video-duration) var(--ease-smooth) infinite;">&#215;1</span>
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;color:#FBBF24;opacity:0;animation:tc2 var(--video-duration) var(--ease-smooth) infinite;">&#215;5</span>
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;color:#F97316;opacity:0;animation:tc3 var(--video-duration) var(--ease-smooth) infinite;">&#215;15</span>
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;color:#F97316;opacity:0;animation:tc4 var(--video-duration) var(--ease-smooth) infinite;">&#215;23</span>
+            <span style="position:absolute;top:0;left:0;font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:500;color:#EF4444;opacity:0;animation:tc5 var(--video-duration) var(--ease-smooth) infinite;">&#215;47</span>
+          </div>
+        </div>
+
+        <!-- Where did the focus go? -->
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:36px;font-weight:400;font-style:italic;color:#94A3B8;margin-top:32px;opacity:0;animation:lost-text var(--video-duration) var(--ease-smooth) infinite;">Where did the focus go?</p>
+      </div>
+
+      <!-- Scene C: Stats -->
+      <div class="scene" style="padding-top:400px;">
+        <p style="font-size:26px;font-weight:600;color:#818CF8;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:48px;opacity:0;animation:sc-card1 var(--video-duration) var(--ease-smooth) infinite;">The damage</p>
+        <div style="display:flex;gap:24px;">
+          <!-- Card 1 -->
+          <div style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:40px 28px;text-align:center;opacity:0;animation:sc-card1 var(--video-duration) var(--ease-smooth) infinite;">
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:72px;color:#EF4444;">47</p>
+            <p style="font-size:24px;font-weight:500;color:#94A3B8;margin-top:12px;">Tab presses</p>
+          </div>
+          <!-- Card 2 -->
+          <div style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:40px 28px;text-align:center;opacity:0;animation:sc-card2 var(--video-duration) var(--ease-smooth) infinite;">
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:72px;color:#FBBF24;">0</p>
+            <p style="font-size:24px;font-weight:500;color:#94A3B8;margin-top:12px;">Focus visible</p>
+          </div>
+          <!-- Card 3 -->
+          <div style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:40px 28px;text-align:center;opacity:0;animation:sc-card3 var(--video-duration) var(--ease-smooth) infinite;">
+            <p style="font-family:'Instrument Serif',Georgia,serif;font-size:72px;color:#F97316;">3</p>
+            <p style="font-size:24px;font-weight:500;color:#94A3B8;margin-top:12px;">Keyboard traps</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene D: Statement -->
+      <div class="scene scene--center">
+        <p style="font-size:44px;font-weight:300;color:#94A3B8;opacity:0;animation:sd-line1 var(--video-duration) var(--ease-smooth) infinite;">This is why we're building</p>
+        <p style="font-family:'Instrument Serif',Georgia,serif;font-size:96px;font-weight:400;color:#FFFFFF;margin-top:16px;opacity:0;animation:sd-line2 var(--video-duration) var(--ease-smooth) infinite;">PagePulser.</p>
+      </div>
+
+    </div>
+
+    <!-- Brand reserve -->
+    <div class="brand-reserve">
+      <span style="font-family:'Outfit',sans-serif;font-weight:600;font-size:18px;letter-spacing:0.15em;text-transform:uppercase;color:#64748B;animation:wordmark-pulse 4s ease-in-out infinite;">PagePulser</span>
+    </div>
+
+  </div>
+</body>
+</html>
