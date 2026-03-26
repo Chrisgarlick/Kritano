@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { Users, Search, RefreshCw, ChevronLeft, ChevronRight, TrendingUp, UserPlus, Zap, AlertTriangle } from 'lucide-react';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
@@ -218,6 +219,7 @@ export default function LeadsPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Leads | PagePulser</title></Helmet>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div className="flex items-center gap-3 mb-4 sm:mb-0">

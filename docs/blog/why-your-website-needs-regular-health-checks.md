@@ -28,7 +28,7 @@ I've audited sites where the owner was genuinely shocked by the results. "But we
 
 Here's something that doesn't get talked about enough: your website is changing even when you're not touching it.
 
-**The web around you changes.** Google updates its algorithms multiple times a year. Core Web Vitals thresholds get adjusted. New accessibility guidelines are published — WCAG 2.2 added nine new success criteria that didn't exist when 2.1 was the standard. Browser behaviour evolves. Security threats emerge. What was compliant and well-optimised six months ago might not be today.
+**The web around you changes.** Google updates its algorithms multiple times a year. [Core Web Vitals](/blog/core-web-vitals-plain-english-guide) thresholds get adjusted. New accessibility guidelines are published — [WCAG](/blog/web-accessibility-2026-why-websites-still-failing) 2.2 added nine new success criteria that didn't exist when 2.1 was the standard. Browser behaviour evolves. Security threats emerge. What was compliant and well-optimised six months ago might not be today.
 
 **Your content changes.** Someone on your team adds a blog post with images but forgets the alt text. A product page gets updated with a new hero image that hasn't been compressed. A form gets tweaked and the labels break. A developer pushes a quick fix that accidentally removes the heading hierarchy on your service pages. None of these are malicious — they're the normal entropy of a living website.
 
@@ -48,7 +48,7 @@ Content editors add uncompressed images. New third-party scripts get added for m
 
 ### Accessibility Regresses
 
-New pages get published without proper heading structure. Images go up without alt text. Someone changes a button's colour scheme and the contrast ratio drops below the 4.5:1 threshold. Forms get added or modified without proper labels. A redesigned component loses its keyboard accessibility. One study by the UK Government Digital Service found that accessibility issues were reintroduced on public sector websites within weeks of being fixed — and these are organisations with dedicated accessibility teams.
+New pages get published without proper heading structure. Images go up without [alt text](/blog/complete-guide-image-alt-text). Someone changes a button's colour scheme and the contrast ratio drops below the 4.5:1 threshold. Forms get added or modified without proper labels. A redesigned component loses its keyboard accessibility. One study by the UK Government Digital Service found that accessibility issues were reintroduced on public sector websites within weeks of being fixed — and these are organisations with dedicated accessibility teams.
 
 ### Security Vulnerabilities Appear
 
@@ -80,7 +80,7 @@ A proper website health check should look at the same things an audit does — j
 
 **Accessibility.** Are new pages meeting WCAG standards? Has anything regressed on existing pages? Are forms properly labelled? Do images have alt text? Automated checks can catch the most common issues — the ones that make up the bulk of failures in the WebAIM Million report.
 
-**Security.** Is your SSL certificate valid? Are your CMS and plugins up to date? Are security headers in place? Are there exposed admin panels or directory listings? These checks should run continuously.
+**Security.** Is your SSL certificate valid? Are your CMS and plugins up to date? Are [security headers](/blog/website-security-basics-business-owners) in place? Are there exposed admin panels or directory listings? These checks should run continuously.
 
 **SEO.** Are there broken links? Are meta tags present and correct? Is your structured data valid? Are pages being indexed properly? A monthly crawl catches drift before it compounds.
 
@@ -90,7 +90,7 @@ A proper website health check should look at the same things an audit does — j
 
 This is exactly why I built PagePulser. Not to replace the deep, expert-led audits that complex sites need, but to fill the gap between them.
 
-The idea is straightforward: instead of checking your website once a year and hoping nothing went wrong in between, you get regular, automated health checks that cover accessibility, performance, SEO, and security in one place. When something drifts — a new page with missing alt text, a performance regression, an expired security header — you know about it while it's still a quick fix, not a major remediation project.
+The idea is straightforward: instead of checking your website once a year and hoping nothing went wrong in between, you get regular, automated health checks that cover [accessibility, performance, SEO, and security](/blog/accessibility-seo-performance-why-you-shouldnt-choose) in one place. When something drifts — a new page with missing alt text, a performance regression, an expired security header — you know about it while it's still a quick fix, not a major remediation project.
 
 It's the same principle as regular health check-ups versus only going to the doctor when you're seriously ill. Prevention is cheaper than cure. Early detection is easier than crisis management.
 

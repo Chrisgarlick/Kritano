@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useSearchParams, Link } from 'react-router-dom';
 import { GitCompare, Plus, X, AlertTriangle, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
@@ -478,6 +479,7 @@ export function AuditComparisonContent() {
 export default function AuditComparison() {
   return (
     <DashboardLayout>
+      <Helmet><title>Compare Audits | PagePulser</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

@@ -97,15 +97,15 @@ export function CreateScheduleModal({ isOpen, onClose, onCreated, tier = 'free' 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 w-full max-w-lg max-h-[90vh] overflow-y-auto mx-4">
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+      <div role="dialog" aria-modal="true" aria-labelledby="create-schedule-title" className="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 w-full max-w-lg max-h-[90vh] overflow-y-auto mx-4">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
           <div className="flex items-center gap-2">
             <CalendarClock className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">New Schedule</h2>
+            <h2 id="create-schedule-title" className="text-lg font-semibold text-slate-900 dark:text-white">New Schedule</h2>
           </div>
-          <button onClick={onClose} className="p-1 text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
+          <button onClick={onClose} className="p-1 text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" aria-label="Close">
             <X className="w-5 h-5" />
           </button>
         </div>

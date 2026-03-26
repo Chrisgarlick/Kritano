@@ -64,7 +64,7 @@ export function StatCard({
   return (
     <div
       className={`
-        rounded-xl p-5
+        rounded-lg p-5
         ${variantStyles[variant]}
         ${animated ? 'animate-reveal-up' : ''}
         ${isClickable ? 'cursor-pointer hover:border-indigo-200 dark:hover:border-indigo-800 hover:shadow-md transition-all' : ''}

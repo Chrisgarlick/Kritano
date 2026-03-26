@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Alert } from '../../components/ui/Alert';
 import { ContentAnalysisPanel } from '../../components/audits/ContentAnalysisPanel';
+import { FixSnippetAccordion } from '../../components/audit';
 import { KeywordAnalysisPanel } from '../../components/audits/KeywordAnalysisPanel';
 import { auditsApi } from '../../services/api';
 import type { AuditPage, Finding, FindingCategory, Severity, FindingsSummary } from '../../types/audit.types';
@@ -140,6 +142,7 @@ export default function PageDetailPage() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Page Details | PagePulser</title></Helmet>
       {/* Breadcrumb */}
       <div className="flex items-center space-x-2 text-sm text-slate-500 mb-4">
         <Link to="/audits" className="hover:text-slate-700">Audits</Link>
@@ -539,6 +542,10 @@ export default function PageDetailPage() {
                               <span className="font-medium">Recommendation:</span> {finding.recommendation}
                             </p>
                           </div>
+                        )}
+
+                        {finding.fixSnippet && (
+                          <FixSnippetAccordion fixSnippet={finding.fixSnippet} />
                         )}
 
                         {finding.selector && (

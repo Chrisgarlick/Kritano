@@ -12,7 +12,7 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import { createInterface } from 'readline';
-import { execSync } from 'child_process';
+import AdmZip from 'adm-zip';
 
 let pool: Pool;
 
@@ -158,7 +158,8 @@ export async function downloadDailyFeed(date: Date): Promise<string> {
   }
 
   // Unzip — extracts domain-names.txt
-  execSync(`unzip -o "${zipPath}" -d "${tmpDir}"`, { stdio: 'pipe' });
+  const zip = new AdmZip(zipPath);
+  zip.extractAllTo(tmpDir, true);
   const extractedPath = path.join(tmpDir, 'domain-names.txt');
 
   if (!fs.existsSync(extractedPath)) {

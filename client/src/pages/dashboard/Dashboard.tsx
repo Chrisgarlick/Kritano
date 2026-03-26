@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Globe,
@@ -28,13 +29,16 @@ import {
 } from '../../components/ui/ScoreDisplay';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { NoAuditsEmptyState } from '../../components/ui/EmptyState';
-import { auditsApi } from '../../services/api';
+import { OnboardingChecklist } from '../../components/onboarding/OnboardingChecklist';
+import { auditsApi, sitesApi } from '../../services/api';
 import type { Audit } from '../../types/audit.types';
+import type { SiteWithStats } from '../../types/site.types';
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [recentAudits, setRecentAudits] = useState<Audit[]>([]);
+  const [sites, setSites] = useState<SiteWithStats[]>([]);
   const [stats, setStats] = useState({
     total: 0,
     completed: 0,
@@ -46,14 +50,18 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await auditsApi.list({ limit: 5 });
-        const audits = response.data.audits;
+        const [auditsResponse, sitesResponse] = await Promise.all([
+          auditsApi.list({ limit: 5 }),
+          sitesApi.list(),
+        ]);
+        const audits = auditsResponse.data.audits;
         setRecentAudits(audits);
+        setSites(sitesResponse.data.sites);
 
         // Calculate stats
         const uniqueDomains = new Set(audits.map(a => a.target_domain));
         setStats({
-          total: response.data.pagination.total,
+          total: auditsResponse.data.pagination.total,
           completed: audits.filter(a => a.status === 'completed').length,
           issues: audits.reduce((sum, a) => sum + (a.total_issues || 0), 0),
           sites: uniqueDomains.size,
@@ -90,6 +98,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Dashboard | PagePulser</title></Helmet>
       <div className="dashboard-bg min-h-full">
         {/* Header Section */}
         <div className="mb-8 animate-reveal-up">
@@ -111,6 +120,13 @@ export default function DashboardPage() {
             </Button>
           </div>
         </div>
+
+        {/* Onboarding Checklist */}
+        <OnboardingChecklist
+          sites={sites}
+          audits={recentAudits}
+          loading={loading}
+        />
 
         {loading ? (
           <DashboardSkeleton />

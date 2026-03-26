@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Button } from '../../components/ui/Button';
 import { useToast } from '../../components/ui/Toast';
 import { apiKeysApi, type ApiKey } from '../../services/api';
@@ -119,9 +120,11 @@ export default function ApiKeysPage() {
   const revokedKeys = keys.filter((k) => !k.isActive || k.revokedAt);
 
   return (
-    <div className="space-y-6">
+    <>
+      <Helmet><title>API Keys | PagePulser</title></Helmet>
+      <div className="space-y-6">
       {/* Info banner */}
-      <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-xl p-4">
+      <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-4">
         <div className="flex">
           <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mt-0.5 mr-3 flex-shrink-0" />
           <div>
@@ -156,7 +159,7 @@ export default function ApiKeysPage() {
 
       {/* Loading state */}
       {loading && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 text-center">
+        <div className="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-8 text-center">
           <div className="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full mx-auto"></div>
           <p className="text-slate-500 dark:text-slate-500 mt-4">Loading API keys...</p>
         </div>
@@ -164,7 +167,7 @@ export default function ApiKeysPage() {
 
       {/* Active keys */}
       {!loading && activeKeys.length > 0 && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
             <h3 className="text-base font-medium text-slate-900 dark:text-white">Active Keys</h3>
           </div>
@@ -210,7 +213,7 @@ export default function ApiKeysPage() {
 
       {/* Empty state */}
       {!loading && activeKeys.length === 0 && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-12 text-center">
+        <div className="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-12 text-center">
           <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4">
             <Key className="w-8 h-8 text-slate-500" />
           </div>
@@ -227,7 +230,7 @@ export default function ApiKeysPage() {
 
       {/* Revoked keys */}
       {!loading && revokedKeys.length > 0 && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
             <h3 className="text-base font-medium text-slate-500 dark:text-slate-500">
               Revoked Keys ({revokedKeys.length})
@@ -280,11 +283,11 @@ export default function ApiKeysPage() {
       {showCreateModal && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4">
-            <div className="fixed inset-0 bg-black/50" onClick={closeCreateModal}></div>
-            <div className="relative bg-white dark:bg-slate-900 rounded-xl shadow-xl w-full max-w-md p-6 border border-slate-200 dark:border-slate-700">
+            <div className="fixed inset-0 bg-black/50" onClick={closeCreateModal} aria-hidden="true"></div>
+            <div role="dialog" aria-modal="true" aria-labelledby="create-api-key-title" className="relative bg-white dark:bg-slate-900 rounded-lg shadow-xl w-full max-w-md p-6 border border-slate-200 dark:border-slate-700">
               {!newKeySecret ? (
                 <>
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Create API Key</h3>
+                  <h3 id="create-api-key-title" className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Create API Key</h3>
                   <div className="mb-4">
                     <label htmlFor="keyName" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                       Key Name
@@ -368,5 +371,6 @@ export default function ApiKeysPage() {
         </div>
       )}
     </div>
+    </>
   );
 }

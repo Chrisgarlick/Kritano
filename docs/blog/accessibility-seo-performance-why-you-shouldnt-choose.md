@@ -28,7 +28,7 @@ Accessibility, SEO, and performance are treated as three separate disciplines wi
 
 Let me give you some concrete examples of how a single fix improves all three areas at once.
 
-**Image alt text.** Adding descriptive alt text to your images is an accessibility requirement under WCAG — screen readers need it to convey image content to blind users. But alt text is also how Google understands what your images contain, which directly affects image search rankings. And while you're sorting out your images, compressing them and adding proper dimensions prevents layout shift (a Core Web Vitals metric) and speeds up load times. One task. Three wins.
+**Image [alt text](/blog/complete-guide-image-alt-text).** Adding descriptive alt text to your images is an accessibility requirement under [WCAG](/blog/web-accessibility-2026-why-websites-still-failing) — screen readers need it to convey image content to blind users. But alt text is also how Google understands what your images contain, which directly affects image search rankings. And while you're sorting out your images, compressing them and adding proper dimensions prevents layout shift (a [Core Web Vitals](/blog/core-web-vitals-plain-english-guide) metric) and speeds up load times. One task. Three wins.
 
 **Heading hierarchy.** Using a logical heading structure — one H1, then H2s, then H3s — gives screen reader users a navigable outline of your page. It also gives Google a clear content structure to understand what your page is about and which topics are most important. And well-structured content tends to keep people on the page longer, which reduces bounce rate and sends positive engagement signals back to search engines.
 
@@ -83,7 +83,7 @@ When businesses treat accessibility, SEO, and performance as separate projects, 
 
 What I've come to believe — after running hundreds of audits — is that the most useful way to think about your website isn't "how's our SEO?" or "are we accessible?" or "is it fast enough?" It's **"is this website healthy?"**
 
-A healthy website is one where the fundamentals are solid across the board. Clean HTML. Proper heading structure. Compressed images with alt text. Fast server response. Working forms with labels. Logical navigation. Security headers in place. Content that's readable and well-structured.
+A healthy website is one where the fundamentals are solid across the board. Clean HTML. Proper heading structure. Compressed images with alt text. Fast server response. Working forms with labels. Logical navigation. [Security headers](/blog/website-security-basics-business-owners) in place. Content that's readable and well-structured.
 
 When those foundations are right, your SEO improves because Google can crawl, understand, and trust your content. Your accessibility improves because assistive technology can interpret and navigate your pages. Your performance improves because there's less bloat, fewer errors, and more efficient rendering. And your users — all of them — have a better experience.
 

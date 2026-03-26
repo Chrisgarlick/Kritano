@@ -8,7 +8,14 @@
  * - Pending: Fading pulse
  */
 
-import { CheckCircleIcon, XCircleIcon, ClockIcon, ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { CheckCircle, XCircle, Clock, RefreshCw, Search } from 'lucide-react';
+
+// Lucide equivalents of heroicons
+const CheckCircleIcon = CheckCircle;
+const XCircleIcon = XCircle;
+const ClockIcon = Clock;
+const ArrowPathIcon = RefreshCw;
+const MagnifyingGlassIcon = Search;
 
 type StatusType = 'pending' | 'discovering' | 'ready' | 'processing' | 'completed' | 'failed' | 'cancelled';
 type BadgeSize = 'xs' | 'sm' | 'md';

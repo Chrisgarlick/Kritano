@@ -39,7 +39,7 @@
 | Scheduled audits | - | Yes | Yes | Yes | Yes |
 | Min schedule interval | - | 7 days | 1 day | 1 hour | 15 minutes |
 
-## Exports
+## Exports & Sharing
 
 | | Free | Starter | Pro | Agency | Enterprise |
 |---|---|---|---|---|---|
@@ -48,6 +48,17 @@
 | CSV export | - | - | Yes | Yes | Yes |
 | JSON export | - | - | Yes | Yes | Yes |
 | White-label | - | - | - | Yes | Yes |
+| Shareable audit reports | - | - | Yes (48h links) | Yes (48h links) | Yes (48h links) |
+| Accessibility statement generator | - | - | Yes | Yes | Yes |
+| Public audit badge | - | Yes | Yes | Yes | Yes |
+| Fix snippets (code) | - | Yes | Yes | Yes | Yes |
+| Fix explanations (text) | Yes | Yes | Yes | Yes | Yes |
+| EAA compliance status | Yes | Yes | Yes | Yes | Yes |
+| EAA compliance full report | - | - | Yes | Yes | Yes |
+| EAA compliance PDF export | - | - | Yes | Yes | Yes |
+| Content Quality Score (number) | Yes | Yes | Yes | Yes | Yes |
+| CQS breakdown (5 sub-scores) | - | Yes | Yes | Yes | Yes |
+| CQS per-page detail + trends | - | - | Yes | Yes | Yes |
 
 ## API & Data
 
@@ -89,6 +100,14 @@
 | Tracking channels | `?ea=email` and `?ea=social` |
 | Activation | Admin triggers all at once from admin panel |
 
+## Pricing
+
+| | Free | Starter | Pro | Agency | Enterprise |
+|---|---|---|---|---|---|
+| Monthly | $0 | $19/mo | $49/mo | $99/mo | Custom |
+| Annual | $0 | $190/yr | $490/yr | $990/yr | Custom |
+| Annual saving | - | $38 (2 months free) | $98 (2 months free) | $198 (2 months free) | - |
+
 ## Notes
 
 - **Site owner's tier determines feature availability** for all users on that site (not the running user's tier).
@@ -96,3 +115,10 @@
 - **"Unlimited"** is represented as `NULL` in the database.
 - **Domain locking** (Free tier) means the user's single domain can only be changed once per month.
 - **Competitor comparison** columns exist in the database but are currently disabled across all tiers.
+- **Shareable audit reports** generate time-limited (48h) public URLs for sharing results externally.
+- **Accessibility statement generator** creates a WCAG-conformant accessibility statement from audit findings (template-based).
+- **Public audit badge** is an embeddable SVG showing the site's latest overall score, hosted at `/api/public/badges/:siteId.svg`.
+- **Annual billing** offers 2 months free (10 months charged for 12 months of service). Stripe price IDs must be configured manually.
+- **Content Quality Score (CQS)** is a weighted average of 5 content sub-scores: quality (25%), E-E-A-T (25%), readability (20%), engagement (15%), structure (15%).
+- **Fix snippets** provide template-based code fixes for the top 50 most common findings. Templates are code-side, not database-stored.
+- **EAA Compliance Passport** maps WCAG findings to EN 301 549 clauses and derives compliance status. Automated testing only — disclaimer required.

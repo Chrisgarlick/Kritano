@@ -290,8 +290,8 @@ export class AuditService {
        FROM auth_audit_logs
        WHERE ip_address = $1
        AND event_type IN ('login_failure', 'login_blocked')
-       AND created_at > NOW() - INTERVAL '${windowMinutes} minutes'`,
-      [ipAddress]
+       AND created_at > NOW() - make_interval(mins => $2)`,
+      [ipAddress, windowMinutes]
     );
 
     return parseInt(result.rows[0].count, 10);

@@ -1,7 +1,13 @@
 # Claude Code Instructions
 
+## CI/CD
+We do NOT use GitHub Actions or any CI/CD pipeline. We don't want automated workflows running on every push. Tests and linting are run locally as needed. Do NOT create `.github/workflows/` files or suggest adding CI pipelines.
+
 ## Competitors
 Competitors should NEVER be brought back into the application. A user would be able to scan their competitors and only have it on a small amount of domains. We do NOT want to promote scanning of websites that are NOT verified, even though users may still do it. 
+
+## Cold Outreach 
+All cold outreach emails will be sent manually by hand to ensure personalisation is kept high. It will be sent externally through my mailbox rather than through the app. 
 
 ## Tiers 
 Whenever there is a new feature added, always update the tiers.md file and the front end to reflect new changes. 
@@ -14,6 +20,10 @@ Security is a must. This app needs to be as secure as possible - we don't want u
 
 ## Audit Issues
 Please always use the unique amount of issues rather than the total issues.
+
+## Database Migrations
+
+Migration files live in `server/src/db/migrations/`. The runner (`server/src/db/migrate.ts`) automatically wraps each migration in a transaction. If a migration uses `CREATE INDEX CONCURRENTLY` (or any other `CONCURRENTLY` operation), it **must not** be wrapped in `BEGIN`/`COMMIT` — the runner detects `CONCURRENTLY` and skips the transaction automatically. Never add explicit `BEGIN`/`COMMIT` to migration files that use `CONCURRENTLY`.
 
 ## Project Context
 

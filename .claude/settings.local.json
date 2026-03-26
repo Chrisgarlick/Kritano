@@ -35,11 +35,25 @@
       "Bash(echo Key: $RAWKEY:*)",
       "mcp__chrome-devtools__lighthouse_audit",
       "Bash(grep:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(cd:*)",
+      "Bash(npx vite:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(node -e \"require\\(''adm-zip''\\)\")",
+      "Bash(node -e \"require\\(''''adm-zip''''\\)\")",
+      "Bash(npx eslint:*)",
+      "Bash(npx tsx:*)",
+      "Bash(npx vitest:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(npm run:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "chrome-devtools"
-  ]
+  ],
+  "enabledPlugins": {
+    "team@team-skill": true
+  }
 }

@@ -102,6 +102,8 @@ export function ProgressRing({
         height={svgSize}
         viewBox={`0 0 ${svgSize} ${svgSize}`}
         className="transform -rotate-90"
+        role="img"
+        aria-label={`Score: ${normalizedValue} out of ${max}`}
       >
         {/* Background track */}
         {showTrack && (

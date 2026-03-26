@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
 import { adminApi } from '../../../services/api';
@@ -215,6 +216,7 @@ export default function TemplateEditorPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Template Editor | PagePulser</title></Helmet>
       <div className="space-y-4">
         {/* Top Bar */}
         <div className="flex items-center justify-between">

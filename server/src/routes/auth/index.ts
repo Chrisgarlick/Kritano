@@ -19,14 +19,17 @@ import {
   passwordResetRequestSchema,
   passwordResetSchema,
   verifyEmailSchema,
+  changePasswordSchema,
 } from '../../schemas/auth.schemas.js';
 import { getDeviceInfo, getClientIp } from '../../utils/ip.utils.js';
 import { recalculateScore } from '../../services/lead-scoring.service.js';
 import { checkTriggers } from '../../services/crm-trigger.service.js';
 import { resolveReferralCode, createReferral, checkAndQualifyReferral } from '../../services/referral.service.js';
 import { isEarlyAccessEnabled, claimSpot } from '../../services/early-access.service.js';
+import { updatePreferences } from '../../services/email-preference.service.js';
 import { sendTemplate } from '../../services/email-template.service.js';
 import { COOKIE_CONFIG, REFRESH_TOKEN_CONFIG, JWT_CONFIG } from '../../config/auth.config.js';
+import { pool } from '../../db/index.js';
 import { oauthRouter } from './oauth.js';
 import { oauthService } from '../../services/oauth.service.js';
 import type {
@@ -102,6 +105,19 @@ router.post(
         // Don't fail registration if ToS recording fails
       }
 
+      // Set email preferences based on marketing opt-in (GDPR)
+      try {
+        const optedIn = input.marketingOptIn === true;
+        await updatePreferences(user.id, {
+          marketing: optedIn,
+          educational: optedIn,
+          product_updates: optedIn,
+          audit_notifications: true,
+        });
+      } catch (prefError) {
+        console.error('Failed to set email preferences:', prefError);
+      }
+
       // Send verification email
       try {
         const verificationToken = await emailService.createVerificationToken(user.id);
@@ -111,16 +127,32 @@ router.post(
         // Don't fail registration if email fails - user can resend later
       }
 
+      // Store UTM attribution if provided
+      if (input.utmSource || input.utmMedium || input.utmCampaign) {
+        try {
+          await pool.query(
+            `UPDATE users SET settings = COALESCE(settings, '{}'::jsonb) || jsonb_build_object('utm', $1::jsonb) WHERE id = $2`,
+            [JSON.stringify({
+              source: input.utmSource || null,
+              medium: input.utmMedium || null,
+              campaign: input.utmCampaign || null,
+            }), user.id]
+          );
+        } catch (utmError) {
+          console.error('Failed to store UTM data:', utmError);
+        }
+      }
+
       // CRM: Recalculate lead score on registration
       recalculateScore(user.id).catch(err => console.error('CRM score recalc failed:', err));
 
-      // Handle early access claim if channel provided
+      // Handle early access claim if flag set
       let earlyAccess = false;
-      if (input.earlyAccessChannel) {
+      if (input.earlyAccess) {
         try {
           const eaEnabled = await isEarlyAccessEnabled();
           if (eaEnabled) {
-            const claimed = await claimSpot(user.id, input.earlyAccessChannel);
+            const claimed = await claimSpot(user.id, 'founding');
             earlyAccess = claimed;
 
             if (claimed) {
@@ -308,7 +340,7 @@ router.post(
         if (needsRehash) {
           await userService.updatePassword(user.id, input.password);
         }
-      }).catch(() => {});
+      }).catch(err => console.error('Password rehash failed:', err));
 
       // Set cookies
       res.cookie('access_token', accessToken, {
@@ -743,6 +775,65 @@ router.post(
         error: 'Password reset failed',
         code: 'RESET_FAILED',
       });
+    }
+  }
+);
+
+/**
+ * POST /api/auth/change-password
+ * Change password for authenticated user
+ */
+router.post(
+  '/change-password',
+  authenticate,
+  loginRateLimiter,
+  validateBody(changePasswordSchema),
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const userId = req.user!.id;
+      const { currentPassword, newPassword } = req.body;
+
+      // Fetch user to verify current password
+      const user = await userService.findById(userId);
+      if (!user || !user.password_hash) {
+        res.status(400).json({ error: 'Unable to change password', code: 'CHANGE_PASSWORD_FAILED' });
+        return;
+      }
+
+      // Verify current password
+      const isValid = await passwordService.verify(currentPassword, user.password_hash);
+      if (!isValid) {
+        res.status(401).json({ error: 'Current password is incorrect', code: 'INVALID_CURRENT_PASSWORD' });
+        return;
+      }
+
+      // Validate new password strength
+      const strengthCheck = passwordService.validateStrength(newPassword);
+      if (!strengthCheck.valid) {
+        res.status(400).json({
+          error: 'Password does not meet requirements',
+          code: 'WEAK_PASSWORD',
+          details: strengthCheck.errors,
+        });
+        return;
+      }
+
+      // Check for common passwords
+      if (passwordService.isCommonPassword(newPassword)) {
+        res.status(400).json({
+          error: 'This password is too common. Please choose a stronger password.',
+          code: 'COMMON_PASSWORD',
+        });
+        return;
+      }
+
+      // Update password
+      await userService.updatePassword(userId, newPassword);
+
+      res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+      console.error('Change password error:', error);
+      res.status(500).json({ error: 'Failed to change password', code: 'CHANGE_PASSWORD_FAILED' });
     }
   }
 );

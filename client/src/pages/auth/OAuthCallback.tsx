@@ -63,7 +63,7 @@ export default function OAuthCallbackPage() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="max-w-md w-full text-center">
-        <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-8">PagePulser</p>
+        <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400 mb-8">PagePulser</p>
 
         {error ? (
           <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">

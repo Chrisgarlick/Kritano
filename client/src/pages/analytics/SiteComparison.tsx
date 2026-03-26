@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Layers, Plus, X, AlertTriangle, Globe, TrendingUp, TrendingDown, Minus, BarChart3 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
@@ -431,6 +432,7 @@ export function SiteComparisonContent() {
 export default function SiteComparison() {
   return (
     <DashboardLayout>
+      <Helmet><title>Compare Sites | PagePulser</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

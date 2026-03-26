@@ -26,9 +26,13 @@ import {
   CONSENT_VERSION,
 } from '../../constants/consent.constants.js';
 import { generateSchemaForPage, generateSchemaForSite } from '../../services/schema-generator.service.js';
+import { resolveFixSnippet } from '../../data/fix-templates.js';
 import { resolvePdfBranding } from '../../services/pdf-branding.service.js';
 import type { ResolvedBranding } from '../../services/pdf-branding.service.js';
 import { generateAuditPdf, buildReportHtml, buildReportMarkdown } from '../../services/pdf-report.service.js';
+import type { ResolvedFixSnippetForPdf, ComplianceDataForPdf } from '../../services/pdf-report.service.js';
+import { enMapping, buildWcagToEnMap } from '../../data/en-301-549-mapping.js';
+import { getCqsImpact } from '../../data/cqs-impact-map.js';
 
 // Validation schemas
 const startAuditSchema = z.object({
@@ -316,7 +320,7 @@ router.get('/', authenticate, async (req: Request, res: Response): Promise<void>
       SELECT id, target_url, target_domain, status, site_id, url_id,
              pages_found, pages_crawled, pages_audited,
              total_issues, critical_issues,
-             seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score,
+             seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score,
              started_at, completed_at, created_at
       FROM audit_jobs
       WHERE user_id = $1
@@ -830,6 +834,184 @@ router.post('/:id/generate-schema-all', authenticate, async (req: Request, res: 
   }
 });
 
+// ============================================================
+// SCHEDULE ENDPOINTS (must be before /:id catch-all)
+// ============================================================
+
+import {
+  createSchedule,
+  updateSchedule,
+  deleteSchedule,
+  getScheduleById,
+  getSchedulesByUser,
+  toggleSchedule,
+  getScheduleRunHistory,
+} from '../../services/schedule.service.js';
+
+const createScheduleSchema = z.object({
+  targetUrl: z.string().url(),
+  name: z.string().max(255).optional(),
+  frequency: z.enum(['daily', 'weekly', 'biweekly', 'monthly', 'custom']),
+  cronExpression: z.string().max(100).optional(),
+  config: z.record(z.unknown()).optional(),
+  notifyOnCompletion: z.boolean().optional(),
+  notifyOnFailure: z.boolean().optional(),
+  timezone: z.string().max(100).optional(),
+  dayOfWeek: z.number().int().min(0).max(6).optional(),
+  hourOfDay: z.number().int().min(0).max(23).optional(),
+});
+
+const updateScheduleSchema = z.object({
+  name: z.string().max(255).optional(),
+  frequency: z.enum(['daily', 'weekly', 'biweekly', 'monthly', 'custom']).optional(),
+  cronExpression: z.string().max(100).optional(),
+  config: z.record(z.unknown()).optional(),
+  notifyOnCompletion: z.boolean().optional(),
+  notifyOnFailure: z.boolean().optional(),
+  timezone: z.string().max(100).optional(),
+  dayOfWeek: z.number().int().min(0).max(6).optional(),
+  hourOfDay: z.number().int().min(0).max(23).optional(),
+});
+
+/**
+ * POST /api/audits/schedules
+ * Create an audit schedule (tier-gated: starter+)
+ */
+router.post('/schedules', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const parsed = createScheduleSchema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten(), code: 'VALIDATION_ERROR' });
+      return;
+    }
+
+    const schedule = await createSchedule(userId, parsed.data);
+    res.status(201).json({ schedule });
+  } catch (error: any) {
+    console.error('Create schedule error:', error);
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Failed to create schedule', code: 'SCHEDULE_FAILED' });
+  }
+});
+
+/**
+ * GET /api/audits/schedules
+ * List user's audit schedules (optional ?siteId= filter)
+ */
+router.get('/schedules', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const siteId = req.query.siteId as string | undefined;
+    const schedules = await getSchedulesByUser(userId, siteId);
+    res.json({ schedules });
+  } catch (error) {
+    console.error('List schedules error:', error);
+    res.status(500).json({ error: 'Failed to list schedules', code: 'LIST_SCHEDULES_FAILED' });
+  }
+});
+
+/**
+ * GET /api/audits/schedules/:scheduleId
+ * Get schedule detail with site info
+ */
+router.get('/schedules/:scheduleId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const schedule = await getScheduleById(userId, req.params.scheduleId);
+    if (!schedule) {
+      res.status(404).json({ error: 'Schedule not found', code: 'SCHEDULE_NOT_FOUND' });
+      return;
+    }
+
+    // Include last 10 runs
+    const { runs } = await getScheduleRunHistory(schedule.id, userId, 10, 0);
+    res.json({ schedule, recentRuns: runs });
+  } catch (error) {
+    console.error('Get schedule error:', error);
+    res.status(500).json({ error: 'Failed to get schedule', code: 'GET_SCHEDULE_FAILED' });
+  }
+});
+
+/**
+ * PATCH /api/audits/schedules/:scheduleId
+ * Update schedule settings
+ */
+router.patch('/schedules/:scheduleId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const parsed = updateScheduleSchema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten(), code: 'VALIDATION_ERROR' });
+      return;
+    }
+
+    const schedule = await updateSchedule(userId, req.params.scheduleId, parsed.data);
+    res.json({ schedule });
+  } catch (error: any) {
+    console.error('Update schedule error:', error);
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Failed to update schedule', code: 'UPDATE_SCHEDULE_FAILED' });
+  }
+});
+
+/**
+ * DELETE /api/audits/schedules/:scheduleId
+ * Delete an audit schedule
+ */
+router.delete('/schedules/:scheduleId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    await deleteSchedule(userId, req.params.scheduleId);
+    res.json({ message: 'Schedule deleted' });
+  } catch (error: any) {
+    console.error('Delete schedule error:', error);
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Failed to delete schedule', code: 'DELETE_SCHEDULE_FAILED' });
+  }
+});
+
+/**
+ * POST /api/audits/schedules/:scheduleId/toggle
+ * Enable or disable a schedule
+ */
+router.post('/schedules/:scheduleId/toggle', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const { enabled } = req.body as { enabled: boolean };
+    if (typeof enabled !== 'boolean') {
+      res.status(400).json({ error: 'enabled (boolean) is required', code: 'VALIDATION_ERROR' });
+      return;
+    }
+
+    const schedule = await toggleSchedule(userId, req.params.scheduleId, enabled);
+    res.json({ schedule });
+  } catch (error: any) {
+    console.error('Toggle schedule error:', error);
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Failed to toggle schedule', code: 'TOGGLE_SCHEDULE_FAILED' });
+  }
+});
+
+/**
+ * GET /api/audits/schedules/:scheduleId/runs
+ * Paginated run history for a schedule
+ */
+router.get('/schedules/:scheduleId/runs', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const { runs, total } = await getScheduleRunHistory(req.params.scheduleId, userId, limit, offset);
+    res.json({ runs, total, limit, offset });
+  } catch (error: any) {
+    console.error('Schedule runs error:', error);
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Failed to get runs', code: 'SCHEDULE_RUNS_FAILED' });
+  }
+});
+
 /**
  * GET /api/audits/:id
  * Get audit details
@@ -917,7 +1099,7 @@ router.get('/:id/findings', authenticate, async (req: Request, res: Response): P
   try {
     const userId = req.user!.id;
     const auditId = req.params.id;
-    const { category, severity, page = '1', limit = '50' } = req.query;
+    const { category, severity, page = '1', limit = '50', sort } = req.query;
 
     // Verify audit ownership
     const auditCheck = await pool.query(
@@ -990,8 +1172,62 @@ router.get('/:id/findings', authenticate, async (req: Request, res: Response): P
 
     const countResult = await pool.query<{ count: string }>(countQuery, countParams);
 
+    // Resolve fix snippets and apply tier gating
+    const tierLimits = await getUserTierLimits(userId);
+    const tier = (tierLimits as any)?.tier || 'free';
+    const isFree = tier === 'free';
+
+    const findingsWithSnippets = result.rows.map((finding) => {
+      const snippet = resolveFixSnippet(finding.rule_id, {
+        selector: finding.selector || undefined,
+        snippet: finding.snippet || undefined,
+        pageUrl: (finding as any).page_url || undefined,
+        message: finding.message || undefined,
+      });
+
+      // CQS sub-score impact tagging
+      const cqsImpact = getCqsImpact(finding.rule_id);
+
+      const enriched: Record<string, unknown> = { ...finding };
+
+      if (cqsImpact) {
+        enriched.cqsImpact = cqsImpact;
+      }
+
+      if (snippet) {
+        // Free tier: explanation only (no code)
+        enriched.fixSnippet = isFree
+          ? {
+              fixType: snippet.fixType,
+              language: snippet.language,
+              explanation: snippet.explanation,
+              effort: snippet.effort,
+              learnMoreUrl: snippet.learnMoreUrl,
+            }
+          : {
+              fixType: snippet.fixType,
+              language: snippet.language,
+              code: snippet.code,
+              explanation: snippet.explanation,
+              effort: snippet.effort,
+              learnMoreUrl: snippet.learnMoreUrl,
+            };
+      }
+
+      return enriched;
+    });
+
+    // Optional: sort by CQS impact weight (highest impact first)
+    if (sort === 'cqs_impact') {
+      findingsWithSnippets.sort((a, b) => {
+        const aWeight = (a.cqsImpact as any)?.weight ?? 0;
+        const bWeight = (b.cqsImpact as any)?.weight ?? 0;
+        return bWeight - aWeight;
+      });
+    }
+
     res.json({
-      findings: result.rows,
+      findings: findingsWithSnippets,
       pagination: {
         page: pageNum,
         limit: limitNum,
@@ -1089,7 +1325,7 @@ router.get('/:id/pages', authenticate, async (req: Request, res: Response): Prom
       SELECT id, url, depth, status_code, content_type, response_time_ms, page_size_bytes,
              title, meta_description, canonical_url, h1_text, word_count,
              crawl_status, error_message, error_type, error_category, error_suggestion, retry_count,
-             seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score,
+             seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score,
              seo_issues, accessibility_issues, security_issues, performance_issues, content_issues, structured_data_issues,
              content_quality_score, content_readability_score, content_structure_score, content_engagement_score,
              flesch_kincaid_grade, flesch_reading_ease, reading_time_minutes, keyword_data,
@@ -1177,7 +1413,7 @@ router.get('/:id/pages/:pageId', authenticate, async (req: Request, res: Respons
       SELECT id, url, url_hash, depth, status_code, content_type, response_time_ms, page_size_bytes,
              title, meta_description, canonical_url, h1_text, word_count,
              crawl_status, error_message, error_type, error_category, error_suggestion, retry_count,
-             seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score,
+             seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score,
              seo_issues, accessibility_issues, security_issues, performance_issues, content_issues, structured_data_issues,
              content_quality_score, content_readability_score, content_structure_score, content_engagement_score,
              flesch_kincaid_grade, flesch_reading_ease, reading_time_minutes, keyword_data,
@@ -1215,9 +1451,45 @@ router.get('/:id/pages/:pageId', authenticate, async (req: Request, res: Respons
         category
     `, [pageId]);
 
+    // Resolve fix snippets for page findings
+    const pageTierLimits = await getUserTierLimits(userId);
+    const pageTier = (pageTierLimits as any)?.tier || 'free';
+    const pageIsFree = pageTier === 'free';
+    const resolvedPageUrl = pageResult.rows[0].url;
+
+    const findingsWithSnippets = findingsResult.rows.map((finding) => {
+      const fixResult = resolveFixSnippet(finding.rule_id, {
+        selector: finding.selector || undefined,
+        snippet: finding.snippet || undefined,
+        pageUrl: resolvedPageUrl || undefined,
+        message: finding.message || undefined,
+      });
+
+      if (!fixResult) return finding;
+
+      const fixSnippet = pageIsFree
+        ? {
+            fixType: fixResult.fixType,
+            language: fixResult.language,
+            explanation: fixResult.explanation,
+            effort: fixResult.effort,
+            learnMoreUrl: fixResult.learnMoreUrl,
+          }
+        : {
+            fixType: fixResult.fixType,
+            language: fixResult.language,
+            code: fixResult.code,
+            explanation: fixResult.explanation,
+            effort: fixResult.effort,
+            learnMoreUrl: fixResult.learnMoreUrl,
+          };
+
+      return { ...finding, fixSnippet };
+    });
+
     // Group findings by category
-    const findingsByCategory: Record<string, AuditFinding[]> = {};
-    for (const finding of findingsResult.rows) {
+    const findingsByCategory: Record<string, any[]> = {};
+    for (const finding of findingsWithSnippets) {
       if (!findingsByCategory[finding.category]) {
         findingsByCategory[finding.category] = [];
       }
@@ -1226,7 +1498,7 @@ router.get('/:id/pages/:pageId', authenticate, async (req: Request, res: Respons
 
     res.json({
       page: pageResult.rows[0],
-      findings: findingsResult.rows,
+      findings: findingsWithSnippets,
       findingsByCategory,
       summary: {
         total: findingsResult.rows.length,
@@ -1283,7 +1555,7 @@ router.get('/:id/stream', authenticate, async (req: Request, res: Response): Pro
       const result = await pool.query<AuditJob & { activity_log: unknown }>(
         `SELECT status, pages_found, pages_crawled, pages_audited, current_url,
                 total_issues, critical_issues,
-                seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score,
+                seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score,
                 activity_log, created_at
          FROM audit_jobs WHERE id = $1`,
         [auditId]
@@ -1427,8 +1699,13 @@ router.get('/:id/export/csv', authenticate, async (req: Request, res: Response):
         f.category, f.rule_id
     `, [auditId]);
 
+    // Resolve tier for fix snippet gating
+    const tierLimits = await getUserTierLimits(userId);
+    const tier = (tierLimits as any)?.tier || 'free';
+    const isFree = tier === 'free';
+
     const domain = auditCheck.rows[0].target_domain;
-    const headers = ['Category', 'Severity', 'Rule ID', 'Rule Name', 'Message', 'Page URL', 'Recommendation', 'Selector', 'WCAG Criteria', 'Help URL'];
+    const headers = ['Category', 'Severity', 'Rule ID', 'Rule Name', 'Message', 'Page URL', 'Recommendation', 'Selector', 'WCAG Criteria', 'Help URL', 'Fix Explanation', 'Fix Code', 'Fix Effort'];
     const csvRows = [headers.join(',')];
 
     for (const row of result.rows) {
@@ -1436,6 +1713,14 @@ router.get('/:id/export/csv', authenticate, async (req: Request, res: Response):
         if (!val) return '';
         return `"${val.replace(/"/g, '""')}"`;
       };
+
+      const snippet = resolveFixSnippet(row.rule_id, {
+        selector: row.selector || undefined,
+        snippet: row.snippet || undefined,
+        pageUrl: row.page_url || undefined,
+        message: row.message || undefined,
+      });
+
       csvRows.push([
         escape(row.category),
         escape(row.severity),
@@ -1447,6 +1732,9 @@ router.get('/:id/export/csv', authenticate, async (req: Request, res: Response):
         escape(row.selector),
         escape(Array.isArray(row.wcag_criteria) ? row.wcag_criteria.join('; ') : null),
         escape(row.help_url),
+        escape(snippet?.explanation || null),
+        escape(isFree ? null : snippet?.code || null),
+        escape(snippet?.effort || null),
       ].join(','));
     }
 
@@ -1496,12 +1784,34 @@ router.get('/:id/export/json', authenticate, async (req: Request, res: Response)
       SELECT * FROM audit_pages WHERE audit_job_id = $1 ORDER BY depth, created_at
     `, [auditId]);
 
+    // Resolve fix snippets with tier gating
+    const tierLimits = await getUserTierLimits(userId);
+    const tier = (tierLimits as any)?.tier || 'free';
+    const isFree = tier === 'free';
+
+    const findingsWithSnippets = findingsResult.rows.map((finding) => {
+      const snippet = resolveFixSnippet(finding.rule_id, {
+        selector: finding.selector || undefined,
+        snippet: finding.snippet || undefined,
+        pageUrl: finding.page_url || undefined,
+        message: finding.message || undefined,
+      });
+
+      if (!snippet) return finding;
+
+      const fixSnippet = isFree
+        ? { fixType: snippet.fixType, language: snippet.language, explanation: snippet.explanation, effort: snippet.effort, learnMoreUrl: snippet.learnMoreUrl }
+        : { fixType: snippet.fixType, language: snippet.language, code: snippet.code, explanation: snippet.explanation, effort: snippet.effort, learnMoreUrl: snippet.learnMoreUrl };
+
+      return { ...finding, fixSnippet };
+    });
+
     const domain = auditResult.rows[0].target_domain;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Content-Disposition', `attachment; filename="audit-${domain}-${new Date().toISOString().split('T')[0]}.json"`);
     res.json({
       audit: auditResult.rows[0],
-      findings: findingsResult.rows,
+      findings: findingsWithSnippets,
       pages: pagesResult.rows,
       exportedAt: new Date().toISOString(),
     });
@@ -1711,12 +2021,113 @@ router.get('/:id/export/pdf', authenticate, async (req: Request, res: Response):
       // broken_links table doesn't exist yet - skip
     }
 
+    // Resolve fix snippets for PDF (tier-gated: Starter+ gets code)
+    const tierLimits = await getUserTierLimits(userId);
+    const tier = (tierLimits as any)?.tier || 'free';
+    const isFree = tier === 'free';
+
+    const fixSnippetMap: Record<string, ResolvedFixSnippetForPdf> = {};
+    const seenRules = new Set<string>();
+    for (const f of findingsResult.rows) {
+      if (seenRules.has(f.rule_id)) continue;
+      seenRules.add(f.rule_id);
+      const snippet = resolveFixSnippet(f.rule_id, {
+        selector: f.selector || undefined,
+        snippet: f.snippet || undefined,
+        pageUrl: f.page_url || undefined,
+        message: f.message || undefined,
+      });
+      if (snippet) {
+        fixSnippetMap[f.rule_id] = isFree
+          ? { ...snippet, code: '' }
+          : snippet;
+      }
+    }
+
+    // Resolve compliance data for PDF (Pro+ only)
+    let complianceData: ComplianceDataForPdf | undefined;
+    const COMPLIANCE_TIERS = ['pro', 'agency', 'enterprise'];
+    if (COMPLIANCE_TIERS.includes(tier) && audit.check_accessibility) {
+      try {
+        const compFindingsResult = await pool.query<{
+          rule_id: string;
+          severity: string;
+          wcag_criteria: string;
+          issue_count: string;
+        }>(`
+          SELECT rule_id, severity, COALESCE(wcag_criteria, '') as wcag_criteria,
+                 COUNT(DISTINCT CONCAT(rule_id, '|', COALESCE(page_url, ''))) as issue_count
+          FROM audit_findings
+          WHERE audit_job_id = $1 AND category = 'accessibility'
+          GROUP BY rule_id, severity, wcag_criteria
+          ORDER BY rule_id
+        `, [auditId]);
+
+        const wcagToEn = buildWcagToEnMap();
+        const clauseMap = new Map<string, { clause: string; title: string; wcagCriteria: string; status: 'pass' | 'fail' | 'manual_review' | 'not_tested'; issueCount: number }>();
+
+        for (const en of enMapping) {
+          clauseMap.set(en.clause, {
+            clause: en.clause,
+            title: en.title,
+            wcagCriteria: en.wcagCriteria,
+            status: en.manualOnly ? 'manual_review' : 'pass',
+            issueCount: 0,
+          });
+        }
+
+        let criticalCount = 0;
+        let seriousCount = 0;
+        for (const row of compFindingsResult.rows) {
+          const criteria = row.wcag_criteria.split(/[,;]\s*/).map((c: string) => c.trim()).filter(Boolean);
+          const count = parseInt(row.issue_count, 10);
+          if (row.severity === 'critical') criticalCount += count;
+          if (row.severity === 'serious') seriousCount += count;
+          for (const criterion of criteria) {
+            const enClauses = wcagToEn.get(criterion);
+            if (!enClauses) continue;
+            for (const en of enClauses) {
+              const entry = clauseMap.get(en.clause)!;
+              entry.issueCount += count;
+              entry.status = 'fail';
+            }
+          }
+        }
+
+        const clauseResults = Array.from(clauseMap.values());
+        const passing = clauseResults.filter(c => c.status === 'pass').length;
+        const failing = clauseResults.filter(c => c.status === 'fail').length;
+        const manualReview = clauseResults.filter(c => c.status === 'manual_review').length;
+        const notTested = clauseResults.filter(c => c.status === 'not_tested').length;
+
+        let compStatus: 'compliant' | 'partially_compliant' | 'non_compliant' = 'partially_compliant';
+        if (failing === 0 && criticalCount === 0 && seriousCount === 0) {
+          compStatus = 'compliant';
+        } else if (criticalCount > 0 || seriousCount > 5) {
+          compStatus = 'non_compliant';
+        }
+
+        complianceData = {
+          status: compStatus,
+          standard: 'EN 301 549 (WCAG 2.2 Level AA)',
+          summary: { totalClauses: enMapping.length, passing, failing, manualReview, notTested },
+          clauses: clauseResults,
+          domain: audit.target_domain,
+          pagesAudited: audit.pages_audited || 0,
+        };
+      } catch (compErr) {
+        console.error('Compliance data for PDF failed (non-fatal):', compErr);
+      }
+    }
+
     // Generate PDF via Playwright HTML-to-PDF
     const pdfBuffer = await generateAuditPdf({
       audit,
       findings: findingsResult.rows,
       brokenLinks: brokenLinksResult.rows,
       branding,
+      fixSnippets: Object.keys(fixSnippetMap).length > 0 ? fixSnippetMap : undefined,
+      compliance: complianceData,
     });
 
     // Log PDF export
@@ -1757,7 +2168,7 @@ router.get('/:id/score-history', authenticate, async (req: Request, res: Respons
     const domain = auditResult.rows[0].target_domain;
 
     const history = await pool.query(`
-      SELECT id, created_at, seo_score, accessibility_score, security_score, performance_score
+      SELECT id, created_at, seo_score, accessibility_score, security_score, performance_score, content_score, cqs_score
       FROM audit_jobs
       WHERE user_id = $1 AND target_domain = $2 AND status = 'completed'
       ORDER BY created_at ASC
@@ -2057,180 +2468,6 @@ router.delete('/archive/old', authenticate, async (req: Request, res: Response):
 // SCHEDULED AUDITS ENDPOINTS
 // ============================================================
 
-import {
-  createSchedule,
-  updateSchedule,
-  deleteSchedule,
-  getScheduleById,
-  getSchedulesByUser,
-  toggleSchedule,
-  getScheduleRunHistory,
-} from '../../services/schedule.service.js';
-
-const createScheduleSchema = z.object({
-  targetUrl: z.string().url(),
-  name: z.string().max(255).optional(),
-  frequency: z.enum(['daily', 'weekly', 'biweekly', 'monthly', 'custom']),
-  cronExpression: z.string().max(100).optional(),
-  config: z.record(z.unknown()).optional(),
-  notifyOnCompletion: z.boolean().optional(),
-  notifyOnFailure: z.boolean().optional(),
-  timezone: z.string().max(100).optional(),
-  dayOfWeek: z.number().int().min(0).max(6).optional(),
-  hourOfDay: z.number().int().min(0).max(23).optional(),
-});
-
-const updateScheduleSchema = z.object({
-  name: z.string().max(255).optional(),
-  frequency: z.enum(['daily', 'weekly', 'biweekly', 'monthly', 'custom']).optional(),
-  cronExpression: z.string().max(100).optional(),
-  config: z.record(z.unknown()).optional(),
-  notifyOnCompletion: z.boolean().optional(),
-  notifyOnFailure: z.boolean().optional(),
-  timezone: z.string().max(100).optional(),
-  dayOfWeek: z.number().int().min(0).max(6).optional(),
-  hourOfDay: z.number().int().min(0).max(23).optional(),
-});
-
-/**
- * POST /api/audits/schedules
- * Create an audit schedule (tier-gated: starter+)
- */
-router.post('/schedules', authenticate, async (req: Request, res: Response): Promise<void> => {
-  try {
-    const userId = req.user!.id;
-    const parsed = createScheduleSchema.safeParse(req.body);
-    if (!parsed.success) {
-      res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten(), code: 'VALIDATION_ERROR' });
-      return;
-    }
-
-    const schedule = await createSchedule(userId, parsed.data);
-    res.status(201).json({ schedule });
-  } catch (error: any) {
-    console.error('Create schedule error:', error);
-    const status = error.statusCode || 500;
-    res.status(status).json({ error: error.message || 'Failed to create schedule', code: 'SCHEDULE_FAILED' });
-  }
-});
-
-/**
- * GET /api/audits/schedules
- * List user's audit schedules (optional ?siteId= filter)
- */
-router.get('/schedules', authenticate, async (req: Request, res: Response): Promise<void> => {
-  try {
-    const userId = req.user!.id;
-    const siteId = req.query.siteId as string | undefined;
-    const schedules = await getSchedulesByUser(userId, siteId);
-    res.json({ schedules });
-  } catch (error) {
-    console.error('List schedules error:', error);
-    res.status(500).json({ error: 'Failed to list schedules', code: 'LIST_SCHEDULES_FAILED' });
-  }
-});
-
-/**
- * GET /api/audits/schedules/:scheduleId
- * Get schedule detail with site info
- */
-router.get('/schedules/:scheduleId', authenticate, async (req: Request, res: Response): Promise<void> => {
-  try {
-    const userId = req.user!.id;
-    const schedule = await getScheduleById(userId, req.params.scheduleId);
-    if (!schedule) {
-      res.status(404).json({ error: 'Schedule not found', code: 'SCHEDULE_NOT_FOUND' });
-      return;
-    }
-
-    // Include last 10 runs
-    const { runs } = await getScheduleRunHistory(schedule.id, userId, 10, 0);
-    res.json({ schedule, recentRuns: runs });
-  } catch (error) {
-    console.error('Get schedule error:', error);
-    res.status(500).json({ error: 'Failed to get schedule', code: 'GET_SCHEDULE_FAILED' });
-  }
-});
-
-/**
- * PATCH /api/audits/schedules/:scheduleId
- * Update schedule settings
- */
-router.patch('/schedules/:scheduleId', authenticate, async (req: Request, res: Response): Promise<void> => {
-  try {
-    const userId = req.user!.id;
-    const parsed = updateScheduleSchema.safeParse(req.body);
-    if (!parsed.success) {
-      res.status(400).json({ error: 'Invalid input', details: parsed.error.flatten(), code: 'VALIDATION_ERROR' });
-      return;
-    }
-
-    const schedule = await updateSchedule(userId, req.params.scheduleId, parsed.data);
-    res.json({ schedule });
-  } catch (error: any) {
-    console.error('Update schedule error:', error);
-    const status = error.statusCode || 500;
-    res.status(status).json({ error: error.message || 'Failed to update schedule', code: 'UPDATE_SCHEDULE_FAILED' });
-  }
-});
-
-/**
- * DELETE /api/audits/schedules/:scheduleId
- * Delete an audit schedule
- */
-router.delete('/schedules/:scheduleId', authenticate, async (req: Request, res: Response): Promise<void> => {
-  try {
-    const userId = req.user!.id;
-    await deleteSchedule(userId, req.params.scheduleId);
-    res.json({ message: 'Schedule deleted' });
-  } catch (error: any) {
-    console.error('Delete schedule error:', error);
-    const status = error.statusCode || 500;
-    res.status(status).json({ error: error.message || 'Failed to delete schedule', code: 'DELETE_SCHEDULE_FAILED' });
-  }
-});
-
-/**
- * POST /api/audits/schedules/:scheduleId/toggle
- * Enable or disable a schedule
- */
-router.post('/schedules/:scheduleId/toggle', authenticate, async (req: Request, res: Response): Promise<void> => {
-  try {
-    const userId = req.user!.id;
-    const { enabled } = req.body as { enabled: boolean };
-    if (typeof enabled !== 'boolean') {
-      res.status(400).json({ error: 'enabled (boolean) is required', code: 'VALIDATION_ERROR' });
-      return;
-    }
-
-    const schedule = await toggleSchedule(userId, req.params.scheduleId, enabled);
-    res.json({ schedule });
-  } catch (error: any) {
-    console.error('Toggle schedule error:', error);
-    const status = error.statusCode || 500;
-    res.status(status).json({ error: error.message || 'Failed to toggle schedule', code: 'TOGGLE_SCHEDULE_FAILED' });
-  }
-});
-
-/**
- * GET /api/audits/schedules/:scheduleId/runs
- * Paginated run history for a schedule
- */
-router.get('/schedules/:scheduleId/runs', authenticate, async (req: Request, res: Response): Promise<void> => {
-  try {
-    const userId = req.user!.id;
-    const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
-    const offset = parseInt(req.query.offset as string) || 0;
-
-    const { runs, total } = await getScheduleRunHistory(req.params.scheduleId, userId, limit, offset);
-    res.json({ runs, total, limit, offset });
-  } catch (error: any) {
-    console.error('Schedule runs error:', error);
-    const status = error.statusCode || 500;
-    res.status(status).json({ error: error.message || 'Failed to get runs', code: 'SCHEDULE_RUNS_FAILED' });
-  }
-});
-
 // ============================================================
 // FILE EXTRACTION / ASSETS ENDPOINTS
 // ============================================================
@@ -2437,6 +2674,274 @@ router.get('/:id/pages/:pageId/assets', authenticate, async (req: Request, res: 
   } catch (error) {
     console.error('Get page assets error:', error);
     res.status(500).json({ error: 'Failed to get page assets', code: 'GET_PAGE_ASSETS_FAILED' });
+  }
+});
+
+/**
+ * GET /api/audits/:id/statement-data
+ * Generate accessibility statement data from audit results (Pro+ tier)
+ */
+router.get('/:id/statement-data', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const auditId = req.params.id;
+
+    // Verify audit ownership
+    const auditResult = await pool.query<AuditJob>(
+      `SELECT * FROM audit_jobs WHERE id = $1 AND user_id = $2`,
+      [auditId, userId]
+    );
+
+    if (auditResult.rows.length === 0) {
+      res.status(404).json({
+        error: 'Audit not found',
+        code: 'AUDIT_NOT_FOUND',
+      });
+      return;
+    }
+
+    const audit = auditResult.rows[0];
+
+    // Tier gate: require Pro or above
+    const tierLimits = await getUserTierLimits(userId);
+    const tier = (tierLimits as any)?.tier || 'free';
+    if (!['pro', 'agency', 'enterprise'].includes(tier)) {
+      res.status(403).json({
+        error: 'Accessibility statement generation requires Pro tier or above',
+        code: 'TIER_REQUIRED',
+        requiredTier: 'pro',
+      });
+      return;
+    }
+
+    // Get accessibility-only findings, grouped by rule (unique issues)
+    const findingsResult = await pool.query<{
+      rule_id: string;
+      rule_name: string;
+      severity: string;
+      description: string | null;
+      issue_count: string;
+    }>(`
+      SELECT rule_id, rule_name, severity, description, COUNT(DISTINCT rule_id || COALESCE(message, '')) as issue_count
+      FROM audit_findings
+      WHERE audit_job_id = $1 AND category = 'accessibility'
+      GROUP BY rule_id, rule_name, severity, description
+      ORDER BY
+        CASE severity
+          WHEN 'critical' THEN 1
+          WHEN 'serious' THEN 2
+          WHEN 'moderate' THEN 3
+          WHEN 'minor' THEN 4
+          ELSE 5
+        END,
+        rule_name
+    `, [auditId]);
+
+    // Group by severity
+    const issuesByCategory: Record<string, Array<{ ruleName: string; count: number; description: string }>> = {
+      critical: [],
+      serious: [],
+      moderate: [],
+      minor: [],
+    };
+
+    for (const row of findingsResult.rows) {
+      const sev = row.severity;
+      if (issuesByCategory[sev]) {
+        issuesByCategory[sev].push({
+          ruleName: row.rule_name,
+          count: parseInt(row.issue_count, 10),
+          description: row.description || '',
+        });
+      }
+    }
+
+    // Get unique accessibility issue count
+    const uniqueIssuesResult = await pool.query<{ count: string }>(`
+      SELECT COUNT(DISTINCT rule_id) as count
+      FROM audit_findings
+      WHERE audit_job_id = $1 AND category = 'accessibility'
+    `, [auditId]);
+
+    const totalIssues = parseInt(uniqueIssuesResult.rows[0].count, 10);
+
+    // Get pages audited count
+    const pagesResult = await pool.query<{ count: string }>(`
+      SELECT COUNT(*) as count FROM audit_pages
+      WHERE audit_job_id = $1 AND crawl_status = 'crawled'
+    `, [auditId]);
+
+    const pagesAudited = parseInt(pagesResult.rows[0].count, 10);
+
+    // Determine categories checked
+    const categoriesChecked: string[] = [];
+    if (audit.check_seo) categoriesChecked.push('seo');
+    if (audit.check_accessibility) categoriesChecked.push('accessibility');
+    if (audit.check_security) categoriesChecked.push('security');
+    if (audit.check_performance) categoriesChecked.push('performance');
+    if (audit.check_content) categoriesChecked.push('content');
+
+    // Determine conformance level from accessibility score
+    const accessibilityScore = audit.accessibility_score ?? 0;
+    let conformanceLevel: 'Full' | 'Partial' | 'Non-conformant';
+    if (accessibilityScore >= 95) {
+      conformanceLevel = 'Full';
+    } else if (accessibilityScore >= 70) {
+      conformanceLevel = 'Partial';
+    } else {
+      conformanceLevel = 'Non-conformant';
+    }
+
+    res.json({
+      domain: audit.target_domain,
+      auditDate: audit.completed_at || audit.created_at,
+      overallScore: accessibilityScore,
+      conformanceLevel,
+      standard: `WCAG ${audit.wcag_version || '2.2'} Level ${audit.wcag_level || 'AA'}`,
+      issuesByCategory,
+      totalIssues,
+      pagesAudited,
+      categoriesChecked,
+    });
+  } catch (error) {
+    console.error('Get statement data error:', error);
+    res.status(500).json({
+      error: 'Failed to generate statement data',
+      code: 'GET_STATEMENT_DATA_FAILED',
+    });
+  }
+});
+
+/**
+ * GET /api/audits/:id/content-quality
+ * Get Content Quality Score (CQS) breakdown for an audit
+ * Tier-gated: free sees cqsScore only, starter sees breakdown, pro+ sees all
+ */
+router.get('/:id/content-quality', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const auditId = req.params.id;
+
+    // Verify audit ownership
+    const auditResult = await pool.query<AuditJob>(
+      `SELECT id, cqs_score, user_id FROM audit_jobs WHERE id = $1 AND user_id = $2`,
+      [auditId, userId]
+    );
+
+    if (auditResult.rows.length === 0) {
+      res.status(404).json({ error: 'Audit not found', code: 'AUDIT_NOT_FOUND' });
+      return;
+    }
+
+    const audit = auditResult.rows[0];
+
+    // Determine user tier
+    const tierLimits = await getUserTierLimits(userId);
+    const tier = (tierLimits as any)?.tier || 'free';
+
+    // Free tier: CQS score only
+    if (tier === 'free') {
+      res.json({ cqsScore: audit.cqs_score });
+      return;
+    }
+
+    // Fetch page-level data for breakdown calculation
+    const pagesResult = await pool.query<{
+      url: string;
+      depth: number;
+      cqs_score: number | null;
+      content_quality_score: number | null;
+      content_readability_score: number | null;
+      content_structure_score: number | null;
+      content_engagement_score: number | null;
+      eeat_score: number | null;
+      word_count: number | null;
+    }>(`
+      SELECT url, depth, cqs_score,
+        content_quality_score, content_readability_score,
+        content_structure_score, content_engagement_score,
+        eeat_score, word_count
+      FROM audit_pages
+      WHERE audit_job_id = $1 AND crawl_status = 'crawled' AND cqs_score IS NOT NULL
+      ORDER BY depth ASC, cqs_score DESC
+    `, [auditId]);
+
+    // Calculate overall breakdown averages
+    const pages = pagesResult.rows;
+    const avg = (key: string) => {
+      const vals = pages.map((p: any) => p[key]).filter((v: any) => v !== null);
+      if (vals.length === 0) return null;
+      return Math.round(vals.reduce((a: number, b: number) => a + b, 0) / vals.length);
+    };
+
+    const breakdown = {
+      quality: avg('content_quality_score'),
+      eeat: avg('eeat_score'),
+      readability: avg('content_readability_score'),
+      engagement: avg('content_engagement_score'),
+      structure: avg('content_structure_score'),
+    };
+
+    // Generate summary text
+    const cqs = audit.cqs_score ?? 0;
+    const lowest = Object.entries(breakdown)
+      .filter(([, v]) => v !== null)
+      .sort(([, a], [, b]) => (a as number) - (b as number));
+    const weakAreas = lowest.slice(0, 2).map(([k]) => {
+      const labels: Record<string, string> = {
+        quality: 'content quality',
+        eeat: 'E-E-A-T',
+        readability: 'readability',
+        engagement: 'engagement',
+        structure: 'content structure',
+      };
+      return labels[k] || k;
+    });
+
+    let summary: string;
+    if (cqs >= 80) {
+      summary = `Your content quality is strong.${weakAreas.length > 0 ? ` ${weakAreas.join(' and ')} are the main areas for further improvement.` : ''}`;
+    } else if (cqs >= 60) {
+      summary = `Your content quality is good.${weakAreas.length > 0 ? ` ${weakAreas.join(' and ')} are the main areas for improvement.` : ''}`;
+    } else if (cqs >= 40) {
+      summary = `Your content quality needs attention.${weakAreas.length > 0 ? ` Focus on improving ${weakAreas.join(' and ')}.` : ''}`;
+    } else {
+      summary = `Your content quality is poor.${weakAreas.length > 0 ? ` Prioritise ${weakAreas.join(' and ')} for the biggest gains.` : ''}`;
+    }
+
+    // Starter tier: breakdown only (no pages)
+    if (tier === 'starter') {
+      res.json({
+        cqsScore: audit.cqs_score,
+        breakdown,
+        summary,
+      });
+      return;
+    }
+
+    // Pro+ tiers: full response with pages
+    res.json({
+      cqsScore: audit.cqs_score,
+      breakdown,
+      pages: pages.map(p => ({
+        url: p.url,
+        cqs: p.cqs_score,
+        depth: p.depth,
+        quality: p.content_quality_score,
+        eeat: p.eeat_score,
+        readability: p.content_readability_score,
+        engagement: p.content_engagement_score,
+        structure: p.content_structure_score,
+        wordCount: p.word_count,
+      })),
+      summary,
+    });
+  } catch (error) {
+    console.error('Get content quality error:', error);
+    res.status(500).json({
+      error: 'Failed to get content quality data',
+      code: 'GET_CONTENT_QUALITY_FAILED',
+    });
   }
 });
 

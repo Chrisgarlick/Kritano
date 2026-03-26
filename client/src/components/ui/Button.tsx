@@ -13,7 +13,7 @@ import { type ButtonHTMLAttributes, type ReactNode, forwardRef } from 'react';
  * - glow: Primary with pulse glow animation
  */
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'accent' | 'glow';
+type ButtonVariant = 'primary' | 'secondary' | 'dark' | 'outline' | 'ghost' | 'danger' | 'accent' | 'glow';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -37,6 +37,13 @@ const variants: Record<ButtonVariant, string> = {
     shadow-sm hover:shadow-md
   `,
   secondary: `
+    bg-white border border-slate-200
+    text-slate-700
+    hover:bg-slate-50
+    focus:ring-indigo-500
+    shadow-sm
+  `,
+  dark: `
     bg-slate-600 text-white
     hover:bg-slate-700
     focus:ring-slate-500
@@ -81,8 +88,8 @@ const variants: Record<ButtonVariant, string> = {
 
 const sizes: Record<ButtonSize, string> = {
   xs: 'px-2 py-1 text-xs gap-1',
-  sm: 'px-3 py-1.5 text-sm gap-1.5',
-  md: 'px-4 py-2 text-sm gap-2',
+  sm: 'px-3 py-2 text-sm gap-1.5',
+  md: 'px-4 py-2.5 text-sm gap-2',
   lg: 'px-6 py-3 text-base gap-2',
 };
 
@@ -185,6 +192,7 @@ function LoadingSpinner({ size }: { size: ButtonSize }) {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
+      aria-hidden="true"
     >
       <circle
         className="opacity-25"
@@ -212,9 +220,11 @@ interface ButtonGroupProps {
   className?: string;
 }
 
-export function ButtonGroup({ children, className = '' }: ButtonGroupProps) {
+export function ButtonGroup({ children, className = '', 'aria-label': ariaLabel }: ButtonGroupProps & { 'aria-label'?: string }) {
   return (
     <div
+      role="group"
+      aria-label={ariaLabel}
       className={`
         inline-flex rounded-lg overflow-hidden
         [&>button]:rounded-none

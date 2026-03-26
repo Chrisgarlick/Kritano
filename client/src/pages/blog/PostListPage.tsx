@@ -78,7 +78,7 @@ export default function PostListPage() {
       <PageSeo
         title={category ? `${CATEGORY_LABELS[category] || category} Articles` : 'Blog'}
         description="SEO guides, accessibility tips, security insights, and web performance best practices from PagePulser."
-        path={category ? `/blog?category=${category}` : '/blog'}
+        path="/blog"
         structuredData={{
           '@context': 'https://schema.org',
           '@type': 'Blog',
@@ -165,13 +165,14 @@ export default function PostListPage() {
               <Link
                 key={post.id}
                 to={`/blog/${post.slug}`}
-                className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:border-indigo-200 transition-all duration-200 group"
+                className="bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-lg hover:border-indigo-200 transition-all duration-200 group"
               >
                 {post.featured_image_url && (
                   <div className="aspect-video bg-slate-100 overflow-hidden">
                     <img
                       src={post.featured_image_url}
-                      alt={post.title}
+                      alt=""
+                      aria-hidden="true"
                       loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />

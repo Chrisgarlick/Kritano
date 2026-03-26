@@ -132,7 +132,7 @@ export default function About() {
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display text-4xl text-slate-900 leading-tight mb-6">
-            Join thousands of teams improving their web presence
+            Ready to improve your web presence?
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-10">
             Start your first audit today. It's free, fast, and requires no credit card.
@@ -142,7 +142,7 @@ export default function About() {
               to="/register"
               className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors"
             >
-              Get Started Free
+              Start Free Audit
             </Link>
             <Link
               to="/contact"

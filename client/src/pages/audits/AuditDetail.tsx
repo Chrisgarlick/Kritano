@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, useRef, Fragment } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -10,6 +11,13 @@ import {
   ExternalLink,
   ChevronDown,
   CheckCircle,
+  Share2,
+  Copy,
+  Link2Off,
+  X,
+  Clock,
+  FileText,
+  ShieldCheck,
 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
@@ -21,13 +29,14 @@ import { CategoryScore } from '../../components/ui/ScoreDisplay';
 import { StatusBadge, SeverityBadge } from '../../components/ui/StatusBadge';
 import { MultiScoreChart, ChartLegend } from '../../components/ui/ScoreChart';
 import { CategoryRadar, SeverityDonut, SeverityLegend } from '../../components/ui/CategoryRadar';
-import { SecurityBlockedAlert, AuditErrorSummary } from '../../components/audit';
+import { SecurityBlockedAlert, AuditErrorSummary, CQSBreakdown, FixSnippetAccordion } from '../../components/audit';
 import { SchemaTab } from '../../components/audit/SchemaTab';
 import { IndexExposureTab } from '../../components/audit/IndexExposureTab';
 import { FilesTab } from '../../components/audit/FilesTab';
 import { ContentAnalysisPanel } from '../../components/audits/ContentAnalysisPanel';
 import { auditsApi } from '../../services/api';
-import type { Audit, Finding, AuditPage, AuditProgress, Severity, FindingCategory } from '../../types/audit.types';
+import { useAuth } from '../../contexts/AuthContext';
+import type { Audit, Finding, AuditPage, AuditProgress, Severity, FindingCategory, FixSnippet } from '../../types/audit.types';
 import { formatDate, formatBytes } from '../../utils/format';
 import { severityColors, categoryColors, getScoreColor } from '../../utils/constants';
 
@@ -42,6 +51,7 @@ interface GroupedFinding {
   recommendation: string | null;
   help_url: string | null;
   dismissed: boolean;
+  fixSnippet?: FixSnippet;
   affectedPages: {
     page_url: string | null;
     message: string; // Page-specific message (e.g., "score of 26/100")
@@ -76,6 +86,7 @@ function groupFindings(findings: Finding[]): GroupedFinding[] {
         recommendation: f.recommendation,
         help_url: f.help_url,
         dismissed: f.status === 'dismissed',
+        fixSnippet: f.fixSnippet,
         affectedPages: [],
       });
     }
@@ -99,7 +110,7 @@ function groupFindings(findings: Finding[]): GroupedFinding[] {
 // Using shared statusColors, severityColors, categoryColors from utils/constants
 // Using shared formatDate from utils/format
 
-function EnhancedScoreCard({ score, category }: { score: number | null; category: 'seo' | 'accessibility' | 'security' | 'performance' | 'content' | 'structured-data' }) {
+function EnhancedScoreCard({ score, category, onClick }: { score: number | null; category: 'seo' | 'accessibility' | 'security' | 'performance' | 'content' | 'structured-data' | 'cqs'; onClick?: () => void }) {
   const categoryLabel = category === 'structured-data' ? 'Schema' : category;
   if (score === null) {
     return (
@@ -117,6 +128,7 @@ function EnhancedScoreCard({ score, category }: { score: number | null; category
       score={score}
       category={category}
       className="animate-reveal-up"
+      onClick={onClick}
     />
   );
 }
@@ -179,6 +191,11 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
               </Body>
             </div>
           </div>
+        )}
+
+        {/* Fix Snippet Accordion */}
+        {group.fixSnippet && (
+          <FixSnippetAccordion fixSnippet={group.fixSnippet} />
         )}
 
         {/* Show snippet if consistent across all pages */}
@@ -508,6 +525,22 @@ export default function AuditDetailPage() {
   const [rerunning, setRerunning] = useState(false);
   const [scoreHistory, setScoreHistory] = useState<Array<{ id: string; created_at: string; seo_score: number | null; accessibility_score: number | null; security_score: number | null; performance_score: number | null; content_score: number | null }>>([]);
 
+  // CQS breakdown panel
+  const [showCqsBreakdown, setShowCqsBreakdown] = useState(false);
+
+  // Share modal state
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [shareExpiresAt, setShareExpiresAt] = useState<string | null>(null);
+  const [sharing, setSharing] = useState(false);
+  const [revoking, setRevoking] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  // Auth context for tier check
+  const { subscription } = useAuth();
+  const userTier = subscription?.tier || 'free';
+  const canShare = ['pro', 'agency', 'enterprise'].includes(userTier);
+
   // Filters
   const [categoryFilter, setCategoryFilter] = useState<FindingCategory | null>(null);
   const [severityFilter, setSeverityFilter] = useState<Severity | null>(null);
@@ -792,6 +825,50 @@ export default function AuditDetailPage() {
     }
   };
 
+  const handleShare = async () => {
+    if (!id) return;
+    try {
+      setSharing(true);
+      const response = await auditsApi.share(id);
+      setShareUrl(response.data.shareUrl);
+      setShareExpiresAt(response.data.expiresAt);
+      setShowShareModal(true);
+    } catch (err: any) {
+      const msg = err?.response?.data?.error || 'Failed to generate share link';
+      toast(msg, 'error');
+    } finally {
+      setSharing(false);
+    }
+  };
+
+  const handleRevokeShare = async () => {
+    if (!id) return;
+    try {
+      setRevoking(true);
+      await auditsApi.revokeShare(id);
+      setShareUrl(null);
+      setShareExpiresAt(null);
+      setShowShareModal(false);
+      toast('Share link revoked', 'success');
+    } catch {
+      toast('Failed to revoke share link', 'error');
+    } finally {
+      setRevoking(false);
+    }
+  };
+
+  const handleCopyShareLink = async () => {
+    if (!shareUrl) return;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      toast('Link copied to clipboard', 'success');
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast('Failed to copy link', 'error');
+    }
+  };
+
   // Deep link: set tab from hash
   useEffect(() => {
     const hash = location.hash.replace('#', '') as TabType;
@@ -825,6 +902,7 @@ export default function AuditDetailPage() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Audit Details | PagePulser</title></Helmet>
       {/* Header */}
       <div className="mb-8 animate-reveal-up">
         {/* Back link */}
@@ -965,6 +1043,37 @@ export default function AuditDetailPage() {
                 >
                   Print
                 </Button>
+                {canShare && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<Share2 className="w-4 h-4" />}
+                    onClick={handleShare}
+                    isLoading={sharing}
+                  >
+                    Share
+                  </Button>
+                )}
+                {['pro', 'agency', 'enterprise'].includes(userTier) && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<FileText className="w-4 h-4" />}
+                    onClick={() => navigate(`/audits/${id}/statement`)}
+                  >
+                    Accessibility Statement
+                  </Button>
+                )}
+                {['pro', 'agency', 'enterprise'].includes(userTier) && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<ShieldCheck className="w-4 h-4" />}
+                    onClick={() => navigate(`/audits/${id}/compliance`)}
+                  >
+                    EAA Compliance
+                  </Button>
+                )}
                 <Button
                   variant="danger"
                   size="sm"
@@ -989,6 +1098,77 @@ export default function AuditDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Share Modal */}
+      {showShareModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/50" onClick={() => setShowShareModal(false)} />
+          <div className="relative bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xl max-w-md w-full p-6 animate-reveal-up">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Share2 className="w-5 h-5 text-indigo-600" />
+                <Heading size="sm" as="h3" className="text-slate-900 dark:text-white">Share Report</Heading>
+              </div>
+              <button
+                onClick={() => setShowShareModal(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {shareUrl ? (
+              <div className="space-y-4">
+                <div>
+                  <Body size="sm" muted className="mb-2">
+                    Anyone with this link can view a summary of this audit report.
+                  </Body>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      readOnly
+                      value={shareUrl}
+                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-300 font-mono truncate focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                    />
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      leftIcon={<Copy className="w-4 h-4" />}
+                      onClick={handleCopyShareLink}
+                    >
+                      {copied ? 'Copied!' : 'Copy'}
+                    </Button>
+                  </div>
+                </div>
+
+                {shareExpiresAt && (
+                  <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                    <Clock className="w-4 h-4" />
+                    <span>Link expires in 48 hours ({new Date(shareExpiresAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })})</span>
+                  </div>
+                )}
+
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    leftIcon={<Link2Off className="w-4 h-4" />}
+                    onClick={handleRevokeShare}
+                    isLoading={revoking}
+                    className="text-red-600 border-red-200 hover:bg-red-50 dark:text-red-400 dark:border-red-800 dark:hover:bg-red-900/20"
+                  >
+                    Revoke Link
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center py-8">
+                <div className="w-6 h-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {error && (
         <Alert variant="error" className="mb-6">
@@ -1283,13 +1463,25 @@ export default function AuditDetailPage() {
       })()}
 
       {/* Score Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8 animate-reveal-up stagger-1">
+      <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 ${showCqsBreakdown && audit.cqs_score !== null ? 'mb-4' : 'mb-8'} animate-reveal-up stagger-1`}>
         <EnhancedScoreCard score={audit.seo_score} category="seo" />
         <EnhancedScoreCard score={audit.accessibility_score} category="accessibility" />
         <EnhancedScoreCard score={audit.security_score} category="security" />
         <EnhancedScoreCard score={audit.performance_score} category="performance" />
         <EnhancedScoreCard score={audit.content_score} category="content" />
+        <EnhancedScoreCard
+          score={audit.cqs_score}
+          category="cqs"
+          onClick={() => setShowCqsBreakdown(prev => !prev)}
+        />
       </div>
+
+      {/* CQS Breakdown Panel */}
+      {showCqsBreakdown && audit.cqs_score !== null && (
+        <div className="mb-8 animate-reveal-up motion-reduce:animate-none" aria-live="polite">
+          <CQSBreakdown auditId={audit.id} cqsScore={audit.cqs_score} />
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="relative border-b border-slate-200 dark:border-slate-800 mb-8 animate-reveal-up stagger-2">

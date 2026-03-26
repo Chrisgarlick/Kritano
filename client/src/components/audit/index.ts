@@ -5,3 +5,5 @@ export { GenerateSchemaPanel } from './GenerateSchemaPanel';
 export { RichSnippetPreview } from './RichSnippetPreview';
 export { IndexExposureTab } from './IndexExposureTab';
 export { FilesTab } from './FilesTab';
+export { CQSBreakdown } from './CQSBreakdown';
+export { FixSnippetAccordion } from './FixSnippet';

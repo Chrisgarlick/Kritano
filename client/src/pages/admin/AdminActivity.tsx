@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { adminApi } from '../../services/api';
 import { AdminLayout } from '../../components/layout/AdminLayout';
 import { Button } from '../../components/ui/Button';
@@ -44,6 +45,7 @@ export default function AdminActivityPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Activity | PagePulser</title></Helmet>
       {/* Page Title */}
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>

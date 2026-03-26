@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { siteInvitationsApi } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
@@ -128,7 +129,9 @@ export default function SiteInvitationPage() {
   const permissionInfo = PERMISSION_INFO[invitation.permission];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+    <>
+      <Helmet><title>Site Invitation | PagePulser</title></Helmet>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8 max-w-md w-full">
         {/* Logo */}
         <div className="text-center mb-6">
@@ -230,5 +233,6 @@ export default function SiteInvitationPage() {
         )}
       </div>
     </div>
+    </>
   );
 }

@@ -1,0 +1,2 @@
+ALTER TABLE sites
+  ADD COLUMN badge_enabled BOOLEAN NOT NULL DEFAULT false;

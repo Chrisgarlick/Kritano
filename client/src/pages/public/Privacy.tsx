@@ -3,16 +3,17 @@
  */
 
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { PublicLayout } from '../../components/layout/PublicLayout';
+import PageSeo from '../../components/seo/PageSeo';
 
 export default function Privacy() {
   return (
     <PublicLayout>
-      <Helmet>
-        <title>Privacy Policy | PagePulser</title>
-        <meta name="description" content="PagePulser privacy policy covering data collection, cookies, GDPR rights, and how we protect your information." />
-      </Helmet>
+      <PageSeo
+        title="Privacy Policy | PagePulser"
+        description="PagePulser privacy policy covering data collection, cookies, GDPR rights, and how we protect your information."
+        path="/privacy"
+      />
 
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">
@@ -182,7 +183,8 @@ export default function Privacy() {
           <ul>
             <li><strong>Free:</strong> 30 days</li>
             <li><strong>Starter:</strong> 90 days</li>
-            <li><strong>Professional:</strong> 1 year</li>
+            <li><strong>Pro:</strong> 1 year</li>
+            <li><strong>Agency:</strong> 2 years</li>
             <li><strong>Enterprise:</strong> Unlimited</li>
           </ul>
 

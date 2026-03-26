@@ -299,16 +299,45 @@ export class EmailService {
     return this.smtpTransport;
   }
 
+  /**
+   * Send payment failure (dunning) notification email.
+   */
+  async sendPaymentFailedEmail(email: string, firstName: string): Promise<void> {
+    const billingUrl = `${this.appUrl}/settings/billing`;
+    const subject = 'Action needed: Your PagePulser payment was unsuccessful';
+    const footer = this.buildEmailFooter();
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="text-align: center; margin-bottom: 30px;"><h1 style="color: #4f46e5; margin: 0;">PagePulser</h1></div><h2 style="color: #1f2937;">Hi ${firstName},</h2><p>We were unable to process your most recent subscription payment. This can happen for a number of reasons, such as an expired card or insufficient funds.</p><p>Your account is still active, but to avoid any interruption to your service, please update your payment method at your earliest convenience.</p><div style="text-align: center; margin: 30px 0;"><a href="${billingUrl}" style="background-color: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">Update Payment Method</a></div><p style="color: #6b7280; font-size: 14px;">If you believe this is an error or need assistance, please don't hesitate to reach out to our support team.</p>${footer}</body></html>`;
+
+    await this.sendEmailDirect(email, subject, html);
+  }
+
   // ========================================
   // Fallback HTML builders (inline templates for migration period)
   // ========================================
 
+  private get businessAddress(): string {
+    return process.env.BUSINESS_ADDRESS || '';
+  }
+
+  private buildEmailFooter(includeUnsubscribe = false, unsubscribeUrl?: string): string {
+    const address = this.businessAddress;
+    const addressHtml = address
+      ? `<p style="color: #9ca3af; font-size: 12px; text-align: center; margin: 4px 0;">${address}</p>`
+      : '';
+    const unsubscribeHtml = includeUnsubscribe && unsubscribeUrl
+      ? `<p style="color: #9ca3af; font-size: 12px; text-align: center; margin: 4px 0;"><a href="${unsubscribeUrl}" style="color: #9ca3af;">Unsubscribe</a> from these emails.</p>`
+      : '';
+    return `<hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">${addressHtml}${unsubscribeHtml}`;
+  }
+
   private buildVerificationHtml(firstName: string, verifyUrl: string): string {
-    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="text-align: center; margin-bottom: 30px;"><h1 style="color: #4f46e5; margin: 0;">PagePulser</h1></div><h2 style="color: #1f2937;">Hi ${firstName},</h2><p>Welcome to PagePulser! Please verify your email address by clicking the button below:</p><div style="text-align: center; margin: 30px 0;"><a href="${verifyUrl}" style="background-color: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">Verify Email Address</a></div><p style="color: #6b7280; font-size: 14px;">This link will expire in 24 hours.</p><hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;"><p style="color: #9ca3af; font-size: 12px;">If you didn't create an account with PagePulser, you can safely ignore this email.</p></body></html>`;
+    const footer = this.buildEmailFooter();
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="text-align: center; margin-bottom: 30px;"><h1 style="color: #4f46e5; margin: 0;">PagePulser</h1></div><h2 style="color: #1f2937;">Hi ${firstName},</h2><p>Welcome to PagePulser! Please verify your email address by clicking the button below:</p><div style="text-align: center; margin: 30px 0;"><a href="${verifyUrl}" style="background-color: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">Verify Email Address</a></div><p style="color: #6b7280; font-size: 14px;">This link will expire in 24 hours.</p>${footer}<p style="color: #9ca3af; font-size: 12px;">If you didn't create an account with PagePulser, you can safely ignore this email.</p></body></html>`;
   }
 
   private buildResetHtml(firstName: string, resetUrl: string): string {
-    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="text-align: center; margin-bottom: 30px;"><h1 style="color: #4f46e5; margin: 0;">PagePulser</h1></div><h2 style="color: #1f2937;">Hi ${firstName},</h2><p>We received a request to reset your password. Click the button below to choose a new password:</p><div style="text-align: center; margin: 30px 0;"><a href="${resetUrl}" style="background-color: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">Reset Password</a></div><p style="color: #6b7280; font-size: 14px;"><strong>This link will expire in 1 hour.</strong></p><hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;"><p style="color: #9ca3af; font-size: 12px;">If you didn't request a password reset, you can safely ignore this email.</p></body></html>`;
+    const footer = this.buildEmailFooter();
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="text-align: center; margin-bottom: 30px;"><h1 style="color: #4f46e5; margin: 0;">PagePulser</h1></div><h2 style="color: #1f2937;">Hi ${firstName},</h2><p>We received a request to reset your password. Click the button below to choose a new password:</p><div style="text-align: center; margin: 30px 0;"><a href="${resetUrl}" style="background-color: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">Reset Password</a></div><p style="color: #6b7280; font-size: 14px;"><strong>This link will expire in 1 hour.</strong></p>${footer}<p style="color: #9ca3af; font-size: 12px;">If you didn't request a password reset, you can safely ignore this email.</p></body></html>`;
   }
 
   private buildAuditHtml(firstName: string, audit: { id: string; target_url: string; target_domain: string; status: string; total_issues: number; critical_issues: number; seo_score: number | null; accessibility_score: number | null; security_score: number | null; performance_score: number | null }): string {
@@ -320,7 +349,9 @@ export class EmailService {
       const color = score >= 80 ? '#22c55e' : score >= 50 ? '#eab308' : '#ef4444';
       return `<tr><td style="padding: 8px 16px; border-bottom: 1px solid #e5e7eb;">${label}</td><td style="padding: 8px 16px; border-bottom: 1px solid #e5e7eb; color: ${color}; font-weight: 600;">${score}/100</td></tr>`;
     };
-    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="text-align: center; margin-bottom: 30px;"><h1 style="color: #4f46e5; margin: 0;">PagePulser</h1></div><h2 style="color: #1f2937;">Hi ${firstName},</h2><p>Your audit of <strong>${audit.target_url}</strong> has ${isSuccess ? 'completed successfully' : 'failed'}.</p>${isSuccess ? `<div style="background: #f9fafb; border-radius: 8px; padding: 20px; margin: 20px 0;"><p style="margin: 8px 0;"><strong>Issues Found:</strong> ${audit.total_issues} (${audit.critical_issues} critical)</p><table style="width: 100%; border-collapse: collapse;">${scoreRow('SEO', audit.seo_score)}${scoreRow('Accessibility', audit.accessibility_score)}${scoreRow('Security', audit.security_score)}${scoreRow('Performance', audit.performance_score)}</table></div>` : ''}<div style="text-align: center; margin: 30px 0;"><a href="${viewUrl}" style="background-color: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">View Audit Results</a></div><hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;"><p style="color: #9ca3af; font-size: 12px; text-align: center;">You're receiving this email because you have audit notifications enabled.</p></body></html>`;
+    const unsubscribeUrl = `${this.appUrl}/settings/notifications`;
+    const footer = this.buildEmailFooter(true, unsubscribeUrl);
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="text-align: center; margin-bottom: 30px;"><h1 style="color: #4f46e5; margin: 0;">PagePulser</h1></div><h2 style="color: #1f2937;">Hi ${firstName},</h2><p>Your audit of <strong>${audit.target_url}</strong> has ${isSuccess ? 'completed successfully' : 'failed'}.</p>${isSuccess ? `<div style="background: #f9fafb; border-radius: 8px; padding: 20px; margin: 20px 0;"><p style="margin: 8px 0;"><strong>Issues Found:</strong> ${audit.total_issues} (${audit.critical_issues} critical)</p><table style="width: 100%; border-collapse: collapse;">${scoreRow('SEO', audit.seo_score)}${scoreRow('Accessibility', audit.accessibility_score)}${scoreRow('Security', audit.security_score)}${scoreRow('Performance', audit.performance_score)}</table></div>` : ''}<div style="text-align: center; margin: 30px 0;"><a href="${viewUrl}" style="background-color: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">View Audit Results</a></div>${footer}<p style="color: #9ca3af; font-size: 12px; text-align: center;">You're receiving this email because you have audit notifications enabled.</p></body></html>`;
   }
 }
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   Zap,
@@ -242,6 +243,7 @@ export default function TriggersPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Triggers | PagePulser</title></Helmet>
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div className="flex items-center space-x-3 mb-4 sm:mb-0">

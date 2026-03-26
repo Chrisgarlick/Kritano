@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Globe, Shield, ShieldCheck, Plus, ExternalLink, Copy, Check, Trash2, AlertTriangle, Palette, Wand2, Loader2 } from 'lucide-react';
@@ -238,7 +239,9 @@ export default function SitesSettings() {
   const sharedSites = sites.filter(s => s.permission !== 'owner');
 
   return (
-    <div className="p-6 space-y-6">
+    <>
+      <Helmet><title>Sites Settings | PagePulser</title></Helmet>
+      <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -933,5 +936,6 @@ export default function SitesSettings() {
         document.body
       )}
     </div>
+    </>
   );
 }

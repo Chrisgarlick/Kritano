@@ -31,10 +31,10 @@ Here's what changes when you add it to CI/CD:
 
 - **Regressions get caught immediately.** A developer adds a form without labels? The build fails before it's merged. No more discovering issues in production a month later
 - **Accessibility becomes part of the development workflow**, not a separate audit that happens quarterly. It shifts from "something we do before launch" to "something we do on every pull request"
-- **The score becomes a trackable metric.** You can set a baseline, monitor trends, and hold the team accountable to a standard — just like you would with test coverage or performance budgets
+- **The [accessibility score](/blog/understanding-website-accessibility-scores) becomes a trackable metric.** You can set a baseline, monitor trends, and hold the team accountable to a standard — just like you would with test coverage or performance budgets
 - **It scales.** Manual testing doesn't scale across a team of ten developers pushing multiple PRs a day. Automated testing does
 
-However, there are a few things to think about. Automated testing catches roughly 30-40% of accessibility issues — the structural, detectable ones like missing alt text, contrast failures, broken labels, and heading hierarchy problems. It won't catch usability issues that require human judgement, like whether alt text is actually useful or whether a custom component makes sense to a screen reader user. Automated testing is a safety net, not a replacement for manual testing.
+However, there are a few things to think about. Automated testing catches roughly 30-40% of accessibility issues — the structural, detectable ones like missing [alt text, contrast failures, broken labels](/blog/improve-accessibility-score-20-points), and heading hierarchy problems. It won't catch usability issues that require human judgement, like whether alt text is actually useful or whether a custom component makes sense to a screen reader user. Automated testing is a safety net, not a replacement for [manual testing](/blog/ecommerce-accessibility-guide-online-retailers).
 
 ## Step 1: Get Your API Key
 

@@ -96,8 +96,7 @@ export default function PostDetailPage() {
     );
   }
 
-  const baseUrl = window.location.origin;
-  const canonicalUrl = `${baseUrl}/blog/${post.slug}`;
+  const canonicalUrl = `https://pagepulser.com/blog/${post.slug}`;
 
   const structuredData = {
     '@context': 'https://schema.org',

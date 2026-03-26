@@ -93,7 +93,7 @@ export function SchemaTab({ auditId }: SchemaTabProps) {
           auditsApi.getSchemaSummary(auditId),
           userApi.getSubscription().catch(() => null),
         ]);
-        setSummary(schemaRes.data);
+        setSummary(schemaRes.data as SchemaSummary);
         const tier = (subRes?.data?.subscription as any)?.tier || 'free';
         setIsFreeUser(tier === 'free');
       } catch {

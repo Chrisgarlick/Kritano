@@ -141,7 +141,11 @@ export const authApi = {
     lastName: string;
     companyName?: string;
     referralCode?: string;
-    earlyAccessChannel?: 'email' | 'social';
+    earlyAccess?: boolean;
+    marketingOptIn?: boolean;
+    utmSource?: string;
+    utmMedium?: string;
+    utmCampaign?: string;
   }) => api.post('/auth/register', data),
 
   logout: () => api.post('/auth/logout'),
@@ -179,6 +183,9 @@ export const authApi = {
 
   unlinkProvider: (provider: string) =>
     api.delete(`/auth/oauth/${provider}`),
+
+  changePassword: (currentPassword: string, newPassword: string) =>
+    api.post('/auth/change-password', { currentPassword, newPassword }),
 };
 
 // Audits API functions
@@ -233,6 +240,30 @@ export const auditsApi = {
   // Get broken links for an audit
   getBrokenLinks: (id: string) =>
     api.get<{ brokenLinks: Finding[]; total: number }>(`/audits/${id}/broken-links`),
+
+  // Get Content Quality Score breakdown
+  getContentQuality: (id: string) =>
+    api.get<{
+      cqsScore: number | null;
+      breakdown?: {
+        quality: number | null;
+        eeat: number | null;
+        readability: number | null;
+        engagement: number | null;
+        structure: number | null;
+      };
+      pages?: Array<{
+        url: string;
+        cqs: number | null;
+        depth: number;
+        quality: number | null;
+        eeat: number | null;
+        readability: number | null;
+        engagement: number | null;
+        structure: number | null;
+      }>;
+      summary?: string;
+    }>(`/audits/${id}/content-quality`),
 
   // Get pages for an audit
   getPages: (
@@ -376,11 +407,93 @@ export const auditsApi = {
       page_count: number; html_element: string | null; html_attribute: string | null;
     }> }>(`/audits/${auditId}/pages/${pageId}/assets`),
 
+  // Share an audit report (generate public link)
+  share: (id: string) =>
+    api.post<{ shareUrl: string; token: string; expiresAt: string }>(`/audits/${id}/share`),
+
+  // Revoke a shared audit report link
+  revokeShare: (id: string) =>
+    api.delete(`/audits/${id}/share`),
+
+  // Accessibility statement data (Pro+ tier)
+  getStatementData: (id: string) =>
+    api.get<{
+      domain: string;
+      auditDate: string;
+      overallScore: number;
+      conformanceLevel: 'Full' | 'Partial' | 'Non-conformant';
+      standard: string;
+      issuesByCategory: Record<string, Array<{ ruleName: string; count: number; description: string }>>;
+      totalIssues: number;
+      pagesAudited: number;
+      categoriesChecked: string[];
+    }>(`/audits/${id}/statement-data`),
+
+  // EAA Compliance Passport report
+  getCompliance: (id: string) =>
+    api.get<{
+      status: 'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed';
+      standard: string;
+      summary: {
+        totalClauses: number;
+        passing: number;
+        failing: number;
+        manualReview: number;
+        notTested: number;
+      };
+      clauses: Array<{
+        clause: string;
+        title: string;
+        wcagCriteria: string;
+        status: 'pass' | 'fail' | 'manual_review' | 'not_tested';
+        issueCount: number;
+        findings: Array<{
+          ruleId: string;
+          severity: string;
+          count: number;
+        }>;
+      }>;
+      auditDate: string;
+      domain: string;
+      pagesAudited: number;
+      tierLocked?: boolean;
+      requiredTier?: string;
+    }>(`/audits/${id}/compliance`),
+
   // Create SSE connection for real-time progress
   createProgressStream: (id: string): EventSource => {
     const url = `/api/audits/${id}/stream`;
     return new EventSource(url, { withCredentials: true });
   },
+};
+
+// Public (unauthenticated) shared report API
+export const publicReportsApi = {
+  get: (token: string) =>
+    api.get<{
+      audit: {
+        targetUrl: string;
+        targetDomain: string;
+        status: string;
+        createdAt: string;
+        completedAt: string | null;
+        pagesFound: number;
+        pagesCrawled: number;
+        pagesAudited: number;
+        scores: {
+          seo: number | null;
+          accessibility: number | null;
+          security: number | null;
+          performance: number | null;
+          content: number | null;
+        };
+        totalIssues: number;
+        criticalIssues: number;
+      };
+      findingsSummary: Record<string, number>;
+      categorySummary: Record<string, number>;
+      expiresAt: string;
+    }>(`/public/reports/${token}`),
 };
 
 // API Key types
@@ -659,6 +772,10 @@ export const sitesApi = {
       verificationHeader: string;
       rateLimitProfiles: Array<{ id: string; label: string; description: string }>;
     }>('/sites/scanner-info'),
+
+  // Toggle public badge
+  toggleBadge: (siteId: string, enabled: boolean) =>
+    api.put<{ success: boolean; badgeEnabled: boolean }>(`/sites/${siteId}/badge`, { enabled }),
 };
 
 // Site Invitations API (public routes)

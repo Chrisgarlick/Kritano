@@ -45,8 +45,14 @@ export const registerSchema = z.object({
     }),
   // Optional referral code from URL param
   referralCode: z.string().max(20).optional(),
-  // Optional early access channel from URL param
-  earlyAccessChannel: z.enum(['email', 'social']).optional(),
+  // Optional early access flag from URL param
+  earlyAccess: z.boolean().optional(),
+  // Marketing email opt-in (unchecked = false, GDPR compliant)
+  marketingOptIn: z.boolean().optional(),
+  // Optional UTM attribution parameters
+  utmSource: z.string().max(255).optional(),
+  utmMedium: z.string().max(255).optional(),
+  utmCampaign: z.string().max(255).optional(),
 });
 
 // Login schema

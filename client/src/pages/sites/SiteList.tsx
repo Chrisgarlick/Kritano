@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import {
   Plus,
@@ -120,6 +121,7 @@ export default function SiteListPage() {
       performance_score: site.stats.latestScores.performance,
       content_score: site.stats.latestScores.content ?? null,
       structured_data_score: site.stats.latestScores.structuredData ?? null,
+      cqs_score: null,
       started_at: null,
       completed_at: site.stats.lastAuditAt,
       created_at: site.stats.lastAuditAt || '',
@@ -138,6 +140,7 @@ export default function SiteListPage() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Sites | PagePulser</title></Helmet>
       <div className="dashboard-bg min-h-full">
         {/* Header */}
         <div className="mb-8 animate-reveal-up">

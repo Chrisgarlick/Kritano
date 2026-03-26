@@ -23,19 +23,19 @@ I've been building websites for years, and one thing has always frustrated me: t
 
 That's why I built PagePulser. And today, it's officially live.
 
-PagePulser is a website health auditing platform that checks your site across the four things that matter most — accessibility, SEO, security, and performance — and gives you a clear, prioritised view of what needs attention. No jargon. No overwhelming technical reports. Just scores, issues, and practical guidance on how to fix them.
+PagePulser is a website health auditing platform that checks your site across the four things that matter most — [accessibility](/blog/web-accessibility-2026-why-websites-still-failing), SEO, security, and performance — and gives you a clear, prioritised view of what needs attention. No jargon. No overwhelming technical reports. Just scores, issues, and practical guidance on how to fix them.
 
 ## What PagePulser Actually Does
 
 When you run an audit, PagePulser crawls your website and analyses it across six dimensions:
 
-**Accessibility** — Can everyone use your site, including people with disabilities? PagePulser checks for WCAG compliance issues like missing alt text, poor colour contrast, broken form labels, and keyboard navigation problems. These aren't just nice-to-haves — they're legal requirements under UK and EU regulations, and they affect a significant portion of your audience.
+**Accessibility** — Can everyone use your site, including people with disabilities? PagePulser checks for WCAG compliance issues like missing [alt text](/blog/complete-guide-image-alt-text), poor colour contrast, broken form labels, and keyboard navigation problems. These aren't just nice-to-haves — they're legal requirements under UK and EU regulations, and they affect a significant portion of your audience.
 
 **SEO** — Can search engines find, understand, and rank your content? PagePulser checks your title tags, meta descriptions, heading structure, structured data, internal linking, and more. It flags the issues that actually affect your rankings, not vanity metrics that don't move the needle.
 
-**Security** — Is your site protected against common threats? PagePulser checks your SSL configuration, security headers, mixed content issues, exposed admin panels, and other vulnerabilities that attackers actively look for. Most of these are quick fixes, but you need to know they exist first.
+**Security** — Is your site protected against common threats? PagePulser checks your SSL configuration, [security headers](/blog/website-security-basics-business-owners), mixed content issues, exposed admin panels, and other vulnerabilities that attackers actively look for. Most of these are quick fixes, but you need to know they exist first.
 
-**Performance** — Does your site load quickly and respond smoothly? PagePulser measures your Core Web Vitals — LCP, INP, and CLS — alongside other performance metrics. It identifies what's slowing you down, whether that's uncompressed images, render-blocking scripts, or server response times.
+**Performance** — Does your site load quickly and respond smoothly? PagePulser measures your [Core Web Vitals](/blog/core-web-vitals-plain-english-guide) — LCP, INP, and CLS — alongside other performance metrics. It identifies what's slowing you down, whether that's uncompressed images, render-blocking scripts, or server response times.
 
 **Content Analysis** — Is your content readable, well-structured, and engaging? PagePulser analyses readability scores, heading structure, content depth, and E-E-A-T signals — the experience, expertise, authoritativeness, and trustworthiness markers that Google increasingly uses to evaluate content quality.
 
@@ -59,7 +59,7 @@ That's it. No installations, no code snippets, no technical setup. If you can fi
 
 ## Understanding Your Scores
 
-Your scores give you an at-a-glance view of where you stand in each category:
+Your [scores](/blog/understanding-website-accessibility-scores) give you an at-a-glance view of where you stand in each category:
 
 - **90-100: Excellent** — Your site is in great shape. There may be minor improvements to make, but the foundations are solid
 - **70-89: Good** — You're doing well, but there are issues worth addressing. These are usually straightforward fixes that can make a noticeable difference
@@ -98,7 +98,7 @@ I've spent years running website audits manually — pulling data from Lighthous
 
 The other thing that kept nagging at me was the accessibility gap. Most audit tools are built for developers. They spit out error codes, DOM selectors, and WCAG criteria references that mean nothing to a business owner who just wants to know "is my website OK?" I wanted to build something that answers that question in plain English, for anyone, regardless of their technical background.
 
-PagePulser isn't trying to replace deep, specialist tools. Lighthouse, axe, WAVE — they're brilliant at what they do, and I still use them every day. But PagePulser fills the gap for the people who don't have time to learn five different tools, don't know which issues to prioritise, and just want a clear, honest answer about their website's health.
+PagePulser isn't trying to replace deep, specialist tools. Lighthouse, axe, WAVE — they're brilliant at what they do, and I still use them every day. But PagePulser fills the gap for the people who don't have time to learn five different tools, don't know which issues to prioritise, and just want a clear, honest answer about their [website's health](/blog/website-regular-health-checks-not-annual-audit).
 
 ## What's Coming Next
 

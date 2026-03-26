@@ -9,6 +9,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
 import { adminApi } from '../../../services/api';
@@ -368,6 +369,7 @@ export default function PostEditorPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Post Editor | PagePulser</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

@@ -15,9 +15,16 @@ export function setPool(dbPool: Pool): void {
 }
 
 const APP_URL = process.env.APP_URL || 'http://localhost:3000';
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required');
+}
+const JWT_SECRET: string = process.env.JWT_SECRET;
 const DEFAULT_DAILY_LIMIT = 20;
 const SEND_DELAY_MS = 200; // 200ms between sends
+
+// Outreach mode: 'draft' queues emails for manual review, 'auto' sends automatically.
+// Default to 'draft' to align with manual personalisation approach.
+const OUTREACH_MODE = process.env.COLD_OUTREACH_MODE || 'draft';
 
 // LIA compliance: Only send to generic/role-based business email addresses.
 // Personal named emails (john@, j.smith@) are never contacted.
@@ -116,7 +123,12 @@ export async function queueOutreachBatch(limit?: number): Promise<{ queued: numb
 /**
  * Process queued outreach sends. Claims rows with FOR UPDATE SKIP LOCKED.
  */
-export async function processOutreachQueue(batchSize: number = 10): Promise<{ sent: number; failed: number }> {
+export async function processOutreachQueue(batchSize: number = 10): Promise<{ sent: number; failed: number; drafted: number }> {
+  // In draft mode, leave queued sends for manual review — don't auto-send
+  if (OUTREACH_MODE === 'draft') {
+    return { sent: 0, failed: 0, drafted: 0 };
+  }
+
   let sent = 0;
   let failed = 0;
 
@@ -216,7 +228,7 @@ export async function processOutreachQueue(batchSize: number = 10): Promise<{ se
     }
   }
 
-  return { sent, failed };
+  return { sent, failed, drafted: 0 };
 }
 
 // LIA compliance: Follow-ups removed. Each domain receives a maximum of 1 email.

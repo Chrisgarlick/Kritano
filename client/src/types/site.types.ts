@@ -60,6 +60,7 @@ export interface Site {
   ignoreRobotsTxt: boolean;
   rateLimitProfile: 'conservative' | 'normal' | 'aggressive';
   sendVerificationHeader: boolean;
+  badgeEnabled: boolean;
   settings: SiteSettings;
   createdAt: string;
   updatedAt: string;

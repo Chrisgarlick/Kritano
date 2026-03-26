@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { TrendingUp, TrendingDown, Minus, ExternalLink, AlertTriangle, ChevronRight, ArrowUp, ArrowDown } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
@@ -190,6 +191,7 @@ export default function SiteAnalytics() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Site Analytics | PagePulser</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm">

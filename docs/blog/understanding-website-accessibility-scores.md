@@ -17,7 +17,7 @@ featured: false
 
 # Understanding Website Accessibility Scores: What the Numbers Actually Mean
 
-You've just run your website through an accessibility tool — maybe Lighthouse, maybe something your developer sent over — and you're staring at a number. Maybe it's 62. Maybe it's 84. Maybe it's a terrifying 31. But what does it actually mean? Is 62 decent? Is 84 good enough? And what exactly was it testing?
+You've just run your website through an accessibility tool — maybe [Lighthouse](/blog/core-web-vitals-plain-english-guide), maybe something your developer sent over — and you're staring at a number. Maybe it's 62. Maybe it's 84. Maybe it's a terrifying 31. But what does it actually mean? Is 62 decent? Is 84 good enough? And what exactly was it testing?
 
 If you've ever felt lost looking at a website accessibility score, you're not alone. Most business owners I work with see a number, feel either relieved or alarmed, and have no idea what to do next. The number on its own isn't particularly useful — what matters is understanding what went into it and where the real problems are hiding.
 
@@ -25,14 +25,14 @@ If you've ever felt lost looking at a website accessibility score, you're not al
 
 Here's the first thing to understand: there's no single, universal accessibility score. Different tools calculate their numbers differently, and comparing a score from one tool to a score from another is a bit like comparing temperatures in Celsius and Fahrenheit — the numbers look different even when they're measuring the same thing.
 
-That said, most tools follow the same basic approach. They crawl your webpage, check it against a set of rules derived from the **Web Content Accessibility Guidelines (WCAG)** — the international standard for web accessibility — and tally up what passes and what fails.
+That said, most tools follow the same basic approach. They crawl your webpage, check it against a set of rules derived from the **[Web Content Accessibility Guidelines (WCAG)](/blog/web-accessibility-2026-why-websites-still-failing)** — the international standard for web accessibility — and tally up what passes and what fails.
 
 ### What the Tools Check
 
 A typical automated accessibility audit looks at things like:
 
-- **Colour contrast** — Is there enough difference between your text colour and background colour for people with low vision to read it?
-- **Image alt text** — Do your images have text descriptions for screen reader users?
+- **[Colour contrast](/blog/improve-accessibility-score-20-points)** — Is there enough difference between your text colour and background colour for people with low vision to read it?
+- **Image [alt text](/blog/complete-guide-image-alt-text)** — Do your images have text descriptions for screen reader users?
 - **Form labels** — Are your input fields properly labelled so people know what to type where?
 - **Heading structure** — Do your headings follow a logical order (H1, then H2, then H3) so the page has a navigable outline?
 - **Link text** — Do your links say something meaningful, or is everything "click here"?

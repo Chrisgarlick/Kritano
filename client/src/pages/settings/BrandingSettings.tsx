@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import {
   Palette,
   Building2,
@@ -307,7 +308,9 @@ export default function BrandingSettings() {
   const verifiedSites = sites.filter(s => s.verified && s.permission === 'owner');
 
   return (
-    <div className="p-6 space-y-8">
+    <>
+      <Helmet><title>Branding | PagePulser</title></Helmet>
+      <div className="p-6 space-y-8">
       {/* Header */}
       <div>
         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">PDF Report Branding</h2>
@@ -319,7 +322,7 @@ export default function BrandingSettings() {
 
       {/* Organization Branding (Agency+ only — always shown) */}
       {isAgencyPlus && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-indigo-50 to-slate-50 dark:from-indigo-950/30 dark:to-slate-800/50">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg flex items-center justify-center">
@@ -433,7 +436,7 @@ export default function BrandingSettings() {
       )}
 
       {/* Site Branding */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg flex items-center justify-center">
@@ -741,6 +744,7 @@ export default function BrandingSettings() {
         </ul>
       </div>
     </div>
+    </>
   );
 }
 

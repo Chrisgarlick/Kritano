@@ -5,6 +5,7 @@
  * Features the PagePulser pulse aesthetic with helpful navigation.
  */
 
+import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { Home, ArrowLeft, Search } from 'lucide-react';
 import { Display, Body } from '../../components/ui/Typography';
@@ -22,7 +23,9 @@ export default function NotFoundPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center px-4">
+    <>
+      <Helmet><title>Page Not Found | PagePulser</title></Helmet>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center px-4">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl" />
@@ -131,5 +134,6 @@ export default function NotFoundPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

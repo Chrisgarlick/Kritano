@@ -30,7 +30,7 @@ This matters for three reasons:
 
 - **Larger files take longer to download.** Every extra megabyte adds seconds to your load time, and those seconds compound when you've got multiple large images on a page
 - **Mobile users are hit hardest.** Someone on a 4G connection in a rural area isn't downloading your 5MB hero image as fast as your office broadband suggests. And mobile is where the majority of your traffic comes from
-- **Google is watching.** Page load speed directly affects your Core Web Vitals scores, which directly affect your search rankings. Your Largest Contentful Paint (LCP) metric — the time it takes for the biggest visible element to appear — is almost always an image. If that image is 4MB, your LCP is going to suffer
+- **Google is watching.** Page load speed directly affects your [Core Web Vitals](/blog/core-web-vitals-plain-english-guide) scores, which directly affect your [search rankings](/blog/why-accessible-websites-rank-higher). Your Largest Contentful Paint (LCP) metric — the time it takes for the biggest visible element to appear — is almost always an image. If that image is 4MB, your LCP is going to suffer
 
 ## Modern Image Formats
 

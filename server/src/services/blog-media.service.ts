@@ -9,6 +9,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
 import sharp from 'sharp';
+import { JSDOM } from 'jsdom';
+import DOMPurify from 'dompurify';
 import { pool } from '../db/index.js';
 import type { BlogMedia } from '../types/blog.types.js';
 
@@ -69,8 +71,16 @@ export async function uploadMedia(
   let processedBuffer: Buffer;
 
   if (file.mimetype === 'image/svg+xml') {
-    // SVGs don't need processing
-    processedBuffer = file.buffer;
+    // Sanitize SVG to strip scripts, event handlers, and foreign objects
+    const window = new JSDOM('').window;
+    const purify = DOMPurify(window as any);
+    const cleanSvg = purify.sanitize(file.buffer.toString('utf-8'), {
+      USE_PROFILES: { svg: true, svgFilters: true },
+      ADD_TAGS: ['use'],
+      FORBID_TAGS: ['script', 'foreignObject'],
+      FORBID_ATTR: ['onload', 'onerror', 'onclick', 'onmouseover', 'onfocus', 'onblur'],
+    });
+    processedBuffer = Buffer.from(cleanSvg, 'utf-8');
     width = 0;
     height = 0;
 

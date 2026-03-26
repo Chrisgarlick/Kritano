@@ -8,13 +8,15 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { PublicLayout } from '../../components/layout/PublicLayout';
 import PageSeo from '../../components/seo/PageSeo';
 import { CheckCircle, X, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 
 interface Plan {
   name: string;
-  price: string;
+  monthlyPrice: string;
+  annualPrice: string;
   priceDetail: string;
   description: string;
   popular?: boolean;
@@ -26,7 +28,8 @@ interface Plan {
 const PLANS: Plan[] = [
   {
     name: 'Free',
-    price: '$0',
+    monthlyPrice: '$0',
+    annualPrice: '$0',
     priceDetail: 'forever',
     description: 'For personal projects.',
     cta: 'Get Started',
@@ -35,13 +38,14 @@ const PLANS: Plan[] = [
       '1 site',
       '50 pages per audit',
       '5 audits/month',
-      'SEO & Content checks',
+      'SEO, Security & Content checks',
       '30-day retention',
     ],
   },
   {
     name: 'Starter',
-    price: '$19',
+    monthlyPrice: '$19',
+    annualPrice: '$190',
     priceDetail: '/month',
     description: 'For freelancers & small teams.',
     cta: 'Start Free Trial',
@@ -50,14 +54,15 @@ const PLANS: Plan[] = [
       '3 sites',
       '250 pages per audit',
       '10 audits/month',
-      '+ Accessibility, Security & Perf',
+      '+ Accessibility & Performance',
       'Weekly scheduling',
       'PDF exports',
     ],
   },
   {
     name: 'Pro',
-    price: '$49',
+    monthlyPrice: '$49',
+    annualPrice: '$490',
     priceDetail: '/month',
     description: 'For growing businesses.',
     popular: true,
@@ -75,7 +80,8 @@ const PLANS: Plan[] = [
   },
   {
     name: 'Agency',
-    price: '$99',
+    monthlyPrice: '$99',
+    annualPrice: '$990',
     priceDetail: '/month',
     description: 'For agencies & consultants.',
     cta: 'Start Free Trial',
@@ -92,11 +98,12 @@ const PLANS: Plan[] = [
   },
   {
     name: 'Enterprise',
-    price: '$199',
-    priceDetail: '/month',
-    description: 'For large organizations.',
-    cta: 'Start Free Trial',
-    ctaLink: '/register',
+    monthlyPrice: 'Custom',
+    annualPrice: 'Custom',
+    priceDetail: '',
+    description: 'For large organisations.',
+    cta: 'Contact Sales',
+    ctaLink: '/contact',
     highlights: [
       'Unlimited sites',
       '10,000 pages per audit',
@@ -150,13 +157,34 @@ const COMPARISON_SECTIONS = [
     ],
   },
   {
-    title: 'Exports',
+    title: 'Exports & Sharing',
     rows: [
       { label: 'PDF export', free: false, starter: true, pro: true, agency: true, enterprise: true },
       { label: 'PDF branding', free: '\u2014', starter: 'Site colors', pro: 'Site colors', agency: 'White-label', enterprise: 'White-label' },
       { label: 'CSV export', free: false, starter: false, pro: true, agency: true, enterprise: true },
       { label: 'JSON export', free: false, starter: false, pro: true, agency: true, enterprise: true },
       { label: 'White-label', free: false, starter: false, pro: false, agency: true, enterprise: true },
+      { label: 'Shareable report links', free: false, starter: false, pro: true, agency: true, enterprise: true },
+      { label: 'Accessibility statement', free: false, starter: false, pro: true, agency: true, enterprise: true },
+      { label: 'Public audit badge', free: false, starter: true, pro: true, agency: true, enterprise: true },
+      { label: 'Fix snippets (code)', free: false, starter: true, pro: true, agency: true, enterprise: true },
+      { label: 'Fix explanations', free: true, starter: true, pro: true, agency: true, enterprise: true },
+    ],
+  },
+  {
+    title: 'Content Intelligence',
+    rows: [
+      { label: 'Content Quality Score', free: 'Score only', starter: 'Breakdown', pro: 'Full detail', agency: 'Full detail', enterprise: 'Full detail' },
+      { label: 'E-E-A-T analysis', free: false, starter: false, pro: true, agency: true, enterprise: true },
+      { label: 'AEO analysis', free: false, starter: false, pro: true, agency: true, enterprise: true },
+    ],
+  },
+  {
+    title: 'Compliance',
+    rows: [
+      { label: 'EAA compliance status', free: true, starter: true, pro: true, agency: true, enterprise: true },
+      { label: 'Full compliance report', free: false, starter: false, pro: true, agency: true, enterprise: true },
+      { label: 'Compliance PDF export', free: false, starter: false, pro: true, agency: true, enterprise: true },
     ],
   },
   {
@@ -178,7 +206,7 @@ const COMPARISON_SECTIONS = [
 const FAQS = [
   {
     q: 'How does the free plan work?',
-    a: 'The free plan lets you audit one website with up to 50 pages per scan and 5 audits per month. You get SEO and content checks with 30-day data retention. No credit card required, no time limit.',
+    a: 'The free plan lets you audit one website with up to 50 pages per scan and 5 audits per month. You get SEO, security, and content checks with 30-day data retention. No credit card required, no time limit.',
   },
   {
     q: 'Can I upgrade or downgrade at any time?',
@@ -197,33 +225,62 @@ const FAQS = [
     a: 'Every paid plan includes a 14-day free trial with full access. No credit card required to start.',
   },
   {
+    q: 'Do you offer annual billing?',
+    a: 'Yes! Switch to annual billing and save 2 months — you pay for 10 months and get 12. Use the toggle at the top of the pricing cards to see annual prices.',
+  },
+  {
     q: 'What kind of support do you offer?',
     a: 'Free and Starter users get community support. Pro users get priority email support. Agency and Enterprise customers get dedicated account management.',
+  },
+  {
+    q: 'What happens to my data if I cancel?',
+    a: 'Your data is retained for the period specified in your plan (30 days for Free, 90 days for Starter, etc.). After cancellation, your account is downgraded to the Free tier and data beyond the Free retention window is deleted after 30 days.',
+  },
+  {
+    q: 'Do you offer refunds?',
+    a: 'We offer a full refund within 14 days of your first payment if you are not satisfied. Contact us at support@pagepulser.com.',
   },
 ];
 
 export default function Pricing() {
   const [comparisonOpen, setComparisonOpen] = useState(false);
+  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
 
   return (
     <PublicLayout>
       <PageSeo
         title="Pricing"
-        description="Simple, transparent pricing for website auditing. Start free, upgrade as you grow. Plans from $0 to $99/month."
+        description="Simple, transparent pricing for website auditing. Start free, upgrade as you grow. Plans starting free."
         path="/pricing"
         structuredData={{
           '@context': 'https://schema.org',
           '@type': 'Product',
           name: 'PagePulser',
           description: 'Website auditing platform for SEO, accessibility, security, and performance.',
-          offers: PLANS.filter(p => p.price !== 'Free').map(p => ({
+          offers: PLANS.filter(p => p.name !== 'Free' && p.name !== 'Enterprise').map(p => ({
             '@type': 'Offer',
             name: p.name,
-            price: p.price.replace('$', ''),
+            price: p.monthlyPrice.replace('$', ''),
             priceCurrency: 'USD',
           })),
         }}
       />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: FAQS.map(faq => ({
+              '@type': 'Question',
+              name: faq.q,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: faq.a,
+              },
+            })),
+          })}
+        </script>
+      </Helmet>
 
       {/* Hero */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16 text-center">
@@ -233,10 +290,39 @@ export default function Pricing() {
         <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-6">
           Simple, transparent pricing.
         </h1>
-        <p className="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto mb-10">
           Start free and upgrade as your needs grow. Every paid plan includes a 14-day
           free trial. No credit card required.
         </p>
+
+        {/* Billing Period Toggle */}
+        <div className="flex items-center justify-center gap-3">
+          <span className={`text-sm font-medium ${billingPeriod === 'monthly' ? 'text-slate-900' : 'text-slate-500'}`}>
+            Monthly
+          </span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={billingPeriod === 'annual'}
+            aria-label="Toggle annual billing"
+            onClick={() => setBillingPeriod(billingPeriod === 'monthly' ? 'annual' : 'monthly')}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+              billingPeriod === 'annual' ? 'bg-indigo-600' : 'bg-slate-300'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                billingPeriod === 'annual' ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+          <span className={`text-sm font-medium ${billingPeriod === 'annual' ? 'text-slate-900' : 'text-slate-500'}`}>
+            Annual
+          </span>
+          <span className="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">
+            Save 2 months
+          </span>
+        </div>
       </section>
 
       {/* All 5 Plans in one row */}
@@ -270,11 +356,13 @@ export default function Pricing() {
               {/* Price */}
               <div className="mb-5">
                 <span className={`font-display text-3xl ${plan.popular ? 'text-white' : 'text-slate-900'}`}>
-                  {plan.price}
+                  {billingPeriod === 'annual' ? plan.annualPrice : plan.monthlyPrice}
                 </span>
                 {plan.priceDetail && (
                   <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-500' : 'text-slate-500'}`}>
-                    {plan.priceDetail}
+                    {billingPeriod === 'annual' && plan.monthlyPrice !== '$0' && plan.monthlyPrice !== 'Custom'
+                      ? '/year'
+                      : plan.priceDetail}
                   </span>
                 )}
               </div>
@@ -394,7 +482,7 @@ export default function Pricing() {
             to="/register"
             className="inline-flex items-center gap-2 px-7 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
           >
-            Get Started Free
+            Start Free Audit
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

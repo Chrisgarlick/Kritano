@@ -23,6 +23,8 @@ import { recalculateScore } from './services/lead-scoring.service.js';
 import { checkTriggers, checkStalledVerifications } from './services/crm-trigger.service.js';
 import { checkAndQualifyReferral, setPool as setReferralServicePool } from './services/referral.service.js';
 import { setPool as setSystemSettingsPool } from './services/system-settings.service.js';
+import { setPool as setRevenueSnapshotPool, takeSnapshot as takeRevenueSnapshot } from './services/revenue-snapshot.service.js';
+import { setPool as setEventTrackingPool } from './services/event-tracking.service.js';
 
 import { getMemoryUsage, getMemoryThreshold } from './services/queue/memory-monitor';
 import dotenv from 'dotenv';
@@ -62,6 +64,8 @@ setDomainVerificationPool(pool);
 setScheduleServicePool(pool);
 setReferralServicePool(pool);
 setSystemSettingsPool(pool);
+setRevenueSnapshotPool(pool);
+setEventTrackingPool(pool);
 
 // Helper to send notification email
 async function sendAuditNotification(jobId: string, status: 'completed' | 'failed'): Promise<void> {
@@ -162,6 +166,39 @@ function stopStalledVerificationPoller(): void {
   }
 }
 
+// Daily revenue snapshot (every 24 hours)
+const REVENUE_SNAPSHOT_MS = 24 * 60 * 60 * 1000;
+let revenueSnapshotTimer: ReturnType<typeof setTimeout> | null = null;
+let revenueSnapshotRunning = false;
+
+async function pollRevenueSnapshot(): Promise<void> {
+  if (!revenueSnapshotRunning) return;
+  try {
+    await takeRevenueSnapshot();
+    console.log('📊 Daily revenue snapshot taken');
+  } catch (err) {
+    console.error('Revenue snapshot error:', err);
+  }
+  if (revenueSnapshotRunning) {
+    revenueSnapshotTimer = setTimeout(pollRevenueSnapshot, REVENUE_SNAPSHOT_MS);
+  }
+}
+
+function startRevenueSnapshotPoller(): void {
+  revenueSnapshotRunning = true;
+  console.log('📊 Revenue snapshot poller started (every 24 hours)');
+  // Take first snapshot after 1 minute (let DB settle)
+  revenueSnapshotTimer = setTimeout(pollRevenueSnapshot, 60 * 1000);
+}
+
+function stopRevenueSnapshotPoller(): void {
+  revenueSnapshotRunning = false;
+  if (revenueSnapshotTimer) {
+    clearTimeout(revenueSnapshotTimer);
+    revenueSnapshotTimer = null;
+  }
+}
+
 // Create worker
 const worker = createAuditWorker({
   pool,
@@ -245,7 +282,7 @@ const worker = createAuditWorker({
 });
 
 // Health check endpoint (S12: Worker health monitoring)
-const BASE_HEALTH_PORT = parseInt(process.env.WORKER_HEALTH_PORT || '3001', 10);
+const BASE_HEALTH_PORT = parseInt(process.env.WORKER_HEALTH_PORT || '3002', 10);
 const MAX_PORT_ATTEMPTS = 10;
 const startTime = Date.now();
 let jobsProcessed = 0;
@@ -365,6 +402,7 @@ const shutdown = async (signal: string) => {
     healthServerRef = null;
   }
   stopStalledVerificationPoller();
+  stopRevenueSnapshotPoller();
   await Promise.all([discoveryWorker.stop(), worker.stop(), campaignWorker.stop(), trialWorker.stop(), schedulePoller.stop(), gdprWorker.stop()]);
   await pool.end();
   process.exit(0);
@@ -381,6 +419,7 @@ process.on('uncaughtException', async (error) => {
     await Sentry.flush(2000);
   }
   stopStalledVerificationPoller();
+  stopRevenueSnapshotPoller();
   await Promise.all([discoveryWorker.stop(), worker.stop(), campaignWorker.stop(), trialWorker.stop(), schedulePoller.stop(), gdprWorker.stop()]);
   await pool.end();
   process.exit(1);
@@ -393,6 +432,7 @@ process.on('unhandledRejection', async (reason) => {
     await Sentry.flush(2000);
   }
   stopStalledVerificationPoller();
+  stopRevenueSnapshotPoller();
   await Promise.all([discoveryWorker.stop(), worker.stop(), campaignWorker.stop(), trialWorker.stop(), schedulePoller.stop(), gdprWorker.stop()]);
   await pool.end();
   process.exit(1);
@@ -407,6 +447,7 @@ console.log('   Max concurrent discovery: ' + DISCOVERY_MAX_CONCURRENT);
 console.log('');
 
 startStalledVerificationPoller();
+startRevenueSnapshotPoller();
 Promise.all([discoveryWorker.start(), worker.start(), campaignWorker.start(), trialWorker.start(), schedulePoller.start(), gdprWorker.start()]).catch(async (error) => {
   console.error('💥 Failed to start workers:', error);
   await pool.end();

@@ -46,7 +46,7 @@ Here's where things get interesting for businesses in the UK and Europe, because
 
 The EAA comes into full force in **June 2025**, and it's a game-changer. It requires that digital products and services — including websites and mobile apps — meet accessibility standards. This isn't limited to public sector organisations. If you're selling products or services to consumers in the EU, this applies to you. E-commerce, banking, travel, telecommunications — all covered.
 
-The standard it references is **EN 301 549**, which maps closely to WCAG 2.1 Level AA. If your website doesn't meet that bar, you're potentially non-compliant with EU law.
+The standard it references is **EN 301 549**, which maps closely to [WCAG 2.1 Level AA](/blog/wcag-2-2-whats-new-what-it-means). If your website doesn't meet that bar, you're potentially non-compliant with EU law.
 
 ### The Public Sector Bodies Accessibility Regulations (PSBAR)
 
@@ -104,7 +104,7 @@ If you're reading this and thinking "right, where do I start?" — here's a chec
 ### Navigation and Structure
 
 - [ ] Set the **document language** in your HTML (`<html lang="en">`)
-- [ ] Use a logical **heading hierarchy** — one H1, then H2s, then H3s. Don't skip levels
+- [ ] Use a logical **[heading hierarchy](/blog/website-launch-checklist)** — one H1, then H2s, then H3s. Don't skip levels
 - [ ] Ensure all **links have descriptive text** — "Read our accessibility guide" not "Click here"
 - [ ] Add **skip navigation links** so keyboard users can jump straight to the main content
 
@@ -116,7 +116,7 @@ If you're reading this and thinking "right, where do I start?" — here's a chec
 
 ### Testing
 
-- [ ] Run your site through **Lighthouse** (built into Chrome) or **axe DevTools** for a quick automated check
+- [ ] Run your site through **[Lighthouse](/blog/core-web-vitals-plain-english-guide)** (built into Chrome) or **axe DevTools** for a quick automated check
 - [ ] Navigate your entire site using only your **keyboard** — can you reach everything?
 - [ ] Test with a **screen reader** at least once — VoiceOver on Mac, NVDA on Windows (both free)
 

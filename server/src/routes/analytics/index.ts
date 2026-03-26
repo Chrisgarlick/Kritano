@@ -16,6 +16,16 @@ import {
 import { Pool } from 'pg';
 import type { TimeRange, GroupBy } from '../../types/analytics.types.js';
 
+const VALID_RANGES: TimeRange[] = ['7d', '30d', '90d', '1y', 'all'];
+const VALID_GROUP_BY: GroupBy[] = ['day', 'week', 'month'];
+
+function isValidRange(v: unknown): v is TimeRange {
+  return typeof v === 'string' && VALID_RANGES.includes(v as TimeRange);
+}
+function isValidGroupBy(v: unknown): v is GroupBy {
+  return typeof v === 'string' && VALID_GROUP_BY.includes(v as GroupBy);
+}
+
 const router = Router();
 let pool: Pool;
 
@@ -60,6 +70,11 @@ router.get('/sites/:siteId/scores', loadSite, async (req: Request, res: Response
     const siteId = siteReq.siteId!;
     const { range, from, to } = req.query;
 
+    if (range && !isValidRange(range)) {
+      res.status(400).json({ error: 'Invalid range parameter. Must be one of: 7d, 30d, 90d, 1y, all' });
+      return;
+    }
+
     const options: Parameters<typeof getSiteScoreHistory>[0] = {
       siteId,
       range: (range as TimeRange) || '30d',
@@ -87,6 +102,15 @@ router.get('/sites/:siteId/issues', loadSite, async (req: Request, res: Response
     const siteReq = req as SiteRequest;
     const siteId = siteReq.siteId!;
     const { range, groupBy } = req.query;
+
+    if (range && !isValidRange(range)) {
+      res.status(400).json({ error: 'Invalid range parameter. Must be one of: 7d, 30d, 90d, 1y, all' });
+      return;
+    }
+    if (groupBy && !isValidGroupBy(groupBy)) {
+      res.status(400).json({ error: 'Invalid groupBy parameter. Must be one of: day, week, month' });
+      return;
+    }
 
     const trends = await getIssueTrends({
       siteId,
@@ -223,8 +247,8 @@ router.get('/compare', async (req: Request, res: Response): Promise<void> => {
     res.json(comparison);
   } catch (error: any) {
     console.error('Compare audits error:', error);
-    if (error.message.includes('requires')) {
-      res.status(400).json({ error: error.message });
+    if (error.message?.includes('requires')) {
+      res.status(400).json({ error: 'Invalid comparison parameters' });
       return;
     }
     res.status(500).json({ error: 'Failed to compare audits' });
@@ -275,8 +299,8 @@ router.get('/compare-sites', async (req: Request, res: Response): Promise<void> 
     res.json(comparison);
   } catch (error: any) {
     console.error('Compare sites error:', error);
-    if (error.message.includes('requires')) {
-      res.status(400).json({ error: error.message });
+    if (error.message?.includes('requires')) {
+      res.status(400).json({ error: 'Invalid comparison parameters' });
       return;
     }
     res.status(500).json({ error: 'Failed to compare sites' });
@@ -365,7 +389,7 @@ router.get('/compare-urls', async (req: Request, res: Response): Promise<void> =
   } catch (error: any) {
     console.error('Compare URLs error:', error);
     if (error.message?.includes('not found') || error.message?.includes('No audit data')) {
-      res.status(404).json({ error: error.message });
+      res.status(404).json({ error: 'URL or audit data not found' });
       return;
     }
     res.status(500).json({ error: 'Failed to compare URLs' });

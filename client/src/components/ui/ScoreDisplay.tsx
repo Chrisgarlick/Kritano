@@ -177,7 +177,7 @@ export function CompactScore({
 // Category Score - For SEO, A11Y, Security, Performance
 // =============================================
 
-type CategoryType = 'seo' | 'accessibility' | 'security' | 'performance' | 'content' | 'structured-data';
+type CategoryType = 'seo' | 'accessibility' | 'security' | 'performance' | 'content' | 'structured-data' | 'cqs';
 
 interface CategoryScoreProps {
   category: CategoryType;
@@ -228,6 +228,12 @@ const categoryConfig: Record<CategoryType, {
   },
   'structured-data': {
     label: 'Schema',
+    bgColor: 'bg-teal-100 dark:bg-teal-900/30',
+    textColor: 'text-teal-700 dark:text-teal-400',
+    ringColor: '#14b8a6', // teal-500
+  },
+  cqs: {
+    label: 'CQS',
     bgColor: 'bg-teal-100 dark:bg-teal-900/30',
     textColor: 'text-teal-700 dark:text-teal-400',
     ringColor: '#14b8a6', // teal-500

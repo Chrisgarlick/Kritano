@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { BarChart3, TrendingUp, TrendingDown, Minus, ArrowRight, Globe, FileSearch, ChevronDown, FileText, Link2, AlertCircle, Zap, Eye, Settings, User } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
@@ -47,10 +48,11 @@ function ScoreCell({ score }: { score: number | null }) {
 
 interface SiteCardProps {
   site: SiteWithStats;
+  trend: 'improving' | 'declining' | 'stable';
   onClick: () => void;
 }
 
-function SiteCard({ site, onClick }: SiteCardProps) {
+function SiteCard({ site, trend, onClick }: SiteCardProps) {
   const scores = [
     site.stats.latestScores?.seo,
     site.stats.latestScores?.accessibility,
@@ -61,9 +63,6 @@ function SiteCard({ site, onClick }: SiteCardProps) {
   const avgScore = scores.length > 0
     ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
     : null;
-
-  // Determine trend based on score history if available
-  const trend: 'improving' | 'declining' | 'stable' = 'stable';
 
   return (
     <div
@@ -248,6 +247,7 @@ export default function AnalyticsDashboard() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Analytics | PagePulser</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -357,6 +357,7 @@ export default function AnalyticsDashboard() {
                 <SiteCard
                   key={site.id}
                   site={site}
+                  trend={overview.siteTrends?.[site.id] || 'stable'}
                   onClick={() => navigate(`/analytics/sites/${site.id}`)}
                 />
               ))}

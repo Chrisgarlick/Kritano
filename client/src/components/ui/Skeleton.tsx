@@ -10,7 +10,8 @@ export function Skeleton({ className = '' }: SkeletonProps) {
 
 export function SkeletonTable({ rows = 5 }: { rows?: number }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden" role="status" aria-label="Loading table">
+      <span className="sr-only">Loading...</span>
       {/* Header */}
       <div className="bg-slate-50 px-6 py-3 flex gap-6">
         <Skeleton className="h-4 w-24" />
@@ -47,7 +48,8 @@ export function SkeletonTable({ rows = 5 }: { rows?: number }) {
 
 export function SkeletonCard() {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 space-y-4" role="status" aria-label="Loading card">
+      <span className="sr-only">Loading...</span>
       <Skeleton className="h-5 w-1/3" />
       <div className="grid grid-cols-2 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
@@ -63,9 +65,10 @@ export function SkeletonCard() {
 
 export function SkeletonScoreCards() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="status" aria-label="Loading scores">
+      <span className="sr-only">Loading...</span>
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="rounded-xl p-4 bg-slate-50">
+        <div key={i} className="rounded-lg p-4 bg-slate-50">
           <div className="flex items-center justify-between mb-2">
             <Skeleton className="h-8 w-8 rounded" />
             <Skeleton className="h-8 w-12" />

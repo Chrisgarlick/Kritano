@@ -24,6 +24,14 @@ import { useAdmin } from '../../contexts/AdminContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { TIER_INFO } from '../../types/site.types';
 
+const tierBadgeColors: Record<string, string> = {
+  gray: 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-400',
+  blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400',
+  purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400',
+  indigo: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400',
+  yellow: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400',
+};
+
 const SIDEBAR_WIDTH = 256;
 const SIDEBAR_COLLAPSED_WIDTH = 64;
 const STORAGE_KEY = 'sidebar-collapsed';
@@ -176,7 +184,7 @@ export function Sidebar() {
               </div>
               <span className="text-sm font-medium text-slate-700 dark:text-slate-300">My Account</span>
             </div>
-            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full uppercase tracking-wide bg-${tierInfo.color}-100 dark:bg-${tierInfo.color}-900/30 text-${tierInfo.color}-700 dark:text-${tierInfo.color}-400`}>
+            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full uppercase tracking-wide ${tierBadgeColors[tierInfo.color] || tierBadgeColors.gray}`}>
               {tierInfo.name}
             </span>
           </div>

@@ -9,6 +9,7 @@ export interface ScoreDataPoint {
   performance: number | null;
   content: number | null;
   structuredData: number | null;
+  cqs: number | null;
 }
 
 export interface ScoreSummary {
@@ -19,6 +20,7 @@ export interface ScoreSummary {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
   trends: {
     seo: TrendDirection;
@@ -27,6 +29,7 @@ export interface ScoreSummary {
     performance: TrendDirection;
     content: TrendDirection;
     structuredData: TrendDirection;
+    cqs: TrendDirection;
   };
   totalAudits: number;
 }
@@ -71,6 +74,7 @@ export interface AuditSummary {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
   issues: {
     total: number;
@@ -92,6 +96,7 @@ export interface ScoreDelta {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
 }
 
@@ -135,6 +140,7 @@ export interface SiteAnalyticsSummary {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
   lastAuditAt: string | null;
   auditCount: number;
@@ -152,6 +158,7 @@ export interface OrgAnalytics {
       performance: number | null;
       content: number | null;
       structuredData: number | null;
+      cqs: number | null;
     };
     topIssues: Array<{
       ruleId: string;
@@ -176,6 +183,7 @@ export interface SiteComparisonEntry {
       performance: number | null;
       content: number | null;
       structuredData: number | null;
+      cqs: number | null;
     };
     totalIssues: number;
   } | null;
@@ -186,6 +194,7 @@ export interface SiteComparisonEntry {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
 }
 
@@ -198,9 +207,9 @@ export type GroupBy = 'day' | 'week' | 'month';
 export type TrendDirection = 'up' | 'down' | 'stable';
 export type OverallTrend = 'improving' | 'declining' | 'stable';
 
-export type ScoreCategory = 'seo' | 'accessibility' | 'security' | 'performance' | 'content' | 'structuredData';
+export type ScoreCategory = 'seo' | 'accessibility' | 'security' | 'performance' | 'content' | 'structuredData' | 'cqs';
 
-export const SCORE_CATEGORIES: ScoreCategory[] = ['seo', 'accessibility', 'security', 'performance', 'content', 'structuredData'];
+export const SCORE_CATEGORIES: ScoreCategory[] = ['seo', 'accessibility', 'security', 'performance', 'content', 'structuredData', 'cqs'];
 
 export const CATEGORY_COLORS: Record<ScoreCategory, string> = {
   seo: '#8b5cf6',        // violet-500
@@ -209,6 +218,7 @@ export const CATEGORY_COLORS: Record<ScoreCategory, string> = {
   performance: '#0ea5e9', // sky-500
   content: '#f59e0b',     // amber-500
   structuredData: '#6366f1', // indigo-500
+  cqs: '#14b8a6',            // teal-500
 };
 
 export const CATEGORY_LABELS: Record<ScoreCategory, string> = {
@@ -218,6 +228,7 @@ export const CATEGORY_LABELS: Record<ScoreCategory, string> = {
   performance: 'Performance',
   content: 'Content',
   structuredData: 'Schema',
+  cqs: 'Content Quality',
 };
 
 export const SEVERITY_COLORS: Record<string, string> = {
@@ -257,6 +268,7 @@ export interface UserOverview {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
   sitesNeedingAttention: Array<{
     id: string;
@@ -269,9 +281,11 @@ export interface UserOverview {
       performance: number | null;
       content: number | null;
       structuredData: number | null;
+      cqs: number | null;
     };
     trend: 'declining';
   }>;
+  siteTrends: Record<string, 'improving' | 'declining' | 'stable'>;
   recentActivity: Array<{
     auditId: string;
     siteName: string;
@@ -289,6 +303,7 @@ export interface UserOverview {
       performance: number | null;
       content: number | null;
       structuredData: number | null;
+      cqs: number | null;
     };
     startedBy: {
       name: string;
@@ -318,6 +333,7 @@ export interface UrlPageSnapshot {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
   issueCountByCategory: {
     seo: number;
@@ -461,6 +477,7 @@ export interface UrlAnalytics {
     performance: { url: number | null; site: number | null; diff: number | null };
     content: { url: number | null; site: number | null; diff: number | null };
     structuredData: { url: number | null; site: number | null; diff: number | null };
+    cqs: { url: number | null; site: number | null; diff: number | null };
   };
   recentAudits: Array<{
     id: string;
@@ -472,6 +489,7 @@ export interface UrlAnalytics {
       performance: number | null;
       content: number | null;
       structuredData: number | null;
+      cqs: number | null;
     };
     totalIssues: number;
   }>;

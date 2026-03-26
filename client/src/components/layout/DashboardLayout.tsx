@@ -1,7 +1,8 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
 import { Sidebar } from './Sidebar';
 import { FeedbackButton } from '../feedback/FeedbackButton';
 import SkipLink from '../a11y/SkipLink';
@@ -14,6 +15,9 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { user, subscription } = useAuth();
   const { showHelp, setShowHelp } = useKeyboardShortcuts();
+
+  const helpModalRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(showHelp, helpModalRef, () => setShowHelp(false));
 
   const isTrialing = subscription?.status === 'trialing';
   const daysRemaining = subscription?.daysRemaining ?? null;
@@ -72,12 +76,17 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
           onClick={() => setShowHelp(false)}
+          aria-hidden="true"
         >
           <div
+            ref={helpModalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="keyboard-shortcuts-title"
             className="bg-white dark:bg-slate-800 rounded-xl shadow-xl p-6 max-w-sm w-full mx-4"
             onClick={e => e.stopPropagation()}
           >
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Keyboard Shortcuts</h2>
+            <h2 id="keyboard-shortcuts-title" className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Keyboard Shortcuts</h2>
             <dl className="space-y-3 text-sm">
               {[
                 ['n', 'New audit'],
@@ -86,7 +95,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 ['?', 'Show this help'],
               ].map(([key, desc]) => (
                 <div key={key} className="flex items-center justify-between">
-                  <dt className="text-slate-500 dark:text-slate-500">{desc}</dt>
+                  <dt className="text-slate-600 dark:text-slate-400">{desc}</dt>
                   <dd>
                     <kbd className="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded text-xs font-mono text-slate-700 dark:text-slate-300">
                       {key}
@@ -97,7 +106,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </dl>
             <button
               onClick={() => setShowHelp(false)}
-              className="mt-5 w-full text-center text-sm text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200"
+              className="mt-5 w-full text-center text-sm text-slate-600 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+              aria-label="Close keyboard shortcuts"
             >
               Press <kbd className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded text-xs font-mono">Esc</kbd> to close
             </button>

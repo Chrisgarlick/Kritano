@@ -18,7 +18,7 @@ featured: false
 
 # Why Accessible Websites Rank Higher: The Data Behind Accessibility and SEO
 
-If you've ever been told that accessibility and SEO are two separate things — two different budgets, two different specialists, two different priorities — I'd like to show you some data that says otherwise.
+If you've ever been told that [accessibility and SEO](/blog/accessibility-seo-performance-why-you-shouldnt-choose) are two separate things — two different budgets, two different specialists, two different priorities — I'd like to show you some data that says otherwise.
 
 After auditing thousands of websites through PagePulser, one pattern has become impossible to ignore: websites that score well on accessibility almost always score well on SEO. Not sometimes. Not roughly. Consistently, measurably, and by a significant margin.
 
@@ -37,7 +37,7 @@ We pulled the data from our first 5,000 PagePulser audits to see whether the pat
 
 The correlation coefficient between accessibility scores and SEO scores across those 5,000 sites is **0.73** — which in statistical terms is a strong positive correlation. To put that in context, a correlation of 1.0 would mean the two scores move in perfect lockstep. At 0.73, they're clearly and meaningfully linked.
 
-What this means in practice: if your accessibility score is low, there's a very good chance your SEO score is being dragged down too — even if you've been investing in SEO specifically. And if you improve your accessibility, your SEO is likely to improve alongside it, often without any additional SEO-specific work.
+What this means in practice: if your [accessibility score](/blog/understanding-website-accessibility-scores) is low, there's a very good chance your SEO score is being dragged down too — even if you've been investing in SEO specifically. And if you improve your accessibility, your SEO is likely to improve alongside it, often without any additional SEO-specific work.
 
 ## Why This Happens
 
@@ -45,7 +45,7 @@ The correlation isn't magic. It's mechanics. Accessibility and SEO share a surpr
 
 ### Alt Text
 
-Screen readers need alt text to describe images to blind users. Google needs alt text to understand what your images contain — because search engines can't "see" photos any more than a screen reader can. Both systems are doing the same thing: reading a text description to make sense of visual content.
+Screen readers need [alt text](/blog/complete-guide-image-alt-text) to describe images to blind users. Google needs alt text to understand what your images contain — because search engines can't "see" photos any more than a screen reader can. Both systems are doing the same thing: reading a text description to make sense of visual content.
 
 When you add proper alt text to your images, you're simultaneously making them accessible to screen reader users and indexable by Google's image search. One fix, two wins.
 
@@ -53,7 +53,7 @@ When you add proper alt text to your images, you're simultaneously making them a
 
 Screen reader users navigate pages by jumping between headings — it's essentially their table of contents. If your headings skip levels, are missing, or are used inconsistently, that navigation breaks.
 
-Search engine crawlers use headings in almost exactly the same way. They read your H1 to understand what the page is about, then your H2s to identify the major topics, and your H3s for subtopics. A logical heading structure tells Google what matters on your page, just as it tells a screen reader user how the content is organised.
+Search engine crawlers use headings in almost exactly the same way. They read your H1 to understand what the page is about, then your H2s to identify the major topics, and your H3s for subtopics. A logical [heading structure](/blog/website-launch-checklist) tells Google what matters on your page, just as it tells a screen reader user how the content is organised.
 
 ### Semantic HTML
 
@@ -71,7 +71,7 @@ Google uses anchor text — the clickable text in a link — as one of its oldes
 
 A slow website is an accessibility barrier. Users on older devices, slower connections, or with cognitive disabilities that make waiting frustrating are all disproportionately affected by poor performance.
 
-Google agrees. Core Web Vitals — LCP, INP, and CLS — are confirmed ranking factors. A fast, responsive, visually stable page ranks better and is more accessible. The investment is the same either way.
+Google agrees. [Core Web Vitals](/blog/core-web-vitals-plain-english-guide) — LCP, INP, and CLS — are confirmed ranking factors. A fast, responsive, visually stable page ranks better and is more accessible. The investment is the same either way.
 
 ## Real-World Results
 

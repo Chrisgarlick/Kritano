@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -173,6 +174,7 @@ export default function AdminFeatureRequestDetail() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Feature Request | PagePulser</title></Helmet>
       {/* Header */}
       <div className="mb-6">
         <Link

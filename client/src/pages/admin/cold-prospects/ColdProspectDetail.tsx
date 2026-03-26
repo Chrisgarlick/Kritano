@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   Crosshair, Globe, Mail, User, Shield, ExternalLink,
@@ -94,6 +95,7 @@ export default function ColdProspectDetail() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Prospect Details | PagePulser</title></Helmet>
       <div className="p-6 max-w-4xl">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">

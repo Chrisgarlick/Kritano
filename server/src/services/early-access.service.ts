@@ -2,7 +2,7 @@
  * Early Access Service
  *
  * Manages the founding members early access campaign:
- * - 200 spots shared across email + social channels
+ * - 250 founding member spots (single consolidated link)
  * - Claim a spot on registration, activate all at once later
  * - 30-day Agency trial + lifetime discount for founding members
  */
@@ -32,7 +32,7 @@ export async function getEarlyAccessStatus(): Promise<EarlyAccessStatus> {
     getSetting('early_access_activated'),
   ]);
 
-  const max = Number(maxSpots) || 200;
+  const max = Number(maxSpots) || 250;
 
   const result = await pool.query(
     `SELECT COUNT(*)::int AS claimed FROM users WHERE early_access = true`
@@ -59,9 +59,9 @@ export async function canClaimSpot(): Promise<boolean> {
  */
 export async function claimSpot(
   userId: string,
-  channel: 'email' | 'social'
+  channel: string = 'founding'
 ): Promise<boolean> {
-  const maxSpots = Number(await getSetting('early_access_max_spots')) || 200;
+  const maxSpots = Number(await getSetting('early_access_max_spots')) || 250;
   const discountPercent = Number(await getSetting('early_access_discount_percent')) || 50;
 
   const result = await pool.query(

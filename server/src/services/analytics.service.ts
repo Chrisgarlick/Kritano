@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import { withCache } from '../utils/cache.utils';
 import type {
   ScoreHistory,
   ScoreDataPoint,
@@ -69,7 +70,7 @@ function calculateTrend(values: (number | null)[]): 'up' | 'down' | 'stable' {
   return 'stable';
 }
 
-function calculateOverallTrend(scores: ScoreDataPoint[]): 'improving' | 'declining' | 'stable' {
+function calculateOverallTrend(scores: Partial<Pick<ScoreDataPoint, 'seo' | 'accessibility' | 'security' | 'performance' | 'content' | 'structuredData'>>[]): 'improving' | 'declining' | 'stable' {
   if (scores.length < 2) return 'stable';
 
   const categories = ['seo', 'accessibility', 'security', 'performance', 'content', 'structuredData'] as const;
@@ -77,7 +78,7 @@ function calculateOverallTrend(scores: ScoreDataPoint[]): 'improving' | 'declini
   let decliningCount = 0;
 
   for (const category of categories) {
-    const values = scores.map(s => s[category]);
+    const values = scores.map(s => s[category] ?? null);
     const trend = calculateTrend(values);
     if (trend === 'up') improvingCount++;
     if (trend === 'down') decliningCount++;
@@ -114,6 +115,7 @@ export async function getSiteScoreHistory(options: ScoreHistoryOptions): Promise
     performance_score: number | null;
     content_score: number | null;
     structured_data_score: number | null;
+    cqs_score: number | null;
   }>(
     `SELECT
       id,
@@ -123,7 +125,8 @@ export async function getSiteScoreHistory(options: ScoreHistoryOptions): Promise
       security_score,
       performance_score,
       content_score,
-      structured_data_score
+      structured_data_score,
+      cqs_score
     FROM audit_jobs
     WHERE site_id = $1
       AND status = 'completed'
@@ -142,6 +145,7 @@ export async function getSiteScoreHistory(options: ScoreHistoryOptions): Promise
     performance: row.performance_score,
     content: row.content_score,
     structuredData: row.structured_data_score,
+    cqs: row.cqs_score,
   }));
 
   // Calculate summary
@@ -152,6 +156,7 @@ export async function getSiteScoreHistory(options: ScoreHistoryOptions): Promise
     performance: scores.map(s => s.performance).filter((v): v is number => v !== null),
     content: scores.map(s => s.content).filter((v): v is number => v !== null),
     structuredData: scores.map(s => s.structuredData).filter((v): v is number => v !== null),
+    cqs: scores.map(s => s.cqs).filter((v): v is number => v !== null),
   };
 
   const summary: ScoreSummary = {
@@ -174,6 +179,9 @@ export async function getSiteScoreHistory(options: ScoreHistoryOptions): Promise
       structuredData: validScores.structuredData.length > 0
         ? Math.round(validScores.structuredData.reduce((a, b) => a + b, 0) / validScores.structuredData.length)
         : null,
+      cqs: validScores.cqs.length > 0
+        ? Math.round(validScores.cqs.reduce((a, b) => a + b, 0) / validScores.cqs.length)
+        : null,
     },
     trends: {
       seo: calculateTrend(scores.map(s => s.seo)),
@@ -182,6 +190,7 @@ export async function getSiteScoreHistory(options: ScoreHistoryOptions): Promise
       performance: calculateTrend(scores.map(s => s.performance)),
       content: calculateTrend(scores.map(s => s.content ?? null)),
       structuredData: calculateTrend(scores.map(s => s.structuredData ?? null)),
+      cqs: calculateTrend(scores.map(s => s.cqs ?? null)),
     },
     totalAudits: scores.length,
   };
@@ -210,7 +219,7 @@ export async function getIssueTrends(options: IssueTrendOptions): Promise<IssueT
       date_trunc($3, aj.completed_at) as period,
       af.category,
       af.severity,
-      COUNT(*)::text as count
+      COUNT(DISTINCT af.rule_id)::text as count
     FROM audit_findings af
     JOIN audit_jobs aj ON aj.id = af.audit_job_id
     WHERE aj.site_id = $1
@@ -277,6 +286,7 @@ export async function compareAudits(auditIds: string[]): Promise<AuditComparison
     performance_score: number | null;
     content_score: number | null;
     structured_data_score: number | null;
+    cqs_score: number | null;
     total_issues: number;
     pages_crawled: number;
   }>(
@@ -292,6 +302,7 @@ export async function compareAudits(auditIds: string[]): Promise<AuditComparison
       aj.performance_score,
       aj.content_score,
       aj.structured_data_score,
+      aj.cqs_score,
       aj.total_issues,
       aj.pages_crawled
     FROM audit_jobs aj
@@ -348,6 +359,7 @@ export async function compareAudits(auditIds: string[]): Promise<AuditComparison
         performance: row.performance_score,
         content: row.content_score,
         structuredData: row.structured_data_score,
+        cqs: row.cqs_score,
       },
       issues: {
         total: sev.critical + sev.serious + sev.moderate + sev.minor,
@@ -383,6 +395,9 @@ export async function compareAudits(auditIds: string[]): Promise<AuditComparison
           : null,
         structuredData: from.scores.structuredData !== null && to.scores.structuredData !== null
           ? to.scores.structuredData - from.scores.structuredData
+          : null,
+        cqs: from.scores.cqs !== null && to.scores.cqs !== null
+          ? to.scores.cqs - from.scores.cqs
           : null,
       },
     });
@@ -502,6 +517,7 @@ export async function getOrganizationOverview(organizationId: string): Promise<O
     performance_score: number | null;
     content_score: number | null;
     structured_data_score: number | null;
+    cqs_score: number | null;
   }>(
     `SELECT
       s.id,
@@ -538,7 +554,12 @@ export async function getOrganizationOverview(organizationId: string): Promise<O
         SELECT structured_data_score FROM audit_jobs
         WHERE site_id = s.id AND status = 'completed'
         ORDER BY completed_at DESC LIMIT 1
-      ) as structured_data_score
+      ) as structured_data_score,
+      (
+        SELECT cqs_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as cqs_score
     FROM sites s
     LEFT JOIN audit_jobs aj ON aj.site_id = s.id AND aj.status = 'completed'
     WHERE s.organization_id = $1
@@ -547,17 +568,39 @@ export async function getOrganizationOverview(organizationId: string): Promise<O
     [organizationId]
   );
 
-  // Get recent score history for each site to determine trends
-  const trendPromises = sitesResult.rows.map(async site => {
-    const history = await getSiteScoreHistory({ siteId: site.id, range: '30d' });
-    return {
-      siteId: site.id,
-      trend: calculateOverallTrend(history.scores),
-    };
-  });
+  // Get recent score history for all sites in one query to avoid N+1
+  const siteIds = sitesResult.rows.map(r => r.id);
+  const trendResult = siteIds.length > 0 ? await pool.query<{
+    site_id: string;
+    seo_score: number | null;
+    accessibility_score: number | null;
+    security_score: number | null;
+    performance_score: number | null;
+    completed_at: Date;
+  }>(
+    `SELECT site_id, seo_score, accessibility_score, security_score, performance_score, completed_at
+     FROM audit_jobs
+     WHERE site_id = ANY($1) AND status = 'completed' AND completed_at >= NOW() - INTERVAL '30 days'
+     ORDER BY completed_at ASC`,
+    [siteIds]
+  ) : { rows: [] };
 
-  const trends = await Promise.all(trendPromises);
-  const trendMap = new Map(trends.map(t => [t.siteId, t.trend]));
+  // Group scores by site and calculate trends
+  const siteScoreMap = new Map<string, Array<{ seo: number | null; accessibility: number | null; security: number | null; performance: number | null }>>();
+  for (const row of trendResult.rows) {
+    if (!siteScoreMap.has(row.site_id)) siteScoreMap.set(row.site_id, []);
+    siteScoreMap.get(row.site_id)!.push({
+      seo: row.seo_score,
+      accessibility: row.accessibility_score,
+      security: row.security_score,
+      performance: row.performance_score,
+    });
+  }
+
+  const trendMap = new Map<string, 'improving' | 'declining' | 'stable'>();
+  for (const [siteId, scores] of siteScoreMap) {
+    trendMap.set(siteId, calculateOverallTrend(scores));
+  }
 
   const sites: SiteAnalyticsSummary[] = sitesResult.rows.map(row => ({
     id: row.id,
@@ -570,6 +613,7 @@ export async function getOrganizationOverview(organizationId: string): Promise<O
       performance: row.performance_score,
       content: row.content_score,
       structuredData: row.structured_data_score,
+      cqs: row.cqs_score,
     },
     lastAuditAt: row.last_audit_at?.toISOString() || null,
     auditCount: parseInt(row.audit_count, 10),
@@ -586,6 +630,7 @@ export async function getOrganizationOverview(organizationId: string): Promise<O
     performance: sites.map(s => s.latestScores.performance).filter((v): v is number => v !== null),
     content: sites.map(s => s.latestScores.content).filter((v): v is number => v !== null),
     structuredData: sites.map(s => s.latestScores.structuredData).filter((v): v is number => v !== null),
+    cqs: sites.map(s => s.latestScores.cqs).filter((v): v is number => v !== null),
   };
 
   const averageScores = {
@@ -606,6 +651,9 @@ export async function getOrganizationOverview(organizationId: string): Promise<O
       : null,
     structuredData: validScores.structuredData.length > 0
       ? Math.round(validScores.structuredData.reduce((a, b) => a + b, 0) / validScores.structuredData.length)
+      : null,
+    cqs: validScores.cqs.length > 0
+      ? Math.round(validScores.cqs.reduce((a, b) => a + b, 0) / validScores.cqs.length)
       : null,
   };
 
@@ -671,6 +719,7 @@ export async function compareSites(siteIds: string[]): Promise<SiteComparison> {
     latest_performance: number | null;
     latest_content: number | null;
     latest_structured_data: number | null;
+    latest_cqs: number | null;
     latest_total_issues: number | null;
     avg_seo: number | null;
     avg_accessibility: number | null;
@@ -678,6 +727,7 @@ export async function compareSites(siteIds: string[]): Promise<SiteComparison> {
     avg_performance: number | null;
     avg_content: number | null;
     avg_structured_data: number | null;
+    avg_cqs: number | null;
   }>(
     `SELECT
       s.id,
@@ -724,6 +774,11 @@ export async function compareSites(siteIds: string[]): Promise<SiteComparison> {
         ORDER BY completed_at DESC LIMIT 1
       ) as latest_structured_data,
       (
+        SELECT cqs_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_cqs,
+      (
         SELECT COUNT(DISTINCT af.rule_id) FROM audit_findings af
         WHERE af.audit_job_id = (
           SELECT id FROM audit_jobs
@@ -754,7 +809,11 @@ export async function compareSites(siteIds: string[]): Promise<SiteComparison> {
       (
         SELECT ROUND(AVG(structured_data_score)) FROM audit_jobs
         WHERE site_id = s.id AND status = 'completed'
-      ) as avg_structured_data
+      ) as avg_structured_data,
+      (
+        SELECT ROUND(AVG(cqs_score)) FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+      ) as avg_cqs
     FROM sites s
     WHERE s.id = ANY($1)
     ORDER BY s.name ASC`,
@@ -776,6 +835,7 @@ export async function compareSites(siteIds: string[]): Promise<SiteComparison> {
             performance: row.latest_performance,
             content: row.latest_content,
             structuredData: row.latest_structured_data,
+            cqs: row.latest_cqs,
           },
           totalIssues: row.latest_total_issues || 0,
         }
@@ -787,6 +847,7 @@ export async function compareSites(siteIds: string[]): Promise<SiteComparison> {
       performance: row.avg_performance,
       content: row.avg_content,
       structuredData: row.avg_structured_data,
+      cqs: row.avg_cqs,
     },
   }));
 
@@ -798,6 +859,10 @@ export async function compareSites(siteIds: string[]): Promise<SiteComparison> {
 // =============================================
 
 export async function getUserOverview(userId: string): Promise<UserOverview> {
+  return withCache(`analytics:overview:${userId}`, 60, () => computeUserOverview(userId));
+}
+
+async function computeUserOverview(userId: string): Promise<UserOverview> {
   // Get all sites the user has access to (owned + shared)
   const sitesResult = await pool.query<{
     id: string;
@@ -822,8 +887,9 @@ export async function getUserOverview(userId: string): Promise<UserOverview> {
     return {
       totalSites: 0,
       totalAudits: 0,
-      avgScores: { seo: null, accessibility: null, security: null, performance: null, content: null, structuredData: null },
+      avgScores: { seo: null, accessibility: null, security: null, performance: null, content: null, structuredData: null, cqs: null },
       sitesNeedingAttention: [],
+      siteTrends: {},
       recentActivity: [],
     };
   }
@@ -844,6 +910,7 @@ export async function getUserOverview(userId: string): Promise<UserOverview> {
     performance_score: number | null;
     content_score: number | null;
     structured_data_score: number | null;
+    cqs_score: number | null;
   }>(
     `SELECT DISTINCT ON (site_id)
       site_id,
@@ -852,7 +919,8 @@ export async function getUserOverview(userId: string): Promise<UserOverview> {
       security_score,
       performance_score,
       content_score,
-      structured_data_score
+      structured_data_score,
+      cqs_score
     FROM audit_jobs
     WHERE site_id = ANY($1) AND status = 'completed'
     ORDER BY site_id, completed_at DESC`,
@@ -867,6 +935,7 @@ export async function getUserOverview(userId: string): Promise<UserOverview> {
     performance: latestScoresResult.rows.map(r => r.performance_score).filter((v): v is number => v !== null),
     content: latestScoresResult.rows.map(r => r.content_score).filter((v): v is number => v !== null),
     structuredData: latestScoresResult.rows.map(r => r.structured_data_score).filter((v): v is number => v !== null),
+    cqs: latestScoresResult.rows.map(r => r.cqs_score).filter((v): v is number => v !== null),
   };
 
   const avgScores = {
@@ -888,60 +957,83 @@ export async function getUserOverview(userId: string): Promise<UserOverview> {
     structuredData: allScores.structuredData.length > 0
       ? Math.round(allScores.structuredData.reduce((a, b) => a + b, 0) / allScores.structuredData.length)
       : null,
+    cqs: allScores.cqs.length > 0
+      ? Math.round(allScores.cqs.reduce((a, b) => a + b, 0) / allScores.cqs.length)
+      : null,
   };
 
-  // Find sites with declining trends (compare last 2 audits)
+  // Calculate trends for all sites and find sites needing attention
   const sitesNeedingAttention: UserOverview['sitesNeedingAttention'] = [];
+  const siteTrends: Record<string, 'improving' | 'declining' | 'stable'> = {};
 
+  // Batch-fetch recent audit scores for all sites (for trend calculation)
+  const allTrendResult = siteIds.length > 0 ? await pool.query<{
+    site_id: string;
+    seo_score: number | null;
+    accessibility_score: number | null;
+    security_score: number | null;
+    performance_score: number | null;
+    content_score: number | null;
+    structured_data_score: number | null;
+    cqs_score: number | null;
+    completed_at: Date;
+  }>(
+    `SELECT site_id, seo_score, accessibility_score, security_score, performance_score,
+            content_score, structured_data_score, cqs_score, completed_at
+     FROM audit_jobs
+     WHERE site_id = ANY($1) AND status = 'completed' AND completed_at >= NOW() - INTERVAL '90 days'
+     ORDER BY completed_at ASC`,
+    [siteIds]
+  ) : { rows: [] };
+
+  // Group scores by site
+  const siteScoresMap = new Map<string, Array<{
+    seo: number | null;
+    accessibility: number | null;
+    security: number | null;
+    performance: number | null;
+    content: number | null;
+    structuredData: number | null;
+    cqs: number | null;
+  }>>();
+  for (const row of allTrendResult.rows) {
+    if (!siteScoresMap.has(row.site_id)) siteScoresMap.set(row.site_id, []);
+    siteScoresMap.get(row.site_id)!.push({
+      seo: row.seo_score,
+      accessibility: row.accessibility_score,
+      security: row.security_score,
+      performance: row.performance_score,
+      content: row.content_score,
+      structuredData: row.structured_data_score,
+      cqs: row.cqs_score,
+    });
+  }
+
+  // Calculate trend for each site
   for (const siteId of siteIds) {
-    const trendResult = await pool.query<{
-      seo_score: number | null;
-      accessibility_score: number | null;
-      security_score: number | null;
-      performance_score: number | null;
-      content_score: number | null;
-      structured_data_score: number | null;
-    }>(
-      `SELECT seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score
-       FROM audit_jobs
-       WHERE site_id = $1 AND status = 'completed'
-       ORDER BY completed_at DESC
-       LIMIT 2`,
-      [siteId]
-    );
+    const scores = siteScoresMap.get(siteId) || [];
+    const trend = calculateOverallTrend(scores);
+    siteTrends[siteId] = trend;
 
-    if (trendResult.rows.length >= 2) {
-      const [latest, previous] = trendResult.rows;
-      let decliningCount = 0;
-      let totalComparisons = 0;
-
-      for (const cat of ['seo_score', 'accessibility_score', 'security_score', 'performance_score', 'content_score', 'structured_data_score'] as const) {
-        if (latest[cat] !== null && previous[cat] !== null) {
-          totalComparisons++;
-          if (latest[cat]! < previous[cat]! - 2) {
-            decliningCount++;
-          }
-        }
-      }
-
-      if (totalComparisons > 0 && decliningCount >= Math.ceil(totalComparisons / 2)) {
-        const site = siteMap.get(siteId);
-        if (site) {
-          sitesNeedingAttention.push({
-            id: siteId,
-            name: site.name,
-            domain: site.domain,
-            latestScores: {
-              seo: latest.seo_score,
-              accessibility: latest.accessibility_score,
-              security: latest.security_score,
-              performance: latest.performance_score,
-              content: latest.content_score,
-              structuredData: latest.structured_data_score,
-            },
-            trend: 'declining',
-          });
-        }
+    if (trend === 'declining') {
+      const site = siteMap.get(siteId);
+      const latestScore = latestScoresResult.rows.find(r => r.site_id === siteId);
+      if (site && latestScore) {
+        sitesNeedingAttention.push({
+          id: siteId,
+          name: site.name,
+          domain: site.domain,
+          latestScores: {
+            seo: latestScore.seo_score,
+            accessibility: latestScore.accessibility_score,
+            security: latestScore.security_score,
+            performance: latestScore.performance_score,
+            content: latestScore.content_score,
+            structuredData: latestScore.structured_data_score,
+            cqs: latestScore.cqs_score,
+          },
+          trend: 'declining',
+        });
       }
     }
   }
@@ -950,12 +1042,13 @@ export async function getUserOverview(userId: string): Promise<UserOverview> {
   // Check which optional columns exist (from later migrations)
   const columnsCheck = await pool.query<{ column_name: string }>(
     `SELECT column_name FROM information_schema.columns
-     WHERE table_name = 'audit_jobs' AND column_name IN ('content_score', 'url_id', 'structured_data_score')`
+     WHERE table_name = 'audit_jobs' AND column_name IN ('content_score', 'url_id', 'structured_data_score', 'cqs_score')`
   );
   const existingColumns = new Set(columnsCheck.rows.map(r => r.column_name));
   const hasContentScore = existingColumns.has('content_score');
   const hasUrlId = existingColumns.has('url_id');
   const hasStructuredDataScore = existingColumns.has('structured_data_score');
+  const hasCqsScore = existingColumns.has('cqs_score');
 
   const recentActivityResult = await pool.query<{
     id: string;
@@ -967,6 +1060,7 @@ export async function getUserOverview(userId: string): Promise<UserOverview> {
     performance_score: number | null;
     content_score: number | null;
     structured_data_score: number | null;
+    cqs_score: number | null;
     pages_crawled: number | null;
     total_issues: number | null;
     url_id: string | null;
@@ -984,6 +1078,7 @@ export async function getUserOverview(userId: string): Promise<UserOverview> {
             aj.performance_score,
             ${hasContentScore ? 'aj.content_score' : 'NULL::int as content_score'},
             ${hasStructuredDataScore ? 'aj.structured_data_score' : 'NULL::int as structured_data_score'},
+            ${hasCqsScore ? 'aj.cqs_score' : 'NULL::int as cqs_score'},
             COALESCE(aj.pages_crawled, 0) as pages_crawled,
             COALESCE(aj.total_issues, 0) as total_issues,
             ${hasUrlId ? 'aj.url_id' : 'NULL::uuid as url_id'},
@@ -1039,6 +1134,7 @@ export async function getUserOverview(userId: string): Promise<UserOverview> {
         performance: row.performance_score,
         content: row.content_score,
         structuredData: row.structured_data_score,
+        cqs: row.cqs_score,
       },
       startedBy: {
         name: `${row.user_first_name} ${row.user_last_name}`.trim(),
@@ -1052,6 +1148,7 @@ export async function getUserOverview(userId: string): Promise<UserOverview> {
     totalAudits,
     avgScores,
     sitesNeedingAttention,
+    siteTrends,
     recentActivity,
   };
 }
@@ -1086,6 +1183,7 @@ export async function getUrlScoreHistory(options: UrlScoreHistoryOptions): Promi
       performance_score: number | null;
       content_score: number | null;
       structured_data_score: number | null;
+      cqs_score: number | null;
     }>(
       `SELECT
         aj.id,
@@ -1095,7 +1193,8 @@ export async function getUrlScoreHistory(options: UrlScoreHistoryOptions): Promi
         ap.security_score,
         ap.performance_score,
         ap.content_score,
-        ap.structured_data_score
+        ap.structured_data_score,
+        ap.cqs_score
       FROM audit_pages ap
       JOIN audit_jobs aj ON ap.audit_job_id = aj.id
       WHERE ap.url = $1
@@ -1118,6 +1217,7 @@ export async function getUrlScoreHistory(options: UrlScoreHistoryOptions): Promi
       performance_score: number | null;
       content_score: number | null;
       structured_data_score: number | null;
+      cqs_score: number | null;
     }>(
       `SELECT
         id,
@@ -1127,7 +1227,8 @@ export async function getUrlScoreHistory(options: UrlScoreHistoryOptions): Promi
         security_score,
         performance_score,
         content_score,
-        structured_data_score
+        structured_data_score,
+        cqs_score
       FROM audit_jobs
       WHERE url_id = $1
         AND status = 'completed'
@@ -1147,6 +1248,7 @@ export async function getUrlScoreHistory(options: UrlScoreHistoryOptions): Promi
     performance: row.performance_score,
     content: row.content_score,
     structuredData: row.structured_data_score,
+    cqs: row.cqs_score,
   }));
 
   // Calculate summary
@@ -1157,6 +1259,7 @@ export async function getUrlScoreHistory(options: UrlScoreHistoryOptions): Promi
     performance: scores.map(s => s.performance).filter((v): v is number => v !== null),
     content: scores.map(s => s.content).filter((v): v is number => v !== null),
     structuredData: scores.map(s => s.structuredData).filter((v): v is number => v !== null),
+    cqs: scores.map(s => s.cqs).filter((v): v is number => v !== null),
   };
 
   const summary: ScoreSummary = {
@@ -1179,6 +1282,9 @@ export async function getUrlScoreHistory(options: UrlScoreHistoryOptions): Promi
       structuredData: validScores.structuredData.length > 0
         ? Math.round(validScores.structuredData.reduce((a, b) => a + b, 0) / validScores.structuredData.length)
         : null,
+      cqs: validScores.cqs.length > 0
+        ? Math.round(validScores.cqs.reduce((a, b) => a + b, 0) / validScores.cqs.length)
+        : null,
     },
     trends: {
       seo: calculateTrend(scores.map(s => s.seo)),
@@ -1187,6 +1293,7 @@ export async function getUrlScoreHistory(options: UrlScoreHistoryOptions): Promi
       performance: calculateTrend(scores.map(s => s.performance)),
       content: calculateTrend(scores.map(s => s.content ?? null)),
       structuredData: calculateTrend(scores.map(s => s.structuredData ?? null)),
+      cqs: calculateTrend(scores.map(s => s.cqs ?? null)),
     },
     totalAudits: scores.length,
   };
@@ -1262,6 +1369,7 @@ export async function getUrlAnalytics(urlId: string, siteId: string): Promise<Ur
     performance_score: urlRow.last_performance_score,
     content_score: urlRow.last_content_score,
     structured_data_score: null as number | null,
+    cqs_score: null as number | null,
   };
 
   // Calculate comparison
@@ -1301,6 +1409,11 @@ export async function getUrlAnalytics(urlId: string, siteId: string): Promise<Ur
       site: null,
       diff: null,
     },
+    cqs: {
+      url: latestUrlScores.cqs_score,
+      site: null,
+      diff: null,
+    },
   };
 
   // Get recent audits for this URL from audit_pages (includes full-site audits)
@@ -1313,6 +1426,7 @@ export async function getUrlAnalytics(urlId: string, siteId: string): Promise<Ur
     performance_score: number | null;
     content_score: number | null;
     structured_data_score: number | null;
+    cqs_score: number | null;
     total_issues: number;
   }>(
     `SELECT
@@ -1324,6 +1438,7 @@ export async function getUrlAnalytics(urlId: string, siteId: string): Promise<Ur
       ap.performance_score,
       ap.content_score,
       ap.structured_data_score,
+      ap.cqs_score,
       (COALESCE(ap.seo_issues, 0) + COALESCE(ap.accessibility_issues, 0) +
        COALESCE(ap.security_issues, 0) + COALESCE(ap.performance_issues, 0) +
        COALESCE(ap.content_issues, 0)) as total_issues
@@ -1348,6 +1463,7 @@ export async function getUrlAnalytics(urlId: string, siteId: string): Promise<Ur
       performance: row.performance_score,
       content: row.content_score,
       structuredData: row.structured_data_score,
+      cqs: row.cqs_score,
     },
     totalIssues: row.total_issues || 0,
   }));
@@ -1469,6 +1585,7 @@ async function getUrlPageSnapshot(
     performance_score: number | null;
     content_score: number | null;
     structured_data_score: number | null;
+    cqs_score: number | null;
     content_quality_score: number | null;
     content_readability_score: number | null;
     content_structure_score: number | null;
@@ -1527,6 +1644,7 @@ async function getUrlPageSnapshot(
       ap.performance_score,
       ap.content_score,
       ap.structured_data_score,
+      ap.cqs_score,
       ap.content_quality_score,
       ap.content_readability_score,
       ap.content_structure_score,
@@ -1611,6 +1729,7 @@ async function getUrlPageSnapshot(
       performance: p.performance_score,
       content: p.content_score,
       structuredData: p.structured_data_score,
+      cqs: p.cqs_score,
     },
     issueCountByCategory: {
       seo: p.seo_issues ?? 0,

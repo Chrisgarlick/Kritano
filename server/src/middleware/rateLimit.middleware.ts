@@ -14,9 +14,24 @@ interface RateLimitConfig {
 const KEY_PREFIX = 'rl:';
 const LOCK_PREFIX = 'rl:lock:';
 
+// In-memory fallback for when Redis is unavailable
+const memoryStore = new Map<string, { count: number; resetAt: number }>();
+const memoryLocks = new Map<string, number>(); // key -> expiry timestamp
+
+// Periodic cleanup of in-memory fallback
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of memoryStore) {
+    if (entry.resetAt <= now) memoryStore.delete(key);
+  }
+  for (const [key, expiry] of memoryLocks) {
+    if (expiry <= now) memoryLocks.delete(key);
+  }
+}, 60 * 1000);
+
 /**
  * Create a rate limiting middleware using Redis.
- * Falls back to pass-through if Redis is unavailable.
+ * Falls back to in-memory rate limiting if Redis is unavailable.
  */
 export function createRateLimiter(config: RateLimitConfig) {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -67,7 +82,41 @@ export function createRateLimiter(config: RateLimitConfig) {
 
       next();
     } catch (error) {
-      // Fail open — don't block users if Redis is down
+      // In-memory fallback when Redis is unavailable
+      const now = Date.now();
+
+      // Check in-memory lock
+      const lockExpiry = memoryLocks.get(lockKey);
+      if (lockExpiry && lockExpiry > now) {
+        const retryAfter = Math.ceil((lockExpiry - now) / 1000);
+        res.setHeader('Retry-After', retryAfter.toString());
+        res.status(429).json({
+          error: 'Too many attempts. Please try again later.',
+          code: 'RATE_LIMITED',
+          retryAfter,
+        });
+        return;
+      }
+
+      // Check/increment in-memory counter
+      const entry = memoryStore.get(key);
+      if (entry && entry.resetAt > now) {
+        entry.count++;
+        if (entry.count > config.maxAttempts) {
+          memoryLocks.set(lockKey, now + config.blockDurationMs);
+          const blockSecs = Math.ceil(config.blockDurationMs / 1000);
+          res.setHeader('Retry-After', blockSecs.toString());
+          res.status(429).json({
+            error: 'Too many attempts. Please try again later.',
+            code: 'RATE_LIMITED',
+            retryAfter: blockSecs,
+          });
+          return;
+        }
+      } else {
+        memoryStore.set(key, { count: 1, resetAt: now + config.windowMs });
+      }
+
       next();
     }
   };

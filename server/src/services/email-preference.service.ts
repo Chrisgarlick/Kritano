@@ -10,7 +10,10 @@ import { pool } from '../db/index.js';
 import type { EmailPreferences, TemplateCategory, CATEGORY_TO_PREFERENCE } from '../types/email-template.types.js';
 import { CATEGORY_TO_PREFERENCE as categoryMap } from '../types/email-template.types.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required');
+}
+const JWT_SECRET: string = process.env.JWT_SECRET;
 
 /**
  * Get email preferences for a user. Returns defaults if no row exists.

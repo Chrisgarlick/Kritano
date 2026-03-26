@@ -26,6 +26,7 @@ import {
   buildAuditConfig,
 } from './audit-shared';
 import { canAcceptJob, getMemoryUsage, getMemoryThreshold } from './memory-monitor';
+import { deliverEvent } from '../webhook.service.js';
 
 // Maximum audit duration (30 minutes)
 const AUDIT_TIMEOUT_MS = 30 * 60 * 1000;
@@ -270,6 +271,27 @@ export class AuditWorkerService {
       // Mark as completed
       await this.queue.completeJob(job.id);
 
+      // Deliver webhook event (non-blocking)
+      if (job.site_id) {
+        deliverEvent('audit.completed', job.site_id, {
+          auditId: job.id,
+          siteId: job.site_id,
+          status: 'completed',
+          targetUrl: job.target_url,
+          scores: {
+            seo: job.seo_score,
+            accessibility: job.accessibility_score,
+            security: job.security_score,
+            performance: job.performance_score,
+            content: job.content_score,
+            structuredData: job.structured_data_score,
+          },
+          totalIssues: job.total_issues,
+          criticalIssues: job.critical_issues,
+          completedAt: new Date().toISOString(),
+        }).catch((err) => console.error('Webhook delivery error (completed):', err.message));
+      }
+
       console.log(`✅ Completed job ${job.id}`);
       await this.config.onJobComplete?.(job);
 
@@ -278,6 +300,19 @@ export class AuditWorkerService {
       console.error(`❌ Failed job ${job.id}:`, err.message);
 
       await this.queue.failJob(job.id, err.message);
+
+      // Deliver webhook event (non-blocking)
+      if (job.site_id) {
+        deliverEvent('audit.failed', job.site_id, {
+          auditId: job.id,
+          siteId: job.site_id,
+          status: 'failed',
+          targetUrl: job.target_url,
+          error: err.message,
+          failedAt: new Date().toISOString(),
+        }).catch((webhookErr) => console.error('Webhook delivery error (failed):', webhookErr.message));
+      }
+
       await this.config.onJobFail?.(job, err);
     }
   }
@@ -698,6 +733,9 @@ export class AuditWorkerService {
       await sharedAddActivityLog(this.pool,job.id, 'Calculating final scores...', 'info');
       await this.calculateFinalScores(job.id, auditConfig);
 
+      // Calculate Content Quality Score (CQS)
+      await this.calculateCqsScores(job.id);
+
       // Calculate error summary
       await this.calculateErrorSummary(job.id);
 
@@ -997,6 +1035,88 @@ export class AuditWorkerService {
         critical_issues = $4
       WHERE id = $1
     `, [jobId, actualPages, actualFindings, criticalFindings]);
+  }
+
+  /**
+   * Calculate Content Quality Score (CQS) for each page and the overall audit.
+   *
+   * Per-page CQS = weighted average of 5 content sub-scores:
+   *   quality 25%, eeat 25%, readability 20%, engagement 15%, structure 15%
+   * If any sub-score is null its weight is redistributed proportionally.
+   *
+   * Audit-level CQS = depth-weighted average:
+   *   homepage (depth 0) = 3x, depth 1 = 2x, others = 1x
+   */
+  private async calculateCqsScores(jobId: string): Promise<void> {
+    // Fetch pages with their content sub-scores
+    const pagesResult = await this.pool.query<{
+      id: string;
+      depth: number;
+      content_quality_score: number | null;
+      content_readability_score: number | null;
+      content_structure_score: number | null;
+      content_engagement_score: number | null;
+      eeat_score: number | null;
+    }>(`
+      SELECT id, depth,
+        content_quality_score, content_readability_score,
+        content_structure_score, content_engagement_score,
+        eeat_score
+      FROM audit_pages
+      WHERE audit_job_id = $1 AND crawl_status = 'crawled'
+    `, [jobId]);
+
+    if (pagesResult.rows.length === 0) return;
+
+    const weights: Array<{ key: keyof Pick<typeof pagesResult.rows[0], 'content_quality_score' | 'eeat_score' | 'content_readability_score' | 'content_engagement_score' | 'content_structure_score'>; weight: number }> = [
+      { key: 'content_quality_score', weight: 0.25 },
+      { key: 'eeat_score', weight: 0.25 },
+      { key: 'content_readability_score', weight: 0.20 },
+      { key: 'content_engagement_score', weight: 0.15 },
+      { key: 'content_structure_score', weight: 0.15 },
+    ];
+
+    let weightedSum = 0;
+    let totalWeight = 0;
+
+    for (const page of pagesResult.rows) {
+      // Calculate per-page CQS with proportional weight redistribution
+      let availableWeight = 0;
+      let scoreSum = 0;
+
+      for (const { key, weight } of weights) {
+        const val = page[key];
+        if (val !== null && val !== undefined) {
+          availableWeight += weight;
+          scoreSum += val * weight;
+        }
+      }
+
+      if (availableWeight === 0) continue; // No sub-scores at all
+
+      const pageCqs = Math.round(scoreSum / availableWeight);
+
+      // Store per-page CQS
+      await this.pool.query(
+        `UPDATE audit_pages SET cqs_score = $2 WHERE id = $1`,
+        [page.id, pageCqs]
+      );
+
+      // Accumulate for audit-level weighted average
+      const depthWeight = page.depth === 0 ? 3 : page.depth === 1 ? 2 : 1;
+      weightedSum += pageCqs * depthWeight;
+      totalWeight += depthWeight;
+    }
+
+    // Store audit-level CQS
+    if (totalWeight > 0) {
+      const auditCqs = Math.round(weightedSum / totalWeight);
+      await this.pool.query(
+        `UPDATE audit_jobs SET cqs_score = $2 WHERE id = $1`,
+        [jobId, auditCqs]
+      );
+      console.log(`📊 CQS score: ${auditCqs} (from ${pagesResult.rows.length} pages)`);
+    }
   }
 
   /**

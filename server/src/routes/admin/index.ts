@@ -384,7 +384,7 @@ router.get('/check', async (req: AdminRequest, res: Response): Promise<void> => 
 // Worker Health & Management
 // =============================================
 
-const WORKER_HEALTH_URL = `http://localhost:${process.env.WORKER_HEALTH_PORT || '3001'}`;
+const WORKER_HEALTH_URL = `http://localhost:${process.env.WORKER_HEALTH_PORT || '3002'}`;
 
 /**
  * Proxy a request to the worker health server.
@@ -452,8 +452,8 @@ router.post('/worker/restart', async (req: AdminRequest, res: Response): Promise
       req.admin!.id,
       'restart_worker',
       'system',
-      'worker',
-      {},
+      null,
+      { target: 'worker' },
       req
     );
 

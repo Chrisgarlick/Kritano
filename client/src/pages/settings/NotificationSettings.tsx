@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useToast } from '../../components/ui/Toast';
 import { emailPreferencesApi } from '../../services/api';
 import type { EmailPreferences } from '../../services/api';
@@ -148,7 +149,9 @@ export default function NotificationSettings() {
   }
 
   return (
-    <div className="space-y-6">
+    <>
+      <Helmet><title>Notifications | PagePulser</title></Helmet>
+      <div className="space-y-6">
       {/* Header */}
       <div>
         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Email Notifications</h2>
@@ -256,5 +259,6 @@ export default function NotificationSettings() {
         </button>
       </div>
     </div>
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { adminApi } from '../../services/api';
 import { AdminLayout } from '../../components/layout/AdminLayout';
 import { useToast } from '../../components/ui/Toast';
@@ -65,6 +66,7 @@ export default function AdminUsersPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Users | PagePulser</title></Helmet>
       {/* Page Header */}
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">

@@ -32,9 +32,9 @@ I started doing this a few years ago and it transformed my close rate. Here's th
 
 Run a full audit 24-48 hours before your meeting. This gives you time to review the results and prepare your talking points rather than scrambling through data on the spot.
 
-PagePulser makes this straightforward — enter their URL, run the audit, and you've got scores across accessibility, SEO, security, performance, and content quality in a few minutes. But the tool matters less than the preparation. The point is walking in with specifics.
+PagePulser makes this straightforward — enter their URL, run the audit, and you've got scores across [accessibility](/blog/web-accessibility-2026-why-websites-still-failing), SEO, security, performance, and content quality in a few minutes. But the tool matters less than the preparation. The point is walking in with specifics.
 
-Review the results and identify the findings that will resonate most with this particular prospect. A law firm will care about accessibility compliance risk. An e-commerce site will care about page speed and conversion impact. A B2B company will care about SEO visibility.
+Review the results and identify the findings that will resonate most with this particular prospect. A law firm will care about [accessibility compliance](/blog/understanding-website-accessibility-scores) risk. An e-commerce site will care about [page speed](/blog/core-web-vitals-plain-english-guide) and conversion impact. A B2B company will care about SEO visibility.
 
 ### Step 2: Prepare Your Presentation
 
@@ -64,9 +64,9 @@ This is where most technically-minded people fall down. You know what a missing 
 
 | Technical Finding | Business Translation |
 |---|---|
-| Missing alt text on 89% of images | "Search engines can't see your images, and neither can the 2.2 billion people worldwide with vision impairments. You're invisible in image search and potentially non-compliant with accessibility law." |
+| Missing [alt text](/blog/complete-guide-image-alt-text) on 89% of images | "Search engines can't see your images, and neither can the 2.2 billion people worldwide with vision impairments. You're invisible in image search and potentially non-compliant with accessibility law." |
 | Colour contrast failures | "Some of your text is genuinely difficult to read — especially for older visitors or anyone on a phone in bright sunlight. That's friction that drives people away." |
-| Missing security headers | "Your site is missing standard security protections. It's like having a front door with no lock — you might never have a problem, but the risk is completely avoidable." |
+| Missing [security headers](/blog/complete-guide-website-security-headers) | "Your site is missing standard security protections. It's like having a front door with no lock — you might never have a problem, but the risk is completely avoidable." |
 | 8-second page load time | "Your site takes 8 seconds to load. Research shows 53% of mobile users leave if it takes more than 3 seconds. You could be losing half your traffic before they've seen a single word." |
 | No HTTPS redirect | "Anyone on public wifi could potentially intercept data your visitors submit through your forms. And Google marks your site as 'Not Secure' — which isn't the first impression you want." |
 

@@ -5,7 +5,12 @@
  * Used for score changes, stats comparisons, etc.
  */
 
-import { ArrowUpIcon, ArrowDownIcon, MinusIcon } from '@heroicons/react/20/solid';
+import { ArrowUp, ArrowDown, Minus } from 'lucide-react';
+
+// Lucide equivalents of heroicons
+const ArrowUpIcon = ArrowUp;
+const ArrowDownIcon = ArrowDown;
+const MinusIcon = Minus;
 
 export type TrendDirection = 'up' | 'down' | 'stable';
 type TrendSize = 'xs' | 'sm' | 'md' | 'lg';

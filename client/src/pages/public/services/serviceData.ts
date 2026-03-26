@@ -67,11 +67,11 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       'Our SEO engine analyses your pages against 100+ ranking factors, from metadata and structured data to Core Web Vitals and mobile-friendliness. Every finding includes clear fix guidance so your team can act immediately — no guesswork, no wasted effort.',
     iconName: 'TrendingUp',
     colorScheme: {
-      text: 'text-indigo-600',
-      bg: 'bg-indigo-50',
-      border: 'border-indigo-100',
-      badgeBg: 'bg-indigo-100',
-      badgeText: 'text-indigo-700',
+      text: 'text-violet-600',
+      bg: 'bg-violet-50',
+      border: 'border-violet-100',
+      badgeBg: 'bg-violet-100',
+      badgeText: 'text-violet-700',
     },
     seo: {
       title: 'SEO Auditing',
@@ -475,11 +475,11 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       'Page speed directly impacts user experience and search rankings. Our performance engine identifies exactly what\'s slowing your pages down, with prioritised recommendations for maximum impact — so you fix what matters most first.',
     iconName: 'Zap',
     colorScheme: {
-      text: 'text-amber-600',
-      bg: 'bg-amber-50',
-      border: 'border-amber-100',
-      badgeBg: 'bg-amber-100',
-      badgeText: 'text-amber-700',
+      text: 'text-sky-600',
+      bg: 'bg-sky-50',
+      border: 'border-sky-100',
+      badgeBg: 'bg-sky-100',
+      badgeText: 'text-sky-700',
     },
     seo: {
       title: 'Performance Analysis',

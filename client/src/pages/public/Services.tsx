@@ -85,15 +85,15 @@ const SERVICES = [
     title: 'Performance Analysis',
     subtitle: 'Speed wins.',
     description:
-      "Page speed directly impacts user experience and search rankings. Our performance engine identifies exactly what's slowing your pages down, with prioritized recommendations for maximum impact.",
+      "Page speed directly impacts user experience and search rankings. Our performance engine identifies exactly what's slowing your pages down, with prioritised recommendations for maximum impact.",
     features: [
-      'Core Web Vitals (LCP, FID, CLS)',
-      'Resource size and optimization analysis',
+      'Core Web Vitals (LCP, INP, CLS)',
+      'Resource size and optimisation analysis',
       'Image format and compression checks',
-      'JavaScript and CSS optimization',
+      'JavaScript and CSS optimisation',
       'Caching header validation',
       'Render-blocking resource detection',
-      'Font loading optimization',
+      'Font loading optimisation',
       'Third-party script impact analysis',
     ],
   },
@@ -248,7 +248,7 @@ export default function Services() {
             to="/register"
             className="inline-flex px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors"
           >
-            Start Free Analysis
+            Start Free Audit
           </Link>
         </div>
       </section>

@@ -7,8 +7,21 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:3002',
+        target: 'http://localhost:3001',
         changeOrigin: true,
+      },
+    },
+  },
+  build: {
+    sourcemap: 'hidden',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          charts: ['recharts'],
+          markdown: ['react-markdown', 'rehype-highlight', 'rehype-sanitize', 'remark-gfm'],
+          forms: ['react-hook-form', '@hookform/resolvers', 'zod'],
+        },
       },
     },
   },

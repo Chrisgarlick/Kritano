@@ -61,7 +61,11 @@ export interface RegisterData {
   companyName?: string;
   acceptedTos?: boolean;
   referralCode?: string;
-  earlyAccessChannel?: 'email' | 'social';
+  earlyAccess?: boolean;
+  marketingOptIn?: boolean;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
 }
 
 export interface PasswordResetRequestData {

@@ -7,6 +7,7 @@
 
 import { Link } from 'react-router-dom';
 import { PublicLayout } from '../components/layout/PublicLayout';
+import { Button } from '../components/ui/Button';
 import PageSeo from '../components/seo/PageSeo';
 import {
   TrendingUp,
@@ -45,7 +46,7 @@ export default function Home() {
           description: 'Comprehensive website auditing for SEO, accessibility, security, and performance.',
           applicationCategory: 'WebApplication',
           operatingSystem: 'Any',
-          offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
+          offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
         }}
       />
 
@@ -70,18 +71,13 @@ export default function Home() {
                 your bottom line.
               </p>
               <div className="flex flex-wrap items-center gap-4">
-                <Link
-                  to="/register"
-                  className="px-7 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-[15px]"
-                >
-                  Start Free Analysis
+                <Link to="/register">
+                  <Button size="lg">Start Free Audit</Button>
                 </Link>
-                <Link
-                  to="/services"
-                  className="px-7 py-3.5 text-slate-600 hover:text-slate-900 font-medium transition-colors flex items-center gap-2 text-[15px]"
-                >
-                  Learn More
-                  <ArrowRight className="w-4 h-4" />
+                <Link to="/services">
+                  <Button variant="ghost" size="lg" rightIcon={<ArrowRight className="w-4 h-4" />}>
+                    Learn More
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -148,17 +144,14 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Trusted By */}
+          {/* Value Props */}
           <div className="mt-28 pt-16 border-t border-slate-100">
-            <p className="text-center text-slate-500 text-xs font-medium mb-8 uppercase tracking-wider">
-              Trusted by forward-thinking teams
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-6 opacity-25">
-              {['Acme Corp', 'Meridian', 'NorthStar', 'Velocity', 'Apex Digital'].map(name => (
-                <span key={name} className="text-xl font-semibold text-slate-500 tracking-tight">
-                  {name}
-                </span>
-              ))}
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-slate-500 text-xs font-medium uppercase tracking-wider">
+              <span>No credit card required</span>
+              <span className="hidden sm:inline" aria-hidden="true">&middot;</span>
+              <span>Free forever plan</span>
+              <span className="hidden sm:inline" aria-hidden="true">&middot;</span>
+              <span>Audits in under 2 minutes</span>
             </div>
           </div>
         </div>
@@ -253,7 +246,7 @@ export default function Home() {
             <StepCard
               number="03"
               title="Act on insights"
-              description="Review prioritized findings with clear explanations and fix guidance. Track improvements over time."
+              description="Review prioritised findings with clear explanations and fix guidance. Track improvements over time."
             />
           </div>
         </div>
@@ -263,9 +256,9 @@ export default function Home() {
       <section className="bg-slate-900">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <StatItem value="50K+" label="Sites Audited" />
-            <StatItem value="2.1M" label="Issues Found" />
-            <StatItem value="99.9%" label="Uptime" />
+            <StatItem value="6" label="Audit Categories" />
+            <StatItem value="500+" label="Rules Checked" />
+            <StatItem value="PDF" label="Export Reports" />
             <StatItem value="< 2min" label="Avg. Audit Time" />
           </div>
         </div>
@@ -287,18 +280,16 @@ export default function Home() {
                 No credit card required.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  to="/register"
-                  className="px-7 py-3.5 bg-white text-indigo-600 hover:bg-indigo-50 rounded-lg font-medium transition-colors"
-                >
-                  Get Started Free
+                <Link to="/register">
+                  <Button variant="secondary" size="lg">
+                    Start Free Audit
+                  </Button>
                 </Link>
-                <Link
-                  to="/pricing"
-                  className="px-7 py-3.5 text-white hover:text-indigo-100 font-medium transition-colors flex items-center gap-2"
-                >
-                  View Pricing
-                  <ArrowRight className="w-4 h-4" />
+                <Link to="/pricing">
+                  <Button variant="ghost" size="lg" className="text-white hover:text-indigo-100 hover:bg-transparent">
+                    View Pricing
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -442,7 +433,7 @@ function StatItem({ value, label }: { value: string; label: string }) {
   return (
     <div className="text-center">
       <p className="font-display text-4xl lg:text-5xl text-white mb-2">{value}</p>
-      <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">{label}</p>
+      <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">{label}</p>
     </div>
   );
 }

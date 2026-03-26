@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { AdminLayout } from '../../components/layout/AdminLayout';
 import { adminEarlyAccessApi } from '../../services/api';
 import {
@@ -115,6 +116,7 @@ export default function AdminEarlyAccessPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Early Access | PagePulser</title></Helmet>
       {/* Header */}
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">

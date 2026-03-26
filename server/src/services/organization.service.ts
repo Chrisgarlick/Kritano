@@ -700,10 +700,9 @@ export async function canAuditDomain(
 
   // Get unique domains audited this period
   const uniqueDomainsResult = await pool.query<{ domain: string }>(
-    `SELECT DISTINCT
-       lower(regexp_replace(regexp_replace(regexp_replace(target_url, '^https?://', ''), '^www\\.', ''), '/.*$', '')) as domain
+    `SELECT DISTINCT lower(target_domain) as domain
      FROM audit_jobs
-     WHERE organization_id = $1 AND created_at >= $2`,
+     WHERE organization_id = $1 AND created_at >= $2 AND target_domain IS NOT NULL`,
     [organizationId, periodStart]
   );
 

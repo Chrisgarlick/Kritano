@@ -6,6 +6,7 @@
  */
 
 import { Pool } from 'pg';
+import { withCache } from '../utils/cache.utils';
 
 let pool: Pool;
 
@@ -112,6 +113,10 @@ function parseRangeDays(range: string): number {
 
 export async function getFunnelAnalytics(range: string = '30d'): Promise<FunnelAnalytics> {
   const days = parseRangeDays(range);
+  return withCache(`admin:funnel:${days}`, 120, () => computeFunnelAnalytics(range, days));
+}
+
+async function computeFunnelAnalytics(range: string, days: number): Promise<FunnelAnalytics> {
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
 
   // Stage 1: Registered users
@@ -177,6 +182,10 @@ export async function getFunnelAnalytics(range: string = '30d'): Promise<FunnelA
 
 export async function getGlobalTrends(range: string = '30d'): Promise<GlobalTrends> {
   const days = parseRangeDays(range);
+  return withCache(`admin:trends:${days}`, 120, () => computeGlobalTrends(range, days));
+}
+
+async function computeGlobalTrends(range: string, days: number): Promise<GlobalTrends> {
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
 
   // Total audits and pages
@@ -218,28 +227,31 @@ export async function getGlobalTrends(range: string = '30d'): Promise<GlobalTren
       : 0,
   }));
 
-  // Score distribution by category
-  const categories = ['seo', 'accessibility', 'security', 'performance'];
+  // Score distribution by category (single query for all categories)
+  const VALID_SCORE_COLUMNS = ['seo_score', 'accessibility_score', 'security_score', 'performance_score', 'content_score', 'structured_data_score'] as const;
+  const categories = ['seo', 'accessibility', 'security', 'performance', 'content', 'structured_data'];
   const scoreDistribution: Record<string, ScoreDistribution> = {};
 
-  for (const cat of categories) {
-    const col = `${cat}_score`;
-    const distResult = await pool.query(
-      `SELECT
-         COALESCE(ROUND(AVG(${col})), 0) as avg,
-         COALESCE(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ${col}), 0) as median,
-         COALESCE(PERCENTILE_CONT(0.1) WITHIN GROUP (ORDER BY ${col}), 0) as p10,
-         COALESCE(PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY ${col}), 0) as p90
-       FROM audit_jobs
-       WHERE status = 'completed' AND completed_at >= $1 AND ${col} IS NOT NULL`,
-      [since]
-    );
-    const row = distResult.rows[0];
-    scoreDistribution[cat] = {
-      avg: Math.round(parseFloat(row.avg)),
-      median: Math.round(parseFloat(row.median)),
-      p10: Math.round(parseFloat(row.p10)),
-      p90: Math.round(parseFloat(row.p90)),
+  const distResult = await pool.query(
+    `SELECT
+       ${VALID_SCORE_COLUMNS.map(col => `
+         COALESCE(ROUND(AVG(${col}) FILTER (WHERE ${col} IS NOT NULL)), 0) as ${col}_avg,
+         COALESCE(PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ${col}) FILTER (WHERE ${col} IS NOT NULL), 0) as ${col}_median,
+         COALESCE(PERCENTILE_CONT(0.1) WITHIN GROUP (ORDER BY ${col}) FILTER (WHERE ${col} IS NOT NULL), 0) as ${col}_p10,
+         COALESCE(PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY ${col}) FILTER (WHERE ${col} IS NOT NULL), 0) as ${col}_p90
+       `).join(',')}
+     FROM audit_jobs
+     WHERE status = 'completed' AND completed_at >= $1`,
+    [since]
+  );
+  const distRow = distResult.rows[0];
+  for (let i = 0; i < categories.length; i++) {
+    const col = VALID_SCORE_COLUMNS[i];
+    scoreDistribution[categories[i]] = {
+      avg: Math.round(parseFloat(distRow[`${col}_avg`])),
+      median: Math.round(parseFloat(distRow[`${col}_median`])),
+      p10: Math.round(parseFloat(distRow[`${col}_p10`])),
+      p90: Math.round(parseFloat(distRow[`${col}_p90`])),
     };
   }
 
@@ -290,6 +302,10 @@ export async function getGlobalTrends(range: string = '30d'): Promise<GlobalTren
 // =============================================
 
 export async function getRevenueAnalytics(): Promise<RevenueAnalytics> {
+  return withCache('admin:revenue', 300, () => computeRevenueAnalytics());
+}
+
+async function computeRevenueAnalytics(): Promise<RevenueAnalytics> {
   // Current tier counts (active subscriptions only)
   const tierCountsResult = await pool.query(
     `SELECT tier, COUNT(*) as count

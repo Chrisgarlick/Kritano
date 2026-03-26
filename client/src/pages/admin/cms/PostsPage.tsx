@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
 import { adminApi } from '../../../services/api';
@@ -201,6 +202,7 @@ export default function PostsPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Blog Posts | PagePulser</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

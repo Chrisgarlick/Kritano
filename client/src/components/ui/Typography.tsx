@@ -127,7 +127,7 @@ export function Body({
       className={`
         font-sans font-normal ${bodySizes[size]}
         ${muted
-          ? 'text-slate-500 dark:text-slate-500'
+          ? 'text-slate-600 dark:text-slate-400'
           : 'text-slate-700 dark:text-slate-300'}
         ${className}
       `}
@@ -191,7 +191,7 @@ export function Label({ children, className = '' }: LabelProps) {
     <span
       className={`
         font-sans font-medium text-xs uppercase tracking-wider
-        text-slate-500 dark:text-slate-500
+        text-slate-600 dark:text-slate-400
         ${className}
       `}
     >

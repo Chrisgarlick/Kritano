@@ -9,6 +9,7 @@ import { Router } from 'express';
 import type { Request, Response } from 'express';
 import type { Pool } from 'pg';
 import { constructWebhookEvent, getTierForPriceId } from '../../services/stripe.service.js';
+import { emailService } from '../../services/email.service.js';
 
 export function initializeStripeWebhooks(pool: Pool): Router {
   const router = Router();
@@ -223,6 +224,27 @@ async function handlePaymentFailed(pool: Pool, invoice: any): Promise<void> {
   );
 
   console.log(`invoice.payment_failed: subscription ${subscriptionId} → past_due`);
+
+  // Send dunning notification email
+  try {
+    const userResult = await pool.query<{ email: string; first_name: string }>(
+      `SELECT u.email, u.first_name
+       FROM users u
+       JOIN subscriptions s ON s.user_id = u.id
+       WHERE s.stripe_subscription_id = $1
+       LIMIT 1`,
+      [subscriptionId]
+    );
+
+    if (userResult.rows.length > 0) {
+      const { email, first_name } = userResult.rows[0];
+      await emailService.sendPaymentFailedEmail(email, first_name || 'there');
+      console.log(`invoice.payment_failed: dunning email sent to ${email}`);
+    }
+  } catch (err) {
+    // Don't let email failure break the webhook
+    console.error('invoice.payment_failed: failed to send dunning email:', err);
+  }
 }
 
 /**

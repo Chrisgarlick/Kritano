@@ -89,13 +89,17 @@ export function SiteCard({
   return (
     <div
       className={`
-        group relative bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800
+        group relative bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800
         hover:border-indigo-200 dark:hover:border-indigo-800 hover:shadow-lg
         transition-all duration-300 overflow-hidden
         ${onClick ? 'cursor-pointer' : ''}
         ${className}
       `}
       onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      aria-label={onClick ? `View site ${domain}` : undefined}
+      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } } : undefined}
     >
       {/* Card Content */}
       <div className="p-5">
@@ -119,7 +123,10 @@ export function SiteCard({
                 {domain}
               </Heading>
               {isVerified && (
-                <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                <>
+                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" aria-hidden="true" />
+                  <span className="sr-only">Verified domain</span>
+                </>
               )}
             </div>
             <Mono size="xs" className="truncate block mt-0.5">
@@ -174,7 +181,7 @@ export function SiteCard({
       </div>
 
       {/* Hover Actions */}
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-white via-white dark:from-slate-900 dark:via-slate-900 to-transparent p-4 pt-8 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-white via-white dark:from-slate-900 dark:via-slate-900 to-transparent p-4 pt-8 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
         <div className="flex items-center gap-2">
           {onRunAudit && (
             <button
@@ -194,8 +201,9 @@ export function SiteCard({
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-lg transition-colors"
+            aria-label={`Visit ${domain} (opens in new tab)`}
           >
-            <ExternalLink className="w-4 h-4" />
+            <ExternalLink className="w-4 h-4" aria-hidden="true" />
           </a>
         </div>
       </div>
@@ -306,6 +314,10 @@ export function SiteListItem({
         ${className}
       `}
       onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      aria-label={onClick ? `View site ${domain}` : undefined}
+      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } } : undefined}
     >
       {/* Score */}
       {score !== null ? (
@@ -323,7 +335,10 @@ export function SiteListItem({
             {domain}
           </span>
           {isVerified && (
-            <CheckCircle className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+            <>
+              <CheckCircle className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" aria-hidden="true" />
+              <span className="sr-only">Verified domain</span>
+            </>
           )}
         </div>
         <Mono size="xs" className="truncate block">
@@ -355,7 +370,8 @@ export function SiteListItem({
             e.stopPropagation();
             onRunAudit();
           }}
-          className="opacity-0 group-hover:opacity-100 p-1.5 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-all"
+          className="opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 p-1.5 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-all"
+          aria-label="Run audit"
           title="Run Audit"
         >
           <Play className="w-4 h-4" />

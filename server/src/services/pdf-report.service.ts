@@ -5,6 +5,36 @@ import type { AuditFinding } from '../types/finding.types.js';
 
 // ── Types ──────────────────────────────────────────────────────────
 
+export interface ResolvedFixSnippetForPdf {
+  fixType: string;
+  language: string;
+  code: string;
+  explanation: string;
+  effort: string;
+  learnMoreUrl: string;
+}
+
+export interface ComplianceDataForPdf {
+  status: 'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed';
+  standard: string;
+  summary: {
+    totalClauses: number;
+    passing: number;
+    failing: number;
+    manualReview: number;
+    notTested: number;
+  };
+  clauses: Array<{
+    clause: string;
+    title: string;
+    wcagCriteria: string;
+    status: 'pass' | 'fail' | 'manual_review' | 'not_tested';
+    issueCount: number;
+  }>;
+  domain: string;
+  pagesAudited: number;
+}
+
 export interface PdfReportData {
   audit: AuditJob;
   findings: Array<AuditFinding & { page_url: string }>;
@@ -14,6 +44,10 @@ export interface PdfReportData {
     status_code: number | null;
   }>;
   branding: ResolvedBranding;
+  /** Map of rule_id → resolved fix snippet (optional, tier-gated in route handler) */
+  fixSnippets?: Record<string, ResolvedFixSnippetForPdf>;
+  /** Compliance passport data (optional, only included for Pro+ tiers) */
+  compliance?: ComplianceDataForPdf;
 }
 
 // ── Browser singleton ──────────────────────────────────────────────
@@ -37,7 +71,7 @@ async function getBrowser(): Promise<Browser> {
 
 export async function shutdownPdfBrowser(): Promise<void> {
   if (browser) {
-    await browser.close().catch(() => {});
+    await browser.close().catch(err => console.error('PDF browser close failed:', err));
     browser = null;
   }
 }
@@ -183,7 +217,7 @@ function svgGauge(score: number | null, size: number = 80): string {
 // ── HTML builder ───────────────────────────────────────────────────
 
 export function buildReportHtml(data: PdfReportData, logoDataUri: string | null): string {
-  const { audit, findings, brokenLinks, branding } = data;
+  const { audit, findings, brokenLinks, branding, fixSnippets, compliance } = data;
 
   // Compute stats
   const severityCounts: Record<string, number> = { critical: 0, serious: 0, moderate: 0, minor: 0, info: 0 };
@@ -203,6 +237,7 @@ export function buildReportHtml(data: PdfReportData, logoDataUri: string | null)
     performance: audit.performance_score,
     content: audit.content_score,
     'structured-data': audit.structured_data_score,
+    cqs: audit.cqs_score,
   };
   for (const [key, score] of Object.entries(scoreMap)) {
     if (score != null) validScores.push({ key, score });
@@ -240,12 +275,17 @@ export function buildReportHtml(data: PdfReportData, logoDataUri: string | null)
     ...Object.keys(findingsByCategory).filter(c => !categoryOrder.includes(c) && findingsByCategory[c]?.length),
   ];
   for (const category of orderedCategories) {
-    sections.push(buildCategoryPage(category, findingsByCategory[category], scoreMap[category] ?? null));
+    sections.push(buildCategoryPage(category, findingsByCategory[category], scoreMap[category] ?? null, fixSnippets));
   }
 
   // ── Broken Links ─────────────────────────────────────────────
   if (brokenLinks.length > 0) {
     sections.push(buildBrokenLinksPage(brokenLinks));
+  }
+
+  // ── Compliance Passport ─────────────────────────────────────
+  if (compliance && compliance.status !== 'not_assessed') {
+    sections.push(buildCompliancePage(compliance));
   }
 
   return `<!DOCTYPE html>
@@ -628,6 +668,133 @@ export function buildReportHtml(data: PdfReportData, logoDataUri: string | null)
     color: #10b981;
     font-size: 13px;
   }
+
+  /* ── Fix Snippets in Findings ──────────── */
+  .fix-snippet {
+    margin-top: 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .fix-snippet-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: var(--bg-subtle);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--secondary);
+  }
+  .fix-effort-badge {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .fix-effort-small { background: #d1fae5; color: #065f46; }
+  .fix-effort-medium { background: #fef3c7; color: #92400e; }
+  .fix-effort-large { background: #fee2e2; color: #991b1b; }
+  .fix-explanation {
+    padding: 6px 12px;
+    font-size: 10px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .fix-code-block {
+    background: #0f172a;
+    color: #e2e8f0;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    padding: 10px 12px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+
+  /* ── Compliance Section ────────────────── */
+  .compliance-header {
+    background: #4f46e5;
+    color: #fff;
+    padding: 24px 32px;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 20px;
+  }
+  .compliance-status {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+  .compliance-status-compliant { background: #d1fae5; color: #065f46; }
+  .compliance-status-partially_compliant { background: #fef3c7; color: #92400e; }
+  .compliance-status-non_compliant { background: #fee2e2; color: #991b1b; }
+  .compliance-status-not_assessed { background: #f1f5f9; color: #475569; }
+  .compliance-summary-grid {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .compliance-stat {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .compliance-stat-value {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .compliance-stat-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .compliance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    margin-bottom: 16px;
+  }
+  .compliance-table th {
+    background: var(--bg-muted);
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+  .compliance-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .clause-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 600;
+  }
+  .clause-pass { background: #d1fae5; color: #065f46; }
+  .clause-fail { background: #fee2e2; color: #991b1b; }
+  .clause-manual_review { background: #fef3c7; color: #92400e; }
+  .clause-not_tested { background: #f1f5f9; color: #475569; }
+  .compliance-disclaimer {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 10px;
+    color: #92400e;
+    line-height: 1.5;
+  }
 </style>
 </head>
 <body>
@@ -767,6 +934,7 @@ function buildCategoryPage(
   category: string,
   catFindings: Array<AuditFinding & { page_url: string }>,
   score: number | null,
+  fixSnippets?: Record<string, ResolvedFixSnippetForPdf>,
 ): string {
   const labels = CATEGORY_LABELS[category] || { short: category, full: category };
   const color = CATEGORY_COLORS[category] || '#6366f1';
@@ -808,6 +976,22 @@ function buildCategoryPage(
       urlsHtml = `<div class="finding-urls">${lines}</div>`;
     }
 
+    // Fix snippet (if available)
+    let snippetHtml = '';
+    const snippet = fixSnippets?.[ruleId];
+    if (snippet) {
+      const effortClass = `fix-effort-${snippet.effort}`;
+      const effortLabel = snippet.effort === 'small' ? 'Quick fix' : snippet.effort === 'medium' ? 'Medium effort' : 'Significant effort';
+      snippetHtml = `<div class="fix-snippet">
+        <div class="fix-snippet-header">
+          How to Fix
+          <span class="fix-effort-badge ${effortClass}">${effortLabel}</span>
+        </div>
+        <div class="fix-explanation">${escapeHtml(snippet.explanation)}</div>
+        ${snippet.code ? `<div class="fix-code-block">${escapeHtml(snippet.code)}</div>` : ''}
+      </div>`;
+    }
+
     return `<div class="finding-card avoid-break">
       <div class="finding-head">
         <span class="sev-badge" style="background:${color}">${escapeHtml(first.severity.toUpperCase())}</span>
@@ -817,6 +1001,7 @@ function buildCategoryPage(
       ${messageHtml}
       ${recHtml}
       ${urlsHtml}
+      ${snippetHtml}
     </div>`;
   }).join('\n');
 
@@ -878,6 +1063,83 @@ function buildBrokenLinksPage(brokenLinks: Array<{
 </div>`;
 }
 
+function buildCompliancePage(compliance: ComplianceDataForPdf): string {
+  const statusLabels: Record<string, string> = {
+    compliant: 'Compliant',
+    partially_compliant: 'Partially Compliant',
+    non_compliant: 'Non-Compliant',
+    not_assessed: 'Not Assessed',
+  };
+
+  const { summary, clauses, status } = compliance;
+  const statusLabel = statusLabels[status] || status;
+
+  // Summary stat cards
+  const statCards = [
+    { value: summary.passing, label: 'Passing', color: '#065f46', bg: '#d1fae5' },
+    { value: summary.failing, label: 'Failing', color: '#991b1b', bg: '#fee2e2' },
+    { value: summary.manualReview, label: 'Manual Review', color: '#92400e', bg: '#fef3c7' },
+    { value: summary.notTested, label: 'Not Tested', color: '#475569', bg: '#f1f5f9' },
+  ];
+
+  const statsHtml = statCards.map(s =>
+    `<div class="compliance-stat" style="background:${s.bg}">
+      <div class="compliance-stat-value" style="color:${s.color}">${s.value}</div>
+      <div class="compliance-stat-label">${s.label}</div>
+    </div>`
+  ).join('\n');
+
+  // Clause rows (show failing and manual_review first, limit to 50)
+  const sortedClauses = [...clauses].sort((a, b) => {
+    const order: Record<string, number> = { fail: 0, manual_review: 1, not_tested: 2, pass: 3 };
+    return (order[a.status] ?? 4) - (order[b.status] ?? 4);
+  });
+  const clausesToShow = sortedClauses.slice(0, 50);
+
+  const clauseRows = clausesToShow.map(c =>
+    `<tr class="avoid-break">
+      <td style="font-family:'Courier New',monospace;font-weight:600">${escapeHtml(c.clause)}</td>
+      <td>${escapeHtml(c.title)}</td>
+      <td style="font-size:9px;color:var(--text-muted)">${escapeHtml(c.wcagCriteria)}</td>
+      <td><span class="clause-status clause-${c.status}">${escapeHtml(c.status.replace('_', ' ').toUpperCase())}</span></td>
+      <td style="text-align:right;font-weight:600">${c.issueCount > 0 ? c.issueCount : '\u2014'}</td>
+    </tr>`
+  ).join('\n');
+
+  const overflow = clauses.length > 50
+    ? `<p style="font-size:10px;color:var(--text-muted);margin-top:8px;">+ ${clauses.length - 50} more clauses (see full report in app)</p>`
+    : '';
+
+  return `<div class="page page-break">
+  <div class="compliance-header">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.06em;opacity:0.8">EAA COMPLIANCE PASSPORT</div>
+    <div style="font-size:18px;font-weight:700;margin-top:4px">${escapeHtml(compliance.standard)}</div>
+    <span class="compliance-status compliance-status-${status}">${escapeHtml(statusLabel)}</span>
+    <div style="font-size:10px;opacity:0.7;margin-top:8px">${escapeHtml(compliance.domain)} &bull; ${compliance.pagesAudited} page${compliance.pagesAudited !== 1 ? 's' : ''} audited</div>
+  </div>
+
+  <div class="compliance-summary-grid">${statsHtml}</div>
+
+  <table class="compliance-table">
+    <thead>
+      <tr>
+        <th style="width:80px">Clause</th>
+        <th>Title</th>
+        <th style="width:80px">WCAG</th>
+        <th style="width:80px">Status</th>
+        <th style="width:50px;text-align:right">Issues</th>
+      </tr>
+    </thead>
+    <tbody>${clauseRows}</tbody>
+  </table>
+  ${overflow}
+
+  <div class="compliance-disclaimer">
+    <strong>Important disclaimer:</strong> This report is generated by automated testing tools and does not constitute a formal conformance assessment or legal advice. Automated testing can detect approximately 30\u201340% of WCAG issues. Clauses marked \u201cManual Review\u201d require human evaluation. For a complete EN 301 549 assessment, consult a qualified accessibility specialist.
+  </div>
+</div>`;
+}
+
 // ── Markdown builder ────────────────────────────────────────────────
 
 export function buildReportMarkdown(data: PdfReportData): string {
@@ -900,6 +1162,7 @@ export function buildReportMarkdown(data: PdfReportData): string {
     performance: audit.performance_score,
     content: audit.content_score,
     'structured-data': audit.structured_data_score,
+    cqs: audit.cqs_score,
   };
 
   const validScores = Object.entries(scoreMap).filter(([, s]) => s != null) as [string, number][];

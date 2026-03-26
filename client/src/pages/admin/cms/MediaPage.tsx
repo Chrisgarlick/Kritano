@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
 import { adminApi } from '../../../services/api';
 import type { BlogMediaItem } from '../../../services/api';
@@ -173,6 +174,7 @@ export default function MediaPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Media | PagePulser</title></Helmet>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>

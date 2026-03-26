@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { CalendarClock, Plus, Search, Loader2 } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { ScheduleCard } from '../../components/schedules/ScheduleCard';
@@ -80,6 +81,7 @@ export default function ScheduleListPage() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Schedules | PagePulser</title></Helmet>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">

@@ -57,6 +57,7 @@ export interface AuditJob {
   performance_score: number | null;
   content_score: number | null;
   structured_data_score: number | null;
+  cqs_score: number | null;
 
   // Error handling
   error_message: string | null;
@@ -127,6 +128,7 @@ export interface AuditPage {
   performance_score: number | null;
   content_score: number | null;
   structured_data_score: number | null;
+  cqs_score: number | null;
 
   // Content subscores
   content_quality_score: number | null;

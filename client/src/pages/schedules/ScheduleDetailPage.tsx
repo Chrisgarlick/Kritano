@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   CalendarClock, ArrowLeft, Clock, Activity, CheckCircle2, XCircle,
@@ -115,6 +116,7 @@ export default function ScheduleDetailPage() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Schedule Details | PagePulser</title></Helmet>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Back link */}
         <Link

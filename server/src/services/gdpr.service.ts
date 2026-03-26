@@ -463,7 +463,19 @@ async function runRetentionCleanup(): Promise<{ deletionsProcessed: number; expo
   const logResult = await pool.query(
     `DELETE FROM auth_audit_logs WHERE created_at < NOW() - INTERVAL '1 year'`
   );
-  logsDeleted = logResult.rowCount ?? 0;
+  logsDeleted += logResult.rowCount ?? 0;
+
+  // 4. Purge API request logs older than 90 days (per privacy policy)
+  const apiLogResult = await pool.query(
+    `DELETE FROM api_requests WHERE created_at < NOW() - INTERVAL '90 days'`
+  );
+  logsDeleted += apiLogResult.rowCount ?? 0;
+
+  // 5. Purge email send logs older than 1 year (per privacy policy)
+  const emailLogResult = await pool.query(
+    `DELETE FROM email_sends WHERE created_at < NOW() - INTERVAL '1 year'`
+  );
+  logsDeleted += emailLogResult.rowCount ?? 0;
 
   return { deletionsProcessed, exportsExpired, logsDeleted };
 }

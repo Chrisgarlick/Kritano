@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import { pool } from '../../db/index.js';
 import { authenticate } from '../../middleware/auth.middleware.js';
 import {
   loadSite,
@@ -72,6 +73,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
       description: s.site.description,
       logoUrl: s.site.logo_url,
       verified: s.site.verified,
+      badgeEnabled: s.site.badge_enabled,
       settings: s.site.settings,
       createdAt: s.site.created_at,
       updatedAt: s.site.updated_at,
@@ -168,6 +170,7 @@ router.get('/:siteId', loadSite, async (req: Request, res: Response): Promise<vo
           ? site.verification_token
           : undefined,
         verifiedAt: site.verified_at,
+        badgeEnabled: site.badge_enabled,
         settings: site.settings,
         createdAt: site.created_at,
         updatedAt: site.updated_at,
@@ -1143,6 +1146,50 @@ router.post(
       console.error('Transfer ownership error:', error);
       const message = error instanceof Error ? error.message : 'Failed to transfer ownership';
       res.status(400).json({ error: message });
+    }
+  }
+);
+
+// =============================================
+// PUBLIC BADGE TOGGLE
+// =============================================
+
+/**
+ * PUT /api/sites/:siteId/badge
+ * Toggle badge_enabled on/off (owner only, Starter+ tier)
+ */
+router.put(
+  '/:siteId/badge',
+  loadSite,
+  requireSiteOwner,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const siteReq = req as SiteRequest;
+      const siteId = siteReq.siteId!;
+      const { enabled } = req.body;
+
+      if (typeof enabled !== 'boolean') {
+        res.status(400).json({ error: 'enabled must be a boolean' });
+        return;
+      }
+
+      // Tier gate: Starter+ only
+      const tierLimits = await getSiteOwnerTierLimits(siteId);
+      const tier = (tierLimits?.tier as string) || 'free';
+      if (tier === 'free') {
+        res.status(403).json({ error: 'Public badges require a Starter plan or above.' });
+        return;
+      }
+
+      await pool.query(
+        `UPDATE sites SET badge_enabled = $1, updated_at = NOW() WHERE id = $2`,
+        [enabled, siteId]
+      );
+
+      res.json({ success: true, badgeEnabled: enabled });
+    } catch (error: unknown) {
+      console.error('Toggle badge error:', error);
+      res.status(500).json({ error: 'Failed to update badge setting' });
     }
   }
 );

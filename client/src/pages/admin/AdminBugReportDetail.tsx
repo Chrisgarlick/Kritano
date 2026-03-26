@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -166,6 +167,7 @@ export default function AdminBugReportDetail() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Bug Report | PagePulser</title></Helmet>
       {/* Header */}
       <div className="mb-6">
         <Link

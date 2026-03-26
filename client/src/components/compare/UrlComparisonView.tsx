@@ -22,7 +22,6 @@ import type {
   UrlComparisonInsight,
   UrlFindingItem,
   SiteComparisonEntry,
-  ScoreCategory,
 } from '../../types/analytics.types';
 
 interface UrlComparisonViewProps {
@@ -765,7 +764,7 @@ function StatusCodeBadge({ code }: { code: number | null }) {
 }
 
 function IssueBar({ snapshot, label, total }: { snapshot: UrlPageSnapshot; label: string; total: number }) {
-  const cats: { key: ScoreCategory; label: string }[] = [
+  const cats: { key: keyof UrlPageSnapshot['issueCountByCategory']; label: string }[] = [
     { key: 'seo', label: 'SEO' },
     { key: 'accessibility', label: 'A11y' },
     { key: 'security', label: 'Sec' },

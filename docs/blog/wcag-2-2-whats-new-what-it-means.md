@@ -17,7 +17,7 @@ featured: false
 
 # WCAG 2.2: What's New and What It Means for Your Website
 
-If you've been following web accessibility at all, you'll know that WCAG — the Web Content Accessibility Guidelines — is the standard that most accessibility laws reference. Version 2.1 has been the benchmark for years, and it's what regulations like the UK's PSBAR and the EU's European Accessibility Act point to.
+If you've been following web accessibility at all, you'll know that WCAG — the Web Content Accessibility Guidelines — is the standard that most accessibility laws reference. Version 2.1 has been the benchmark for years, and it's what regulations like the UK's PSBAR and the EU's [European Accessibility Act](/blog/web-accessibility-2026-why-websites-still-failing) point to.
 
 But WCAG 2.2 was published as a W3C Recommendation in October 2023, and it's now the current version. It added nine new success criteria that didn't exist in 2.1 — and removed one. If your site was compliant with 2.1, you've got new ground to cover. And if you're starting fresh, 2.2 is the version you should be targeting.
 
@@ -152,7 +152,7 @@ If your site is already compliant with WCAG 2.1 Level AA, here's the order I'd t
 5. **Focus Not Obscured** (Level AA) — Add `scroll-padding-top` for sticky elements
 6. **Dragging Movements** (Level AA) — Audit drag-only interactions. May require significant work depending on your site
 
-If your site isn't yet WCAG 2.1 compliant, don't worry about 2.2-specific criteria first — fix the fundamentals (alt text, contrast, labels, headings, keyboard access) and then address 2.2 as part of your ongoing improvement.
+If your site isn't yet WCAG 2.1 compliant, don't worry about 2.2-specific criteria first — fix the fundamentals ([alt text, contrast, labels, headings](/blog/improve-accessibility-score-20-points), [keyboard access](/blog/ecommerce-accessibility-guide-online-retailers)) and then address 2.2 as part of your ongoing improvement.
 
 ## The Bottom Line
 

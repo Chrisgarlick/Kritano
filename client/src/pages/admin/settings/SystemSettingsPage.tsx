@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
 import { adminSettingsApi } from '../../../services/api';
@@ -109,6 +110,7 @@ export default function SystemSettingsPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: System Settings | PagePulser</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -175,7 +177,7 @@ export default function SystemSettingsPage() {
                 <span>Early Access</span>
               </h2>
               <p className="text-sm text-slate-500 mt-1">
-                When enabled, users can claim founding member spots via <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">/register?ea=email</code> or <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">/register?ea=social</code>.
+                When enabled, users can claim one of 250 founding member spots via <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">/register?ea=1</code>.
               </p>
             </div>
             <button

@@ -32,7 +32,7 @@ The disability community is not a niche market. It's one of the largest consumer
 
 - **1.3 billion people** worldwide live with a disability — that's roughly 16% of the global population
 - The disability community controls an estimated **$13 trillion** in annual disposable income
-- In the UK, the "Purple Pound" — spending power of disabled people and their households — is worth approximately **$309 billion** annually
+- In the UK, the "[Purple Pound](/blog/ecommerce-accessibility-guide-online-retailers)" — spending power of disabled people and their households — is worth approximately **$309 billion** annually
 - The Click-Away Pound survey found that **69% of disabled consumers** will leave a website that presents barriers, taking their money to a competitor
 
 That last statistic is the one that should keep e-commerce managers up at night. It's not that disabled people can't find your website — it's that they arrive, encounter barriers, and leave. They don't complain. They don't submit feedback. They simply go somewhere else. And you never know it happened.
@@ -41,7 +41,7 @@ That last statistic is the one that should keep e-commerce managers up at night.
 
 A 2019 study by the Institute of Disability Studies found that UK retailers lost an estimated **$17.1 billion** in potential online revenue per year by failing to meet basic accessibility standards. That's not lost to the market — it's lost to competitors whose sites work.
 
-I've seen this firsthand in our PagePulser data. E-commerce sites that improved their accessibility scores from below 40 to above 70 consistently reported increased conversion rates — typically in the range of **10-25%** — even when no other changes were made. The fixes that drove those improvements (form labels, contrast, alt text, keyboard navigation) didn't just help disabled users. They removed friction for everyone.
+I've seen this firsthand in our PagePulser data. E-commerce sites that improved their accessibility scores from below 40 to above 70 consistently reported increased [conversion rates](/blog/improve-accessibility-score-20-points) — typically in the range of **10-25%** — even when no other changes were made. The fixes that drove those improvements (form labels, contrast, alt text, keyboard navigation) didn't just help disabled users. They removed friction for everyone.
 
 ## The Legal Risk Is Real and Growing
 
@@ -52,7 +52,7 @@ If the revenue argument doesn't convince the finance team, the legal argument mi
 - In the US, web accessibility lawsuits hit over **4,600 in 2024** — and that number has increased year on year since tracking began
 - The average settlement for a US web accessibility lawsuit is **$25,000-$75,000**, before legal fees. Some cases settle for significantly more
 - In 2024, major brands including **Domino's, Nike, Beyonce's Parkwood Entertainment**, and hundreds of smaller businesses were sued over inaccessible websites
-- The **European Accessibility Act** came into full force in 2025, extending compliance requirements to private sector businesses selling to EU consumers
+- The **[European Accessibility Act](/blog/web-accessibility-2026-why-websites-still-failing)** came into full force in 2025, extending compliance requirements to private sector businesses selling to EU consumers
 - The UK's **Equality Act 2010** requires service providers to make reasonable adjustments for disabled people — and courts have increasingly interpreted this to include websites
 
 **The cost comparison is stark:**
@@ -72,11 +72,11 @@ The maths isn't complicated. Investing in accessibility proactively costs a frac
 
 This is the argument that often lands with marketing teams, because it connects accessibility directly to a metric they already care about: search rankings.
 
-From our PagePulser data across 5,000 audits, the correlation between accessibility scores and SEO scores is **0.73** — a strong positive correlation. Sites that score well on accessibility consistently score well on SEO, and vice versa.
+From our PagePulser data across 5,000 audits, the correlation between [accessibility and SEO scores](/blog/why-accessible-websites-rank-higher) is **0.73** — a strong positive correlation. Sites that score well on accessibility consistently score well on SEO, and vice versa.
 
 The technical reasons are well-documented:
 
-- **Alt text** helps search engines understand image content — the same text that screen readers use
+- **[Alt text](/blog/complete-guide-image-alt-text)** helps search engines understand image content — the same text that screen readers use
 - **Heading hierarchy** gives Google a content structure to parse — the same structure assistive technology relies on
 - **Semantic HTML** helps search crawlers identify content types — the same markup that powers screen reader navigation
 - **Page speed** is both a Google ranking factor and an accessibility factor — faster sites are more usable for everyone

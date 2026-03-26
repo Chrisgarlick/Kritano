@@ -19,6 +19,9 @@ import { referralsRouter } from './referrals/index.js';
 import { cookieConsentRouter } from './consent/cookie-consent.js';
 import { seoRouter } from './seo.js';
 import { accountRouter } from './account/index.js';
+import { userWebhooksRouter } from './webhooks/user-webhooks.js';
+import { publicReportsRouter } from './public-reports/index.js';
+import { complianceRouter } from './compliance/index.js';
 import { setPool as setSiteServicePool, getUserTierLimits, getUserSiteUsage } from '../services/site.service.js';
 import { startTrial } from '../services/trial.service.js';
 import { pool } from '../db/index.js';
@@ -68,6 +71,9 @@ router.use('/site-invitations', siteInvitationsRouter);
 // Audits routes
 router.use('/audits', auditsRouter);
 
+// EAA Compliance (nested under audits path)
+router.use('/audits', complianceRouter);
+
 // Analytics routes
 router.use('/analytics', analyticsRouter);
 
@@ -110,8 +116,21 @@ router.use('/seo', seoRouter);
 // Account management (GDPR: data export, deletion)
 router.use('/account', accountRouter);
 
+// User webhooks (authenticated)
+router.use('/webhooks', userWebhooksRouter);
+
+// Public shareable audit reports (mixed auth: share/revoke are authenticated, view is public)
+router.use(publicReportsRouter);
+
 // Contact form (public, no auth)
 const contactAttempts = new Map<string, { count: number; resetAt: number }>();
+// Periodic cleanup to prevent unbounded memory growth
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of contactAttempts) {
+    if (entry.resetAt <= now) contactAttempts.delete(key);
+  }
+}, 5 * 60 * 1000);
 
 router.post('/contact', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -153,6 +172,106 @@ router.post('/contact', async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: 'Failed to send message. Please try again.' });
   }
 });
+
+// Public badge SVG (no auth, cached)
+router.get('/public/badges/:siteId.svg', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { siteId } = req.params;
+
+    // Validate siteId is a UUID
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(siteId)) {
+      res.status(404).setHeader('Content-Type', 'image/svg+xml').send(generateBadgeSvg('Not Found', null));
+      return;
+    }
+
+    // Check badge_enabled
+    const siteResult = await pool.query(
+      `SELECT id, badge_enabled FROM sites WHERE id = $1`,
+      [siteId]
+    );
+
+    if (siteResult.rows.length === 0 || !siteResult.rows[0].badge_enabled) {
+      res.status(404).setHeader('Content-Type', 'image/svg+xml').send(generateBadgeSvg('Not Found', null));
+      return;
+    }
+
+    // Fetch latest completed audit scores
+    const auditResult = await pool.query(
+      `SELECT seo_score, accessibility_score, security_score, performance_score, content_score
+       FROM audit_jobs
+       WHERE site_id = $1 AND status = 'completed'
+       ORDER BY completed_at DESC
+       LIMIT 1`,
+      [siteId]
+    );
+
+    if (auditResult.rows.length === 0) {
+      res.setHeader('Content-Type', 'image/svg+xml');
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+      res.send(generateBadgeSvg('No data', null));
+      return;
+    }
+
+    const audit = auditResult.rows[0];
+    const scores = [
+      audit.seo_score,
+      audit.accessibility_score,
+      audit.security_score,
+      audit.performance_score,
+      audit.content_score,
+    ].filter((s: number | null) => s !== null) as number[];
+
+    const overall = scores.length > 0 ? Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length) : null;
+
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.send(generateBadgeSvg(overall !== null ? String(overall) : 'No data', overall));
+  } catch (error) {
+    console.error('Badge SVG error:', error);
+    res.status(500).setHeader('Content-Type', 'image/svg+xml').send(generateBadgeSvg('Error', null));
+  }
+});
+
+function generateBadgeSvg(scoreText: string, score: number | null): string {
+  // Color based on score
+  let scoreColor = '#94a3b8'; // slate-400 default for no data
+  if (score !== null) {
+    if (score >= 80) scoreColor = '#22c55e'; // green
+    else if (score >= 60) scoreColor = '#f59e0b'; // amber
+    else scoreColor = '#ef4444'; // red
+  }
+
+  const labelText = 'PagePulser';
+  const labelWidth = 72;
+  const scoreWidth = scoreText.length > 4 ? 48 : 36;
+  const totalWidth = labelWidth + scoreWidth;
+  const height = 28;
+  const labelX = labelWidth / 2;
+  const scoreX = labelWidth + scoreWidth / 2;
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${labelText}: ${scoreText}">
+  <title>${labelText}: ${scoreText}</title>
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#fff" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r">
+    <rect width="${totalWidth}" height="${height}" rx="4" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#r)">
+    <rect width="${labelWidth}" height="${height}" fill="#334155"/>
+    <rect x="${labelWidth}" width="${scoreWidth}" height="${height}" fill="${scoreColor}"/>
+    <rect width="${totalWidth}" height="${height}" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="11">
+    <text x="${labelX}" y="${height / 2 + 4}" fill="#010101" fill-opacity=".3">${labelText}</text>
+    <text x="${labelX}" y="${height / 2 + 3}">${labelText}</text>
+    <text x="${scoreX}" y="${height / 2 + 4}" fill="#010101" fill-opacity=".3">${scoreText}</text>
+    <text x="${scoreX}" y="${height / 2 + 3}">${scoreText}</text>
+  </g>
+</svg>`;
+}
 
 // Public success stories (no auth)
 router.get('/public/success-stories', async (req: Request, res: Response): Promise<void> => {
@@ -442,7 +561,7 @@ p{color:#64748b;font-size:14px;line-height:1.6;margin:0;}</style>
 </head><body><div class="card">
 <div class="icon">${success ? '✓' : '✗'}</div>
 <h1>${success ? 'Unsubscribed' : 'Error'}</h1>
-<p>${message}</p>
+<p>${message.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')}</p>
 </div></body></html>`;
 }
 
@@ -487,6 +606,13 @@ router.get('/coming-soon/status', async (req: Request, res: Response): Promise<v
 
 // Simple rate limit map for signup endpoint
 const signupAttempts = new Map<string, { count: number; resetAt: number }>();
+// Periodic cleanup to prevent unbounded memory growth
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of signupAttempts) {
+    if (entry.resetAt <= now) signupAttempts.delete(key);
+  }
+}, 5 * 60 * 1000);
 
 router.post('/coming-soon/signup', async (req: Request, res: Response): Promise<void> => {
   try {

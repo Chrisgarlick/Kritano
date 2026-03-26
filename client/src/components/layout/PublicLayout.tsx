@@ -183,7 +183,7 @@ export function PublicLayout({ children }: Props) {
               {isAuthenticated ? (
                 <Link
                   to="/dashboard"
-                  className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-medium transition-colors text-sm"
+                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-sm"
                 >
                   Dashboard
                 </Link>
@@ -197,7 +197,7 @@ export function PublicLayout({ children }: Props) {
                   </Link>
                   <Link
                     to="/register"
-                    className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-medium transition-colors text-sm"
+                    className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-sm"
                   >
                     Get Started
                   </Link>
@@ -292,7 +292,7 @@ export function PublicLayout({ children }: Props) {
                   <Link
                     to="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block w-full text-center px-5 py-3 bg-slate-900 text-white rounded-lg font-medium"
+                    className="block w-full text-center px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium"
                   >
                     Dashboard
                   </Link>
@@ -308,7 +308,7 @@ export function PublicLayout({ children }: Props) {
                     <Link
                       to="/register"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block w-full text-center px-5 py-3 bg-slate-900 text-white rounded-lg font-medium"
+                      className="block w-full text-center px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium"
                     >
                       Get Started
                     </Link>

@@ -15,7 +15,7 @@ export default function RegisterSuccessPage() {
       </Helmet>
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <p className="text-3xl font-bold text-indigo-600">PagePulser</p>
+          <p className="text-3xl font-display text-indigo-600">PagePulser</p>
           <h1 className="mt-4 text-xl font-semibold text-slate-900">Check your email</h1>
         </div>
 

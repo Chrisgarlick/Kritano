@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../components/ui/Toast';
@@ -50,7 +51,7 @@ const PLANS: PlanInfo[] = [
       '1 site',
       '5 audits per month',
       '50 pages per audit',
-      'SEO & Accessibility checks',
+      'SEO, Security & Content checks',
       '30 day data retention',
     ],
   },
@@ -344,7 +345,7 @@ export default function ProfilePage() {
 
     try {
       setIsChangingPassword(true);
-      // TODO: Implement password change API call
+      await authApi.changePassword(currentPassword, newPassword);
       toast('Password changed successfully', 'success');
       setCurrentPassword('');
       setNewPassword('');
@@ -424,9 +425,11 @@ export default function ProfilePage() {
     : 'Unknown';
 
   return (
-    <div className="space-y-8">
+    <>
+      <Helmet><title>Profile | PagePulser</title></Helmet>
+      <div className="space-y-8">
       {/* Account Information */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Account Information</h2>
         </div>
@@ -511,7 +514,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Subscription & Plans */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
           <div className="flex items-center justify-between">
             <div>
@@ -568,7 +571,7 @@ export default function ProfilePage() {
                 return (
                   <div
                     key={plan.tier}
-                    className={`relative rounded-xl border-2 p-5 transition-all ${
+                    className={`relative rounded-lg border-2 p-5 transition-all ${
                       isCurrent
                         ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-900/10'
                         : isHighlighted
@@ -675,7 +678,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Connected Accounts */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Connected Accounts</h2>
           <p className="text-sm text-slate-500 dark:text-slate-500 mt-0.5">
@@ -798,7 +801,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Change Password */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Change Password</h2>
         </div>
@@ -861,7 +864,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Download My Data */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Download My Data</h2>
           <p className="text-sm text-slate-500 dark:text-slate-500 mt-0.5">
@@ -911,7 +914,7 @@ export default function ProfilePage() {
       {/* Export Password Modal */}
       {showExportModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl max-w-md w-full mx-4 p-6">
+          <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 shadow-xl max-w-md w-full mx-4 p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Confirm Data Export</h3>
               <button onClick={() => { setShowExportModal(false); setExportPassword(''); }} className="text-slate-500 hover:text-slate-600">
@@ -948,7 +951,7 @@ export default function ProfilePage() {
       )}
 
       {/* Delete Account */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-red-200 dark:border-red-900/50 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-lg border border-red-200 dark:border-red-900/50 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/10">
           <h2 className="text-lg font-semibold text-red-600 dark:text-red-400">Delete Account</h2>
         </div>
@@ -1001,7 +1004,7 @@ export default function ProfilePage() {
       {/* Delete Account Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl max-w-md w-full mx-4 p-6">
+          <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 shadow-xl max-w-md w-full mx-4 p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-red-600 dark:text-red-400">Delete Your Account</h3>
               <button onClick={() => { setShowDeleteModal(false); setDeletePassword(''); setDeleteConfirmText(''); }} className="text-slate-500 hover:text-slate-600">
@@ -1058,5 +1061,6 @@ export default function ProfilePage() {
         </div>
       )}
     </div>
+    </>
   );
 }

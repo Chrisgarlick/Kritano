@@ -8,7 +8,7 @@ import { Sparkles, Loader2 } from 'lucide-react';
 export default function RegisterPage() {
   const [searchParams] = useSearchParams();
   const eaParam = searchParams.get('ea');
-  const isEarlyAccess = eaParam === 'email' || eaParam === 'social';
+  const isEarlyAccess = !!eaParam;
 
   const [eaStatus, setEaStatus] = useState<{ loading: boolean; isFull: boolean; spotsRemaining: number }>({
     loading: isEarlyAccess,
@@ -64,7 +64,7 @@ export default function RegisterPage() {
         </Helmet>
         <div className="max-w-md w-full">
           <div className="text-center mb-8">
-            <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">PagePulser</p>
+            <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400">PagePulser</p>
             <h1 className="mt-4 text-xl font-semibold text-slate-900 dark:text-white">Early Access is Full</h1>
             <p className="mt-2 text-sm text-slate-600 dark:text-slate-500">
               All founding member spots have been claimed. Join the waitlist and we'll notify you when we launch.
@@ -119,7 +119,7 @@ export default function RegisterPage() {
       </Helmet>
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">PagePulser</p>
+          <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400">PagePulser</p>
           {isEarlyAccess ? (
             <>
               <h1 className="mt-4 text-xl font-semibold text-slate-900 dark:text-white flex items-center justify-center gap-2">

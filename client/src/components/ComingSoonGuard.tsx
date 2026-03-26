@@ -65,7 +65,7 @@ export function ComingSoonGuard({ children }: { children: ReactNode }) {
   // Allow early access registration routes through
   const searchParams = new URLSearchParams(location.search);
   const eaValue = searchParams.get('ea');
-  const hasEaParam = eaValue === 'email' || eaValue === 'social';
+  const hasEaParam = !!eaValue;
   const isRegisterRoute = location.pathname === '/register';
   const isEaSuccessRoute = location.pathname === '/register/early-access-success';
   const isAuthRoute = ['/login', '/register/success'].includes(location.pathname)

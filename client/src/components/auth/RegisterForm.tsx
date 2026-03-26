@@ -40,6 +40,7 @@ const registerSchema = z.object({
   acceptedTos: z.boolean().refine((val) => val === true, {
     message: 'You must accept the Terms of Service to register',
   }),
+  marketingOptIn: z.boolean().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Passwords do not match',
   path: ['confirmPassword'],
@@ -53,7 +54,10 @@ export function RegisterForm() {
   const [searchParams] = useSearchParams();
   const referralCode = searchParams.get('ref') || undefined;
   const eaParam = searchParams.get('ea');
-  const earlyAccessChannel = (eaParam === 'email' || eaParam === 'social') ? eaParam : undefined;
+  const isEarlyAccess = !!eaParam;
+  const utmSource = searchParams.get('utm_source') || undefined;
+  const utmMedium = searchParams.get('utm_medium') || undefined;
+  const utmCampaign = searchParams.get('utm_campaign') || undefined;
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -78,10 +82,14 @@ export function RegisterForm() {
         companyName: data.companyName,
         acceptedTos: data.acceptedTos,
         referralCode,
-        earlyAccessChannel,
+        earlyAccess: isEarlyAccess || undefined,
+        marketingOptIn: data.marketingOptIn || false,
+        utmSource,
+        utmMedium,
+        utmCampaign,
       });
 
-      if (earlyAccessChannel && (result as any)?.earlyAccess) {
+      if (isEarlyAccess && (result as any)?.earlyAccess) {
         navigate('/register/early-access-success', { state: { email: data.email } });
       } else {
         navigate('/register/success', { state: { email: data.email } });
@@ -108,7 +116,7 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {earlyAccessChannel && (
+      {isEarlyAccess && (
         <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-800">
           <p className="font-semibold mb-1">Founding Member Benefits</p>
           <ul className="list-disc list-inside space-y-0.5 text-amber-700">
@@ -117,7 +125,7 @@ export function RegisterForm() {
           </ul>
         </div>
       )}
-      {referralCode && !earlyAccessChannel && (
+      {referralCode && !isEarlyAccess && (
         <div className="bg-indigo-50 border border-indigo-200 rounded-lg px-4 py-3 text-sm text-indigo-700">
           You were referred by a friend! Complete registration and your first audit to earn bonus audits.
         </div>
@@ -221,6 +229,18 @@ export function RegisterForm() {
           <p id="acceptedTos-error" role="alert" className="text-sm text-red-600">{errors.acceptedTos.message}</p>
         )}
       </div>
+
+      {/* Marketing opt-in */}
+      <label className="flex items-start gap-3 cursor-pointer">
+        <input
+          type="checkbox"
+          {...register('marketingOptIn')}
+          className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+        />
+        <span className="text-sm text-slate-600">
+          Send me tips, product updates, and occasional offers
+        </span>
+      </label>
 
       <Button type="submit" className="w-full" isLoading={isLoading}>
         Create account

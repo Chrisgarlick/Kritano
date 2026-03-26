@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CheckCircle, AlertTriangle, ExternalLink, Search, Lock, ShieldAlert } from 'lucide-react';
+import { CheckCircle, ExternalLink, Search, Lock, ShieldAlert } from 'lucide-react';
 import { auditsApi, userApi } from '../../services/api';
 import { SeverityBadge } from '../ui/StatusBadge';
 import type { Severity } from '../../types/audit.types';
@@ -51,7 +51,7 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFreeUser, setIsFreeUser] = useState(false);
-  const [tier, setTier] = useState<string>('free');
+  const [, setTier] = useState<string>('free');
 
   useEffect(() => {
     const fetchData = async () => {

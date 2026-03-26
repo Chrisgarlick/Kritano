@@ -137,7 +137,7 @@ The empty parentheses mean "nobody can use this feature, not even my own site." 
 
 The quickest way to see where you stand is **securityheaders.com** — enter your URL and it'll give you a grade from A+ to F, along with a clear list of what's missing and what's configured correctly. Most small business sites I've tested score a D or lower on their first check.
 
-PagePulser also checks all of these headers automatically as part of your security audit, alongside SSL configuration, mixed content, and other vulnerabilities. If you've already got a PagePulser report, check the security section — it'll tell you exactly which headers are missing.
+PagePulser also checks all of these headers automatically as part of your security audit, alongside [SSL](/blog/website-security-basics-business-owners) configuration, mixed content, and other vulnerabilities. If you've already got a PagePulser report, check the security section — it'll tell you exactly which headers are missing.
 
 ## How to Add Them
 
@@ -194,7 +194,7 @@ Security headers are one of those rare things in web development where the effor
 
 In my honest opinion, every website should have at least the first five headers on this list configured. They cost nothing, they don't affect your site's appearance or functionality, and they provide meaningful protection that compounds with everything else in your security posture.
 
-If you want to see which headers you're missing and get your security score alongside accessibility, SEO, and performance, run an audit on PagePulser. The security section flags every missing header with specific implementation guidance for your setup.
+If you want to see which headers you're missing and get your security score alongside [accessibility, SEO, and performance](/blog/accessibility-seo-performance-why-you-shouldnt-choose), run an audit on PagePulser. The security section flags every missing header with specific implementation guidance for your setup.
 
 <!-- Internal linking suggestions:
 - Link "SSL" or "HTTPS" to the website security basics post

@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useSearchParams, Link } from 'react-router-dom';
 import { emailPreferencesApi } from '../../services/api';
 import {
@@ -48,7 +49,9 @@ export default function UnsubscribePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center px-4">
+    <>
+      <Helmet><title>Unsubscribe | PagePulser</title></Helmet>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo / Brand */}
         <div className="text-center mb-8">
@@ -173,5 +176,6 @@ export default function UnsubscribePage() {
         </p>
       </div>
     </div>
+    </>
   );
 }

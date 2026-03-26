@@ -24,7 +24,7 @@ That's the reality of online shopping for millions of people with disabilities �
 
 E-commerce accessibility isn't just an ethical issue, though it absolutely is that. It's a commercial one. The disability community controls over **$13 trillion** in annual disposable income globally. In the UK alone, the "Purple Pound" is worth approximately $309 billion. If your shop isn't accessible, you're not just excluding people — you're actively turning away customers who want to give you money.
 
-And with the European Accessibility Act now in full force, it's also a legal requirement for anyone selling to EU consumers. This isn't theoretical. Let me walk you through the specific areas where e-commerce sites most commonly fail and exactly how to fix them.
+And with the [European Accessibility Act](/blog/web-accessibility-2026-why-websites-still-failing) now in full force, it's also a legal requirement for anyone selling to EU consumers. This isn't theoretical. Let me walk you through the specific areas where e-commerce sites most commonly fail and exactly how to fix them.
 
 ## Product Pages
 
@@ -32,7 +32,7 @@ Product pages are where the shopping decision happens, and they're riddled with 
 
 ### Product Images
 
-Every product image needs descriptive alt text — not "product image" or "IMG_4521.jpg," but an actual description of what the image shows. For a clothing retailer, that means including the colour, the style, and what makes the image different from the other product photos:
+Every product image needs descriptive [alt text](/blog/complete-guide-image-alt-text) — not "product image" or "IMG_4521.jpg," but an actual description of what the image shows. For a clothing retailer, that means including the colour, the style, and what makes the image different from the other product photos:
 
 - **Bad:** `alt="dress"` — Which dress? What colour? What view?
 - **Good:** `alt="Navy blue midi wrap dress with short sleeves, front view on model"`
@@ -153,7 +153,7 @@ Don't lock your site to portrait mode. Some users with motor impairments have th
 
 I should address this directly, because I know someone reading this is thinking "can't I just install an accessibility overlay widget and tick the box?"
 
-No. Accessibility overlays — those floating toolbar widgets that promise to make your site compliant with one line of JavaScript — don't work. They can't fix structural issues like missing form labels, broken heading hierarchy, inaccessible custom components, or keyboard traps. Many accessibility professionals and disability advocacy organisations have publicly spoken against them. Some have even been the subject of legal action for making misleading compliance claims.
+No. Accessibility overlays — those floating toolbar widgets that promise to make your site compliant with one line of JavaScript — don't work. They can't fix structural issues like missing [form labels](/blog/understanding-website-accessibility-scores), broken heading hierarchy, inaccessible custom components, or keyboard traps. Many accessibility professionals and disability advocacy organisations have publicly spoken against them. Some have even been the subject of legal action for making misleading compliance claims.
 
 There's no shortcut. E-commerce accessibility requires the actual product experience to be built correctly. The good news is that most of the fixes I've described are straightforward — they're about using HTML properly, not about complex engineering.
 

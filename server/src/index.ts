@@ -1,13 +1,14 @@
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
+import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import { Pool } from 'pg';
 import * as Sentry from '@sentry/node';
 import { configureSecurityMiddleware } from './middleware/security.middleware.js';
 import { ensureCsrfToken, csrfProtection } from './middleware/csrf.middleware.js';
 import { globalRateLimiter } from './middleware/rateLimit.middleware.js';
+import { pool } from './db/index.js';
 import { testRedisConnection } from './db/redis.js';
 import { apiRouter, initializeRoutes } from './routes/index.js';
 import { shutdownPdfBrowser } from './services/pdf-report.service.js';
@@ -38,21 +39,16 @@ if (process.env.SENTRY_DSN) {
   console.log('🔍 Sentry error tracking enabled');
 }
 
-// Database connection - require DATABASE_URL (no hardcoded credentials)
-if (!process.env.DATABASE_URL) {
-  console.error('FATAL: DATABASE_URL environment variable is required');
-  process.exit(1);
-}
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  max: 20,
-});
-
-// Initialize route dependencies
+// Initialize route dependencies (uses shared pool from db/index.ts)
 initializeRoutes(pool);
 
 const app = express();
+
+// Trust first proxy (for correct req.ip behind reverse proxy)
+app.set('trust proxy', 1);
+
+// Response compression (gzip/brotli)
+app.use(compression());
 
 // Security middleware (Helmet)
 configureSecurityMiddleware(app);

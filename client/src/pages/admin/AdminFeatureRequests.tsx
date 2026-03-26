@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   Lightbulb,
@@ -89,6 +90,7 @@ export default function AdminFeatureRequests() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Feature Requests | PagePulser</title></Helmet>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>

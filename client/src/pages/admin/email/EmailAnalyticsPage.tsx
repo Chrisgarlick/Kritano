@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
 import { adminApi } from '../../../services/api';
 import type { EmailAnalyticsDay, EmailAnalyticsTotals, TemplatePerformanceItem } from '../../../services/api';
@@ -83,6 +84,7 @@ export default function EmailAnalyticsPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Email Analytics | PagePulser</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

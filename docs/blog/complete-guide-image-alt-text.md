@@ -44,7 +44,7 @@ This is the big one. Over 2.2 billion people globally have a vision impairment. 
 
 WebAIM's 2025 Million report found that **54.5% of all images** across the top million homepages were missing alt text. That's more than half the images on the web effectively hidden from anyone using assistive technology.
 
-Under WCAG 2.1 — the standard referenced by both UK and EU accessibility regulations — providing text alternatives for non-text content is a **Level A requirement**. That's the lowest, most fundamental level. It's not optional.
+Under [WCAG 2.1](/blog/web-accessibility-2026-why-websites-still-failing) — the standard referenced by both UK and EU accessibility regulations — providing text alternatives for non-text content is a **Level A requirement**. That's the lowest, most fundamental level. It's not optional.
 
 ### For SEO
 
@@ -162,7 +162,7 @@ Before you publish any page, run through this:
 
 ## Tools That Help
 
-- **Lighthouse / Chrome DevTools** — Flags images with missing alt text in the accessibility audit
+- **[Lighthouse](/blog/core-web-vitals-plain-english-guide) / Chrome DevTools** — Flags images with missing alt text in the accessibility audit
 - **axe DevTools** (browser extension) — Catches missing and potentially poor alt text
 - **WAVE** (by WebAIM) — Visual overlay that highlights every image and shows its alt text inline — brilliant for a quick visual scan
 - **WordPress plugins** — Yoast SEO, WP Accessibility, and All in One SEO all flag missing alt text during editing

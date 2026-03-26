@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
@@ -12,6 +13,7 @@ import { formatDate } from '../../utils/format';
 import { getScoreColor } from '../../utils/constants';
 import type { SiteWithStats, ScoreHistoryEntry, SiteUrl, SiteShare, SiteInvitation, SitePermission, MemberLimit } from '../../types/site.types';
 import { PERMISSION_INFO } from '../../types/site.types';
+import { useAuth } from '../../contexts/AuthContext';
 
 type TabType = 'overview' | 'audits' | 'urls' | 'analytics' | 'sharing' | 'settings';
 
@@ -123,6 +125,7 @@ export default function SiteDetailPage() {
   const { siteId } = useParams<{ siteId: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { subscription } = useAuth();
   const [site, setSite] = useState<SiteWithStats | null>(null);
   const [scoreHistory, setScoreHistory] = useState<ScoreHistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -163,6 +166,10 @@ export default function SiteDetailPage() {
   // Verification state
   const [verifying, setVerifying] = useState(false);
   const [verificationInstructions, setVerificationInstructions] = useState<any>(null);
+
+  // Badge state
+  const [badgeToggling, setBadgeToggling] = useState(false);
+  const [badgeCopied, setBadgeCopied] = useState<'html' | 'markdown' | null>(null);
 
   const fetchSite = useCallback(async () => {
     if (!siteId) return;
@@ -400,6 +407,34 @@ export default function SiteDetailPage() {
     }
   };
 
+  const handleToggleBadge = async () => {
+    if (!siteId || !site) return;
+    try {
+      setBadgeToggling(true);
+      const newEnabled = !site.badgeEnabled;
+      await sitesApi.toggleBadge(siteId, newEnabled);
+      setSite(prev => prev ? { ...prev, badgeEnabled: newEnabled } : prev);
+      toast(newEnabled ? 'Public badge enabled' : 'Public badge disabled', 'success');
+    } catch (err: any) {
+      toast(err.response?.data?.error || 'Failed to update badge setting', 'error');
+    } finally {
+      setBadgeToggling(false);
+    }
+  };
+
+  const handleCopyBadgeCode = (type: 'html' | 'markdown') => {
+    if (!siteId) return;
+    const badgeUrl = `https://pagepulser.com/api/public/badges/${siteId}.svg`;
+    const snippet = type === 'html'
+      ? `<a href="https://pagepulser.com"><img src="${badgeUrl}" alt="PagePulser Score" /></a>`
+      : `[![PagePulser Score](${badgeUrl})](https://pagepulser.com)`;
+    navigator.clipboard.writeText(snippet).then(() => {
+      setBadgeCopied(type);
+      toast('Copied to clipboard', 'success');
+      setTimeout(() => setBadgeCopied(null), 2000);
+    });
+  };
+
   if (loading) {
     return (
       <DashboardLayout>
@@ -444,6 +479,7 @@ export default function SiteDetailPage() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Site Details | PagePulser</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -1114,6 +1150,108 @@ export default function SiteDetailPage() {
                 </div>
               </div>
             )}
+
+            {/* Public Badge */}
+            {(() => {
+              const tier = subscription?.tier || 'free';
+              const isPaidTier = tier !== 'free';
+              return (
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
+                  <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">Public Badge</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-500 mb-4">
+                    Embed a "Verified by PagePulser" badge on your website showing your latest audit score.
+                  </p>
+
+                  {!isPaidTier ? (
+                    <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600">
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Public badges are available on the Starter plan and above.{' '}
+                        <Link to="/settings/profile" className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 font-medium">
+                          Upgrade your plan
+                        </Link>
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {/* Toggle */}
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-slate-700 dark:text-slate-300">Enable Badge</p>
+                          <p className="text-sm text-slate-500 dark:text-slate-500">Allow your badge to be publicly visible</p>
+                        </div>
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={site.badgeEnabled}
+                          disabled={badgeToggling}
+                          onClick={handleToggleBadge}
+                          className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:ring-offset-2 ${
+                            site.badgeEnabled ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-600'
+                          } ${badgeToggling ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                          <span
+                            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                              site.badgeEnabled ? 'translate-x-5' : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
+
+                      {/* Badge Preview & Embed Code */}
+                      {site.badgeEnabled && (
+                        <div className="space-y-4 pt-2">
+                          {/* Preview */}
+                          <div>
+                            <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-2">Preview</p>
+                            <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600 inline-block">
+                              <img
+                                src={`/api/public/badges/${siteId}.svg`}
+                                alt="PagePulser Score Badge"
+                                className="h-7"
+                              />
+                            </div>
+                          </div>
+
+                          {/* HTML Embed Code */}
+                          <div>
+                            <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-2">HTML Embed Code</p>
+                            <div className="flex items-start gap-2">
+                              <code className="flex-1 block p-3 bg-slate-100 dark:bg-slate-900 rounded text-xs font-mono text-slate-700 dark:text-slate-300 break-all select-all">
+                                {`<a href="https://pagepulser.com"><img src="https://pagepulser.com/api/public/badges/${siteId}.svg" alt="PagePulser Score" /></a>`}
+                              </code>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleCopyBadgeCode('html')}
+                              >
+                                {badgeCopied === 'html' ? 'Copied' : 'Copy'}
+                              </Button>
+                            </div>
+                          </div>
+
+                          {/* Markdown Embed Code */}
+                          <div>
+                            <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-2">Markdown</p>
+                            <div className="flex items-start gap-2">
+                              <code className="flex-1 block p-3 bg-slate-100 dark:bg-slate-900 rounded text-xs font-mono text-slate-700 dark:text-slate-300 break-all select-all">
+                                {`[![PagePulser Score](https://pagepulser.com/api/public/badges/${siteId}.svg)](https://pagepulser.com)`}
+                              </code>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleCopyBadgeCode('markdown')}
+                              >
+                                {badgeCopied === 'markdown' ? 'Copied' : 'Copy'}
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
 
           </div>
         )}

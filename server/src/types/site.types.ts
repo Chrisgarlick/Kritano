@@ -17,6 +17,7 @@ export interface Site {
   ignore_robots_txt: boolean;
   rate_limit_profile: string;
   send_verification_header: boolean;
+  badge_enabled: boolean;
   settings: SiteSettings;
   created_by: string | null;
   created_at: Date;

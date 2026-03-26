@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
@@ -175,6 +176,7 @@ export default function AuditListPage() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Audits | PagePulser</title></Helmet>
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">

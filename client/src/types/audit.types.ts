@@ -31,6 +31,7 @@ export interface Audit {
   performance_score: number | null;
   content_score: number | null;
   structured_data_score: number | null;
+  cqs_score: number | null;
   started_at: string | null;
   completed_at: string | null;
   created_at: string;
@@ -48,6 +49,16 @@ export interface Audit {
   // Queue info (from SSE)
   queue_position?: number | null;
   estimated_wait_seconds?: number | null;
+}
+
+// Fix snippet attached to findings (Starter+ tiers get code, Free gets explanation only)
+export interface FixSnippet {
+  fixType: 'code' | 'config' | 'content' | 'manual';
+  language: 'html' | 'css' | 'javascript' | 'json' | 'config' | 'text';
+  code?: string;
+  explanation: string;
+  effort: 'small' | 'medium' | 'large';
+  learnMoreUrl: string;
 }
 
 // Audit finding from API
@@ -69,6 +80,7 @@ export interface Finding {
   help_url: string | null;
   status?: 'active' | 'dismissed';
   page_url?: string;
+  fixSnippet?: FixSnippet;
   created_at: string;
 }
 
@@ -99,6 +111,7 @@ export interface AuditPage {
   performance_score: number | null;
   content_score: number | null;
   structured_data_score: number | null;
+  cqs_score?: number | null;
   // Content subscores
   content_quality_score?: number | null;
   content_readability_score?: number | null;

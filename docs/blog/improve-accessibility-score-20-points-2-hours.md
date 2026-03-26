@@ -33,7 +33,7 @@ If you haven't run an audit yet, do that first. It takes about five minutes and 
 
 **Expected impact: +5-10 points | Time: 15-30 minutes**
 
-Missing alt text is the single most common accessibility issue I see — it shows up on roughly 89% of sites we audit. Every time a screen reader hits an image without alt text, it either skips it entirely or reads out the filename. Neither is useful.
+Missing [alt text](/blog/complete-guide-image-alt-text) is the single most common accessibility issue I see — it shows up on roughly 89% of sites we audit. Every time a screen reader hits an image without alt text, it either skips it entirely or reads out the filename. Neither is useful.
 
 **How to fix it:**
 
@@ -44,13 +44,13 @@ Missing alt text is the single most common accessibility issue I see — it show
 
 **If you're on WordPress:** Go to your Media Library, filter by "Unattached" or browse through your images, and fill in the "Alt Text" field for each one. If you've got a lot of images, the WP Accessibility plugin can help flag the gaps.
 
-This fix alone is usually worth 5-10 points because alt text failures are weighted heavily — they're a Level A WCAG requirement, which means they're considered fundamental barriers to access.
+This fix alone is usually worth 5-10 points because alt text failures are weighted heavily — they're a Level A [WCAG](/blog/web-accessibility-2026-why-websites-still-failing) requirement, which means they're considered fundamental barriers to access.
 
 ## Fix 2: Fix Colour Contrast
 
 **Expected impact: +3-8 points | Time: 15-30 minutes**
 
-Insufficient colour contrast affects around 76% of websites. The issue is almost always the same: light grey text on a white background, or white text on a pastel-coloured button. It looks subtle and "clean" in your design, but it's genuinely difficult to read for anyone with low vision — and uncomfortable for everyone else in bright lighting.
+Insufficient [colour contrast](/blog/understanding-website-accessibility-scores) affects around 76% of websites. The issue is almost always the same: light grey text on a white background, or white text on a pastel-coloured button. It looks subtle and "clean" in your design, but it's genuinely difficult to read for anyone with low vision — and uncomfortable for everyone else in bright lighting.
 
 **The rules are simple:**
 
@@ -71,7 +71,7 @@ Insufficient colour contrast affects around 76% of websites. The issue is almost
 
 **Expected impact: +2-5 points | Time: 15-20 minutes**
 
-Screen reader users navigate pages by jumping between headings — it's like a table of contents for people who can't see the visual layout. When your headings skip levels or are used for styling rather than structure, that navigation breaks completely.
+Screen reader users navigate pages by jumping between [headings](/blog/website-launch-checklist) — it's like a table of contents for people who can't see the visual layout. When your headings skip levels or are used for styling rather than structure, that navigation breaks completely.
 
 **How to fix it:**
 

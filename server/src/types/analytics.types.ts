@@ -9,6 +9,7 @@ export interface ScoreDataPoint {
   performance: number | null;
   content: number | null;
   structuredData: number | null;
+  cqs: number | null;
 }
 
 export interface ScoreSummary {
@@ -19,6 +20,7 @@ export interface ScoreSummary {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
   trends: {
     seo: 'up' | 'down' | 'stable';
@@ -27,6 +29,7 @@ export interface ScoreSummary {
     performance: 'up' | 'down' | 'stable';
     content: 'up' | 'down' | 'stable';
     structuredData: 'up' | 'down' | 'stable';
+    cqs: 'up' | 'down' | 'stable';
   };
   totalAudits: number;
 }
@@ -71,6 +74,7 @@ export interface AuditSummary {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
   issues: {
     total: number;
@@ -92,6 +96,7 @@ export interface ScoreDelta {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
 }
 
@@ -140,6 +145,7 @@ export interface SiteAnalyticsSummary {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
   lastAuditAt: string | null;
   auditCount: number;
@@ -157,6 +163,7 @@ export interface OrgAnalytics {
       performance: number | null;
       content: number | null;
       structuredData: number | null;
+      cqs: number | null;
     };
     topIssues: Array<{
       ruleId: string;
@@ -181,6 +188,7 @@ export interface SiteComparisonEntry {
       performance: number | null;
       content: number | null;
       structuredData: number | null;
+      cqs: number | null;
     };
     totalIssues: number;
   } | null;
@@ -191,6 +199,7 @@ export interface SiteComparisonEntry {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
 }
 
@@ -219,6 +228,7 @@ export interface UrlPageSnapshot {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
   issueCountByCategory: {
     seo: number;
@@ -385,6 +395,7 @@ export interface UserOverview {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   };
   sitesNeedingAttention: Array<{
     id: string;
@@ -397,9 +408,11 @@ export interface UserOverview {
       performance: number | null;
       content: number | null;
       structuredData: number | null;
+      cqs: number | null;
     };
     trend: 'declining';
   }>;
+  siteTrends: Record<string, 'improving' | 'declining' | 'stable'>;
   recentActivity: Array<{
     auditId: string;
     siteName: string;
@@ -417,6 +430,7 @@ export interface UserOverview {
       performance: number | null;
       content: number | null;
       structuredData: number | null;
+      cqs: number | null;
     };
     startedBy: {
       name: string;
@@ -441,6 +455,7 @@ export interface UrlAnalytics {
     performance: { url: number | null; site: number | null; diff: number | null };
     content: { url: number | null; site: number | null; diff: number | null };
     structuredData: { url: number | null; site: number | null; diff: number | null };
+    cqs: { url: number | null; site: number | null; diff: number | null };
   };
   recentAudits: Array<{
     id: string;
@@ -452,6 +467,7 @@ export interface UrlAnalytics {
       performance: number | null;
       content: number | null;
       structuredData: number | null;
+      cqs: number | null;
     };
     totalIssues: number;
   }>;

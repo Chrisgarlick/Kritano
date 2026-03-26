@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   CalendarClock, ArrowLeft, Loader2, CheckCircle2, XCircle, Pause,
@@ -88,6 +89,7 @@ export default function AdminScheduleDetailPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Schedule Details | PagePulser</title></Helmet>
       <div className="p-6 max-w-4xl">
         <Link
           to="/admin/schedules"

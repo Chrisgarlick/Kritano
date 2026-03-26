@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -243,6 +244,7 @@ export default function LeadDetailPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Lead Details | PagePulser</title></Helmet>
       {/* ----------------------------------------------------------------- */}
       {/* Header                                                            */}
       {/* ----------------------------------------------------------------- */}

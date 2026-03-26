@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   Crosshair, Search, Loader2, Mail, User, Globe, Shield,
@@ -149,6 +150,7 @@ export default function ColdProspectsList() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Prospects List | PagePulser</title></Helmet>
       <div className="p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

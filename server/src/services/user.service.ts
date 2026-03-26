@@ -116,12 +116,12 @@ export class UserService {
        SET failed_login_attempts = failed_login_attempts + 1,
            lockout_until = CASE
              WHEN failed_login_attempts + 1 >= $2
-             THEN NOW() + INTERVAL '${LOCKOUT_CONFIG.lockoutDurationMs} milliseconds'
+             THEN NOW() + make_interval(secs => $3 / 1000.0)
              ELSE lockout_until
            END
        WHERE id = $1
        RETURNING failed_login_attempts, lockout_until`,
-      [userId, LOCKOUT_CONFIG.maxFailedAttempts]
+      [userId, LOCKOUT_CONFIG.maxFailedAttempts, LOCKOUT_CONFIG.lockoutDurationMs]
     );
 
     const row = result.rows[0];

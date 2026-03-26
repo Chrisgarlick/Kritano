@@ -52,7 +52,7 @@ router.get('/posts/:slug', async (req: Request, res: Response): Promise<void> =>
 
     // Increment view count (debounced by IP)
     const sessionKey = (req.ip || req.headers['x-forwarded-for'] || 'unknown') as string;
-    incrementViewCount(post.id, sessionKey).catch(() => {});
+    incrementViewCount(post.id, sessionKey).catch(err => console.error('Blog view count increment failed:', err));
 
     res.json({ post });
   } catch (error) {

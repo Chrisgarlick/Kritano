@@ -55,15 +55,25 @@ async function runMigration(pool: Pool, filename: string): Promise<void> {
   const filepath = path.join(MIGRATIONS_DIR, filename);
   const sql = fs.readFileSync(filepath, 'utf-8');
 
+  // CONCURRENTLY operations cannot run inside a transaction block
+  const needsNoTransaction = /\bCONCURRENTLY\b/i.test(sql);
+
   const client = await pool.connect();
   try {
-    await client.query('BEGIN');
-    await client.query(sql);
-    await client.query('INSERT INTO _migrations (name) VALUES ($1)', [filename]);
-    await client.query('COMMIT');
+    if (needsNoTransaction) {
+      await client.query(sql);
+      await client.query('INSERT INTO _migrations (name) VALUES ($1)', [filename]);
+    } else {
+      await client.query('BEGIN');
+      await client.query(sql);
+      await client.query('INSERT INTO _migrations (name) VALUES ($1)', [filename]);
+      await client.query('COMMIT');
+    }
     console.log(`  ✓ ${filename}`);
   } catch (error) {
-    await client.query('ROLLBACK');
+    if (!needsNoTransaction) {
+      await client.query('ROLLBACK');
+    }
     throw error;
   } finally {
     client.release();

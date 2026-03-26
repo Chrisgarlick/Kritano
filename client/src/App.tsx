@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -7,107 +8,117 @@ import { ToastProvider } from './components/ui/Toast';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { AdminRoute } from './routes/AdminRoute';
 import { SettingsLayout } from './components/layout/SettingsLayout';
+import { ComingSoonGuard } from './components/ComingSoonGuard';
+import { CookieConsentProvider } from './contexts/CookieConsentContext';
+import { SeoProvider } from './hooks/useSeoOverrides';
+
+// Eagerly loaded (critical path)
 import Home from './pages/Home';
 import LoginPage from './pages/auth/Login';
 import RegisterPage from './pages/auth/Register';
-import RegisterSuccessPage from './pages/auth/RegisterSuccess';
-import VerifyEmailPage from './pages/auth/VerifyEmail';
-import OAuthCallbackPage from './pages/auth/OAuthCallback';
-import ForgotPasswordPage from './pages/auth/ForgotPassword';
-import ResetPasswordPage from './pages/auth/ResetPassword';
-import DashboardPage from './pages/dashboard/Dashboard';
-import AuditListPage from './pages/audits/AuditList';
-import NewAuditPage from './pages/audits/NewAudit';
-import AuditDetailPage from './pages/audits/AuditDetail';
-import PageDetailPage from './pages/audits/PageDetail';
-import ApiKeysPage from './pages/settings/ApiKeys';
-import ProfilePage from './pages/settings/Profile';
-import SitesSettingsPage from './pages/settings/SitesSettings';
-import BrandingSettingsPage from './pages/settings/BrandingSettings';
-import NotificationSettingsPage from './pages/settings/NotificationSettings';
-import SiteInvitationPage from './pages/invitations/SiteInvitation';
-import UnsubscribePage from './pages/email/UnsubscribePage';
-import AdminDashboardPage from './pages/admin/AdminDashboard';
-import AdminUsersPage from './pages/admin/AdminUsers';
-import AdminOrganizationsPage from './pages/admin/AdminOrganizations';
-import AdminActivityPage from './pages/admin/AdminActivity';
-import AdminBugReportsPage from './pages/admin/AdminBugReports';
-import AdminBugReportDetailPage from './pages/admin/AdminBugReportDetail';
-import AdminFeatureRequestsPage from './pages/admin/AdminFeatureRequests';
-import AdminFeatureRequestDetailPage from './pages/admin/AdminFeatureRequestDetail';
-// CRM
-import AdminLeadsPage from './pages/admin/crm/LeadsPage';
-import AdminLeadDetailPage from './pages/admin/crm/LeadDetailPage';
-import AdminTriggersPage from './pages/admin/crm/TriggersPage';
-// Email
-import AdminTemplatesPage from './pages/admin/email/TemplatesPage';
-import AdminTemplateEditorPage from './pages/admin/email/TemplateEditorPage';
-import AdminCampaignsPage from './pages/admin/email/CampaignsPage';
-import AdminCampaignEditorPage from './pages/admin/email/CampaignEditorPage';
-import AdminEmailAnalyticsPage from './pages/admin/email/EmailAnalyticsPage';
-// CMS
-import AdminPostsPage from './pages/admin/cms/PostsPage';
-import AdminPostEditorPage from './pages/admin/cms/PostEditorPage';
-import AdminMediaPage from './pages/admin/cms/MediaPage';
-import AdminAdvicePage from './pages/admin/cms/AdvicePage';
-import AdminAnnouncementsPage from './pages/admin/cms/AnnouncementsPage';
-import AdminStoriesPage from './pages/admin/cms/StoriesPage';
-// Marketing
-import AdminMarketingContentListPage from './pages/admin/marketing/ContentListPage';
-import AdminMarketingContentEditorPage from './pages/admin/marketing/ContentEditorPage';
-import AdminMarketingCampaignsPage from './pages/admin/marketing/CampaignsPage';
-// Cold Prospects
-import ColdProspectsDashboard from './pages/admin/cold-prospects/ColdProspectsDashboard';
-import ColdProspectsList from './pages/admin/cold-prospects/ColdProspectsList';
-import ColdProspectDetail from './pages/admin/cold-prospects/ColdProspectDetail';
-// Referrals
-import ReferralDashboard from './pages/referrals/ReferralDashboard';
-import AdminReferralsDashboard from './pages/admin/referrals/AdminReferralsDashboard';
-// Admin Analytics
-import AdminFunnelPage from './pages/admin/analytics/FunnelPage';
-import AdminTrendsPage from './pages/admin/analytics/TrendsPage';
-import AdminRevenuePage from './pages/admin/analytics/RevenuePage';
-import SiteListPage from './pages/sites/SiteList';
-import SiteDetailPage from './pages/sites/SiteDetail';
-import ScheduleListPage from './pages/schedules/ScheduleListPage';
-import ScheduleDetailPage from './pages/schedules/ScheduleDetailPage';
-import AdminSchedulesPage from './pages/admin/AdminSchedules';
-import AdminScheduleDetailPage from './pages/admin/AdminScheduleDetail';
-import AnalyticsDashboard from './pages/analytics/AnalyticsDashboard';
-import SiteAnalytics from './pages/analytics/SiteAnalytics';
-import UrlAnalytics from './pages/analytics/UrlAnalytics';
-import AuditComparison from './pages/analytics/AuditComparison';
-import SiteComparison from './pages/analytics/SiteComparison';
-import ComparePage from './pages/compare/ComparePage';
-// Blog (public)
-import BlogPostListPage from './pages/blog/PostListPage';
-import BlogPostDetailPage from './pages/blog/PostDetailPage';
-// Public pages
-import AboutPage from './pages/public/About';
-import ServicesPage from './pages/public/Services';
-import PricingPage from './pages/public/Pricing';
-import ContactPage from './pages/public/Contact';
-import TermsPage from './pages/public/Terms';
-import PrivacyPage from './pages/public/Privacy';
-import ServiceDetailPage from './pages/public/services/ServiceDetailPage';
-// API Docs (public)
-import DocsOverviewPage from './pages/docs/DocsOverviewPage';
-import DocsAuthPage from './pages/docs/DocsAuthPage';
-import DocsRateLimitsPage from './pages/docs/DocsRateLimitsPage';
-import DocsErrorsPage from './pages/docs/DocsErrorsPage';
-import DocsEndpointsPage from './pages/docs/DocsEndpointsPage';
-import DocsObjectsPage from './pages/docs/DocsObjectsPage';
 import NotFoundPage from './pages/errors/NotFound';
-import ServerErrorPage from './pages/errors/ServerError';
-import { ComingSoonGuard } from './components/ComingSoonGuard';
-import { CookieConsentProvider } from './contexts/CookieConsentContext';
-import EarlyAccessSuccessPage from './pages/auth/EarlyAccessSuccess';
-import AdminEarlyAccessPage from './pages/admin/AdminEarlyAccess';
-import SystemSettingsPage from './pages/admin/settings/SystemSettingsPage';
-import ComingSoonSignupsPage from './pages/admin/settings/ComingSoonSignupsPage';
-// SEO Management
-import SeoManagerPage from './pages/admin/seo/SeoManagerPage';
-import { SeoProvider } from './hooks/useSeoOverrides';
+
+// Lazy-loaded: Auth pages
+const RegisterSuccessPage = lazy(() => import('./pages/auth/RegisterSuccess'));
+const VerifyEmailPage = lazy(() => import('./pages/auth/VerifyEmail'));
+const OAuthCallbackPage = lazy(() => import('./pages/auth/OAuthCallback'));
+const ForgotPasswordPage = lazy(() => import('./pages/auth/ForgotPassword'));
+const ResetPasswordPage = lazy(() => import('./pages/auth/ResetPassword'));
+const EarlyAccessSuccessPage = lazy(() => import('./pages/auth/EarlyAccessSuccess'));
+
+// Lazy-loaded: Dashboard / App pages
+const DashboardPage = lazy(() => import('./pages/dashboard/Dashboard'));
+const AuditListPage = lazy(() => import('./pages/audits/AuditList'));
+const NewAuditPage = lazy(() => import('./pages/audits/NewAudit'));
+const AuditDetailPage = lazy(() => import('./pages/audits/AuditDetail'));
+const PageDetailPage = lazy(() => import('./pages/audits/PageDetail'));
+const AccessibilityStatementPage = lazy(() => import('./pages/audits/AccessibilityStatement'));
+const ComplianceReportPage = lazy(() => import('./pages/audits/ComplianceReport'));
+const SiteListPage = lazy(() => import('./pages/sites/SiteList'));
+const SiteDetailPage = lazy(() => import('./pages/sites/SiteDetail'));
+const ScheduleListPage = lazy(() => import('./pages/schedules/ScheduleListPage'));
+const ScheduleDetailPage = lazy(() => import('./pages/schedules/ScheduleDetailPage'));
+const ReferralDashboard = lazy(() => import('./pages/referrals/ReferralDashboard'));
+const ComparePage = lazy(() => import('./pages/compare/ComparePage'));
+const SiteInvitationPage = lazy(() => import('./pages/invitations/SiteInvitation'));
+const UnsubscribePage = lazy(() => import('./pages/email/UnsubscribePage'));
+
+// Lazy-loaded: Settings
+const ProfilePage = lazy(() => import('./pages/settings/Profile'));
+const ApiKeysPage = lazy(() => import('./pages/settings/ApiKeys'));
+const SitesSettingsPage = lazy(() => import('./pages/settings/SitesSettings'));
+const BrandingSettingsPage = lazy(() => import('./pages/settings/BrandingSettings'));
+const NotificationSettingsPage = lazy(() => import('./pages/settings/NotificationSettings'));
+
+// Lazy-loaded: Analytics
+const AnalyticsDashboard = lazy(() => import('./pages/analytics/AnalyticsDashboard'));
+const SiteAnalytics = lazy(() => import('./pages/analytics/SiteAnalytics'));
+const UrlAnalytics = lazy(() => import('./pages/analytics/UrlAnalytics'));
+const AuditComparison = lazy(() => import('./pages/analytics/AuditComparison'));
+const SiteComparison = lazy(() => import('./pages/analytics/SiteComparison'));
+
+// Lazy-loaded: Public pages
+const AboutPage = lazy(() => import('./pages/public/About'));
+const ServicesPage = lazy(() => import('./pages/public/Services'));
+const PricingPage = lazy(() => import('./pages/public/Pricing'));
+const ContactPage = lazy(() => import('./pages/public/Contact'));
+const TermsPage = lazy(() => import('./pages/public/Terms'));
+const PrivacyPage = lazy(() => import('./pages/public/Privacy'));
+const ServiceDetailPage = lazy(() => import('./pages/public/services/ServiceDetailPage'));
+const ServerErrorPage = lazy(() => import('./pages/errors/ServerError'));
+const SharedReportPage = lazy(() => import('./pages/public/SharedReport'));
+
+// Lazy-loaded: Blog
+const BlogPostListPage = lazy(() => import('./pages/blog/PostListPage'));
+const BlogPostDetailPage = lazy(() => import('./pages/blog/PostDetailPage'));
+
+// Lazy-loaded: Docs
+const DocsOverviewPage = lazy(() => import('./pages/docs/DocsOverviewPage'));
+const DocsAuthPage = lazy(() => import('./pages/docs/DocsAuthPage'));
+const DocsRateLimitsPage = lazy(() => import('./pages/docs/DocsRateLimitsPage'));
+const DocsErrorsPage = lazy(() => import('./pages/docs/DocsErrorsPage'));
+const DocsEndpointsPage = lazy(() => import('./pages/docs/DocsEndpointsPage'));
+const DocsObjectsPage = lazy(() => import('./pages/docs/DocsObjectsPage'));
+
+// Lazy-loaded: Admin pages
+const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminUsersPage = lazy(() => import('./pages/admin/AdminUsers'));
+const AdminOrganizationsPage = lazy(() => import('./pages/admin/AdminOrganizations'));
+const AdminActivityPage = lazy(() => import('./pages/admin/AdminActivity'));
+const AdminBugReportsPage = lazy(() => import('./pages/admin/AdminBugReports'));
+const AdminBugReportDetailPage = lazy(() => import('./pages/admin/AdminBugReportDetail'));
+const AdminFeatureRequestsPage = lazy(() => import('./pages/admin/AdminFeatureRequests'));
+const AdminFeatureRequestDetailPage = lazy(() => import('./pages/admin/AdminFeatureRequestDetail'));
+const AdminSchedulesPage = lazy(() => import('./pages/admin/AdminSchedules'));
+const AdminScheduleDetailPage = lazy(() => import('./pages/admin/AdminScheduleDetail'));
+const AdminEarlyAccessPage = lazy(() => import('./pages/admin/AdminEarlyAccess'));
+const AdminLeadsPage = lazy(() => import('./pages/admin/crm/LeadsPage'));
+const AdminLeadDetailPage = lazy(() => import('./pages/admin/crm/LeadDetailPage'));
+const AdminTriggersPage = lazy(() => import('./pages/admin/crm/TriggersPage'));
+const AdminTemplatesPage = lazy(() => import('./pages/admin/email/TemplatesPage'));
+const AdminTemplateEditorPage = lazy(() => import('./pages/admin/email/TemplateEditorPage'));
+const AdminCampaignsPage = lazy(() => import('./pages/admin/email/CampaignsPage'));
+const AdminCampaignEditorPage = lazy(() => import('./pages/admin/email/CampaignEditorPage'));
+const AdminEmailAnalyticsPage = lazy(() => import('./pages/admin/email/EmailAnalyticsPage'));
+const AdminPostsPage = lazy(() => import('./pages/admin/cms/PostsPage'));
+const AdminPostEditorPage = lazy(() => import('./pages/admin/cms/PostEditorPage'));
+const AdminMediaPage = lazy(() => import('./pages/admin/cms/MediaPage'));
+const AdminAdvicePage = lazy(() => import('./pages/admin/cms/AdvicePage'));
+const AdminAnnouncementsPage = lazy(() => import('./pages/admin/cms/AnnouncementsPage'));
+const AdminStoriesPage = lazy(() => import('./pages/admin/cms/StoriesPage'));
+const AdminMarketingContentListPage = lazy(() => import('./pages/admin/marketing/ContentListPage'));
+const AdminMarketingContentEditorPage = lazy(() => import('./pages/admin/marketing/ContentEditorPage'));
+const AdminMarketingCampaignsPage = lazy(() => import('./pages/admin/marketing/CampaignsPage'));
+const ColdProspectsDashboard = lazy(() => import('./pages/admin/cold-prospects/ColdProspectsDashboard'));
+const ColdProspectsList = lazy(() => import('./pages/admin/cold-prospects/ColdProspectsList'));
+const ColdProspectDetail = lazy(() => import('./pages/admin/cold-prospects/ColdProspectDetail'));
+const AdminReferralsDashboard = lazy(() => import('./pages/admin/referrals/AdminReferralsDashboard'));
+const AdminFunnelPage = lazy(() => import('./pages/admin/analytics/FunnelPage'));
+const AdminTrendsPage = lazy(() => import('./pages/admin/analytics/TrendsPage'));
+const AdminRevenuePage = lazy(() => import('./pages/admin/analytics/RevenuePage'));
+const SystemSettingsPage = lazy(() => import('./pages/admin/settings/SystemSettingsPage'));
+const ComingSoonSignupsPage = lazy(() => import('./pages/admin/settings/ComingSoonSignupsPage'));
+const SeoManagerPage = lazy(() => import('./pages/admin/seo/SeoManagerPage'));
 
 function App() {
   return (
@@ -120,6 +131,7 @@ function App() {
             <BrowserRouter>
               <SeoProvider>
               <ComingSoonGuard>
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" /></div>}>
               <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<Home />} />
@@ -159,6 +171,9 @@ function App() {
                 <Route path="/blog" element={<BlogPostListPage />} />
                 <Route path="/blog/:slug" element={<BlogPostDetailPage />} />
 
+                {/* Public shared audit report */}
+                <Route path="/public/reports/:token" element={<SharedReportPage />} />
+
                 {/* Protected routes */}
                 <Route
                   path="/dashboard"
@@ -197,6 +212,22 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <PageDetailPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/audits/:id/statement"
+                  element={
+                    <ProtectedRoute>
+                      <AccessibilityStatementPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/audits/:id/compliance"
+                  element={
+                    <ProtectedRoute>
+                      <ComplianceReportPage />
                     </ProtectedRoute>
                   }
                 />
@@ -691,6 +722,7 @@ function App() {
                 {/* Catch all - 404 */}
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
+              </Suspense>
               </ComingSoonGuard>
               </SeoProvider>
             </BrowserRouter>

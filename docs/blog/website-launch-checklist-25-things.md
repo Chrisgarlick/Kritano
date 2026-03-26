@@ -31,13 +31,13 @@ These aren't optional extras — they're the baseline for making sure everyone c
 
 ### 1. Every Image Has Proper Alt Text
 
-Check every `<img>` tag. Informative images need descriptive alt text that explains what the image shows. Decorative images — background patterns, visual flourishes — need an empty alt attribute (`alt=""`). No image should be missing the alt attribute entirely.
+Check every `<img>` tag. Informative images need descriptive [alt text](/blog/complete-guide-image-alt-text) that explains what the image shows. Decorative images — background patterns, visual flourishes — need an empty alt attribute (`alt=""`). No image should be missing the alt attribute entirely.
 
 **Quick check:** Install the WAVE browser extension and scan each page. It highlights every image and shows its alt text inline.
 
 ### 2. Colour Contrast Meets WCAG Standards
 
-All text needs a contrast ratio of at least **4.5:1** against its background (3:1 for large text). This includes text on images, text over gradients, and placeholder text in form fields — that last one catches people out constantly.
+All text needs a [colour contrast](/blog/understanding-website-accessibility-scores) ratio of at least **4.5:1** against its background (3:1 for large text). This includes text on images, text over gradients, and placeholder text in form fields — that last one catches people out constantly.
 
 **Quick check:** Use the WebAIM Contrast Checker or Chrome DevTools' built-in contrast inspection.
 
@@ -119,7 +119,7 @@ If your CMS login is at the default URL (`/wp-admin`, `/admin`, `/login`), move 
 
 ### 20. Security Headers Are Configured
 
-Run your domain through **securityheaders.com** before launch. At minimum, you should have Strict-Transport-Security (HSTS), X-Content-Type-Options, X-Frame-Options, and Referrer-Policy in place. These take ten minutes to configure and block entire categories of attack.
+Run your domain through **securityheaders.com** before launch. At minimum, you should have Strict-Transport-Security (HSTS), X-Content-Type-Options, X-Frame-Options, and Referrer-Policy in place. These take ten minutes to configure and [block entire categories of attack](/blog/website-security-basics-business-owners).
 
 ### 21. Unnecessary Files and Directories Are Removed
 
@@ -147,7 +147,7 @@ Browser caching headers should be set so returning visitors don't re-download st
 
 ## The One That Ties It All Together
 
-If I had to pick one thing from this entire list, it's this: **don't treat these as four separate checklists.** Accessibility, SEO, security, and performance overlap constantly. A compressed image with proper alt text and dimensions handles performance, accessibility, and SEO in one go. A clean heading hierarchy helps screen readers and search engines equally. Security headers protect your users and your reputation simultaneously.
+If I had to pick one thing from this entire list, it's this: **don't treat these as four separate checklists.** [Accessibility, SEO, security, and performance overlap](/blog/accessibility-seo-performance-why-you-shouldnt-choose) constantly. A compressed image with proper alt text and dimensions handles performance, accessibility, and SEO in one go. A clean heading hierarchy helps screen readers and search engines equally. Security headers protect your users and your reputation simultaneously.
 
 The most efficient way to check all of this isn't running four separate tools and reconciling four separate reports. It's using something that looks at your site holistically — which is exactly what PagePulser does. Run a single audit and you'll get your accessibility score, performance metrics, security checks, and SEO analysis in one place, with every issue prioritised by severity so you know what to fix first.
 

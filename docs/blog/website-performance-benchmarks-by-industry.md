@@ -26,7 +26,7 @@ I've pulled together performance data from publicly available sources like the H
 
 ## The Universal Benchmarks
 
-Before we get into industry specifics, here are Google's Core Web Vitals thresholds. These apply to everyone regardless of sector:
+Before we get into industry specifics, here are Google's [Core Web Vitals](/blog/core-web-vitals-plain-english-guide) thresholds. These apply to everyone regardless of sector:
 
 | Metric | Good | Needs Improvement | Poor |
 |--------|------|-------------------|------|
@@ -48,10 +48,10 @@ E-commerce sites are the heaviest on the web, and the performance benchmarks ref
 | Total Page Weight | 3.8MB | 1.6MB | Under 2MB |
 | Performance Score | 41 | 72 | 70+ |
 
-**Why e-commerce is heavy:** Product images are the obvious culprit — most category pages load dozens of them simultaneously. But the bigger issue is often JavaScript. Product filtering, dynamic pricing, cart widgets, recommendation engines, analytics, A/B testing scripts, chat widgets, and retargeting pixels all compete for the browser's attention. I've audited e-commerce sites running 40+ third-party scripts on a single page.
+**Why e-commerce is heavy:** Product images are the obvious culprit — most category pages load dozens of them simultaneously. But the bigger issue is often JavaScript. Product filtering, dynamic pricing, cart widgets, recommendation engines, analytics, A/B testing scripts, chat widgets, and retargeting pixels all compete for the browser's attention. I've audited e-commerce sites running 40+ [third-party scripts](/blog/website-launch-checklist) on a single page.
 
 **Common bottlenecks:**
-- Uncompressed product images — often the single biggest win. Switching to WebP with lazy loading can halve your page weight
+- Uncompressed product images — often the single biggest win. Switching to [WebP with lazy loading](/blog/image-optimisation-biggest-performance-win) can halve your page weight
 - Heavy JavaScript bundles — especially React or Angular-based storefronts that ship entire framework libraries for pages that don't need them
 - Third-party scripts — each marketing tool adds weight. Audit what you're actually using versus what someone installed two years ago and forgot about
 - No CDN — serving assets from a single origin server means users far from that server wait longer. A content delivery network like Cloudflare or Bunny CDN makes a measurable difference

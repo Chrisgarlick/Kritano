@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
@@ -405,6 +406,7 @@ export default function NewAuditPage() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>New Audit | PagePulser</title></Helmet>
       <div className="max-w-2xl mx-auto">
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../services/api';
 import type {
@@ -189,6 +190,7 @@ export default function AdminDashboardPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Dashboard | PagePulser</title></Helmet>
       {/* Page Header */}
       <div className="mb-10">
         <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>

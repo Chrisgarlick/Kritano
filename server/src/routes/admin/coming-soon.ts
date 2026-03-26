@@ -65,9 +65,15 @@ router.get('/signups/export', async (req: AdminRequest, res: Response): Promise<
        ORDER BY created_at DESC`
     );
 
+    const escapeCsv = (val: string) => {
+      // Escape double quotes and prevent formula injection
+      let safe = val.replace(/"/g, '""');
+      if (/^[=+\-@\t\r]/.test(safe)) safe = "'" + safe;
+      return `"${safe}"`;
+    };
     const header = 'Email,Name,IP Address,Signed Up\n';
     const rows = result.rows.map((r) =>
-      `"${r.email}","${r.name || ''}","${r.ip_address || ''}","${r.created_at}"`
+      `${escapeCsv(r.email)},${escapeCsv(r.name || '')},${escapeCsv(r.ip_address || '')},${escapeCsv(String(r.created_at))}`
     ).join('\n');
 
     await logAdminActivity(

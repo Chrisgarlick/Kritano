@@ -1,4 +1,6 @@
-# Brand Voice Analysis: chrisgarlick.com
+# Brand Voice Analysis: chrisgarlick.com (Founder Voice Reference)
+
+> **Note:** This is a personal voice analysis of chrisgarlick.com — the founder's personal website. For the canonical **PagePulser brand voice guide**, see [`team/03-marketing/brand-voice.md`](/team/03-marketing/brand-voice.md). This document is retained as a founder voice reference.
 
 > Deep-dive analysis of the tone of voice, writing style, and communication patterns used across chrisgarlick.com. Derived from comprehensive scanning of all pages including homepage, about, contact, 5 case studies, and 4 blog posts.
 

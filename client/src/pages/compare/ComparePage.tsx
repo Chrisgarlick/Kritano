@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { GitCompareArrows, Globe, ClipboardList, Link2, AlertTriangle } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
@@ -51,6 +52,7 @@ export default function ComparePage() {
 
   return (
     <DashboardLayout>
+      <Helmet><title>Compare | PagePulser</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div>

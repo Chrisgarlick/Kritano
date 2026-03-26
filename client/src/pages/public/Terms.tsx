@@ -3,16 +3,17 @@
  */
 
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { PublicLayout } from '../../components/layout/PublicLayout';
+import PageSeo from '../../components/seo/PageSeo';
 
 export default function Terms() {
   return (
     <PublicLayout>
-      <Helmet>
-        <title>Terms of Service | PagePulser</title>
-        <meta name="description" content="PagePulser terms of service covering website scanning liability, acceptable use, subscriptions, and data ownership." />
-      </Helmet>
+      <PageSeo
+        title="Terms of Service | PagePulser"
+        description="PagePulser terms of service covering website scanning liability, acceptable use, subscriptions, and data ownership."
+        path="/terms"
+      />
 
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">

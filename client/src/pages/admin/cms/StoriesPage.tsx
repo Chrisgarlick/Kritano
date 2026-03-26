@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
 import { adminApi } from '../../../services/api';
 import type { SuccessStoryItem, CreateSuccessStoryInput, UpdateSuccessStoryInput } from '../../../services/api';
@@ -193,6 +194,7 @@ export default function StoriesPage() {
 
   return (
     <AdminLayout>
+      <Helmet><title>Admin: Success Stories | PagePulser</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

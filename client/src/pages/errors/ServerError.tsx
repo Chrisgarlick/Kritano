@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { Home, RefreshCw, AlertCircle, MessageSquare } from 'lucide-react';
 import { Display, Body } from '../../components/ui/Typography';
@@ -54,11 +55,13 @@ export default function ServerErrorPage({
 
   const handleReportIssue = () => {
     // Open GitHub issues page or support email
-    window.open('https://github.com/anthropics/claude-code/issues', '_blank');
+    window.location.href = '/contact';
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center px-4">
+    <>
+      <Helmet><title>Server Error | PagePulser</title></Helmet>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center px-4">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-red-500/5 dark:bg-red-500/10 rounded-full blur-3xl" />
@@ -201,5 +204,6 @@ export default function ServerErrorPage({
         </div>
       </div>
     </div>
+    </>
   );
 }
