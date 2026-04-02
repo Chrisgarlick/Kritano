@@ -1,4 +1,4 @@
-# pagepulser - Team Workspaces & Subscription Plan
+# kritano - Team Workspaces & Subscription Plan
 
 Comprehensive implementation plan for team workspaces, subscription tiers, and billing infrastructure.
 
@@ -310,7 +310,7 @@ Feb 3:  User runs audit on "site-b.com" → LOCKED until Mar 1
 For enhanced security, organizations can verify domain ownership:
 
 ```
-1. System generates unique token: "pagepulser-verify=abc123xyz"
+1. System generates unique token: "kritano-verify=abc123xyz"
 2. User adds DNS TXT record to their domain
 3. System checks for TXT record periodically
 4. On success: Domain marked as verified

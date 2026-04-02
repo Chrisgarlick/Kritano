@@ -30,6 +30,7 @@ interface ChartDataPoint {
   performance: number | null;
   content: number | null;
   structuredData: number | null;
+  cqs: number | null;
 }
 
 export function ScoreLineChart({
@@ -49,6 +50,7 @@ export function ScoreLineChart({
       performance: point.performance,
       content: point.content ?? null,
       structuredData: point.structuredData ?? null,
+      cqs: point.cqs ?? null,
     }));
   }, [data]);
 
@@ -59,8 +61,8 @@ export function ScoreLineChart({
     const fullDate = format(parseISO(dataPoint.date), 'MMM d, yyyy h:mm a');
 
     return (
-      <div className="bg-white border border-slate-200 rounded-lg shadow-lg p-3">
-        <p className="text-sm font-medium text-slate-900 mb-2">{fullDate}</p>
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-3">
+        <p className="text-sm font-medium text-slate-900 dark:text-white mb-2">{fullDate}</p>
         <div className="space-y-1">
           {payload.map((entry: any) => (
             <div key={entry.dataKey} className="flex items-center justify-between gap-4 text-sm">
@@ -69,11 +71,11 @@ export function ScoreLineChart({
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-slate-600">
+                <span className="text-slate-600 dark:text-slate-400">
                   {CATEGORY_LABELS[entry.dataKey as ScoreCategory]}
                 </span>
               </span>
-              <span className="font-medium text-slate-900">
+              <span className="font-medium text-slate-900 dark:text-white">
                 {entry.value !== null ? entry.value : 'N/A'}
               </span>
             </div>
@@ -92,10 +94,10 @@ export function ScoreLineChart({
   if (chartData.length === 0) {
     return (
       <div
-        className="flex items-center justify-center bg-slate-50 rounded-lg border border-slate-200"
+        className="flex items-center justify-center bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700"
         style={{ height }}
       >
-        <p className="text-slate-500">No score data available</p>
+        <p className="text-slate-500 dark:text-slate-400">No score data available</p>
       </div>
     );
   }
@@ -126,7 +128,7 @@ export function ScoreLineChart({
           iconType="circle"
           wrapperStyle={{ paddingTop: '10px' }}
           formatter={(value: string) => (
-            <span className="text-sm text-slate-600">
+            <span className="text-sm text-slate-600 dark:text-slate-400">
               {CATEGORY_LABELS[value as ScoreCategory]}
             </span>
           )}

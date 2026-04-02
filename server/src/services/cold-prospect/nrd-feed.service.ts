@@ -128,7 +128,7 @@ function downloadFile(url: string, destPath: string): Promise<void> {
  */
 export async function downloadDailyFeed(date: Date): Promise<string> {
   const dateStr = formatDate(date);
-  const tmpDir = path.join(os.tmpdir(), 'pagepulser-nrd');
+  const tmpDir = path.join(os.tmpdir(), 'kritano-nrd');
 
   if (!fs.existsSync(tmpDir)) {
     fs.mkdirSync(tmpDir, { recursive: true });
@@ -318,7 +318,7 @@ export async function importFromCsv(csvContent: string): Promise<{ imported: num
  * Clean up old temp files
  */
 export function cleanupTempFiles(olderThanDays: number = 7): void {
-  const tmpDir = path.join(os.tmpdir(), 'pagepulser-nrd');
+  const tmpDir = path.join(os.tmpdir(), 'kritano-nrd');
   if (!fs.existsSync(tmpDir)) return;
 
   const cutoff = Date.now() - olderThanDays * 24 * 60 * 60 * 1000;

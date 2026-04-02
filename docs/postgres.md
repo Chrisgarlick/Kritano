@@ -1,4 +1,4 @@
-# Connecting PagePulser to DigitalOcean Managed PostgreSQL
+# Connecting Kritano to DigitalOcean Managed PostgreSQL
 
 ## Overview
 
@@ -38,14 +38,14 @@ The **Basic 1 vCPU ($15/mo)** plan is sufficient for early-stage. 22 connections
    - **Engine**: PostgreSQL 16
    - **Region**: Same as your droplet (e.g., LON1 for London)
    - **Plan**: Basic $15/mo (1 vCPU, 1 GB RAM, 10 GB disk)
-   - **Database name**: `pagepulser`
+   - **Database name**: `kritano`
 3. Under **Trusted Sources**, add your droplet so only it can connect
 4. Note the connection details:
    - **Host**: `db-postgresql-lon1-xxxxx-do-user-xxxxx-0.b.db.ondigitalocean.com`
    - **Port**: `25060`
    - **Username**: `doadmin`
    - **Password**: (auto-generated)
-   - **Database**: `defaultdb` (you'll create `pagepulser` DB)
+   - **Database**: `defaultdb` (you'll create `kritano` DB)
    - **SSL Mode**: `require` (mandatory)
 
 5. Also note the **Connection Pool** details (PgBouncer):
@@ -54,7 +54,7 @@ The **Basic 1 vCPU ($15/mo)** plan is sufficient for early-stage. 22 connections
 
 ---
 
-## Step 2: Create the `pagepulser` Database
+## Step 2: Create the `kritano` Database
 
 Connect via the DigitalOcean web console or `psql`:
 
@@ -65,7 +65,7 @@ psql "postgresql://doadmin:<password>@<host>:25060/defaultdb?sslmode=require"
 Then:
 
 ```sql
-CREATE DATABASE pagepulser;
+CREATE DATABASE kritano;
 ```
 
 ---
@@ -203,14 +203,14 @@ Set these on your droplet (e.g., in `/etc/environment` or your PM2 ecosystem fil
 
 ```env
 NODE_ENV=production
-DATABASE_URL=postgresql://doadmin:<password>@<host>:25060/pagepulser?sslmode=require
+DATABASE_URL=postgresql://doadmin:<password>@<host>:25060/kritano?sslmode=require
 REDIS_URL=redis://localhost:6379
 JWT_SECRET=<generate-a-64-char-secure-secret>
-CORS_ORIGIN=https://pagepulser.com
+CORS_ORIGIN=https://kritano.com
 SMTP_HOST=smtp.resend.com
 SMTP_PORT=465
-EMAIL_FROM=PagePulser <noreply@pagepulser.com>
-APP_URL=https://pagepulser.com
+EMAIL_FROM=Kritano <noreply@kritano.com>
+APP_URL=https://kritano.com
 RESEND_API_KEY=<your-key>
 ```
 
@@ -234,8 +234,8 @@ const pool = new Pool({
 From the droplet:
 
 ```bash
-cd /path/to/pagepulser/server
-NODE_ENV=production DATABASE_URL="postgresql://doadmin:<password>@<host>:25060/pagepulser?sslmode=require" npm run migrate
+cd /path/to/kritano/server
+NODE_ENV=production DATABASE_URL="postgresql://doadmin:<password>@<host>:25060/kritano?sslmode=require" npm run migrate
 ```
 
 Then seed (if needed):
@@ -310,7 +310,7 @@ But if you hit connection limits, either:
 4. Test locally (verify no breakage)
 5. Create DigitalOcean managed database
 6. Add trusted source (droplet IP)
-7. Create `pagepulser` database
+7. Create `kritano` database
 8. Run migrations
 9. Seed admin user
 10. Deploy app pointing at managed DB

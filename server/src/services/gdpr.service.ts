@@ -170,7 +170,7 @@ async function processExport(exportId: string): Promise<void> {
 
   try {
     const data = await gatherUserData(userId);
-    const exportDir = path.join(os.tmpdir(), 'pagepulser-exports');
+    const exportDir = path.join(os.tmpdir(), 'kritano-exports');
     fs.mkdirSync(exportDir, { recursive: true });
 
     const filePath = path.join(exportDir, `${exportId}.zip`);
@@ -194,7 +194,7 @@ async function processExport(exportId: string): Promise<void> {
           export_id: exportId,
           exported_at: data.exported_at,
           format: 'JSON',
-          description: 'Your complete PagePulser data export',
+          description: 'Your complete Kritano data export',
         }, null, 2),
         { name: 'manifest.json' }
       );
@@ -253,7 +253,7 @@ async function getExportDownload(userId: string, exportId: string): Promise<{ fi
   if (!fs.existsSync(row.file_path)) {
     throw Object.assign(new Error('Export file not found. Please request a new one.'), { statusCode: 404 });
   }
-  return { filePath: row.file_path, fileName: `pagepulser-data-export.zip` };
+  return { filePath: row.file_path, fileName: `kritano-data-export.zip` };
 }
 
 /**

@@ -50,7 +50,7 @@ For example, if you've got a blog post, the markup might tell search engines:
 - It was written by **Chris Garlick**
 - It was published on **7 March 2026**
 - It's about **structured data and AI search**
-- It belongs to the **organisation** PagePulser
+- It belongs to the **organisation** Kritano
 
 Without this markup, an AI has to figure all of that out from the page content alone. With it, the information is explicit and unambiguous. The AI doesn't have to guess — it knows.
 
@@ -69,7 +69,7 @@ Not all Schema types are created equal when it comes to AI citation. The ones th
 
 Structured data is one piece of a broader concept called **entity SEO** — the idea that search engines and AI models don't just match keywords anymore, they understand *entities*. An entity is a distinct, well-defined thing: a person, a business, a product, a concept.
 
-When Google or an AI model can confidently identify your business as an entity — connected to a location, an industry, a set of services, and a body of content — you become far more likely to be cited as a source. You move from being "a website that mentions accessibility audits" to "PagePulser, a web accessibility auditing platform."
+When Google or an AI model can confidently identify your business as an entity — connected to a location, an industry, a set of services, and a body of content — you become far more likely to be cited as a source. You move from being "a website that mentions accessibility audits" to "Kritano, a web accessibility auditing platform."
 
 This is why structured data and entity SEO go hand in hand. The markup gives the AI the structured facts. Your content gives it the depth. Together, they build a picture that makes your site a trustworthy, citable source.
 
@@ -94,7 +94,7 @@ Structured data isn't new, but its importance is growing fast as AI answer engin
 If you want to see how your website's structured data stacks up and whether AI search engines can actually make sense of your content, get in touch for an audit. I'll walk you through what's there, what's missing, and what to prioritise first.
 
 <!-- Internal linking suggestions:
-- Link "web accessibility auditing" to the PagePulser audit/pricing page
+- Link "web accessibility auditing" to the Kritano audit/pricing page
 - Link "E-E-A-T" to a future or existing post about Google's quality signals
 - Link "rich results" to a post about SEO fundamentals if one exists
 - Link "get in touch for an audit" to the contact or audit page

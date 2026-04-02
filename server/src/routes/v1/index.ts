@@ -29,6 +29,7 @@ const createAuditSchema = z.object({
     checks: z.array(z.enum(['seo', 'accessibility', 'security', 'performance', 'content', 'file-extraction'])).optional(),
     respectRobotsTxt: z.boolean().optional(),
     includeSubdomains: z.boolean().optional(),
+    includeMobile: z.boolean().optional(),
   }).optional(),
 });
 
@@ -90,14 +91,16 @@ router.post(
       const options = input.options || {};
       const checks = options.checks || ['seo', 'accessibility', 'security', 'performance', 'content'];
 
-      // Create audit job
+      // Create audit job (include_mobile defaults to true for API users — they have paid tiers)
+      const includeMobile = options.includeMobile !== false;
+
       const result = await pool.query<AuditJob>(`
         INSERT INTO audit_jobs (
           user_id, target_url, target_domain,
           max_pages, max_depth, respect_robots_txt, include_subdomains,
           check_seo, check_accessibility, check_security, check_performance, check_content,
-          check_file_extraction
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+          check_file_extraction, include_mobile
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
         RETURNING *
       `, [
         userId,
@@ -113,6 +116,7 @@ router.post(
         checks.includes('performance'),
         checks.includes('content'),
         checks.includes('file-extraction'),
+        includeMobile,
       ]);
 
       const audit = result.rows[0];

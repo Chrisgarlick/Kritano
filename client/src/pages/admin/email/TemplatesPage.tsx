@@ -113,12 +113,12 @@ export default function TemplatesPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Email Templates | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Email Templates | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Email Templates</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">Email Templates</h1>
             <p className="text-sm text-slate-500 mt-1">
               {total} template{total !== 1 ? 's' : ''} — manage your transactional and campaign emails
             </p>

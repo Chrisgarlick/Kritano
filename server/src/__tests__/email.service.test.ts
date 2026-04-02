@@ -157,7 +157,7 @@ describe('EmailService', () => {
 
   describe('Email sending', () => {
     it('sendVerificationEmail calls sendTemplate with correct variables', async () => {
-      const { sendTemplate } = await import('./email-template.service.js') as { sendTemplate: ReturnType<typeof vi.fn> };
+      const { sendTemplate } = await import('../services/email-template.service.js') as unknown as { sendTemplate: ReturnType<typeof vi.fn> };
 
       await emailService.sendVerificationEmail('test@example.com', 'Chris', 'token123', 'user-1');
 
@@ -172,7 +172,7 @@ describe('EmailService', () => {
     });
 
     it('sendPasswordResetEmail calls sendTemplate with correct variables', async () => {
-      const { sendTemplate } = await import('./email-template.service.js') as { sendTemplate: ReturnType<typeof vi.fn> };
+      const { sendTemplate } = await import('../services/email-template.service.js') as unknown as { sendTemplate: ReturnType<typeof vi.fn> };
 
       await emailService.sendPasswordResetEmail('test@example.com', 'Chris', 'reset-token', 'user-1');
 

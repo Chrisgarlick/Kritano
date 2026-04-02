@@ -25,11 +25,11 @@ export function DateRangePicker({ value, onChange, className = '' }: DateRangePi
     <div className={`relative inline-block ${className}`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
+        className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
       >
-        <Calendar className="w-4 h-4 text-slate-500" />
+        <Calendar className="w-4 h-4 text-slate-500 dark:text-slate-400" />
         <span>{selectedOption.label}</span>
-        <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-slate-500 dark:text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
@@ -38,7 +38,7 @@ export function DateRangePicker({ value, onChange, className = '' }: DateRangePi
             className="fixed inset-0 z-10"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 mt-2 w-40 bg-white border border-slate-200 rounded-lg shadow-lg z-20 py-1">
+          <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-20 py-1">
             {RANGE_OPTIONS.map(option => (
               <button
                 key={option.value}
@@ -48,8 +48,8 @@ export function DateRangePicker({ value, onChange, className = '' }: DateRangePi
                 }}
                 className={`w-full px-4 py-2 text-left text-sm transition-colors ${
                   option.value === value
-                    ? 'bg-indigo-50 text-indigo-700 font-medium'
-                    : 'text-slate-700 hover:bg-slate-50'
+                    ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 font-medium'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
                 }`}
               >
                 {option.label}

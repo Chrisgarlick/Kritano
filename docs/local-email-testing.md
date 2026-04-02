@@ -30,7 +30,7 @@ SMTP_PORT=1025
 # Comment out Resend so SMTP takes priority
 # RESEND_API_KEY=re_xxxxx
 
-EMAIL_FROM=PagePulser <noreply@pagepulser.com>
+EMAIL_FROM=Kritano <noreply@kritano.com>
 ```
 
 When `SMTP_HOST` is set, all emails route through Mailpit instead of Resend. If neither is configured, emails are logged to the server console.
@@ -103,8 +103,8 @@ Mailpit is defined in `docker-compose.yml`:
 
 | Service | Container | Port | Purpose |
 |---------|-----------|------|---------|
-| mailpit | pagepulser-mailpit | `1025` | SMTP server (receives emails) |
-| mailpit | pagepulser-mailpit | `8025` | Web UI (view emails) |
+| mailpit | kritano-mailpit | `1025` | SMTP server (receives emails) |
+| mailpit | kritano-mailpit | `8025` | Web UI (view emails) |
 
 ### Commands
 
@@ -128,7 +128,7 @@ docker compose restart mailpit
 
 - Check the server logs for `📧 SMTP transport configured` on startup
 - If you see `No email transport configured`, the `SMTP_HOST` env var isn't being read — restart the server
-- Verify Mailpit is running: `docker ps --filter name=pagepulser-mailpit`
+- Verify Mailpit is running: `docker ps --filter name=kritano-mailpit`
 
 **Port conflicts**
 

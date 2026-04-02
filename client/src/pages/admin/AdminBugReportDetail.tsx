@@ -167,7 +167,7 @@ export default function AdminBugReportDetail() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Bug Report | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Bug Report | Kritano</title></Helmet>
       {/* Header */}
       <div className="mb-6">
         <Link

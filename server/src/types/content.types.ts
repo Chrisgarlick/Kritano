@@ -1,4 +1,4 @@
-// Content Analysis Types for PagePulser
+// Content Analysis Types for Kritano
 
 import type { Severity } from './finding.types.js';
 
@@ -235,6 +235,7 @@ export interface ContentAnalysisResult {
     hasPrivacyPolicy?: boolean;
     hasTermsOfService?: boolean;
     eeatTier?: string;
+    eeatEvidence?: any;
 
     // AEO metrics (when available)
     aeoNuggetScore?: number;

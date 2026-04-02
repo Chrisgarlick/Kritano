@@ -167,12 +167,12 @@ export default function ContentListPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Marketing Content | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Marketing Content | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Marketing Content</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">Marketing Content</h1>
             {stats && (
               <div className="flex items-center gap-3 mt-2">
                 <span className="text-sm text-slate-500">{stats.total} total items</span>

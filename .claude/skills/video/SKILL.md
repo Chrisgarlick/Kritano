@@ -5,9 +5,9 @@ user-invocable: true
 argument-hint: [description of what to animate]
 ---
 
-# Video Skill — PagePulser Animated Social Content
+# Video Skill — Kritano Animated Social Content
 
-Generate 1080×1920px (9:16 portrait) animated HTML files styled to PagePulser's editorial brand language. Each file is a self-contained, loopable CSS animation lasting 20–40 seconds, designed for Instagram Reels, TikTok, and YouTube Shorts.
+Generate 1080×1920px (9:16 portrait) animated HTML files styled to Kritano's editorial brand language. Each file is a self-contained, loopable CSS animation lasting 20–40 seconds, designed for Instagram Reels, TikTok, and YouTube Shorts.
 
 ## Input
 
@@ -102,7 +102,7 @@ Structure:
 
 ## Combined Caption (all platforms)
 **Hook:** [First line — the scroll-stopping hook]
-**Caption:** [Full caption, conversational PagePulser voice, 1-3 sentences]
+**Caption:** [Full caption, conversational Kritano voice, 1-3 sentences]
 
 ---
 
@@ -110,7 +110,7 @@ Structure:
 [Caption, max 2200 chars, front-load the hook]
 
 ### Hashtags
-#WebAccessibility #SEO #PagePulser #WebDesign #DigitalAccessibility [15-20 total]
+#WebAccessibility #SEO #Kritano #WebDesign #DigitalAccessibility [15-20 total]
 
 ---
 
@@ -128,12 +128,12 @@ Structure:
 ```
 
 #### Caption guidelines:
-- Write in PagePulser's brand voice — conversational, authoritative, helpful (not corporate or salesy)
+- Write in Kritano's brand voice — conversational, authoritative, helpful (not corporate or salesy)
 - Use British English spelling (optimise, colour, favour)
 - Lead with a scroll-stopping hook in the first line
 - Include a soft CTA where natural (e.g. "Link in bio to scan your site")
 - 15-20 hashtags on IG — mix broad (#WebDesign) and niche (#WCAG, #A11y)
-- Always include #PagePulser
+- Always include #Kritano
 
 ### 10. Output summary
 
@@ -310,7 +310,7 @@ Every video HTML output MUST use this skeleton:
 
     <!-- Brand reserve -->
     <div class="brand-reserve">
-      <span class="wordmark" style="color: var(--slate-500);">PagePulser</span>
+      <span class="wordmark" style="color: var(--slate-500);">Kritano</span>
     </div>
 
   </div>
@@ -345,7 +345,7 @@ Every video HTML output MUST use this skeleton:
 
 - **Canvas**: 1080 × 1920 px (9:16 portrait)
 - **Content padding**: 100px all sides (above brand reserve)
-- **Brand reserve**: 60px fixed at bottom for PagePulser wordmark
+- **Brand reserve**: 60px fixed at bottom for Kritano wordmark
 - **Safe content area**: ~880 × 1660 px
 - **Centre-safe zone**: Keep critical text within inner 80% — some platforms crop edges
 
@@ -434,7 +434,7 @@ Before outputting each file, verify:
 - [ ] Atmospheric elements loop independently and infinitely
 - [ ] Content enters and exits cleanly — no jump cuts or flashes
 - [ ] All `animation-fill-mode` values are correct (no flash of unstyled content on load)
-- [ ] Brand reserve (PagePulser wordmark) is present at bottom, 60px height
+- [ ] Brand reserve (Kritano wordmark) is present at bottom, 60px height
 - [ ] All text is ≥ 24px (readable on phone)
 - [ ] All colours are from the brand palette (indigo, amber, slate, category, score)
 - [ ] No content overflows the safe area (880 × 1660 px)

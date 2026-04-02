@@ -1,6 +1,6 @@
-# PagePulser — Phased Deployment Plan
+# Kritano — Phased Deployment Plan
 
-> **Purpose**: Break the entire PagePulser codebase into standalone branches that can be pushed to GitHub incrementally. Each phase builds on the previous one, progressing from bare-bones MVP to the full production platform.
+> **Purpose**: Break the entire Kritano codebase into standalone branches that can be pushed to GitHub incrementally. Each phase builds on the previous one, progressing from bare-bones MVP to the full production platform.
 
 ---
 
@@ -184,7 +184,7 @@ Developer API, referral program, and production readiness.
 
 **Branch**: `phase-13`
 
-Replaces the inline HTML API documentation with proper React SPA pages and rebrands API key prefixes from `aa_` to `pp_` (PagePulser).
+Replaces the inline HTML API documentation with proper React SPA pages and rebrands API key prefixes from `aa_` to `pp_` (Kritano).
 
 ### Included
 
@@ -205,14 +205,14 @@ Replaces the inline HTML API documentation with proper React SPA pages and rebra
 
 #### Server Changes
 - `GET /api/docs` replaced with 301 redirect to `/docs` (removed 2000+ line inline HTML)
-- `GET /api/v1/info` documentation URL changed from `docs.pagepulser.io/api` to `/docs`
+- `GET /api/v1/info` documentation URL changed from `docs.kritano.io/api` to `/docs`
 
 #### API Key Prefix Rebrand (`aa_` → `pp_`)
-- `apiKey.service.ts` — Key generation now produces `pp_live_` prefix
-- `apiAuth.middleware.ts` — Auth header detection updated to check for `pp_live_`
+- `apiKey.service.ts` — Key generation now produces `kt_live_` prefix
+- `apiAuth.middleware.ts` — Auth header detection updated to check for `kt_live_`
 - Migration `015_create_api_keys.sql` — Comment updated
 - All documentation files updated (`API_DOCS.md`, `INNOVATION.md`, `test.md`)
-- All 6 frontend docs pages use `pp_live_` in examples
+- All 6 frontend docs pages use `kt_live_` in examples
 
 #### Content Corrections (from original inline docs)
 - Added missing `content` and `file-extraction` check types to Create Audit

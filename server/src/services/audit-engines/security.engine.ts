@@ -17,7 +17,7 @@ interface SecurityRule {
 // Context passed to rule checks
 interface SecurityContext {
   url: string;
-  $: cheerio.Root;
+  $: ReturnType<typeof cheerio.load>;
   html: string;
   headers: Record<string, string>;
   statusCode: number;
@@ -125,7 +125,7 @@ export class SecurityEngine {
         const findings: SecurityFinding[] = [];
 
         // Check scripts
-        ctx.$('script[src^="http://"]').each((_, el) => {
+        ctx.$('script[src^="http://"]').each((_: number, el: any) => {
           const src = ctx.$(el).attr('src');
           findings.push(this.createFinding('mixed-content-script', 'Mixed Content (Script)', 'critical',
             `Insecure script loaded over HTTP: ${src}`,
@@ -134,7 +134,7 @@ export class SecurityEngine {
         });
 
         // Check stylesheets
-        ctx.$('link[rel="stylesheet"][href^="http://"]').each((_, el) => {
+        ctx.$('link[rel="stylesheet"][href^="http://"]').each((_: number, el: any) => {
           const href = ctx.$(el).attr('href');
           findings.push(this.createFinding('mixed-content-css', 'Mixed Content (Stylesheet)', 'serious',
             `Insecure stylesheet loaded over HTTP: ${href}`,
@@ -143,7 +143,7 @@ export class SecurityEngine {
         });
 
         // Check images
-        ctx.$('img[src^="http://"]').each((_, el) => {
+        ctx.$('img[src^="http://"]').each((_: number, el: any) => {
           const src = ctx.$(el).attr('src');
           findings.push(this.createFinding('mixed-content-image', 'Mixed Content (Image)', 'moderate',
             `Insecure image loaded over HTTP: ${src}`,
@@ -152,7 +152,7 @@ export class SecurityEngine {
         });
 
         // Check iframes
-        ctx.$('iframe[src^="http://"]').each((_, el) => {
+        ctx.$('iframe[src^="http://"]').each((_: number, el: any) => {
           const src = ctx.$(el).attr('src');
           findings.push(this.createFinding('mixed-content-iframe', 'Mixed Content (Iframe)', 'serious',
             `Insecure iframe loaded over HTTP: ${src}`,
@@ -258,7 +258,7 @@ export class SecurityEngine {
       check: (ctx) => {
         const findings: SecurityFinding[] = [];
 
-        ctx.$('form[action^="http://"]').each((_, el) => {
+        ctx.$('form[action^="http://"]').each((_: number, el: any) => {
           const action = ctx.$(el).attr('action');
           findings.push(this.createFinding('form-action-http', 'Form Submits to HTTP', 'critical',
             `Form submits data to insecure HTTP endpoint: ${action}`,
@@ -277,7 +277,7 @@ export class SecurityEngine {
       check: (ctx) => {
         const findings: SecurityFinding[] = [];
 
-        ctx.$('input[type="password"]').each((_, el) => {
+        ctx.$('input[type="password"]').each((_: number, el: any) => {
           const autocomplete = ctx.$(el).attr('autocomplete');
           // Modern browsers recommend allowing password managers
           // This is informational only
@@ -340,7 +340,7 @@ export class SecurityEngine {
         let count = 0;
 
         for (const event of inlineEvents) {
-          ctx.$(`[${event}]`).each(() => count++);
+          ctx.$(`[${event}]`).each(() => { count++; });
         }
 
         if (count > 0) {
@@ -458,7 +458,7 @@ export class SecurityEngine {
         const findings: SecurityFinding[] = [];
         const seen = new Set<string>();
 
-        ctx.$('a[href]').each((_, el) => {
+        ctx.$('a[href]').each((_: number, el: any) => {
           const href = ctx.$(el).attr('href') || '';
           for (const pattern of adminPatterns) {
             if (href.includes(pattern) && !seen.has(pattern)) {
@@ -503,7 +503,7 @@ export class SecurityEngine {
       check: (ctx) => {
         const findings: SecurityFinding[] = [];
 
-        ctx.$('script[src]').each((_, el) => {
+        ctx.$('script[src]').each((_: number, el: any) => {
           const src = ctx.$(el).attr('src') || '';
           const integrity = ctx.$(el).attr('integrity');
 
@@ -532,7 +532,7 @@ export class SecurityEngine {
       check: (ctx) => {
         const findings: SecurityFinding[] = [];
 
-        ctx.$('a[target="_blank"]').each((_, el) => {
+        ctx.$('a[target="_blank"]').each((_: number, el: any) => {
           const rel = ctx.$(el).attr('rel') || '';
           const href = ctx.$(el).attr('href') || '';
 
@@ -674,7 +674,7 @@ export class SecurityEngine {
           method: 'GET',
           redirect: 'follow',
           signal: controller.signal,
-          headers: { 'User-Agent': 'PagePulser/1.0 Security Scanner' },
+          headers: { 'User-Agent': 'Kritano/1.0 Security Scanner' },
         });
         clearTimeout(timeoutId);
 

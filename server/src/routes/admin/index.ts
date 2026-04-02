@@ -11,6 +11,7 @@ import {
   listUsers,
   getUserDetails,
   updateUserSuperAdmin,
+  updateUserTier,
   deleteUser,
   listOrganizations,
   getOrganizationDetails,
@@ -32,6 +33,7 @@ import { adminSettingsRouter } from './settings.js';
 import { adminComingSoonRouter } from './coming-soon.js';
 import { adminSeoRouter } from './seo.js';
 import { adminEarlyAccessRouter } from './early-access.js';
+import { adminOutreachLogRouter } from './outreach-log.js';
 import { pool } from '../../db/index.js';
 
 const router = Router();
@@ -51,6 +53,7 @@ router.use('/settings', adminSettingsRouter);
 router.use('/coming-soon', adminComingSoonRouter);
 router.use('/seo', adminSeoRouter);
 router.use('/early-access', adminEarlyAccessRouter);
+router.use('/outreach-log', adminOutreachLogRouter);
 
 // =============================================
 // Dashboard & Analytics
@@ -144,6 +147,7 @@ router.get('/users/:userId', async (req: AdminRequest, res: Response): Promise<v
 
 const updateUserSchema = z.object({
   is_super_admin: z.boolean().optional(),
+  tier: z.enum(['free', 'starter', 'pro', 'agency', 'enterprise']).optional(),
 });
 
 /**
@@ -156,7 +160,7 @@ router.patch(
   async (req: AdminRequest, res: Response): Promise<void> => {
     try {
       const { userId } = req.params;
-      const { is_super_admin } = req.body;
+      const { is_super_admin, tier } = req.body;
 
       const user = await getUserDetails(userId);
       if (!user) {
@@ -172,6 +176,18 @@ router.patch(
           'user',
           userId,
           { email: user.email },
+          req
+        );
+      }
+
+      if (tier !== undefined) {
+        await updateUserTier(userId, tier);
+        await logAdminActivity(
+          req.admin!.id,
+          'update_user_tier',
+          'user',
+          userId,
+          { email: user.email, tier },
           req
         );
       }

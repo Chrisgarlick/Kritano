@@ -1,4 +1,4 @@
-# Test Report — PagePulser Iteration 2
+# Test Report — Kritano Iteration 2
 
 **Date:** 2026-03-26
 **Runner:** Vitest (server + client)

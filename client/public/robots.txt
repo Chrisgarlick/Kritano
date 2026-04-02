@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pagepulser.com/sitemap.xml
+Sitemap: https://kritano.com/sitemap.xml
 
 # Disallow authenticated areas
 Disallow: /dashboard

@@ -110,12 +110,12 @@ export default function SystemSettingsPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: System Settings | PagePulser</title></Helmet>
+      <Helmet><title>Admin: System Settings | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight flex items-center space-x-2" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            <h1 className="text-3xl font-bold text-white tracking-tight flex items-center space-x-2 font-display">
               <Settings className="w-6 h-6" />
               <span>System Settings</span>
             </h1>
@@ -320,15 +320,14 @@ export default function SystemSettingsPage() {
             <div className="bg-white rounded-lg p-8 text-center space-y-4">
               <div className="flex items-center justify-center space-x-2">
                 <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">P</span>
+                  <span className="text-white font-bold text-sm">K</span>
                 </div>
-                <span className="text-lg font-bold text-slate-900" style={{ fontFamily: "'Instrument Serif', serif" }}>
-                  PagePulser
+                <span className="text-lg font-bold text-slate-900 font-display">
+                  Kritano
                 </span>
               </div>
               <h2
-                className="text-2xl font-bold text-slate-900"
-                style={{ fontFamily: "'Instrument Serif', serif" }}
+                className="text-2xl font-bold text-slate-900 font-display"
               >
                 {headline || 'Something great is on its way.'}
               </h2>

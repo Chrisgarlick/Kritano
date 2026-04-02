@@ -1,4 +1,4 @@
-// Analytics Types for PagePulser Frontend
+// Analytics Types for Kritano Frontend
 
 export interface ScoreDataPoint {
   auditId: string;
@@ -240,10 +240,10 @@ export const SEVERITY_COLORS: Record<string, string> = {
 
 export function getScoreColor(score: number | null): string {
   if (score === null) return '#94a3b8'; // slate-400
-  if (score >= 90) return '#10b981';    // emerald-500
+  if (score >= 90) return '#059669';    // emerald-600
   if (score >= 70) return '#f59e0b';    // amber-500
   if (score >= 50) return '#f97316';    // orange-500
-  return '#ef4444';                      // red-500
+  return '#dc2626';                      // red-600
 }
 
 export function getScoreLabel(score: number | null): string {

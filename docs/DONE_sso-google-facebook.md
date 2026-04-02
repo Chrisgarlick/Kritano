@@ -2,7 +2,7 @@
 
 ## Context
 
-PagePulser currently supports email/password authentication only. Users have requested social sign-on for faster onboarding. This plan adds Google and Facebook SSO using the Authorization Code flow with PKCE, integrating into the existing custom JWT auth system (no Passport.js).
+Kritano currently supports email/password authentication only. Users have requested social sign-on for faster onboarding. This plan adds Google and Facebook SSO using the Authorization Code flow with PKCE, integrating into the existing custom JWT auth system (no Passport.js).
 
 **User decisions:**
 - Providers: Google + Facebook
@@ -52,7 +52,7 @@ CREATE TRIGGER update_user_oauth_providers_updated_at
 ```
 
 Key constraints:
-- `UNIQUE (provider, provider_user_id)` -- prevents same social account linking to multiple PagePulser users
+- `UNIQUE (provider, provider_user_id)` -- prevents same social account linking to multiple Kritano users
 - `UNIQUE (user_id, provider)` -- one link per provider per user
 
 ---
@@ -274,14 +274,14 @@ psql $DATABASE_URL -f server/src/db/migrations/087_sso_oauth_providers.sql
 2. Create a project (or select your existing one)
 3. Go to **APIs & Services > OAuth consent screen**
    - Choose **External** user type
-   - Fill in app name ("PagePulser"), support email, developer email
+   - Fill in app name ("Kritano"), support email, developer email
    - Add scopes: `openid`, `email`, `profile`
-   - Add your domain(s) to **Authorized domains** (e.g. `pagepulser.com`)
+   - Add your domain(s) to **Authorized domains** (e.g. `kritano.com`)
    - For development, add test users (your email) — while in "Testing" publishing status, only test users can sign in
 4. Go to **APIs & Services > Credentials**
    - Click **Create Credentials > OAuth client ID**
    - Application type: **Web application**
-   - Name: "PagePulser" (or whatever you like)
+   - Name: "Kritano" (or whatever you like)
    - **Authorized JavaScript origins**: `http://localhost:3000` (dev) and your production URL
    - **Authorized redirect URIs**: `http://localhost:3000/auth/callback/google` (dev) and `https://yourdomain.com/auth/callback/google` (prod)
    - Click Create — copy the **Client ID** and **Client Secret**
@@ -291,7 +291,7 @@ psql $DATABASE_URL -f server/src/db/migrations/087_sso_oauth_providers.sql
 1. Go to [Meta for Developers](https://developers.facebook.com/)
 2. Click **My Apps > Create App**
    - Choose **Consumer** (or "None" if prompted for use case)
-   - App name: "PagePulser"
+   - App name: "Kritano"
 3. From the app dashboard, go to **App Settings > Basic**
    - Copy the **App ID** and **App Secret**
    - Set **App Domains**: `localhost` (dev) and your production domain
@@ -340,7 +340,7 @@ cd server && npm run dev
 - [ ] Google OAuth consent screen published (moved out of "Testing" mode) or all users added as test users
 - [ ] Facebook app switched to **Live** mode (requires app review for `email` permission)
 - [ ] Redirect URIs updated to production domain in both Google and Facebook dashboards
-- [ ] `APP_URL` env var set to production URL (e.g. `https://pagepulser.com`)
+- [ ] `APP_URL` env var set to production URL (e.g. `https://kritano.com`)
 - [ ] `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `FACEBOOK_APP_ID`, `FACEBOOK_APP_SECRET` set in production env
 - [ ] Migration 087 applied to production database
 - [ ] HTTPS enforced (OAuth providers require it in production)

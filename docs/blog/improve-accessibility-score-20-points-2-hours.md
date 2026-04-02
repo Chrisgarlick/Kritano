@@ -17,7 +17,7 @@ featured: false
 
 # How to Improve Your Website Accessibility Score by 20+ Points in Under 2 Hours
 
-You've just run your first accessibility audit — maybe through PagePulser, maybe through Lighthouse — and the number staring back at you is... not great. Maybe it's a 45. Maybe it's a 58. Either way, it's lower than you expected and you're wondering how much time and money it's going to take to sort it out.
+You've just run your first accessibility audit — maybe through Kritano, maybe through Lighthouse — and the number staring back at you is... not great. Maybe it's a 45. Maybe it's a 58. Either way, it's lower than you expected and you're wondering how much time and money it's going to take to sort it out.
 
 Here's the good news: most websites score between 40 and 60 on their first accessibility audit, and the reasons are almost always the same handful of issues. Even better, those issues are some of the fastest and easiest to fix. I've seen sites jump 20, 25, even 30 points in a single afternoon by tackling just four or five things.
 
@@ -25,7 +25,7 @@ Let me walk you through exactly what to fix, how to fix it, and how much each on
 
 ## Before You Start
 
-You'll need your audit results open — either your PagePulser report or a Lighthouse accessibility audit. These will show you the specific issues on your site, which makes everything faster because you're not hunting for problems, you're working through a list.
+You'll need your audit results open — either your Kritano report or a Lighthouse accessibility audit. These will show you the specific issues on your site, which makes everything faster because you're not hunting for problems, you're working through a list.
 
 If you haven't run an audit yet, do that first. It takes about five minutes and gives you the roadmap for everything below.
 
@@ -151,7 +151,7 @@ These are the fixes that matter most — not because they move a score, but beca
 
 From here, work through the remaining issues in your audit report, starting with anything flagged as critical or serious. Progress over perfection. Every fix helps.
 
-If you want to see exactly where your site stands and get a prioritised list of what to fix first, run a free audit on PagePulser. It takes five minutes and gives you the roadmap for everything above.
+If you want to see exactly where your site stands and get a prioritised list of what to fix first, run a free audit on Kritano. It takes five minutes and gives you the roadmap for everything above.
 
 <!-- Internal linking suggestions:
 - Link "alt text" to the complete guide to image alt text post
@@ -159,5 +159,5 @@ If you want to see exactly where your site stands and get a prioritised list of 
 - Link "WCAG" to the web accessibility 2026 state of the web post
 - Link "heading hierarchy" to the website launch checklist post
 - Link "accessibility score" to the understanding accessibility scores post
-- Link "PagePulser" or "free audit" to the main product/pricing page
+- Link "Kritano" or "free audit" to the main product/pricing page
 -->

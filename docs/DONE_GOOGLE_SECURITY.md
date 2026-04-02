@@ -2,7 +2,7 @@ This is a brilliant "Black Hat/White Hat" hybrid feature. In the cybersecurity a
 
 If a sensitive route like `/wp-admin`, `/config.php`, or `/backup.sql` is indexed on Google, it’s a **Critical Security Vulnerability**. It means your site is "leaking" its private structure to hackers and search crawlers.
 
-Adding this to **pagepulser.co** elevates it from a standard auditor to a **Security & Privacy Monitor**.
+Adding this to **kritano.co** elevates it from a standard auditor to a **Security & Privacy Monitor**.
 
 ---
 
@@ -12,7 +12,7 @@ Adding this to **pagepulser.co** elevates it from a standard auditor to a **Secu
 
 ---
 
-# AI Agent Instruction: pagepulser Index Leak & Security Discovery
+# AI Agent Instruction: kritano Index Leak & Security Discovery
 
 ## **1. Role**
 
@@ -98,6 +98,6 @@ A truly "Senior" implementation doesn't just find the leak; it explains *why* it
 
 ---
 
-### The "pagepulser" Edge
+### The "kritano" Edge
 
-By adding this, you aren't just an SEO tool; you are a **Security Consultant**. This gives you an excuse to email the user: *"Urgent: We found sensitive files for [Site] on Google. Log in to pagepulser.co to see the fix."*
+By adding this, you aren't just an SEO tool; you are a **Security Consultant**. This gives you an excuse to email the user: *"Urgent: We found sensitive files for [Site] on Google. Log in to kritano.co to see the fix."*

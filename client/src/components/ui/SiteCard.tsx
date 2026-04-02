@@ -22,6 +22,14 @@ import { Heading, Mono } from './Typography';
 import { StatusBadge } from './StatusBadge';
 import type { Audit } from '../../types/audit.types';
 
+const TIER_BADGE_CONFIG: Record<string, { label: string; className: string }> = {
+  free: { label: 'Free', className: 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300' },
+  starter: { label: 'Starter', className: 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' },
+  pro: { label: 'Pro', className: 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400' },
+  agency: { label: 'Agency', className: 'bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400' },
+  enterprise: { label: 'Enterprise', className: 'bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400' },
+};
+
 interface SiteCardProps {
   /** Site domain */
   domain: string;
@@ -31,6 +39,8 @@ interface SiteCardProps {
   latestAudit?: Audit | null;
   /** Whether domain is verified */
   isVerified?: boolean;
+  /** Owner's subscription tier */
+  ownerTier?: string;
   /** Click handler for the card */
   onClick?: () => void;
   /** Handler for running a new audit */
@@ -44,6 +54,7 @@ export function SiteCard({
   url,
   latestAudit,
   isVerified = false,
+  ownerTier,
   onClick,
   onRunAudit,
   className = '',
@@ -128,6 +139,11 @@ export function SiteCard({
                   <span className="sr-only">Verified domain</span>
                 </>
               )}
+              {ownerTier && TIER_BADGE_CONFIG[ownerTier] && (
+                <span className={`inline-flex items-center px-1.5 py-0.5 text-[10px] font-semibold rounded ${TIER_BADGE_CONFIG[ownerTier].className} flex-shrink-0`}>
+                  {TIER_BADGE_CONFIG[ownerTier].label}
+                </span>
+              )}
             </div>
             <Mono size="xs" className="truncate block mt-0.5">
               {url}
@@ -138,7 +154,7 @@ export function SiteCard({
         {/* Stats Row */}
         <div className="mt-4 flex items-center justify-between">
           {/* Last Audit */}
-          <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-500">
+          <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
             <Clock className="w-4 h-4" />
             <span className="text-sm">{lastAuditTime}</span>
           </div>
@@ -163,7 +179,7 @@ export function SiteCard({
               <StatusBadge status={latestAudit.status} size="sm" />
             )
           ) : (
-            <span className="text-sm text-slate-500">No audits yet</span>
+            <span className="text-sm text-slate-500 dark:text-slate-400">No audits yet</span>
           )}
         </div>
 
@@ -257,6 +273,7 @@ interface SiteListItemProps {
   url: string;
   latestAudit?: Audit | null;
   isVerified?: boolean;
+  ownerTier?: string;
   onClick?: () => void;
   onRunAudit?: () => void;
   className?: string;
@@ -267,6 +284,7 @@ export function SiteListItem({
   url,
   latestAudit,
   isVerified = false,
+  ownerTier,
   onClick,
   onRunAudit,
   className = '',
@@ -340,6 +358,11 @@ export function SiteListItem({
               <span className="sr-only">Verified domain</span>
             </>
           )}
+          {ownerTier && ownerTier !== 'free' && TIER_BADGE_CONFIG[ownerTier] && (
+            <span className={`inline-flex items-center px-1.5 py-0.5 text-[10px] font-semibold rounded ${TIER_BADGE_CONFIG[ownerTier].className} flex-shrink-0`}>
+              {TIER_BADGE_CONFIG[ownerTier].label}
+            </span>
+          )}
         </div>
         <Mono size="xs" className="truncate block">
           {url}
@@ -353,13 +376,13 @@ export function SiteListItem({
 
       {/* Issues */}
       {latestAudit?.total_issues ? (
-        <span className="text-sm text-slate-500 dark:text-slate-500 tabular-nums">
+        <span className="text-sm text-slate-500 dark:text-slate-400 tabular-nums">
           {latestAudit.total_issues} issue{latestAudit.total_issues !== 1 ? 's' : ''}
         </span>
       ) : null}
 
       {/* Last Audit Time */}
-      <span className="text-sm text-slate-500 tabular-nums w-20 text-right">
+      <span className="text-sm text-slate-500 dark:text-slate-400 tabular-nums w-20 text-right">
         {latestAudit ? getRelativeTime(latestAudit.completed_at || latestAudit.created_at) : 'Never'}
       </span>
 

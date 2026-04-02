@@ -64,7 +64,7 @@ describe('ProgressRing', () => {
   it('uses auto-color based on value (green for 90+)', () => {
     const { container } = render(<ProgressRing value={95} />);
     const progressCircle = container.querySelectorAll('circle')[1];
-    expect(progressCircle.getAttribute('stroke')).toBe('#10b981');
+    expect(progressCircle.getAttribute('stroke')).toBe('#059669');
   });
 
   it('uses auto-color based on value (amber for 70-89)', () => {
@@ -82,7 +82,7 @@ describe('ProgressRing', () => {
   it('uses auto-color based on value (red for <50)', () => {
     const { container } = render(<ProgressRing value={30} />);
     const progressCircle = container.querySelectorAll('circle')[1];
-    expect(progressCircle.getAttribute('stroke')).toBe('#ef4444');
+    expect(progressCircle.getAttribute('stroke')).toBe('#dc2626');
   });
 
   it('uses custom color when provided', () => {

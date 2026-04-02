@@ -423,7 +423,7 @@ export function RichSnippetPreview({
   const showStars = hasProduct || hasLocalBusiness || hasReview;
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 p-4 max-w-xl">
+    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 max-w-xl">
       <div className="text-[10px] font-medium uppercase tracking-wider text-slate-500 mb-3">
         Google Search Preview
       </div>
@@ -431,8 +431,8 @@ export function RichSnippetPreview({
       <div className="space-y-0.5">
         {/* Favicon + URL / Breadcrumb */}
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0">
-            <span className="text-[10px] font-bold text-slate-500">
+          <div className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center flex-shrink-0">
+            <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400">
               {(() => {
                 try { return new URL(url).hostname.charAt(0).toUpperCase(); }
                 catch { return 'P'; }
@@ -490,7 +490,7 @@ export function RichSnippetPreview({
 
         {/* Description */}
         {displayDescription ? (
-          <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
+          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">
             {displayDescription}
           </p>
         ) : (

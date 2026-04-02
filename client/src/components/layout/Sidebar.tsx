@@ -164,11 +164,11 @@ export function Sidebar() {
       <div className={`flex items-center h-16 px-4 border-b border-slate-200/50 dark:border-slate-700/50 ${isCollapsed ? 'justify-center' : ''}`}>
         <Link to="/dashboard" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:shadow-lg group-hover:shadow-indigo-500/30 transition-shadow">
-            <span className="text-white font-bold text-base">P</span>
+            <span className="text-white font-bold text-base">K</span>
           </div>
           {!isCollapsed && (
             <span className="text-lg font-semibold text-slate-900 dark:text-white tracking-tight">
-              Page<span className="text-indigo-600 dark:text-indigo-400">Pulser</span>
+              Kritano
             </span>
           )}
         </Link>

@@ -58,14 +58,14 @@ export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
       <Helmet>
-        <title>Reset Password | PagePulser</title>
+        <title>Reset Password | Kritano</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400">PagePulser</p>
+          <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400">Kritano</p>
           <h1 className="mt-4 text-xl font-semibold text-slate-900 dark:text-white">Set a new password</h1>
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-500">
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             Choose a strong password for your account
           </p>
         </div>
@@ -114,7 +114,7 @@ export default function ResetPasswordPage() {
               <div className="text-center">
                 <Link
                   to="/login"
-                  className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-500"
+                  className="inline-flex items-center gap-2 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back to sign in

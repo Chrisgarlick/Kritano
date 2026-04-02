@@ -59,11 +59,11 @@ export default function OAuthCallbackPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4">
       <Helmet>
-        <title>Authenticating... | PagePulser</title>
+        <title>Authenticating... | Kritano</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="max-w-md w-full text-center">
-        <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400 mb-8">PagePulser</p>
+        <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400 mb-8">Kritano</p>
 
         {error ? (
           <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
@@ -73,7 +73,7 @@ export default function OAuthCallbackPage() {
               </svg>
               <p className="text-lg font-semibold">Authentication Failed</p>
             </div>
-            <p className="text-slate-600 dark:text-slate-500 mb-6">{error}</p>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">{error}</p>
             <Link
               to="/login"
               className="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
@@ -87,7 +87,7 @@ export default function OAuthCallbackPage() {
             <p className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
               Completing sign in...
             </p>
-            <p className="text-sm text-slate-500 dark:text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Please wait while we verify your account.
             </p>
           </div>

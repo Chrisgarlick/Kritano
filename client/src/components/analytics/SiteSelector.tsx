@@ -29,13 +29,13 @@ export function SiteSelector({
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors min-w-[200px]"
+        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors min-w-[200px]"
       >
-        <Globe className="w-4 h-4 text-slate-500" />
+        <Globe className="w-4 h-4 text-slate-500 dark:text-slate-400" />
         <span className="flex-1 text-left truncate">
           {currentSite ? currentSite.name : placeholder}
         </span>
-        <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-slate-500 dark:text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
@@ -44,7 +44,7 @@ export function SiteSelector({
             className="fixed inset-0 z-10"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-lg shadow-lg z-20 py-1 max-h-64 overflow-auto">
+          <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-20 py-1 max-h-64 overflow-auto">
             {otherSites.map(site => (
               <button
                 key={site.id}
@@ -52,10 +52,10 @@ export function SiteSelector({
                   onChange(site.id);
                   setIsOpen(false);
                 }}
-                className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                className="w-full px-4 py-2 text-left text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
               >
                 <div className="font-medium truncate">{site.name}</div>
-                <div className="text-xs text-slate-500 truncate">{site.domain}</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 truncate">{site.domain}</div>
               </button>
             ))}
           </div>

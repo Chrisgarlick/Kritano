@@ -170,7 +170,7 @@ export async function activateAll(adminId: string): Promise<{ activated: number;
 
   let activated = 0;
   let skipped = 0;
-  const appUrl = process.env.APP_URL || 'https://pagepulser.com';
+  const appUrl = process.env.APP_URL || 'https://kritano.com';
 
   for (const user of result.rows) {
     try {

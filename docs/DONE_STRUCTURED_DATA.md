@@ -2,7 +2,7 @@ In 2026, **Structured Data (Schema.org)** is no longer "optional"—it is the la
 
 If a website has great content but no structured data, it’s like having a great book with no table of contents and no index. Google has to "guess" what the page is about, which is a massive ranking risk.
 
-### Why it is critical for pagepulser.co:
+### Why it is critical for kritano.co:
 
 1. **Rich Snippets:** It’s how sites get stars, prices, and FAQ dropdowns in search results. These increase clicks by up to **30%**.
 2. **AI Visibility:** Modern AI crawlers use Schema to "verify" facts. No Schema = No AI visibility.
@@ -14,7 +14,7 @@ If a website has great content but no structured data, it’s like having a grea
 
 ---
 
-# AI Agent Instruction: pagepulser Schema & Structured Data Audit
+# AI Agent Instruction: kritano Schema & Structured Data Audit
 
 ## **1. Role**
 
@@ -96,6 +96,6 @@ The agent should expect specific Schema types based on the page content:
 
 ---
 
-**Next Step:** Now that we have **Content**, **EEAT**, and **Schema** audits, pagepulser.co is becoming a powerhouse.
+**Next Step:** Now that we have **Content**, **EEAT**, and **Schema** audits, kritano.co is becoming a powerhouse.
 
 **Would you like me to create the "Audit Summary PDF" layout that your users can download to show off all these new data points to their clients?**

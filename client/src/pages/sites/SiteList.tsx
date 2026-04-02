@@ -140,7 +140,7 @@ export default function SiteListPage() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>Sites | PagePulser</title></Helmet>
+      <Helmet><title>Sites | Kritano</title></Helmet>
       <div className="dashboard-bg min-h-full">
         {/* Header */}
         <div className="mb-8 animate-reveal-up">
@@ -254,6 +254,7 @@ export default function SiteListPage() {
                       url={`https://${site.domain}`}
                       latestAudit={siteToLatestAudit(site)}
                       isVerified={site.verified}
+                      ownerTier={site.ownerTier}
                       onClick={() => handleSiteClick(site)}
                       onRunAudit={() => handleRunAudit(site)}
                     />
@@ -283,6 +284,7 @@ export default function SiteListPage() {
                       url={`https://${site.domain}`}
                       latestAudit={siteToLatestAudit(site)}
                       isVerified={site.verified}
+                      ownerTier={site.ownerTier}
                       onClick={() => handleSiteClick(site)}
                       onRunAudit={() => handleRunAudit(site)}
                     />

@@ -1,19 +1,23 @@
-# PagePulser Brand Guidelines
+# Kritano Brand Guidelines
 
 ## Brand Identity
 
 ### Brand Name
-**PagePulser** (one word, camelCase in code: `pagePulser` or `PagePulser`)
+**Kritano** (capital K, lowercase remainder — never "KRITANO", "KritAno", or "Krit-ano")
+- Pronunciation: kri-TAH-no (stress on second syllable, rhymes with Milano)
+- Origin: Greek *krites* (judge/evaluator)
+- Code references: `kritano` (lowercase) or `Kritano` (PascalCase)
 
-### Tagline Options
-- "Feel the Pulse of Your Pages"
-- "Website Health, Measured"
+### Tagline
+- Primary: **"Judge your website before others do."**
+- Secondary: "Every page, fully judged."
+- Feature-focused: "Six audits. One clear score."
 - "Insights at Every Beat"
 
 ### Brand Etymology
 **Page** (web page, digital content) + **Pulser** (one who takes a pulse, measures vital signs)
 
-The name evokes health monitoring, regular check-ups, and the ability to detect vital signs of website performance. A PagePulser doesn't just scan—they *measure* the heartbeat of a website's health, security, and potential.
+The name evokes health monitoring, regular check-ups, and the ability to detect vital signs of website performance. A Kritano doesn't just scan—they *measure* the heartbeat of a website's health, security, and potential.
 
 ---
 
@@ -37,12 +41,12 @@ The name evokes health monitoring, regular check-ups, and the ability to detect 
 ## Color System
 
 ### Philosophy
-The PagePulser palette draws from the metaphor of **vital signs monitoring**—the careful observation of health indicators that reveal the true state of a system. Deep, contemplative primary tones paired with illuminating accents suggest both depth of analysis and clarity of insight.
+The Kritano palette draws from the metaphor of **vital signs monitoring**—the careful observation of health indicators that reveal the true state of a system. Deep, contemplative primary tones paired with illuminating accents suggest both depth of analysis and clarity of insight.
 
 ### Primary Palette
 
 #### Indigo (Primary Brand Color)
-The foundation of PagePulser's identity. Deep, authoritative, and distinct from generic tech blues.
+The foundation of Kritano's identity. Deep, authoritative, and distinct from generic tech blues.
 
 | Token | Hex | RGB | Usage |
 |-------|-----|-----|-------|
@@ -202,7 +206,7 @@ Typography should feel **editorial and authoritative** without being stuffy. We 
 ## Logo & Iconography
 
 ### Logo Concept
-The PagePulser logo incorporates an abstract **pulse/wave** motif, suggesting monitoring, health checks, and continuous analysis. The mark works as a standalone icon while the wordmark uses the display typeface.
+The Kritano logo incorporates an abstract **pulse/wave** motif, suggesting monitoring, health checks, and continuous analysis. The mark works as a standalone icon while the wordmark uses the display typeface.
 
 ### Logo Variations
 | Variant | Usage |
@@ -225,7 +229,7 @@ The PagePulser logo incorporates an abstract **pulse/wave** motif, suggesting mo
 - **Full logo**: 120px width minimum (digital), 30mm (print)
 
 ### Clear Space
-Maintain clear space equal to the height of the "P" in PagePulser around all sides of the logo.
+Maintain clear space equal to the height of the "P" in Kritano around all sides of the logo.
 
 ### Logo Don'ts
 - Don't rotate or skew the logo
@@ -519,7 +523,7 @@ module.exports = {
 ## Motion Design
 
 ### The Pulse Signature
-PagePulser's signature motion is the "pulse" - a subtle, rhythmic animation that suggests continuous monitoring and vitality. This differentiates us from static, lifeless dashboards.
+Kritano's signature motion is the "pulse" - a subtle, rhythmic animation that suggests continuous monitoring and vitality. This differentiates us from static, lifeless dashboards.
 
 ### Core Animation Keyframes
 
@@ -622,7 +626,7 @@ Scores should animate in:
 ## Atmospheric Design
 
 ### Philosophy
-Avoid flat, sterile interfaces. PagePulser's UI should feel *alive* and *dimensional*, reflecting the dynamic nature of website health monitoring.
+Avoid flat, sterile interfaces. Kritano's UI should feel *alive* and *dimensional*, reflecting the dynamic nature of website health monitoring.
 
 ### Background Treatments
 
@@ -725,5 +729,5 @@ client/
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2024-XX-XX | Initial brand guidelines |
-| 1.1 | 2025-XX-XX | Rebrand from SiteSeer to PagePulser |
+| 1.1 | 2025-XX-XX | Rebrand from SiteSeer to Kritano |
 | 1.2 | 2025-02-01 | Added Motion Design, Score Visualization, and Atmospheric Design sections |

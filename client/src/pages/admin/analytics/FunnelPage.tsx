@@ -64,7 +64,7 @@ export default function FunnelPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Funnel Analytics | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Funnel Analytics | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -73,7 +73,7 @@ export default function FunnelPage() {
               <Funnel className="w-6 h-6 text-indigo-400" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Conversion Funnel</h1>
+              <h1 className="text-3xl font-bold text-white tracking-tight font-display">Conversion Funnel</h1>
               <p className="text-sm text-slate-500">Track user progression from signup to paid subscriber</p>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
@@ -46,13 +46,14 @@ describe('RegisterForm', () => {
     expect(screen.getByRole('button', { name: /create account/i })).toBeInTheDocument();
   });
 
-  it('shows validation errors for empty required fields on submit', async () => {
-    const user = userEvent.setup();
+  it('shows validation errors on submit', async () => {
     renderForm();
 
-    await user.click(screen.getByRole('button', { name: /create account/i }));
+    // Submit the form directly (bypasses native HTML validation in jsdom)
+    const form = document.querySelector('form')!;
+    fireEvent.submit(form);
 
-    // Should show validation errors
+    // Zod validates: first name is required
     expect(await screen.findByText(/first name is required/i)).toBeInTheDocument();
   });
 
@@ -66,8 +67,8 @@ describe('RegisterForm', () => {
     await user.type(screen.getByLabelText(/^password$/i), 'StrongPass1234!');
     await user.type(screen.getByLabelText(/confirm password/i), 'DifferentPass1234!');
 
-    // Check the ToS checkbox
-    const tosCheckbox = screen.getByRole('checkbox');
+    // Check the ToS checkbox (first checkbox is ToS)
+    const tosCheckbox = screen.getByLabelText(/i agree to the/i);
     await user.click(tosCheckbox);
 
     await user.click(screen.getByRole('button', { name: /create account/i }));
@@ -94,8 +95,10 @@ describe('RegisterForm', () => {
   it('shows Terms of Service acceptance checkbox', () => {
     renderForm();
 
-    const checkbox = screen.getByRole('checkbox');
-    expect(checkbox).toBeInTheDocument();
+    const checkboxes = screen.getAllByRole('checkbox');
+    // ToS checkbox + marketing opt-in checkbox
+    expect(checkboxes.length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/terms of service/i)).toBeInTheDocument();
   });
 
   it('shows error when ToS is not accepted', async () => {
@@ -125,7 +128,7 @@ describe('RegisterForm', () => {
     await user.type(screen.getByLabelText(/^password$/i), 'StrongPass1234!');
     await user.type(screen.getByLabelText(/confirm password/i), 'StrongPass1234!');
 
-    const tosCheckbox = screen.getByRole('checkbox');
+    const tosCheckbox = screen.getByLabelText(/i agree to the/i);
     await user.click(tosCheckbox);
 
     await user.click(screen.getByRole('button', { name: /create account/i }));
@@ -156,7 +159,7 @@ describe('RegisterForm', () => {
     await user.type(screen.getByLabelText(/^password$/i), 'StrongPass1234!');
     await user.type(screen.getByLabelText(/confirm password/i), 'StrongPass1234!');
 
-    const tosCheckbox = screen.getByRole('checkbox');
+    const tosCheckbox = screen.getByLabelText(/i agree to the/i);
     await user.click(tosCheckbox);
 
     await user.click(screen.getByRole('button', { name: /create account/i }));

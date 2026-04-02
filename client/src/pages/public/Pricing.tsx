@@ -139,6 +139,7 @@ const COMPARISON_SECTIONS = [
       { label: 'Google Dorking', free: false, starter: false, pro: true, agency: true, enterprise: true },
       { label: 'E-E-A-T Analysis', free: false, starter: false, pro: true, agency: true, enterprise: true },
       { label: 'AEO Analysis', free: false, starter: false, pro: true, agency: true, enterprise: true },
+      { label: 'Mobile Audit Pass', free: false, starter: true, pro: true, agency: true, enterprise: true },
     ],
   },
   {
@@ -238,7 +239,7 @@ const FAQS = [
   },
   {
     q: 'Do you offer refunds?',
-    a: 'We offer a full refund within 14 days of your first payment if you are not satisfied. Contact us at support@pagepulser.com.',
+    a: 'We offer a full refund within 14 days of your first payment if you are not satisfied. Contact us at support@kritano.com.',
   },
 ];
 
@@ -255,7 +256,7 @@ export default function Pricing() {
         structuredData={{
           '@context': 'https://schema.org',
           '@type': 'Product',
-          name: 'PagePulser',
+          name: 'Kritano',
           description: 'Website auditing platform for SEO, accessibility, security, and performance.',
           offers: PLANS.filter(p => p.name !== 'Free' && p.name !== 'Enterprise').map(p => ({
             '@type': 'Offer',
@@ -284,20 +285,20 @@ export default function Pricing() {
 
       {/* Hero */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16 text-center">
-        <p className="text-indigo-600 font-medium tracking-wide uppercase text-xs mb-5">
+        <p className="text-indigo-600 dark:text-indigo-400 font-medium tracking-wide uppercase text-xs mb-5">
           Pricing
         </p>
-        <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-6">
+        <h1 className="font-display text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.05] mb-6">
           Simple, transparent pricing.
         </h1>
-        <p className="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto mb-10">
+        <p className="text-lg text-slate-500 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto mb-10">
           Start free and upgrade as your needs grow. Every paid plan includes a 14-day
           free trial. No credit card required.
         </p>
 
         {/* Billing Period Toggle */}
         <div className="flex items-center justify-center gap-3">
-          <span className={`text-sm font-medium ${billingPeriod === 'monthly' ? 'text-slate-900' : 'text-slate-500'}`}>
+          <span className={`text-sm font-medium ${billingPeriod === 'monthly' ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400'}`}>
             Monthly
           </span>
           <button
@@ -307,7 +308,7 @@ export default function Pricing() {
             aria-label="Toggle annual billing"
             onClick={() => setBillingPeriod(billingPeriod === 'monthly' ? 'annual' : 'monthly')}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              billingPeriod === 'annual' ? 'bg-indigo-600' : 'bg-slate-300'
+              billingPeriod === 'annual' ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-600'
             }`}
           >
             <span
@@ -316,10 +317,10 @@ export default function Pricing() {
               }`}
             />
           </button>
-          <span className={`text-sm font-medium ${billingPeriod === 'annual' ? 'text-slate-900' : 'text-slate-500'}`}>
+          <span className={`text-sm font-medium ${billingPeriod === 'annual' ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400'}`}>
             Annual
           </span>
-          <span className="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">
+          <span className="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
             Save 2 months
           </span>
         </div>
@@ -333,8 +334,8 @@ export default function Pricing() {
               key={plan.name}
               className={`rounded-xl p-5 flex flex-col ${
                 plan.popular
-                  ? 'bg-slate-900 text-white ring-2 ring-indigo-600 relative'
-                  : 'bg-white border border-slate-200'
+                  ? 'bg-slate-900 dark:bg-slate-950 text-white ring-2 ring-indigo-600 relative'
+                  : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700'
               }`}
             >
               {plan.popular && (
@@ -345,21 +346,21 @@ export default function Pricing() {
 
               {/* Plan name & description */}
               <div className="mb-4">
-                <h3 className={`text-base font-semibold mb-1 ${plan.popular ? 'text-white' : 'text-slate-900'}`}>
+                <h3 className={`text-base font-semibold mb-1 ${plan.popular ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
                   {plan.name}
                 </h3>
-                <p className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-500' : 'text-slate-500'}`}>
+                <p className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-500' : 'text-slate-500 dark:text-slate-400'}`}>
                   {plan.description}
                 </p>
               </div>
 
               {/* Price */}
               <div className="mb-5">
-                <span className={`font-display text-3xl ${plan.popular ? 'text-white' : 'text-slate-900'}`}>
+                <span className={`font-display text-3xl ${plan.popular ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
                   {billingPeriod === 'annual' ? plan.annualPrice : plan.monthlyPrice}
                 </span>
                 {plan.priceDetail && (
-                  <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-500' : 'text-slate-500'}`}>
+                  <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-500' : 'text-slate-500 dark:text-slate-400'}`}>
                     {billingPeriod === 'annual' && plan.monthlyPrice !== '$0' && plan.monthlyPrice !== 'Custom'
                       ? '/year'
                       : plan.priceDetail}
@@ -374,7 +375,7 @@ export default function Pricing() {
                     <CheckCircle className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
                       plan.popular ? 'text-indigo-400' : 'text-indigo-600'
                     }`} />
-                    <span className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-300' : 'text-slate-600'}`}>
+                    <span className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-300' : 'text-slate-600 dark:text-slate-400'}`}>
                       {feature}
                     </span>
                   </li>
@@ -387,7 +388,7 @@ export default function Pricing() {
                 className={`block text-center px-4 py-2.5 rounded-lg font-medium text-sm transition-colors ${
                   plan.popular
                     ? 'bg-indigo-600 hover:bg-indigo-500 text-white'
-                    : 'border border-slate-300 text-slate-700 hover:bg-slate-50'
+                    : 'border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
                 {plan.cta}
@@ -398,12 +399,12 @@ export default function Pricing() {
       </section>
 
       {/* Feature Comparison Table */}
-      <section className="bg-slate-50 border-t border-slate-200">
+      <section className="bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-16">
           <button
             onClick={() => setComparisonOpen(!comparisonOpen)}
             aria-expanded={comparisonOpen}
-            className="w-full flex items-center justify-center gap-2 text-slate-700 font-medium text-sm mb-8"
+            className="w-full flex items-center justify-center gap-2 text-slate-700 dark:text-slate-300 font-medium text-sm mb-8"
           >
             {comparisonOpen ? 'Hide' : 'Show'} full feature comparison
             {comparisonOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -413,26 +414,26 @@ export default function Pricing() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b-2 border-slate-200">
-                    <th scope="col" className="text-left py-3 pr-4 text-slate-500 font-medium w-44">&nbsp;</th>
-                    <th scope="col" className="text-center py-3 px-2 text-slate-900 font-semibold text-xs">Free</th>
-                    <th scope="col" className="text-center py-3 px-2 text-slate-900 font-semibold text-xs">Starter</th>
-                    <th scope="col" className="text-center py-3 px-2 text-slate-900 font-semibold text-xs bg-indigo-50 rounded-t-lg">Pro</th>
-                    <th scope="col" className="text-center py-3 px-2 text-slate-900 font-semibold text-xs">Agency</th>
-                    <th scope="col" className="text-center py-3 px-2 text-slate-900 font-semibold text-xs">Enterprise</th>
+                  <tr className="border-b-2 border-slate-200 dark:border-slate-700">
+                    <th scope="col" className="text-left py-3 pr-4 text-slate-500 dark:text-slate-400 font-medium w-44">&nbsp;</th>
+                    <th scope="col" className="text-center py-3 px-2 text-slate-900 dark:text-white font-semibold text-xs">Free</th>
+                    <th scope="col" className="text-center py-3 px-2 text-slate-900 dark:text-white font-semibold text-xs">Starter</th>
+                    <th scope="col" className="text-center py-3 px-2 text-slate-900 dark:text-white font-semibold text-xs bg-indigo-50 dark:bg-indigo-900/20 rounded-t-lg">Pro</th>
+                    <th scope="col" className="text-center py-3 px-2 text-slate-900 dark:text-white font-semibold text-xs">Agency</th>
+                    <th scope="col" className="text-center py-3 px-2 text-slate-900 dark:text-white font-semibold text-xs">Enterprise</th>
                   </tr>
                 </thead>
                 <tbody>
                   {COMPARISON_SECTIONS.map((section) => (
                     <>
                       <tr key={section.title}>
-                        <td colSpan={6} className="pt-6 pb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        <td colSpan={6} className="pt-6 pb-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                           {section.title}
                         </td>
                       </tr>
                       {section.rows.map((row) => (
-                        <tr key={row.label} className="border-b border-slate-100">
-                          <td className="py-3 pr-4 text-slate-700 text-xs">{row.label}</td>
+                        <tr key={row.label} className="border-b border-slate-100 dark:border-slate-700/50">
+                          <td className="py-3 pr-4 text-slate-700 dark:text-slate-300 text-xs">{row.label}</td>
                           <ComparisonCell value={row.free} />
                           <ComparisonCell value={row.starter} />
                           <ComparisonCell value={row.pro} highlight />
@@ -450,13 +451,13 @@ export default function Pricing() {
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-slate-200">
+      <section className="border-t border-slate-200 dark:border-slate-700">
         <div className="max-w-3xl mx-auto px-6 lg:px-20 py-24">
           <div className="text-center mb-16">
-            <p className="text-indigo-600 font-medium tracking-wide uppercase text-xs mb-4">
+            <p className="text-indigo-600 dark:text-indigo-400 font-medium tracking-wide uppercase text-xs mb-4">
               FAQ
             </p>
-            <h2 className="font-display text-4xl text-slate-900 leading-tight">
+            <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight">
               Common questions
             </h2>
           </div>
@@ -472,10 +473,10 @@ export default function Pricing() {
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
         <div className="text-center max-w-2xl mx-auto">
-          <h2 className="font-display text-4xl text-slate-900 leading-tight mb-6">
+          <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight mb-6">
             Start for free, no strings attached
           </h2>
-          <p className="text-lg text-slate-500 leading-relaxed mb-10">
+          <p className="text-lg text-slate-500 dark:text-slate-400 leading-relaxed mb-10">
             Your first audit is on us. See the value before you commit.
           </p>
           <Link
@@ -492,18 +493,18 @@ export default function Pricing() {
 }
 
 function ComparisonCell({ value, highlight }: { value: boolean | string; highlight?: boolean }) {
-  const bg = highlight ? 'bg-indigo-50' : '';
+  const bg = highlight ? 'bg-indigo-50 dark:bg-indigo-900/20' : '';
   if (typeof value === 'boolean') {
     return (
       <td className={`text-center py-3 px-2 ${bg}`}>
         {value ? (
           <>
-            <CheckCircle className="w-4 h-4 text-indigo-600 mx-auto" aria-hidden="true" />
+            <CheckCircle className="w-4 h-4 text-indigo-600 dark:text-indigo-400 mx-auto" aria-hidden="true" />
             <span className="sr-only">Included</span>
           </>
         ) : (
           <>
-            <X className="w-4 h-4 text-slate-300 mx-auto" aria-hidden="true" />
+            <X className="w-4 h-4 text-slate-300 dark:text-slate-600 mx-auto" aria-hidden="true" />
             <span className="sr-only">Not included</span>
           </>
         )}
@@ -511,7 +512,7 @@ function ComparisonCell({ value, highlight }: { value: boolean | string; highlig
     );
   }
   return (
-    <td className={`text-center py-3 px-2 text-slate-700 text-xs ${bg}`}>
+    <td className={`text-center py-3 px-2 text-slate-700 dark:text-slate-300 text-xs ${bg}`}>
       {value}
     </td>
   );
@@ -521,22 +522,22 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border border-slate-200 rounded-lg bg-white">
+    <div className="border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800">
       <button
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         className="w-full flex items-center justify-between px-6 py-5 text-left"
       >
-        <span className="font-semibold text-slate-900 text-sm pr-4">{question}</span>
+        <span className="font-semibold text-slate-900 dark:text-white text-sm pr-4">{question}</span>
         {open ? (
-          <ChevronUp className="w-5 h-5 text-slate-500 flex-shrink-0" />
+          <ChevronUp className="w-5 h-5 text-slate-500 dark:text-slate-400 flex-shrink-0" />
         ) : (
-          <ChevronDown className="w-5 h-5 text-slate-500 flex-shrink-0" />
+          <ChevronDown className="w-5 h-5 text-slate-500 dark:text-slate-400 flex-shrink-0" />
         )}
       </button>
       {open && (
         <div className="px-6 pb-5">
-          <p className="text-sm text-slate-600 leading-relaxed">{answer}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{answer}</p>
         </div>
       )}
     </div>

@@ -92,7 +92,7 @@ function ensureOutputDir(): void {
 
 // ─── Checkpointing ─────────────────────────────────────────────────────────
 
-const CHECKPOINT_DIR = path.join(os.tmpdir(), 'pagepulser-pipeline');
+const CHECKPOINT_DIR = path.join(os.tmpdir(), 'kritano-pipeline');
 
 function checkpointPath(dateStr: string, step: string): string {
   return path.join(CHECKPOINT_DIR, `${dateStr}-${step}.json`);
@@ -367,10 +367,9 @@ async function extractAndSave(
     return 0;
   }
 
-  // Write qualified prospects to JSON file
+  // Write qualified prospects to JSON file — use the source dateStr, not today's date
   ensureOutputDir();
-  const outputDate = new Date().toISOString().split('T')[0];
-  const outputPath = path.join(OUTPUT_DIR, `qualified-prospects-${outputDate}.json`);
+  const outputPath = path.join(OUTPUT_DIR, `qualified-prospects-${dateStr}.json`);
 
   const output = qualified.map(p => ({
     domain: p.domain,
@@ -469,6 +468,15 @@ async function runPipeline(): Promise<void> {
     console.log('\n   No domains passed DNS. Nothing left to check.');
     clearCheckpoints(dateStr);
     return;
+  }
+
+  // Filter out government domains before HTTP check
+  const EXCLUDED_DOMAIN_SUFFIXES = ['.gov.uk', '.gov', '.mil', '.police.uk', '.nhs.uk'];
+  const preFilterCount = dnsPassedDomains.length;
+  dnsPassedDomains = dnsPassedDomains.filter(d => !EXCLUDED_DOMAIN_SUFFIXES.some(suffix => d.endsWith(suffix)));
+  const govRemoved = preFilterCount - dnsPassedDomains.length;
+  if (govRemoved > 0) {
+    console.log(`   Excluded ${fmt(govRemoved)} government/public sector domains`);
   }
 
   // ── Step 3: HTTP check ──
@@ -760,8 +768,13 @@ async function runNrdFile(fileName: string): Promise<void> {
     console.log(`   Capped to ${fmt(settings.dailyCheckLimit)} (daily limit setting)`);
   }
 
-  // Use filename as checkpoint key
-  const checkpointKey = `nrd-${path.basename(fileName, path.extname(fileName))}`;
+  // Use filename as checkpoint key, and extract date for output naming
+  const baseName = path.basename(fileName, path.extname(fileName));
+  const checkpointKey = `nrd-${baseName}`;
+
+  // Extract date from filename (e.g. "2026-03-01" from "2026-03-01.txt" or "nrd-2026-03-01.txt")
+  const dateMatch = baseName.match(/(\d{4}-\d{2}-\d{2})/);
+  const outputDateStr = dateMatch ? dateMatch[1] : baseName;
 
   const savedDnsPassed = loadCheckpoint<string[]>(checkpointKey, 'dns-passed');
   const savedLiveDomains = loadCheckpoint<PipelineDomain[]>(checkpointKey, 'live-domains');
@@ -786,6 +799,15 @@ async function runNrdFile(fileName: string): Promise<void> {
     return;
   }
 
+  // Filter out government domains before HTTP check
+  const EXCLUDED_SUFFIXES = ['.gov.uk', '.gov', '.mil', '.police.uk', '.nhs.uk'];
+  const preCount = dnsPassedDomains.length;
+  dnsPassedDomains = dnsPassedDomains.filter(d => !EXCLUDED_SUFFIXES.some(suffix => d.endsWith(suffix)));
+  const removed = preCount - dnsPassedDomains.length;
+  if (removed > 0) {
+    console.log(`   Excluded ${fmt(removed)} government/public sector domains`);
+  }
+
   // ── Step 3: HTTP check ──
   let liveDomains: PipelineDomain[];
   if (savedLiveDomains) {
@@ -803,7 +825,7 @@ async function runNrdFile(fileName: string): Promise<void> {
   }
 
   // ── Step 4: Email extraction + save ──
-  const saved = await extractAndSave(liveDomains, 4, TOTAL_STEPS, checkpointKey, settings.minQualityScore);
+  const saved = await extractAndSave(liveDomains, 4, TOTAL_STEPS, outputDateStr, settings.minQualityScore);
   clearCheckpoints(checkpointKey);
 
   // Clean up the source .txt file now that we have the JSON output
@@ -864,7 +886,7 @@ async function main(): Promise<void> {
   const command = args[0] || 'all';
 
   console.log('');
-  console.log('🎯  PagePulser Cold Prospect Pipeline');
+  console.log('🎯  Kritano Cold Prospect Pipeline');
   console.log('━'.repeat(50));
 
   try {

@@ -122,7 +122,7 @@ export function NoAuditsEmptyState({ onCreateAudit }: { onCreateAudit?: () => vo
     <EmptyState
       icon={<PulseLineIcon />}
       title="No audits yet"
-      description="Run your first audit to see the pulse of your website's health"
+      description="Run your first audit to get the full verdict on your website's health"
       actionLabel="Run First Audit"
       onAction={onCreateAudit}
     />
@@ -173,7 +173,7 @@ export function NoApiKeysEmptyState({ onCreate }: { onCreate?: () => void }) {
     <EmptyState
       icon={<KeyIcon />}
       title="No API keys"
-      description="Create an API key to integrate PagePulser with your workflow"
+      description="Create an API key to integrate Kritano with your workflow"
       actionLabel="Create API Key"
       onAction={onCreate}
     />

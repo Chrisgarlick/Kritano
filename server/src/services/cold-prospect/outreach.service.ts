@@ -442,7 +442,7 @@ async function sendColdEmail(
     html = html.replace(/\{\{#if contactName\}\}(.*?)\{\{\/if\}\}/gs, '');
   }
 
-  const fromAddress = process.env.EMAIL_FROM || 'PagePulser <noreply@pagepulser.com>';
+  const fromAddress = process.env.EMAIL_FROM || 'Kritano <noreply@kritano.com>';
   const smtpHost = process.env.SMTP_HOST;
 
   if (smtpHost) {
@@ -501,7 +501,7 @@ function buildSimpleHtml(blocks: Array<{ type: string; content?: string; label?:
   for (const block of blocks) {
     switch (block.type) {
       case 'header':
-        html += `<div style="background:${block.backgroundColor || '#4f46e5'};padding:20px;text-align:center;color:white;border-radius:8px 8px 0 0;"><strong>${block.companyName || 'PagePulser'}</strong></div>`;
+        html += `<div style="background:${block.backgroundColor || '#4f46e5'};padding:20px;text-align:center;color:white;border-radius:8px 8px 0 0;"><strong>${block.companyName || 'Kritano'}</strong></div>`;
         break;
       case 'text':
         html += `<div style="padding:15px 0;">${block.content || ''}</div>`;

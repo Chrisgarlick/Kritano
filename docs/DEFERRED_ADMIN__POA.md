@@ -1,8 +1,8 @@
-# PagePulser Admin Panel — Plan of Action
+# Kritano Admin Panel — Plan of Action
 
 ## 1. Executive Summary
 
-This is the **master implementation plan** for the PagePulser admin panel. It unifies four workstreams into a single phased rollout:
+This is the **master implementation plan** for the Kritano admin panel. It unifies four workstreams into a single phased rollout:
 
 1. **Existing Admin Panel** — Dashboard, user/org management, bug reports, activity log (already built)
 2. **CRM Module** — Lead scoring, automated triggers, one-click outreach (`ADMIN_CRM.md`)
@@ -152,7 +152,7 @@ Dashboard | Users | Organizations | Bug Reports | Activity
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│  PagePulser Admin                                     ← Back to App│
+│  Kritano Admin                                     ← Back to App│
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  OVERVIEW                                                           │

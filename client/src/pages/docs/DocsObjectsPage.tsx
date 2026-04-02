@@ -64,20 +64,20 @@ function ObjectTable({ fields }: { fields: { field: string; type: string; descri
     <div className="border border-slate-200 rounded-lg overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="bg-slate-50">
-            <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider whitespace-nowrap">Field</th>
-            <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider whitespace-nowrap">Type</th>
-            <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Description</th>
+          <tr className="bg-slate-50 dark:bg-slate-800/50">
+            <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider whitespace-nowrap">Field</th>
+            <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider whitespace-nowrap">Type</th>
+            <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Description</th>
           </tr>
         </thead>
         <tbody>
           {fields.map(f => (
-            <tr key={f.field} className="border-t border-slate-100 hover:bg-slate-50/50">
+            <tr key={f.field} className="border-t border-slate-100 dark:border-slate-700/50 hover:bg-slate-50/50">
               <td className="px-4 py-3 font-mono text-xs text-indigo-600 font-medium whitespace-nowrap">{f.field}</td>
               <td className="px-4 py-3 whitespace-nowrap">
-                <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">{f.type}</span>
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">{f.type}</span>
               </td>
-              <td className="px-4 py-3 text-slate-600">{f.description}</td>
+              <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{f.description}</td>
             </tr>
           ))}
         </tbody>
@@ -91,17 +91,17 @@ export default function DocsObjectsPage() {
     <PublicLayout>
       <PageSeo
         title="Object Reference - API Docs"
-        description="Complete reference for PagePulser API objects — Audit and Finding data structures with field descriptions."
+        description="Complete reference for Kritano API objects — Audit and Finding data structures with field descriptions."
         path="/docs/objects"
         useOverrides={true}
       />
       <DocsLayout>
         {/* Audit Object */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h1 className="font-display text-2xl font-bold text-slate-900 mb-6">Object Reference</h1>
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-6">Object Reference</h1>
 
-          <h2 className="text-xl font-semibold text-slate-800 mb-2" id="audit-object">Audit Object</h2>
-          <p className="text-slate-600 mb-4">
+          <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2" id="audit-object">Audit Object</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
             The audit object represents a website audit job. It contains configuration, real-time progress, scores, and issue counts. The shape varies slightly between list and detail endpoints — the detail endpoint includes <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">config</code> and <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">_links</code>.
           </p>
           <ObjectTable fields={AUDIT_FIELDS} />
@@ -174,9 +174,9 @@ export default function DocsObjectsPage() {
         </div>
 
         {/* Finding Object */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-800 mb-2" id="finding-object">Finding Object</h2>
-          <p className="text-slate-600 mb-4">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2" id="finding-object">Finding Object</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
             A finding represents an individual issue discovered during the audit. Each finding includes the issue location, severity, remediation advice, and links to relevant standards documentation.
           </p>
           <ObjectTable fields={FINDING_FIELDS} />
@@ -238,9 +238,9 @@ export default function DocsObjectsPage() {
         </div>
 
         {/* Pagination Object */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-800 mb-2" id="pagination">Pagination Object</h2>
-          <p className="text-slate-600 mb-4">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2" id="pagination">Pagination Object</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
             All list endpoints include a <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">pagination</code> object. Use it to iterate through results.
           </p>
           <ObjectTable fields={PAGINATION_FIELDS} />

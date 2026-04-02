@@ -78,13 +78,13 @@ export interface ValidatedApiKey extends ApiKey {
 export class ApiKeyService {
   /**
    * Generate a secure random API key
-   * Format: pp_live_<32 random hex chars>
+   * Format: kt_live_<32 random hex chars>
    */
   private generateKey(): { key: string; prefix: string; hash: string } {
     const randomBytes = crypto.randomBytes(24);
     const keyBody = randomBytes.toString('base64url');
-    const key = `pp_live_${keyBody}`;
-    const prefix = key.substring(0, 12); // "pp_live_xxxx"
+    const key = `kt_live_${keyBody}`;
+    const prefix = key.substring(0, 12); // "kt_live_xxxx"
     const hash = this.hashKey(key);
 
     return { key, prefix, hash };
@@ -131,7 +131,7 @@ export class ApiKeyService {
    * Returns null if key is invalid, expired, or revoked
    */
   async validateKey(key: string): Promise<ValidatedApiKey | null> {
-    if (!key || !key.startsWith('pp_live_')) {
+    if (!key || (!key.startsWith('kt_live_') && !key.startsWith('pp_live_'))) {
       return null;
     }
 

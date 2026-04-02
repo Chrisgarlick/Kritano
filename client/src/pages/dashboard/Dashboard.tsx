@@ -46,6 +46,7 @@ export default function DashboardPage() {
     sites: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +69,7 @@ export default function DashboardPage() {
         });
       } catch (err) {
         console.error('Failed to fetch dashboard data:', err);
+        setError('Failed to load dashboard data. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -98,7 +100,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>Dashboard | PagePulser</title></Helmet>
+      <Helmet><title>Dashboard | Kritano</title></Helmet>
       <div className="dashboard-bg min-h-full">
         {/* Header Section */}
         <div className="mb-8 animate-reveal-up">
@@ -108,7 +110,7 @@ export default function DashboardPage() {
                 Welcome back, <span className="italic text-indigo-600 dark:text-indigo-400">{user?.firstName}</span>
               </Display>
               <Body muted className="mt-1">
-                Here's the pulse of your sites
+                Here's the verdict on your sites
               </Body>
             </div>
             <Button
@@ -130,6 +132,16 @@ export default function DashboardPage() {
 
         {loading ? (
           <DashboardSkeleton />
+        ) : error ? (
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
+            <p className="text-red-700 dark:text-red-400">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-3 text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
+            >
+              Retry
+            </button>
+          </div>
         ) : recentAudits.length === 0 ? (
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12">
             <NoAuditsEmptyState onCreateAudit={handleNewAudit} />

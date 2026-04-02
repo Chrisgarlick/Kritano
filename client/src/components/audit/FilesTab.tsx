@@ -110,7 +110,7 @@ export function FilesTab({ auditId }: FilesTabProps) {
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-red-700 dark:text-red-400 text-sm">
         {error}
       </div>
     );
@@ -119,9 +119,9 @@ export function FilesTab({ auditId }: FilesTabProps) {
   if (!loading && totalAssets === 0) {
     return (
       <div className="text-center py-16">
-        <File className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-slate-900 mb-2">No files discovered</h3>
-        <p className="text-sm text-slate-500">
+        <File className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+        <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No files discovered</h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           No files or assets were found during this audit. This could mean the pages had minimal external resources.
         </p>
       </div>

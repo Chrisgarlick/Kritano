@@ -720,6 +720,140 @@ export class AuditWorkerService {
         );
       }
 
+      // ── Mobile audit pass ──────────────────────────────────────────────
+      if (job.include_mobile && (job.check_accessibility || job.check_performance)) {
+        await sharedAddActivityLog(this.pool, job.id, 'Starting mobile audit pass...', 'info');
+        await this.queue.updateProgress(job.id, { currentUrl: '[mobile] Starting mobile pass...' });
+
+        // Get all crawled HTML pages for mobile re-visit
+        const crawledPages = await this.pool.query<{ id: string; url: string }>(`
+          SELECT id, url FROM audit_pages
+          WHERE audit_job_id = $1 AND crawl_status = 'crawled'
+            AND content_type LIKE '%html%'
+          ORDER BY depth ASC, url ASC
+        `, [job.id]);
+
+        let mobileAudited = 0;
+        const totalMobilePages = crawledPages.rows.length;
+
+        for (const pageRow of crawledPages.rows) {
+          if (!this.isRunning) break;
+
+          try {
+            await this.queue.updateProgress(job.id, { currentUrl: `[mobile] ${pageRow.url}` });
+
+            // Crawl with mobile fingerprint
+            const mobileCrawlResult = await spider.crawlPage(pageRow.url, 'mobile');
+
+            if (!this.isHtmlContentType(mobileCrawlResult.contentType)) continue;
+
+            // Create mobile Playwright page for axe-core
+            let mobilePage: Page | null = null;
+            if (this.browser && (job.check_accessibility || job.check_performance)) {
+              const mobileContext = await this.browser.newContext({
+                userAgent: mobileCrawlResult.viewport ? `Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1` : spiderConfig.userAgent,
+                viewport: mobileCrawlResult.viewport || { width: 390, height: 844 },
+                isMobile: true,
+                hasTouch: true,
+              });
+              mobilePage = await mobileContext.newPage();
+              try {
+                await mobilePage.goto(pageRow.url, {
+                  waitUntil: 'networkidle',
+                  timeout: 30000,
+                });
+              } catch {
+                // Page load failed on mobile — skip but don't fail the audit
+                await mobilePage.context().close();
+                continue;
+              }
+            }
+
+            // Run mobile-only engines (accessibility + performance)
+            const mobileResult = await this.auditCoordinator.analyzeMobilePage(
+              mobileCrawlResult,
+              mobilePage,
+              auditConfig
+            );
+
+            if (mobilePage) {
+              await mobilePage.context().close();
+            }
+
+            // Store mobile findings
+            if (mobileResult.findings.length > 0) {
+              await this.auditCoordinator.storeFindings(job.id, pageRow.id, mobileResult.findings, 'mobile');
+            }
+
+            // Calculate and store mobile page scores
+            const mobileA11yScore = this.auditCoordinator.calculateScore(
+              mobileResult.findings.filter(f => f.category === 'accessibility'),
+              'accessibility'
+            );
+            const mobilePerfScore = this.auditCoordinator.calculateScore(
+              mobileResult.findings.filter(f => f.category === 'performance'),
+              'performance'
+            );
+            const mobileA11yIssues = mobileResult.findings.filter(f => f.category === 'accessibility').length;
+            const mobilePerfIssues = mobileResult.findings.filter(f => f.category === 'performance').length;
+
+            await this.pool.query(`
+              UPDATE audit_pages SET
+                mobile_accessibility_score = $2,
+                mobile_performance_score = $3,
+                mobile_accessibility_issues = $4,
+                mobile_performance_issues = $5
+              WHERE id = $1
+            `, [pageRow.id, mobileA11yScore, mobilePerfScore, mobileA11yIssues, mobilePerfIssues]);
+
+            mobileAudited++;
+            if (mobileAudited % 5 === 0 || mobileAudited === totalMobilePages) {
+              await sharedAddActivityLog(
+                this.pool, job.id,
+                `Mobile pass: ${mobileAudited}/${totalMobilePages} pages audited`,
+                'info'
+              );
+            }
+          } catch (err) {
+            console.warn(`Mobile audit failed for ${pageRow.url}:`, err instanceof Error ? err.message : err);
+          }
+        }
+
+        // Deduplicate findings that appear on both desktop and mobile
+        const deduped = await this.auditCoordinator.deduplicateFindings(job.id);
+        if (deduped > 0) {
+          await sharedAddActivityLog(this.pool, job.id, `Deduplicated ${deduped} findings found on both desktop and mobile`, 'info');
+        }
+
+        // Calculate aggregate mobile scores for the job
+        const mobileScores = await this.pool.query<{
+          avg_a11y: string | null;
+          avg_perf: string | null;
+        }>(`
+          SELECT
+            ROUND(AVG(mobile_accessibility_score)) as avg_a11y,
+            ROUND(AVG(mobile_performance_score)) as avg_perf
+          FROM audit_pages
+          WHERE audit_job_id = $1
+            AND mobile_accessibility_score IS NOT NULL
+        `, [job.id]);
+
+        if (mobileScores.rows[0]) {
+          await this.pool.query(`
+            UPDATE audit_jobs SET
+              mobile_accessibility_score = $2,
+              mobile_performance_score = $3
+            WHERE id = $1
+          `, [
+            job.id,
+            mobileScores.rows[0].avg_a11y ? parseInt(mobileScores.rows[0].avg_a11y) : null,
+            mobileScores.rows[0].avg_perf ? parseInt(mobileScores.rows[0].avg_perf) : null,
+          ]);
+        }
+
+        await sharedAddActivityLog(this.pool, job.id, `Mobile pass complete: ${mobileAudited} pages audited`, 'success');
+      }
+
       // Post-crawl SEO checks
       if (job.check_seo) {
         await sharedAddActivityLog(this.pool,job.id, 'Checking for broken links...', 'info');

@@ -172,7 +172,7 @@ The businesses that get caught out are almost always the ones who assumed their 
 If you'd like a proper look under the bonnet, get in touch for a security audit. I'll check everything on this list and more, and give you a clear, prioritised plan for what to fix first — no scare tactics, just practical advice.
 
 <!-- Internal linking suggestions:
-- Link "security audit" to the PagePulser audit/pricing page
+- Link "security audit" to the Kritano audit/pricing page
 - Link "mixed content" to a technical deep-dive post if one exists
 - Link "Core Web Vitals" or "page speed" to the CWV explainer post
 - Link "accessibility" to the web accessibility 2026 post

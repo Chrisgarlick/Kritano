@@ -64,7 +64,7 @@ export function StatCard({
   return (
     <div
       className={`
-        rounded-lg p-5
+        rounded-lg p-6
         ${variantStyles[variant]}
         ${animated ? 'animate-reveal-up' : ''}
         ${isClickable ? 'cursor-pointer hover:border-indigo-200 dark:hover:border-indigo-800 hover:shadow-md transition-all' : ''}
@@ -76,7 +76,7 @@ export function StatCard({
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <Label className="text-slate-500 dark:text-slate-500">
+          <Label className="text-slate-500 dark:text-slate-400">
             {label}
           </Label>
 
@@ -95,7 +95,7 @@ export function StatCard({
                 invertColors={invertTrend}
               />
               {trendLabel && (
-                <span className="text-xs text-slate-500 dark:text-slate-500">
+                <span className="text-xs text-slate-500 dark:text-slate-400">
                   {trendLabel}
                 </span>
               )}
@@ -136,7 +136,7 @@ export function MiniStat({
 }: MiniStatProps) {
   return (
     <div className={`flex items-center justify-between py-2 ${className}`}>
-      <span className="text-sm text-slate-600 dark:text-slate-500">{label}</span>
+      <span className="text-sm text-slate-600 dark:text-slate-400">{label}</span>
       <div className="flex items-center gap-2">
         <span className="text-sm font-semibold text-slate-900 dark:text-white tabular-nums">
           {value}

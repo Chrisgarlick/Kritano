@@ -20,7 +20,7 @@ featured: false
 
 Have you ever wondered why your website takes so long to load, even though there's "not that much on it"? Nine times out of ten, when I dig into the data, the answer is the same: images. Massive, uncompressed, incorrectly sized images that are silently dragging your entire site down.
 
-From our PagePulser audits, unoptimised images show up on **83% of websites** — making them the single most common performance issue by a significant margin. And the fix is usually straightforward, doesn't cost anything, and can cut your page load time in half. If you're only going to do one thing to speed up your website, this is the one.
+From our Kritano audits, unoptimised images show up on **83% of websites** — making them the single most common performance issue by a significant margin. And the fix is usually straightforward, doesn't cost anything, and can cut your page load time in half. If you're only going to do one thing to speed up your website, this is the one.
 
 ## Why Images Are the #1 Performance Bottleneck
 
@@ -139,7 +139,7 @@ Notice the `width` and `height` attributes — these tell the browser how much s
 
 ## The Impact: A Real Before and After
 
-Here's what image optimisation typically looks like in practice, based on what we see in PagePulser audits:
+Here's what image optimisation typically looks like in practice, based on what we see in Kritano audits:
 
 | Metric | Before | After | Change |
 |--------|--------|-------|--------|
@@ -155,12 +155,12 @@ Image optimisation isn't glamorous. It's not a redesign, it's not a new feature,
 
 In my honest opinion, if your website is slow and you haven't optimised your images yet, stop everything else and do this first. It's the highest return on time you'll get.
 
-If you want to see exactly which images on your site need attention, run an audit on PagePulser. The performance report flags unoptimised images, missing lazy loading, and opportunities for format improvements — so you know precisely where to start.
+If you want to see exactly which images on your site need attention, run an audit on Kritano. The performance report flags unoptimised images, missing lazy loading, and opportunities for format improvements — so you know precisely where to start.
 
 <!-- Internal linking suggestions:
 - Link "Core Web Vitals" or "LCP" to the CWV plain-English guide
 - Link "alt text" or alt attribute in code examples to the complete guide to image alt text post
 - Link "search rankings" to the accessibility and SEO data post
 - Link "performance score" to the website launch checklist post
-- Link "PagePulser audit" to the main product/pricing page
+- Link "Kritano audit" to the main product/pricing page
 -->

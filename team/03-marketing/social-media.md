@@ -26,7 +26,7 @@ The blog is the long-term SEO engine. Every post should target a specific keywor
 | Security | Security headers, HTTPS, CSP, Google Dorking explained | "website security headers guide", "CSP header explained" |
 | Performance | Core Web Vitals, image optimisation, load speed | "core web vitals 2026", "website performance audit" |
 | Content Quality | E-E-A-T signals, AI content detection, readability | "E-E-A-T scoring tool", "content quality audit" |
-| Product / Comparison | PagePulser vs X, case studies, feature deep-dives | "pagepulser vs lighthouse", "website audit tool comparison" |
+| Product / Comparison | Kritano vs X, case studies, feature deep-dives | "kritano vs lighthouse", "website audit tool comparison" |
 
 **Rules:**
 - Every post includes at least one inline CTA ("Run a free audit on your site — no card required")
@@ -81,7 +81,7 @@ Instagram is for visual brand building and reaching non-technical decision-maker
 - Use the `/draw` skill or Canva templates for consistent visual identity
 
 **Hashtags (rotate from pool):**
-`#WebAccessibility #WCAG #a11y #WebDev #SEO #CoreWebVitals #WebDesign #DigitalAgency #FreelanceWebDev #WebsiteAudit #EAA #PagePulser #WebPerformance #SecurityHeaders #UXDesign #InclusiveDesign`
+`#WebAccessibility #WCAG #a11y #WebDev #SEO #CoreWebVitals #WebDesign #DigitalAgency #FreelanceWebDev #WebsiteAudit #EAA #Kritano #WebPerformance #SecurityHeaders #UXDesign #InclusiveDesign`
 
 **Engagement (daily, 10 min):**
 - Reply to every comment
@@ -130,7 +130,7 @@ Reddit is high-trust, high-intent, but actively hostile to self-promotion. The a
 
 | Subreddit | Members | Relevance | Approach |
 |---|---|---|---|
-| r/webdev | 2.3M | Core audience — developers who build and maintain sites | Answer technical questions; mention PagePulser only when genuinely relevant |
+| r/webdev | 2.3M | Core audience — developers who build and maintain sites | Answer technical questions; mention Kritano only when genuinely relevant |
 | r/SEO | 230K | SEO professionals evaluating audit tools | Share SEO insights; respond to "what tools do you use?" threads |
 | r/accessibility | 30K | Accessibility specialists and advocates | High credibility required — never promote, only contribute expertise |
 | r/webdesign | 700K | Designers who care about performance and UX | Share design-adjacent audit findings |
@@ -139,7 +139,7 @@ Reddit is high-trust, high-intent, but actively hostile to self-promotion. The a
 
 **Rules:**
 - Read and follow each subreddit's rules before posting. Many ban self-promotion outright.
-- Spend 2 weeks commenting helpfully before ever mentioning PagePulser.
+- Spend 2 weeks commenting helpfully before ever mentioning Kritano.
 - When you do mention it, be transparent: "I built a tool that does this — [link]" is fine. "Check out this amazing tool!" is not.
 - Set a Reddit alert (or manually check 3x/week) for mentions of: "website audit", "accessibility checker", "WCAG tool", "site audit tool".
 
@@ -154,12 +154,12 @@ Reddit is high-trust, high-intent, but actively hostile to self-promotion. The a
 Indie Hackers is the bootstrapped SaaS community. The audience is founders, but many are also potential customers (they all have websites).
 
 **Setup:**
-1. Create a PagePulser product page on Indie Hackers
+1. Create a Kritano product page on Indie Hackers
 2. Post monthly revenue milestones with full transparency (MRR, customer count, what worked, what didn't)
 3. Engage in the "SaaS" and "Marketing" groups
 
 **Format for milestone posts:**
-- Headline: "PagePulser — Month X: £[MRR] MRR, [customers] customers"
+- Headline: "Kritano — Month X: £[MRR] MRR, [customers] customers"
 - Body: What shipped, what grew, what failed, one specific lesson learned
 - Always include a concrete takeaway other founders can use
 - End with what's planned next month
@@ -180,7 +180,7 @@ Hacker News is not a regular posting channel. It's a launch weapon.
 3. **When a relevant news story breaks** and you can offer informed commentary (e.g., a major EAA enforcement action, a high-profile accessibility lawsuit)
 
 **Show HN post format:**
-- Title: "Show HN: PagePulser — Website health auditing across accessibility, SEO, security, and performance"
+- Title: "Show HN: Kritano — Website health auditing across accessibility, SEO, security, and performance"
 - Include: what it does, what's different, tech stack, link to free tier
 - Be in the comments within 5 minutes of posting. Respond to every comment for the first 24 hours.
 

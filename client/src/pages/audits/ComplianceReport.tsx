@@ -258,7 +258,7 @@ export default function ComplianceReportPage() {
   return (
     <DashboardLayout>
       <Helmet>
-        <title>EAA Compliance Report | PagePulser</title>
+        <title>EAA Compliance Report | Kritano</title>
       </Helmet>
 
       <div className="max-w-5xl mx-auto space-y-6">

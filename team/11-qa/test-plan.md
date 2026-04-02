@@ -1,4 +1,4 @@
-# Test Plan — PagePulser Iteration 2
+# Test Plan — Kritano Iteration 2
 
 **Date:** 2026-03-25
 **Scope:** CQS, Fix Snippets, EAA Compliance Passport

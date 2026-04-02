@@ -3,7 +3,7 @@ title: "Why Accessible Websites Rank Higher: The Data Behind Accessibility and S
 slug: "why-accessible-websites-rank-higher"
 date: "2026-03-18"
 author: "Chris Garlick"
-description: "Data from 5,000 PagePulser audits shows a clear link between accessibility and SEO scores. Here's why fixing one improves the other — and what to do about it."
+description: "Data from 5,000 Kritano audits shows a clear link between accessibility and SEO scores. Here's why fixing one improves the other — and what to do about it."
 keyword: "accessibility and SEO"
 category: "seo"
 tags:
@@ -20,13 +20,13 @@ featured: false
 
 If you've ever been told that [accessibility and SEO](/blog/accessibility-seo-performance-why-you-shouldnt-choose) are two separate things — two different budgets, two different specialists, two different priorities — I'd like to show you some data that says otherwise.
 
-After auditing thousands of websites through PagePulser, one pattern has become impossible to ignore: websites that score well on accessibility almost always score well on SEO. Not sometimes. Not roughly. Consistently, measurably, and by a significant margin.
+After auditing thousands of websites through Kritano, one pattern has become impossible to ignore: websites that score well on accessibility almost always score well on SEO. Not sometimes. Not roughly. Consistently, measurably, and by a significant margin.
 
 This isn't a coincidence. There's a clear technical reason for the overlap, and understanding it could change how you prioritise your website investment.
 
 ## The Numbers From 5,000 Audits
 
-We pulled the data from our first 5,000 PagePulser audits to see whether the pattern I'd been noticing anecdotally actually held up in the numbers. It did — convincingly.
+We pulled the data from our first 5,000 Kritano audits to see whether the pattern I'd been noticing anecdotally actually held up in the numbers. It did — convincingly.
 
 | Accessibility Score | Average SEO Score |
 |---|---|
@@ -118,7 +118,7 @@ The web industry has spent years treating accessibility and SEO as separate disc
 
 Investing in accessibility isn't just the right thing to do — it's an SEO strategy. And investing in SEO, done properly, is an accessibility strategy. The sooner businesses stop treating them as competing priorities, the better their websites will perform for everyone.
 
-If you want to see how your accessibility and SEO scores relate on your own site — and find the specific fixes that improve both — run a free audit on PagePulser. It checks both in one scan and shows you exactly where the overlap is.
+If you want to see how your accessibility and SEO scores relate on your own site — and find the specific fixes that improve both — run a free audit on Kritano. It checks both in one scan and shows you exactly where the overlap is.
 
 <!-- Internal linking suggestions:
 - Link "alt text" to the complete guide to image alt text post
@@ -127,5 +127,5 @@ If you want to see how your accessibility and SEO scores relate on your own site
 - Link "WCAG" or "accessibility regulations" to the web accessibility 2026 post
 - Link "heading structure" to the website launch checklist post
 - Link "accessibility vs SEO vs performance" to the holistic website health post
-- Link "PagePulser" to the main product/pricing page
+- Link "Kritano" to the main product/pricing page
 -->

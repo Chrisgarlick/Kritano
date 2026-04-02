@@ -1,6 +1,6 @@
 {
-  "name": "PagePulser",
-  "short_name": "PagePulser",
+  "name": "Kritano",
+  "short_name": "Kritano",
   "description": "Website auditing for SEO, accessibility, security, and performance",
   "start_url": "/",
   "display": "standalone",

@@ -3,7 +3,7 @@
 ## Combined Carousel Caption
 **Caption:** 3 days left. Then early access is gone.
 
-Right now, if you sign up for PagePulser you get:
+Right now, if you sign up for Kritano you get:
 - 50% off every plan, locked in for life
 - A free 30-day Agency trial — full access, no card required
 
@@ -11,7 +11,7 @@ Once we launch properly, these go away. This is a founding member deal and it wo
 
 Link in bio to get in before it closes.
 
-**Hashtags:** #PagePulser #EarlyAccess #LaunchCountdown #3DaysLeft #WebAudit #SEO #WebAccessibility #A11y #WebSecurity #WebPerformance #CoreWebVitals #WCAG #WebDesign #WebDev #DigitalMarketing #SaaS #StartupLaunch #FoundingMember #WebsiteHealth #HalfPrice
+**Hashtags:** #Kritano #EarlyAccess #LaunchCountdown #3DaysLeft #WebAudit #SEO #WebAccessibility #A11y #WebSecurity #WebPerformance #CoreWebVitals #WCAG #WebDesign #WebDev #DigitalMarketing #SaaS #StartupLaunch #FoundingMember #WebsiteHealth #HalfPrice
 
 ---
 
@@ -20,7 +20,7 @@ Link in bio to get in before it closes.
 
 Link in bio.
 
-**Hashtags:** #PagePulser #EarlyAccess #Countdown #WebsiteAudit #SEO #Accessibility #WebDesign #SaaS #FoundingMember #WebDev #HalfPrice #DigitalMarketing #WebPerformance #WCAG #CoreWebVitals #StartupLaunch #LastChance #LinkInBio
+**Hashtags:** #Kritano #EarlyAccess #Countdown #WebsiteAudit #SEO #Accessibility #WebDesign #SaaS #FoundingMember #WebDev #HalfPrice #DigitalMarketing #WebPerformance #WCAG #CoreWebVitals #StartupLaunch #LastChance #LinkInBio
 
 ---
 
@@ -32,7 +32,7 @@ Plus a free 30-day Agency trial with full access to every feature.
 
 3 days left. Link in bio.
 
-**Hashtags:** #PagePulser #EarlyAccess #FoundingMember #WebAudit #SEOTools #AccessibilityTesting #WebSecurity #PerformanceOptimisation #WebsiteHealth #HalfPriceForLife #SaaS #WebDev #DigitalAgency #WCAG #A11y #CoreWebVitals #LastChance #WebDesign #FreeTrial #LinkInBio
+**Hashtags:** #Kritano #EarlyAccess #FoundingMember #WebAudit #SEOTools #AccessibilityTesting #WebSecurity #PerformanceOptimisation #WebsiteHealth #HalfPriceForLife #SaaS #WebDev #DigitalAgency #WCAG #A11y #CoreWebVitals #LastChance #WebDesign #FreeTrial #LinkInBio
 
 ---
 
@@ -43,4 +43,4 @@ Plus a free 30-day Agency trial with full access to every feature.
 
 Don't sleep on this one. Link in bio.
 
-**Hashtags:** #PagePulser #HalfPriceForLife #EarlyAccess #FoundingMember #WebsiteAudit #SEO #WebAccessibility #WebSecurity #SiteSpeed #WebPerformance #WCAG #A11y #CoreWebVitals #WebDev #DigitalMarketing #SaaS #StartupLaunch #LastChance #LinkInBio #DontMissOut
+**Hashtags:** #Kritano #HalfPriceForLife #EarlyAccess #FoundingMember #WebsiteAudit #SEO #WebAccessibility #WebSecurity #SiteSpeed #WebPerformance #WCAG #A11y #CoreWebVitals #WebDev #DigitalMarketing #SaaS #StartupLaunch #LastChance #LinkInBio #DontMissOut

@@ -78,6 +78,7 @@ export interface SiteWithStatsRow extends Site {
   latest_security_score: number | null;
   latest_performance_score: number | null;
   url_count: string;
+  owner_tier?: string;
 }
 
 export interface ScoreHistoryEntry {
@@ -142,6 +143,7 @@ export interface GetUrlsOptions {
 export interface UserSiteAccess {
   site: SiteWithStats;
   permission: 'owner' | 'admin' | 'editor' | 'viewer';
+  ownerTier: string;
   sharedBy?: string;
   sharedAt?: Date;
 }

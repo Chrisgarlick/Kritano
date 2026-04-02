@@ -1,8 +1,8 @@
-# PagePulser UX/UI Comprehensive Upgrade Plan
+# Kritano UX/UI Comprehensive Upgrade Plan
 
 ## Executive Summary
 
-This plan transforms PagePulser from a functional audit tool into a **distinctive, memorable experience** that embodies the "vital signs monitoring" metaphor at every interaction. The current UI is solid but generic—this upgrade injects personality, motion, and premium polish while strictly adhering to brand guidelines.
+This plan transforms Kritano from a functional audit tool into a **distinctive, memorable experience** that embodies the "vital signs monitoring" metaphor at every interaction. The current UI is solid but generic—this upgrade injects personality, motion, and premium polish while strictly adhering to brand guidelines.
 
 **Design Direction**: *Clinical Elegance meets Living Data*
 - The precision of medical instrumentation
@@ -23,7 +23,7 @@ Create a `Typography` component system that enforces brand typography:
 
 ```tsx
 // components/ui/Typography.tsx
-<Display size="2xl">Feel the Pulse of Your Pages</Display>
+<Display size="2xl">Judge your website before others do</Display>
 <Heading size="lg">Recent Audits</Heading>
 <Body>Your comprehensive audit results...</Body>
 <Mono>https://example.com/page</Mono>
@@ -282,7 +282,7 @@ Upgrade from basic lists to:
 │  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ │
 │                                                         │
 │         ┌─────────────────────────────────┐            │
-│         │  Feel the Pulse                 │ ← Instrument Serif
+│         │  Judge your website                 │ ← Instrument Serif
 │         │  of Your Pages                  │   display-2xl
 │         │                                 │            │
 │         │  [AMBER GLOW CTA: Start Free]   │            │
@@ -320,7 +320,7 @@ Upgrade from basic lists to:
 │                                                         │
 │  Welcome back, Chris                    [+ New Audit]   │
 │  ─────────────────                                      │
-│  Here's the pulse of your sites                        │
+│  Here's the verdict on your sites                        │
 │                                                         │
 │  ┌─────────────────────────────────────────────────┐   │
 │  │  OVERALL HEALTH SCORE                           │   │
@@ -464,7 +464,7 @@ Upgrade from basic lists to:
 │              ───────────────                            │
 │                                                         │
 │         Run your first audit to see the                 │
-│         pulse of your website's health                  │
+│         verdict on your website's health                  │
 │                                                         │
 │                   [Run First Audit]                     │  ← Accent button
 │                                                         │
@@ -728,7 +728,7 @@ Based on this plan, the following should be added to BRAND_GUIDELINES.md:
 ## Motion Design
 
 ### The Pulse Signature
-PagePulser's signature motion is the "pulse" - a subtle, rhythmic animation that
+Kritano's signature motion is the "pulse" - a subtle, rhythmic animation that
 suggests continuous monitoring and vitality.
 
 ### Animation Tokens

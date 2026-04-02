@@ -11,7 +11,7 @@ This isn't optional. It's law.
 
 Here's the timeline, who it affects, and what you need to comply with. Save this for your next planning meeting.
 
-**Hashtags:** #EuropeanAccessibilityAct #EAA #WebAccessibility #WCAG #A11y #EURegulation #DigitalAccessibility #Compliance #PagePulser #WebDesign #InclusiveDesign #AccessibilityMatters #WebDevelopment #EULaw #AccessibleWeb #WebStandards #Ecommerce #DigitalInclusion
+**Hashtags:** #EuropeanAccessibilityAct #EAA #WebAccessibility #WCAG #A11y #EURegulation #DigitalAccessibility #Compliance #Kritano #WebDesign #InclusiveDesign #AccessibilityMatters #WebDevelopment #EULaw #AccessibleWeb #WebStandards #Ecommerce #DigitalInclusion
 
 ---
 
@@ -24,7 +24,7 @@ E-commerce, banking, telecoms, transport, media — if you operate in the EU and
 
 The deadline isn't shifting. Start auditing now.
 
-**Hashtags:** #EAA #EuropeanAccessibilityAct #WebAccessibility #WCAG #A11y #Compliance #EURegulation #PagePulser #DigitalAccessibility #WebDesign #InclusiveDesign #AccessibilityMatters #WebDevelopment #EULaw #LegalCompliance #TechRegulation #AccessibleWeb #WebAudit
+**Hashtags:** #EAA #EuropeanAccessibilityAct #WebAccessibility #WCAG #A11y #Compliance #EURegulation #Kritano #DigitalAccessibility #WebDesign #InclusiveDesign #AccessibilityMatters #WebDevelopment #EULaw #LegalCompliance #TechRegulation #AccessibleWeb #WebAudit
 
 ---
 
@@ -37,4 +37,4 @@ Every digital product sold in the EU needs to meet WCAG 2.1 AA by June 2025. Non
 
 Link in bio to audit your site before the deadline.
 
-**Hashtags:** #EuropeanAccessibilityAct #EAA #WebAccessibility #WCAG #A11y #Compliance #PagePulser #EURegulation #DigitalAccessibility #AccessibilityMatters #WebDesign #InclusiveDesign #WebDevelopment #EULaw #AccessibleWeb #WebAudit #SiteHealth #LegalCompliance #TechRegulation #DigitalInclusion
+**Hashtags:** #EuropeanAccessibilityAct #EAA #WebAccessibility #WCAG #A11y #Compliance #Kritano #EURegulation #DigitalAccessibility #AccessibilityMatters #WebDesign #InclusiveDesign #WebDevelopment #EULaw #AccessibleWeb #WebAudit #SiteHealth #LegalCompliance #TechRegulation #DigitalInclusion

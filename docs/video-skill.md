@@ -41,7 +41,7 @@ The skill shares the draw skill's brand language (colours, typography, atmospher
 │  │                    │   │
 │  └────────────────────┘   │
 │                           │
-│   PagePulser Wordmark     │  60px brand reserve
+│   Kritano Wordmark     │  60px brand reserve
 │      Safe Zone Bottom     │  40px padding
 └──────────────────────────┘
        1080 × 1920 px
@@ -49,7 +49,7 @@ The skill shares the draw skill's brand language (colours, typography, atmospher
 
 - **Canvas**: 1080 × 1920 px (9:16)
 - **Content padding**: 100px top, 100px sides, 100px bottom (above brand reserve)
-- **Brand reserve**: 60px fixed at bottom for PagePulser wordmark
+- **Brand reserve**: 60px fixed at bottom for Kritano wordmark
 - **Safe content area**: ~880 × 1660 px
 - **Centre-safe zone**: Keep critical text within inner 80% (864 × 1536 px) — some platforms crop edges
 
@@ -351,7 +351,7 @@ docs/video/
 
     <!-- Brand reserve -->
     <div class="brand-reserve">
-      <span class="wordmark">PagePulser</span>
+      <span class="wordmark">Kritano</span>
     </div>
 
   </div>
@@ -448,7 +448,7 @@ The same discipline from draw applies, adapted for the taller canvas:
 [Caption text, max 2200 chars, front-load the hook in first line]
 
 ### Hashtags
-#WebAccessibility #SEO #PagePulser #WebDesign #DigitalAccessibility ...
+#WebAccessibility #SEO #Kritano #WebDesign #DigitalAccessibility ...
 
 ---
 
@@ -480,7 +480,7 @@ Before outputting any video HTML file, verify:
 - [ ] Last frame visually matches first frame (loop test)
 - [ ] Atmospheric elements loop independently and infinitely
 - [ ] Content enters and exits cleanly — no jump cuts
-- [ ] Brand reserve (PagePulser wordmark) is present at bottom
+- [ ] Brand reserve (Kritano wordmark) is present at bottom
 - [ ] Text is large enough to read on a phone (minimum 24px for any text)
 - [ ] All colours are from the brand palette
 - [ ] No content overflows the safe area

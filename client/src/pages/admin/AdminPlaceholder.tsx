@@ -18,7 +18,7 @@ interface AdminPlaceholderProps {
 export default function AdminPlaceholder({ title, description, icon: Icon, phase }: AdminPlaceholderProps) {
   return (
     <AdminLayout>
-      <Helmet><title>{`Admin: ${title} | PagePulser`}</title></Helmet>
+      <Helmet><title>{`Admin: ${title} | Kritano`}</title></Helmet>
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <div className="w-16 h-16 rounded-2xl bg-white/[0.03] flex items-center justify-center mb-6">
           <Icon className="w-8 h-8 text-slate-500" />

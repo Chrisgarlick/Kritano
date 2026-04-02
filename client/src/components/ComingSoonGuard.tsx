@@ -81,10 +81,10 @@ export function ComingSoonGuard({ children }: { children: ReactNode }) {
       <div className="min-h-screen bg-white dark:bg-slate-950 flex items-center justify-center">
         <div className="flex items-center space-x-2">
           <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">P</span>
+            <span className="text-white font-bold text-lg">K</span>
           </div>
-          <span className="text-2xl font-bold text-slate-900 dark:text-white" style={{ fontFamily: "'Instrument Serif', serif" }}>
-            PagePulser
+          <span className="text-2xl font-bold text-slate-900 dark:text-white font-display">
+            Kritano
           </span>
         </div>
       </div>

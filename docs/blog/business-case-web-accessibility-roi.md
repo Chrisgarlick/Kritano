@@ -41,7 +41,7 @@ That last statistic is the one that should keep e-commerce managers up at night.
 
 A 2019 study by the Institute of Disability Studies found that UK retailers lost an estimated **$17.1 billion** in potential online revenue per year by failing to meet basic accessibility standards. That's not lost to the market — it's lost to competitors whose sites work.
 
-I've seen this firsthand in our PagePulser data. E-commerce sites that improved their accessibility scores from below 40 to above 70 consistently reported increased [conversion rates](/blog/improve-accessibility-score-20-points) — typically in the range of **10-25%** — even when no other changes were made. The fixes that drove those improvements (form labels, contrast, alt text, keyboard navigation) didn't just help disabled users. They removed friction for everyone.
+I've seen this firsthand in our Kritano data. E-commerce sites that improved their accessibility scores from below 40 to above 70 consistently reported increased [conversion rates](/blog/improve-accessibility-score-20-points) — typically in the range of **10-25%** — even when no other changes were made. The fixes that drove those improvements (form labels, contrast, alt text, keyboard navigation) didn't just help disabled users. They removed friction for everyone.
 
 ## The Legal Risk Is Real and Growing
 
@@ -72,7 +72,7 @@ The maths isn't complicated. Investing in accessibility proactively costs a frac
 
 This is the argument that often lands with marketing teams, because it connects accessibility directly to a metric they already care about: search rankings.
 
-From our PagePulser data across 5,000 audits, the correlation between [accessibility and SEO scores](/blog/why-accessible-websites-rank-higher) is **0.73** — a strong positive correlation. Sites that score well on accessibility consistently score well on SEO, and vice versa.
+From our Kritano data across 5,000 audits, the correlation between [accessibility and SEO scores](/blog/why-accessible-websites-rank-higher) is **0.73** — a strong positive correlation. Sites that score well on accessibility consistently score well on SEO, and vice versa.
 
 The technical reasons are well-documented:
 
@@ -140,7 +140,7 @@ If you've never tried navigating your site with a screen reader, do it once. Put
 
 But if the spreadsheet is what you need — the data is here. Accessibility isn't a cost. It's revenue, risk mitigation, search performance, customer satisfaction, and brand trust, all compounding together. The businesses that understand this aren't doing accessibility because they have to. They're doing it because it makes them money.
 
-If you want to see where your site stands and what the highest-impact fixes would be, run a free audit on PagePulser. It gives you scores across accessibility, SEO, security, and performance — so you can start building your own business case with your own data.
+If you want to see where your site stands and what the highest-impact fixes would be, run a free audit on Kritano. It gives you scores across accessibility, SEO, security, and performance — so you can start building your own business case with your own data.
 
 <!-- Internal linking suggestions:
 - Link "accessibility and SEO scores" to the why accessible websites rank higher post
@@ -149,5 +149,5 @@ If you want to see where your site stands and what the highest-impact fixes woul
 - Link "WCAG" to the WCAG 2.2 explainer post
 - Link "conversion rate improvements" to the improve score by 20 points post
 - Link "Purple Pound" data to the e-commerce accessibility guide
-- Link "PagePulser audit" to the main product/pricing page
+- Link "Kritano audit" to the main product/pricing page
 -->

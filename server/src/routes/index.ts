@@ -242,7 +242,7 @@ function generateBadgeSvg(scoreText: string, score: number | null): string {
     else scoreColor = '#ef4444'; // red
   }
 
-  const labelText = 'PagePulser';
+  const labelText = 'Kritano';
   const labelWidth = 72;
   const scoreWidth = scoreText.length > 4 ? 48 : 36;
   const totalWidth = labelWidth + scoreWidth;
@@ -552,7 +552,7 @@ router.get('/cold-unsubscribe', async (req: Request, res: Response): Promise<voi
 function unsubscribeHtml(message: string, success: boolean): string {
   const color = success ? '#059669' : '#dc2626';
   return `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Unsubscribe - PagePulser</title>
+<html><head><meta charset="utf-8"><title>Unsubscribe - Kritano</title>
 <style>body{font-family:Arial,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#f8fafc;}
 .card{background:white;border-radius:12px;padding:40px;max-width:400px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
 .icon{font-size:48px;margin-bottom:16px;}

@@ -511,7 +511,7 @@ A horizontal rule with a pulsing centre dot.
 
 ---
 
-## 10. PagePulser Wordmark (Brand Reserve)
+## 10. Kritano Wordmark (Brand Reserve)
 
 ### On light backgrounds
 ```html
@@ -523,7 +523,7 @@ A horizontal rule with a pulsing centre dot.
     text-transform: uppercase;
     color: #94A3B8;
     animation: wordmark-pulse 4s ease-in-out infinite;
-  ">PagePulser</span>
+  ">Kritano</span>
 </div>
 ```
 
@@ -537,7 +537,7 @@ A horizontal rule with a pulsing centre dot.
     text-transform: uppercase;
     color: #64748B;
     animation: wordmark-pulse 4s ease-in-out infinite;
-  ">PagePulser</span>
+  ">Kritano</span>
 </div>
 ```
 
@@ -551,7 +551,7 @@ A horizontal rule with a pulsing centre dot.
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.4);
     animation: wordmark-pulse 4s ease-in-out infinite;
-  ">PagePulser</span>
+  ">Kritano</span>
 </div>
 ```
 

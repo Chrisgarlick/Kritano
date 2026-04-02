@@ -5,16 +5,16 @@
 
 We've been building something to help you understand exactly how your website performs — SEO, accessibility, security, performance, and content — all in one scan.
 
-PagePulser launches next week. Early access is open now — link in bio.
+Kritano launches next week. Early access is open now — link in bio.
 
-**Hashtags:** #PagePulser #LaunchCountdown #WebAudit #SEO #WebAccessibility #A11y #WebSecurity #WebPerformance #SiteSpeed #CoreWebVitals #WCAG #WebDesign #WebDev #DigitalMarketing #StartupLaunch #SaaS #TechLaunch #EarlyAccess #WebsiteHealth #AccessibilityMatters
+**Hashtags:** #Kritano #LaunchCountdown #WebAudit #SEO #WebAccessibility #A11y #WebSecurity #WebPerformance #SiteSpeed #CoreWebVitals #WCAG #WebDesign #WebDev #DigitalMarketing #StartupLaunch #SaaS #TechLaunch #EarlyAccess #WebsiteHealth #AccessibilityMatters
 
 ---
 
 ## Slide 1 — Clean & Minimal
-**Caption:** The countdown has started. 7 days until PagePulser goes live. Get early access now — link in bio.
+**Caption:** The countdown has started. 7 days until Kritano goes live. Get early access now — link in bio.
 
-**Hashtags:** #PagePulser #LaunchDay #CountdownToLaunch #WebsiteAudit #SEO #Accessibility #WebDesign #SaaS #EarlyAccess #WebDev #StartupLife #DigitalMarketing #WebPerformance #WCAG #CoreWebVitals #TechStartup #ProductLaunch #LinkInBio
+**Hashtags:** #Kritano #LaunchDay #CountdownToLaunch #WebsiteAudit #SEO #Accessibility #WebDesign #SaaS #EarlyAccess #WebDev #StartupLife #DigitalMarketing #WebPerformance #WCAG #CoreWebVitals #TechStartup #ProductLaunch #LinkInBio
 
 ---
 
@@ -23,7 +23,7 @@ PagePulser launches next week. Early access is open now — link in bio.
 
 Early access is open. Link in bio to be first in.
 
-**Hashtags:** #PagePulser #WebAudit #SEOTools #AccessibilityTesting #WebSecurity #PerformanceOptimisation #ContentAnalysis #WebsiteHealth #LaunchCountdown #SaaS #WebDev #DigitalAgency #WCAG #A11y #CoreWebVitals #EarlyAccess #WebDesign #SiteAudit #TechLaunch #LinkInBio
+**Hashtags:** #Kritano #WebAudit #SEOTools #AccessibilityTesting #WebSecurity #PerformanceOptimisation #ContentAnalysis #WebsiteHealth #LaunchCountdown #SaaS #WebDev #DigitalAgency #WCAG #A11y #CoreWebVitals #EarlyAccess #WebDesign #SiteAudit #TechLaunch #LinkInBio
 
 ---
 
@@ -32,4 +32,4 @@ Early access is open. Link in bio to be first in.
 
 Early access is live — link in bio.
 
-**Hashtags:** #PagePulser #7DaysToGo #WebsiteAudit #SEO #WebAccessibility #SecurityHeaders #SiteSpeed #ContentQuality #WebPerformance #WCAG #A11y #CoreWebVitals #WebDev #DigitalMarketing #SaaS #StartupLaunch #EarlyAccess #WebDesign #TechProduct #LaunchWeek
+**Hashtags:** #Kritano #7DaysToGo #WebsiteAudit #SEO #WebAccessibility #SecurityHeaders #SiteSpeed #ContentQuality #WebPerformance #WCAG #A11y #CoreWebVitals #WebDev #DigitalMarketing #SaaS #StartupLaunch #EarlyAccess #WebDesign #TechProduct #LaunchWeek

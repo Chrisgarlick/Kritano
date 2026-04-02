@@ -3,6 +3,7 @@ import * as cheerio from 'cheerio';
 import type {
   SpiderConfig,
   CrawlResult,
+  DeviceType,
   DiscoveredLink,
   ResourceInfo,
   CookieInfo,
@@ -117,8 +118,9 @@ export class SpiderService {
 
   /**
    * Crawl a single page and extract information
+   * @param deviceType - 'desktop' (default) or 'mobile' for mobile viewport crawl
    */
-  async crawlPage(url: string): Promise<CrawlResult> {
+  async crawlPage(url: string, deviceType: DeviceType = 'desktop'): Promise<CrawlResult> {
     if (!this.browser) {
       throw new Error('Spider not initialized. Call initialize() first.');
     }
@@ -128,7 +130,7 @@ export class SpiderService {
     await this.timingController.waitBeforeRequest();
 
     // Generate a random browser fingerprint for this request
-    const fingerprint = generateFingerprint('desktop');
+    const fingerprint = generateFingerprint(deviceType);
 
     // Get proxy if available
     const proxy = this.proxyService?.getNextProxy();
@@ -244,7 +246,7 @@ export class SpiderService {
       );
 
       if (!isHtml) {
-        return this.createNonHtmlResult(url, statusCode, contentType, responseTimeMs, headers);
+        return this.createNonHtmlResult(url, statusCode, contentType, responseTimeMs, headers, deviceType);
       }
 
       // Get HTML content with challenge page detection and retry
@@ -321,6 +323,8 @@ export class SpiderService {
         headers,
         cookies,
         redirectChain,
+        deviceType,
+        viewport: fingerprint.viewport,
       };
     } finally {
       await context.close();
@@ -330,11 +334,11 @@ export class SpiderService {
   /**
    * Extract links from HTML
    */
-  private extractLinks($: cheerio.Root, baseUrl: string): DiscoveredLink[] {
+  private extractLinks($: ReturnType<typeof cheerio.load>, baseUrl: string): DiscoveredLink[] {
     const links: DiscoveredLink[] = [];
     const seen = new Set<string>();
 
-    $('a[href]').each((_, element) => {
+    $('a[href]').each((_: number, element: any) => {
       const href = $(element).attr('href');
       if (!href) return;
 
@@ -458,7 +462,8 @@ export class SpiderService {
     statusCode: number,
     contentType: string,
     responseTimeMs: number,
-    headers: Record<string, string>
+    headers: Record<string, string>,
+    deviceType: DeviceType = 'desktop'
   ): CrawlResult {
     return {
       url,
@@ -479,6 +484,8 @@ export class SpiderService {
       headers,
       cookies: [],
       redirectChain: [],
+      deviceType,
+      viewport: { width: deviceType === 'mobile' ? 390 : 1920, height: deviceType === 'mobile' ? 844 : 1080 },
     };
   }
 

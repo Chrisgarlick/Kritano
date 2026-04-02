@@ -220,12 +220,12 @@ export default function AnnouncementsPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Announcements | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Announcements | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Announcements</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">Announcements</h1>
             <p className="text-sm text-slate-500 mt-1">
               Create and schedule in-app announcements and banners
             </p>

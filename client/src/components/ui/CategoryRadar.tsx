@@ -91,7 +91,7 @@ export function CategoryRadar({
       const data = payload[0].payload;
       return (
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg px-3 py-2">
-          <p className="text-xs text-slate-500 dark:text-slate-500">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             {data.category}
           </p>
           <p className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -114,14 +114,14 @@ export function CategoryRadar({
           <PolarAngleAxis
             dataKey="category"
             tick={{ fontSize: 12, fill: 'currentColor' }}
-            className="text-slate-600 dark:text-slate-500"
+            className="text-slate-600 dark:text-slate-400"
           />
           {showValues && (
             <PolarRadiusAxis
               angle={90}
               domain={[0, 100]}
               tick={{ fontSize: 10, fill: 'currentColor' }}
-              className="text-slate-500 dark:text-slate-500"
+              className="text-slate-500 dark:text-slate-400"
               tickCount={5}
             />
           )}
@@ -212,7 +212,7 @@ export function CategoryComparison({
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-indigo-500" />
-                <span className="text-xs text-slate-500">Current</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">Current</span>
               </div>
               <span className="text-sm font-semibold text-slate-900 dark:text-white">
                 {data.current}
@@ -222,7 +222,7 @@ export function CategoryComparison({
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-slate-400" />
-                  <span className="text-xs text-slate-500">Previous</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">Previous</span>
                 </div>
                 <span className="text-sm font-semibold text-slate-900 dark:text-white">
                   {data.previous}
@@ -247,7 +247,7 @@ export function CategoryComparison({
           <PolarAngleAxis
             dataKey="category"
             tick={{ fontSize: 12, fill: 'currentColor' }}
-            className="text-slate-600 dark:text-slate-500"
+            className="text-slate-600 dark:text-slate-400"
           />
           <Tooltip content={<CustomTooltip />} />
 
@@ -313,7 +313,7 @@ export function CategoryBars({
         <div key={cat.key}>
           {showLabels && (
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm text-slate-600 dark:text-slate-500">{cat.label}</span>
+              <span className="text-sm text-slate-600 dark:text-slate-400">{cat.label}</span>
               <span className="text-sm font-semibold text-slate-900 dark:text-white tabular-nums">
                 {cat.value ?? '—'}
               </span>
@@ -364,7 +364,7 @@ export function SeverityDonut({
       >
         <div className="text-center">
           <div className="text-3xl font-semibold text-emerald-600 dark:text-emerald-400">0</div>
-          <div className="text-sm text-slate-500 dark:text-slate-500">No issues</div>
+          <div className="text-sm text-slate-500 dark:text-slate-400">No issues</div>
         </div>
       </div>
     );
@@ -425,7 +425,7 @@ export function SeverityDonut({
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center">
           <div className="text-2xl font-semibold text-slate-900 dark:text-white">{total}</div>
-          <div className="text-xs text-slate-500 dark:text-slate-500">issues</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400">issues</div>
         </div>
       </div>
     </div>
@@ -456,7 +456,7 @@ export function SeverityLegend({ data, className = '' }: SeverityLegendProps) {
         <div key={item.key} className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className={`w-3 h-3 rounded-full ${item.color}`} />
-            <span className="text-sm text-slate-600 dark:text-slate-500">{item.label}</span>
+            <span className="text-sm text-slate-600 dark:text-slate-400">{item.label}</span>
           </div>
           <span className="text-sm font-semibold text-slate-900 dark:text-white tabular-nums">
             {item.value}

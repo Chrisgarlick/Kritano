@@ -39,6 +39,14 @@ if (process.env.SENTRY_DSN) {
   console.log('🔍 Sentry error tracking enabled');
 }
 
+// Production safety checks
+if (process.env.NODE_ENV === 'production') {
+  if (!process.env.RESEND_WEBHOOK_SECRET) {
+    console.error('❌ RESEND_WEBHOOK_SECRET must be set in production. Exiting.');
+    process.exit(1);
+  }
+}
+
 // Initialize route dependencies (uses shared pool from db/index.ts)
 initializeRoutes(pool);
 
@@ -47,8 +55,13 @@ const app = express();
 // Trust first proxy (for correct req.ip behind reverse proxy)
 app.set('trust proxy', 1);
 
-// Response compression (gzip/brotli)
-app.use(compression());
+// Response compression (gzip/brotli) — skip SSE streams
+app.use(compression({
+  filter: (req, res) => {
+    if (req.headers.accept === 'text/event-stream') return false;
+    return compression.filter(req, res);
+  },
+}));
 
 // Security middleware (Helmet)
 configureSecurityMiddleware(app);
@@ -90,13 +103,13 @@ app.use('/api', globalRateLimiter);
 
 // Health check endpoint (no auth required)
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'pagepulser', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', service: 'kritano', timestamp: new Date().toISOString() });
 });
 
 // API version endpoint
 app.get('/api', (req, res) => {
   res.json({
-    name: 'PagePulser API',
+    name: 'Kritano API',
     version: '1.0.0',
     documentation: '/api/docs',
   });
@@ -162,7 +175,7 @@ const startServer = (port: number, attempt: number = 1): void => {
   });
 
   server.on('listening', async () => {
-    console.log(`🛡️  PagePulser server running on http://localhost:${port}`);
+    console.log(`🛡️  Kritano server running on http://localhost:${port}`);
     console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
     await testRedisConnection().catch(() => console.warn('⚠️  Redis not available — rate limiting will fail open'));
   });

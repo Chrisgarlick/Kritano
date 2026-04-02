@@ -29,7 +29,7 @@ export class SitemapParserService {
     maxSitemaps?: number;
     maxUrlsPerSitemap?: number;
   } = {}) {
-    this.userAgent = options.userAgent || 'PagePulser-Scanner/1.0';
+    this.userAgent = options.userAgent || 'KritanoBot/1.0';
     this.timeoutMs = options.timeoutMs || 30000;
     this.maxSitemaps = options.maxSitemaps || 10; // Limit nested sitemaps
     this.maxUrlsPerSitemap = options.maxUrlsPerSitemap || 50000; // Standard limit

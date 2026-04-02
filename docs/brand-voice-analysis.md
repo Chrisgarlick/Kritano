@@ -101,7 +101,7 @@ This is the site-wide aggregated profile stored on `audit_jobs`:
       { "phrase": "user experience", "count": 6 }
     ],
     "powerWords": ["seamless", "transform", "boost", "empower"],
-    "brandTerms": ["PagePulser", "Coffee Design"],  // Proper nouns recurring 3+ times
+    "brandTerms": ["Kritano", "Coffee Design"],  // Proper nouns recurring 3+ times
     "ctaLanguage": ["Get in touch", "Read more", "View Work"],
     "jargonTerms": ["SEO", "CMS", "HubSpot", "WCAG"],
     "readingLevel": "secondary-school"  // elementary | secondary-school | undergraduate | graduate | expert

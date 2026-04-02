@@ -115,12 +115,12 @@ export default function CampaignsPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Marketing Campaigns | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Marketing Campaigns | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Marketing Campaigns</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">Marketing Campaigns</h1>
             <p className="text-sm text-slate-500 mt-1">
               Manage campaign labels for organizing social content
             </p>

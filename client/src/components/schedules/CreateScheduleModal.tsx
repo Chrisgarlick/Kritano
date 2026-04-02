@@ -128,7 +128,7 @@ export function CreateScheduleModal({ isOpen, onClose, onCreated, tier = 'free' 
               required
               className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-md text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
             />
-            <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">Domain must be verified</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Domain must be verified</p>
           </div>
 
           {/* Name */}
@@ -167,7 +167,7 @@ export function CreateScheduleModal({ isOpen, onClose, onCreated, tier = 'free' 
                     `}
                   >
                     <span className="text-sm font-medium text-slate-900 dark:text-white">{opt.label}</span>
-                    <span className="text-xs text-slate-500 dark:text-slate-500">{opt.description}</span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">{opt.description}</span>
                     {!allowed && (
                       <span className="absolute top-1 right-1 text-[10px] px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-medium">
                         {opt.minTier}+

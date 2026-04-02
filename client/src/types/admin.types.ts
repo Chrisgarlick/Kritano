@@ -47,6 +47,7 @@ export interface AdminUser {
   last_login_at: string | null;
   organization_count: number;
   unsubscribed_all: boolean;
+  tier: SubscriptionTier;
 }
 
 export interface AdminOrganization {

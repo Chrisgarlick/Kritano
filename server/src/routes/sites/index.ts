@@ -79,6 +79,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
       updatedAt: s.site.updated_at,
       permission: s.permission,
       isOwner: s.permission === 'owner',
+      ownerTier: s.ownerTier,
       sharedBy: s.sharedBy,
       sharedAt: s.sharedAt,
       stats: {
@@ -156,7 +157,11 @@ router.get('/:siteId', loadSite, async (req: Request, res: Response): Promise<vo
     }
 
     // Get additional data
-    const scoreHistory = await getSiteScoreHistory(siteId, 30);
+    const [scoreHistory, ownerTierLimits] = await Promise.all([
+      getSiteScoreHistory(siteId, 30),
+      getSiteOwnerTierLimits(siteId),
+    ]);
+    const ownerTier = (ownerTierLimits as any)?.tier || 'free';
 
     res.json({
       site: {
@@ -183,6 +188,7 @@ router.get('/:siteId', loadSite, async (req: Request, res: Response): Promise<vo
       },
       permission: siteReq.sitePermission,
       isOwner: siteReq.sitePermission === 'owner',
+      ownerTier,
       scoreHistory: scoreHistory.map(s => ({
         date: s.date,
         seo: s.seo,
@@ -852,11 +858,11 @@ router.post(
         instructions: {
           dns: {
             type: 'TXT',
-            name: '_pagepulser',
+            name: '_kritano',
             value: token,
           },
           file: {
-            path: `/.well-known/pagepulser-verification.txt`,
+            path: `/.well-known/kritano-verification.txt`,
             content: token,
           },
         },
@@ -889,7 +895,7 @@ router.post(
         const response = await fetch(url, {
           signal: AbortSignal.timeout(15000),
           headers: {
-            'User-Agent': 'PagePulser/1.0 (Branding Extractor)',
+            'User-Agent': 'Kritano/1.0 (Branding Extractor)',
           },
         });
 
@@ -1058,7 +1064,7 @@ router.post(
         // Check DNS TXT record
         try {
           const dns = await import('dns/promises');
-          const records = await dns.resolveTxt(`_pagepulser.${site.domain}`);
+          const records = await dns.resolveTxt(`_kritano.${site.domain}`);
           verified = records.some(r => r.join('').includes(site.verification_token!));
         } catch {
           // DNS lookup failed
@@ -1067,7 +1073,7 @@ router.post(
       } else {
         // Check file
         try {
-          const url = `https://${site.domain}/.well-known/pagepulser-verification.txt`;
+          const url = `https://${site.domain}/.well-known/kritano-verification.txt`;
           const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
           if (response.ok) {
             const text = await response.text();
@@ -1089,8 +1095,8 @@ router.post(
         res.json({
           verified: false,
           message: method === 'dns'
-            ? `Could not find verification TXT record at _pagepulser.${site.domain}`
-            : `Could not find verification file at https://${site.domain}/.well-known/pagepulser-verification.txt`,
+            ? `Could not find verification TXT record at _kritano.${site.domain}`
+            : `Could not find verification file at https://${site.domain}/.well-known/kritano-verification.txt`,
         });
       }
     } catch (error: unknown) {

@@ -192,7 +192,7 @@ export function ActivityFeed({
 
               {/* Timestamp */}
               {showTimestamps && (
-                <span className="text-xs text-slate-500 dark:text-slate-500 whitespace-nowrap pt-1.5">
+                <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap pt-1.5">
                   {formatRelativeTime(activity.timestamp)}
                 </span>
               )}
@@ -238,7 +238,7 @@ export function CompactActivityList({
   }
 
   return (
-    <div className={`divide-y divide-slate-100 dark:divide-slate-800 ${className}`}>
+    <div className={`divide-y divide-slate-100 dark:divide-slate-700 ${className}`}>
       {displayActivities.map((activity, index) => {
         const config = activityConfig[activity.type];
         const Icon = config.icon;
@@ -257,7 +257,7 @@ export function CompactActivityList({
                 {activity.message}
               </Body>
             </div>
-            <span className="text-xs text-slate-500 whitespace-nowrap">
+            <span className="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap">
               {formatRelativeTime(activity.timestamp)}
             </span>
           </div>

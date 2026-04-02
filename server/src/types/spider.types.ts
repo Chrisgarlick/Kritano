@@ -20,8 +20,11 @@ export const DEFAULT_SPIDER_CONFIG: SpiderConfig = {
   timeoutMs: 30000,
   respectRobotsTxt: true,
   includeSubdomains: false,
-  userAgent: 'PagePulser-Scanner/1.0 (+https://pagepulser.com/bot)',
+  userAgent: 'KritanoBot/1.0 (+https://kritano.com/bot)',
 };
+
+// Device type for crawl passes
+export type DeviceType = 'desktop' | 'mobile';
 
 // Crawl result from a single page
 export interface CrawlResult {
@@ -43,6 +46,8 @@ export interface CrawlResult {
   headers: Record<string, string>;
   cookies: CookieInfo[];
   redirectChain: RedirectHop[];
+  deviceType: DeviceType;
+  viewport: { width: number; height: number };
 }
 
 // Redirect hop in a chain

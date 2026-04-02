@@ -32,7 +32,7 @@ I started doing this a few years ago and it transformed my close rate. Here's th
 
 Run a full audit 24-48 hours before your meeting. This gives you time to review the results and prepare your talking points rather than scrambling through data on the spot.
 
-PagePulser makes this straightforward — enter their URL, run the audit, and you've got scores across [accessibility](/blog/web-accessibility-2026-why-websites-still-failing), SEO, security, performance, and content quality in a few minutes. But the tool matters less than the preparation. The point is walking in with specifics.
+Kritano makes this straightforward — enter their URL, run the audit, and you've got scores across [accessibility](/blog/web-accessibility-2026-why-websites-still-failing), SEO, security, performance, and content quality in a few minutes. But the tool matters less than the preparation. The point is walking in with specifics.
 
 Review the results and identify the findings that will resonate most with this particular prospect. A law firm will care about [accessibility compliance](/blog/understanding-website-accessibility-scores) risk. An e-commerce site will care about [page speed](/blog/core-web-vitals-plain-english-guide) and conversion impact. A B2B company will care about SEO visibility.
 
@@ -121,13 +121,13 @@ The audit-first approach works because it flips the traditional agency dynamic. 
 
 I've seen agencies go from a 20% close rate to well over 50% simply by leading with data instead of promises. The audit becomes the proof that you know what you're talking about — and the natural starting point for a conversation about what to fix and how.
 
-If you're running an agency or freelancing and you're not auditing prospect websites before every meeting, you're leaving revenue on the table. Take a look at PagePulser — run a few prospect audits, walk into your next meeting with data, and see how differently the conversation goes.
+If you're running an agency or freelancing and you're not auditing prospect websites before every meeting, you're leaving revenue on the table. Take a look at Kritano — run a few prospect audits, walk into your next meeting with data, and see how differently the conversation goes.
 
 <!-- Internal linking suggestions:
 - Link "accessibility" to the web accessibility 2026 post
 - Link "Core Web Vitals" or "page speed" to the CWV explainer post
 - Link "security headers" to the complete guide to security headers post
 - Link "alt text" to the complete guide to image alt text post
-- Link "PDF report" to the PagePulser features/pricing page
+- Link "PDF report" to the Kritano features/pricing page
 - Link "accessibility compliance" to the understanding accessibility scores post
 -->

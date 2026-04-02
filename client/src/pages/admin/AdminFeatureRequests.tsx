@@ -90,7 +90,7 @@ export default function AdminFeatureRequests() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Feature Requests | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Feature Requests | Kritano</title></Helmet>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>

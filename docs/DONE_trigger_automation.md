@@ -49,7 +49,7 @@ CREATE TABLE cold_prospect_unsubscribes (
 ```
 
 **Seed outreach templates** (insert into `email_templates` with category `'cold_outreach'`):
-- `cold_outreach_initial` — First contact: introduces PagePulser, offers free audit
+- `cold_outreach_initial` — First contact: introduces Kritano, offers free audit
 - `cold_outreach_followup` — Follow-up 3 days later if no open/click
 
 ---
@@ -68,7 +68,7 @@ Template variables available:
 - `{{contactName}}` or `"there"` fallback
 - `{{domain}}` — their website
 - `{{qualityScore}}` — their site score
-- `{{auditUrl}}` — link to run free audit on PagePulser
+- `{{auditUrl}}` — link to run free audit on Kritano
 - `{{unsubscribeUrl}}` — one-click unsubscribe
 
 ### 2. Add 5th Polling Loop to Cold Prospect Worker

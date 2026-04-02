@@ -2,7 +2,7 @@
 
 ## Overview
 
-PagePulser currently uses three server-set cookies (access_token, refresh_token, csrf_token) — all strictly necessary for authentication and security. There is no analytics, tracking, or marketing cookie infrastructure. The app uses localStorage only for theme preference (non-tracking).
+Kritano currently uses three server-set cookies (access_token, refresh_token, csrf_token) — all strictly necessary for authentication and security. There is no analytics, tracking, or marketing cookie infrastructure. The app uses localStorage only for theme preference (non-tracking).
 
 This plan implements a GDPR/UK-GDPR/PECR-compliant cookie consent banner system that:
 1. Classifies cookies into categories (Necessary, Analytics, Marketing)
@@ -53,7 +53,7 @@ This plan implements a GDPR/UK-GDPR/PECR-compliant cookie consent banner system 
 
 | Key | Purpose | Consent Required? |
 |-----|---------|-------------------|
-| `pagepulser-theme` | Theme preference | No (functional) |
+| `kritano-theme` | Theme preference | No (functional) |
 | `sidebar-collapsed` | UI preference | No (functional) |
 | `pp-cookie-consent` | Consent state itself | No (exempt — consent mechanism) |
 
@@ -118,7 +118,7 @@ export const COOKIE_CATEGORIES = {
   },
   analytics: {
     label: 'Analytics',
-    description: 'Help us understand how visitors interact with our website by collecting anonymous usage data. This helps us improve PagePulser for everyone.',
+    description: 'Help us understand how visitors interact with our website by collecting anonymous usage data. This helps us improve Kritano for everyone.',
     required: false,
     cookies: ['_ga', '_gid', '_gat'],
   },
@@ -248,7 +248,7 @@ This is the core of the system. The context:
 │                                                                     │
 │  We use essential cookies for security and authentication.          │
 │  With your permission, we'd also like to use analytics cookies      │
-│  to understand how you use PagePulser so we can make it better.    │
+│  to understand how you use Kritano so we can make it better.    │
 │                                                                     │
 │  [Manage Preferences]    [Reject All]    [Accept All]              │
 │                                                                     │
@@ -303,7 +303,7 @@ Full modal with granular toggle controls:
 │                                                                 │
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │  ○ Analytics                              [Toggle]      │   │
-│  │  Help us understand how visitors use PagePulser by      │   │
+│  │  Help us understand how visitors use Kritano by      │   │
 │  │  collecting anonymous usage data.                       │   │
 │  │  Cookies: _ga, _gid, _gat                              │   │
 │  └─────────────────────────────────────────────────────────┘   │

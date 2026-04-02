@@ -45,10 +45,10 @@ export default function AdminActivityPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Activity | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Activity | Kritano</title></Helmet>
       {/* Page Title */}
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
+          <h1 className="text-3xl font-bold text-white tracking-tight font-display">
             Admin Activity Log
           </h1>
           <Button size="sm" variant="outline" onClick={loadActivities}>

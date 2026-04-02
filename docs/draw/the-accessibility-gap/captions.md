@@ -13,7 +13,7 @@ Accessibility isn't a nice-to-have. It's the bare minimum.
 
 Save this one. Share it with your team.
 
-**Hashtags:** #WebAccessibility #A11y #WCAG #AccessibilityMatters #InclusiveDesign #PagePulser #WebDesign #DigitalAccessibility #WebDevelopment #UXDesign #AccessibleWeb #DisabilityInclusion #WebStandards #ADACompliance #EqualAccess #WebAudit #SiteHealth #TechForGood #DevTips #DigitalInclusion
+**Hashtags:** #WebAccessibility #A11y #WCAG #AccessibilityMatters #InclusiveDesign #Kritano #WebDesign #DigitalAccessibility #WebDevelopment #UXDesign #AccessibleWeb #DisabilityInclusion #WebStandards #ADACompliance #EqualAccess #WebAudit #SiteHealth #TechForGood #DevTips #DigitalInclusion
 
 ---
 
@@ -26,7 +26,7 @@ The accessibility gap in four numbers.
 
 Every one of these is fixable. Start with an audit — link in bio.
 
-**Hashtags:** #WebAccessibility #A11y #WCAG #AccessibilityMatters #InclusiveDesign #PagePulser #WebDesign #WebDevelopment #UXDesign #AccessibleWeb #DigitalAccessibility #WebAudit #SiteHealth #WebStandards #ADACompliance
+**Hashtags:** #WebAccessibility #A11y #WCAG #AccessibilityMatters #InclusiveDesign #Kritano #WebDesign #WebDevelopment #UXDesign #AccessibleWeb #DigitalAccessibility #WebAudit #SiteHealth #WebStandards #ADACompliance
 
 ---
 
@@ -39,7 +39,7 @@ The web was built to be for everyone — but almost no one is building it that w
 
 Time to close the gap.
 
-**Hashtags:** #WebAccessibility #WCAG #A11y #AccessibilityMatters #InclusiveDesign #PagePulser #DigitalAccessibility #WebDesign #WebDevelopment #UXDesign #TechForGood #AccessibleWeb #DisabilityAwareness #WebStandards #EqualAccess
+**Hashtags:** #WebAccessibility #WCAG #A11y #AccessibilityMatters #InclusiveDesign #Kritano #DigitalAccessibility #WebDesign #WebDevelopment #UXDesign #TechForGood #AccessibleWeb #DisabilityAwareness #WebStandards #EqualAccess
 
 ---
 
@@ -52,4 +52,4 @@ Here's what the accessibility gap actually looks like — in numbers that are ha
 
 If your site hasn't been audited for accessibility, now's the time. Link in bio.
 
-**Hashtags:** #WebAccessibility #A11y #WCAG #PagePulser #InclusiveDesign #AccessibilityMatters #DigitalAccessibility #WebDesign #WebAudit #WebDevelopment #UXDesign #AccessibleWeb #DisabilityInclusion #ADACompliance #WebStandards #TechForGood #DevTips #SiteHealth #EqualAccess #DigitalInclusion
+**Hashtags:** #WebAccessibility #A11y #WCAG #Kritano #InclusiveDesign #AccessibilityMatters #DigitalAccessibility #WebDesign #WebAudit #WebDevelopment #UXDesign #AccessibleWeb #DisabilityInclusion #ADACompliance #WebStandards #TechForGood #DevTips #SiteHealth #EqualAccess #DigitalInclusion

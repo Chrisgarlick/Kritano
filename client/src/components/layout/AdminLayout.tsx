@@ -8,7 +8,7 @@ import { type ReactNode, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard, Users, Building2, Bug, Lightbulb, Activity, CalendarClock,
-  UserSearch, Zap, Mail, Send, Crosshair, Gift,
+  UserSearch, Zap, Mail, Send, Crosshair, Gift, ClipboardList,
   Share2, Tags,
   FileText, Image, BookOpen, Megaphone, Trophy,
   Funnel, TrendingUp, DollarSign, BarChart3,
@@ -57,6 +57,7 @@ const navGroups: NavGroup[] = [
       { href: '/admin/email/templates', label: 'Email Templates', icon: Mail },
       { href: '/admin/email/campaigns', label: 'Campaigns', icon: Send },
       { href: '/admin/cold-prospects', label: 'Cold Prospects', icon: Crosshair },
+      { href: '/admin/outreach-log', label: 'Outreach Log', icon: ClipboardList },
       { href: '/admin/referrals', label: 'Referrals', icon: Gift },
     ],
   },
@@ -126,7 +127,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-[13px] font-semibold text-white tracking-tight leading-none">PagePulser</p>
+            <p className="text-[13px] font-semibold text-white tracking-tight leading-none">Kritano</p>
             <p className="text-[10px] text-indigo-300/70 font-medium mt-0.5">Admin Console</p>
           </div>
         </div>

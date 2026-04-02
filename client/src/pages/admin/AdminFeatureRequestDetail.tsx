@@ -174,7 +174,7 @@ export default function AdminFeatureRequestDetail() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Feature Request | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Feature Request | Kritano</title></Helmet>
       {/* Header */}
       <div className="mb-6">
         <Link

@@ -22,7 +22,7 @@ You've run a speed test, you've got your numbers, and now you're staring at them
 
 Context matters enormously when it comes to website performance benchmarks. A score that's excellent for a media-heavy e-commerce shop might be mediocre for a simple service business site. And Google's thresholds — while useful — don't account for the reality that some types of websites are inherently heavier than others.
 
-I've pulled together performance data from publicly available sources like the HTTP Archive, Google's Chrome User Experience Report, and patterns from our own PagePulser audits to give you realistic benchmarks by industry. Not theoretical ideals — actual numbers that reflect what sites in each sector are doing in the real world.
+I've pulled together performance data from publicly available sources like the HTTP Archive, Google's Chrome User Experience Report, and patterns from our own Kritano audits to give you realistic benchmarks by industry. Not theoretical ideals — actual numbers that reflect what sites in each sector are doing in the real world.
 
 ## The Universal Benchmarks
 
@@ -173,12 +173,12 @@ Knowing that your site scores 52 on performance doesn't mean much in isolation. 
 
 In my honest opinion, every industry in this list has room for improvement. The averages are, frankly, poor across the board. That's bad news for the web in general, but it's an opportunity for you — because hitting even the top 25% doesn't require heroic effort. Image compression, script auditing, decent hosting, and lazy loading will get most sites there.
 
-If you want to see exactly where your site stands and how it compares, run an audit on PagePulser. Your performance report breaks down every Core Web Vitals metric alongside your other scores — so you can see the full picture and know precisely where to start.
+If you want to see exactly where your site stands and how it compares, run an audit on Kritano. Your performance report breaks down every Core Web Vitals metric alongside your other scores — so you can see the full picture and know precisely where to start.
 
 <!-- Internal linking suggestions:
 - Link "Core Web Vitals" or "LCP, INP, CLS" to the CWV plain-English guide
 - Link "image compression" or "WebP" to the image optimisation post
 - Link "third-party scripts" to the website launch checklist post
 - Link "accessibility" to the e-commerce accessibility guide
-- Link "PagePulser audit" to the main product/pricing page
+- Link "Kritano audit" to the main product/pricing page
 -->

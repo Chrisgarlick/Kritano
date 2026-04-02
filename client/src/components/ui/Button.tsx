@@ -33,20 +33,20 @@ const variants: Record<ButtonVariant, string> = {
   primary: `
     bg-indigo-600 text-white
     hover:bg-indigo-700
-    focus:ring-indigo-500
+    focus:ring-indigo-500/20
     shadow-sm hover:shadow-md
   `,
   secondary: `
-    bg-white border border-slate-200
-    text-slate-700
-    hover:bg-slate-50
-    focus:ring-indigo-500
+    bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700
+    text-slate-700 dark:text-slate-200
+    hover:bg-slate-50 dark:hover:bg-slate-700
+    focus:ring-indigo-500/20
     shadow-sm
   `,
   dark: `
     bg-slate-600 text-white
     hover:bg-slate-700
-    focus:ring-slate-500
+    focus:ring-slate-500/20
     shadow-sm
   `,
   outline: `
@@ -54,24 +54,24 @@ const variants: Record<ButtonVariant, string> = {
     text-slate-700 dark:text-slate-200
     hover:bg-slate-50 dark:hover:bg-slate-800
     hover:border-slate-400 dark:hover:border-slate-500
-    focus:ring-indigo-500
+    focus:ring-indigo-500/20
   `,
   ghost: `
     text-slate-700 dark:text-slate-200
     hover:bg-slate-100 dark:hover:bg-slate-800
-    focus:ring-slate-500
+    focus:ring-slate-500/20
   `,
   danger: `
     bg-red-600 text-white
     hover:bg-red-700
-    focus:ring-red-500
+    focus:ring-red-500/20
     shadow-sm
   `,
   accent: `
     bg-gradient-to-r from-amber-400 to-amber-500
     text-slate-900 font-semibold
     hover:from-amber-500 hover:to-amber-600
-    focus:ring-amber-500
+    focus:ring-amber-500/20
     shadow-md shadow-amber-500/25
     hover:shadow-lg hover:shadow-amber-500/30
     hover:-translate-y-0.5
@@ -80,7 +80,7 @@ const variants: Record<ButtonVariant, string> = {
   glow: `
     bg-indigo-600 text-white
     hover:bg-indigo-700
-    focus:ring-indigo-500
+    focus:ring-indigo-500/20
     shadow-md shadow-indigo-500/25
     animate-pulse-glow
   `,

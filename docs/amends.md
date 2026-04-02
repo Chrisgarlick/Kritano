@@ -1,4 +1,4 @@
-# PagePulser — Amends List
+# Kritano — Amends List
 
 Generated from full test run on 2026-03-15 (Parts 1–32).
 
@@ -71,7 +71,7 @@ Generated from full test run on 2026-03-15 (Parts 1–32).
 ## Now Tested (This Round)
 
 - [x] **LIA Compliance** (Part 18.6) — PASS: Generic business emails only (info@, support@), unsubscribe links in templates, data source disclosure text, single contact per domain
-- [x] **Email lifecycle flows** (Part 24) — PASS: 6 emails verified in Mailpit — registration verification, password reset, audit completed, referral invites. All have PagePulser branding, personalized content, proper CTAs, security notices
+- [x] **Email lifecycle flows** (Part 24) — PASS: 6 emails verified in Mailpit — registration verification, password reset, audit completed, referral invites. All have Kritano branding, personalized content, proper CTAs, security notices
 - [x] **API v1 endpoints** (Part 25) — PASS (with caveats): GET /audits (paginated), GET /audits/:id (HATEOAS _links), GET /audits/:id/findings (scope enforcement), auth rejection (401), rate limit headers (X-RateLimit-Limit: 100). Bugs: POST /audits blocked by CSRF, GET /sites 404
 - [x] **Tier enforcement** (Part 26) — PASS: Free tier correctly shows 50 pages/audit, 1 site, 1 concurrent audit. File Extraction disabled ("Starter plan required"). Unverified domain caps to 3 pages with consent dialog. Backend enforces limits via Math.min(). 5 tiers displayed with correct pricing.
 - [x] **GDPR account management** (Part 30) — PASS: Migration 089 ran. Settings page shows "Download My Data" and "Delete Account" (30-day grace period) sections.

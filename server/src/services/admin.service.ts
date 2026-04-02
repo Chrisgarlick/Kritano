@@ -235,7 +235,11 @@ export async function listUsers(
       u.created_at,
       u.last_login_at,
       (SELECT COUNT(*) FROM organization_members om WHERE om.user_id = u.id) as organization_count,
-      COALESCE(ep.unsubscribed_all, false) AS unsubscribed_all
+      COALESCE(ep.unsubscribed_all, false) AS unsubscribed_all,
+      COALESCE(
+        (SELECT s.tier FROM subscriptions s WHERE s.user_id = u.id AND s.status IN ('active', 'trialing') ORDER BY s.created_at DESC LIMIT 1),
+        'free'
+      ) AS tier
      FROM users u
      LEFT JOIN email_preferences ep ON ep.user_id = u.id
      ${whereClause}
@@ -277,6 +281,26 @@ export async function updateUserSuperAdmin(userId: string, isSuperAdmin: boolean
     'UPDATE users SET is_super_admin = $1 WHERE id = $2',
     [isSuperAdmin, userId]
   );
+}
+
+export async function updateUserTier(userId: string, tier: string): Promise<void> {
+  // Upsert the user's subscription — update if active/trialing exists, otherwise insert
+  const existing = await pool.query(
+    `SELECT id FROM subscriptions WHERE user_id = $1 AND status IN ('active', 'trialing') ORDER BY created_at DESC LIMIT 1`,
+    [userId]
+  );
+
+  if (existing.rows.length > 0) {
+    await pool.query(
+      `UPDATE subscriptions SET tier = $1, updated_at = NOW() WHERE id = $2`,
+      [tier, existing.rows[0].id]
+    );
+  } else {
+    await pool.query(
+      `INSERT INTO subscriptions (user_id, tier, status) VALUES ($1, $2, 'active')`,
+      [userId, tier]
+    );
+  }
 }
 
 export async function deleteUser(userId: string): Promise<void> {

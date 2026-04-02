@@ -5,7 +5,7 @@
 **Caption:**
 Launch day is coming. Are you in?
 
-**Hashtags:** #PagePulser #LaunchDay #WebAudit #SiteHealth #SEO #WebAccessibility #ComingSoon #BuildInPublic #StartupLife #ProductLaunch #WebDesign #FreeTools #TechStartup #SaaS #IndieHacker #WebDevelopment #Waitlist #GetReady
+**Hashtags:** #Kritano #LaunchDay #WebAudit #SiteHealth #SEO #WebAccessibility #ComingSoon #BuildInPublic #StartupLife #ProductLaunch #WebDesign #FreeTools #TechStartup #SaaS #IndieHacker #WebDevelopment #Waitlist #GetReady
 
 ---
 
@@ -16,7 +16,7 @@ Quick poll for launch day. Are you going to audit your website?
 
 Drop a comment if you're already on the waitlist.
 
-**Hashtags:** #PagePulser #LaunchDay #Poll #WebAudit #SiteHealth #SEO #WebAccessibility #ComingSoon #BuildInPublic #StartupLife #ProductLaunch #WebDesign #FreeTools #TechStartup #SaaS #IndieHacker #Waitlist
+**Hashtags:** #Kritano #LaunchDay #Poll #WebAudit #SiteHealth #SEO #WebAccessibility #ComingSoon #BuildInPublic #StartupLife #ProductLaunch #WebDesign #FreeTools #TechStartup #SaaS #IndieHacker #Waitlist
 
 ---
 
@@ -29,4 +29,4 @@ Yes / Already on the waitlist
 
 Either way — we're nearly there.
 
-**Hashtags:** #PagePulser #LaunchDay #Poll #WebAudit #ComingSoon #SiteHealth #SEO #WebAccessibility #BuildInPublic #StartupLife #ProductLaunch #TechStartup #SaaS #IndieHacker #FreeTools #WebDesign #Waitlist #GetReady
+**Hashtags:** #Kritano #LaunchDay #Poll #WebAudit #ComingSoon #SiteHealth #SEO #WebAccessibility #BuildInPublic #StartupLife #ProductLaunch #TechStartup #SaaS #IndieHacker #FreeTools #WebDesign #Waitlist #GetReady

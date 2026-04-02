@@ -61,11 +61,11 @@ export default function AdminSchedulesPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Schedules | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Schedules | Kritano</title></Helmet>
       <div className="p-6">
         <div className="flex items-center gap-3 mb-6">
           <CalendarClock className="w-6 h-6 text-indigo-400" />
-          <h1 className="text-2xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Scheduled Audits</h1>
+          <h1 className="text-2xl font-bold text-white tracking-tight font-display">Scheduled Audits</h1>
         </div>
 
         {/* Stats cards */}

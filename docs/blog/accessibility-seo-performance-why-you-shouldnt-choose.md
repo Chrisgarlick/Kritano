@@ -111,5 +111,5 @@ If you want to see how your site scores across accessibility, SEO, performance, 
 - Link "WCAG" or "accessibility" to the web accessibility 2026 post
 - Link "alt text" to the complete guide to image alt text post
 - Link "security headers" to the website security basics post
-- Link "single audit" or "comprehensive view" to the PagePulser audit/pricing page
+- Link "single audit" or "comprehensive view" to the Kritano audit/pricing page
 -->

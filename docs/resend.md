@@ -2,7 +2,7 @@
 
 ## Overview
 
-PagePulser uses a **dual-transport email system**: Mailpit (SMTP) for local development and Resend for production. This plan documents the full setup, configuration, and operational details for both environments.
+Kritano uses a **dual-transport email system**: Mailpit (SMTP) for local development and Resend for production. This plan documents the full setup, configuration, and operational details for both environments.
 
 **Current Status**: The core Resend integration is already implemented across 6 services, 11 database migrations, webhook handling, and a full admin API. This plan covers configuration, deployment steps, and remaining improvements.
 
@@ -71,7 +71,7 @@ Mailpit runs as part of `docker-compose.yml`:
 ```yaml
 mailpit:
   image: axllent/mailpit:latest
-  container_name: pagepulser-mailpit
+  container_name: kritano-mailpit
   restart: unless-stopped
   ports:
     - "8025:8025"  # Web UI
@@ -93,7 +93,7 @@ RESEND_API_KEY=
 RESEND_WEBHOOK_SECRET=
 
 # Sender and app URL
-EMAIL_FROM=PagePulser <noreply@pagepulser.com>
+EMAIL_FROM=Kritano <noreply@kritano.com>
 APP_URL=http://localhost:3000
 ```
 
@@ -120,11 +120,11 @@ To test Resend webhooks locally (e.g. delivery/open/click events):
 
 #### a. Domain Verification
 1. Sign up at [resend.com](https://resend.com)
-2. Add your sending domain (e.g. `pagepulser.com`)
+2. Add your sending domain (e.g. `kritano.com`)
 3. Add the required DNS records:
    - **SPF**: TXT record on your domain
    - **DKIM**: CNAME records (Resend provides these)
-   - **DMARC**: TXT record (`_dmarc.pagepulser.com`)
+   - **DMARC**: TXT record (`_dmarc.kritano.com`)
 4. Wait for verification (usually < 5 minutes)
 
 #### b. API Key
@@ -150,8 +150,8 @@ RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 RESEND_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # Sender and app URL
-EMAIL_FROM=PagePulser <noreply@pagepulser.com>
-APP_URL=https://app.pagepulser.com
+EMAIL_FROM=Kritano <noreply@kritano.com>
+APP_URL=https://app.kritano.com
 ```
 
 ### 3. Deployment Checklist

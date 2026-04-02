@@ -114,12 +114,12 @@ export default function CampaignsPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Email Campaigns | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Email Campaigns | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Email Campaigns</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">Email Campaigns</h1>
             <p className="text-sm text-slate-500 mt-1">
               {total} campaign{total !== 1 ? 's' : ''} — send targeted emails to segmented audiences
             </p>

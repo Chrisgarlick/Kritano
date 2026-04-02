@@ -1,13 +1,13 @@
 ---
 name: blog
-description: Write a polished, publish-ready blog post in the PagePulser brand voice. Use when the user wants to create a blog post or article.
+description: Write a polished, publish-ready blog post in the Kritano brand voice. Use when the user wants to create a blog post or article.
 user-invocable: true
 argument-hint: [topic or prompt]
 ---
 
 # Blog Writing Skill
 
-Write polished, publish-ready blog posts in PagePulser's brand voice. Accepts a topic or prompt and outputs a complete `.md` file.
+Write polished, publish-ready blog posts in Kritano's brand voice. Accepts a topic or prompt and outputs a complete `.md` file.
 
 ## Input
 

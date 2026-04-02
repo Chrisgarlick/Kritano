@@ -30,6 +30,7 @@ import { StatusBadge, SeverityBadge } from '../../components/ui/StatusBadge';
 import { MultiScoreChart, ChartLegend } from '../../components/ui/ScoreChart';
 import { CategoryRadar, SeverityDonut, SeverityLegend } from '../../components/ui/CategoryRadar';
 import { SecurityBlockedAlert, AuditErrorSummary, CQSBreakdown, FixSnippetAccordion } from '../../components/audit';
+import { ComplianceBadgeInline } from '../../components/audit/ComplianceBadge';
 import { SchemaTab } from '../../components/audit/SchemaTab';
 import { IndexExposureTab } from '../../components/audit/IndexExposureTab';
 import { FilesTab } from '../../components/audit/FilesTab';
@@ -57,6 +58,7 @@ interface GroupedFinding {
     message: string; // Page-specific message (e.g., "score of 26/100")
     snippet: string | null;
     selector: string | null;
+    device_type?: string;
   }[];
 }
 
@@ -96,6 +98,7 @@ function groupFindings(findings: Finding[]): GroupedFinding[] {
       message: f.message,
       snippet: f.snippet || null,
       selector: f.selector || null,
+      device_type: f.device_type || 'desktop',
     });
   }
 
@@ -287,13 +290,13 @@ function PageAccordion({ page, auditId }: { page: AuditPage; auditId: string }) 
   const totalIssues = page.seo_issues + page.accessibility_issues + page.security_issues + page.performance_issues + page.content_issues;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
       {/* Header Row - Clickable */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-controls={`page-details-${page.id}`}
-        className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors"
+        className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
       >
         <div className="flex-1 min-w-0 text-left">
           <a
@@ -301,35 +304,35 @@ function PageAccordion({ page, auditId }: { page: AuditPage; auditId: string }) 
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="text-sm font-medium text-indigo-600 hover:text-indigo-800 hover:underline truncate block"
+            className="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline truncate block"
           >
             {page.url}
           </a>
           {page.title && (
-            <div className="text-xs text-slate-500 truncate">{page.title}</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 truncate">{page.title}</div>
           )}
         </div>
 
         <div className="flex items-center space-x-6 ml-4">
           {/* Status Badge */}
           <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${
-            page.crawl_status === 'crawled' ? 'bg-emerald-100 text-emerald-800' :
-            page.crawl_status === 'failed' ? 'bg-red-100 text-red-800' :
-            'bg-amber-100 text-amber-800'
+            page.crawl_status === 'crawled' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300' :
+            page.crawl_status === 'failed' ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300' :
+            'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300'
           }`}>
             {page.crawl_status}
           </span>
 
           {/* Response */}
           <div className="text-center w-16">
-            <div className="text-sm text-slate-900">{page.status_code || '-'}</div>
-            <div className="text-xs text-slate-500">{page.response_time_ms ? `${page.response_time_ms}ms` : ''}</div>
+            <div className="text-sm text-slate-900 dark:text-white">{page.status_code || '-'}</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400">{page.response_time_ms ? `${page.response_time_ms}ms` : ''}</div>
           </div>
 
           {/* Issues */}
           <div className="text-center w-12">
-            <div className="text-sm font-medium text-slate-900">{totalIssues}</div>
-            <div className="text-xs text-slate-500">issues</div>
+            <div className="text-sm font-medium text-slate-900 dark:text-white">{totalIssues}</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400">issues</div>
           </div>
 
           {/* Scores */}
@@ -356,84 +359,84 @@ function PageAccordion({ page, auditId }: { page: AuditPage; auditId: string }) 
 
       {/* Expanded Content */}
       {isOpen && (
-        <div id={`page-details-${page.id}`} className="px-6 pb-6 border-t border-slate-100">
+        <div id={`page-details-${page.id}`} className="px-6 pb-6 border-t border-slate-100 dark:border-slate-700/50">
           <div className="pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Page Info */}
             <div>
-              <h4 className="text-xs font-medium text-slate-500 uppercase mb-3">Page Info</h4>
+              <h4 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase mb-3">Page Info</h4>
               <dl className="space-y-2">
                 <div>
-                  <dt className="text-xs text-slate-500">Status Code</dt>
-                  <dd className="text-sm font-medium text-slate-900">{page.status_code || '-'}</dd>
+                  <dt className="text-xs text-slate-500 dark:text-slate-400">Status Code</dt>
+                  <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.status_code || '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-slate-500">Content Type</dt>
-                  <dd className="text-sm font-medium text-slate-900">{page.content_type || '-'}</dd>
+                  <dt className="text-xs text-slate-500 dark:text-slate-400">Content Type</dt>
+                  <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.content_type || '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-slate-500">Page Size</dt>
-                  <dd className="text-sm font-medium text-slate-900">{formatBytes(page.page_size_bytes)}</dd>
+                  <dt className="text-xs text-slate-500 dark:text-slate-400">Page Size</dt>
+                  <dd className="text-sm font-medium text-slate-900 dark:text-white">{formatBytes(page.page_size_bytes)}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-slate-500">Response Time</dt>
-                  <dd className="text-sm font-medium text-slate-900">{page.response_time_ms ? `${page.response_time_ms}ms` : '-'}</dd>
+                  <dt className="text-xs text-slate-500 dark:text-slate-400">Response Time</dt>
+                  <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.response_time_ms ? `${page.response_time_ms}ms` : '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-slate-500">Depth</dt>
-                  <dd className="text-sm font-medium text-slate-900">{page.depth}</dd>
+                  <dt className="text-xs text-slate-500 dark:text-slate-400">Depth</dt>
+                  <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.depth}</dd>
                 </div>
               </dl>
             </div>
 
             {/* Issues Breakdown */}
             <div>
-              <h4 className="text-xs font-medium text-slate-500 uppercase mb-3">Issues by Category</h4>
+              <h4 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase mb-3">Issues by Category</h4>
               <dl className="space-y-2">
                 <div className="flex justify-between">
                   <dt className="text-sm text-purple-600">SEO</dt>
-                  <dd className="text-sm font-medium text-slate-900">{page.seo_issues}</dd>
+                  <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.seo_issues}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-sm text-emerald-600">Accessibility</dt>
-                  <dd className="text-sm font-medium text-slate-900">{page.accessibility_issues}</dd>
+                  <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.accessibility_issues}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-sm text-red-600">Security</dt>
-                  <dd className="text-sm font-medium text-slate-900">{page.security_issues}</dd>
+                  <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.security_issues}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-sm text-indigo-600">Performance</dt>
-                  <dd className="text-sm font-medium text-slate-900">{page.performance_issues}</dd>
+                  <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.performance_issues}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-sm text-amber-600">Content</dt>
-                  <dd className="text-sm font-medium text-slate-900">{page.content_issues}</dd>
+                  <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.content_issues}</dd>
                 </div>
               </dl>
             </div>
 
             {/* Scores */}
             <div>
-              <h4 className="text-xs font-medium text-slate-500 uppercase mb-3">Scores</h4>
+              <h4 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase mb-3">Scores</h4>
               <dl className="space-y-2">
                 <div className="flex justify-between">
-                  <dt className="text-sm text-slate-600">SEO</dt>
+                  <dt className="text-sm text-slate-600 dark:text-slate-400">SEO</dt>
                   <dd className={`text-sm font-bold ${getScoreColor(page.seo_score)}`}>{page.seo_score ?? '-'}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm text-slate-600">Accessibility</dt>
+                  <dt className="text-sm text-slate-600 dark:text-slate-400">Accessibility</dt>
                   <dd className={`text-sm font-bold ${getScoreColor(page.accessibility_score)}`}>{page.accessibility_score ?? '-'}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm text-slate-600">Security</dt>
+                  <dt className="text-sm text-slate-600 dark:text-slate-400">Security</dt>
                   <dd className={`text-sm font-bold ${getScoreColor(page.security_score)}`}>{page.security_score ?? '-'}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm text-slate-600">Performance</dt>
+                  <dt className="text-sm text-slate-600 dark:text-slate-400">Performance</dt>
                   <dd className={`text-sm font-bold ${getScoreColor(page.performance_score)}`}>{page.performance_score ?? '-'}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-sm text-slate-600">Content</dt>
+                  <dt className="text-sm text-slate-600 dark:text-slate-400">Content</dt>
                   <dd className={`text-sm font-bold ${getScoreColor(page.content_score)}`}>{page.content_score ?? '-'}</dd>
                 </div>
               </dl>
@@ -442,12 +445,12 @@ function PageAccordion({ page, auditId }: { page: AuditPage; auditId: string }) 
             {/* Actions */}
             <div className="flex flex-col justify-between">
               <div>
-                <h4 className="text-xs font-medium text-slate-500 uppercase mb-3">Actions</h4>
+                <h4 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase mb-3">Actions</h4>
                 <a
                   href={page.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800"
+                  className="inline-flex items-center text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300"
                 >
                   Visit Page
                   <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -457,7 +460,7 @@ function PageAccordion({ page, auditId }: { page: AuditPage; auditId: string }) 
               </div>
               <button
                 onClick={() => navigate(`/audits/${auditId}/pages/${page.id}`)}
-                className="mt-4 w-full px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                className="mt-4 w-full px-4 py-2 bg-indigo-600 dark:bg-indigo-500 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors"
               >
                 View Full Details
               </button>
@@ -466,7 +469,7 @@ function PageAccordion({ page, auditId }: { page: AuditPage; auditId: string }) 
 
           {/* Content Analysis Panel (if content was analyzed) */}
           {page.content_score !== null && (
-            <div className="mt-6 pt-6 border-t border-slate-100">
+            <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-700/50">
               <ContentAnalysisPanel
                 metrics={{
                   content_quality_score: page.content_quality_score,
@@ -528,8 +531,13 @@ export default function AuditDetailPage() {
   // CQS breakdown panel
   const [showCqsBreakdown, setShowCqsBreakdown] = useState(false);
 
+  // Compliance status (fetched separately for badge)
+  const [complianceStatus, setComplianceStatus] = useState<'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed' | null>(null);
+
   // Share modal state
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const exportDropdownRef = useRef<HTMLDivElement>(null);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [shareExpiresAt, setShareExpiresAt] = useState<string | null>(null);
   const [sharing, setSharing] = useState(false);
@@ -544,7 +552,11 @@ export default function AuditDetailPage() {
   // Filters
   const [categoryFilter, setCategoryFilter] = useState<FindingCategory | null>(null);
   const [severityFilter, setSeverityFilter] = useState<Severity | null>(null);
+  const [deviceFilter, setDeviceFilter] = useState<'all' | 'desktop' | 'mobile' | 'both'>('all');
   const [showDismissed, setShowDismissed] = useState(false);
+
+  // Check if audit has mobile data
+  const hasMobileData = audit?.include_mobile && audit?.mobile_accessibility_score != null;
 
   // Group and filter findings
   const allGrouped = useMemo(() => groupFindings(findings), [findings]);
@@ -554,9 +566,16 @@ export default function AuditDetailPage() {
       if (categoryFilter && g.category !== categoryFilter) return false;
       if (severityFilter && g.severity !== severityFilter) return false;
       if (!showDismissed && g.dismissed) return false;
+      if (deviceFilter !== 'all') {
+        // Check if any affected page finding matches the device filter
+        const hasMatchingDevice = g.affectedPages.some((p: { device_type?: string }) =>
+          p.device_type === deviceFilter || p.device_type === 'both'
+        );
+        if (!hasMatchingDevice) return false;
+      }
       return true;
     });
-  }, [allGrouped, categoryFilter, severityFilter, showDismissed]);
+  }, [allGrouped, categoryFilter, severityFilter, deviceFilter, showDismissed]);
 
   // P1: Memoize category/severity counts to avoid recomputation on every render
   const categoryCounts = useMemo(() => {
@@ -687,6 +706,17 @@ export default function AuditDetailPage() {
     }
   }, [audit?.status, fetchBrokenLinks]);
 
+  // Fetch compliance status for badge
+  useEffect(() => {
+    if (id && audit && audit.status === 'completed') {
+      auditsApi.getCompliance(id).then(res => {
+        setComplianceStatus(res.data.status);
+      }).catch(() => {
+        setComplianceStatus('not_assessed');
+      });
+    }
+  }, [id, audit?.status]);
+
   // Fetch score history
   useEffect(() => {
     if (id && audit && audit.status === 'completed') {
@@ -710,6 +740,18 @@ export default function AuditDetailPage() {
     if (activeTab === 'pages') fetchPages();
     if (activeTab === 'broken-links') fetchBrokenLinks();
   }, [activeTab, fetchPages, fetchBrokenLinks]);
+
+  // Close export dropdown on outside click
+  useEffect(() => {
+    if (!showExportMenu) return;
+    const handleClick = (e: MouseEvent) => {
+      if (exportDropdownRef.current && !exportDropdownRef.current.contains(e.target as Node)) {
+        setShowExportMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showExportMenu]);
 
   // Track if SSE error has been shown to avoid duplicate toasts
   const sseErrorShown = useRef(false);
@@ -902,9 +944,9 @@ export default function AuditDetailPage() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>Audit Details | PagePulser</title></Helmet>
+      <Helmet><title>Audit Details | Kritano</title></Helmet>
       {/* Header */}
-      <div className="mb-8 animate-reveal-up">
+      <div className="mb-8 animate-reveal-up relative z-10">
         {/* Back link */}
         <Link
           to="/sites"
@@ -914,188 +956,165 @@ export default function AuditDetailPage() {
           Back to Sites
         </Link>
 
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <Display size="sm" as="h1" className="text-slate-900 dark:text-white">
-                {audit.target_domain}
-              </Display>
-              <StatusBadge status={audit.status} />
-            </div>
-            <Mono size="sm" className="block">
-              {audit.target_url}
-            </Mono>
-            {audit.completed_at && (
-              <Body size="sm" muted className="mt-1">
-                Completed {formatDate(audit.completed_at)}
-              </Body>
-            )}
-          </div>
+        {/* Title row */}
+        <div className="flex items-center gap-3 mb-1">
+          <Display size="sm" as="h1" className="text-slate-900 dark:text-white">
+            {audit.target_domain}
+          </Display>
+          <StatusBadge status={audit.status} />
+          {complianceStatus && complianceStatus !== 'not_assessed' && (
+            <ComplianceBadgeInline status={complianceStatus} />
+          )}
+        </div>
+        <div className="flex items-center gap-3 mb-4">
+          <Mono size="sm">{audit.target_url}</Mono>
+          {audit.completed_at && (
+            <Body size="sm" muted>
+              &middot; Completed {formatDate(audit.completed_at)}
+            </Body>
+          )}
+        </div>
 
-          <div className="flex flex-wrap gap-2 no-print">
-            {!isRunning && (
-              <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  leftIcon={<RefreshCw className="w-4 h-4" />}
-                  onClick={handleRerun}
-                  isLoading={rerunning}
-                >
-                  Re-run
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  leftIcon={<FileDown className="w-4 h-4" />}
-                  onClick={() => {
-                    auditsApi.exportCsv(id!).then(res => {
-                      const url = URL.createObjectURL(res.data);
-                      const a = document.createElement('a');
-                      a.href = url;
-                      a.download = `audit-${audit.target_domain}.csv`;
-                      a.click();
-                      URL.revokeObjectURL(url);
-                      toast('CSV exported', 'success');
-                    }).catch(() => toast('Export failed', 'error'));
-                  }}
-                >
-                  CSV
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  leftIcon={<FileDown className="w-4 h-4" />}
-                  onClick={() => {
-                    auditsApi.exportMarkdown(id!).then(res => {
-                      const url = URL.createObjectURL(res.data);
-                      const a = document.createElement('a');
-                      a.href = url;
-                      a.download = `audit-${audit.target_domain}.md`;
-                      a.click();
-                      URL.revokeObjectURL(url);
-                      toast('Markdown exported', 'success');
-                    }).catch(() => toast('Export failed', 'error'));
-                  }}
-                >
-                  Markdown
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  leftIcon={<FileDown className="w-4 h-4" />}
-                  onClick={() => {
-                    auditsApi.exportHtml(id!).then(res => {
-                      const url = URL.createObjectURL(res.data);
-                      const a = document.createElement('a');
-                      a.href = url;
-                      a.download = `audit-${audit.target_domain}.html`;
-                      a.click();
-                      URL.revokeObjectURL(url);
-                      toast('HTML exported', 'success');
-                    }).catch(() => toast('Export failed', 'error'));
-                  }}
-                >
-                  HTML
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  leftIcon={<FileDown className="w-4 h-4" />}
-                  onClick={() => {
-                    auditsApi.exportJson(id!).then(res => {
-                      const url = URL.createObjectURL(res.data);
-                      const a = document.createElement('a');
-                      a.href = url;
-                      a.download = `audit-${audit.target_domain}.json`;
-                      a.click();
-                      URL.revokeObjectURL(url);
-                      toast('JSON exported', 'success');
-                    }).catch(() => toast('Export failed', 'error'));
-                  }}
-                >
-                  JSON
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  leftIcon={<FileDown className="w-4 h-4" />}
-                  onClick={() => {
-                    toast('Generating PDF...', 'info');
-                    auditsApi.exportPdf(id!).then(res => {
-                      const url = URL.createObjectURL(res.data);
-                      const a = document.createElement('a');
-                      a.href = url;
-                      a.download = `audit-${audit.target_domain}.pdf`;
-                      a.click();
-                      URL.revokeObjectURL(url);
-                      toast('PDF exported', 'success');
-                    }).catch(() => toast('PDF export failed', 'error'));
-                  }}
-                >
-                  PDF
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  leftIcon={<Printer className="w-4 h-4" />}
-                  onClick={() => window.print()}
-                >
-                  Print
-                </Button>
-                {canShare && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    leftIcon={<Share2 className="w-4 h-4" />}
-                    onClick={handleShare}
-                    isLoading={sharing}
-                  >
-                    Share
-                  </Button>
-                )}
-                {['pro', 'agency', 'enterprise'].includes(userTier) && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    leftIcon={<FileText className="w-4 h-4" />}
-                    onClick={() => navigate(`/audits/${id}/statement`)}
-                  >
-                    Accessibility Statement
-                  </Button>
-                )}
-                {['pro', 'agency', 'enterprise'].includes(userTier) && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    leftIcon={<ShieldCheck className="w-4 h-4" />}
-                    onClick={() => navigate(`/audits/${id}/compliance`)}
-                  >
-                    EAA Compliance
-                  </Button>
-                )}
-                <Button
-                  variant="danger"
-                  size="sm"
-                  leftIcon={<Trash2 className="w-4 h-4" />}
-                  onClick={handleDelete}
-                  isLoading={deleting}
-                >
-                  Delete
-                </Button>
-              </>
-            )}
-            {isRunning && (
+        {/* Action toolbar */}
+        <div className="flex items-center gap-2 no-print">
+          {!isRunning && (
+            <>
               <Button
                 variant="outline"
-                leftIcon={<XCircle className="w-4 h-4" />}
-                onClick={handleCancel}
-                isLoading={cancelling}
+                size="sm"
+                leftIcon={<RefreshCw className="w-4 h-4" />}
+                onClick={handleRerun}
+                isLoading={rerunning}
               >
-                Cancel Audit
+                Re-run
               </Button>
-            )}
-          </div>
+              <div className="relative" ref={exportDropdownRef}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  leftIcon={<FileDown className="w-4 h-4" />}
+                  rightIcon={<ChevronDown className="w-3.5 h-3.5" />}
+                  onClick={() => setShowExportMenu(prev => !prev)}
+                >
+                  Export
+                </Button>
+                {showExportMenu && (
+                  <div className="absolute left-0 top-full mt-1 w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg py-1" style={{ zIndex: 9999 }}>
+                    {[
+                      { label: 'CSV', ext: 'csv', fn: () => auditsApi.exportCsv(id!) },
+                      { label: 'Markdown', ext: 'md', fn: () => auditsApi.exportMarkdown(id!) },
+                      { label: 'HTML', ext: 'html', fn: () => auditsApi.exportHtml(id!) },
+                      { label: 'JSON', ext: 'json', fn: () => auditsApi.exportJson(id!) },
+                    ].map(item => (
+                      <button
+                        key={item.ext}
+                        className="w-full text-left px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2"
+                        onClick={() => {
+                          setShowExportMenu(false);
+                          item.fn().then((res: { data: Blob }) => {
+                            const url = URL.createObjectURL(res.data);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `audit-${audit.target_domain}.${item.ext}`;
+                            a.click();
+                            URL.revokeObjectURL(url);
+                            toast(`${item.label} exported`, 'success');
+                          }).catch(() => toast('Export failed', 'error'));
+                        }}
+                      >
+                        <FileDown className="w-4 h-4 text-slate-400" />
+                        {item.label}
+                      </button>
+                    ))}
+                    <button
+                      className="w-full text-left px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2"
+                      onClick={() => {
+                        setShowExportMenu(false);
+                        toast('Generating PDF...', 'info');
+                        auditsApi.exportPdf(id!).then(res => {
+                          const url = URL.createObjectURL(res.data);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = `audit-${audit.target_domain}.pdf`;
+                          a.click();
+                          URL.revokeObjectURL(url);
+                          toast('PDF exported', 'success');
+                        }).catch(() => toast('PDF export failed', 'error'));
+                      }}
+                    >
+                      <FileDown className="w-4 h-4 text-slate-400" />
+                      PDF
+                    </button>
+                    <div className="border-t border-slate-200 dark:border-slate-700 my-1" />
+                    <button
+                      className="w-full text-left px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2"
+                      onClick={() => {
+                        setShowExportMenu(false);
+                        window.print();
+                      }}
+                    >
+                      <Printer className="w-4 h-4 text-slate-400" />
+                      Print
+                    </button>
+                  </div>
+                )}
+              </div>
+              {canShare && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  leftIcon={<Share2 className="w-4 h-4" />}
+                  onClick={handleShare}
+                  isLoading={sharing}
+                >
+                  Share
+                </Button>
+              )}
+              {['pro', 'agency', 'enterprise'].includes(userTier) && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  leftIcon={<FileText className="w-4 h-4" />}
+                  onClick={() => navigate(`/audits/${id}/statement`)}
+                >
+                  Accessibility Statement
+                </Button>
+              )}
+              {['pro', 'agency', 'enterprise'].includes(userTier) && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  leftIcon={<ShieldCheck className="w-4 h-4" />}
+                  onClick={() => navigate(`/audits/${id}/compliance`)}
+                >
+                  EAA Compliance
+                </Button>
+              )}
+
+              <div className="flex-1" />
+
+              <Button
+                variant="outline"
+                size="sm"
+                leftIcon={<Trash2 className="w-4 h-4" />}
+                onClick={handleDelete}
+                isLoading={deleting}
+                className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 dark:text-red-400 dark:border-red-800 dark:hover:bg-red-900/20"
+              >
+                Delete
+              </Button>
+            </>
+          )}
+          {isRunning && (
+            <Button
+              variant="outline"
+              leftIcon={<XCircle className="w-4 h-4" />}
+              onClick={handleCancel}
+              isLoading={cancelling}
+            >
+              Cancel Audit
+            </Button>
+          )}
         </div>
       </div>
 
@@ -1476,6 +1495,30 @@ export default function AuditDetailPage() {
         />
       </div>
 
+      {/* Mobile Score Cards */}
+      {hasMobileData && (
+        <div className="grid grid-cols-2 gap-4 mb-4 animate-reveal-up stagger-1">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide font-medium">Mobile Accessibility</span>
+              <span className="text-[10px] px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-full font-medium">Mobile</span>
+            </div>
+            <div className={`text-2xl font-bold ${getScoreColor(audit.mobile_accessibility_score ?? null)}`}>
+              {audit.mobile_accessibility_score ?? '—'}
+            </div>
+          </div>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide font-medium">Mobile Performance</span>
+              <span className="text-[10px] px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-full font-medium">Mobile</span>
+            </div>
+            <div className={`text-2xl font-bold ${getScoreColor(audit.mobile_performance_score ?? null)}`}>
+              {audit.mobile_performance_score ?? '—'}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* CQS Breakdown Panel */}
       {showCqsBreakdown && audit.cqs_score !== null && (
         <div className="mb-8 animate-reveal-up motion-reduce:animate-none" aria-live="polite">
@@ -1697,11 +1740,11 @@ export default function AuditDetailPage() {
           {findings.length > 0 && (
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
               {/* Category Filter - Button Style */}
-              <div className="flex items-center gap-1 bg-slate-100 rounded-lg p-1">
+              <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
                 <button
                   onClick={() => setCategoryFilter(null)}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                    categoryFilter === null ? 'bg-white shadow text-slate-900' : 'text-slate-600 hover:text-slate-900'
+                    categoryFilter === null ? 'bg-white dark:bg-slate-700 shadow text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   All
@@ -1716,7 +1759,7 @@ export default function AuditDetailPage() {
                       key={cat}
                       onClick={() => setCategoryFilter(cat)}
                       className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                        categoryFilter === cat ? 'bg-white shadow text-slate-900' : 'text-slate-600 hover:text-slate-900'
+                        categoryFilter === cat ? 'bg-white dark:bg-slate-700 shadow text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                       } ${count === 0 && severityFilter ? 'opacity-50' : ''}`}
                     >
                       {label} ({count})
@@ -1729,7 +1772,7 @@ export default function AuditDetailPage() {
               <select
                 value={severityFilter || ''}
                 onChange={(e) => setSeverityFilter(e.target.value as Severity || null)}
-                className="px-3 py-1.5 text-xs font-medium border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500"
+                className="px-3 py-1.5 text-xs font-medium border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="">All Severities</option>
                 {(['critical', 'serious', 'moderate', 'minor', 'info'] as Severity[]).map(sev => {
@@ -1744,19 +1787,33 @@ export default function AuditDetailPage() {
                 })}
               </select>
 
+              {/* Device Filter — only shown when mobile data exists */}
+              {hasMobileData && (
+                <select
+                  value={deviceFilter}
+                  onChange={(e) => setDeviceFilter(e.target.value as 'all' | 'desktop' | 'mobile' | 'both')}
+                  className="px-3 py-1.5 text-xs font-medium border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value="all">All Devices</option>
+                  <option value="desktop">Desktop Only</option>
+                  <option value="mobile">Mobile Only</option>
+                  <option value="both">Both Devices</option>
+                </select>
+              )}
+
               {/* Show dismissed toggle */}
-              <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
+              <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={showDismissed}
                   onChange={(e) => setShowDismissed(e.target.checked)}
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                 />
                 Show dismissed
               </label>
 
               {/* Results count */}
-              <div className="text-sm text-slate-500">
+              <div className="text-sm text-slate-500 dark:text-slate-400">
                 {filteredGroups.length} unique {filteredGroups.length === 1 ? 'issue' : 'issues'}
               </div>
             </div>
@@ -1764,11 +1821,11 @@ export default function AuditDetailPage() {
 
           {/* Grouped Findings List */}
           {findings.length === 0 ? (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center text-slate-500">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500 dark:text-slate-400">
               No issues found in this audit.
             </div>
           ) : filteredGroups.length === 0 ? (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center text-slate-500">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500 dark:text-slate-400">
               No findings match your filters.
             </div>
           ) : (
@@ -1784,26 +1841,26 @@ export default function AuditDetailPage() {
       {activeTab === 'broken-links' && (
         <div>
           {brokenLinks.length === 0 ? (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center">
               <div className="text-4xl mb-3">🔗</div>
-              <p className="text-slate-900 font-medium">0 broken links</p>
-              <p className="text-slate-500 text-sm mt-1">No broken links were detected during this audit.</p>
+              <p className="text-slate-900 dark:text-white font-medium">0 broken links</p>
+              <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">No broken links were detected during this audit.</p>
             </div>
           ) : (
             <div>
-              <div className="mb-4 text-sm text-slate-500">
+              <div className="mb-4 text-sm text-slate-500 dark:text-slate-400">
                 Found {brokenLinks.length} broken {brokenLinks.length === 1 ? 'link' : 'links'}
               </div>
               <div className="space-y-3">
                 {brokenLinks.map((link) => (
-                  <div key={link.id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                  <div key={link.id} className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center space-x-2">
                         <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${severityColors[link.severity]}`}>
                           {link.severity}
                         </span>
                         <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${
-                          link.rule_id === 'broken-link' ? 'bg-indigo-100 text-indigo-800' : 'bg-cyan-100 text-cyan-800'
+                          link.rule_id === 'broken-link' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300' : 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-300'
                         }`}>
                           {link.rule_id === 'broken-link' ? 'Internal' : 'External'}
                         </span>
@@ -1822,21 +1879,21 @@ export default function AuditDetailPage() {
                       </a>
                     </div>
 
-                    <p className="text-sm text-slate-600 mb-2">{link.message}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">{link.message}</p>
 
                     {link.recommendation && (
-                      <p className="text-xs text-slate-500">{link.recommendation}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">{link.recommendation}</p>
                     )}
 
                     {/* Source page */}
                     {link.page_url && (
-                      <div className="mt-3 pt-3 border-t border-slate-100">
-                        <span className="text-xs text-slate-500">Found on: </span>
+                      <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/50">
+                        <span className="text-xs text-slate-500 dark:text-slate-400">Found on: </span>
                         <a
                           href={link.page_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs text-indigo-600 hover:text-indigo-800 hover:underline"
+                          className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline"
                         >
                           {link.page_url}
                         </a>
@@ -1853,7 +1910,7 @@ export default function AuditDetailPage() {
       {activeTab === 'pages' && (
         <div>
           {pages.length === 0 ? (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center text-slate-500">
+            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500 dark:text-slate-400">
               No pages crawled yet.
             </div>
           ) : (

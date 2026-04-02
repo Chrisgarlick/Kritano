@@ -23,6 +23,7 @@ interface AuditOptions {
   checkSecurity: boolean;
   checkPerformance: boolean;
   checkFileExtraction: boolean;
+  includeMobile: boolean;
   wcagVersion: WcagVersion;
   wcagLevel: WcagLevel;
 }
@@ -45,6 +46,7 @@ export default function NewAuditPage() {
     checkSecurity: true,
     checkPerformance: true,
     checkFileExtraction: false,
+    includeMobile: true,
     wcagVersion: '2.2',
     wcagLevel: 'AA',
   });
@@ -406,14 +408,14 @@ export default function NewAuditPage() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>New Audit | PagePulser</title></Helmet>
+      <Helmet><title>New Audit | Kritano</title></Helmet>
       <div className="max-w-2xl mx-auto">
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">
-            <Plus className="w-6 h-6 text-indigo-600" />
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+            <Plus className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             New Audit
           </h1>
-          <p className="text-slate-600 mt-1">
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
             Enter a website URL to scan for SEO, accessibility, security, performance, and content issues.
           </p>
         </div>
@@ -425,7 +427,7 @@ export default function NewAuditPage() {
             </Alert>
           )}
 
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
             <div className="relative" ref={autocompleteRef}>
               <Input
                 label="Website URL"
@@ -450,7 +452,7 @@ export default function NewAuditPage() {
                 <div
                   id="url-autocomplete-list"
                   role="listbox"
-                  className="absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-48 overflow-y-auto"
+                  className="absolute z-10 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg max-h-48 overflow-y-auto"
                 >
                   {filteredUrls.map((u, idx) => (
                     <button
@@ -460,7 +462,7 @@ export default function NewAuditPage() {
                       role="option"
                       aria-selected={idx === autocompleteIndex}
                       className={`w-full text-left px-4 py-2 flex items-center gap-2 ${
-                        idx === autocompleteIndex ? 'bg-indigo-50 text-indigo-900' : 'hover:bg-slate-50'
+                        idx === autocompleteIndex ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-900 dark:text-indigo-300' : 'hover:bg-slate-50 dark:hover:bg-slate-700'
                       }`}
                       onClick={() => {
                         setTargetUrl(u.target_url);
@@ -472,7 +474,7 @@ export default function NewAuditPage() {
                       <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span className="text-sm text-slate-700 truncate">{u.target_url}</span>
+                      <span className="text-sm text-slate-700 dark:text-slate-300 truncate">{u.target_url}</span>
                     </button>
                   ))}
                 </div>
@@ -485,7 +487,7 @@ export default function NewAuditPage() {
                 <button
                   type="button"
                   onClick={() => setShowUrlPicker(true)}
-                  className="text-sm text-indigo-600 hover:text-indigo-800 flex items-center gap-1.5 transition-colors"
+                  className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1.5 transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
@@ -540,8 +542,8 @@ export default function NewAuditPage() {
               {targetUrl.trim() && !verificationChecking && isVerifiedDomain !== null && (
                 <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${
                   isVerifiedDomain
-                    ? 'bg-emerald-50 text-emerald-700'
-                    : 'bg-slate-100 text-slate-600'
+                    ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
                 }`}>
                   {isVerifiedDomain ? (
                     <>
@@ -561,7 +563,7 @@ export default function NewAuditPage() {
                 </div>
               )}
               {targetUrl.trim() && verificationChecking && (
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-500">
+                <div className="flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
                   <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
@@ -584,12 +586,12 @@ export default function NewAuditPage() {
                   disabled={disabled}
                   className={`text-left p-3 border rounded-lg transition-colors relative ${
                     disabled
-                      ? 'border-slate-100 bg-slate-50 cursor-not-allowed opacity-60'
-                      : 'border-slate-200 hover:border-indigo-400 hover:bg-indigo-50'
+                      ? 'border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 cursor-not-allowed opacity-60'
+                      : 'border-slate-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20'
                   }`}
                   title={disabled ? 'Verify this domain to enable multi-page audits' : undefined}
                 >
-                  <div className={`text-sm font-medium ${disabled ? 'text-slate-500' : 'text-slate-900'}`}>
+                  <div className={`text-sm font-medium ${disabled ? 'text-slate-500 dark:text-slate-400' : 'text-slate-900 dark:text-white'}`}>
                     {p.label}
                   </div>
                   <div className={`text-xs mt-1 ${disabled ? 'text-slate-500' : 'text-slate-500'}`}>
@@ -609,13 +611,13 @@ export default function NewAuditPage() {
 
           {/* Verification notice for unverified domains */}
           {isVerifiedDomain === false && targetUrl.trim() && (
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3">
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 flex items-start gap-3">
               <svg className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <div>
-                <p className="text-sm font-medium text-amber-800">Unverified domain</p>
-                <p className="text-sm text-amber-700 mt-0.5">
+                <p className="text-sm font-medium text-amber-800 dark:text-amber-300">Unverified domain</p>
+                <p className="text-sm text-amber-700 dark:text-amber-400 mt-0.5">
                   Multi-page audits require domain verification. You can run a single page audit, or{' '}
                   <a href="/settings/domains" className="underline hover:text-amber-900">verify this domain</a>{' '}
                   to unlock full audits.
@@ -624,7 +626,7 @@ export default function NewAuditPage() {
             </div>
           )}
 
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
             <button
               type="button"
               onClick={() => setShowAdvanced(!showAdvanced)}
@@ -632,7 +634,7 @@ export default function NewAuditPage() {
               aria-controls="advanced-options-panel"
               className="flex items-center justify-between w-full text-left"
             >
-              <span className="text-sm font-medium text-slate-700">Advanced Options</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Advanced Options</span>
               <svg
                 className={`w-5 h-5 text-slate-500 transition-transform ${showAdvanced ? 'rotate-180' : ''}`}
                 fill="none"
@@ -648,28 +650,28 @@ export default function NewAuditPage() {
               <div id="advanced-options-panel" className="mt-6 space-y-6">
                 {/* Crawl Settings */}
                 <div>
-                  <h3 className="text-sm font-medium text-slate-900 mb-4">Crawl Settings</h3>
+                  <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-4">Crawl Settings</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-slate-700 mb-1">Max Pages</label>
+                      <label className="block text-sm text-slate-700 dark:text-slate-300 mb-1">Max Pages</label>
                       <input
                         type="number"
                         min={1}
                         max={tierMaxPages}
                         value={options.maxPages}
                         onChange={(e) => updateOption('maxPages', Math.min(parseInt(e.target.value) || 50, tierMaxPages))}
-                        className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-slate-700 mb-1">Max Depth</label>
+                      <label className="block text-sm text-slate-700 dark:text-slate-300 mb-1">Max Depth</label>
                       <input
                         type="number"
                         min={1}
                         max={10}
                         value={options.maxDepth}
                         onChange={(e) => updateOption('maxDepth', parseInt(e.target.value) || 3)}
-                        className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       />
                     </div>
                   </div>
@@ -677,79 +679,79 @@ export default function NewAuditPage() {
 
                 {/* Crawl Behavior */}
                 <div>
-                  <h3 className="text-sm font-medium text-slate-900 mb-4">Crawl Behavior</h3>
+                  <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-4">Crawl Behavior</h3>
                   <div className="space-y-3">
                     <label className="flex items-center">
                       <input
                         type="checkbox"
                         checked={options.respectRobotsTxt}
                         onChange={(e) => updateOption('respectRobotsTxt', e.target.checked)}
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                       />
-                      <span className="ml-2 text-sm text-slate-700">Respect robots.txt</span>
+                      <span className="ml-2 text-sm text-slate-700 dark:text-slate-300">Respect robots.txt</span>
                     </label>
                     <label className="flex items-center">
                       <input
                         type="checkbox"
                         checked={options.includeSubdomains}
                         onChange={(e) => updateOption('includeSubdomains', e.target.checked)}
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                       />
-                      <span className="ml-2 text-sm text-slate-700">Include subdomains</span>
+                      <span className="ml-2 text-sm text-slate-700 dark:text-slate-300">Include subdomains</span>
                     </label>
                   </div>
                 </div>
 
                 {/* Audit Types */}
                 <div>
-                  <h3 className="text-sm font-medium text-slate-900 mb-4">Audit Types</h3>
+                  <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-4">Audit Types</h3>
                   <div className="grid grid-cols-2 gap-3">
-                    <label className="flex items-center p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+                    <label className="flex items-center p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={options.checkSeo}
                         onChange={(e) => updateOption('checkSeo', e.target.checked)}
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                       />
                       <div className="ml-3">
-                        <span className="text-sm font-medium text-slate-900">SEO</span>
-                        <p className="text-xs text-slate-500">Meta tags, headings, links</p>
+                        <span className="text-sm font-medium text-slate-900 dark:text-white">SEO</span>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Meta tags, headings, links</p>
                       </div>
                     </label>
-                    <label className="flex items-center p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+                    <label className="flex items-center p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={options.checkAccessibility}
                         onChange={(e) => updateOption('checkAccessibility', e.target.checked)}
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                       />
                       <div className="ml-3">
-                        <span className="text-sm font-medium text-slate-900">Accessibility</span>
-                        <p className="text-xs text-slate-500">WCAG {options.wcagVersion} Level {options.wcagLevel}</p>
+                        <span className="text-sm font-medium text-slate-900 dark:text-white">Accessibility</span>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">WCAG {options.wcagVersion} Level {options.wcagLevel}</p>
                       </div>
                     </label>
-                    <label className="flex items-center p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+                    <label className="flex items-center p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={options.checkSecurity}
                         onChange={(e) => updateOption('checkSecurity', e.target.checked)}
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                       />
                       <div className="ml-3">
-                        <span className="text-sm font-medium text-slate-900">Security</span>
-                        <p className="text-xs text-slate-500">Headers, cookies, HTTPS</p>
+                        <span className="text-sm font-medium text-slate-900 dark:text-white">Security</span>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Headers, cookies, HTTPS</p>
                       </div>
                     </label>
-                    <label className="flex items-center p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
+                    <label className="flex items-center p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={options.checkPerformance}
                         onChange={(e) => updateOption('checkPerformance', e.target.checked)}
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                       />
                       <div className="ml-3">
-                        <span className="text-sm font-medium text-slate-900">Performance</span>
-                        <p className="text-xs text-slate-500">Speed, page size</p>
+                        <span className="text-sm font-medium text-slate-900 dark:text-white">Performance</span>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Speed, page size</p>
                       </div>
                     </label>
                     <label className={`flex items-center p-3 border rounded-lg ${
@@ -766,10 +768,10 @@ export default function NewAuditPage() {
                       />
                       <div className="ml-3 flex-1">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm font-medium text-slate-900">File Extraction</span>
+                          <span className="text-sm font-medium text-slate-900 dark:text-white">File Extraction</span>
                           {!canUseFileExtraction && <Lock className="w-3.5 h-3.5 text-slate-500" />}
                         </div>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
                           {canUseFileExtraction ? 'Discover all files & assets' : 'Starter plan required'}
                         </p>
                       </div>
@@ -777,17 +779,38 @@ export default function NewAuditPage() {
                   </div>
                 </div>
 
+                {/* Mobile Audit Toggle */}
+                <div>
+                  <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-4">Mobile Testing</h3>
+                  <label className="flex items-start gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <input
+                      type="checkbox"
+                      checked={options.includeMobile}
+                      onChange={(e) => updateOption('includeMobile', e.target.checked)}
+                      className="h-4 w-4 mt-0.5 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm font-medium text-slate-900 dark:text-white">Include Mobile Audit</span>
+                      </div>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                        Re-visits pages with a mobile viewport to catch touch target issues, responsive layout problems, and mobile-specific performance issues.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+
                 {/* WCAG Settings (shown when accessibility is enabled) */}
                 {options.checkAccessibility && (
                   <div>
-                    <h3 className="text-sm font-medium text-slate-900 mb-4">WCAG Settings</h3>
+                    <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-4">WCAG Settings</h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm text-slate-700 mb-1">WCAG Version</label>
+                        <label className="block text-sm text-slate-700 dark:text-slate-300 mb-1">WCAG Version</label>
                         <select
                           value={options.wcagVersion}
                           onChange={(e) => updateOption('wcagVersion', e.target.value as WcagVersion)}
-                          className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         >
                           <option value="2.1">WCAG 2.1</option>
                           <option value="2.2">WCAG 2.2</option>
@@ -797,11 +820,11 @@ export default function NewAuditPage() {
                         </p>
                       </div>
                       <div>
-                        <label className="block text-sm text-slate-700 mb-1">Conformance Level</label>
+                        <label className="block text-sm text-slate-700 dark:text-slate-300 mb-1">Conformance Level</label>
                         <select
                           value={options.wcagLevel}
                           onChange={(e) => updateOption('wcagLevel', e.target.value as WcagLevel)}
-                          className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         >
                           <option value="A">Level A (Minimum)</option>
                           <option value="AA">Level AA (Recommended)</option>
@@ -821,13 +844,13 @@ export default function NewAuditPage() {
           </div>
 
           {/* #46 Estimated time display */}
-          <div className="bg-indigo-50 border border-indigo-100 rounded-lg p-4 flex items-center gap-3">
+          <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 rounded-lg p-4 flex items-center gap-3">
             <svg className="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div>
-              <span className="text-sm font-medium text-indigo-800">Estimated time: {estimatedTime}</span>
-              <span className="text-sm text-indigo-600 ml-2">
+              <span className="text-sm font-medium text-indigo-800 dark:text-indigo-300">Estimated time: {estimatedTime}</span>
+              <span className="text-sm text-indigo-600 dark:text-indigo-400 ml-2">
                 ({options.maxPages} pages, {[options.checkSeo, options.checkAccessibility, options.checkSecurity, options.checkPerformance].filter(Boolean).length} categories)
               </span>
             </div>

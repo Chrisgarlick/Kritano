@@ -1,16 +1,16 @@
 <!-- Version: 1 | Department: product | Updated: 2026-03-24 -->
 
-# Product Requirements Document — PagePulser Iteration 2
+# Product Requirements Document — Kritano Iteration 2
 
 ## Problem Statement
 
-PagePulser has a comprehensive audit engine and strong infrastructure, but three critical gaps prevent it from delivering on its "Website Intelligence Platform" positioning:
+Kritano has a comprehensive audit engine and strong infrastructure, but three critical gaps prevent it from delivering on its "Website Intelligence Platform" positioning:
 
 1. **Content intelligence is hidden.** E-E-A-T, AEO, readability, engagement, and content structure scores exist but are scattered across sub-scores with no unified metric. The unique differentiator identified in strategy is invisible to users.
 
 2. **Findings are diagnosis without prescription.** Users see what's wrong but get no code-level guidance on how to fix it. Every competitor at least links to documentation; the most advanced offer AI-generated fixes.
 
-3. **Compliance has no dedicated surface.** The EAA is in force. PagePulser checks WCAG 2.2 AA but has no compliance-specific reporting, no regulatory framing, and no way to generate the documents that compliance officers need.
+3. **Compliance has no dedicated surface.** The EAA is in force. Kritano checks WCAG 2.2 AA but has no compliance-specific reporting, no regulatory framing, and no way to generate the documents that compliance officers need.
 
 **Why now:** The founding member launch is imminent. These three features — Content Quality Score, Fix Snippets, and Compliance Passport — are the minimum viable differentiation that justifies "Website Intelligence Platform" over "yet another scanner."
 
@@ -20,12 +20,12 @@ PagePulser has a comprehensive audit engine and strong infrastructure, but three
 |------|----------|
 | Establish content intelligence as the lead differentiator | Q2 KR: Content Quality Score is #1 cited feature; ≥70% E-E-A-T/AEO usage rate |
 | Give users actionable remediation for every finding | Q3 KR: Fix snippets live for top 50 findings |
-| Position PagePulser for EAA compliance market | Q3 KR: Compliance Passport shipped and generating reports |
+| Position Kritano for EAA compliance market | Q3 KR: Compliance Passport shipped and generating reports |
 
 ## Non-Goals
 
 - **AI-generated fixes.** Template-based fix snippets only. AI integration is deferred until API key and cost model are decided.
-- **Rank tracking or keyword research.** This is Semrush's territory. PagePulser audits existing content, it doesn't prescribe new content.
+- **Rank tracking or keyword research.** This is Semrush's territory. Kritano audits existing content, it doesn't prescribe new content.
 - **Full EN 301 549 certification.** The Compliance Passport is a reporting tool, not a legal certification. Disclaimer required.
 - **Portfolio dashboard for agencies.** High value but separate scope. Deferred to Iteration 3.
 - **GitHub Action / CLI.** Important for Developer Dana persona but requires API stability and documentation. Deferred.
@@ -114,7 +114,7 @@ PagePulser has a comprehensive audit engine and strong infrastructure, but three
     fallbackTemplate: "Add a descriptive alt attribute to this image.",
     explanation: "Screen readers use alt text to describe images to visually impaired users.",
     effort: "small",
-    learnMoreUrl: "https://pagepulser.com/blog/complete-guide-image-alt-text"
+    learnMoreUrl: "https://kritano.com/blog/complete-guide-image-alt-text"
   }
   ```
 - Variables are populated from the finding context (selector, snippet, page URL)
@@ -247,7 +247,7 @@ PagePulser has a comprehensive audit engine and strong infrastructure, but three
 - Template variables are sanitised before rendering
 
 ### Accessibility
-- All new pages meet WCAG 2.2 AA (PagePulser must practise what it preaches)
+- All new pages meet WCAG 2.2 AA (Kritano must practise what it preaches)
 - CQS breakdown page is keyboard-navigable
 - Compliance report table has proper ARIA attributes and column headers
 - Fix snippet code blocks use `<pre><code>` with appropriate `aria-label`

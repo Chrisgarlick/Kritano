@@ -2,7 +2,7 @@
 
 # Full-Team Audit Summary
 
-**Project:** PagePulser
+**Project:** Kritano
 **Audited:** 2026-03-24
 **Departments reviewed:** 13
 
@@ -72,7 +72,7 @@
 
 8. **Social sharing for referrals** — Growth — Add one-click Twitter/LinkedIn/WhatsApp share buttons with pre-written messages to the referral dashboard.
 
-9. **Public audit badge/widget** — Innovator — "Verified by PagePulser" embeddable badges as a viral distribution channel, gated to Starter+.
+9. **Public audit badge/widget** — Innovator — "Verified by Kritano" embeddable badges as a viral distribution channel, gated to Starter+.
 
 10. **Accessibility statement generator** — Innovator — Auto-generate WCAG accessibility statements from audit results. No major competitor offers this.
 
@@ -82,9 +82,9 @@
 
 Curated from Innovator, Growth, and Strategy findings:
 
-1. **Compliance Center** — Bundle EAA reporting, auto-generated accessibility statements, and remediation timelines as a premium Pro+ feature. Positions PagePulser as a compliance tool, not just a scanner.
+1. **Compliance Center** — Bundle EAA reporting, auto-generated accessibility statements, and remediation timelines as a premium Pro+ feature. Positions Kritano as a compliance tool, not just a scanner.
 
-2. **Viral audit score sharing** — Post-audit "Share your score" prompt with a branded public page (pagepulser.com/score/abc123). Creates organic social proof and inbound signups.
+2. **Viral audit score sharing** — Post-audit "Share your score" prompt with a branded public page (kritano.com/score/abc123). Creates organic social proof and inbound signups.
 
 3. **Health pulse email digest** — Weekly/monthly email summarizing score trends across all sites with sparkline charts. Creates habitual engagement without requiring login. Natural upsell touchpoint.
 
@@ -170,7 +170,7 @@ These issues appeared across multiple departments — they are systemic, not one
 43. **Build GitHub Action + CLI** — Thin API wrapper for CI/CD integration
 44. **Add dark mode** — Apply `dark:` Tailwind variants across all components
 45. **Implement shareable public audit reports** — Time-limited public URLs
-46. **Build public audit badge/widget** — Embeddable "Verified by PagePulser" badges
+46. **Build public audit badge/widget** — Embeddable "Verified by Kritano" badges
 47. **Build accessibility statement generator** — Auto-generate from audit results
 48. **Add Compliance Center** — EAA reporting, remediation timelines, policy templates
 49. **Add portfolio dashboard for agencies** — Aggregate scores, worst performers, bulk re-audit
@@ -192,14 +192,14 @@ These issues appeared across multiple departments — they are systemic, not one
 8. **Set actual Stripe prices** — Confirm USD vs GBP, create annual price IDs in Stripe dashboard
 9. **Decide Enterprise pricing model** — Keep $199 self-serve, move to "Contact Sales", or hybrid?
 10. **Review 50% lifetime discount strategy** — Consider capping at current tier, reducing for last 50 spots, or setting a review date
-11. **Write brand voice guide for PagePulser** — Current `brand_voice.md` describes chrisgarlick.com, not PagePulser
+11. **Write brand voice guide for Kritano** — Current `brand_voice.md` describes chrisgarlick.com, not Kritano
 
 #### Medium-Term (Next Month)
 12. **Create DPA registry document** — Track sub-processor agreements (Stripe, Resend, Sentry, hosting)
 13. **Create ROPA document** — Convert data inventory to formal Art. 30 Record of Processing Activities
 14. **Write breach notification procedure** — Internal escalation, ICO 72-hour process, user comms templates
 15. **Rebalance blog content calendar** — Publish more SEO, security, and performance posts; add case studies
-16. **Add comparison/vs content to blog** — "PagePulser vs Lighthouse", etc. for high-intent search traffic
+16. **Add comparison/vs content to blog** — "Kritano vs Lighthouse", etc. for high-intent search traffic
 17. **Harden Redis on production** — Set `requirepass`, bind to `127.0.0.1`
 18. **Review and update INNOVATION.md** — Mark what's done vs. planned vs. deferred
 19. **Decide on referral milestone expansion** — Add tiers beyond 10 referrals?

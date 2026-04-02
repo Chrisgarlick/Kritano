@@ -15,7 +15,7 @@ interface SeoRule {
 // Context passed to rule checks
 interface SeoContext {
   url: string;
-  $: cheerio.Root;
+  $: ReturnType<typeof cheerio.load>;
   html: string;
   title: string | null;
   metaDescription: string | null;
@@ -170,7 +170,7 @@ export class SeoEngine {
       severity: 'minor',
       check: (ctx) => {
         const headings: Array<{ level: number; text: string }> = [];
-        ctx.$('h1, h2, h3, h4, h5, h6').each((_, el) => {
+        ctx.$('h1, h2, h3, h4, h5, h6').each((_: number, el: any) => {
           const tag = ctx.$(el).prop('tagName');
           if (tag) {
             headings.push({
@@ -203,7 +203,7 @@ export class SeoEngine {
       severity: 'serious',
       check: (ctx) => {
         const findings: SeoFinding[] = [];
-        ctx.$('img').each((_, el) => {
+        ctx.$('img').each((_: number, el: any) => {
           const alt = ctx.$(el).attr('alt');
           const src = ctx.$(el).attr('src') || '';
 
@@ -230,7 +230,7 @@ export class SeoEngine {
       severity: 'minor',
       check: (ctx) => {
         const findings: SeoFinding[] = [];
-        ctx.$('img').each((_, el) => {
+        ctx.$('img').each((_: number, el: any) => {
           const alt = ctx.$(el).attr('alt');
           const src = ctx.$(el).attr('src') || '';
           const role = ctx.$(el).attr('role');
@@ -260,7 +260,7 @@ export class SeoEngine {
         const filenamePatterns = /\.(jpg|jpeg|png|gif|svg|webp|avif|bmp|ico)$/i;
         const placeholderPatterns = /^(image|img|photo|picture|icon|logo|banner|untitled|screenshot|screen shot|dsc_?\d|img_?\d|photo_?\d|image\s?\d)$/i;
 
-        ctx.$('img[alt]').each((_, el) => {
+        ctx.$('img[alt]').each((_: number, el: any) => {
           const alt = (ctx.$(el).attr('alt') || '').trim();
           const src = ctx.$(el).attr('src') || '';
 
@@ -302,7 +302,7 @@ export class SeoEngine {
       description: 'Page has no internal links',
       severity: 'moderate',
       check: (ctx) => {
-        const internalLinks = ctx.$('a[href]').filter((_, el) => {
+        const internalLinks = ctx.$('a[href]').filter((_: number, el: any) => {
           const href = ctx.$(el).attr('href') || '';
           return !href.startsWith('http') && !href.startsWith('//') && !href.startsWith('#');
         });
@@ -325,13 +325,13 @@ export class SeoEngine {
         const ids = new Set<string>();
 
         // Collect all IDs
-        ctx.$('[id]').each((_, el) => {
+        ctx.$('[id]').each((_: number, el: any) => {
           const id = ctx.$(el).attr('id');
           if (id) ids.add(id);
         });
 
         // Check anchor links
-        ctx.$('a[href^="#"]').each((_, el) => {
+        ctx.$('a[href^="#"]').each((_: number, el: any) => {
           const href = ctx.$(el).attr('href') || '';
           const targetId = href.substring(1);
 
@@ -627,7 +627,7 @@ export class SeoEngine {
       severity: 'moderate',
       check: (ctx) => {
         const findings: SeoFinding[] = [];
-        ctx.$('script[type="application/ld+json"]').each((_, el) => {
+        ctx.$('script[type="application/ld+json"]').each((_: number, el: any) => {
           const content = ctx.$(el).text().trim();
           try {
             const data = JSON.parse(content);
@@ -666,7 +666,7 @@ export class SeoEngine {
         if (hreflangLinks.length === 0) {
           // Check for common multilingual indicators
           const hasLangSwitcher = ctx.$('a[href*="/en/"], a[href*="/fr/"], a[href*="/de/"], a[href*="/es/"], a[href*="/it/"], a[href*="/nl/"], a[href*="/pt/"], a[href*="/ja/"], a[href*="/zh/"]').length > 0;
-          const hasAlternateLinks = ctx.$('link[rel="alternate"]').filter((_, el) => {
+          const hasAlternateLinks = ctx.$('link[rel="alternate"]').filter((_: number, el: any) => {
             const href = ctx.$(el).attr('href') || '';
             return href !== ctx.url && !href.includes('feed') && !href.includes('rss');
           }).length > 0;
@@ -681,7 +681,7 @@ export class SeoEngine {
           const findings: SeoFinding[] = [];
           let hasSelfRef = false;
 
-          hreflangLinks.each((_, el) => {
+          hreflangLinks.each((_: number, el: any) => {
             const hreflang = ctx.$(el).attr('hreflang') || '';
             const href = ctx.$(el).attr('href') || '';
 

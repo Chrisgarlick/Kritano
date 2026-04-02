@@ -76,7 +76,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     seo: {
       title: 'SEO Auditing',
       description:
-        'Analyse your website against 100+ SEO ranking factors. PagePulser checks metadata, structured data, Core Web Vitals, mobile-friendliness, and more — with clear fix guidance for every issue.',
+        'Analyse your website against 100+ SEO ranking factors. Kritano checks metadata, structured data, Core Web Vitals, mobile-friendliness, and more — with clear fix guidance for every issue.',
     },
     featureGroups: [
       {
@@ -200,7 +200,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     title: 'Accessibility (WCAG 2.2)',
     subtitle: 'Inclusive by design.',
     heroDescription:
-      'Ensure your website is usable by everyone, regardless of ability. PagePulser checks your pages against WCAG 2.2 Level AA criteria, helping you meet legal requirements and reach a wider audience — because no visitor should be left behind.',
+      'Ensure your website is usable by everyone, regardless of ability. Kritano checks your pages against WCAG 2.2 Level AA criteria, helping you meet legal requirements and reach a wider audience — because no visitor should be left behind.',
     iconName: 'Accessibility',
     colorScheme: {
       text: 'text-emerald-600',
@@ -212,7 +212,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     seo: {
       title: 'Accessibility Auditing (WCAG 2.2)',
       description:
-        'Check your website against WCAG 2.2 Level AA criteria. PagePulser evaluates color contrast, keyboard navigation, screen reader compatibility, semantic HTML, and more.',
+        'Check your website against WCAG 2.2 Level AA criteria. Kritano evaluates color contrast, keyboard navigation, screen reader compatibility, semantic HTML, and more.',
     },
     featureGroups: [
       {
@@ -348,7 +348,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     seo: {
       title: 'Security Scanning',
       description:
-        'Identify website security vulnerabilities before attackers do. PagePulser checks HTTPS configuration, security headers, exposed files, cookie security, and more.',
+        'Identify website security vulnerabilities before attackers do. Kritano checks HTTPS configuration, security headers, exposed files, cookie security, and more.',
     },
     featureGroups: [
       {
@@ -484,7 +484,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     seo: {
       title: 'Performance Analysis',
       description:
-        'Identify exactly what\'s slowing your website down. PagePulser analyses Core Web Vitals, resource optimisation, caching, render pipeline, and more — with prioritised fix recommendations.',
+        'Identify exactly what\'s slowing your website down. Kritano analyses Core Web Vitals, resource optimisation, caching, render pipeline, and more — with prioritised fix recommendations.',
     },
     featureGroups: [
       {

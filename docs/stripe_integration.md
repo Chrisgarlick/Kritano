@@ -2,7 +2,7 @@
 
 ## Overview
 
-PagePulser uses a 5-tier per-organization subscription model (Free, Starter, Pro, Agency, Enterprise). The database schema already has Stripe columns (`stripe_customer_id`, `stripe_subscription_id`, `stripe_price_id`) on the `subscriptions` table, types are defined, and tier limits are enforced via middleware and DB functions. What's missing: the Stripe SDK, checkout flow, webhook handler, and customer portal integration.
+Kritano uses a 5-tier per-organization subscription model (Free, Starter, Pro, Agency, Enterprise). The database schema already has Stripe columns (`stripe_customer_id`, `stripe_subscription_id`, `stripe_price_id`) on the `subscriptions` table, types are defined, and tier limits are enforced via middleware and DB functions. What's missing: the Stripe SDK, checkout flow, webhook handler, and customer portal integration.
 
 ### Architecture Flow
 
@@ -41,10 +41,10 @@ In the Stripe Dashboard (or via CLI), create one **Product** per paid tier, each
 
 | Product Name | Monthly Price | Stripe Product ID (example) | Stripe Price ID (example) |
 |-------------|--------------|-------|---------|
-| PagePulser Starter | £19/mo | `prod_starter_xxx` | `price_starter_monthly_xxx` |
-| PagePulser Pro | £49/mo | `prod_pro_xxx` | `price_pro_monthly_xxx` |
-| PagePulser Agency | £99/mo | `prod_agency_xxx` | `price_agency_monthly_xxx` |
-| PagePulser Enterprise | £199/mo | `prod_enterprise_xxx` | `price_enterprise_monthly_xxx` |
+| Kritano Starter | £19/mo | `prod_starter_xxx` | `price_starter_monthly_xxx` |
+| Kritano Pro | £49/mo | `prod_pro_xxx` | `price_pro_monthly_xxx` |
+| Kritano Agency | £99/mo | `prod_agency_xxx` | `price_agency_monthly_xxx` |
+| Kritano Enterprise | £199/mo | `prod_enterprise_xxx` | `price_enterprise_monthly_xxx` |
 
 Store each Price ID in environment variables (see Section 3.1).
 
@@ -62,7 +62,7 @@ In **Stripe Dashboard → Settings → Billing → Customer Portal**:
 
 In **Stripe Dashboard → Developers → Webhooks**:
 
-- **Endpoint URL** (production): `https://app.pagepulser.com/api/webhooks/stripe`
+- **Endpoint URL** (production): `https://app.kritano.com/api/webhooks/stripe`
 - **Events to send**:
   - `checkout.session.completed`
   - `customer.subscription.created`
@@ -91,8 +91,8 @@ In **Stripe Dashboard → Settings → Payment methods**, enable the following:
 
 1. Go to **Stripe Dashboard → Settings → Payment methods → Apple Pay**
 2. Click "Add new domain"
-3. Enter your production domain (e.g., `app.pagepulser.com`)
-4. Download the verification file and serve it at `https://app.pagepulser.com/.well-known/apple-developer-merchantid-domain-association`
+3. Enter your production domain (e.g., `app.kritano.com`)
+4. Download the verification file and serve it at `https://app.kritano.com/.well-known/apple-developer-merchantid-domain-association`
 5. Click "Verify" — Apple Pay will then work on your domain
 
 This can only be done once the app is on a live domain with HTTPS.
@@ -904,7 +904,7 @@ During the transition:
 
 - [ ] Create Stripe products and prices in **live mode**
 - [ ] Configure Customer Portal in live mode
-- [ ] Register production webhook endpoint (`https://app.pagepulser.com/api/webhooks/stripe`)
+- [ ] Register production webhook endpoint (`https://app.kritano.com/api/webhooks/stripe`)
 - [ ] Set production environment variables:
   - `STRIPE_SECRET_KEY` → live key (`sk_live_...`)
   - `STRIPE_PUBLISHABLE_KEY` → live key (`pk_live_...`)
@@ -983,7 +983,7 @@ Everything in this phase uses Stripe **test mode** keys and can be done locally.
 Only do this once the app is deployed to a production domain.
 
 1. **Create live products & prices** — Duplicate test products in Stripe live mode with real GBP prices
-2. **Register production webhook** (Section 1.3) — `https://app.pagepulser.com/api/webhooks/stripe`
+2. **Register production webhook** (Section 1.3) — `https://app.kritano.com/api/webhooks/stripe`
 3. **Apple Pay domain verification** (Section 1.4) — Add domain, serve verification file at `/.well-known/apple-developer-merchantid-domain-association`
 4. **PayPal live connection** — Connect live PayPal business account in Stripe Dashboard
 5. **Set production env vars** — Swap all `STRIPE_*` vars to live keys and price IDs
@@ -1037,10 +1037,10 @@ Phase A code is implemented. Follow these steps to get test keys and wire everyt
 
 | Product Name | Monthly Price |
 |---|---|
-| PagePulser Starter | £19.00 |
-| PagePulser Pro | £49.00 |
-| PagePulser Agency | £99.00 |
-| PagePulser Enterprise | £199.00 |
+| Kritano Starter | £19.00 |
+| Kritano Pro | £49.00 |
+| Kritano Agency | £99.00 |
+| Kritano Enterprise | £199.00 |
 
 3. For each product, click into it and copy the **Price ID** (starts with `price_`)
 
@@ -1067,7 +1067,7 @@ STRIPE_PRICE_ENTERPRISE_MONTHLY=price_...
 2. Enable:
    - Subscription cancellation (at period end)
    - Invoice history
-3. Under **Products**, add all 4 PagePulser products so users can switch plans
+3. Under **Products**, add all 4 Kritano products so users can switch plans
 4. Save
 
 ### Step 6: (Optional) Create Early Access Coupon

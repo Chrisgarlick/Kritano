@@ -2,7 +2,7 @@
 
 ## Overview/Summary
 
-Add comprehensive analytics capabilities to PagePulser that allow users to:
+Add comprehensive analytics capabilities to Kritano that allow users to:
 
 1. **Track audit scores over time** - Visualize how SEO, accessibility, security, and performance scores change across audits
 2. **Compare audits** - Side-by-side comparison of any two audits (same site or different sites)

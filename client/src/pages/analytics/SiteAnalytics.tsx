@@ -156,16 +156,16 @@ export default function SiteAnalytics() {
       <DashboardLayout>
         <div className="max-w-6xl mx-auto">
           <div className="animate-pulse space-y-6">
-            <div className="h-4 w-48 bg-slate-200 rounded" />
-            <div className="h-8 w-64 bg-slate-200 rounded" />
+            <div className="h-4 w-48 bg-slate-200 dark:bg-slate-700 rounded" />
+            <div className="h-8 w-64 bg-slate-200 dark:bg-slate-700 rounded" />
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[1, 2, 3, 4].map(i => (
-                <div key={i} className="h-24 bg-slate-200 rounded-lg" />
+                <div key={i} className="h-24 bg-slate-200 dark:bg-slate-700 rounded-lg" />
               ))}
             </div>
             <div className="grid lg:grid-cols-2 gap-6">
-              <div className="h-80 bg-slate-200 rounded-lg" />
-              <div className="h-80 bg-slate-200 rounded-lg" />
+              <div className="h-80 bg-slate-200 dark:bg-slate-700 rounded-lg" />
+              <div className="h-80 bg-slate-200 dark:bg-slate-700 rounded-lg" />
             </div>
           </div>
         </div>
@@ -177,9 +177,9 @@ export default function SiteAnalytics() {
     return (
       <DashboardLayout>
         <div className="max-w-6xl mx-auto">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
             <AlertTriangle className="w-8 h-8 text-red-500 mx-auto mb-2" />
-            <p className="text-red-700">{error || 'Failed to load site analytics'}</p>
+            <p className="text-red-700 dark:text-red-400">{error || 'Failed to load site analytics'}</p>
             <Button variant="outline" className="mt-4" onClick={() => window.location.reload()}>
               Retry
             </Button>
@@ -191,26 +191,26 @@ export default function SiteAnalytics() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>Site Analytics | PagePulser</title></Helmet>
+      <Helmet><title>Site Analytics | Kritano</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm">
-          <Link to="/analytics" className="text-indigo-600 hover:text-indigo-700">
+          <Link to="/analytics" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
             Analytics
           </Link>
           <ChevronRight className="w-4 h-4 text-slate-500" />
-          <span className="text-slate-900 font-medium">{site.name}</span>
+          <span className="text-slate-900 dark:text-white font-medium">{site.name}</span>
         </nav>
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">{site.name}</h1>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{site.name}</h1>
             <a
               href={`https://${site.domain}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-indigo-600"
+              className="inline-flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400"
             >
               {site.domain}
               <ExternalLink className="w-3 h-3" />
@@ -233,8 +233,8 @@ export default function SiteAnalytics() {
         </div>
 
         {/* Score Summary Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-          {(['seo', 'accessibility', 'security', 'performance', 'content', 'structuredData'] as const).map(cat => (
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+          {(['seo', 'accessibility', 'security', 'performance', 'content', 'structuredData', 'cqs'] as const).map(cat => (
             <ScoreSummaryCard
               key={cat}
               category={cat}
@@ -246,19 +246,20 @@ export default function SiteAnalytics() {
 
         {/* Charts Row */}
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-lg font-medium text-slate-900 mb-4">Score History</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Score History</h2>
             <ScoreLineChart
               data={scoreHistory.scores}
+              categories={['seo', 'accessibility', 'security', 'performance', 'content', 'structuredData', 'cqs']}
               onPointClick={(auditId) => navigate(`/audits/${auditId}`)}
             />
           </div>
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-lg font-medium text-slate-900 mb-4">Issue Trends</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Issue Trends</h2>
             {issueTrends && issueTrends.trends.length > 0 ? (
               <IssueTrendChart data={issueTrends.trends} />
             ) : (
-              <div className="flex items-center justify-center h-[300px] text-slate-500">
+              <div className="flex items-center justify-center h-[300px] text-slate-500 dark:text-slate-400">
                 No issue data available
               </div>
             )}
@@ -266,30 +267,30 @@ export default function SiteAnalytics() {
         </div>
 
         {/* URLs Table */}
-        <div className="bg-white rounded-lg border border-slate-200 p-6">
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-medium text-slate-900">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white">
               URLs ({urlsTotal})
             </h2>
             <Link
               to={`/sites/${siteId}`}
-              className="text-sm text-indigo-600 hover:text-indigo-700"
+              className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
             >
               View All URLs
             </Link>
           </div>
 
           {urls.length === 0 && !urlsLoading ? (
-            <div className="text-center py-8 text-slate-500">
+            <div className="text-center py-8 text-slate-500 dark:text-slate-400">
               No URLs audited yet. Run an audit to see URL data here.
             </div>
           ) : (
             <div className={`overflow-x-auto transition-opacity duration-150 ${urlsLoading ? 'opacity-50' : ''}`}>
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-slate-200">
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
                     <th
-                      className="text-left py-3 px-4 text-xs font-medium text-slate-500 uppercase cursor-pointer hover:text-slate-700 select-none"
+                      className="text-left py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase cursor-pointer hover:text-slate-700 dark:hover:text-slate-300 select-none"
                       onClick={() => handleSort('url_path')}
                     >
                       <span className="inline-flex items-center gap-1">
@@ -300,7 +301,7 @@ export default function SiteAnalytics() {
                       </span>
                     </th>
                     <th
-                      className="text-center py-3 px-4 text-xs font-medium text-slate-500 uppercase cursor-pointer hover:text-slate-700 select-none"
+                      className="text-center py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase cursor-pointer hover:text-slate-700 dark:hover:text-slate-300 select-none"
                       onClick={() => handleSort('last_seo_score')}
                     >
                       <span className="inline-flex items-center justify-center gap-1">
@@ -311,7 +312,7 @@ export default function SiteAnalytics() {
                       </span>
                     </th>
                     <th
-                      className="text-center py-3 px-4 text-xs font-medium text-slate-500 uppercase cursor-pointer hover:text-slate-700 select-none"
+                      className="text-center py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase cursor-pointer hover:text-slate-700 dark:hover:text-slate-300 select-none"
                       onClick={() => handleSort('last_accessibility_score')}
                     >
                       <span className="inline-flex items-center justify-center gap-1">
@@ -322,7 +323,7 @@ export default function SiteAnalytics() {
                       </span>
                     </th>
                     <th
-                      className="text-center py-3 px-4 text-xs font-medium text-slate-500 uppercase cursor-pointer hover:text-slate-700 select-none"
+                      className="text-center py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase cursor-pointer hover:text-slate-700 dark:hover:text-slate-300 select-none"
                       onClick={() => handleSort('last_security_score')}
                     >
                       <span className="inline-flex items-center justify-center gap-1">
@@ -333,7 +334,7 @@ export default function SiteAnalytics() {
                       </span>
                     </th>
                     <th
-                      className="text-center py-3 px-4 text-xs font-medium text-slate-500 uppercase cursor-pointer hover:text-slate-700 select-none"
+                      className="text-center py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase cursor-pointer hover:text-slate-700 dark:hover:text-slate-300 select-none"
                       onClick={() => handleSort('last_performance_score')}
                     >
                       <span className="inline-flex items-center justify-center gap-1">
@@ -344,7 +345,7 @@ export default function SiteAnalytics() {
                       </span>
                     </th>
                     <th
-                      className="text-center py-3 px-4 text-xs font-medium text-slate-500 uppercase cursor-pointer hover:text-slate-700 select-none"
+                      className="text-center py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase cursor-pointer hover:text-slate-700 dark:hover:text-slate-300 select-none"
                       onClick={() => handleSort('last_content_score')}
                     >
                       <span className="inline-flex items-center justify-center gap-1">
@@ -355,7 +356,7 @@ export default function SiteAnalytics() {
                       </span>
                     </th>
                     <th
-                      className="text-right py-3 px-4 text-xs font-medium text-slate-500 uppercase cursor-pointer hover:text-slate-700 select-none"
+                      className="text-right py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase cursor-pointer hover:text-slate-700 dark:hover:text-slate-300 select-none"
                       onClick={() => handleSort('last_audited_at')}
                     >
                       <span className="inline-flex items-center justify-end gap-1">
@@ -372,10 +373,10 @@ export default function SiteAnalytics() {
                     <tr
                       key={url.id}
                       onClick={() => navigate(`/analytics/sites/${siteId}/urls/${url.id}`)}
-                      className="border-b border-slate-100 hover:bg-slate-50 cursor-pointer transition-colors"
+                      className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors"
                     >
                       <td className="py-3 px-4">
-                        <span className="font-mono text-sm text-slate-700 truncate block max-w-[300px]">
+                        <span className="font-mono text-sm text-slate-700 dark:text-slate-300 truncate block max-w-[300px]">
                           {url.urlPath || '/'}
                         </span>
                       </td>

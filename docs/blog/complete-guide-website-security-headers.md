@@ -19,7 +19,7 @@ featured: false
 
 If I asked you whether your website has security headers configured, there's a good chance you'd say "I have no idea what those are." And honestly, that's completely normal — security headers are one of the most effective ways to protect a website, and almost nobody talks about them outside of security circles.
 
-Here's the problem: from our PagePulser audits, the majority of websites are missing at least one critical security header. Some are missing all of them. These aren't obscure, enterprise-level configurations — they're straightforward instructions that tell browsers how to handle your site's content safely. Most can be added in under 30 minutes, and they dramatically reduce your exposure to common attacks.
+Here's the problem: from our Kritano audits, the majority of websites are missing at least one critical security header. Some are missing all of them. These aren't obscure, enterprise-level configurations — they're straightforward instructions that tell browsers how to handle your site's content safely. Most can be added in under 30 minutes, and they dramatically reduce your exposure to common attacks.
 
 Let me explain what each one does, why it matters, and exactly how to add them — regardless of what platform you're running.
 
@@ -49,7 +49,7 @@ This tells the browser: only load scripts from my own domain, only load styles f
 
 **The honest caveat:** CSP is the most powerful header on this list, but it's also the trickiest to get right. Set it too strictly and you'll break your own site by blocking legitimate resources — your analytics script, your chat widget, your Google Fonts. I'd recommend starting with **report-only mode** (`Content-Security-Policy-Report-Only`) to see what would be blocked before enforcing it. This logs violations without actually breaking anything, giving you time to build your allow-list.
 
-**Found missing on:** 61% of PagePulser-audited sites
+**Found missing on:** 61% of Kritano-audited sites
 
 ### X-Frame-Options
 
@@ -71,7 +71,7 @@ X-Frame-Options: SAMEORIGIN
 
 **When to use which:** `DENY` is the safest default. Only use `SAMEORIGIN` if you have a specific, known reason to embed your own pages. If you're not sure, go with `DENY`.
 
-**Found missing on:** 44% of PagePulser-audited sites
+**Found missing on:** 44% of Kritano-audited sites
 
 ### Strict-Transport-Security (HSTS)
 
@@ -89,7 +89,7 @@ The `max-age` is in seconds — 31536000 is one year. `includeSubDomains` applie
 
 **Important:** Only add this header once you're certain that HTTPS is working correctly across your entire site and all subdomains. Once a browser caches this header, it will refuse to connect over HTTP for the specified duration — so if your SSL certificate breaks, visitors won't be able to reach your site at all. Start with a shorter `max-age` (like 86400, which is one day) to test, then increase it once you're confident.
 
-**Found missing on:** 38% of PagePulser-audited sites
+**Found missing on:** 38% of Kritano-audited sites
 
 ### X-Content-Type-Options
 
@@ -137,7 +137,7 @@ The empty parentheses mean "nobody can use this feature, not even my own site." 
 
 The quickest way to see where you stand is **securityheaders.com** — enter your URL and it'll give you a grade from A+ to F, along with a clear list of what's missing and what's configured correctly. Most small business sites I've tested score a D or lower on their first check.
 
-PagePulser also checks all of these headers automatically as part of your security audit, alongside [SSL](/blog/website-security-basics-business-owners) configuration, mixed content, and other vulnerabilities. If you've already got a PagePulser report, check the security section — it'll tell you exactly which headers are missing.
+Kritano also checks all of these headers automatically as part of your security audit, alongside [SSL](/blog/website-security-basics-business-owners) configuration, mixed content, and other vulnerabilities. If you've already got a Kritano report, check the security section — it'll tell you exactly which headers are missing.
 
 ## How to Add Them
 
@@ -194,11 +194,11 @@ Security headers are one of those rare things in web development where the effor
 
 In my honest opinion, every website should have at least the first five headers on this list configured. They cost nothing, they don't affect your site's appearance or functionality, and they provide meaningful protection that compounds with everything else in your security posture.
 
-If you want to see which headers you're missing and get your security score alongside [accessibility, SEO, and performance](/blog/accessibility-seo-performance-why-you-shouldnt-choose), run an audit on PagePulser. The security section flags every missing header with specific implementation guidance for your setup.
+If you want to see which headers you're missing and get your security score alongside [accessibility, SEO, and performance](/blog/accessibility-seo-performance-why-you-shouldnt-choose), run an audit on Kritano. The security section flags every missing header with specific implementation guidance for your setup.
 
 <!-- Internal linking suggestions:
 - Link "SSL" or "HTTPS" to the website security basics post
-- Link "PagePulser audit" or "security audit" to the main product/pricing page
+- Link "Kritano audit" or "security audit" to the main product/pricing page
 - Link "securityheaders.com" inline (already a named tool)
 - Link "common attacks" to the website security basics post
 - Link "accessibility, SEO, and performance" to the holistic website health post

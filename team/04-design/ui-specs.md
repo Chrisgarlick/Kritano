@@ -1,6 +1,6 @@
 <!-- Version: 1 | Department: design | Updated: 2026-03-24 -->
 
-# UI Specifications — PagePulser Iteration 2
+# UI Specifications — Kritano Iteration 2
 
 Screen-by-screen specs for the three new features. Read `design-system.md` first for component definitions and color tokens.
 

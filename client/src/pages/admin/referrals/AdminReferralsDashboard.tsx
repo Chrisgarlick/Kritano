@@ -99,10 +99,10 @@ export default function AdminReferralsDashboard() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Referrals - Admin - PagePulser</title></Helmet>
+      <Helmet><title>Referrals - Admin - Kritano</title></Helmet>
 
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">Referral Program</h1>
+        <h1 className="text-2xl font-bold text-white">Referral Program</h1>
         <p className="text-slate-500 mt-1">Manage referrals, view stats, and configure rewards.</p>
       </div>
 

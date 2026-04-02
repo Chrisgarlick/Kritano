@@ -13,13 +13,13 @@
 
 4. **Robust admin tooling built from day one.** The admin panel covers users, organizations, schedules, CRM leads, email campaigns, blog CMS, cold prospects, referrals, analytics (funnel/trends/revenue), SEO management, system settings, bug reports, and feature requests. This is unusually mature for a pre-launch product.
 
-5. **Public API with proper documentation SPA.** Six dedicated documentation pages (overview, auth, rate limits, errors, endpoints, objects) built as React pages with shared layout components. The API key system uses `pp_live_` prefixes, scoped permissions, and tier-based rate limits -- all production-ready patterns.
+5. **Public API with proper documentation SPA.** Six dedicated documentation pages (overview, auth, rate limits, errors, endpoints, objects) built as React pages with shared layout components. The API key system uses `kt_live_` prefixes, scoped permissions, and tier-based rate limits -- all production-ready patterns.
 
 ## Issues Found
 
 ### Free tier feature description is inconsistent across surfaces
 **Severity:** HIGH
-**Location:** `/Users/chris/Herd/pagepulser/client/src/pages/public/Pricing.tsx` (line 39), `/Users/chris/Herd/pagepulser/client/src/pages/settings/Profile.tsx` (line 54), `/Users/chris/Herd/pagepulser/docs/TIERS.md` (line 17-19)
+**Location:** `/Users/chris/Herd/kritano/client/src/pages/public/Pricing.tsx` (line 39), `/Users/chris/Herd/kritano/client/src/pages/settings/Profile.tsx` (line 54), `/Users/chris/Herd/kritano/docs/TIERS.md` (line 17-19)
 **Finding:** The Free tier describes available checks differently in three places:
 - **Pricing page**: "SEO & Content checks" (correct per DB migration 035)
 - **Profile page**: "SEO & Accessibility checks" (incorrect -- Accessibility is Starter+)
@@ -30,49 +30,49 @@
 
 ### No user-facing onboarding flow
 **Severity:** HIGH
-**Location:** `/Users/chris/Herd/pagepulser/client/src/pages/dashboard/Dashboard.tsx`
+**Location:** `/Users/chris/Herd/kritano/client/src/pages/dashboard/Dashboard.tsx`
 **Finding:** After registration and email verification, users land on a dashboard that shows recent audits and stats. There is no guided onboarding: no "add your first site" prompt, no walkthrough of features, no progressive disclosure of the audit workflow. The `NoAuditsEmptyState` component exists but is a minimal empty state, not an onboarding experience.
 **Impact:** First-time users, especially on the Free tier, face a blank dashboard with no direction. This directly harms activation rate and time-to-value -- the most critical SaaS metrics. Users who do not complete their first audit within the first session rarely return.
 **Recommendation:** Build a 3-step onboarding checklist (add site, verify domain, run first audit) that persists on the dashboard until completed. Consider adding a "quick audit" CTA that bypasses site creation for the very first scan.
 
 ### Schedules route directory is empty on the server
 **Severity:** MEDIUM
-**Location:** `/Users/chris/Herd/pagepulser/server/src/routes/schedules/` (empty directory)
+**Location:** `/Users/chris/Herd/kritano/server/src/routes/schedules/` (empty directory)
 **Finding:** The `schedules` directory under routes exists but contains no files. Schedule endpoints are actually served under `/api/audits/schedules` via the audits router. The empty directory is dead code and could cause confusion for developers.
 **Impact:** Minor maintenance confusion. No user impact since the functionality works through the audits route.
 **Recommendation:** Delete the empty `/server/src/routes/schedules/` directory.
 
 ### INNOVATION.md roadmap is stale and misaligned with actual implementation
 **Severity:** MEDIUM
-**Location:** `/Users/chris/Herd/pagepulser/docs/INNOVATION.md`
+**Location:** `/Users/chris/Herd/kritano/docs/INNOVATION.md`
 **Finding:** The document is dated 2026-01-29 and labeled "Phase 4: Innovation Roadmap" with "Status: Planning." However, the actual codebase is on phase-15 and has already implemented many items it describes (Public API, API keys, organizations, RBAC). Meanwhile, features it outlines as upcoming (AI fix suggestions, webhooks, Jira/Slack/Linear integrations, CLI tool, GitHub Action, anomaly detection) have not been built. The migration numbers it references (010-014) do not match the actual migration numbering.
 **Impact:** Any team member referencing this document for roadmap decisions will be working from outdated context. It conflates "done" and "planned" without distinction.
 **Recommendation:** Either archive this document with a DONE_ prefix and create a fresh roadmap, or update it with clear "Implemented" / "Planned" / "Deferred" status labels for each section.
 
 ### No in-app notification system for completed audits
 **Severity:** MEDIUM
-**Location:** `/Users/chris/Herd/pagepulser/client/src/pages/settings/NotificationSettings.tsx`
+**Location:** `/Users/chris/Herd/kritano/client/src/pages/settings/NotificationSettings.tsx`
 **Finding:** Notification settings only cover email preferences (audit notifications, product updates, educational, marketing). There is no in-app notification bell, no toast for audit completion when navigating away, and no real-time push. The audit progress uses SSE, but only on the audit detail page -- if a user navigates away, they have no visibility into audit completion.
 **Impact:** Users who start audits and navigate away (common for longer scans of 1,000+ pages) must manually check back or wait for an email. This creates a disjointed experience, especially for Agency/Enterprise users running many concurrent audits.
 **Recommendation:** Add a notification bell in the dashboard header that shows audit completions, schedule run results, and team activity. This can be backed by the existing SSE infrastructure.
 
 ### Pricing inconsistency: Enterprise tier has no "Contact Sales" flow
 **Severity:** LOW
-**Location:** `/Users/chris/Herd/pagepulser/client/src/pages/public/Pricing.tsx` (line 99-100)
+**Location:** `/Users/chris/Herd/kritano/client/src/pages/public/Pricing.tsx` (line 99-100)
 **Finding:** The Enterprise tier is priced at a flat "$199/month" with a "Start Free Trial" CTA linking to `/register`. Enterprise features list includes "Custom integrations," "SLA guarantees," and "On-premise option" -- these are not self-service features. Having a fixed price with self-serve signup undercuts the Enterprise positioning and leaves money on the table.
 **Impact:** Enterprise buyers expect a sales conversation. Showing a fixed price ($199) for "unlimited everything + SLA + on-premise" signals this is not a serious enterprise offering.
 **Recommendation:** Replace the Enterprise CTA with "Contact Sales" linking to `/contact`. Remove the fixed price and replace with "Custom" or "Starting at $199/mo." This also opens the door for annual contracts and volume discounts.
 
 ### Free tier FAQ inconsistency
 **Severity:** LOW
-**Location:** `/Users/chris/Herd/pagepulser/client/src/pages/public/Pricing.tsx` (line 182)
+**Location:** `/Users/chris/Herd/kritano/client/src/pages/public/Pricing.tsx` (line 182)
 **Finding:** The FAQ answer for "How does the free plan work?" states "You get SEO and content checks" but omits Security, which is actually included for Free tier users per the database.
 **Impact:** Undersells the free tier; minor trust issue if users discover Security checks are available but weren't advertised.
 **Recommendation:** Update to "You get SEO, security, and content checks" to match the actual tier configuration.
 
 ## Opportunities
 
-1. **Webhooks for audit events.** The INNOVATION.md doc outlines webhooks (audit.completed, audit.failed, anomaly.detected) but they have not been built. This is the single highest-leverage feature for API-first users and CI/CD integration. It would differentiate PagePulser from tools that require polling.
+1. **Webhooks for audit events.** The INNOVATION.md doc outlines webhooks (audit.completed, audit.failed, anomaly.detected) but they have not been built. This is the single highest-leverage feature for API-first users and CI/CD integration. It would differentiate Kritano from tools that require polling.
 
 2. **AI-powered fix suggestions.** The roadmap describes generating code fixes per finding using Claude. This is a strong differentiator and natural upsell for paid tiers. Even a basic version (pre-written fix templates for common issues) would add significant value before a full LLM integration.
 
@@ -84,4 +84,4 @@
 
 ## Summary
 
-PagePulser has a mature, well-architected feature set that covers the full lifecycle of website auditing -- from one-off scans through scheduled monitoring, team collaboration, API access, and white-label exports. The tier structure is thoughtfully designed with genuine progression from Free through Enterprise. The admin panel and CRM tooling are unusually complete for a pre-launch product. The main product gaps are in activation (no onboarding flow), real-time feedback (no in-app notifications), and messaging consistency (Free tier features described differently across three surfaces). The Enterprise tier positioning needs a sales-led approach rather than self-serve pricing. The INNOVATION.md roadmap should be refreshed to reflect what has shipped versus what is planned. These are all fixable issues that do not undermine the core product quality.
+Kritano has a mature, well-architected feature set that covers the full lifecycle of website auditing -- from one-off scans through scheduled monitoring, team collaboration, API access, and white-label exports. The tier structure is thoughtfully designed with genuine progression from Free through Enterprise. The admin panel and CRM tooling are unusually complete for a pre-launch product. The main product gaps are in activation (no onboarding flow), real-time feedback (no in-app notifications), and messaging consistency (Free tier features described differently across three surfaces). The Enterprise tier positioning needs a sales-led approach rather than self-serve pricing. The INNOVATION.md roadmap should be refreshed to reflect what has shipped versus what is planned. These are all fixable issues that do not undermine the core product quality.

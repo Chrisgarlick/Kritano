@@ -21,21 +21,21 @@
 
 ### 1. No Formal Legitimate Interest Assessment (LIA) Document for Cold Prospects
 **Severity:** HIGH
-**Location:** `/Users/chris/Herd/pagepulser/server/src/services/cold-prospect/email-extractor.service.ts`, `/Users/chris/Herd/pagepulser/docs/privacy_policy.md` (Section 2.13)
+**Location:** `/Users/chris/Herd/kritano/server/src/services/cold-prospect/email-extractor.service.ts`, `/Users/chris/Herd/kritano/docs/privacy_policy.md` (Section 2.13)
 **Finding:** The cold prospect system scrapes contact emails from live websites and stores contact names and roles. While the privacy policy (Section 9) states "We do not collect personal or named email addresses for this purpose," the `email-extractor.service.ts` actively extracts personal names (`extractNameNearEmail`) and roles (`Director`, `CEO`, etc.) and stores them in `contact_name` and `contact_role` fields. The code also captures personal emails found on pages, though it deprioritises them for outreach. There is no formal LIA document to support the Art. 6(1)(f) basis relied upon.
 **Impact:** Under UK-GDPR, relying on legitimate interest without a documented LIA is a compliance gap. If a complaint reaches the ICO, the absence of a balancing test is a material weakness. The privacy policy's claim of not collecting personal/named emails is contradicted by the code, which could be viewed as misleading.
 **Recommendation:** (a) Create a formal LIA document at `/docs/legitimate-interest-assessment-cold-prospects.md` covering purpose, necessity, and balancing test. (b) Align the privacy policy Section 9 with what the code actually does -- either update the policy to disclose name/role collection, or modify the extractor to genuinely skip personal data. (c) Consider adding a right-to-object mechanism beyond just unsubscribe (Art. 21 requires processing to stop on objection unless compelling grounds exist).
 
 ### 2. Privacy Policy Claims Self-Service Data Export and Deletion Exist -- Verify They Are Live
 **Severity:** MEDIUM
-**Location:** `/Users/chris/Herd/pagepulser/client/src/pages/public/Privacy.tsx` (Sections 10, 12)
+**Location:** `/Users/chris/Herd/kritano/client/src/pages/public/Privacy.tsx` (Sections 10, 12)
 **Finding:** The privacy policy states users can "download a complete export of your data at any time from your account settings" and "delete your account from your account settings." The GDPR service code exists, but the privacy policy should only promise what is actually deployed and accessible to users in production.
 **Impact:** If these features are not yet live in the UI, the privacy policy makes a false promise, which is a compliance issue and a potential ICO concern.
 **Recommendation:** Verify that the Profile/Settings page actually exposes the "Download My Data" and "Delete My Account" buttons. If not yet live, either deploy them or soften the policy language to "contact us to exercise these rights."
 
 ### 3. Cookie Consent Re-prompt on Version Change Not Fully Enforced
 **Severity:** MEDIUM
-**Location:** `/Users/chris/Herd/pagepulser/client/src/contexts/CookieConsentContext.tsx`
+**Location:** `/Users/chris/Herd/kritano/client/src/contexts/CookieConsentContext.tsx`
 **Finding:** The context checks `parsed.version !== CONSENT_VERSION` and returns `null` if they differ, which does re-show the banner. However, the privacy audit document notes this logic may not be fully tested. Additionally, the version is hardcoded as `'1.0'` on both client and server -- when it is eventually bumped, all users will need re-consent, which could be disruptive if not planned.
 **Impact:** If the version check fails silently for any reason (localStorage corruption, SSR mismatch), users could operate under stale consent, which undermines the consent mechanism.
 **Recommendation:** Add integration tests for the version bump scenario. Consider adding a server-side consent version check that returns a re-consent-required flag on API responses as a belt-and-suspenders approach.
@@ -63,14 +63,14 @@
 
 ### 7. Terms of Service Missing Data Processing Clause
 **Severity:** LOW
-**Location:** `/Users/chris/Herd/pagepulser/client/src/pages/public/Terms.tsx`
+**Location:** `/Users/chris/Herd/kritano/client/src/pages/public/Terms.tsx`
 **Finding:** The Terms of Service is well-drafted for liability protection but does not include a data processing clause or reference the privacy policy for data handling terms. Standard SaaS terms typically include a section stating that data processing is governed by the privacy policy.
 **Impact:** Minor gap -- the privacy policy exists and is linked at registration, but contractual completeness would benefit from an explicit cross-reference.
 **Recommendation:** Add a short section: "Your use of the Service is also governed by our Privacy Policy at [link], which is incorporated into these Terms by reference."
 
 ### 8. Unsubscribe Token Does Not Expire
 **Severity:** LOW
-**Location:** `/Users/chris/Herd/pagepulser/server/src/services/email-preference.service.ts` (line 128)
+**Location:** `/Users/chris/Herd/kritano/server/src/services/email-preference.service.ts` (line 128)
 **Finding:** The `generateUnsubscribeToken` function creates a JWT with no expiry (`jwt.sign({ userId, purpose: 'unsubscribe' }, JWT_SECRET)`). While this is common practice for unsubscribe links (they should always work), it means these tokens are valid indefinitely and could theoretically be used to unsubscribe a user at any future time if intercepted.
 **Impact:** Low risk in practice since the token only performs an unsubscribe action (not a destructive or privileged operation). However, if the JWT_SECRET is compromised, tokens for any user could be forged.
 **Recommendation:** This is acceptable as-is. Optionally, consider HMAC-based tokens tied to the user ID rather than JWTs, which would be simpler and avoid the theoretical JWT key compromise vector.
@@ -89,4 +89,4 @@
 
 ## Summary
 
-PagePulser demonstrates a strong compliance posture for an early-stage SaaS. The consent logging infrastructure is genuinely impressive -- consent text hashing, version tracking, IP/UA provenance, and separate tables for different consent types put it ahead of most competitors. The liability protection system for website scanning is well-engineered and addresses the core business risk effectively. The GDPR service implements the critical data subject rights (export, deletion, retention cleanup) with a proper worker process. The privacy policy is comprehensive and largely accurate. The main gaps are documentation-level: a formal LIA for cold prospects, a DPA registry, a ROPA, and a breach notification procedure. The cold prospect email extractor's collection of personal names and roles contradicts the privacy policy's claim of only collecting generic emails -- this is the most actionable finding. Overall, the technical implementation is strong; the documentation and process layer needs to catch up.
+Kritano demonstrates a strong compliance posture for an early-stage SaaS. The consent logging infrastructure is genuinely impressive -- consent text hashing, version tracking, IP/UA provenance, and separate tables for different consent types put it ahead of most competitors. The liability protection system for website scanning is well-engineered and addresses the core business risk effectively. The GDPR service implements the critical data subject rights (export, deletion, retention cleanup) with a proper worker process. The privacy policy is comprehensive and largely accurate. The main gaps are documentation-level: a formal LIA for cold prospects, a DPA registry, a ROPA, and a breach notification procedure. The cold prospect email extractor's collection of personal names and roles contradicts the privacy policy's claim of only collecting generic emails -- this is the most actionable finding. Overall, the technical implementation is strong; the documentation and process layer needs to catch up.

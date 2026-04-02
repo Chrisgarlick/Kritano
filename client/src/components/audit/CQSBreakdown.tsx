@@ -191,8 +191,8 @@ export function CQSBreakdown({ auditId, cqsScore }: CQSBreakdownProps) {
                     <span className="text-[10px]">Low content</span>
                   </span>
                 )}
-                <span className="text-slate-400 dark:text-slate-600 tabular-nums">
-                  d{page.depth}
+                <span className="text-slate-400 dark:text-slate-600 text-[10px]">
+                  {page.depth === 0 ? 'Homepage' : page.depth === 1 ? 'Top-level' : `Depth ${page.depth}`}
                 </span>
               </div>
             ))}

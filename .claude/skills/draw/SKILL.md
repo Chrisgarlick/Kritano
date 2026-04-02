@@ -1,13 +1,13 @@
 ---
 name: draw
-description: Generate brand-consistent visual assets (HTML or SVG) for social media. Creates 1:1 ratio images matching PagePulser's editorial design language. Use when the user wants social graphics, illustrations, diagrams, or visual content.
+description: Generate brand-consistent visual assets (HTML or SVG) for social media. Creates 1:1 ratio images matching Kritano's editorial design language. Use when the user wants social graphics, illustrations, diagrams, or visual content.
 user-invocable: true
 argument-hint: [description of what to draw]
 ---
 
-# Draw Skill — PagePulser Brand Visual Assets
+# Draw Skill — Kritano Brand Visual Assets
 
-Generate 1080×1080px visual assets styled to PagePulser's editorial brand language. Outputs self-contained HTML or SVG files for social media use.
+Generate 1080×1080px visual assets styled to Kritano's editorial brand language. Outputs self-contained HTML or SVG files for social media use.
 
 ## Input
 
@@ -59,7 +59,7 @@ When generating multi-slide carousels, these elements MUST be identical across e
 
 - **Slide indicator position**: Always `position: absolute; top: 48px; left: 100px;` — taken out of document flow so it doesn't shift based on content padding. Use `z-index: 2`.
 - **Content padding**: All slides use the same padding (e.g. `padding: 90px 100px`). The indicator sits above this area via absolute positioning.
-- **Branding position**: PagePulser wordmark at a consistent absolute bottom-right or bottom-centre across all slides.
+- **Branding position**: Kritano wordmark at a consistent absolute bottom-right or bottom-centre across all slides.
 - **Font sizes for matching elements**: Issue number badges, titles, body text, quick fix cards should use the same sizes across all issue slides.
 
 ### 7. Generate variations
@@ -84,9 +84,9 @@ The file should contain a caption and hashtags **for each slide/variation**, str
 # Captions — [Prompt Title]
 
 ## Slide 1
-**Caption:** [Instagram-ready caption for this slide. Conversational, on-brand PagePulser voice. 1-3 sentences. Can include line breaks for readability.]
+**Caption:** [Instagram-ready caption for this slide. Conversational, on-brand Kritano voice. 1-3 sentences. Can include line breaks for readability.]
 
-**Hashtags:** #WebAccessibility #SEO #PagePulser #WebDesign [etc — 15-20 relevant hashtags]
+**Hashtags:** #WebAccessibility #SEO #Kritano #WebDesign [etc — 15-20 relevant hashtags]
 
 ---
 
@@ -95,13 +95,13 @@ The file should contain a caption and hashtags **for each slide/variation**, str
 ```
 
 #### Caption guidelines:
-- Write in PagePulser's brand voice — conversational, authoritative, helpful (not corporate or salesy)
+- Write in Kritano's brand voice — conversational, authoritative, helpful (not corporate or salesy)
 - Use British English spelling (optimise, colour, favour)
 - Keep captions concise — Instagram truncates after ~125 characters in feed, so lead with the hook
 - For carousel posts, write one **combined caption** for the full carousel as well as per-slide captions. The combined caption goes first.
 - Include a soft CTA where natural (e.g. "Link in bio to scan your site")
 - 15-20 hashtags — mix of broad (#WebDesign, #SEO) and niche (#WCAG, #A11y, #CoreWebVitals)
-- Always include #PagePulser
+- Always include #Kritano
 
 ### 10. Output summary
 
@@ -192,7 +192,7 @@ Cover/CTA slides should look different through **background colour, text alignme
 1. **Always calculate total content height EXPLICITLY before writing.** Add up every element: top padding + all element heights + all gaps + bottom padding + branding reserve (50px). If it exceeds 1080px, reduce sizes BEFORE writing the file.
 2. **Prefer fixed padding over centring.** `padding: 90px 90px 70px` is the standard. Never change this between slides.
 3. **Atmospheric elements and branding must be absolute-positioned** with `pointer-events: none`. They sit outside the content flow.
-4. **Budget for branding.** The PagePulser wordmark at `position:absolute;bottom:32px;right:90px;` needs ~50px of clearance at the bottom.
+4. **Budget for branding.** The Kritano wordmark at `position:absolute;bottom:32px;right:90px;` needs ~50px of clearance at the bottom.
 5. **Keep stat numbers ≤56px on grid layouts.** Reserve 72px+ only for hero/single-stat layouts.
 6. **When in doubt, make things smaller.** It's better to have whitespace at the bottom than to clip content.
 
@@ -209,7 +209,7 @@ Before outputting each file, verify:
 - [ ] **ALL content is visible within the 1080×1080px canvas — nothing is clipped or overflowing** (most important check)
 - [ ] Total content height (padding + elements + gaps) does not exceed 1080px
 - [ ] Canvas is exactly 1080×1080px (HTML body or SVG viewBox)
-- [ ] Uses ONLY PagePulser brand fonts (Instrument Serif, Outfit, JetBrains Mono)
+- [ ] Uses ONLY Kritano brand fonts (Instrument Serif, Outfit, JetBrains Mono)
 - [ ] Uses ONLY brand palette colours (indigo, amber, slate — see `brand-style.md`)
 - [ ] Includes at least one atmospheric element (blurred gradient, grid overlay, or subtle texture)
 - [ ] Has generous padding from canvas edges (minimum 80px)
@@ -223,5 +223,5 @@ Before outputting each file, verify:
 
 | File | Purpose |
 |------|---------|
-| `brand-style.md` | PagePulser visual DNA — colours, typography, atmospheric elements, do's & don'ts |
+| `brand-style.md` | Kritano visual DNA — colours, typography, atmospheric elements, do's & don'ts |
 | `templates.md` | Reusable HTML/SVG snippets for common patterns (score rings, backgrounds, stat cards) |

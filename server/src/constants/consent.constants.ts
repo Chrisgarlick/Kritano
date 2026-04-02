@@ -56,7 +56,7 @@ By proceeding, you acknowledge and agree that:
 3. You accept full responsibility for any consequences resulting from this scan.
 4. This scan will be limited to ${UNVERIFIED_DOMAIN_LIMITS.MAX_PAGES} pages maximum with reduced crawl speed for safety.
 
-PagePulser and its operators are not liable for any damages, downtime, or issues that may arise from scanning domains you do not own or have explicit authorization to scan.
+Kritano and its operators are not liable for any damages, downtime, or issues that may arise from scanning domains you do not own or have explicit authorization to scan.
 
 Unauthorized scanning of websites may violate computer access laws in your jurisdiction.
 `.trim();
@@ -90,17 +90,33 @@ export const LEGAL_URLS = {
 /**
  * Domain verification token prefix
  */
-export const VERIFICATION_TOKEN_PREFIX = 'pagepulser-verify=';
+export const VERIFICATION_TOKEN_PREFIX = 'kritano-verify=';
+
+/**
+ * Legacy verification token prefix (pre-rebrand)
+ * Kept for backward compatibility with existing verified domains
+ */
+export const LEGACY_VERIFICATION_TOKEN_PREFIX = 'pagepulser-verify=';
 
 /**
  * Well-known path for file-based verification
  */
-export const VERIFICATION_FILE_PATH = '/.well-known/pagepulser-verify.txt';
+export const VERIFICATION_FILE_PATH = '/.well-known/kritano-verify.txt';
+
+/**
+ * Legacy well-known path (pre-rebrand)
+ */
+export const LEGACY_VERIFICATION_FILE_PATH = '/.well-known/pagepulser-verify.txt';
 
 /**
  * DNS TXT record subdomain for verification (alternative to root domain)
  */
-export const VERIFICATION_DNS_SUBDOMAIN = '_pagepulser';
+export const VERIFICATION_DNS_SUBDOMAIN = '_kritano';
+
+/**
+ * Legacy DNS subdomain (pre-rebrand)
+ */
+export const LEGACY_VERIFICATION_DNS_SUBDOMAIN = '_pagepulser';
 
 /**
  * Verification attempt limits
@@ -122,9 +138,9 @@ export const VERIFICATION_LIMITS = {
  */
 export const SCANNER_INFO = {
   /** User-Agent string used by the scanner */
-  USER_AGENT: 'PagePulser-Scanner/1.0 (+https://pagepulser.com/bot)',
+  USER_AGENT: 'KritanoBot/1.0 (+https://kritano.com/bot)',
   /** Scanner bot info URL */
-  BOT_INFO_URL: 'https://pagepulser.com/bot',
+  BOT_INFO_URL: 'https://kritano.com/bot',
   /**
    * Outbound IP addresses used by the scanner
    * Configure via SCANNER_IPS environment variable (comma-separated)
@@ -139,7 +155,7 @@ export const SCANNER_INFO = {
     return ['YOUR_SERVER_IP'];
   },
   /** Header name for verification token */
-  VERIFICATION_HEADER: 'X-PagePulser-Token',
+  VERIFICATION_HEADER: 'X-Kritano-Token',
 } as const;
 
 /**
@@ -196,7 +212,7 @@ export const COOKIE_CATEGORIES = {
   },
   analytics: {
     label: 'Analytics',
-    description: 'Help us understand how visitors interact with our website by collecting anonymous usage data. This helps us improve PagePulser for everyone.',
+    description: 'Help us understand how visitors interact with our website by collecting anonymous usage data. This helps us improve Kritano for everyone.',
     required: false,
     cookies: ['_ga', '_gid', '_gat'],
   },

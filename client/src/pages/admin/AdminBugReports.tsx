@@ -81,7 +81,7 @@ export default function AdminBugReports() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Bug Reports | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Bug Reports | Kritano</title></Helmet>
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>

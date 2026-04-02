@@ -227,9 +227,9 @@ export default function SitesSettings() {
     return (
       <div className="p-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 w-48 bg-slate-200 rounded" />
-          <div className="h-24 bg-slate-100 rounded-lg" />
-          <div className="h-24 bg-slate-100 rounded-lg" />
+          <div className="h-8 w-48 bg-slate-200 dark:bg-slate-700 rounded" />
+          <div className="h-24 bg-slate-100 dark:bg-slate-800 rounded-lg" />
+          <div className="h-24 bg-slate-100 dark:bg-slate-800 rounded-lg" />
         </div>
       </div>
     );
@@ -240,7 +240,7 @@ export default function SitesSettings() {
 
   return (
     <>
-      <Helmet><title>Sites Settings | PagePulser</title></Helmet>
+      <Helmet><title>Sites Settings | Kritano</title></Helmet>
       <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -390,7 +390,7 @@ export default function SitesSettings() {
                         onClick={() => brandingSiteId === site.id ? setBrandingSiteId(null) : handleStartBranding(site)}
                         className={`p-1.5 transition-colors rounded ${
                           brandingSiteId === site.id
-                            ? 'text-indigo-600 bg-indigo-50'
+                            ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20'
                             : 'text-slate-500 hover:text-indigo-500'
                         }`}
                         title="PDF branding"

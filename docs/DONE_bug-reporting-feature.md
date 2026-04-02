@@ -2,7 +2,7 @@
 
 ## Overview
 
-This feature allows authenticated users to report bugs directly from the PagePulser application. Reports are stored in the database and displayed in a dedicated admin panel section for review, status tracking, and resolution.
+This feature allows authenticated users to report bugs directly from the Kritano application. Reports are stored in the database and displayed in a dedicated admin panel section for review, status tracking, and resolution.
 
 ## Key Decisions
 
@@ -1198,9 +1198,9 @@ Resolution Notes:
 
 You can view the full details at: {{reportUrl}}
 
-Thanks for helping us improve PagePulser!
+Thanks for helping us improve Kritano!
 
-The PagePulser Team
+The Kritano Team
 ```
 
 ---

@@ -2,7 +2,7 @@
  * 404 Not Found Page
  *
  * Displayed when a user navigates to a non-existent route.
- * Features the PagePulser pulse aesthetic with helpful navigation.
+ * Features the Kritano brand aesthetic with helpful navigation.
  */
 
 import { Helmet } from 'react-helmet-async';
@@ -24,7 +24,7 @@ export default function NotFoundPage() {
 
   return (
     <>
-      <Helmet><title>Page Not Found | PagePulser</title></Helmet>
+      <Helmet><title>Page Not Found | Kritano</title></Helmet>
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center px-4">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -42,7 +42,7 @@ export default function NotFoundPage() {
             404
           </Display>
 
-          {/* Pulse line overlay */}
+          {/* Decorative line overlay */}
           <div className="absolute inset-0 flex items-center justify-center">
             <svg
               className="w-full h-32 text-indigo-500/30 dark:text-indigo-400/30"
@@ -80,6 +80,7 @@ export default function NotFoundPage() {
             <input
               type="text"
               placeholder="Search for a site..."
+              aria-label="Search for a site"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"

@@ -1,10 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { Helmet } from 'react-helmet-async';
 import { adminApi } from '../../services/api';
 import { AdminLayout } from '../../components/layout/AdminLayout';
 import { useToast } from '../../components/ui/Toast';
-import type { AdminUser, Pagination } from '../../types/admin.types';
-import { Search, Loader2, ShieldCheck, ShieldX, Trash2, ChevronLeft, ChevronRight, MailX } from 'lucide-react';
+import type { AdminUser, Pagination, SubscriptionTier } from '../../types/admin.types';
+import { TIER_LABELS } from '../../types/admin.types';
+import { Search, Loader2, ShieldCheck, ShieldX, Trash2, ChevronLeft, ChevronRight, MailX, ChevronDown, Check } from 'lucide-react';
+
+const TIER_OPTIONS: SubscriptionTier[] = ['free', 'starter', 'pro', 'agency', 'enterprise'];
+
+const TIER_BADGE_STYLES: Record<SubscriptionTier, string> = {
+  free: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
+  starter: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
+  pro: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/20',
+  agency: 'bg-purple-500/10 text-purple-300 border-purple-500/20',
+  enterprise: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
+};
+
+const TIER_DROPDOWN_STYLES: Record<SubscriptionTier, string> = {
+  free: 'text-slate-400',
+  starter: 'text-blue-400',
+  pro: 'text-indigo-400',
+  agency: 'text-purple-400',
+  enterprise: 'text-amber-400',
+};
 
 export default function AdminUsersPage() {
   const { toast } = useToast();
@@ -12,6 +32,8 @@ export default function AdminUsersPage() {
   const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 25, total: 0, pages: 0 });
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [editingTierUserId, setEditingTierUserId] = useState<string | null>(null);
+  const [updatingTier, setUpdatingTier] = useState<string | null>(null);
 
   useEffect(() => {
     loadUsers();
@@ -64,14 +86,28 @@ export default function AdminUsersPage() {
     }
   };
 
+  const handleChangeTier = async (user: AdminUser, newTier: SubscriptionTier) => {
+    try {
+      setUpdatingTier(user.id);
+      await adminApi.updateUser(user.id, { tier: newTier });
+      toast(`Plan updated to ${TIER_LABELS[newTier]}`, 'success');
+      setEditingTierUserId(null);
+      loadUsers();
+    } catch {
+      toast('Failed to update plan', 'error');
+    } finally {
+      setUpdatingTier(null);
+    }
+  };
+
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Users | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Users | Kritano</title></Helmet>
       {/* Page Header */}
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">
               Users
             </h1>
             <p className="text-sm text-slate-500 mt-1">{pagination.total.toLocaleString()} total users</p>
@@ -99,11 +135,12 @@ export default function AdminUsersPage() {
           <div className="py-16 text-center text-slate-500 text-sm">No users found</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[700px]">
+            <table className="w-full min-w-[800px]">
               <thead>
                 <tr className="border-b border-white/[0.06]">
                   <th className="px-5 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">User</th>
                   <th className="px-5 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                  <th className="px-5 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Plan</th>
                   <th className="px-5 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Orgs</th>
                   <th className="px-5 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Joined</th>
                   <th className="px-5 py-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Last Login</th>
@@ -153,6 +190,16 @@ export default function AdminUsersPage() {
                           </span>
                         )}
                       </div>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <TierDropdown
+                        user={user}
+                        isOpen={editingTierUserId === user.id}
+                        onToggle={() => setEditingTierUserId(editingTierUserId === user.id ? null : user.id)}
+                        onClose={() => setEditingTierUserId(null)}
+                        onChangeTier={handleChangeTier}
+                        updating={updatingTier === user.id}
+                      />
                     </td>
                     <td className="px-5 py-3.5 text-sm text-slate-500 tabular-nums">{user.organization_count}</td>
                     <td className="px-5 py-3.5 text-xs text-slate-500 tabular-nums">
@@ -218,5 +265,94 @@ export default function AdminUsersPage() {
         )}
       </div>
     </AdminLayout>
+  );
+}
+
+// =============================================
+// Tier Dropdown (portalled to body to escape overflow)
+// =============================================
+
+function TierDropdown({
+  user,
+  isOpen,
+  onToggle,
+  onClose,
+  onChangeTier,
+  updating,
+}: {
+  user: AdminUser;
+  isOpen: boolean;
+  onToggle: () => void;
+  onClose: () => void;
+  onChangeTier: (user: AdminUser, tier: SubscriptionTier) => void;
+  updating: boolean;
+}) {
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+
+  const updatePos = useCallback(() => {
+    if (btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      setPos({ top: rect.bottom + 6, left: rect.left });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      updatePos();
+      window.addEventListener('scroll', onClose, true);
+      return () => window.removeEventListener('scroll', onClose, true);
+    }
+  }, [isOpen, updatePos, onClose]);
+
+  return (
+    <>
+      <button
+        ref={btnRef}
+        onClick={onToggle}
+        disabled={updating}
+        className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium border rounded-lg transition-all duration-200 hover:brightness-125 ${
+          TIER_BADGE_STYLES[user.tier || 'free']
+        }`}
+        title="Click to change plan"
+      >
+        {updating && <Loader2 className="w-3 h-3 animate-spin" />}
+        {TIER_LABELS[user.tier || 'free']}
+        <ChevronDown className="w-3 h-3 opacity-60" />
+      </button>
+
+      {isOpen && createPortal(
+        <>
+          <div className="fixed inset-0 z-[9998]" onClick={onClose} />
+          <div
+            className="fixed z-[9999] w-44 py-1.5 rounded-xl border border-white/[0.08] bg-[#0f1117] shadow-2xl shadow-black/40"
+            style={{ top: pos.top, left: pos.left }}
+          >
+            <div className="px-3 py-1.5 text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+              Change plan
+            </div>
+            {TIER_OPTIONS.map(tier => {
+              const isCurrent = tier === (user.tier || 'free');
+              return (
+                <button
+                  key={tier}
+                  onClick={() => onChangeTier(user, tier)}
+                  disabled={updating || isCurrent}
+                  className={`w-full px-3 py-2 text-left text-sm transition-colors duration-150 flex items-center justify-between gap-2 ${
+                    isCurrent
+                      ? `${TIER_DROPDOWN_STYLES[tier]} bg-white/[0.04]`
+                      : 'text-slate-300 hover:bg-white/[0.06] hover:text-white'
+                  }`}
+                >
+                  <span className={isCurrent ? 'font-medium' : ''}>{TIER_LABELS[tier]}</span>
+                  {isCurrent && <Check className="w-3.5 h-3.5" />}
+                </button>
+              );
+            })}
+          </div>
+        </>,
+        document.body
+      )}
+    </>
   );
 }

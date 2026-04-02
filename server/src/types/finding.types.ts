@@ -4,6 +4,9 @@ export type Severity = 'critical' | 'serious' | 'moderate' | 'minor' | 'info';
 // Finding category
 export type FindingCategory = 'seo' | 'accessibility' | 'security' | 'performance' | 'content' | 'structured-data';
 
+// Device type for findings (which crawl pass found this issue)
+export type FindingDeviceType = 'desktop' | 'mobile' | 'both';
+
 // Base finding interface
 export interface BaseFinding {
   ruleId: string;
@@ -18,6 +21,7 @@ export interface BaseFinding {
   columnNumber?: number;
   snippet?: string;
   helpUrl?: string;
+  deviceType?: FindingDeviceType;
 }
 
 // SEO finding
@@ -81,6 +85,7 @@ export interface AuditFinding {
   impact: string | null;
   wcag_criteria: string[] | null;
   help_url: string | null;
+  device_type: FindingDeviceType;
   status: FindingStatus;
   created_at: Date;
 }
@@ -91,6 +96,7 @@ export interface FindingsFilter {
   severity?: Severity;
   ruleId?: string;
   pageId?: string;
+  deviceType?: FindingDeviceType;
   page?: number;
   limit?: number;
 }

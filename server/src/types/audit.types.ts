@@ -35,6 +35,9 @@ export interface AuditJob {
   wcag_version: WcagVersion;
   wcag_level: WcagLevel;
 
+  // Mobile audit
+  include_mobile: boolean;
+
   // Job status
   status: AuditJobStatus;
 
@@ -58,6 +61,8 @@ export interface AuditJob {
   content_score: number | null;
   structured_data_score: number | null;
   cqs_score: number | null;
+  mobile_accessibility_score: number | null;
+  mobile_performance_score: number | null;
 
   // Error handling
   error_message: string | null;
@@ -182,6 +187,7 @@ export interface StartAuditInput {
     wcagVersion?: WcagVersion;
     wcagLevel?: WcagLevel;
     targetKeyword?: string; // For content analysis keyword optimization
+    includeMobile?: boolean;
   };
 }
 

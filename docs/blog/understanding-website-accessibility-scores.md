@@ -150,6 +150,6 @@ If you're looking at your accessibility score and wondering what to tackle first
 - Link "alt text" to the complete guide to image alt text post
 - Link "colour contrast" to the accessibility post or a dedicated contrast guide
 - Link "Core Web Vitals" or "Lighthouse" to the CWV explainer post
-- Link "audit" to the PagePulser audit/pricing page
+- Link "audit" to the Kritano audit/pricing page
 - Link "accessibility, SEO, and performance" to the holistic website health thought leadership post
 -->

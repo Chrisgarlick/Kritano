@@ -1,4 +1,4 @@
-# PagePulser Admin Command Center
+# Kritano Admin Command Center
 
 ## 1. Vision
 

@@ -1,4 +1,4 @@
-# PagePulser Email Template System
+# Kritano Email Template System
 
 ## 1. Vision
 
@@ -64,8 +64,8 @@ Template text supports `{{variable}}` syntax. Variables are replaced server-side
 ### 3.4 Reuse PDF Branding Chain
 
 Email branding follows the same resolution chain as PDF exports (`pdf-branding.service.ts`):
-1. Check tier limits — free tier gets PagePulser branding only
-2. Starter/Pro — site colors and company name, "Powered by PagePulser" footer
+1. Check tier limits — free tier gets Kritano branding only
+2. Starter/Pro — site colors and company name, "Powered by Kritano" footer
 3. Agency+ — full white-label with org logo, custom colors, custom footer
 
 ### 3.5 Resend Webhooks for Tracking
@@ -435,9 +435,9 @@ Reuses the same logic as `pdf-branding.service.ts`. Create `resolveEmailBranding
 
 | Tier | Header BG | Button Color | Logo | Footer Text |
 |---|---|---|---|---|
-| **Free** | `#4f46e5` (indigo-600) | `#4f46e5` | PagePulser | "Powered by PagePulser" |
-| **Starter** | Site `primaryColor` or `#4f46e5` | Site `primaryColor` | PagePulser | "Powered by PagePulser" |
-| **Pro** | Site `primaryColor` or `#4f46e5` | Site `primaryColor` | PagePulser | "Powered by PagePulser" |
+| **Free** | `#4f46e5` (indigo-600) | `#4f46e5` | Kritano | "Powered by Kritano" |
+| **Starter** | Site `primaryColor` or `#4f46e5` | Site `primaryColor` | Kritano | "Powered by Kritano" |
+| **Pro** | Site `primaryColor` or `#4f46e5` | Site `primaryColor` | Kritano | "Powered by Kritano" |
 | **Agency+** | Org/site `primaryColor` | Org/site `primaryColor` | Org/site logo | Custom footer text |
 
 ### 7.2 Default Brand Colors (Matching Brand Guidelines)
@@ -527,7 +527,7 @@ Migrate the three existing inline templates into the new system as `is_system = 
 |---|---|
 | **slug** | `email_verification` |
 | **category** | `transactional` |
-| **subject** | `Verify your PagePulser account` |
+| **subject** | `Verify your Kritano account` |
 | **is_system** | `true` |
 | **variables** | `["firstName", "verifyUrl"]` |
 
@@ -536,13 +536,13 @@ Migrate the three existing inline templates into the new system as `is_system = 
 [
   { "type": "header" },
   { "type": "text", "content": "Hi {{firstName}},", "fontSize": "lg" },
-  { "type": "text", "content": "Welcome to PagePulser! Please verify your email address by clicking the button below:" },
+  { "type": "text", "content": "Welcome to Kritano! Please verify your email address by clicking the button below:" },
   { "type": "button", "label": "Verify Email Address", "href": "{{verifyUrl}}", "align": "center" },
   { "type": "text", "content": "Or copy and paste this link into your browser:", "fontSize": "sm", "color": "#6b7280" },
   { "type": "text", "content": "{{verifyUrl}}", "fontSize": "sm", "color": "#6b7280" },
   { "type": "text", "content": "This link will expire in 24 hours.", "fontSize": "sm", "color": "#6b7280" },
   { "type": "divider" },
-  { "type": "footer", "text": "If you didn't create an account with PagePulser, you can safely ignore this email.", "includeUnsubscribe": false }
+  { "type": "footer", "text": "If you didn't create an account with Kritano, you can safely ignore this email.", "includeUnsubscribe": false }
 ]
 ```
 
@@ -552,7 +552,7 @@ Migrate the three existing inline templates into the new system as `is_system = 
 |---|---|
 | **slug** | `password_reset` |
 | **category** | `transactional` |
-| **subject** | `Reset your PagePulser password` |
+| **subject** | `Reset your Kritano password` |
 | **is_system** | `true` |
 | **variables** | `["firstName", "resetUrl"]` |
 
@@ -797,7 +797,7 @@ The editor follows the same pattern as the CMS blog editor (if implemented) — 
 │   Block Palette         │   600px Email Canvas                   │
 │   ─────────────         │   ─────────────────                    │
 │   📌 Header             │   ┌──────────────────────────────┐    │
-│   🖼️ Hero Image         │   │  [PagePulser Logo]           │    │
+│   🖼️ Hero Image         │   │  [Kritano Logo]           │    │
 │   📝 Text               │   ├──────────────────────────────┤    │
 │   🔘 Button             │   │  Hi {{firstName}},           │    │
 │   📊 Two Column         │   │                              │    │
@@ -806,7 +806,7 @@ The editor follows the same pattern as the CMS blog editor (if implemented) — 
 │   📈 Score Table        │   │  [View Audit Results]        │    │
 │   🔢 Issues Summary     │   │                              │    │
 │   📎 Footer             │   │  ─────────────────           │    │
-│                         │   │  Powered by PagePulser       │    │
+│                         │   │  Powered by Kritano       │    │
 │   ─────────────         │   │  Unsubscribe | Preferences   │    │
 │   Block Settings        │   └──────────────────────────────┘    │
 │   (when block selected) │                                        │

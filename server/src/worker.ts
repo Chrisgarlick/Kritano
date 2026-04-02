@@ -1,5 +1,5 @@
 /**
- * PagePulser Worker Process
+ * Kritano Worker Process
  *
  * This is a standalone process that processes audit jobs from the queue.
  * Run with: npm run worker
@@ -19,6 +19,7 @@ import { setPool as setScheduleServicePool } from './services/schedule.service.j
 import { emailService } from './services/email.service';
 import { auditService } from './services/audit.service';
 import { setPool as setDomainVerificationPool } from './services/domain-verification.service.js';
+import { setPool as setSiteServicePool } from './services/site.service.js';
 import { recalculateScore } from './services/lead-scoring.service.js';
 import { checkTriggers, checkStalledVerifications } from './services/crm-trigger.service.js';
 import { checkAndQualifyReferral, setPool as setReferralServicePool } from './services/referral.service.js';
@@ -61,6 +62,7 @@ const pool = new Pool({
 
 // Initialize services that need the pool
 setDomainVerificationPool(pool);
+setSiteServicePool(pool);
 setScheduleServicePool(pool);
 setReferralServicePool(pool);
 setSystemSettingsPool(pool);
@@ -439,7 +441,7 @@ process.on('unhandledRejection', async (reason) => {
 });
 
 // Start worker
-console.log('🛡️  PagePulser Worker');
+console.log('🛡️  Kritano Worker');
 console.log('   Version: 1.0.0');
 console.log('   Database: ' + DATABASE_URL.replace(/:[^:@]+@/, ':****@'));
 console.log('   Max concurrent audits: ' + WORKER_MAX_CONCURRENT_JOBS);

@@ -116,7 +116,7 @@ export default function ScheduleDetailPage() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>Schedule Details | PagePulser</title></Helmet>
+      <Helmet><title>Schedule Details | Kritano</title></Helmet>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Back link */}
         <Link

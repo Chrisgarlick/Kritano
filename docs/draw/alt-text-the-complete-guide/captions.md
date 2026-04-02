@@ -17,7 +17,7 @@ Swipe through for the complete guide:
 
 Save this. Share it with your dev team. Your content team. Anyone who uploads images.
 
-**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #SEO #ImageSEO #InclusiveDesign #AccessibilityMatters #PagePulser #WebDesign #WebDevelopment #ScreenReader #DigitalAccessibility #AccessibleWeb #HTMLTips #FrontendDev #DevTips #ContentStrategy #WebStandards #DigitalInclusion
+**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #SEO #ImageSEO #InclusiveDesign #AccessibilityMatters #Kritano #WebDesign #WebDevelopment #ScreenReader #DigitalAccessibility #AccessibleWeb #HTMLTips #FrontendDev #DevTips #ContentStrategy #WebStandards #DigitalInclusion
 
 ---
 
@@ -26,7 +26,7 @@ Save this. Share it with your dev team. Your content team. Anyone who uploads im
 **Caption:**
 Alt Text: The Complete Guide. Everything you need to know about writing proper image descriptions — in 8 slides.
 
-**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #SEO #PagePulser #InclusiveDesign #WebDesign #AccessibilityMatters #HTMLTips #WebDevelopment #FrontendDev #DevTips
+**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #SEO #Kritano #InclusiveDesign #WebDesign #AccessibilityMatters #HTMLTips #WebDevelopment #FrontendDev #DevTips
 
 ---
 
@@ -37,7 +37,7 @@ Alt text is a short description added to an image's HTML. Screen readers read it
 
 Three audiences. One attribute.
 
-**Hashtags:** #AltText #WebAccessibility #A11y #ScreenReader #SEO #ImageSEO #WCAG #PagePulser #HTMLTips #WebDevelopment #FrontendDev #AccessibilityMatters #InclusiveDesign #WebDesign #DevTips
+**Hashtags:** #AltText #WebAccessibility #A11y #ScreenReader #SEO #ImageSEO #WCAG #Kritano #HTMLTips #WebDevelopment #FrontendDev #AccessibilityMatters #InclusiveDesign #WebDesign #DevTips
 
 ---
 
@@ -48,7 +48,7 @@ Alt text isn't optional. 285 million people worldwide are visually impaired. Goo
 
 Accessibility. SEO. Legal compliance. Three reasons. No excuses.
 
-**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #ADA #EuropeanAccessibilityAct #SEO #ScreenReader #PagePulser #InclusiveDesign #AccessibilityMatters #WebDesign #LegalCompliance #WebDevelopment #DigitalAccessibility
+**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #ADA #EuropeanAccessibilityAct #SEO #ScreenReader #Kritano #InclusiveDesign #AccessibilityMatters #WebDesign #LegalCompliance #WebDevelopment #DigitalAccessibility
 
 ---
 
@@ -61,7 +61,7 @@ alt="Golden retriever sitting in a sunny park" ← good.
 
 Be specific. Be brief. Never start with "image of" or "photo of" — screen readers already announce it's an image.
 
-**Hashtags:** #AltText #WebAccessibility #A11y #HTMLTips #DevTips #WCAG #SEO #PagePulser #WebDevelopment #FrontendDev #AccessibilityMatters #InclusiveDesign #CodeTips #WebDesign #ScreenReader
+**Hashtags:** #AltText #WebAccessibility #A11y #HTMLTips #DevTips #WCAG #SEO #Kritano #WebDevelopment #FrontendDev #AccessibilityMatters #InclusiveDesign #CodeTips #WebDesign #ScreenReader
 
 ---
 
@@ -75,7 +75,7 @@ Background textures, decorative dividers, spacer images → use alt="" (empty).
 
 The key question: does this image convey information?
 
-**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #HTMLTips #InclusiveDesign #PagePulser #WebDesign #FrontendDev #AccessibilityMatters #DevTips #WebDevelopment #ScreenReader #DigitalAccessibility #AccessibleWeb
+**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #HTMLTips #InclusiveDesign #Kritano #WebDesign #FrontendDev #AccessibilityMatters #DevTips #WebDevelopment #ScreenReader #DigitalAccessibility #AccessibleWeb
 
 ---
 
@@ -91,7 +91,7 @@ The alt text decision flowchart:
 
 Save this for your next content upload.
 
-**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #Flowchart #DevTips #HTMLTips #PagePulser #FrontendDev #WebDevelopment #AccessibilityMatters #InclusiveDesign #WebDesign #ContentStrategy #ScreenReader
+**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #Flowchart #DevTips #HTMLTips #Kritano #FrontendDev #WebDevelopment #AccessibilityMatters #InclusiveDesign #WebDesign #ContentStrategy #ScreenReader
 
 ---
 
@@ -107,7 +107,7 @@ The 4 alt text mistakes we see most in audits:
 
 Which one is on your site?
 
-**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #WebAudit #DevTips #PagePulser #HTMLTips #FrontendDev #WebDevelopment #AccessibilityMatters #InclusiveDesign #CommonMistakes #WebDesign #SEO
+**Hashtags:** #AltText #WebAccessibility #A11y #WCAG #WebAudit #DevTips #Kritano #HTMLTips #FrontendDev #WebDevelopment #AccessibilityMatters #InclusiveDesign #CommonMistakes #WebDesign #SEO
 
 ---
 
@@ -116,6 +116,6 @@ Which one is on your site?
 **Caption:**
 Good alt text makes the web better for everyone.
 
-PagePulser scans every image on your site and flags the ones that need attention. Link in bio to audit yours.
+Kritano scans every image on your site and flags the ones that need attention. Link in bio to audit yours.
 
-**Hashtags:** #PagePulser #AltText #WebAccessibility #A11y #WebAudit #SiteHealth #WCAG #SEO #InclusiveDesign #AccessibilityMatters #WebDesign #FreeTools #WebDevelopment #DigitalAccessibility #AccessibleWeb #DevTools
+**Hashtags:** #Kritano #AltText #WebAccessibility #A11y #WebAudit #SiteHealth #WCAG #SEO #InclusiveDesign #AccessibilityMatters #WebDesign #FreeTools #WebDevelopment #DigitalAccessibility #AccessibleWeb #DevTools

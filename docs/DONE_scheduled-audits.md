@@ -39,7 +39,7 @@ Scheduled audits allow users to automatically run recurring website audits on a 
 
 Add a `SchedulePollerService` that runs inside the existing `worker.ts` process on a 60-second interval. It queries `audit_schedules WHERE enabled = true AND next_run_at <= NOW()`, creates `audit_jobs` entries (reusing the existing audit creation logic), and updates `next_run_at` to the next cron occurrence.
 
-**Why not a separate process?** PagePulser already runs a worker process with health endpoints. Adding a lightweight poller avoids operational complexity (another process to manage/monitor). The poller is non-blocking — it just inserts rows into `audit_jobs` and the existing worker picks them up.
+**Why not a separate process?** Kritano already runs a worker process with health endpoints. Adding a lightweight poller avoids operational complexity (another process to manage/monitor). The poller is non-blocking — it just inserts rows into `audit_jobs` and the existing worker picks them up.
 
 **Why not BullMQ repeatable jobs?** The codebase uses a PostgreSQL-based job queue (no Redis/BullMQ). Staying consistent with the PG-based approach avoids introducing a new dependency.
 

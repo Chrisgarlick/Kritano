@@ -50,13 +50,13 @@ export default function UnsubscribePage() {
 
   return (
     <>
-      <Helmet><title>Unsubscribe | PagePulser</title></Helmet>
+      <Helmet><title>Unsubscribe | Kritano</title></Helmet>
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo / Brand */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-            PagePulser
+            Kritano
           </h1>
         </div>
 
@@ -98,7 +98,7 @@ export default function UnsubscribePage() {
                   className="flex items-center justify-center gap-2 w-full px-4 py-2 text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  Back to PagePulser
+                  Back to Kritano
                 </Link>
               </div>
             </div>
@@ -135,7 +135,7 @@ export default function UnsubscribePage() {
                   className="flex items-center justify-center gap-2 w-full px-4 py-2 text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  Back to PagePulser
+                  Back to Kritano
                 </Link>
               </div>
             </div>
@@ -164,7 +164,7 @@ export default function UnsubscribePage() {
                   className="flex items-center justify-center gap-2 w-full px-4 py-2 text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm transition-colors"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  Back to PagePulser
+                  Back to Kritano
                 </Link>
               </div>
             </div>
@@ -172,7 +172,7 @@ export default function UnsubscribePage() {
         </div>
 
         <p className="text-center text-xs text-slate-500 dark:text-slate-500 mt-6">
-          &copy; {new Date().getFullYear()} PagePulser. All rights reserved.
+          &copy; {new Date().getFullYear()} Kritano. All rights reserved.
         </p>
       </div>
     </div>

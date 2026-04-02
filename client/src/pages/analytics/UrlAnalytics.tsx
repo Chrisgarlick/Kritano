@@ -72,10 +72,10 @@ export default function UrlAnalytics() {
       <DashboardLayout>
         <div className="max-w-6xl mx-auto">
           <div className="animate-pulse space-y-6">
-            <div className="h-4 w-64 bg-slate-200 rounded" />
-            <div className="h-8 w-48 bg-slate-200 rounded" />
-            <div className="h-64 bg-slate-200 rounded-lg" />
-            <div className="h-80 bg-slate-200 rounded-lg" />
+            <div className="h-4 w-64 bg-slate-200 dark:bg-slate-700 rounded" />
+            <div className="h-8 w-48 bg-slate-200 dark:bg-slate-700 rounded" />
+            <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-lg" />
+            <div className="h-80 bg-slate-200 dark:bg-slate-700 rounded-lg" />
           </div>
         </div>
       </DashboardLayout>
@@ -86,9 +86,9 @@ export default function UrlAnalytics() {
     return (
       <DashboardLayout>
         <div className="max-w-6xl mx-auto">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
             <AlertTriangle className="w-8 h-8 text-red-500 mx-auto mb-2" />
-            <p className="text-red-700">{error || 'Failed to load URL analytics'}</p>
+            <p className="text-red-700 dark:text-red-400">{error || 'Failed to load URL analytics'}</p>
             <Button variant="outline" className="mt-4" onClick={() => window.location.reload()}>
               Retry
             </Button>
@@ -100,22 +100,22 @@ export default function UrlAnalytics() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>URL Analytics | PagePulser</title></Helmet>
+      <Helmet><title>URL Analytics | Kritano</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm flex-wrap">
-          <Link to="/analytics" className="text-indigo-600 hover:text-indigo-700">
+          <Link to="/analytics" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
             Analytics
           </Link>
           <ChevronRight className="w-4 h-4 text-slate-500" />
           <Link
             to={`/analytics/sites/${siteId}`}
-            className="text-indigo-600 hover:text-indigo-700"
+            className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
           >
             {site.name}
           </Link>
           <ChevronRight className="w-4 h-4 text-slate-500" />
-          <span className="text-slate-900 font-mono text-xs bg-slate-100 px-2 py-1 rounded">
+          <span className="text-slate-900 dark:text-white font-mono text-xs bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
             {data.url.urlPath || '/'}
           </span>
         </nav>
@@ -123,10 +123,10 @@ export default function UrlAnalytics() {
         {/* Header */}
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
-            <h1 className="text-xl font-bold text-slate-900 font-mono truncate">
+            <h1 className="text-xl font-bold text-slate-900 dark:text-white font-mono truncate">
               {data.url.urlPath || '/'}
             </h1>
-            <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
+            <div className="flex items-center gap-4 mt-2 text-sm text-slate-500 dark:text-slate-400">
               <span className="inline-flex items-center gap-1">
                 <AlertCircle className="w-4 h-4" />
                 {data.url.auditCount} audit{data.url.auditCount !== 1 ? 's' : ''}
@@ -141,7 +141,7 @@ export default function UrlAnalytics() {
                 href={data.url.fullUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-700"
+                className="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
               >
                 View Page
                 <ExternalLink className="w-3 h-3" />
@@ -159,58 +159,58 @@ export default function UrlAnalytics() {
         </div>
 
         {/* Comparison to Site Average */}
-        <div className="bg-white rounded-lg border border-slate-200 p-6">
-          <h2 className="text-lg font-medium text-slate-900 mb-4">Comparison to Site Average</h2>
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+          <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Comparison to Site Average</h2>
           <ComparisonBars data={data.comparisonToSite} />
         </div>
 
         {/* Score History */}
-        <div className="bg-white rounded-lg border border-slate-200 p-6">
-          <h2 className="text-lg font-medium text-slate-900 mb-4">Score History</h2>
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+          <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Score History</h2>
           {data.scoreHistory.scores.length > 0 ? (
             <ScoreLineChart
               data={data.scoreHistory.scores}
               onPointClick={(auditId) => navigate(`/audits/${auditId}`)}
             />
           ) : (
-            <div className="flex items-center justify-center h-[300px] text-slate-500">
+            <div className="flex items-center justify-center h-[300px] text-slate-500 dark:text-slate-400">
               No score history available. Run an audit to see trends.
             </div>
           )}
         </div>
 
         {/* Recent Audits */}
-        <div className="bg-white rounded-lg border border-slate-200 p-6">
-          <h2 className="text-lg font-medium text-slate-900 mb-4">Recent Audits</h2>
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+          <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Recent Audits</h2>
 
           {data.recentAudits.length === 0 ? (
-            <div className="text-center py-8 text-slate-500">
+            <div className="text-center py-8 text-slate-500 dark:text-slate-400">
               No audits for this URL yet.
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="text-left py-3 px-4 text-xs font-medium text-slate-500 uppercase">
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="text-left py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">
                       Date
                     </th>
-                    <th className="text-center py-3 px-4 text-xs font-medium text-slate-500 uppercase">
+                    <th className="text-center py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">
                       SEO
                     </th>
-                    <th className="text-center py-3 px-4 text-xs font-medium text-slate-500 uppercase">
+                    <th className="text-center py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">
                       A11y
                     </th>
-                    <th className="text-center py-3 px-4 text-xs font-medium text-slate-500 uppercase">
+                    <th className="text-center py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">
                       Security
                     </th>
-                    <th className="text-center py-3 px-4 text-xs font-medium text-slate-500 uppercase">
+                    <th className="text-center py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">
                       Perf
                     </th>
-                    <th className="text-center py-3 px-4 text-xs font-medium text-slate-500 uppercase">
+                    <th className="text-center py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">
                       Content
                     </th>
-                    <th className="text-right py-3 px-4 text-xs font-medium text-slate-500 uppercase">
+                    <th className="text-right py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">
                       Issues
                     </th>
                   </tr>
@@ -220,10 +220,10 @@ export default function UrlAnalytics() {
                     <tr
                       key={audit.id}
                       onClick={() => navigate(`/audits/${audit.id}`)}
-                      className="border-b border-slate-100 hover:bg-slate-50 cursor-pointer transition-colors"
+                      className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors"
                     >
                       <td className="py-3 px-4">
-                        <span className="text-sm text-slate-700">
+                        <span className="text-sm text-slate-700 dark:text-slate-300">
                           {format(parseISO(audit.completedAt), 'MMM d, yyyy h:mm a')}
                         </span>
                       </td>
@@ -268,7 +268,7 @@ export default function UrlAnalytics() {
                         </span>
                       </td>
                       <td className="py-3 px-4 text-right">
-                        <span className="text-sm text-slate-600">
+                        <span className="text-sm text-slate-600 dark:text-slate-400">
                           {audit.totalIssues}
                         </span>
                       </td>

@@ -9,7 +9,7 @@ SEO, accessibility, security, and performance — all in one view. Real scores, 
 
 Stay tuned. More to come.
 
-**Hashtags:** #PagePulser #WebAudit #SiteHealth #WebDesign #SEO #WebAccessibility #WebDevelopment #BehindTheScenes #StartupLife #ProductDesign #UXDesign #UIDesign #TechStartup #BuildInPublic #A11y #WebPerformance #SaaS #IndieHacker
+**Hashtags:** #Kritano #WebAudit #SiteHealth #WebDesign #SEO #WebAccessibility #WebDevelopment #BehindTheScenes #StartupLife #ProductDesign #UXDesign #UIDesign #TechStartup #BuildInPublic #A11y #WebPerformance #SaaS #IndieHacker
 
 ---
 
@@ -22,7 +22,7 @@ One dashboard. Every metric that matters. SEO, accessibility, security, performa
 
 Early access coming soon. Stay tuned.
 
-**Hashtags:** #PagePulser #WebAudit #BuildInPublic #StartupLife #ProductDesign #WebDesign #SEO #WebAccessibility #WebDevelopment #SiteHealth #UXDesign #UIDesign #TechStartup #SaaS #BehindTheScenes #WebPerformance #A11y #IndieHacker
+**Hashtags:** #Kritano #WebAudit #BuildInPublic #StartupLife #ProductDesign #WebDesign #SEO #WebAccessibility #WebDevelopment #SiteHealth #UXDesign #UIDesign #TechStartup #SaaS #BehindTheScenes #WebPerformance #A11y #IndieHacker
 
 ---
 
@@ -33,4 +33,4 @@ Sneak peek at what we've been building. Stay tuned.
 
 Scores. Issues. Guidance. Everything your website needs to improve — in one place.
 
-**Hashtags:** #PagePulser #WebAudit #SiteHealth #BuildInPublic #ProductDesign #WebDesign #SEO #WebAccessibility #BehindTheScenes #StartupLife #WebDevelopment #UXDesign #UIDesign #TechStartup #SaaS #A11y #WebPerformance #IndieHacker
+**Hashtags:** #Kritano #WebAudit #SiteHealth #BuildInPublic #ProductDesign #WebDesign #SEO #WebAccessibility #BehindTheScenes #StartupLife #WebDevelopment #UXDesign #UIDesign #TechStartup #SaaS #A11y #WebPerformance #IndieHacker

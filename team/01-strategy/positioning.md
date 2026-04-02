@@ -1,21 +1,21 @@
 <!-- Version: 1 | Department: strategy | Updated: 2026-03-24 -->
 
-# Positioning — PagePulser
+# Positioning — Kritano
 
 ## Positioning Statement
 
-> For **agencies, freelancers, and growing businesses** who need to understand why their website isn't performing — and how to fix it — **PagePulser** is a **website intelligence platform** that audits SEO, content quality, accessibility, security, and performance in a single scan, then prioritises exactly what to fix first. Unlike Lighthouse (surface-level), Semrush (SEO-only depth), and Siteimprove (enterprise pricing), PagePulser combines **content intelligence** (E-E-A-T, AEO, readability, engagement scoring) with **actionable remediation** at a price point that starts free and scales with you.
+> For **agencies, freelancers, and growing businesses** who need to understand why their website isn't performing — and how to fix it — **Kritano** is a **website intelligence platform** that audits SEO, content quality, accessibility, security, and performance in a single scan, then prioritises exactly what to fix first. Unlike Lighthouse (surface-level), Semrush (SEO-only depth), and Siteimprove (enterprise pricing), Kritano combines **content intelligence** (E-E-A-T, AEO, readability, engagement scoring) with **actionable remediation** at a price point that starts free and scales with you.
 
 ## Category
 
 **Website Intelligence Platform** — not "website auditor", not "accessibility checker", not "SEO tool."
 
-The category matters because it defines who PagePulser competes with in the buyer's mind. "Auditor" invites comparison with free tools. "Intelligence platform" invites comparison with expensive enterprise tools — and then surprises with the price.
+The category matters because it defines who Kritano competes with in the buyer's mind. "Auditor" invites comparison with free tools. "Intelligence platform" invites comparison with expensive enterprise tools — and then surprises with the price.
 
 ## Core Positioning Pillars
 
 ### Pillar 1: Content Intelligence (Unique)
-PagePulser is the only tool that scores content the way Google's algorithms evaluate it. E-E-A-T (Experience, Expertise, Authority, Trust), AEO (Answer Engine Optimisation), readability, engagement markers, and content structure — unified into a Content Quality Score. No competitor offers this combination.
+Kritano is the only tool that scores content the way Google's algorithms evaluate it. E-E-A-T (Experience, Expertise, Authority, Trust), AEO (Answer Engine Optimisation), readability, engagement markers, and content structure — unified into a Content Quality Score. No competitor offers this combination.
 
 **Proof point:** 7 content analysis sub-modules running 400+ checks across quality, readability, structure, engagement, E-E-A-T, AEO, and keyword analysis.
 
@@ -34,7 +34,7 @@ White-label exports, team workspaces, per-site collaboration, portfolio manageme
 
 **Proof point:** 5-tier structure from $0 to custom enterprise. Full white-label PDF branding at Agency tier. Unlimited seats. 50 sites per account.
 
-## Who PagePulser Is NOT For
+## Who Kritano Is NOT For
 
 - **Enterprise IT teams** running compliance audits across 500+ internal properties (they need Siteimprove or Deque)
 - **Pure SEO specialists** who need rank tracking, backlink analysis, and competitor keyword research (they need Semrush or Ahrefs)
@@ -52,7 +52,7 @@ Being clear about who we're *not* for sharpens the message for who we *are* for.
 - **Current tools:** Lighthouse (free, manual), Screaming Frog (SEO crawling), maybe Semrush (expensive, SEO-focused)
 - **Pain:** Spends 4+ hours per client per month on manual auditing. Can't show improvement trends. White-labelling reports requires custom templates. No way to prioritise which client site needs attention most.
 - **Success looks like:** Single dashboard showing all client sites ranked by urgency. Branded reports generated in one click. Scheduled audits that catch regressions before clients notice. Prove retainer value with trend data.
-- **Key objection:** "Can I white-label this? My clients can't see 'PagePulser' branding."
+- **Key objection:** "Can I white-label this? My clients can't see 'Kritano' branding."
 - **Channels:** LinkedIn, agency Slack communities, WordPress meetups, Clutch, DesignRush
 
 ### Persona 2: "Founder Fran" — Solo Founder / Small Business Owner

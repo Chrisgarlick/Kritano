@@ -38,7 +38,7 @@ const PREFERENCE_TOGGLES: PreferenceToggle[] = [
   {
     key: 'product_updates',
     label: 'Product Updates',
-    description: 'New features, improvements, and changes to PagePulser.',
+    description: 'New features, improvements, and changes to Kritano.',
     icon: <Bell className="w-5 h-5" />,
   },
   {
@@ -150,7 +150,7 @@ export default function NotificationSettings() {
 
   return (
     <>
-      <Helmet><title>Notifications | PagePulser</title></Helmet>
+      <Helmet><title>Notifications | Kritano</title></Helmet>
       <div className="space-y-6">
       {/* Header */}
       <div>

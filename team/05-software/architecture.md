@@ -4,7 +4,7 @@
   V1: Initial architecture from full audit
 -->
 
-# Architecture — PagePulser Iteration 2
+# Architecture — Kritano Iteration 2
 
 ## Existing Stack (No Changes)
 - **Backend:** Node.js + Express + TypeScript

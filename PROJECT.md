@@ -1,7 +1,7 @@
 
 ---
 
-# pagepulser: Project Blueprint
+# kritano: Project Blueprint
 
 **Goal:** Turn £50 into £5,000 in 6 months using "World-Class" engineering and automated sales.
 
@@ -9,7 +9,7 @@
 
 ## 1. Product Concept
 
-**pagepulser** is an automated B2B "Trust Auditor." It scans websites for three critical pillars that business owners are often unaware of but legally or financially penalized for:
+**kritano** is an automated B2B "Trust Auditor." It scans websites for three critical pillars that business owners are often unaware of but legally or financially penalized for:
 
 1. **SEO & Performance:** Core Web Vitals, broken links, and metadata.
 2. **Accessibility (WCAG 2.2):** Legal compliance for screen readers and keyboard navigation.
@@ -37,11 +37,11 @@ We use a single-server architecture to keep costs under **£10/month** and ensur
 
 | Command | Description |
 |---------|-------------|
-| `./pp start` | Start database and seed user |
-| `./pp stop` | Stop database |
-| `./pp reset` | Stop and delete all data |
-| `./pp logs` | Follow database logs |
-| `./pp db` | Open psql shell |
+| `./kt start` | Start database and seed user |
+| `./kt stop` | Stop database |
+| `./kt reset` | Stop and delete all data |
+| `./kt logs` | Follow database logs |
+| `./kt db` | Open psql shell |
 
 After starting, run `npm run dev:all --prefix server` to start the dev servers.
 
@@ -109,7 +109,7 @@ The differentiator: **We don't wait for users. We find them.**
 
 *Hi [Owner Name],*
 
-*I'm pagepulser, an automated site-health bot. I recently scanned **[Website URL]** and found three critical items that need your attention:*
+*I'm kritano, an automated site-health bot. I recently scanned **[Website URL]** and found three critical items that need your attention:*
 
 * *⚠️ **Security:** Your site is serving mixed content (HTTP), which triggers "Not Secure" warnings in Chrome.*
 * *⚖️ **Legal:** I found 4 WCAG accessibility violations that could expose you to compliance notices.*
@@ -120,7 +120,7 @@ The differentiator: **We don't wait for users. We find them.**
 *[Link to personalized dashboard]*
 
 *Best,*
-*pagepulser Bot*
+*kritano Bot*
 
 ---
 

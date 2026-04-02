@@ -244,7 +244,7 @@ export default function LeadDetailPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Lead Details | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Lead Details | Kritano</title></Helmet>
       {/* ----------------------------------------------------------------- */}
       {/* Header                                                            */}
       {/* ----------------------------------------------------------------- */}
@@ -264,7 +264,7 @@ export default function LeadDetailPage() {
               {(lead.first_name?.[0] || lead.email[0]).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>{displayName}</h1>
+              <h1 className="text-3xl font-bold text-white tracking-tight font-display">{displayName}</h1>
               <div className="flex items-center space-x-3 mt-1">
                 <span className="text-sm text-slate-500">{lead.email}</span>
                 {lead.email_verified ? (

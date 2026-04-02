@@ -14,7 +14,7 @@ These are Core Web Vitals — and they directly affect your search rankings. Swi
 
 Save this for your next performance review.
 
-**Hashtags:** #CoreWebVitals #SEO #WebPerformance #LCP #INP #CLS #PageSpeed #GoogleRanking #WebDevelopment #PagePulser #TechnicalSEO #WebDesign #PerformanceOptimisation #FrontendDev #UXDesign #SiteSpeed #WebStandards #DevTips #GoogleSearch #SearchRankings
+**Hashtags:** #CoreWebVitals #SEO #WebPerformance #LCP #INP #CLS #PageSpeed #GoogleRanking #WebDevelopment #Kritano #TechnicalSEO #WebDesign #PerformanceOptimisation #FrontendDev #UXDesign #SiteSpeed #WebStandards #DevTips #GoogleSearch #SearchRankings
 
 ---
 
@@ -23,7 +23,7 @@ Save this for your next performance review.
 **Caption:**
 What Google actually looks at when ranking your website. It's not just keywords — it's how your site performs. Swipe to learn the three metrics that matter most.
 
-**Hashtags:** #CoreWebVitals #SEO #GoogleRanking #WebPerformance #PagePulser #WebDesign #TechnicalSEO #WebDevelopment #PageSpeed #SearchRankings #LCP #INP #CLS #DevTips #FrontendDev
+**Hashtags:** #CoreWebVitals #SEO #GoogleRanking #WebPerformance #Kritano #WebDesign #TechnicalSEO #WebDevelopment #PageSpeed #SearchRankings #LCP #INP #CLS #DevTips #FrontendDev
 
 ---
 
@@ -36,7 +36,7 @@ How long until the biggest thing on screen shows up. Think of it as walking into
 
 Quick win: compress and preload your hero image.
 
-**Hashtags:** #LCP #CoreWebVitals #WebPerformance #PageSpeed #SEO #WebDevelopment #FrontendDev #PagePulser #ImageOptimisation #SiteSpeed #TechnicalSEO #WebDesign #PerformanceOptimisation #DevTips #GoogleRanking
+**Hashtags:** #LCP #CoreWebVitals #WebPerformance #PageSpeed #SEO #WebDevelopment #FrontendDev #Kritano #ImageOptimisation #SiteSpeed #TechnicalSEO #WebDesign #PerformanceOptimisation #DevTips #GoogleRanking
 
 ---
 
@@ -49,7 +49,7 @@ How fast your site responds when someone taps a button. It's like pressing a lif
 
 Quick win: break up long JavaScript tasks and defer non-critical scripts.
 
-**Hashtags:** #INP #CoreWebVitals #WebPerformance #JavaScript #SEO #WebDevelopment #FrontendDev #PagePulser #UserExperience #SiteSpeed #TechnicalSEO #InteractionDesign #DevTips #PerformanceOptimisation #GoogleRanking
+**Hashtags:** #INP #CoreWebVitals #WebPerformance #JavaScript #SEO #WebDevelopment #FrontendDev #Kritano #UserExperience #SiteSpeed #TechnicalSEO #InteractionDesign #DevTips #PerformanceOptimisation #GoogleRanking
 
 ---
 
@@ -62,15 +62,15 @@ How much stuff jumps around while loading. You go to tap "Add to Cart" and the p
 
 Quick win: set explicit width and height on all images and embeds.
 
-**Hashtags:** #CLS #CoreWebVitals #WebPerformance #LayoutShift #SEO #WebDevelopment #FrontendDev #PagePulser #UXDesign #SiteSpeed #TechnicalSEO #WebDesign #DevTips #PerformanceOptimisation #GoogleRanking
+**Hashtags:** #CLS #CoreWebVitals #WebPerformance #LayoutShift #SEO #WebDevelopment #FrontendDev #Kritano #UXDesign #SiteSpeed #TechnicalSEO #WebDesign #DevTips #PerformanceOptimisation #GoogleRanking
 
 ---
 
 ## Slide 5 — CTA Closing
 
 **Caption:**
-Now you know what Google is measuring. PagePulser checks all three Core Web Vitals — and tells you exactly what to fix first.
+Now you know what Google is measuring. Kritano checks all three Core Web Vitals — and tells you exactly what to fix first.
 
 Link in bio to check your scores.
 
-**Hashtags:** #PagePulser #CoreWebVitals #SEO #WebPerformance #WebAudit #SiteHealth #LCP #INP #CLS #TechnicalSEO #WebDesign #FreeTools #WebDevelopment #PageSpeed #GoogleRanking #DevTools #PerformanceOptimisation
+**Hashtags:** #Kritano #CoreWebVitals #SEO #WebPerformance #WebAudit #SiteHealth #LCP #INP #CLS #TechnicalSEO #WebDesign #FreeTools #WebDevelopment #PageSpeed #GoogleRanking #DevTools #PerformanceOptimisation

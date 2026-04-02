@@ -188,7 +188,7 @@ export default function ContentEditorPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Content Editor | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Content Editor | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -199,7 +199,7 @@ export default function ContentEditorPage() {
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <h1 className="text-2xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            <h1 className="text-2xl font-bold text-white tracking-tight font-display">
               {isNew ? 'New Content' : 'Edit Content'}
             </h1>
           </div>
@@ -436,8 +436,8 @@ export default function ContentEditorPage() {
                     PP
                   </div>
                   <div>
-                    <div className="text-xs font-semibold text-slate-900">PagePulser</div>
-                    <div className="text-[10px] text-slate-500">@pagepulser</div>
+                    <div className="text-xs font-semibold text-slate-900">Kritano</div>
+                    <div className="text-[10px] text-slate-500">@kritano</div>
                   </div>
                 </div>
                 <p className="text-slate-700 text-sm whitespace-pre-wrap break-words leading-relaxed">

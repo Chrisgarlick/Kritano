@@ -16,7 +16,7 @@ Here's the anatomy of one that does — with a real Google SERP mockup showing e
 
 Save this for your next content review.
 
-**Hashtags:** #MetaDescription #SEO #TechnicalSEO #GoogleRanking #ContentMarketing #PagePulser #WebDesign #OrganicTraffic #SearchEngine #WebDevelopment #SEOTips #DigitalMarketing #CTR #SERP #ContentStrategy #CopywritingTips #WebStandards #DevTips
+**Hashtags:** #MetaDescription #SEO #TechnicalSEO #GoogleRanking #ContentMarketing #Kritano #WebDesign #OrganicTraffic #SearchEngine #WebDevelopment #SEOTips #DigitalMarketing #CTR #SERP #ContentStrategy #CopywritingTips #WebStandards #DevTips
 
 ---
 
@@ -29,7 +29,7 @@ Keyword + Value → Specific Details → Call to Action
 
 Pages with optimised meta descriptions get 5.8% higher click-through rates than pages with none. That's the difference between page one traffic and wasted rankings.
 
-**Hashtags:** #MetaDescription #SEO #ContentMarketing #GoogleRanking #TechnicalSEO #PagePulser #DigitalMarketing #OrganicTraffic #WebDesign #SEOTips #CTR #SearchEngine #CopywritingTips #WebDevelopment #SERP #ContentStrategy
+**Hashtags:** #MetaDescription #SEO #ContentMarketing #GoogleRanking #TechnicalSEO #Kritano #DigitalMarketing #OrganicTraffic #WebDesign #SEOTips #CTR #SearchEngine #CopywritingTips #WebDevelopment #SERP #ContentStrategy
 
 ---
 
@@ -46,4 +46,4 @@ Meta description cheat sheet. Save this.
 
 Pages with no meta description let Google guess. And Google guesses badly.
 
-**Hashtags:** #MetaDescription #SEO #CheatSheet #TechnicalSEO #GoogleRanking #PagePulser #ContentMarketing #DigitalMarketing #WebDesign #SEOTips #OrganicTraffic #SearchEngine #WebDevelopment #CTR #SERP #CopywritingTips #ContentStrategy #DevTips
+**Hashtags:** #MetaDescription #SEO #CheatSheet #TechnicalSEO #GoogleRanking #Kritano #ContentMarketing #DigitalMarketing #WebDesign #SEOTips #OrganicTraffic #SearchEngine #WebDevelopment #CTR #SERP #CopywritingTips #ContentStrategy #DevTips

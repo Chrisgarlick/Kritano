@@ -18,11 +18,11 @@ import type { AuditAsset } from '../../types/audit.types';
 
 function ScoreCircle({ score, label }: { score: number | null; label: string }) {
   const getScoreColor = (s: number | null) => {
-    if (s === null) return { bg: 'bg-slate-100', text: 'text-slate-500', ring: 'ring-slate-200' };
-    if (s >= 90) return { bg: 'bg-emerald-50', text: 'text-emerald-600', ring: 'ring-emerald-200' };
-    if (s >= 70) return { bg: 'bg-amber-50', text: 'text-amber-600', ring: 'ring-amber-200' };
-    if (s >= 50) return { bg: 'bg-orange-50', text: 'text-orange-600', ring: 'ring-orange-200' };
-    return { bg: 'bg-red-50', text: 'text-red-600', ring: 'ring-red-200' };
+    if (s === null) return { bg: 'bg-slate-100 dark:bg-slate-800', text: 'text-slate-500 dark:text-slate-400', ring: 'ring-slate-200 dark:ring-slate-700' };
+    if (s >= 90) return { bg: 'bg-emerald-50 dark:bg-emerald-900/20', text: 'text-emerald-600 dark:text-emerald-400', ring: 'ring-emerald-200 dark:ring-emerald-800' };
+    if (s >= 70) return { bg: 'bg-amber-50 dark:bg-amber-900/20', text: 'text-amber-600 dark:text-amber-400', ring: 'ring-amber-200 dark:ring-amber-800' };
+    if (s >= 50) return { bg: 'bg-orange-50 dark:bg-orange-900/20', text: 'text-orange-600 dark:text-orange-400', ring: 'ring-orange-200 dark:ring-orange-800' };
+    return { bg: 'bg-red-50 dark:bg-red-900/20', text: 'text-red-600 dark:text-red-400', ring: 'ring-red-200 dark:ring-red-800' };
   };
 
   const colors = getScoreColor(score);
@@ -32,7 +32,7 @@ function ScoreCircle({ score, label }: { score: number | null; label: string }) 
       <div className={`w-16 h-16 rounded-full ${colors.bg} ${colors.ring} ring-2 flex items-center justify-center mx-auto`}>
         <span className={`text-xl font-bold ${colors.text}`}>{score ?? '-'}</span>
       </div>
-      <div className="text-xs text-slate-500 mt-2">{label}</div>
+      <div className="text-xs text-slate-500 dark:text-slate-400 mt-2">{label}</div>
     </div>
   );
 }
@@ -142,14 +142,14 @@ export default function PageDetailPage() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>Page Details | PagePulser</title></Helmet>
+      <Helmet><title>Page Details | Kritano</title></Helmet>
       {/* Breadcrumb */}
-      <div className="flex items-center space-x-2 text-sm text-slate-500 mb-4">
-        <Link to="/audits" className="hover:text-slate-700">Audits</Link>
+      <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
+        <Link to="/audits" className="hover:text-slate-700 dark:hover:text-slate-300">Audits</Link>
         <span>/</span>
-        <Link to={`/audits/${auditId}`} className="hover:text-slate-700">Audit Details</Link>
+        <Link to={`/audits/${auditId}`} className="hover:text-slate-700 dark:hover:text-slate-300">Audit Details</Link>
         <span>/</span>
-        <span className="text-slate-900 truncate max-w-xs">{page.title || page.url}</span>
+        <span className="text-slate-900 dark:text-white truncate max-w-xs">{page.title || page.url}</span>
       </div>
 
       {error && (
@@ -157,15 +157,15 @@ export default function PageDetailPage() {
       )}
 
       {/* Page Header */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 mb-6">
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-semibold text-slate-900 truncate">{page.title || 'Untitled Page'}</h1>
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white truncate">{page.title || 'Untitled Page'}</h1>
             <a
               href={page.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-indigo-600 hover:text-indigo-800 flex items-center mt-1"
+              className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center mt-1"
             >
               {page.url}
               <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -174,16 +174,16 @@ export default function PageDetailPage() {
             </a>
           </div>
           <span className={`inline-flex px-3 py-1 text-sm font-medium rounded-full ${
-            page.crawl_status === 'crawled' ? 'bg-emerald-100 text-emerald-800' :
-            page.crawl_status === 'failed' ? 'bg-red-100 text-red-800' :
-            'bg-amber-100 text-amber-800'
+            page.crawl_status === 'crawled' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300' :
+            page.crawl_status === 'failed' ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300' :
+            'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300'
           }`}>
             {page.crawl_status}
           </span>
         </div>
 
         {/* Scores (R3: flex-wrap for mobile responsiveness) */}
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-6 pt-6 border-t border-slate-100">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-8 mt-6 pt-6 border-t border-slate-100 dark:border-slate-700/50">
           <ScoreCircle score={page.seo_score} label="SEO" />
           <ScoreCircle score={page.accessibility_score} label="Accessibility" />
           <ScoreCircle score={page.security_score} label="Security" />
@@ -194,11 +194,11 @@ export default function PageDetailPage() {
       {/* Page Details Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
         {/* Technical Info */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <h3 className="text-sm font-medium text-slate-900 mb-4">Technical Information</h3>
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-4">Technical Information</h3>
           <dl className="space-y-3">
             <div className="flex justify-between">
-              <dt className="text-sm text-slate-500">Status Code</dt>
+              <dt className="text-sm text-slate-500 dark:text-slate-400">Status Code</dt>
               <dd className={`text-sm font-medium ${
                 page.status_code && page.status_code >= 200 && page.status_code < 300 ? 'text-emerald-600' :
                 page.status_code && page.status_code >= 300 && page.status_code < 400 ? 'text-amber-600' :
@@ -206,88 +206,88 @@ export default function PageDetailPage() {
               }`}>{page.status_code || '-'}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-sm text-slate-500">Content Type</dt>
-              <dd className="text-sm font-medium text-slate-900">{page.content_type || '-'}</dd>
+              <dt className="text-sm text-slate-500 dark:text-slate-400">Content Type</dt>
+              <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.content_type || '-'}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-sm text-slate-500">Page Size</dt>
-              <dd className="text-sm font-medium text-slate-900">{formatBytes(page.page_size_bytes)}</dd>
+              <dt className="text-sm text-slate-500 dark:text-slate-400">Page Size</dt>
+              <dd className="text-sm font-medium text-slate-900 dark:text-white">{formatBytes(page.page_size_bytes)}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-sm text-slate-500">Response Time</dt>
+              <dt className="text-sm text-slate-500 dark:text-slate-400">Response Time</dt>
               <dd className={`text-sm font-medium ${
                 page.response_time_ms && page.response_time_ms > 3000 ? 'text-red-600' :
                 page.response_time_ms && page.response_time_ms > 1000 ? 'text-amber-600' : 'text-emerald-600'
               }`}>{page.response_time_ms ? `${page.response_time_ms}ms` : '-'}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-sm text-slate-500">Depth</dt>
-              <dd className="text-sm font-medium text-slate-900">{page.depth}</dd>
+              <dt className="text-sm text-slate-500 dark:text-slate-400">Depth</dt>
+              <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.depth}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-sm text-slate-500">Crawled At</dt>
-              <dd className="text-sm font-medium text-slate-900">{formatDate(page.crawled_at)}</dd>
+              <dt className="text-sm text-slate-500 dark:text-slate-400">Crawled At</dt>
+              <dd className="text-sm font-medium text-slate-900 dark:text-white">{formatDate(page.crawled_at)}</dd>
             </div>
           </dl>
         </div>
 
         {/* SEO Info */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <h3 className="text-sm font-medium text-slate-900 mb-4">SEO Information</h3>
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-4">SEO Information</h3>
           <dl className="space-y-3">
             <div>
-              <dt className="text-sm text-slate-500">Title</dt>
+              <dt className="text-sm text-slate-500 dark:text-slate-400">Title</dt>
               <dd className="text-sm font-medium text-slate-900 mt-1">{page.title || '-'}</dd>
             </div>
             <div>
-              <dt className="text-sm text-slate-500">Meta Description</dt>
-              <dd className="text-sm text-slate-700 mt-1 line-clamp-3">{page.meta_description || '-'}</dd>
+              <dt className="text-sm text-slate-500 dark:text-slate-400">Meta Description</dt>
+              <dd className="text-sm text-slate-700 dark:text-slate-300 mt-1 line-clamp-3">{page.meta_description || '-'}</dd>
             </div>
             <div>
-              <dt className="text-sm text-slate-500">H1</dt>
+              <dt className="text-sm text-slate-500 dark:text-slate-400">H1</dt>
               <dd className="text-sm font-medium text-slate-900 mt-1">{page.h1_text || '-'}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-sm text-slate-500">Word Count</dt>
-              <dd className="text-sm font-medium text-slate-900">{page.word_count ?? '-'}</dd>
+              <dt className="text-sm text-slate-500 dark:text-slate-400">Word Count</dt>
+              <dd className="text-sm font-medium text-slate-900 dark:text-white">{page.word_count ?? '-'}</dd>
             </div>
             {page.canonical_url && (
               <div>
-                <dt className="text-sm text-slate-500">Canonical URL</dt>
-                <dd className="text-sm text-slate-700 mt-1 truncate">{page.canonical_url}</dd>
+                <dt className="text-sm text-slate-500 dark:text-slate-400">Canonical URL</dt>
+                <dd className="text-sm text-slate-700 dark:text-slate-300 mt-1 truncate">{page.canonical_url}</dd>
               </div>
             )}
           </dl>
         </div>
 
         {/* Issues Summary */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <h3 className="text-sm font-medium text-slate-900 mb-4">Issues Summary</h3>
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+          <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-4">Issues Summary</h3>
           {summary && (
             <>
-              <div className="text-3xl font-bold text-slate-900 mb-4">{summary.total} issues</div>
+              <div className="text-3xl font-bold text-slate-900 dark:text-white mb-4">{summary.total} issues</div>
               <div className="space-y-2">
-                <h4 className="text-xs font-medium text-slate-500 uppercase">By Severity</h4>
+                <h4 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">By Severity</h4>
                 {(['critical', 'serious', 'moderate', 'minor', 'info'] as Severity[]).map(sev => (
                   summary.bySeverity[sev] > 0 && (
                     <div key={sev} className="flex justify-between items-center">
                       <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${severityColors[sev]}`}>
                         {sev}
                       </span>
-                      <span className="text-sm font-medium text-slate-900">{summary.bySeverity[sev]}</span>
+                      <span className="text-sm font-medium text-slate-900 dark:text-white tabular-nums">{summary.bySeverity[sev]}</span>
                     </div>
                   )
                 ))}
               </div>
               <div className="mt-4 space-y-2">
-                <h4 className="text-xs font-medium text-slate-500 uppercase">By Category</h4>
+                <h4 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">By Category</h4>
                 {(['seo', 'accessibility', 'security', 'performance', 'content'] as FindingCategory[]).map(cat => (
                   summary.byCategory[cat] > 0 && (
                     <div key={cat} className="flex justify-between items-center">
                       <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${categoryColors[cat]}`}>
                         {categoryLabels[cat]}
                       </span>
-                      <span className="text-sm font-medium text-slate-900">{summary.byCategory[cat]}</span>
+                      <span className="text-sm font-medium text-slate-900 dark:text-white">{summary.byCategory[cat]}</span>
                     </div>
                   )
                 ))}
@@ -364,25 +364,25 @@ export default function PageDetailPage() {
         <div className="mb-6">
           <button
             onClick={() => setAssetsExpanded(!assetsExpanded)}
-            className="flex items-center gap-2 w-full text-left bg-white border border-slate-200 rounded-lg px-4 py-3 hover:bg-slate-50 transition-colors"
+            className="flex items-center gap-2 w-full text-left bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
           >
             {assetsExpanded ? <ChevronDown className="w-4 h-4 text-slate-500" /> : <ChevronRight className="w-4 h-4 text-slate-500" />}
             <File className="w-4 h-4 text-indigo-500" />
-            <span className="text-sm font-medium text-slate-900">Files & Assets</span>
-            <span className="ml-auto text-xs text-slate-500">{pageAssets.length} file{pageAssets.length !== 1 ? 's' : ''}</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-white">Files & Assets</span>
+            <span className="ml-auto text-xs text-slate-500 dark:text-slate-400">{pageAssets.length} file{pageAssets.length !== 1 ? 's' : ''}</span>
           </button>
           {assetsExpanded && (
-            <div className="mt-2 bg-white border border-slate-200 rounded-lg overflow-hidden">
+            <div className="mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-slate-100 bg-slate-50">
-                    <th className="text-left text-xs font-medium text-slate-500 px-4 py-2">Type</th>
-                    <th className="text-left text-xs font-medium text-slate-500 px-4 py-2">File</th>
-                    <th className="text-right text-xs font-medium text-slate-500 px-4 py-2">Size</th>
-                    <th className="text-center text-xs font-medium text-slate-500 px-4 py-2">Source</th>
+                  <tr className="border-b border-slate-100 dark:border-slate-700/50 bg-slate-50 dark:bg-slate-800/50">
+                    <th className="text-left text-xs font-medium text-slate-500 dark:text-slate-400 px-4 py-2">Type</th>
+                    <th className="text-left text-xs font-medium text-slate-500 dark:text-slate-400 px-4 py-2">File</th>
+                    <th className="text-right text-xs font-medium text-slate-500 dark:text-slate-400 px-4 py-2">Size</th>
+                    <th className="text-center text-xs font-medium text-slate-500 dark:text-slate-400 px-4 py-2">Source</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
                   {pageAssets.map((asset) => {
                     const typeIcons: Record<string, typeof Image> = {
                       image: Image, document: FileText, video: Video, audio: Music,
@@ -390,15 +390,15 @@ export default function PageDetailPage() {
                     };
                     const Icon = typeIcons[asset.asset_type] || File;
                     return (
-                      <tr key={asset.id} className="hover:bg-slate-50">
+                      <tr key={asset.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
                         <td className="px-4 py-2">
                           <Icon className="w-4 h-4 text-slate-500" />
                         </td>
                         <td className="px-4 py-2">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm text-slate-900 truncate max-w-xs">{asset.file_name || 'Unknown'}</span>
+                            <span className="text-sm text-slate-900 dark:text-white truncate max-w-xs">{asset.file_name || 'Unknown'}</span>
                             {asset.file_extension && (
-                              <span className="px-1 py-0.5 text-[10px] font-mono bg-slate-100 text-slate-500 rounded">.{asset.file_extension}</span>
+                              <span className="px-1 py-0.5 text-[10px] font-mono bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded">.{asset.file_extension}</span>
                             )}
                             <a href={asset.url} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-indigo-500">
                               <ExternalLink className="w-3 h-3" />
@@ -426,17 +426,17 @@ export default function PageDetailPage() {
       {/* Findings Section */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <h2 className="text-lg font-medium text-slate-900">Findings</h2>
+          <h2 className="text-lg font-medium text-slate-900 dark:text-white">Findings</h2>
 
           {/* Filters */}
           {findings.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {/* Category Filter */}
-              <div className="flex items-center gap-1 bg-slate-100 rounded-lg p-1">
+              <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
                 <button
                   onClick={() => setCategoryFilter(null)}
                   className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                    categoryFilter === null ? 'bg-white shadow text-slate-900' : 'text-slate-600 hover:text-slate-900'
+                    categoryFilter === null ? 'bg-white dark:bg-slate-700 shadow text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   All
@@ -450,7 +450,7 @@ export default function PageDetailPage() {
                       key={cat}
                       onClick={() => setCategoryFilter(cat)}
                       className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                        categoryFilter === cat ? 'bg-white shadow text-slate-900' : 'text-slate-600 hover:text-slate-900'
+                        categoryFilter === cat ? 'bg-white dark:bg-slate-700 shadow text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                       } ${count === 0 && severityFilter ? 'opacity-50' : ''}`}
                     >
                       {categoryLabels[cat]} ({count})
@@ -463,7 +463,7 @@ export default function PageDetailPage() {
               <select
                 value={severityFilter || ''}
                 onChange={(e) => setSeverityFilter(e.target.value as Severity || null)}
-                className="px-3 py-1.5 text-xs font-medium border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500"
+                className="px-3 py-1.5 text-xs font-medium border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="">All Severities</option>
                 {(['critical', 'serious', 'moderate', 'minor', 'info'] as Severity[]).map(sev => {
@@ -482,11 +482,11 @@ export default function PageDetailPage() {
         </div>
 
         {findings.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center text-slate-500">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500 dark:text-slate-400">
             No issues found on this page.
           </div>
         ) : filteredFindings.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center text-slate-500">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500 dark:text-slate-400">
             No issues match your filters.
           </div>
         ) : (
@@ -495,18 +495,18 @@ export default function PageDetailPage() {
             if (categoryFindings.length === 0) return null;
 
             return (
-              <div key={category} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <div key={category} className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                 <button
                   onClick={() => toggleCategory(category)}
                   aria-expanded={expandedCategories.has(category)}
                   aria-controls={`category-panel-${category}`}
-                  className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors"
+                  className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                 >
                   <div className="flex items-center space-x-3">
                     <span className={`inline-flex px-3 py-1 text-sm font-medium rounded-full ${categoryColors[category]}`}>
                       {categoryLabels[category]}
                     </span>
-                    <span className="text-sm text-slate-600">{categoryFindings.length} issues</span>
+                    <span className="text-sm text-slate-600 dark:text-slate-400">{categoryFindings.length} issues</span>
                   </div>
                   <svg
                     className={`w-5 h-5 text-slate-500 transition-transform ${expandedCategories.has(category) ? 'rotate-180' : ''}`}
@@ -520,25 +520,25 @@ export default function PageDetailPage() {
                 </button>
 
                 {expandedCategories.has(category) && (
-                  <div id={`category-panel-${category}`} className="border-t border-slate-100">
+                  <div id={`category-panel-${category}`} className="border-t border-slate-100 dark:border-slate-700/50">
                     {categoryFindings.map((finding) => (
-                      <div key={finding.id} className="px-6 py-4 border-b border-slate-100 last:border-b-0">
+                      <div key={finding.id} className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 last:border-b-0">
                         <div className="flex items-start justify-between mb-2">
                           <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${severityColors[finding.severity]}`}>
                             {finding.severity}
                           </span>
                         </div>
 
-                        <h4 className="text-sm font-medium text-slate-900 mb-1">{finding.rule_name}</h4>
-                        <p className="text-sm text-slate-600">{finding.message}</p>
+                        <h4 className="text-sm font-medium text-slate-900 dark:text-white mb-1">{finding.rule_name}</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{finding.message}</p>
 
                         {finding.description && (
-                          <p className="text-sm text-slate-500 mt-2">{finding.description}</p>
+                          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">{finding.description}</p>
                         )}
 
                         {finding.recommendation && (
-                          <div className="mt-3 p-3 bg-indigo-50 rounded-lg">
-                            <p className="text-sm text-indigo-800">
+                          <div className="mt-3 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+                            <p className="text-sm text-indigo-800 dark:text-indigo-300">
                               <span className="font-medium">Recommendation:</span> {finding.recommendation}
                             </p>
                           </div>
@@ -550,13 +550,13 @@ export default function PageDetailPage() {
 
                         {finding.selector && (
                           <div className="mt-2">
-                            <span className="text-xs text-slate-500">Selector: </span>
-                            <code className="text-xs bg-slate-100 px-1 py-0.5 rounded">{finding.selector}</code>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">Selector: </span>
+                            <code className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1 py-0.5 rounded">{finding.selector}</code>
                           </div>
                         )}
 
                         {finding.snippet && (
-                          <pre className="mt-2 p-3 bg-slate-50 rounded-lg text-xs text-slate-700 overflow-x-auto">
+                          <pre className="mt-2 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-xs text-slate-700 dark:text-slate-300 overflow-x-auto">
                             {finding.snippet}
                           </pre>
                         )}
@@ -564,7 +564,7 @@ export default function PageDetailPage() {
                         {finding.wcag_criteria && finding.wcag_criteria.length > 0 && (
                           <div className="mt-2 flex flex-wrap gap-1">
                             {finding.wcag_criteria.map((criteria, i) => (
-                              <span key={i} className="inline-flex px-2 py-0.5 text-xs bg-slate-100 text-slate-600 rounded">
+                              <span key={i} className="inline-flex px-2 py-0.5 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded">
                                 {criteria}
                               </span>
                             ))}
@@ -577,7 +577,7 @@ export default function PageDetailPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label={`Learn more about ${finding.rule_name}`}
-                            className="mt-2 inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800"
+                            className="mt-2 inline-flex items-center text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300"
                           >
                             Learn more
                             <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

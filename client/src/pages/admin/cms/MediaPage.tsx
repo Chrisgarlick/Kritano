@@ -174,11 +174,11 @@ export default function MediaPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Media | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Media | Kritano</title></Helmet>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Media Library</h1>
+          <h1 className="text-3xl font-bold text-white tracking-tight font-display">Media Library</h1>
           {pagination && (
             <p className="text-sm text-slate-500 mt-1">
               {pagination.total} {pagination.total === 1 ? 'file' : 'files'} total

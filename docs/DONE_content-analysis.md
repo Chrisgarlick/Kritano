@@ -2,7 +2,7 @@
 
 ## Overview
 
-A deterministic content quality scoring engine that evaluates webpage content using statistical linguistics, structural analysis, and SEO best practices. This engine integrates with PagePulser's existing audit architecture as a new analysis dimension alongside SEO, Accessibility, Security, and Performance.
+A deterministic content quality scoring engine that evaluates webpage content using statistical linguistics, structural analysis, and SEO best practices. This engine integrates with Kritano's existing audit architecture as a new analysis dimension alongside SEO, Accessibility, Security, and Performance.
 
 ## Key Decisions
 
@@ -472,7 +472,7 @@ For multi-word keywords, measure how close the words appear:
 
 ## Findings Generation
 
-The content engine generates findings following PagePulser's existing pattern:
+The content engine generates findings following Kritano's existing pattern:
 
 ### Finding Categories
 

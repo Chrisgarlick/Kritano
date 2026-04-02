@@ -79,7 +79,7 @@ export const categoryColors: Record<FindingCategory, string> = {
   accessibility: 'bg-emerald-100 text-emerald-800',
   security: 'bg-red-100 text-red-800',
   performance: 'bg-sky-100 text-sky-800',
-  content: 'bg-purple-100 text-purple-800',
+  content: 'bg-amber-100 text-amber-800',
   'content-eeat': 'bg-amber-100 text-amber-800',
   'content-aeo': 'bg-indigo-100 text-indigo-800',
   'structured-data': 'bg-teal-100 text-teal-800',
@@ -105,8 +105,8 @@ export const categoryLabels: Record<FindingCategory, string> = {
 export function getScoreColor(score: number | null): string {
   if (score === null) return 'text-slate-500';
   if (score >= 90) return 'text-emerald-600';
-  if (score >= 70) return 'text-amber-600';
-  if (score >= 50) return 'text-orange-600';
+  if (score >= 70) return 'text-amber-500';
+  if (score >= 50) return 'text-orange-500';
   return 'text-red-600';
 }
 

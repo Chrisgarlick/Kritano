@@ -532,13 +532,23 @@ export async function createAuditFromSchedule(
     }
   }
 
+  // Determine if mobile pass should run (Starter+ = any non-free tier)
+  const tierResult = await pool.query<{ tier: string }>(
+    `SELECT COALESCE(
+      (SELECT s.tier FROM subscriptions s WHERE s.user_id = $1 AND s.status IN ('active', 'trialing') ORDER BY s.created_at DESC LIMIT 1),
+      'free'
+    ) as tier`,
+    [userId]
+  );
+  const includeMobile = (tierResult.rows[0]?.tier || 'free') !== 'free';
+
   const result = await pool.query<{ id: string }>(`
     INSERT INTO audit_jobs (
       user_id, site_id, url_id, schedule_id, target_url, target_domain,
       max_pages, max_depth, respect_robots_txt, include_subdomains,
       check_seo, check_accessibility, check_security, check_performance, check_content,
-      wcag_version, wcag_level
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+      wcag_version, wcag_level, include_mobile
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
     RETURNING id
   `, [
     userId,
@@ -558,6 +568,7 @@ export async function createAuditFromSchedule(
     checkContent,
     (config.wcagVersion as string) ?? '2.2',
     (config.wcagLevel as string) ?? 'AA',
+    includeMobile,
   ]);
 
   return { auditId: result.rows[0].id };
@@ -575,15 +586,15 @@ export async function markScheduleRun(
   await pool.query(`
     UPDATE audit_schedules
     SET last_run_at = NOW(),
-        last_status = $2,
-        last_audit_id = $3,
-        next_run_at = $4,
+        last_status = $2::text,
+        last_audit_id = $3::uuid,
+        next_run_at = $4::timestamptz,
         run_count = run_count + 1,
-        failure_count = CASE WHEN $2 = 'failed' THEN failure_count + 1 ELSE failure_count END,
-        consecutive_failures = CASE WHEN $2 = 'failed' THEN consecutive_failures + 1 ELSE 0 END,
+        failure_count = CASE WHEN $2::text = 'failed' THEN failure_count + 1 ELSE failure_count END,
+        consecutive_failures = CASE WHEN $2::text = 'failed' THEN consecutive_failures + 1 ELSE 0 END,
         updated_at = NOW()
     WHERE id = $1
-  `, [scheduleId, status, auditId, nextRunAt?.toISOString() || null]);
+  `, [scheduleId, status, auditId || null, nextRunAt?.toISOString() || null]);
 }
 
 /**

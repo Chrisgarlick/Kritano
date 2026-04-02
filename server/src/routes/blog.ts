@@ -100,7 +100,7 @@ router.get('/categories', async (_req: Request, res: Response): Promise<void> =>
 router.get('/sitemap.xml', async (_req: Request, res: Response): Promise<void> => {
   try {
     const posts = await getPublishedPostsForSitemap();
-    const baseUrl = process.env.APP_URL || 'https://pagepulser.com';
+    const baseUrl = process.env.APP_URL || 'https://kritano.com';
 
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
@@ -132,17 +132,17 @@ router.get('/sitemap.xml', async (_req: Request, res: Response): Promise<void> =
 router.get('/feed.xml', async (_req: Request, res: Response): Promise<void> => {
   try {
     const posts = await getLatestPublishedPosts(20);
-    const baseUrl = process.env.APP_URL || 'https://pagepulser.com';
+    const baseUrl = process.env.APP_URL || 'https://kritano.com';
     const now = new Date().toISOString();
 
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
     xml += '<feed xmlns="http://www.w3.org/2005/Atom">\n';
-    xml += '  <title>PagePulser Blog</title>\n';
+    xml += '  <title>Kritano Blog</title>\n';
     xml += `  <link href="${baseUrl}/blog" rel="alternate" />\n`;
     xml += `  <link href="${baseUrl}/api/blog/feed.xml" rel="self" />\n`;
     xml += `  <id>${baseUrl}/blog</id>\n`;
     xml += `  <updated>${now}</updated>\n`;
-    xml += '  <author><name>PagePulser</name></author>\n';
+    xml += '  <author><name>Kritano</name></author>\n';
 
     for (const post of posts) {
       const content = blocksToPlainText(post.content);

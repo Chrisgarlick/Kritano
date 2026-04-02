@@ -1,4 +1,4 @@
-# pagepulser - Scraper V2 Roadmap
+# kritano - Scraper V2 Roadmap
 
 Comprehensive review and enhancement plan based on full codebase audit.
 Covers bugs, security, UX/UI, architecture, and transformative new features.
@@ -246,7 +246,7 @@ Extract to `client/src/components/audit/`:
 
 | Feature | Description | Impact |
 |---------|-------------|--------|
-| **CLI Tool** | `pagepulser scan https://example.com` | High |
+| **CLI Tool** | `kritano scan https://example.com` | High |
 | **GitHub Action** | Audit PRs automatically | Very High |
 | **VS Code Extension** | In-editor issue highlighting | Medium |
 | **API Access** | Full REST API for integrations | High |

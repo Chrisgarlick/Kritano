@@ -37,12 +37,12 @@ export default function Home() {
     <PublicLayout>
       <PageSeo
         title="Website Auditing for SEO, Accessibility, Security & Performance"
-        description="PagePulser audits your website for SEO, accessibility, security, and performance issues. Get actionable insights to build trust online."
+        description="Kritano audits your website for SEO, accessibility, security, and performance issues. Get actionable insights to build trust online."
         path="/"
         structuredData={{
           '@context': 'https://schema.org',
           '@type': 'WebApplication',
-          name: 'PagePulser',
+          name: 'Kritano',
           description: 'Comprehensive website auditing for SEO, accessibility, security, and performance.',
           applicationCategory: 'WebApplication',
           operatingSystem: 'Any',
@@ -52,21 +52,21 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute -top-8 -right-8 w-72 h-72 bg-indigo-50 rounded-full opacity-60 blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 -left-16 w-48 h-48 bg-amber-50 rounded-full opacity-60 blur-3xl pointer-events-none" />
+        <div className="absolute -top-8 -right-8 w-72 h-72 bg-indigo-50 dark:bg-indigo-900/20 rounded-full opacity-60 blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 -left-16 w-48 h-48 bg-amber-50 dark:bg-amber-900/20 rounded-full opacity-60 blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-20">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-start">
             {/* Left: Copy */}
             <div>
-              <p className="text-indigo-600 font-medium tracking-wide uppercase text-xs mb-5">
+              <p className="text-indigo-600 dark:text-indigo-400 font-medium tracking-wide uppercase text-xs mb-5">
                 Website Intelligence Platform
               </p>
-              <h1 className="font-display text-5xl lg:text-[4.25rem] text-slate-900 leading-[1.08] mb-7">
+              <h1 className="font-display text-5xl lg:text-[4.25rem] text-slate-900 dark:text-white leading-[1.08] mb-7">
                 The clarity your website deserves.
               </h1>
-              <p className="text-lg text-slate-500 leading-relaxed mb-10 max-w-lg">
-                PagePulser provides deep visibility into your website's health&mdash;surfacing
+              <p className="text-lg text-slate-500 dark:text-slate-400 leading-relaxed mb-10 max-w-lg">
+                Kritano provides deep visibility into your website's health&mdash;surfacing
                 critical issues in SEO, accessibility, security, and performance that impact
                 your bottom line.
               </p>
@@ -84,25 +84,25 @@ export default function Home() {
 
             {/* Right: App-like Score Card */}
             <div className="relative">
-              <div className="absolute -top-6 -right-6 w-64 h-64 bg-indigo-50 rounded-full opacity-60" />
-              <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-amber-50 rounded-full opacity-60" />
+              <div className="absolute -top-6 -right-6 w-64 h-64 bg-indigo-50 dark:bg-indigo-900/20 rounded-full opacity-60" />
+              <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-amber-50 dark:bg-amber-900/20 rounded-full opacity-60" />
 
-              <div className="relative bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+              <div className="relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
                 {/* Card Header */}
-                <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                    <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Audit Complete</span>
+                    <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Audit Complete</span>
                   </div>
-                  <span className="text-xs text-slate-500 font-mono">example.com</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">example.com</span>
                 </div>
 
                 {/* Overall Score */}
                 <div className="px-6 pt-6 pb-4 flex items-center gap-6">
                   <HeroRing score={overallScore} size={96} strokeWidth={6} label="Overall" />
                   <div>
-                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Overall Health</p>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Overall Health</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
                       {overallScore >= 90 ? 'Excellent' : overallScore >= 70 ? 'Good' : 'Fair'} &mdash; {CATEGORIES.filter(c => c.score < 80).length} {CATEGORIES.filter(c => c.score < 80).length === 1 ? 'area' : 'areas'} to improve
                     </p>
                   </div>
@@ -123,30 +123,30 @@ export default function Home() {
                 </div>
 
                 {/* Issues summary bar */}
-                <div className="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                <div className="px-6 py-3.5 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
                   <div className="flex items-center gap-4 text-xs">
                     <span className="flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-red-500" />
-                      <span className="text-slate-500">3 Critical</span>
+                      <span className="text-slate-500 dark:text-slate-400">3 Critical</span>
                     </span>
                     <span className="flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-orange-500" />
-                      <span className="text-slate-500">7 Serious</span>
+                      <span className="text-slate-500 dark:text-slate-400">7 Serious</span>
                     </span>
                     <span className="flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-amber-500" />
-                      <span className="text-slate-500">12 Moderate</span>
+                      <span className="text-slate-500 dark:text-slate-400">12 Moderate</span>
                     </span>
                   </div>
-                  <span className="text-xs font-medium text-indigo-600">View All &rarr;</span>
+                  <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400">View All &rarr;</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Value Props */}
-          <div className="mt-28 pt-16 border-t border-slate-100">
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-slate-500 text-xs font-medium uppercase tracking-wider">
+          <div className="mt-28 pt-16 border-t border-slate-100 dark:border-slate-700/50">
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">
               <span>No credit card required</span>
               <span className="hidden sm:inline" aria-hidden="true">&middot;</span>
               <span>Free forever plan</span>
@@ -158,16 +158,16 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="bg-slate-50 border-t border-slate-100">
+      <section className="bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700/50">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
           <div className="max-w-2xl mb-16">
-            <p className="text-indigo-600 font-medium tracking-wide uppercase text-xs mb-4">
+            <p className="text-indigo-600 dark:text-indigo-400 font-medium tracking-wide uppercase text-xs mb-4">
               Capabilities
             </p>
-            <h2 className="font-display text-4xl lg:text-5xl text-slate-900 leading-tight mb-5">
+            <h2 className="font-display text-4xl lg:text-5xl text-slate-900 dark:text-white leading-tight mb-5">
               Everything you need to build trust online
             </h2>
-            <p className="text-lg text-slate-500 leading-relaxed">
+            <p className="text-lg text-slate-500 dark:text-slate-400 leading-relaxed">
               Comprehensive auditing tools that cover all aspects of website health,
               delivering insights your team can act on immediately.
             </p>
@@ -224,10 +224,10 @@ export default function Home() {
       <section>
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="text-indigo-600 font-medium tracking-wide uppercase text-xs mb-4">
+            <p className="text-indigo-600 dark:text-indigo-400 font-medium tracking-wide uppercase text-xs mb-4">
               How It Works
             </p>
-            <h2 className="font-display text-4xl lg:text-5xl text-slate-900 leading-tight">
+            <h2 className="font-display text-4xl lg:text-5xl text-slate-900 dark:text-white leading-tight">
               Three steps to a healthier website
             </h2>
           </div>
@@ -241,7 +241,7 @@ export default function Home() {
             <StepCard
               number="02"
               title="Run your audit"
-              description="PagePulser crawls your pages, checking hundreds of SEO, accessibility, security, and performance rules."
+              description="Kritano crawls your pages, checking hundreds of SEO, accessibility, security, and performance rules."
             />
             <StepCard
               number="03"
@@ -253,7 +253,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-slate-900">
+      <section className="bg-slate-900 dark:bg-slate-950">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <StatItem value="6" label="Audit Categories" />
@@ -273,7 +273,7 @@ export default function Home() {
 
             <div className="relative text-center max-w-2xl mx-auto">
               <h2 className="font-display text-4xl lg:text-5xl text-white leading-tight mb-6">
-                Ready to check your website's pulse?
+                Ready to judge your website?
               </h2>
               <p className="text-lg text-indigo-200 leading-relaxed mb-10">
                 Start your free audit today and discover what's holding your site back.
@@ -340,7 +340,7 @@ function HeroRing({
           fill="none"
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          className="text-slate-200"
+          className="text-slate-200 dark:text-slate-700"
         />
         {/* Progress */}
         <circle
@@ -357,7 +357,7 @@ function HeroRing({
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
         <span
-          className="font-display tabular-nums text-slate-900"
+          className="font-display tabular-nums text-slate-900 dark:text-white"
           style={{ fontSize: size * 0.32 }}
         >
           {score}
@@ -389,21 +389,21 @@ function FeatureCard({
       <div className={`w-10 h-10 rounded-lg ${iconColor} flex items-center justify-center mb-4 group-hover:scale-105 transition-transform`}>
         {icon}
       </div>
-      <h3 className="text-base font-semibold text-slate-900 mb-1.5 group-hover:text-indigo-600 transition-colors">{title}</h3>
-      <p className="text-slate-500 text-sm leading-relaxed">{description}</p>
+      <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{title}</h3>
+      <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{description}</p>
     </>
   );
 
   if (href) {
     return (
-      <Link to={href} className="bg-white border border-slate-200 rounded-xl p-6 hover:border-indigo-200 hover:shadow-md transition-all duration-200 group block">
+      <Link to={href} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 hover:border-indigo-200 dark:hover:border-indigo-800 hover:shadow-md transition-all duration-200 group block">
         {content}
       </Link>
     );
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-6 hover:border-indigo-200 hover:shadow-md transition-all duration-200 group">
+    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 hover:border-indigo-200 dark:hover:border-indigo-800 hover:shadow-md transition-all duration-200 group">
       {content}
     </div>
   );
@@ -420,11 +420,11 @@ function StepCard({
 }) {
   return (
     <div className="text-center">
-      <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 font-display text-xl mb-5">
+      <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 font-display text-xl mb-5">
         {number}
       </div>
-      <h3 className="text-base font-semibold text-slate-900 mb-2">{title}</h3>
-      <p className="text-slate-500 text-sm leading-relaxed">{description}</p>
+      <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-2">{title}</h3>
+      <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{description}</p>
     </div>
   );
 }

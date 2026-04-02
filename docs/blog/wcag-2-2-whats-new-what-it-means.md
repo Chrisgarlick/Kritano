@@ -160,7 +160,7 @@ WCAG 2.2 isn't a dramatic overhaul — it's a focused update that addresses real
 
 In my honest opinion, the most impactful additions are Target Size and Accessible Authentication. Small touch targets and hostile login flows are problems that affect millions of people daily, and having explicit standards for them is long overdue.
 
-If you want to see how your site measures up against the latest WCAG criteria, run an accessibility audit on PagePulser. It tests against the current standard and flags the specific issues — including the new 2.2 criteria — so you know exactly what needs attention.
+If you want to see how your site measures up against the latest WCAG criteria, run an accessibility audit on Kritano. It tests against the current standard and flags the specific issues — including the new 2.2 criteria — so you know exactly what needs attention.
 
 <!-- Internal linking suggestions:
 - Link "WCAG 2.1" or "accessibility regulations" to the web accessibility 2026 post
@@ -168,5 +168,5 @@ If you want to see how your site measures up against the latest WCAG criteria, r
 - Link "keyboard access" to the e-commerce accessibility post
 - Link "accessibility score" to the understanding accessibility scores post
 - Link "European Accessibility Act" to the web accessibility 2026 post
-- Link "PagePulser audit" to the main product/pricing page
+- Link "Kritano audit" to the main product/pricing page
 -->

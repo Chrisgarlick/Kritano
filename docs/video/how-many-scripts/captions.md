@@ -2,7 +2,7 @@
 
 ## Combined Caption (all platforms)
 **Hook:** How many scripts is YOUR website loading? We counted 127 on a single page.
-**Caption:** Every third-party script slows your site, tracks your users, and widens your attack surface. Most website owners have no idea how many are running. PagePulser audits every single one — automatically.
+**Caption:** Every third-party script slows your site, tracks your users, and widens your attack surface. Most website owners have no idea how many are running. Kritano audits every single one — automatically.
 
 ---
 
@@ -17,24 +17,24 @@ Here's what 127 scripts actually costs you:
 23 third-party trackers
 3 known vulnerabilities
 
-Most website owners have absolutely no idea this is happening. That's exactly why we built PagePulser — it audits every script, every tracker, and every security risk. Automatically.
+Most website owners have absolutely no idea this is happening. That's exactly why we built Kritano — it audits every script, every tracker, and every security risk. Automatically.
 
 Link in bio to scan your site.
 
 ### Hashtags
-#WebPerformance #PageSpeed #ThirdPartyScripts #WebSecurity #PagePulser #CoreWebVitals #WebDev #JavaScript #PerformanceOptimisation #WebDesign #SEO #SiteSpeed #SecurityAudit #DigitalMarketing #WebAudit #FrontendDev #TechTips
+#WebPerformance #PageSpeed #ThirdPartyScripts #WebSecurity #Kritano #CoreWebVitals #WebDev #JavaScript #PerformanceOptimisation #WebDesign #SEO #SiteSpeed #SecurityAudit #DigitalMarketing #WebAudit #FrontendDev #TechTips
 
 ---
 
 ## TikTok
 
-How many scripts is YOUR website loading? We found 127 on one page. Each one slowing your site and tracking your users. PagePulser catches every single one automatically.
+How many scripts is YOUR website loading? We found 127 on one page. Each one slowing your site and tracking your users. Kritano catches every single one automatically.
 
 ### Hashtags
-#WebPerformance #TechTok #WebDev #PageSpeed #PagePulser #JavaScript #WebSecurity #SiteSpeed #CoreWebVitals #FrontendDev #WebDesign #CodingTips
+#WebPerformance #TechTok #WebDev #PageSpeed #Kritano #JavaScript #WebSecurity #SiteSpeed #CoreWebVitals #FrontendDev #WebDesign #CodingTips
 
 ---
 
 ## YouTube Shorts
 **Title**: We found 127 scripts on one webpage — here's what that costs you
-**Description**: Every third-party script on your website adds load time, tracks your users, and increases your attack surface. PagePulser audits every script automatically so you know exactly what's running on your site.
+**Description**: Every third-party script on your website adds load time, tracks your users, and increases your attack surface. Kritano audits every script automatically so you know exactly what's running on your site.

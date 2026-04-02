@@ -153,8 +153,8 @@ export function AuditErrorSummary({
     .sort((a, b) => b[1] - a[1]);
 
   return (
-    <div className="bg-white border border-slate-200 rounded-lg p-4">
-      <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+      <h3 className="font-semibold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
         <svg
           className="w-5 h-5 text-slate-500"
           fill="none"
@@ -187,7 +187,7 @@ export function AuditErrorSummary({
               <div
                 key={type}
                 className={`flex justify-between items-center text-sm p-2 rounded ${
-                  isSecurityError ? 'bg-amber-50' : 'bg-slate-50'
+                  isSecurityError ? 'bg-amber-50 dark:bg-amber-900/20' : 'bg-slate-50 dark:bg-slate-800/50'
                 }`}
               >
                 <div className="flex items-center gap-2">
@@ -205,15 +205,15 @@ export function AuditErrorSummary({
                     </svg>
                   )}
                   <div>
-                    <span className="text-slate-700 font-medium">{info.label}</span>
-                    <span className="text-slate-500 text-xs ml-2">
+                    <span className="text-slate-700 dark:text-slate-300 font-medium">{info.label}</span>
+                    <span className="text-slate-500 dark:text-slate-400 text-xs ml-2">
                       {info.description}
                     </span>
                   </div>
                 </div>
                 <span
                   className={`font-medium ${
-                    isSecurityError ? 'text-amber-700' : 'text-slate-600'
+                    isSecurityError ? 'text-amber-700 dark:text-amber-400' : 'text-slate-600 dark:text-slate-400'
                   }`}
                 >
                   {count} page{count !== 1 ? 's' : ''}
@@ -227,7 +227,7 @@ export function AuditErrorSummary({
       )}
 
       {hasSecurityErrors && (
-        <div className="mt-4 p-3 bg-amber-50 border border-amber-100 rounded text-sm text-amber-800">
+        <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800 rounded text-sm text-amber-800 dark:text-amber-300">
           <strong>Note:</strong> Some pages were blocked by security measures.
           The audit results may be incomplete. Consider contacting the website
           owner to whitelist the crawler.
@@ -236,7 +236,7 @@ export function AuditErrorSummary({
 
       {Object.keys(byCategory).length > 0 && (
         <details className="mt-4">
-          <summary className="text-sm text-slate-500 cursor-pointer hover:text-slate-700">
+          <summary className="text-sm text-slate-500 dark:text-slate-400 cursor-pointer hover:text-slate-700 dark:hover:text-slate-300">
             View by category
           </summary>
           <div className="mt-2 space-y-1">
@@ -245,7 +245,7 @@ export function AuditErrorSummary({
               .map(([category, count]) => (
                 <div
                   key={category}
-                  className="flex justify-between text-sm text-slate-600"
+                  className="flex justify-between text-sm text-slate-600 dark:text-slate-400"
                 >
                   <span>{CATEGORY_LABELS[category] || category}</span>
                   <span>{count}</span>

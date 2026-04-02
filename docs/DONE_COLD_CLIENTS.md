@@ -2,7 +2,7 @@
 
 ## Overview
 
-Build an automated pipeline that discovers newly registered domains, checks if they have live websites, extracts contact emails, and feeds them into PagePulser's existing CRM/campaign system for cold outreach. The goal: find businesses that just launched a website (and likely haven't thought about accessibility/SEO yet) and offer them a free audit.
+Build an automated pipeline that discovers newly registered domains, checks if they have live websites, extracts contact emails, and feeds them into Kritano's existing CRM/campaign system for cold outreach. The goal: find businesses that just launched a website (and likely haven't thought about accessibility/SEO yet) and offer them a free audit.
 
 ## Key Decisions
 
@@ -481,7 +481,7 @@ Create a `cold_outreach_free_audit` email template:
 
 **Subject**: "Your new website — free accessibility & SEO audit"
 
-**Concept**: Congratulate them on their new site, offer a free audit (PagePulser free tier), highlight what they'd learn (accessibility issues, SEO gaps, security checks). Soft CTA — not salesy, genuinely helpful. Position as "we noticed you just launched, here's something that could help."
+**Concept**: Congratulate them on their new site, offer a free audit (Kritano free tier), highlight what they'd learn (accessibility issues, SEO gaps, security checks). Soft CTA — not salesy, genuinely helpful. Position as "we noticed you just launched, here's something that could help."
 
 The template should be added to the email_templates table as a system template with category `cold_outreach`.
 

@@ -35,7 +35,7 @@
 **Severity:** MEDIUM
 **Location:** `client/src/pages/public/Services.tsx`
 **Finding:** The Services page describes "Four pillars of website health" (SEO, Accessibility, Security, Performance), but the actual product audits six categories. The launch blog post and the homepage score card both show Content Analysis and AI Readiness as distinct audit dimensions. The Services page does not mention either.
-**Impact:** Prospective customers reading the Services page get an incomplete picture of what PagePulser offers. Content Analysis and AI Readiness are differentiators that competitors do not typically offer -- omitting them from the Services page is a missed selling point.
+**Impact:** Prospective customers reading the Services page get an incomplete picture of what Kritano offers. Content Analysis and AI Readiness are differentiators that competitors do not typically offer -- omitting them from the Services page is a missed selling point.
 **Recommendation:** Either add Content Analysis and AI Readiness as two additional service sections on the Services page (updating the hero to "Six pillars of website health"), or create separate detail pages for them. At minimum, reference them in the "Beyond Auditing" section.
 
 ### Performance Service Lists Outdated Metric (FID)
@@ -48,8 +48,8 @@
 ### About Page Uses "We" Inconsistently with Brand Voice
 **Severity:** LOW
 **Location:** `client/src/pages/public/About.tsx`
-**Finding:** The brand voice guide establishes first-person singular ("I", "my") for editorial content and the homepage, shifting to first-person plural for case studies. The About page uses "we" and "our" throughout ("We believe," "We built," "We're here to change that"), which creates a slight disconnect given PagePulser appears to be a solo-founder product. The Story section references "our founder" in the third person, adding a further inconsistency.
-**Impact:** Minor, but it creates ambiguity about whether PagePulser is a team or a solo venture. The blog posts use "I" consistently and the brand voice guide anchors on personal authenticity.
+**Finding:** The brand voice guide establishes first-person singular ("I", "my") for editorial content and the homepage, shifting to first-person plural for case studies. The About page uses "we" and "our" throughout ("We believe," "We built," "We're here to change that"), which creates a slight disconnect given Kritano appears to be a solo-founder product. The Story section references "our founder" in the third person, adding a further inconsistency.
+**Impact:** Minor, but it creates ambiguity about whether Kritano is a team or a solo venture. The blog posts use "I" consistently and the brand voice guide anchors on personal authenticity.
 **Recommendation:** Decide on a consistent voice for the About page. If the intent is to present as a company, use "we" consistently and remove "our founder" phrasing. If the intent is personal authenticity (aligned with the blog voice), shift to first-person singular.
 
 ### Privacy Page Uses Helmet Instead of PageSeo
@@ -67,10 +67,10 @@
 
 3. **Create case studies or social proof.** The blog content establishes expertise, but there is no customer evidence on the public site. Even anonymised before/after score improvements ("E-commerce site improved accessibility score from 38 to 84 in 2 hours") would strengthen trust, especially on the Pricing and About pages.
 
-4. **Add author schema and byline to blog posts.** The frontmatter includes `author: "Chris Garlick"` but there is no Person schema or visible author bio on published posts. Adding these would strengthen E-E-A-T signals -- which PagePulser itself audits for.
+4. **Add author schema and byline to blog posts.** The frontmatter includes `author: "Chris Garlick"` but there is no Person schema or visible author bio on published posts. Adding these would strengthen E-E-A-T signals -- which Kritano itself audits for.
 
 5. **Consider annual pricing toggle on the Pricing page.** The page only shows monthly pricing. An annual pricing option (with a discount) is standard SaaS practice and could improve conversion and reduce churn.
 
 ## Summary
 
-PagePulser's content is genuinely strong. The blog library of 20 posts is well above average for an early-stage SaaS -- the writing quality is high, the research is thorough with real statistics and data, and the brand voice is consistent with the documented guidelines. The public pages are clean, well-structured, and conversion-focused with good SEO metadata and structured data throughout. The legal pages are comprehensive and appropriate for a UK-based SaaS handling website scanning. The most impactful gap is the unimplemented internal linking across all 20 blog posts -- the strategy is already written in HTML comments but never executed, which represents a significant missed SEO opportunity. Secondary issues include American English spelling creeping into a few public pages (contradicting the British English brand standard), the Services page being out of date with only four audit categories when the product now offers six, and an outdated Core Web Vital metric (FID instead of INP). None of these issues are critical, and the content foundation is solid enough that addressing them would move the score from strong to excellent.
+Kritano's content is genuinely strong. The blog library of 20 posts is well above average for an early-stage SaaS -- the writing quality is high, the research is thorough with real statistics and data, and the brand voice is consistent with the documented guidelines. The public pages are clean, well-structured, and conversion-focused with good SEO metadata and structured data throughout. The legal pages are comprehensive and appropriate for a UK-based SaaS handling website scanning. The most impactful gap is the unimplemented internal linking across all 20 blog posts -- the strategy is already written in HTML comments but never executed, which represents a significant missed SEO opportunity. Secondary issues include American English spelling creeping into a few public pages (contradicting the British English brand standard), the Services page being out of date with only four audit categories when the product now offers six, and an outdated Core Web Vital metric (FID instead of INP). None of these issues are critical, and the content foundation is solid enough that addressing them would move the score from strong to excellent.

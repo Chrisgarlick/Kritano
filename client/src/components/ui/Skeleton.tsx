@@ -4,16 +4,16 @@ interface SkeletonProps {
 
 export function Skeleton({ className = '' }: SkeletonProps) {
   return (
-    <div className={`animate-pulse bg-slate-200 rounded ${className}`} />
+    <div className={`animate-pulse bg-slate-200 dark:bg-slate-700 rounded ${className}`} />
   );
 }
 
 export function SkeletonTable({ rows = 5 }: { rows?: number }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden" role="status" aria-label="Loading table">
+    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden" role="status" aria-label="Loading table">
       <span className="sr-only">Loading...</span>
       {/* Header */}
-      <div className="bg-slate-50 px-6 py-3 flex gap-6">
+      <div className="bg-slate-50 dark:bg-slate-800/50 px-6 py-3 flex gap-6">
         <Skeleton className="h-4 w-24" />
         <Skeleton className="h-4 w-16" />
         <Skeleton className="h-4 w-12" />
@@ -24,7 +24,7 @@ export function SkeletonTable({ rows = 5 }: { rows?: number }) {
       </div>
       {/* Rows */}
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="px-6 py-4 flex items-center gap-6 border-t border-slate-100">
+        <div key={i} className="px-6 py-4 flex items-center gap-6 border-t border-slate-100 dark:border-slate-700">
           <div className="flex-shrink-0 w-24 space-y-1">
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-3 w-16" />
@@ -48,7 +48,7 @@ export function SkeletonTable({ rows = 5 }: { rows?: number }) {
 
 export function SkeletonCard() {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 space-y-4" role="status" aria-label="Loading card">
+    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6 space-y-4" role="status" aria-label="Loading card">
       <span className="sr-only">Loading...</span>
       <Skeleton className="h-5 w-1/3" />
       <div className="grid grid-cols-2 gap-4">
@@ -68,7 +68,7 @@ export function SkeletonScoreCards() {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4" role="status" aria-label="Loading scores">
       <span className="sr-only">Loading...</span>
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="rounded-lg p-4 bg-slate-50">
+        <div key={i} className="rounded-lg p-4 bg-slate-50 dark:bg-slate-800">
           <div className="flex items-center justify-between mb-2">
             <Skeleton className="h-8 w-8 rounded" />
             <Skeleton className="h-8 w-12" />

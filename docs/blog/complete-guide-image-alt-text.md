@@ -27,7 +27,7 @@ The good news is that writing proper alt text is one of the easiest things you c
 Alt text — short for "alternative text" — is a written description attached to an image in your website's HTML. It looks like this:
 
 ```html
-<img src="team-photo.jpg" alt="The PagePulser team standing outside the office on a sunny day">
+<img src="team-photo.jpg" alt="The Kritano team standing outside the office on a sunny day">
 ```
 
 That `alt` attribute serves three purposes:
@@ -176,7 +176,7 @@ In my honest opinion, alt text is the single highest-impact accessibility fix mo
 If you're not sure how your website's images stack up, get in touch for an accessibility audit. I'll flag every missing or poorly written alt text across your site and help you prioritise what to fix first.
 
 <!-- Internal linking suggestions:
-- Link "accessibility audit" to the PagePulser audit/pricing page
+- Link "accessibility audit" to the Kritano audit/pricing page
 - Link "WCAG 2.1" to the web accessibility 2026 blog post
 - Link "WebAIM's 2025 Million report" to the accessibility state of the web post
 - Link "Lighthouse" or "Core Web Vitals" to the CWV explainer post

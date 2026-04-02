@@ -13,7 +13,7 @@ import { getScoreColor, CATEGORY_LABELS } from '../../types/analytics.types';
 function TrendBadge({ trend }: { trend: 'improving' | 'declining' | 'stable' }) {
   if (trend === 'improving') {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
         <TrendingUp className="w-3 h-3" />
         Improving
       </span>
@@ -21,14 +21,14 @@ function TrendBadge({ trend }: { trend: 'improving' | 'declining' | 'stable' }) 
   }
   if (trend === 'declining') {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">
         <TrendingDown className="w-3 h-3" />
         Declining
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
       <Minus className="w-3 h-3" />
       Stable
     </span>
@@ -37,7 +37,7 @@ function TrendBadge({ trend }: { trend: 'improving' | 'declining' | 'stable' }) 
 
 function ScoreCell({ score }: { score: number | null }) {
   if (score === null) {
-    return <span className="text-slate-300">-</span>;
+    return <span className="text-slate-300 dark:text-slate-600">-</span>;
   }
   return (
     <span className="font-semibold" style={{ color: getScoreColor(score) }}>
@@ -67,12 +67,12 @@ function SiteCard({ site, trend, onClick }: SiteCardProps) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-lg border border-slate-200 p-4 hover:shadow-md hover:border-indigo-200 cursor-pointer transition-all"
+      className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 hover:shadow-md hover:border-indigo-200 dark:hover:border-indigo-800 cursor-pointer transition-all"
     >
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="font-medium text-slate-900 truncate max-w-[180px]">{site.name}</h3>
-          <p className="text-xs text-slate-500 truncate max-w-[180px]">{site.domain}</p>
+          <h3 className="font-medium text-slate-900 dark:text-white truncate max-w-[180px]">{site.name}</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 truncate max-w-[180px]">{site.domain}</p>
         </div>
         <div
           className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold"
@@ -98,7 +98,7 @@ function SiteCard({ site, trend, onClick }: SiteCardProps) {
         ))}
       </div>
 
-      <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+      <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700/50">
         <TrendBadge trend={trend} />
         <span className="text-xs text-slate-500">
           {site.stats.totalAudits} audit{site.stats.totalAudits !== 1 ? 's' : ''}
@@ -123,7 +123,7 @@ function SiteSelector({ sites, value, onChange, placeholder = 'Select a site...'
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors min-w-[200px]"
+        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors min-w-[200px]"
       >
         <Globe className="w-4 h-4 text-slate-500" />
         <span className="flex-1 text-left truncate">
@@ -138,7 +138,7 @@ function SiteSelector({ sites, value, onChange, placeholder = 'Select a site...'
             className="fixed inset-0 z-10"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-lg shadow-lg z-20 py-1 max-h-64 overflow-auto">
+          <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-20 py-1 max-h-64 overflow-auto">
             {sites.map(site => (
               <button
                 key={site.id}
@@ -148,8 +148,8 @@ function SiteSelector({ sites, value, onChange, placeholder = 'Select a site...'
                 }}
                 className={`w-full px-4 py-2 text-left text-sm transition-colors ${
                   site.id === value
-                    ? 'bg-indigo-50 text-indigo-700 font-medium'
-                    : 'text-slate-700 hover:bg-slate-50'
+                    ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 font-medium'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
                 }`}
               >
                 <div className="font-medium truncate">{site.name}</div>
@@ -199,13 +199,13 @@ export default function AnalyticsDashboard() {
       <DashboardLayout>
         <div className="max-w-6xl mx-auto">
           <div className="animate-pulse space-y-6">
-            <div className="h-8 w-48 bg-slate-200 rounded" />
+            <div className="h-8 w-48 bg-slate-200 dark:bg-slate-700 rounded" />
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               {[1, 2, 3, 4, 5].map(i => (
-                <div key={i} className="h-24 bg-slate-200 rounded-lg" />
+                <div key={i} className="h-24 bg-slate-200 dark:bg-slate-700 rounded-lg" />
               ))}
             </div>
-            <div className="h-64 bg-slate-200 rounded-lg" />
+            <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-lg" />
           </div>
         </div>
       </DashboardLayout>
@@ -218,22 +218,22 @@ export default function AnalyticsDashboard() {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <BarChart3 className="w-6 h-6 text-indigo-600" />
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <BarChart3 className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
               Analytics
             </h1>
-            <p className="text-slate-500 mt-1">
+            <p className="text-slate-500 dark:text-slate-400 mt-1">
               Overview of all your sites' health and performance
             </p>
           </div>
 
           {/* Empty state */}
-          <div className="bg-white rounded-lg border border-slate-200 p-12 text-center">
-            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <BarChart3 className="w-8 h-8 text-indigo-600" />
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-12 text-center">
+            <div className="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <BarChart3 className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <h3 className="text-lg font-medium text-slate-900 mb-2">No analytics data yet</h3>
-            <p className="text-slate-500 mb-6 max-w-md mx-auto">
+            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No analytics data yet</h3>
+            <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-md mx-auto">
               Add your first site and run an audit to start tracking your website's health and performance over time.
             </p>
             <Button variant="accent" onClick={() => navigate('/sites')}>
@@ -247,16 +247,16 @@ export default function AnalyticsDashboard() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>Analytics | PagePulser</title></Helmet>
+      <Helmet><title>Analytics | Kritano</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <BarChart3 className="w-6 h-6 text-indigo-600" />
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <BarChart3 className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
               Analytics
             </h1>
-            <p className="text-slate-500 mt-1">
+            <p className="text-slate-500 dark:text-slate-400 mt-1">
               Overview of all your sites' health and performance
             </p>
           </div>
@@ -282,27 +282,27 @@ export default function AnalyticsDashboard() {
 
         {/* Aggregate Stats */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <div className="bg-white rounded-lg border border-slate-200 p-4">
-            <div className="flex items-center gap-2 text-sm text-slate-500 mb-1">
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
+            <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1">
               <Globe className="w-4 h-4" />
               Sites
             </div>
-            <div className="text-2xl font-bold text-slate-900">
+            <div className="text-2xl font-bold text-slate-900 dark:text-white">
               {overview.totalSites}
             </div>
           </div>
-          <div className="bg-white rounded-lg border border-slate-200 p-4">
-            <div className="flex items-center gap-2 text-sm text-slate-500 mb-1">
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
+            <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1">
               <FileSearch className="w-4 h-4" />
               Total Audits
             </div>
-            <div className="text-2xl font-bold text-slate-900">
+            <div className="text-2xl font-bold text-slate-900 dark:text-white">
               {overview.totalAudits}
             </div>
           </div>
           {(['seo', 'accessibility', 'security'] as const).map(cat => (
-            <div key={cat} className="bg-white rounded-lg border border-slate-200 p-4">
-              <div className="text-sm text-slate-500 mb-1">{CATEGORY_LABELS[cat]} Avg</div>
+            <div key={cat} className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
+              <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">{CATEGORY_LABELS[cat]} Avg</div>
               <div
                 className="text-2xl font-bold"
                 style={{ color: getScoreColor(overview.avgScores[cat]) }}
@@ -315,17 +315,17 @@ export default function AnalyticsDashboard() {
 
         {/* Sites Needing Attention */}
         {overview.sitesNeedingAttention.length > 0 && (
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
             <div className="flex items-center gap-2 mb-3">
-              <TrendingDown className="w-5 h-5 text-amber-600" />
-              <h2 className="font-medium text-amber-800">Sites Needing Attention</h2>
+              <TrendingDown className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              <h2 className="font-medium text-amber-800 dark:text-amber-300">Sites Needing Attention</h2>
             </div>
             <div className="flex flex-wrap gap-2">
               {overview.sitesNeedingAttention.map(site => (
                 <button
                   key={site.id}
                   onClick={() => navigate(`/analytics/sites/${site.id}`)}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-white rounded-lg border border-amber-200 text-sm text-amber-800 hover:bg-amber-100 transition-colors"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-slate-800 rounded-lg border border-amber-200 dark:border-amber-800 text-sm text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-colors"
                 >
                   {site.name}
                   <ArrowRight className="w-3 h-3" />
@@ -337,12 +337,12 @@ export default function AnalyticsDashboard() {
 
         {/* Site Grid */}
         {sites.length === 0 ? (
-          <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
-            <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <BarChart3 className="w-6 h-6 text-indigo-600" />
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-8 text-center">
+            <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <BarChart3 className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <h3 className="text-lg font-medium text-slate-900 mb-2">No sites yet</h3>
-            <p className="text-slate-500 mb-4">
+            <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No sites yet</h3>
+            <p className="text-slate-500 dark:text-slate-400 mb-4">
               Add a site and run audits to see analytics data here.
             </p>
             <Button onClick={() => navigate('/sites')}>
@@ -351,7 +351,7 @@ export default function AnalyticsDashboard() {
           </div>
         ) : (
           <div>
-            <h2 className="text-lg font-medium text-slate-900 mb-4">All Sites</h2>
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">All Sites</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {sites.map(site => (
                 <SiteCard
@@ -367,20 +367,20 @@ export default function AnalyticsDashboard() {
 
         {/* Recent Activity */}
         {overview.recentActivity.length > 0 && (
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-lg font-medium text-slate-900 mb-4">Recent Activity</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Recent Activity</h2>
             <div className="space-y-3">
               {overview.recentActivity.map((activity) => (
                 <div
                   key={activity.auditId}
                   onClick={() => navigate(`/audits/${activity.auditId}`)}
-                  className="p-4 rounded-lg border border-slate-100 hover:border-indigo-200 hover:shadow-sm cursor-pointer transition-all group"
+                  className="p-4 rounded-lg border border-slate-100 dark:border-slate-700/50 hover:border-indigo-200 dark:hover:border-indigo-800 hover:shadow-sm cursor-pointer transition-all group"
                 >
                   <div className="flex items-start justify-between gap-4">
                     {/* Left side - Site info and audit details */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors">
+                        <span className="font-medium text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                           {activity.siteName}
                         </span>
                         <span className="text-xs text-slate-500">{activity.domain}</span>
@@ -465,7 +465,7 @@ export default function AnalyticsDashboard() {
                   </div>
 
                   {/* Score breakdown bar */}
-                  <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-50">
+                  <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-50 dark:border-slate-700/30">
                     {(['seo', 'accessibility', 'security', 'performance', 'content', 'structuredData'] as const).map(cat => (
                       <div key={cat} className="flex items-center gap-1.5">
                         <span className="text-[10px] text-slate-500 uppercase w-8">

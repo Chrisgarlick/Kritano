@@ -1,6 +1,6 @@
-# PagePulser Brand Style — Visual Asset Reference
+# Kritano Brand Style — Visual Asset Reference
 
-This file defines the visual rules for all `/draw` outputs. Every generated asset must look like it belongs on the PagePulser homepage.
+This file defines the visual rules for all `/draw` outputs. Every generated asset must look like it belongs on the Kritano homepage.
 
 ## Colour Palette
 
@@ -112,7 +112,7 @@ Use strong card/border compositions for structure. Add subtle atmospheric accent
 
 ## Atmospheric Elements
 
-These are the signature PagePulser visual elements. **Every output must include at least one.**
+These are the signature Kritano visual elements. **Every output must include at least one.**
 
 ### Blurred Gradient Circles
 Large, soft circles positioned in corners or behind focal elements:
@@ -156,11 +156,11 @@ box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
 
 ## Do's
 
-- Use the PagePulser font stack — always
+- Use the Kritano font stack — always
 - Use the brand palette — always
 - Include atmospheric depth (blurred gradients)
 - Use score rings, status dots, and severity badges as visual vocabulary
-- Reference "PagePulser" as text where branding makes sense (Instrument Serif, indigo-600)
+- Reference "Kritano" as text where branding makes sense (Instrument Serif, indigo-600)
 - Keep text large enough for mobile social feeds
 - Create distinct variations — different backgrounds, layouts, and compositions
 

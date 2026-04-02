@@ -1,7 +1,7 @@
 /**
  * Services Page
  *
- * Detailed breakdown of PagePulser's core audit services.
+ * Detailed breakdown of Kritano's core audit services.
  */
 
 import { Link } from 'react-router-dom';
@@ -24,7 +24,7 @@ const SERVICES = [
   {
     id: 'seo',
     icon: <TrendingUp className="w-7 h-7" />,
-    iconColor: 'text-indigo-600 bg-indigo-50 border-indigo-100',
+    iconColor: 'text-violet-600 bg-violet-50 border-violet-100',
     title: 'SEO Auditing',
     subtitle: 'Get found. Get traffic.',
     description:
@@ -47,7 +47,7 @@ const SERVICES = [
     title: 'Accessibility (WCAG 2.2)',
     subtitle: 'Inclusive by design.',
     description:
-      'Ensure your website is usable by everyone, regardless of ability. PagePulser checks your pages against WCAG 2.2 Level AA criteria, helping you meet legal requirements and reach a wider audience.',
+      'Ensure your website is usable by everyone, regardless of ability. Kritano checks your pages against WCAG 2.2 Level AA criteria, helping you meet legal requirements and reach a wider audience.',
     features: [
       'Color contrast ratio validation',
       'Image alt text and ARIA label checks',
@@ -121,14 +121,14 @@ export default function Services() {
       {/* Hero */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">
-          <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-6">
+          <p className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-6">
             Services
           </p>
-          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-8">
+          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.05] mb-8">
             Four pillars of website health.
           </h1>
-          <p className="text-xl text-slate-600 leading-relaxed">
-            Every PagePulser audit covers SEO, accessibility, security, and performance.
+          <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
+            Every Kritano audit covers SEO, accessibility, security, and performance.
             Each pillar is powered by a dedicated scanning engine with hundreds of
             rules maintained by domain experts.
           </p>
@@ -142,7 +142,7 @@ export default function Services() {
           return (
             <section
               key={service.id}
-              className={`py-20 ${index < SERVICES.length - 1 ? 'border-b border-slate-200' : ''}`}
+              className={`py-20 ${index < SERVICES.length - 1 ? 'border-b border-slate-200 dark:border-slate-700' : ''}`}
             >
               <div className={`grid lg:grid-cols-2 gap-16 items-start ${!isEven ? 'lg:direction-rtl' : ''}`}>
                 {/* Info - appears first on even rows, second on odd rows */}
@@ -150,13 +150,13 @@ export default function Services() {
                   <div className={`inline-flex items-center justify-center w-14 h-14 rounded-xl border ${service.iconColor} mb-6`}>
                     {service.icon}
                   </div>
-                  <h2 className="font-display text-3xl lg:text-4xl text-slate-900 leading-tight mb-3">
-                    <Link to={`/services/${service.id}`} className="hover:text-indigo-600 transition-colors">
+                  <h2 className="font-display text-3xl lg:text-4xl text-slate-900 dark:text-white leading-tight mb-3">
+                    <Link to={`/services/${service.id}`} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                       {service.title}
                     </Link>
                   </h2>
-                  <p className="text-lg text-indigo-600 font-medium mb-6">{service.subtitle}</p>
-                  <p className="text-lg text-slate-600 leading-relaxed mb-8">
+                  <p className="text-lg text-indigo-600 dark:text-indigo-400 font-medium mb-6">{service.subtitle}</p>
+                  <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
                     {service.description}
                   </p>
                   <div className="flex items-center gap-4 flex-wrap">
@@ -170,7 +170,7 @@ export default function Services() {
                     <Link
                       to={`/services/${service.id}`}
                       aria-label={`Learn more about ${service.title}`}
-                      className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                     >
                       Learn more
                       <ArrowRight className="w-4 h-4" />
@@ -179,15 +179,15 @@ export default function Services() {
                 </div>
 
                 {/* Features list - appears second on even rows, first on odd rows */}
-                <div className={`bg-slate-50 border border-slate-200 rounded-xl p-8 ${!isEven ? 'lg:order-1' : ''}`}>
-                  <h3 className="font-semibold text-slate-900 mb-6 text-sm uppercase tracking-wider">
+                <div className={`bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-8 ${!isEven ? 'lg:order-1' : ''}`}>
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-6 text-sm uppercase tracking-wider">
                     What We Check
                   </h3>
                   <ul className="space-y-4">
                     {service.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-slate-700 text-sm leading-relaxed">{feature}</span>
+                        <CheckCircle className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+                        <span className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -199,13 +199,13 @@ export default function Services() {
       </div>
 
       {/* Additional Features */}
-      <section className="bg-slate-50 border-t border-slate-200">
+      <section className="bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-4">
+            <p className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-4">
               Beyond Auditing
             </p>
-            <h2 className="font-display text-4xl text-slate-900 leading-tight">
+            <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight">
               Tools that support the whole journey
             </h2>
           </div>
@@ -238,10 +238,10 @@ export default function Services() {
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
         <div className="text-center max-w-2xl mx-auto">
-          <h2 className="font-display text-4xl text-slate-900 leading-tight mb-6">
-            See PagePulser in action
+          <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight mb-6">
+            See Kritano in action
           </h2>
-          <p className="text-lg text-slate-600 leading-relaxed mb-10">
+          <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
             Run your first audit in under two minutes. No credit card, no commitment.
           </p>
           <Link
@@ -267,11 +267,11 @@ function MiniFeature({
 }) {
   return (
     <div className="text-center">
-      <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 mb-4">
+      <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 mb-4">
         {icon}
       </div>
-      <h3 className="font-semibold text-slate-900 mb-2 text-sm">{title}</h3>
-      <p className="text-slate-500 text-sm leading-relaxed">{description}</p>
+      <h3 className="font-semibold text-slate-900 dark:text-white mb-2 text-sm">{title}</h3>
+      <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{description}</p>
     </div>
   );
 }

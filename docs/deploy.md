@@ -1,6 +1,6 @@
-# PagePulser — Production Deployment Guide (Digital Ocean Droplet)
+# Kritano — Production Deployment Guide (Digital Ocean Droplet)
 
-This guide covers a complete production deployment of PagePulser on a single Digital Ocean droplet using PM2 for process management and Nginx as a reverse proxy with SSL via Let's Encrypt.
+This guide covers a complete production deployment of Kritano on a single Digital Ocean droplet using PM2 for process management and Nginx as a reverse proxy with SSL via Let's Encrypt.
 
 ---
 
@@ -110,12 +110,12 @@ ssh deploy@YOUR_DROPLET_IP
 
 ## 3. Install Dependencies
 
-### 3.1 Node.js 20 LTS (via NodeSource)
+### 3.1 Node.js 22 LTS (via NodeSource)
 
 ```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt install -y nodejs
-node -v  # should print v20.x
+node -v  # should print v22.x
 npm -v
 ```
 
@@ -165,9 +165,9 @@ sudo -u postgres psql
 ```
 
 ```sql
-CREATE USER pagepulser WITH PASSWORD 'GENERATE_A_STRONG_PASSWORD_HERE';
-CREATE DATABASE pagepulser OWNER pagepulser;
-GRANT ALL PRIVILEGES ON DATABASE pagepulser TO pagepulser;
+CREATE USER kritano WITH PASSWORD 'GENERATE_A_STRONG_PASSWORD_HERE';
+CREATE DATABASE kritano OWNER kritano;
+GRANT ALL PRIVILEGES ON DATABASE kritano TO kritano;
 \q
 ```
 
@@ -210,7 +210,7 @@ sudo systemctl restart postgresql
 ### 4.4 Verify connection
 
 ```bash
-psql postgresql://pagepulser:YOUR_PASSWORD@localhost:5432/pagepulser -c "SELECT 1;"
+psql postgresql://kritano:YOUR_PASSWORD@localhost:5432/kritano -c "SELECT 1;"
 ```
 
 ---
@@ -249,11 +249,11 @@ redis-cli ping  # should print PONG
 
 ```bash
 cd /home/deploy
-git clone git@github.com:YOUR_ORG/pagepulser.git
-cd pagepulser
+git clone git@github.com:YOUR_ORG/kritano.git
+cd kritano
 ```
 
-> If using HTTPS: `git clone https://github.com/YOUR_ORG/pagepulser.git`
+> If using HTTPS: `git clone https://github.com/YOUR_ORG/kritano.git`
 > You'll need a deploy key or personal access token for private repos.
 
 ### 6.2 Install dependencies
@@ -261,6 +261,8 @@ cd pagepulser
 ```bash
 npm run install:all
 ```
+
+> **Important:** Do NOT use `npm install --omit=dev` for the server. The worker process runs via `tsx` (TypeScript execution), which is currently a devDependency. All devDependencies must be installed for the worker to start.
 
 ### 6.3 Install Playwright browsers
 
@@ -287,6 +289,14 @@ ls server/dist/index.js
 ls client/dist/index.html
 ```
 
+### 6.5 Create the uploads directory
+
+Blog media uploads are stored on disk. Create the directory and ensure the deploy user owns it:
+
+```bash
+mkdir -p /home/deploy/kritano/server/uploads/blog/{original,thumbnails,webp}
+```
+
 ---
 
 ## 7. Environment Configuration
@@ -306,7 +316,7 @@ PORT=3001
 NODE_ENV=production
 
 # === DATABASE ===
-DATABASE_URL=postgresql://pagepulser:YOUR_DB_PASSWORD@localhost:5432/pagepulser
+DATABASE_URL=postgresql://kritano:YOUR_DB_PASSWORD@localhost:5432/kritano
 
 # === REDIS ===
 REDIS_URL=redis://localhost:6379
@@ -317,15 +327,17 @@ JWT_SECRET=YOUR_64_CHAR_SECRET_HERE
 
 # === CORS ===
 # Your production domain(s), comma-separated
-CORS_ORIGIN=https://pagepulser.com,https://www.pagepulser.com
+CORS_ORIGIN=https://kritano.com,https://www.kritano.com
 
 # === EMAIL (Resend) ===
+# Do NOT set SMTP_HOST in production — leave it unset so Resend is used.
+# SMTP_HOST is only for local dev (Mailpit).
 RESEND_API_KEY=re_xxxxxxxxxxxx
-EMAIL_FROM=PagePulser <noreply@pagepulser.com>
+EMAIL_FROM=Kritano <noreply@kritano.com>
 RESEND_WEBHOOK_SECRET=whsec_xxxxxxxxxxxx
 
 # === APPLICATION ===
-APP_URL=https://pagepulser.com
+APP_URL=https://kritano.com
 
 # === STRIPE ===
 STRIPE_SECRET_KEY=sk_live_xxxxxxxxxxxx
@@ -353,6 +365,21 @@ FACEBOOK_APP_SECRET=
 GOOGLE_CSE_API_KEY=
 GOOGLE_CSE_ID=
 
+# === BUSINESS ===
+BUSINESS_ADDRESS=Your registered business address here
+
+# === COLD OUTREACH ===
+COLD_OUTREACH_MODE=draft         # 'draft' = preview only, 'send' = live emails
+
+# === SCANNER ===
+SCANNER_IPS=                     # Comma-separated IPs of your scanner (for consent identification)
+
+# === DATABASE POOL ===
+PG_POOL_MAX=20                   # Match max_connections in postgresql.conf
+
+# === LOGGING ===
+LOG_LEVEL=info                   # Options: debug, info, warn, error
+
 # === WORKER TUNING ===
 WORKER_POOL_SIZE=3               # Increase to 5 on 4 GB droplet
 WORKER_POLLING_MS=2000
@@ -377,7 +404,7 @@ chmod 600 server/.env
 Run all migrations to set up the schema:
 
 ```bash
-cd /home/deploy/pagepulser/server
+cd /home/deploy/kritano/server
 npm run migrate
 ```
 
@@ -387,7 +414,7 @@ Verify:
 npm run migrate:status
 ```
 
-All 91 migrations should show as executed.
+All migrations should show as executed (check the count matches what's in `server/src/db/migrations/`).
 
 **Optional** — seed initial data (admin user, templates, etc.):
 
@@ -402,15 +429,15 @@ npm run seed
 ### 9.1 Create the PM2 ecosystem file
 
 ```bash
-nano /home/deploy/pagepulser/ecosystem.config.cjs
+nano /home/deploy/kritano/ecosystem.config.cjs
 ```
 
 ```js
 module.exports = {
   apps: [
     {
-      name: 'pagepulser-api',
-      cwd: '/home/deploy/pagepulser/server',
+      name: 'kritano-api',
+      cwd: '/home/deploy/kritano/server',
       script: 'dist/index.js',
       instances: 1,
       exec_mode: 'fork',
@@ -418,14 +445,14 @@ module.exports = {
         NODE_ENV: 'production',
       },
       max_memory_restart: '300M',   // Increase to 512M on 4 GB droplet
-      error_file: '/home/deploy/pagepulser/logs/api-error.log',
-      out_file: '/home/deploy/pagepulser/logs/api-out.log',
+      error_file: '/home/deploy/kritano/logs/api-error.log',
+      out_file: '/home/deploy/kritano/logs/api-out.log',
       merge_logs: true,
       time: true,
     },
     {
-      name: 'pagepulser-worker',
-      cwd: '/home/deploy/pagepulser/server',
+      name: 'kritano-worker',
+      cwd: '/home/deploy/kritano/server',
       script: 'node_modules/.bin/tsx',
       args: 'src/worker.ts',
       instances: 1,
@@ -434,8 +461,8 @@ module.exports = {
         NODE_ENV: 'production',
       },
       max_memory_restart: '700M',   // Increase to 1G on 4 GB droplet
-      error_file: '/home/deploy/pagepulser/logs/worker-error.log',
-      out_file: '/home/deploy/pagepulser/logs/worker-out.log',
+      error_file: '/home/deploy/kritano/logs/worker-error.log',
+      out_file: '/home/deploy/kritano/logs/worker-out.log',
       merge_logs: true,
       time: true,
     },
@@ -446,13 +473,13 @@ module.exports = {
 ### 9.2 Create the logs directory
 
 ```bash
-mkdir -p /home/deploy/pagepulser/logs
+mkdir -p /home/deploy/kritano/logs
 ```
 
 ### 9.3 Start the processes
 
 ```bash
-cd /home/deploy/pagepulser
+cd /home/deploy/kritano
 pm2 start ecosystem.config.cjs
 ```
 
@@ -462,13 +489,13 @@ pm2 start ecosystem.config.cjs
 pm2 status
 ```
 
-You should see `pagepulser-api` and `pagepulser-worker` both `online`.
+You should see `kritano-api` and `kritano-worker` both `online`.
 
 ### 9.5 Test the API health check
 
 ```bash
 curl http://localhost:3001/health
-# {"status":"ok","service":"pagepulser","timestamp":"..."}
+# {"status":"ok","service":"kritano","timestamp":"..."}
 ```
 
 ### 9.6 Save and set PM2 to start on boot
@@ -487,13 +514,13 @@ Run the command PM2 outputs (it will look like `sudo env PATH=... pm2 startup sy
 ### 10.1 Create the Nginx config
 
 ```bash
-sudo nano /etc/nginx/sites-available/pagepulser
+sudo nano /etc/nginx/sites-available/kritano
 ```
 
 ```nginx
 server {
     listen 80;
-    server_name pagepulser.com www.pagepulser.com;
+    server_name kritano.com www.kritano.com;
 
     # Redirect HTTP → HTTPS (Certbot will handle this, but keep as fallback)
     location / {
@@ -503,11 +530,11 @@ server {
 
 server {
     listen 443 ssl http2;
-    server_name pagepulser.com www.pagepulser.com;
+    server_name kritano.com www.kritano.com;
 
     # SSL certs — Certbot will populate these
-    # ssl_certificate /etc/letsencrypt/live/pagepulser.com/fullchain.pem;
-    # ssl_certificate_key /etc/letsencrypt/live/pagepulser.com/privkey.pem;
+    # ssl_certificate /etc/letsencrypt/live/kritano.com/fullchain.pem;
+    # ssl_certificate_key /etc/letsencrypt/live/kritano.com/privkey.pem;
 
     # Security headers
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -568,7 +595,7 @@ server {
 
     # Static frontend — serve from Vite build output
     location / {
-        root /home/deploy/pagepulser/client/dist;
+        root /home/deploy/kritano/client/dist;
         index index.html;
         try_files $uri $uri/ /index.html;
 
@@ -584,7 +611,7 @@ server {
 ### 10.2 Enable the site
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/pagepulser /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/kritano /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t
 sudo systemctl restart nginx
@@ -595,7 +622,7 @@ sudo systemctl restart nginx
 First, make sure your domain's DNS A record points to the droplet IP. Then:
 
 ```bash
-sudo certbot --nginx -d pagepulser.com -d www.pagepulser.com
+sudo certbot --nginx -d kritano.com -d www.kritano.com
 ```
 
 Certbot will:
@@ -646,19 +673,19 @@ If using email (Resend), also add the required DNS records from your Resend dash
 
 In the [Stripe Dashboard → Webhooks](https://dashboard.stripe.com/webhooks):
 
-1. Create a new endpoint: `https://pagepulser.com/api/webhooks/stripe`
+1. Create a new endpoint: `https://kritano.com/api/webhooks/stripe`
 2. Select events:
    - `checkout.session.completed`
    - `customer.subscription.created`
    - `customer.subscription.updated`
    - `customer.subscription.deleted`
-   - `invoice.payment_succeeded`
+   - `invoice.paid`
    - `invoice.payment_failed`
 3. Copy the signing secret to `STRIPE_WEBHOOK_SECRET` in your `.env`
-4. Restart the API: `pm2 restart pagepulser-api`
+4. Restart the API: `pm2 restart kritano-api`
 
 Similarly for Resend webhooks if using email tracking:
-- Endpoint: `https://pagepulser.com/api/webhooks/resend`
+- Endpoint: `https://kritano.com/api/webhooks/resend`
 - Copy signing secret to `RESEND_WEBHOOK_SECRET`
 
 ---
@@ -669,10 +696,10 @@ Run through this checklist after deployment:
 
 ```bash
 # 1. API health
-curl https://pagepulser.com/health
+curl https://kritano.com/health
 
 # 2. API version
-curl https://pagepulser.com/api
+curl https://kritano.com/api
 
 # 3. Worker health
 curl http://localhost:3002/health
@@ -681,10 +708,10 @@ curl http://localhost:3002/health
 curl http://localhost:3002/status
 
 # 5. SSL check
-curl -I https://pagepulser.com
+curl -I https://kritano.com
 
 # 6. Frontend loads
-curl -s https://pagepulser.com | head -20
+curl -s https://kritano.com | head -20
 
 # 7. Check PM2 processes
 pm2 status
@@ -701,7 +728,7 @@ redis-cli ping
 
 ### Smoke test
 
-1. Open `https://pagepulser.com` in a browser — frontend should load
+1. Open `https://kritano.com` in a browser — frontend should load
 2. Register a new account
 3. Verify the confirmation email arrives
 4. Log in and run a test audit
@@ -717,8 +744,8 @@ redis-cli ping
 
 ```bash
 pm2 logs                        # All logs (tail)
-pm2 logs pagepulser-api         # API only
-pm2 logs pagepulser-worker      # Worker only
+pm2 logs kritano-api         # API only
+pm2 logs kritano-worker      # Worker only
 pm2 logs --lines 200            # Last 200 lines
 ```
 
@@ -748,8 +775,8 @@ pm2 restart all
 ### Uptime monitoring
 
 Set up an external uptime check (e.g., UptimeRobot, Better Uptime) against:
-- `https://pagepulser.com/health` — API health
-- `https://pagepulser.com` — Frontend availability
+- `https://kritano.com/health` — API health
+- `https://kritano.com` — Frontend availability
 
 ---
 
@@ -758,8 +785,8 @@ Set up an external uptime check (e.g., UptimeRobot, Better Uptime) against:
 ### 16.1 Automated daily database backups
 
 ```bash
-sudo mkdir -p /home/deploy/backups
-sudo chown deploy:deploy /home/deploy/backups
+mkdir -p /home/deploy/backups
+mkdir -p /home/deploy/scripts
 ```
 
 Create the backup script:
@@ -774,12 +801,12 @@ set -e
 
 BACKUP_DIR="/home/deploy/backups"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-FILENAME="pagepulser_${TIMESTAMP}.sql.gz"
+FILENAME="kritano_${TIMESTAMP}.sql.gz"
 
-pg_dump postgresql://pagepulser:YOUR_DB_PASSWORD@localhost:5432/pagepulser | gzip > "${BACKUP_DIR}/${FILENAME}"
+pg_dump postgresql://kritano:YOUR_DB_PASSWORD@localhost:5432/kritano | gzip > "${BACKUP_DIR}/${FILENAME}"
 
 # Keep only last 14 days
-find "${BACKUP_DIR}" -name "pagepulser_*.sql.gz" -mtime +14 -delete
+find "${BACKUP_DIR}" -name "kritano_*.sql.gz" -mtime +14 -delete
 
 echo "Backup complete: ${FILENAME}"
 ```
@@ -811,16 +838,16 @@ Copy backups to Digital Ocean Spaces or S3:
 sudo apt install -y s3cmd
 # Configure: s3cmd --configure
 # Add to backup script:
-# s3cmd put "${BACKUP_DIR}/${FILENAME}" s3://your-bucket/pagepulser-backups/
+# s3cmd put "${BACKUP_DIR}/${FILENAME}" s3://your-bucket/kritano-backups/
 ```
 
 ### 16.4 Uploads directory
 
-If users upload files, also back up `/home/deploy/pagepulser/server/uploads/`:
+If users upload files, also back up `/home/deploy/kritano/server/uploads/`:
 
 ```bash
 # Add to cron
-0 4 * * * tar -czf /home/deploy/backups/uploads_$(date +\%Y\%m\%d).tar.gz /home/deploy/pagepulser/server/uploads/ 2>/dev/null
+0 4 * * * tar -czf /home/deploy/backups/uploads_$(date +\%Y\%m\%d).tar.gz /home/deploy/kritano/server/uploads/ 2>/dev/null
 ```
 
 ---
@@ -837,7 +864,7 @@ nano /home/deploy/scripts/deploy.sh
 #!/bin/bash
 set -e
 
-APP_DIR="/home/deploy/pagepulser"
+APP_DIR="/home/deploy/kritano"
 cd "$APP_DIR"
 
 echo "==> Pulling latest code..."
@@ -882,7 +909,7 @@ chmod +x /home/deploy/scripts/deploy.sh
 If you want to avoid any dropped requests during restart:
 
 ```bash
-pm2 reload pagepulser-api
+pm2 reload kritano-api
 ```
 
 `reload` does a graceful restart (waits for existing connections to close). Works best with `exec_mode: 'cluster'` and multiple instances if you scale up later.
@@ -895,7 +922,7 @@ pm2 reload pagepulser-api
 
 ```bash
 # Check logs
-pm2 logs pagepulser-api --lines 100
+pm2 logs kritano-api --lines 100
 
 # Common issues:
 # - DATABASE_URL wrong → check .env and test with psql
@@ -906,7 +933,7 @@ pm2 logs pagepulser-api --lines 100
 ### Worker won't start
 
 ```bash
-pm2 logs pagepulser-worker --lines 100
+pm2 logs kritano-worker --lines 100
 
 # Common issues:
 # - Playwright browsers not installed → run `npx playwright install chromium` in server/
@@ -936,10 +963,10 @@ sudo tail -50 /var/log/nginx/error.log
 sudo systemctl status postgresql
 
 # Test connection
-psql postgresql://pagepulser:PASSWORD@localhost:5432/pagepulser -c "SELECT 1;"
+psql postgresql://kritano:PASSWORD@localhost:5432/kritano -c "SELECT 1;"
 
 # Check connection count
-psql postgresql://pagepulser:PASSWORD@localhost:5432/pagepulser -c "SELECT count(*) FROM pg_stat_activity;"
+psql postgresql://kritano:PASSWORD@localhost:5432/kritano -c "SELECT count(*) FROM pg_stat_activity;"
 ```
 
 ### SSL certificate renewal fails
@@ -956,7 +983,7 @@ sudo certbot renew --dry-run
 free -h
 
 # Check if PM2 processes were restarted due to memory
-pm2 describe pagepulser-worker | grep restart
+pm2 describe kritano-worker | grep restart
 
 # On a 2 GB droplet, ensure these are set low in .env:
 # WORKER_MAX_CONCURRENT_JOBS=1
@@ -977,7 +1004,7 @@ curl http://localhost:3002/status
 psql $DATABASE_URL -c "UPDATE audit_jobs SET status = 'pending' WHERE status = 'processing' AND updated_at < NOW() - INTERVAL '1 hour';"
 
 # Restart worker
-pm2 restart pagepulser-worker
+pm2 restart kritano-worker
 ```
 
 ---
@@ -998,7 +1025,7 @@ pm2 restart pagepulser-worker
 | `pm2 status` | Check all processes |
 | `pm2 logs` | Tail all logs |
 | `pm2 restart all` | Restart everything |
-| `pm2 reload pagepulser-api` | Graceful API restart |
+| `pm2 reload kritano-api` | Graceful API restart |
 | `pm2 monit` | Real-time monitoring |
 | `/home/deploy/scripts/deploy.sh` | Full redeploy |
 | `/home/deploy/scripts/backup-db.sh` | Manual DB backup |

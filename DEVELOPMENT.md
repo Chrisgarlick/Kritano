@@ -1,4 +1,4 @@
-# pagepulser Development Guide
+# kritano Development Guide
 
 ## Quick Start
 
@@ -32,10 +32,10 @@ docker compose down
 docker compose down -v
 
 # View database logs
-docker logs pagepulser-db
+docker logs kritano-db
 
 # Follow logs in real-time
-docker logs -f pagepulser-db
+docker logs -f kritano-db
 ```
 
 ---
@@ -71,45 +71,45 @@ npm run migrate:adopt
 
 ```bash
 # Interactive psql session
-docker exec -it pagepulser-db psql -U pagepulser -d pagepulser
+docker exec -it kritano-db psql -U kritano -d kritano
 
 # Run a single query
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c "YOUR SQL HERE"
+docker exec kritano-db psql -U kritano -d kritano -c "YOUR SQL HERE"
 ```
 
 ### View Data
 
 ```bash
 # List all tables
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c "\dt"
+docker exec kritano-db psql -U kritano -d kritano -c "\dt"
 
 # View all users
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c "SELECT id, email, status, email_verified, created_at FROM users;"
+docker exec kritano-db psql -U kritano -d kritano -c "SELECT id, email, status, email_verified, created_at FROM users;"
 
 # View refresh tokens
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c "SELECT id, user_id, is_revoked, created_at FROM refresh_tokens ORDER BY created_at DESC LIMIT 10;"
+docker exec kritano-db psql -U kritano -d kritano -c "SELECT id, user_id, is_revoked, created_at FROM refresh_tokens ORDER BY created_at DESC LIMIT 10;"
 
 # View audit logs
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c "SELECT event_type, event_status, ip_address, created_at FROM auth_audit_logs ORDER BY created_at DESC LIMIT 20;"
+docker exec kritano-db psql -U kritano -d kritano -c "SELECT event_type, event_status, ip_address, created_at FROM auth_audit_logs ORDER BY created_at DESC LIMIT 20;"
 ```
 
 ### User Management
 
 ```bash
 # Verify a user's email (skip email verification)
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "UPDATE users SET email_verified = true, email_verified_at = NOW(), status = 'active' WHERE email = 'user@example.com';"
 
 # Unlock a locked account
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "UPDATE users SET failed_login_attempts = 0, lockout_until = NULL WHERE email = 'user@example.com';"
 
 # Make a user admin
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "UPDATE users SET role = 'admin' WHERE email = 'user@example.com';"
 
 # Delete a user (for testing)
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "DELETE FROM users WHERE email = 'user@example.com';"
 ```
 
@@ -117,7 +117,7 @@ docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
 
 ```bash
 # Clear all auth data (keeps tables)
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c "
+docker exec kritano-db psql -U kritano -d kritano -c "
   TRUNCATE users, refresh_tokens, email_verification_tokens, auth_audit_logs, rate_limit_records CASCADE;
 "
 
@@ -139,7 +139,7 @@ To enable real email sending:
 3. Update `.env`:
    ```
    RESEND_API_KEY=re_your_api_key
-   EMAIL_FROM=pagepulser <noreply@yourdomain.com>
+   EMAIL_FROM=kritano <noreply@yourdomain.com>
    ```
 
 ---
@@ -206,15 +206,15 @@ cd server && npm run worker:dev
 
 ```bash
 # List audit jobs
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "SELECT id, target_url, status, pages_found, pages_crawled, total_issues FROM audit_jobs ORDER BY created_at DESC LIMIT 10;"
 
 # View audit findings
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "SELECT category, severity, COUNT(*) FROM audit_findings GROUP BY category, severity ORDER BY category, severity;"
 
 # View crawled pages for an audit
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "SELECT url, crawl_status, status_code, response_time_ms FROM audit_pages WHERE audit_job_id = 'YOUR_AUDIT_ID' ORDER BY created_at LIMIT 20;"
 ```
 
@@ -222,7 +222,7 @@ docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
 
 ```bash
 # Clear all audit data (keeps auth tables)
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c "
+docker exec kritano-db psql -U kritano -d kritano -c "
   TRUNCATE audit_jobs, audit_pages, audit_findings, crawl_queue CASCADE;
 "
 ```
@@ -245,7 +245,7 @@ lsof -i :5433
 docker ps
 
 # Check container health
-docker inspect pagepulser-db | grep -A 5 "Health"
+docker inspect kritano-db | grep -A 5 "Health"
 
 # Restart the container
 docker compose restart
@@ -253,7 +253,7 @@ docker compose restart
 
 ### Reset rate limiting
 ```bash
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "DELETE FROM rate_limit_records;"
 ```
 
@@ -265,7 +265,7 @@ docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
 
 ```bash
 # List all organization domains
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "SELECT id, domain, verified, verification_method, verified_at FROM organization_domains;"
 ```
 
@@ -275,18 +275,18 @@ Use this to test the domain verification flow by resetting a domain to unverifie
 
 ```bash
 # Reset verification for a specific domain
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "UPDATE organization_domains SET verified = FALSE, verified_at = NULL, verification_method = NULL, verification_token = NULL, verification_attempts = 0 WHERE domain = 'example.com';"
 
 # Reset ALL domains to unverified (use with caution)
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "UPDATE organization_domains SET verified = FALSE, verified_at = NULL, verification_method = NULL, verification_token = NULL, verification_attempts = 0;"
 ```
 
 ### Delete a Domain
 
 ```bash
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c \
+docker exec kritano-db psql -U kritano -d kritano -c \
   "DELETE FROM organization_domains WHERE domain = 'example.com';"
 ```
 

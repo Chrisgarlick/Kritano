@@ -23,7 +23,7 @@ function ScoreBadge({ score, label }: { score: number | null; label: string }) {
       <div className={`text-lg font-semibold ${getScoreColor(score)}`} aria-label={`${score} out of 100`}>
         {score}
       </div>
-      <div className="text-xs text-slate-500">{label}</div>
+      <div className="text-xs text-slate-500 dark:text-slate-400">{label}</div>
     </div>
   );
 }
@@ -102,7 +102,7 @@ export default function AuditListPage() {
 
     return (
       <span
-        className="ml-1 text-slate-500"
+        className="ml-1 text-slate-500 dark:text-slate-400"
         aria-label={`Sort ${direction}`}
         aria-hidden={!isActive}
       >
@@ -176,14 +176,14 @@ export default function AuditListPage() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>Audits | PagePulser</title></Helmet>
+      <Helmet><title>Audits | Kritano</title></Helmet>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">
-            <FileSearch className="w-6 h-6 text-indigo-600" />
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+            <FileSearch className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             Audits
           </h1>
-          <p className="text-slate-600 mt-1">View and manage your website audits</p>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">View and manage your website audits</p>
         </div>
         <Link to="/audits/new">
           <Button>New Audit</Button>
@@ -194,14 +194,14 @@ export default function AuditListPage() {
       <div className="mb-6 flex flex-wrap items-center gap-4">
         {/* A3: Proper label association */}
         <div className="flex items-center gap-2">
-          <label htmlFor="status-filter" className="text-sm font-medium text-slate-700">
+          <label htmlFor="status-filter" className="text-sm font-medium text-slate-700 dark:text-slate-300">
             Status:
           </label>
           <select
             id="status-filter"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             aria-label="Filter audits by status"
           >
             <option value="">All</option>
@@ -221,7 +221,7 @@ export default function AuditListPage() {
             placeholder="Search by URL..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             aria-label="Search audits by URL"
           />
         </div>
@@ -242,14 +242,14 @@ export default function AuditListPage() {
       {loading ? (
         <SkeletonTable rows={5} />
       ) : filtered.length === 0 && !searchQuery && !statusFilter ? (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
-          <div className="text-slate-300 mb-4">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
+          <div className="text-slate-300 dark:text-slate-600 mb-4">
             <svg className="w-20 h-20 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h3 className="text-xl font-medium text-slate-900 mb-2">No audits yet</h3>
-          <p className="text-slate-500 mb-6 max-w-sm mx-auto">
+          <h3 className="text-xl font-medium text-slate-900 dark:text-white mb-2">No audits yet</h3>
+          <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-sm mx-auto">
             Start your first website audit to discover SEO, accessibility, security, and performance issues.
           </p>
           <Link to="/audits/new">
@@ -257,14 +257,14 @@ export default function AuditListPage() {
           </Link>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center text-slate-500" role="status">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center text-slate-500 dark:text-slate-400" role="status">
           No audits match your filters.
         </div>
       ) : (
         <>
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
-            <table className="min-w-full divide-y divide-slate-200" role="grid" aria-label="Audits list">
-              <thead className="bg-slate-50">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700" role="grid" aria-label="Audits list">
+              <thead className="bg-slate-50 dark:bg-slate-800/50">
                 <tr>
                   <th className="px-4 py-3 w-8" scope="col">
                     {/* A1: ARIA label for select all checkbox */}
@@ -272,68 +272,68 @@ export default function AuditListPage() {
                       type="checkbox"
                       checked={selectedIds.size === filtered.length && filtered.length > 0}
                       onChange={toggleSelectAll}
-                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                      className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                       aria-label={selectedIds.size === filtered.length ? "Deselect all audits" : "Select all audits"}
                     />
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider" scope="col">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">
                     Website
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider" scope="col">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider hidden sm:table-cell" scope="col">
+                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell" scope="col">
                     Pages
                   </th>
                   {/* A6: Keyboard accessible sort button */}
-                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider" scope="col">
+                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">
                     <button
                       type="button"
                       onClick={() => toggleSort('total_issues')}
                       onKeyDown={(e) => handleSortKeyDown(e, 'total_issues')}
-                      className="inline-flex items-center hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 rounded"
+                      className="inline-flex items-center hover:text-slate-700 dark:hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 rounded"
                       aria-label={`Sort by issues, currently ${sortField === 'total_issues' ? sortDir : 'not sorted'}`}
                     >
                       Issues<SortIcon field="total_issues" />
                     </button>
                   </th>
                   {/* R2: Hide scores on small screens, show on md+ */}
-                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 uppercase tracking-wider hidden md:table-cell" scope="col">
+                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden md:table-cell" scope="col">
                     Scores
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider hidden lg:table-cell" scope="col">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell" scope="col">
                     <button
                       type="button"
                       onClick={() => toggleSort('created_at')}
                       onKeyDown={(e) => handleSortKeyDown(e, 'created_at')}
-                      className="inline-flex items-center hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 rounded"
+                      className="inline-flex items-center hover:text-slate-700 dark:hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 rounded"
                       aria-label={`Sort by date, currently ${sortField === 'created_at' ? sortDir : 'not sorted'}`}
                     >
                       Started<SortIcon field="created_at" />
                     </button>
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider" scope="col">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider" scope="col">
                     <span className="sr-only">Actions</span>
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-slate-200">
+              <tbody className="bg-white dark:bg-slate-800 divide-y divide-slate-200 dark:divide-slate-700">
                 {filtered.map((audit) => (
-                  <tr key={audit.id} className={`hover:bg-slate-50 ${selectedIds.has(audit.id) ? 'bg-indigo-50' : ''}`}>
+                  <tr key={audit.id} className={`hover:bg-slate-50 dark:hover:bg-slate-700 ${selectedIds.has(audit.id) ? 'bg-indigo-50 dark:bg-indigo-900/20' : ''}`}>
                     <td className="px-4 py-4">
                       {/* A1: ARIA label for row checkbox */}
                       <input
                         type="checkbox"
                         checked={selectedIds.has(audit.id)}
                         onChange={() => toggleSelect(audit.id)}
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                         aria-label={`Select audit for ${audit.target_domain}`}
                       />
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm font-medium text-slate-900">{audit.target_domain}</div>
+                      <div className="text-sm font-medium text-slate-900 dark:text-white">{audit.target_domain}</div>
                       {/* R1: Responsive URL truncation */}
-                      <div className="text-sm text-slate-500 truncate max-w-[150px] sm:max-w-[200px] md:max-w-xs">{audit.target_url}</div>
+                      <div className="text-sm text-slate-500 dark:text-slate-400 truncate max-w-[150px] sm:max-w-[200px] md:max-w-xs">{audit.target_url}</div>
                     </td>
                     <td className="px-6 py-4">
                       {/* A4: Status badge with icon for non-color indication */}
@@ -347,13 +347,13 @@ export default function AuditListPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-center hidden sm:table-cell">
-                      <div className="text-sm text-slate-900">{audit.pages_crawled} / {audit.pages_found}</div>
-                      <div className="text-xs text-slate-500">crawled</div>
+                      <div className="text-sm text-slate-900 dark:text-white">{audit.pages_crawled} / {audit.pages_found}</div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400">crawled</div>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <div className="text-sm text-slate-900">{audit.total_issues}</div>
+                      <div className="text-sm text-slate-900 dark:text-white">{audit.total_issues}</div>
                       {audit.critical_issues > 0 && (
-                        <div className="text-xs text-red-600" aria-label={`${audit.critical_issues} critical issues`}>
+                        <div className="text-xs text-red-600 dark:text-red-400" aria-label={`${audit.critical_issues} critical issues`}>
                           {audit.critical_issues} critical
                         </div>
                       )}
@@ -367,7 +367,7 @@ export default function AuditListPage() {
                         <ScoreBadge score={audit.performance_score} label="Perf" />
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-500 hidden lg:table-cell">
+                    <td className="px-6 py-4 text-sm text-slate-500 dark:text-slate-400 hidden lg:table-cell">
                       <time dateTime={audit.started_at || audit.created_at || undefined}>
                         {formatDate(audit.started_at || audit.created_at)}
                       </time>
@@ -375,7 +375,7 @@ export default function AuditListPage() {
                     <td className="px-6 py-4 text-right">
                       <Link
                         to={`/audits/${audit.id}`}
-                        className="text-indigo-600 hover:text-indigo-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 rounded"
+                        className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 rounded"
                         aria-label={`View details for ${audit.target_domain}`}
                       >
                         View
@@ -390,14 +390,14 @@ export default function AuditListPage() {
           {/* Pagination */}
           {totalPages > 1 && (
             <nav className="flex items-center justify-between mt-4" aria-label="Pagination">
-              <div className="text-sm text-slate-500">
+              <div className="text-sm text-slate-500 dark:text-slate-400">
                 Showing {(page - 1) * pageSize + 1}-{Math.min(page * pageSize, totalCount)} of {totalCount}
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="px-3 py-1 text-sm border border-slate-300 rounded-lg disabled:opacity-50 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="px-3 py-1 text-sm border border-slate-300 dark:border-slate-600 rounded-lg disabled:opacity-50 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   aria-label="Go to previous page"
                 >
                   Previous
@@ -410,7 +410,7 @@ export default function AuditListPage() {
                       key={p}
                       onClick={() => setPage(p)}
                       className={`px-3 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                        p === page ? 'bg-indigo-600 text-white border-indigo-600' : 'border-slate-300 hover:bg-slate-50'
+                        p === page ? 'bg-indigo-600 text-white border-indigo-600' : 'border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
                       }`}
                       aria-label={`Go to page ${p}`}
                       aria-current={p === page ? 'page' : undefined}
@@ -422,7 +422,7 @@ export default function AuditListPage() {
                 <button
                   onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
-                  className="px-3 py-1 text-sm border border-slate-300 rounded-lg disabled:opacity-50 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="px-3 py-1 text-sm border border-slate-300 dark:border-slate-600 rounded-lg disabled:opacity-50 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   aria-label="Go to next page"
                 >
                   Next

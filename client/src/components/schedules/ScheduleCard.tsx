@@ -20,7 +20,7 @@ function getStatusInfo(schedule: AuditScheduleSummary) {
     return { label: 'Paused', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-900/30', icon: Pause };
   }
   if (!schedule.enabled) {
-    return { label: 'Disabled', color: 'text-slate-500 dark:text-slate-500', bg: 'bg-slate-100 dark:bg-slate-800', icon: XCircle };
+    return { label: 'Disabled', color: 'text-slate-500 dark:text-slate-400', bg: 'bg-slate-100 dark:bg-slate-800', icon: XCircle };
   }
   if (schedule.last_status === 'failed') {
     return { label: 'Last run failed', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30', icon: AlertTriangle };
@@ -54,7 +54,7 @@ export function ScheduleCard({ schedule, onToggle }: ScheduleCardProps) {
           >
             {schedule.name || schedule.target_domain}
           </Link>
-          <p className="text-xs text-slate-500 dark:text-slate-500 truncate mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
             {schedule.target_url}
           </p>
         </div>
@@ -86,18 +86,18 @@ export function ScheduleCard({ schedule, onToggle }: ScheduleCardProps) {
           <StatusIcon className="w-3 h-3" />
           {status.label}
         </span>
-        <span className="inline-flex items-center gap-1 text-xs text-slate-500 dark:text-slate-500">
+        <span className="inline-flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
           <CalendarClock className="w-3 h-3" />
           {frequencyLabels[schedule.frequency] || schedule.frequency}
         </span>
       </div>
 
       <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100 dark:border-slate-700">
-        <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-500">
+        <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
           <Clock className="w-3 h-3" />
           <span>Next: {schedule.enabled && !schedule.paused_reason ? formatNextRun(schedule.next_run_at) : 'Paused'}</span>
         </div>
-        <span className="text-xs text-slate-500 dark:text-slate-500">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
           {schedule.run_count} run{schedule.run_count !== 1 ? 's' : ''}
         </span>
       </div>

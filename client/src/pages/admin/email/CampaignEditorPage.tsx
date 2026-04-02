@@ -247,7 +247,7 @@ export default function CampaignEditorPage() {
   if (campaign && campaign.status !== 'draft') {
     return (
       <AdminLayout>
-        <Helmet><title>Admin: Campaign Details | PagePulser</title></Helmet>
+        <Helmet><title>Admin: Campaign Details | Kritano</title></Helmet>
         <div className="space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between">
@@ -257,7 +257,7 @@ export default function CampaignEditorPage() {
               </Link>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>{campaign.name}</h1>
+                  <h1 className="text-3xl font-bold text-white tracking-tight font-display">{campaign.name}</h1>
                   <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_BADGE[campaign.status]}`}>
                     {campaign.status}
                   </span>
@@ -484,14 +484,14 @@ export default function CampaignEditorPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Campaign Editor | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Campaign Editor | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center gap-3">
           <Link to="/admin/email/campaigns" className="p-2 text-slate-500 hover:text-white transition-colors">
             <ArrowLeft className="w-4 h-4" />
           </Link>
-          <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
+          <h1 className="text-3xl font-bold text-white tracking-tight font-display">
             {isNew ? 'New Campaign' : `Edit: ${campaign?.name || ''}`}
           </h1>
         </div>

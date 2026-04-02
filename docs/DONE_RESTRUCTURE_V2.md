@@ -622,7 +622,7 @@ GET /sites/:siteId/urls/:urlId/analytics  // URL-level
 ### 1. Database Migration
 ```bash
 # Test on copy first
-docker compose exec postgres pg_dump -U pagepulser pagepulser > backup.sql
+docker compose exec postgres pg_dump -U kritano kritano > backup.sql
 psql -f 025_user_centric_restructure.sql
 
 # Verify

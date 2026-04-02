@@ -324,7 +324,7 @@ Added new **Referrals** section with tier table showing:
 ## Referral Lifecycle Flow
 
 ```
-1. User A shares link: https://app.pagepulser.com/register?ref=REF-a8kd3m2x
+1. User A shares link: https://app.kritano.com/register?ref=REF-a8kd3m2x
 
 2. User B clicks link → RegisterForm reads ?ref param → shows referral banner
 

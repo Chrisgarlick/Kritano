@@ -23,6 +23,8 @@ function mockCrawlResult(overrides: Partial<CrawlResult> = {}): CrawlResult {
     headers: {},
     cookies: [],
     redirectChain: [],
+    deviceType: 'desktop',
+    viewport: { width: 1920, height: 1080 },
     ...overrides,
   };
 }

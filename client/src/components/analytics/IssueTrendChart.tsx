@@ -70,8 +70,8 @@ export function IssueTrendChart({
     const fullDate = format(parseISO(dataPoint.period), 'MMM d, yyyy');
 
     return (
-      <div className="bg-white border border-slate-200 rounded-lg shadow-lg p-3">
-        <p className="text-sm font-medium text-slate-900 mb-2">{fullDate}</p>
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-3">
+        <p className="text-sm font-medium text-slate-900 dark:text-white mb-2">{fullDate}</p>
         <div className="space-y-1">
           {payload.reverse().map((entry: any) => (
             <div key={entry.dataKey} className="flex items-center justify-between gap-4 text-sm">
@@ -80,18 +80,18 @@ export function IssueTrendChart({
                   className="w-3 h-3 rounded"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-slate-600">
+                <span className="text-slate-600 dark:text-slate-400">
                   {viewMode === 'severity'
                     ? SEVERITY_LABELS[entry.dataKey]
                     : CATEGORY_LABELS[entry.dataKey]}
                 </span>
               </span>
-              <span className="font-medium text-slate-900">{entry.value}</span>
+              <span className="font-medium text-slate-900 dark:text-white">{entry.value}</span>
             </div>
           ))}
-          <div className="pt-1 mt-1 border-t border-slate-100 flex justify-between">
-            <span className="text-slate-600">Total</span>
-            <span className="font-medium text-slate-900">{dataPoint.total}</span>
+          <div className="pt-1 mt-1 border-t border-slate-100 dark:border-slate-700 flex justify-between">
+            <span className="text-slate-600 dark:text-slate-400">Total</span>
+            <span className="font-medium text-slate-900 dark:text-white">{dataPoint.total}</span>
           </div>
         </div>
       </div>
@@ -101,10 +101,10 @@ export function IssueTrendChart({
   if (chartData.length === 0) {
     return (
       <div
-        className="flex items-center justify-center bg-slate-50 rounded-lg border border-slate-200"
+        className="flex items-center justify-center bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700"
         style={{ height }}
       >
-        <p className="text-slate-500">No issue data available</p>
+        <p className="text-slate-500 dark:text-slate-400">No issue data available</p>
       </div>
     );
   }
@@ -139,7 +139,7 @@ export function IssueTrendChart({
           iconType="square"
           wrapperStyle={{ paddingTop: '10px' }}
           formatter={(value: string) => (
-            <span className="text-sm text-slate-600">{labels[value]}</span>
+            <span className="text-sm text-slate-600 dark:text-slate-400">{labels[value]}</span>
           )}
         />
         {keys.map(key => (

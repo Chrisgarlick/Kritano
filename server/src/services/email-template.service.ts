@@ -570,7 +570,7 @@ export async function sendTemplate(params: SendTemplateParams): Promise<string> 
 
   // 9. Send via SMTP (Mailpit) / Resend / Console
   try {
-    const fromAddress = process.env.EMAIL_FROM || 'PagePulser <noreply@pagepulser.com>';
+    const fromAddress = process.env.EMAIL_FROM || 'Kritano <noreply@kritano.com>';
     const smtpHost = process.env.SMTP_HOST;
 
     if (smtpHost) {

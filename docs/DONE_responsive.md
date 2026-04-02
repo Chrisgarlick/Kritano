@@ -2,7 +2,7 @@
 
 ## Overview
 
-Comprehensive mobile responsiveness audit and fix for PagePulser's 71 routes across public, protected, and admin areas. Playwright mobile viewport tests were set up to validate all routes.
+Comprehensive mobile responsiveness audit and fix for Kritano's 71 routes across public, protected, and admin areas. Playwright mobile viewport tests were set up to validate all routes.
 
 ## Changes Made
 

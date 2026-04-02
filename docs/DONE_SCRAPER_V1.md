@@ -1,4 +1,4 @@
-# pagepulser - Scraper V1 Review
+# kritano - Scraper V1 Review
 
 Full review of spider, audit engines, worker system, and client UX.
 Confidence scores reflect how certain we are the improvement will meaningfully impact users.

@@ -216,7 +216,7 @@ export default function TemplateEditorPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Template Editor | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Template Editor | Kritano</title></Helmet>
       <div className="space-y-4">
         {/* Top Bar */}
         <div className="flex items-center justify-between">
@@ -227,7 +227,7 @@ export default function TemplateEditorPage() {
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <h1 className="text-2xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            <h1 className="text-2xl font-bold text-white tracking-tight font-display">
               {isNew ? 'New Template' : `Edit: ${name}`}
             </h1>
             {isSystem && (
@@ -302,7 +302,7 @@ export default function TemplateEditorPage() {
                   value={subject}
                   onChange={e => setSubject(e.target.value)}
                   className="w-full px-3 py-1.5 bg-white/[0.03] border border-white/[0.06] rounded text-sm text-white focus:outline-none focus:border-indigo-500"
-                  placeholder="Welcome to PagePulser, {{firstName}}"
+                  placeholder="Welcome to Kritano, {{firstName}}"
                 />
               </div>
 
@@ -645,7 +645,7 @@ function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: 
               value={String(block.text || '')}
               onChange={e => onChange({ text: e.target.value || undefined })}
               className="w-full px-3 py-1.5 bg-white/[0.03] border border-white/[0.06] rounded text-sm text-white focus:outline-none focus:border-indigo-500"
-              placeholder="Powered by PagePulser (default)"
+              placeholder="Powered by Kritano (default)"
             />
           </div>
           <div>

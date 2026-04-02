@@ -192,8 +192,8 @@ async function deliverToWebhook(
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-PagePulser-Signature': signature,
-          'X-PagePulser-Event': event,
+          'X-Kritano-Signature': signature,
+          'X-Kritano-Event': event,
         },
         body,
         signal: controller.signal,

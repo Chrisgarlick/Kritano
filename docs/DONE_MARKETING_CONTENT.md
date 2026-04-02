@@ -1,8 +1,8 @@
-# PagePulser — 3-Month Marketing Content Plan
+# Kritano — 3-Month Marketing Content Plan
 
 ## Overview
 
-A full 90-day content calendar covering **pre-launch** (Month 1), **launch** (Month 2), and **post-launch / growth** (Month 3). All content centres on PagePulser's core value prop: helping businesses understand their website's accessibility, SEO, security, and performance health.
+A full 90-day content calendar covering **pre-launch** (Month 1), **launch** (Month 2), and **post-launch / growth** (Month 3). All content centres on Kritano's core value prop: helping businesses understand their website's accessibility, SEO, security, and performance health.
 
 ### Daily / Weekly Cadence
 
@@ -30,7 +30,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 ## Month 1: Pre-Launch (Building Authority & Anticipation)
 
-**Theme:** Establish PagePulser as a trusted voice in web accessibility and site health. Tease the product. Build an email list / waitlist.
+**Theme:** Establish Kritano as a trusted voice in web accessibility and site health. Tease the product. Build an email list / waitlist.
 
 **Campaign label:** `Pre-Launch`
 
@@ -58,11 +58,11 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 |-----|------|---------|
 | Mon | Carousel | "5 Website Issues Hiding in Plain Sight" — 1. Missing alt text 2. Poor colour contrast 3. No heading hierarchy 4. Broken links 5. Missing form labels. Each slide explains the issue + quick fix. |
 | Tue | Infographic | "The Accessibility Gap" — stats showing % of sites with issues, cost of lawsuits, lost revenue from inaccessible sites. |
-| Wed | Reel script | Screen recording: "Watch me try to navigate a popular website using only my keyboard" — show how quickly things break. End with "This is why we're building PagePulser." |
+| Wed | Reel script | Screen recording: "Watch me try to navigate a popular website using only my keyboard" — show how quickly things break. End with "This is why we're building Kritano." |
 | Thu | Carousel | "What Google Actually Looks At" — Core Web Vitals explained in simple terms. LCP, FID, CLS with real-world analogies. |
 | Fri | Quote graphic | "The power of the Web is in its universality. Access by everyone regardless of disability is an essential aspect." — Tim Berners-Lee |
 | Sat | Infographic | "European Accessibility Act: What You Need to Know" — timeline, who it affects, key requirements. |
-| Sun | Behind-the-scenes | Photo/mockup of the PagePulser dashboard with caption: "Sneak peek at what we've been building. Stay tuned." |
+| Sun | Behind-the-scenes | Photo/mockup of the Kritano dashboard with caption: "Sneak peek at what we've been building. Stay tuned." |
 
 #### Threads (Daily)
 
@@ -94,11 +94,11 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > With the European Accessibility Act coming into force and Google increasingly rewarding accessible sites in search rankings, this isn't something businesses can ignore anymore.
 >
-> We're building PagePulser to help businesses understand their website health — accessibility, SEO, security, and performance — in one clear dashboard. Not just errors, but guidance.
+> We're building Kritano to help businesses understand their website health — accessibility, SEO, security, and performance — in one clear dashboard. Not just errors, but guidance.
 >
 > More details coming soon. Follow along for the journey.
 >
-> #Accessibility #WebDevelopment #SEO #PagePulser
+> #Accessibility #WebDevelopment #SEO #Kritano
 
 **Post 2 (Thu):**
 > **The Hidden Cost of a "Good Enough" Website**
@@ -115,7 +115,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > The businesses that win online aren't the ones with the flashiest design. They're the ones that consistently monitor, measure, and improve.
 >
-> That's the problem we're solving at PagePulser. Think of it as a health check for your website — regular audits across accessibility, SEO, security, and performance.
+> That's the problem we're solving at Kritano. Think of it as a health check for your website — regular audits across accessibility, SEO, security, and performance.
 >
 > We're launching soon. If you want early access, drop a comment or DM me.
 >
@@ -141,7 +141,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 ### Week 2 — Education & Authority
 
-**Goal:** Position PagePulser as the go-to resource for web health knowledge. Provide genuine value through educational content.
+**Goal:** Position Kritano as the go-to resource for web health knowledge. Provide genuine value through educational content.
 
 #### Twitter/X (Daily)
 
@@ -165,7 +165,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 | Thu | Reel script | "How many scripts is YOUR website loading?" — Show DevTools network tab on a popular site. Count the third-party requests. React to the number. |
 | Fri | Carousel | "Colour Contrast: Good vs Bad" — Side-by-side comparisons of text that passes vs fails WCAG. Show the actual ratios. |
 | Sat | Infographic | "Anatomy of a Perfect Meta Description" — Character count, keywords, call to action, what Google shows. |
-| Sun | Behind-the-scenes | Screenshot of PagePulser scoring system with caption about the challenge of fair scoring. |
+| Sun | Behind-the-scenes | Screenshot of Kritano scoring system with caption about the challenge of fair scoring. |
 
 #### Threads (Daily)
 
@@ -209,7 +209,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > The most surprising finding? Every single business owner I spoke to thought their website was "fine."
 >
-> This gap between perception and reality is exactly why we're building PagePulser. Regular, automated health checks that tell you what's actually happening — not what you assume.
+> This gap between perception and reality is exactly why we're building Kritano. Regular, automated health checks that tell you what's actually happening — not what you assume.
 >
 > What's the most common issue you see on small business websites?
 
@@ -235,7 +235,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 > 3. Set up regular monitoring — compliance isn't one-and-done
 > 4. Document your efforts (shows good faith)
 >
-> We're building PagePulser to make step 1 and 3 effortless. Automated audits, clear reports, actionable guidance.
+> We're building Kritano to make step 1 and 3 effortless. Automated audits, clear reports, actionable guidance.
 >
 > Don't wait until June. Start now.
 
@@ -262,52 +262,52 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 ### Week 3 — Building Anticipation
 
-**Goal:** Start teasing specific PagePulser features. Create FOMO around early access.
+**Goal:** Start teasing specific Kritano features. Create FOMO around early access.
 
 #### Twitter/X (Daily)
 
 | Day | Post |
 |-----|------|
 | Mon | What if you could audit your entire website — accessibility, SEO, security, and performance — in under 5 minutes? We're making that real. Waitlist link in bio. |
-| Tue | Feature preview: PagePulser doesn't just tell you what's wrong. It tells you WHY it matters and HOW to fix it. Every issue comes with plain-English guidance. No dev degree required. |
-| Wed | We're giving PagePulser scores out of 100 for each category — accessibility, SEO, security, performance. Like a credit score for your website. Would you check yours? |
+| Tue | Feature preview: Kritano doesn't just tell you what's wrong. It tells you WHY it matters and HOW to fix it. Every issue comes with plain-English guidance. No dev degree required. |
+| Wed | We're giving Kritano scores out of 100 for each category — accessibility, SEO, security, performance. Like a credit score for your website. Would you check yours? |
 | Thu | Feature preview: PDF audit reports you can share with your team, clients, or developers. Professional, branded, and actually useful. Not a wall of code. |
-| Fri | The best part about building PagePulser? Every feature we add makes the web a little bit better. More accessible. More secure. Faster. That's the mission. |
-| Sat | Early access spots are limited. If you want to be among the first to audit your site with PagePulser, join the waitlist now. Link in bio. |
+| Fri | The best part about building Kritano? Every feature we add makes the web a little bit better. More accessible. More secure. Faster. That's the mission. |
+| Sat | Early access spots are limited. If you want to be among the first to audit your site with Kritano, join the waitlist now. Link in bio. |
 | Sun | Weekend thought: your website is often the first interaction someone has with your business. What does it say about you if it's slow, broken, or inaccessible? |
 
 #### Instagram (Daily)
 
 | Day | Type | Content |
 |-----|------|---------|
-| Mon | Carousel | "Introducing PagePulser" — What it is, what it does, who it's for, how it works. 6 slides, clean brand visuals. |
+| Mon | Carousel | "Introducing Kritano" — What it is, what it does, who it's for, how it works. 6 slides, clean brand visuals. |
 | Tue | Screenshot/mockup | Dashboard preview showing the four score circles (accessibility, SEO, security, performance). Caption about plain-English guidance. |
 | Wed | Infographic | "Your Website Health Score" — Explain the 0-100 scoring system, what each range means, the four categories. |
 | Thu | Mockup | PDF report preview. Show a sample page with findings, severity levels, and fix guidance. |
-| Fri | Quote graphic | "Every website deserves a health check." — PagePulser brand statement. Clean, indigo brand colours. |
+| Fri | Quote graphic | "Every website deserves a health check." — Kritano brand statement. Clean, indigo brand colours. |
 | Sat | Story/Reel | "Join the Waitlist" — Quick 15-second reel showing the audit running, scores appearing. End with CTA. |
-| Sun | Carousel | "What Makes PagePulser Different?" — vs generic SEO tools, vs manual audits, vs dev-only tools. Position as the all-in-one, accessible option. |
+| Sun | Carousel | "What Makes Kritano Different?" — vs generic SEO tools, vs manual audits, vs dev-only tools. Position as the all-in-one, accessible option. |
 
 #### Threads (Daily)
 
 | Day | Post |
 |-----|------|
-| Mon | Been building PagePulser for a while now and I'm genuinely excited to share it. One tool that audits your website across accessibility, SEO, security, and performance. Not just errors — actual guidance. Coming very soon. |
-| Tue | The thing I hate about most audit tools is they give you a list of errors with zero context. "Missing alt text on line 47." Cool. What do I do about it? PagePulser tells you what's wrong, why it matters, and exactly how to fix it. |
+| Mon | Been building Kritano for a while now and I'm genuinely excited to share it. One tool that audits your website across accessibility, SEO, security, and performance. Not just errors — actual guidance. Coming very soon. |
+| Tue | The thing I hate about most audit tools is they give you a list of errors with zero context. "Missing alt text on line 47." Cool. What do I do about it? Kritano tells you what's wrong, why it matters, and exactly how to fix it. |
 | Wed | Hot take: a website health score should be as common as a credit score. Every business should know their number. We're making it a thing. |
 | Thu | PDF reports that don't look like they were generated by a robot in 2005. That was a non-negotiable for us. Your audit report should be something you're proud to share. |
-| Fri | The web should work for everyone. That's not a radical position, it's the original promise of the internet. PagePulser is our contribution to making that real. |
+| Fri | The web should work for everyone. That's not a radical position, it's the original promise of the internet. Kritano is our contribution to making that real. |
 | Sat | Early access slots are filling up. If you run a website and want to know your health score before everyone else, link in bio. |
 | Sun | Honest question: if you found out your website had 50+ accessibility issues, would you want to know? Or would you rather not? Genuinely curious. |
 
 #### LinkedIn (2x/week)
 
 **Post 1 (Wed):**
-> **Announcing PagePulser: Website Health Checks, Simplified**
+> **Announcing Kritano: Website Health Checks, Simplified**
 >
-> I'm thrilled to announce what we've been building: PagePulser.
+> I'm thrilled to announce what we've been building: Kritano.
 >
-> PagePulser is a website health auditing platform that scans your site across four key dimensions:
+> Kritano is a website health auditing platform that scans your site across four key dimensions:
 >
 > - **Accessibility** — Are all users, including those with disabilities, able to use your site?
 > - **SEO** — Is your site structured for search engine visibility?
@@ -320,11 +320,11 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 > - Step-by-step guidance on how to fix it
 > - Its impact on your overall health score
 >
-> We built PagePulser because we were tired of audit tools that require a computer science degree to understand. Your website health should be as clear as your financial health.
+> We built Kritano because we were tired of audit tools that require a computer science degree to understand. Your website health should be as clear as your financial health.
 >
 > We're opening early access soon. If you'd like to be among the first to try it, follow this page or comment below.
 >
-> #PagePulser #WebAccessibility #SEO #LaunchingSoon
+> #Kritano #WebAccessibility #SEO #LaunchingSoon
 
 **Post 2 (Fri):**
 > **Why Every Website Needs Regular Health Checks**
@@ -341,7 +341,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > A website that was "perfect" at launch can have 100+ issues within 6 months — and you'd never know without checking.
 >
-> PagePulser is designed for regular auditing. Not a one-time scan, but ongoing monitoring that keeps your website healthy, compliant, and performing.
+> Kritano is designed for regular auditing. Not a one-time scan, but ongoing monitoring that keeps your website healthy, compliant, and performing.
 >
 > Early access opening soon. Stay tuned.
 
@@ -351,7 +351,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 - The website decay problem
 - What changes between audits
 - Regulatory compliance as an ongoing process
-- Introduction to PagePulser's approach
+- Introduction to Kritano's approach
 - Category: Guides
 
 **Blog 2:** "Accessibility vs SEO vs Performance: Why You Shouldn't Choose"
@@ -371,13 +371,13 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | One week until launch. PagePulser is almost ready. We've been testing, refining, and obsessing over every detail. Can't wait to show you what we've built. |
-| Tue | Preview: PagePulser can audit a 50-page website in under 2 minutes. Every page checked for accessibility, SEO, security, and performance. Full report with scores and fix guidance. |
+| Mon | One week until launch. Kritano is almost ready. We've been testing, refining, and obsessing over every detail. Can't wait to show you what we've built. |
+| Tue | Preview: Kritano can audit a 50-page website in under 2 minutes. Every page checked for accessibility, SEO, security, and performance. Full report with scores and fix guidance. |
 | Wed | 5 days to go. Here's a feature we're really proud of: severity-based prioritisation. Don't fix everything at once — fix the critical issues first. We sort them for you. |
-| Thu | 4 days. Building PagePulser taught us something: most website issues are easy to fix once you know they exist. The hard part is finding them. That's our job. |
-| Fri | 3 days until PagePulser launches. Last chance to join the early access list and be among the first to get your website health score. Link in bio. |
+| Thu | 4 days. Building Kritano taught us something: most website issues are easy to fix once you know they exist. The hard part is finding them. That's our job. |
+| Fri | 3 days until Kritano launches. Last chance to join the early access list and be among the first to get your website health score. Link in bio. |
 | Sat | 2 days. The team is doing final checks. Everything is looking good. Nervous and excited in equal measure. |
-| Sun | Tomorrow. PagePulser goes live. If your website could talk, what would it say about its health? Tomorrow, you'll find out. |
+| Sun | Tomorrow. Kritano goes live. If your website could talk, what would it say about its health? Tomorrow, you'll find out. |
 
 #### Instagram (Daily)
 
@@ -385,7 +385,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 |-----|------|---------|
 | Mon | Countdown graphic | "7 Days to Launch" — Bold, clean, brand colours. |
 | Tue | Reel/Video | Speed demo: watch a full website audit run in real-time. Timer on screen. Show results appearing. |
-| Wed | Carousel | "How PagePulser Prioritises Your Fixes" — Critical → Serious → Moderate → Minor. Explain why order matters. |
+| Wed | Carousel | "How Kritano Prioritises Your Fixes" — Critical → Serious → Moderate → Minor. Explain why order matters. |
 | Thu | Behind-the-scenes | Team photo or workspace shot. Caption about the journey and what's driven the project. |
 | Fri | Countdown graphic | "3 Days to Launch" with waitlist CTA. |
 | Sat | Story poll | "Are you going to audit your website on launch day? Yes / Already on the waitlist" |
@@ -395,10 +395,10 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | One week. Seven days. PagePulser launches next week and I genuinely can't wait. The amount of work that's gone into this... it's been a journey. |
+| Mon | One week. Seven days. Kritano launches next week and I genuinely can't wait. The amount of work that's gone into this... it's been a journey. |
 | Tue | Fun fact from testing: the fastest audit we've run was 47 seconds for a 30-page site. Full accessibility, SEO, security, and performance analysis. Pretty wild what you can do with good architecture. |
 | Wed | Something we debated for weeks: how to score severity. Is one critical issue worse than ten minor ones? We think so. Our scoring reflects real-world impact, not just issue count. |
-| Thu | The honest truth about building PagePulser: the technical part was the easy bit. The hard part was making the results understandable to someone who isn't a developer. That's where we focused. |
+| Thu | The honest truth about building Kritano: the technical part was the easy bit. The hard part was making the results understandable to someone who isn't a developer. That's where we focused. |
 | Fri | Three days until launch. If you're a business owner, marketer, or developer who cares about website quality — this is for you. Join the waitlist (link in bio). |
 | Sat | Doing final testing today. Found a typo in a report template. Fixed it. That's the level of detail we're operating at. Every pixel matters. |
 | Sun | Launch day is tomorrow. Deep breath. Let's do this. |
@@ -406,9 +406,9 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 #### LinkedIn (2x/week)
 
 **Post 1 (Tue):**
-> **Behind the Build: What We Learned Creating PagePulser**
+> **Behind the Build: What We Learned Creating Kritano**
 >
-> In one week, we're launching PagePulser. Before we do, I wanted to share some lessons from the build:
+> In one week, we're launching Kritano. Before we do, I wanted to share some lessons from the build:
 >
 > 1. **Simplicity is harder than complexity.** Making a website audit understandable to a non-developer took 10x more effort than the actual scanning technology.
 >
@@ -420,12 +420,12 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > 5. **Compliance is a journey, not a destination.** Websites change. Standards evolve. A one-time audit is a snapshot. Regular monitoring is a health plan.
 >
-> We've poured everything into making PagePulser the clearest, most actionable website health tool on the market. See you at launch.
+> We've poured everything into making Kritano the clearest, most actionable website health tool on the market. See you at launch.
 
 **Post 2 (Fri):**
-> **T-Minus 3 Days: PagePulser Launch Countdown**
+> **T-Minus 3 Days: Kritano Launch Countdown**
 >
-> On Monday, PagePulser goes live.
+> On Monday, Kritano goes live.
 >
 > If you've been following along, you know what we're building: a website health auditing platform that checks accessibility, SEO, security, and performance — and tells you exactly what to fix and why.
 >
@@ -455,7 +455,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 - SEO fundamentals
 - Security basics
 - Performance benchmarks
-- Ties into "use PagePulser to check all of this"
+- Ties into "use Kritano to check all of this"
 - Category: Guides
 
 ---
@@ -474,19 +474,19 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | PagePulser is LIVE. Audit your website's accessibility, SEO, security, and performance in under 5 minutes. Free to start. No credit card. Let's make the web better. [link] |
+| Mon | Kritano is LIVE. Audit your website's accessibility, SEO, security, and performance in under 5 minutes. Free to start. No credit card. Let's make the web better. [link] |
 | Tue | 24 hours since launch. X websites audited already. The most common issue so far? Missing alt text. Followed closely by poor colour contrast. The basics still trip people up. |
-| Wed | "I had no idea my site had so many issues." We're hearing this a lot. That's exactly why we built PagePulser. Awareness is the first step. [link] |
-| Thu | PagePulser tip: start with the Critical issues in your report. Fix those first. Then Serious. Then Moderate. Don't try to fix everything at once — prioritise by impact. |
+| Wed | "I had no idea my site had so many issues." We're hearing this a lot. That's exactly why we built Kritano. Awareness is the first step. [link] |
+| Thu | Kritano tip: start with the Critical issues in your report. Fix those first. Then Serious. Then Moderate. Don't try to fix everything at once — prioritise by impact. |
 | Fri | Launch week stats: X audits completed. X issues found. X fixes recommended. The web is getting healthier, one audit at a time. |
-| Sat | Weekend project idea: audit your website with PagePulser, fix the top 3 issues, and re-run the audit. Watch your score jump. It's oddly satisfying. [link] |
-| Sun | Thank you to everyone who's tried PagePulser this week. Your feedback has been incredible. We're listening, iterating, and shipping improvements daily. |
+| Sat | Weekend project idea: audit your website with Kritano, fix the top 3 issues, and re-run the audit. Watch your score jump. It's oddly satisfying. [link] |
+| Sun | Thank you to everyone who's tried Kritano this week. Your feedback has been incredible. We're listening, iterating, and shipping improvements daily. |
 
 #### Instagram (Daily)
 
 | Day | Type | Content |
 |-----|------|---------|
-| Mon | Launch announcement | Bold graphic: "PagePulser is Live" + key features + CTA. Pin to top of profile. |
+| Mon | Launch announcement | Bold graphic: "Kritano is Live" + key features + CTA. Pin to top of profile. |
 | Tue | Screenshot | Real dashboard showing first-day stats (total audits, common issues found). Celebrate the milestone. |
 | Wed | Carousel | "Your First Audit: What to Expect" — Step-by-step walkthrough of running an audit, reading results, taking action. |
 | Thu | Infographic | "The Fix Priority Framework" — Critical → Serious → Moderate → Minor. Why order matters. |
@@ -498,22 +498,22 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | IT'S LIVE. PagePulser is out in the world. Go audit your website. Seriously. I'll wait. pagepulser.com |
+| Mon | IT'S LIVE. Kritano is out in the world. Go audit your website. Seriously. I'll wait. kritano.com |
 | Tue | 24 hours in and we've already audited hundreds of websites. The data is fascinating. Nearly every site has at least one critical accessibility issue. The web needs this. |
-| Wed | Best feedback we've received so far: "I've been using other tools for years and never understood what to actually fix. PagePulser made it obvious." That's the whole mission. |
+| Wed | Best feedback we've received so far: "I've been using other tools for years and never understood what to actually fix. Kritano made it obvious." That's the whole mission. |
 | Thu | Pro tip: don't panic when you see your score. Most sites start between 40-60. That's normal. What matters is the trend — run regular audits and watch it climb. |
 | Fri | Launch week by the numbers: [stats]. Most common issue: missing alt text. Easiest win: adding descriptive alt text to your images. Takes minutes, improves accessibility AND SEO. |
 | Sat | Weekend challenge: audit your site, fix ONE critical issue, re-audit. Post your before/after scores. I'll shout out the biggest improvements. |
-| Sun | Grateful for every single person who's tried PagePulser this week. Your feedback is shaping the product. Keep it coming. |
+| Sun | Grateful for every single person who's tried Kritano this week. Your feedback is shaping the product. Keep it coming. |
 
 #### LinkedIn (2x/week)
 
 **Post 1 (Mon):**
-> **PagePulser is Live: Making Website Health Accessible to Everyone**
+> **Kritano is Live: Making Website Health Accessible to Everyone**
 >
-> Today, I'm proud to announce that PagePulser is officially live.
+> Today, I'm proud to announce that Kritano is officially live.
 >
-> PagePulser is a website health auditing platform that checks your site across four dimensions: accessibility, SEO, security, and performance.
+> Kritano is a website health auditing platform that checks your site across four dimensions: accessibility, SEO, security, and performance.
 >
 > What makes us different:
 > - **Plain-English results** — No jargon, no code dumps. Every issue explained clearly.
@@ -521,7 +521,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 > - **Actionable guidance** — Every finding comes with step-by-step fix instructions.
 > - **Health scores** — Track your website's health over time, not just one-off snapshots.
 >
-> We've built PagePulser because we believe every business deserves to know the health of their website — not just those who can afford expensive consultants or have in-house dev teams.
+> We've built Kritano because we believe every business deserves to know the health of their website — not just those who can afford expensive consultants or have in-house dev teams.
 >
 > Free tier available. No credit card required.
 >
@@ -530,7 +530,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 **Post 2 (Thu):**
 > **What We Learned From Our First 1,000 Website Audits**
 >
-> PagePulser launched on Monday. In the first 72 hours, we audited over 1,000 websites. Here's what the data tells us:
+> Kritano launched on Monday. In the first 72 hours, we audited over 1,000 websites. Here's what the data tells us:
 >
 > **Top 5 most common issues:**
 > 1. Images without alt text (found on 89% of sites)
@@ -547,12 +547,12 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > The good news? Most of these issues are straightforward to fix. The challenge is knowing they exist.
 >
-> If you haven't audited your site yet, now's the time. Free at pagepulser.com.
+> If you haven't audited your site yet, now's the time. Free at kritano.com.
 
 #### Blog (2x/week)
 
-**Blog 1:** "PagePulser is Live: Everything You Need to Know"
-- What PagePulser does
+**Blog 1:** "Kritano is Live: Everything You Need to Know"
+- What Kritano does
 - How to run your first audit
 - Understanding your scores
 - Free vs paid tiers
@@ -573,13 +573,13 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | Accessibility win of the week: a user fixed 12 alt text issues in 15 minutes after running their PagePulser audit. Score jumped from 47 to 68. Small fixes, big impact. |
+| Mon | Accessibility win of the week: a user fixed 12 alt text issues in 15 minutes after running their Kritano audit. Score jumped from 47 to 68. Small fixes, big impact. |
 | Tue | "But my developer said our site was accessible." Developers are great at building features. Accessibility requires specialised knowledge. That's why automated auditing exists — to catch what humans miss. |
-| Wed | PagePulser now shows you exactly which WCAG criteria each issue relates to. Building a bridge between automated findings and the actual standards. |
+| Wed | Kritano now shows you exactly which WCAG criteria each issue relates to. Building a bridge between automated findings and the actual standards. |
 | Thu | Question: what's your website's biggest weakness — accessibility, SEO, security, or performance? Run a free audit and find out. Most people are surprised by the answer. |
 | Fri | New feature: compare two audits side by side. Run one today, fix some issues, run another next week. See exactly what improved. |
 | Sat | Interesting finding: websites that score well on accessibility tend to score well on SEO too. They're more connected than most people realise. |
-| Sun | Thank you for 2 weeks. The feedback, the feature requests, the bug reports — all of it is making PagePulser better. Keep it coming. |
+| Sun | Thank you for 2 weeks. The feedback, the feature requests, the bug reports — all of it is making Kritano better. Keep it coming. |
 
 #### Instagram (Daily)
 
@@ -599,18 +599,18 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 |-----|------|
 | Mon | Love seeing people's reactions when they fix a few issues and their score jumps 20+ points. One user went from 47 to 68 just by adding alt text. Accessibility wins are SEO wins too. |
 | Tue | Controversial take: "my developer handles accessibility" is like saying "my plumber handles electrical." They might be able to, but it's a different specialty. No shade to devs — automated tools help everyone. |
-| Wed | We just added WCAG criteria references to every accessibility finding. Now when PagePulser says "fix this," you can see exactly which standard requires it. Transparency matters. |
+| Wed | We just added WCAG criteria references to every accessibility finding. Now when Kritano says "fix this," you can see exactly which standard requires it. Transparency matters. |
 | Thu | Challenge: reply with your website and I'll tell you which of the four areas (accessibility, SEO, security, performance) is probably your weakest. No audit needed — I'll guess from a quick look. |
 | Fri | Shipped a new feature today: audit comparison. Run an audit, fix stuff, run another one, compare them side by side. So satisfying to see green arrows. |
 | Sat | Data from our first 5,000 audits: sites that score 80+ on accessibility score an average of 72 on SEO. Sites below 40 on accessibility average only 48 on SEO. They're correlated. |
-| Sun | Two weeks in and I'm genuinely blown away by the community response. The DMs, the feedback, the "I had no idea my site had these issues" messages. This is why we built PagePulser. |
+| Sun | Two weeks in and I'm genuinely blown away by the community response. The DMs, the feedback, the "I had no idea my site had these issues" messages. This is why we built Kritano. |
 
 #### LinkedIn (2x/week)
 
 **Post 1 (Tue):**
 > **Real Results: How Small Fixes Create Big Score Improvements**
 >
-> Two weeks since launch, and the results from PagePulser users are remarkable.
+> Two weeks since launch, and the results from Kritano users are remarkable.
 >
 > Here are three real examples (shared with permission):
 >
@@ -634,12 +634,12 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > The pattern is clear: most improvements don't require a developer. They require awareness.
 >
-> That's the gap PagePulser fills. Try it free at pagepulser.com.
+> That's the gap Kritano fills. Try it free at kritano.com.
 
 **Post 2 (Fri):**
 > **Why Accessibility and SEO Are Two Sides of the Same Coin**
 >
-> After auditing thousands of websites through PagePulser, one correlation stands out:
+> After auditing thousands of websites through Kritano, one correlation stands out:
 >
 > Sites that score well on accessibility almost always score well on SEO. And vice versa.
 >
@@ -664,7 +664,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 - Category: Accessibility
 
 **Blog 2:** "Why Accessible Websites Rank Higher: The Data Behind Accessibility and SEO"
-- Correlation data from PagePulser audits
+- Correlation data from Kritano audits
 - The technical overlap between a11y and SEO
 - Case study examples
 - Category: SEO
@@ -677,13 +677,13 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | Feature spotlight: PagePulser's PDF reports. Download a branded, professional audit report to share with your team, clients, or developers. Every issue documented with fix guidance. |
-| Tue | SEO tip: your title tag is the single most important on-page SEO element. Keep it under 60 characters, include your primary keyword, and make it compelling. PagePulser checks this automatically. |
+| Mon | Feature spotlight: Kritano's PDF reports. Download a branded, professional audit report to share with your team, clients, or developers. Every issue documented with fix guidance. |
+| Tue | SEO tip: your title tag is the single most important on-page SEO element. Keep it under 60 characters, include your primary keyword, and make it compelling. Kritano checks this automatically. |
 | Wed | Did you know? Screen readers announce images without alt text as "image" or just the filename. Imagine hearing "DSC_0047.jpg" 30 times while trying to browse a website. That's the experience for millions of users. |
-| Thu | Performance tip: the #1 cause of slow websites is unoptimised images. Compress them, use modern formats (WebP), and lazy-load anything below the fold. Your PagePulser performance score will thank you. |
-| Fri | New: scheduled audits. Set PagePulser to automatically audit your site weekly or monthly. Get notified when your score drops. Website health monitoring on autopilot. |
-| Sat | Your website security checklist: HTTPS everywhere. Security headers set. Admin panel protected. Software updated. No mixed content. PagePulser checks all of these. |
-| Sun | Weekly wins thread: share your PagePulser score improvements this week. Tag us. We'll retweet the best ones. |
+| Thu | Performance tip: the #1 cause of slow websites is unoptimised images. Compress them, use modern formats (WebP), and lazy-load anything below the fold. Your Kritano performance score will thank you. |
+| Fri | New: scheduled audits. Set Kritano to automatically audit your site weekly or monthly. Get notified when your score drops. Website health monitoring on autopilot. |
+| Sat | Your website security checklist: HTTPS everywhere. Security headers set. Admin panel protected. Software updated. No mixed content. Kritano checks all of these. |
+| Sun | Weekly wins thread: share your Kritano score improvements this week. Tag us. We'll retweet the best ones. |
 
 #### Instagram (Daily)
 
@@ -693,7 +693,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 | Tue | Carousel | "Title Tag Masterclass" — anatomy of a perfect title tag, good vs bad examples, common mistakes. |
 | Wed | Reel | Screen reader demo: listen to how a screen reader announces images without alt text. The "DSC_0047.jpg" experience. Powerful. |
 | Thu | Carousel | "Image Optimisation Guide" — formats, compression, lazy loading, responsive images. Before/after file sizes. |
-| Fri | Feature announcement | Scheduled audits graphic. "Set it and forget it. PagePulser monitors your site health automatically." |
+| Fri | Feature announcement | Scheduled audits graphic. "Set it and forget it. Kritano monitors your site health automatically." |
 | Sat | Carousel | "Website Security Checklist" — visual checklist with pass/fail indicators. |
 | Sun | Community | User score improvement compilation. "This week's biggest wins" |
 
@@ -701,12 +701,12 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | PDF reports are getting great feedback. People are actually sharing their PagePulser audits with clients and stakeholders. That was the goal — make audits something you share, not something that sits in a tab you never look at again. |
+| Mon | PDF reports are getting great feedback. People are actually sharing their Kritano audits with clients and stakeholders. That was the goal — make audits something you share, not something that sits in a tab you never look at again. |
 | Tue | Hot take: most title tags are boring, keyword-stuffed, or way too long. Your title tag is your website's first impression in search results. Treat it like a headline, not a keyword dump. |
 | Wed | Made a team member listen to their own website through a screen reader today. The look on their face when it said "image image image image link image" was everything. You don't get it until you hear it. |
 | Thu | The average web page is now 2.5MB. In 2010 it was 700KB. Most of that bloat is images. Compress. Use WebP. Lazy load. Your users (and their data plans) will thank you. |
-| Fri | Just shipped scheduled audits. Set PagePulser to audit your site weekly and get notified when something changes. Because website health isn't a one-time thing — it's ongoing. |
-| Sat | Security headers are the most underrated website protection. Content-Security-Policy, X-Frame-Options, Strict-Transport-Security. Most sites don't have them. PagePulser checks for all of them. |
+| Fri | Just shipped scheduled audits. Set Kritano to audit your site weekly and get notified when something changes. Because website health isn't a one-time thing — it's ongoing. |
+| Sat | Security headers are the most underrated website protection. Content-Security-Policy, X-Frame-Options, Strict-Transport-Security. Most sites don't have them. Kritano checks for all of them. |
 | Sun | Show me your score improvement this week and I'll share it. Love celebrating wins with this community. |
 
 #### LinkedIn (2x/week)
@@ -726,7 +726,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 > - Security breach: Average cost for SMBs is $120,000
 > - Slow site: Every 1-second delay reduces conversions by 7%
 >
-> **The cost of regular auditing with PagePulser:**
+> **The cost of regular auditing with Kritano:**
 > - Free tier: $0/month for basic audits
 > - Pro tier: [price]/month for full monitoring
 > - Time investment: 5 minutes per audit + fix time
@@ -736,12 +736,12 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 > - A 10-point accessibility improvement correlates with 5-15% more organic traffic
 > - Faster sites convert measurably better
 >
-> Regular auditing isn't a cost — it's insurance. And with tools like PagePulser, there's no excuse not to.
+> Regular auditing isn't a cost — it's insurance. And with tools like Kritano, there's no excuse not to.
 
 **Post 2 (Fri):**
 > **New Feature: Scheduled Audits and Monitoring**
 >
-> Launching something important today: scheduled audits in PagePulser.
+> Launching something important today: scheduled audits in Kritano.
 >
 > You can now set your website to be automatically audited on a weekly or monthly schedule. When it runs, you'll get notified of any significant score changes.
 >
@@ -751,14 +751,14 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > Scheduled audits catch issues early, when they're easy to fix. Think of it like automated testing for your website's health.
 >
-> Available on Pro plans and above. Set it up in your PagePulser dashboard today.
+> Available on Pro plans and above. Set it up in your Kritano dashboard today.
 
 #### Blog (2x/week)
 
 **Blog 1:** "The Complete Guide to Website Security Headers"
 - What security headers are and why they matter
 - Content-Security-Policy, X-Frame-Options, HSTS, etc.
-- How to check yours (and how PagePulser does it)
+- How to check yours (and how Kritano does it)
 - Implementation guide for common platforms
 - Category: Security
 
@@ -778,22 +778,22 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | Milestone: X,000 websites audited on PagePulser. The average starting score? 54/100. The average score after first round of fixes? 72/100. The web is getting better. |
-| Tue | Agency owners: PagePulser can be your secret weapon. Audit a prospect's site before a pitch. Show them their score. Offer to fix it. Instant credibility. |
+| Mon | Milestone: X,000 websites audited on Kritano. The average starting score? 54/100. The average score after first round of fixes? 72/100. The web is getting better. |
+| Tue | Agency owners: Kritano can be your secret weapon. Audit a prospect's site before a pitch. Show them their score. Offer to fix it. Instant credibility. |
 | Wed | A thread on the 5 accessibility fixes that give you the biggest score improvement: [thread] |
-| Thu | Every time someone fixes their website because of PagePulser, the internet gets a little bit better. X issues fixed and counting. |
-| Fri | PagePulser now supports team accounts. Add your developers, designers, and stakeholders. Everyone sees the same health dashboard. |
-| Sat | Your website is your best salesperson. It works 24/7, never takes a day off. Make sure it's performing at its best. pagepulser.com |
-| Sun | End of month 1. From zero to X,000 audits. Thank you to everyone who's trusted PagePulser with their website health. Month 2 is going to be even bigger. |
+| Thu | Every time someone fixes their website because of Kritano, the internet gets a little bit better. X issues fixed and counting. |
+| Fri | Kritano now supports team accounts. Add your developers, designers, and stakeholders. Everyone sees the same health dashboard. |
+| Sat | Your website is your best salesperson. It works 24/7, never takes a day off. Make sure it's performing at its best. kritano.com |
+| Sun | End of month 1. From zero to X,000 audits. Thank you to everyone who's trusted Kritano with their website health. Month 2 is going to be even bigger. |
 
 #### Instagram (Daily)
 
 | Day | Type | Content |
 |-----|------|---------|
 | Mon | Stats graphic | Milestone celebration — audits completed, issues found, average improvement. |
-| Tue | Carousel | "Agency Hack: Win More Clients with Website Audits" — how to use PagePulser in pitches. |
+| Tue | Carousel | "Agency Hack: Win More Clients with Website Audits" — how to use Kritano in pitches. |
 | Wed | Carousel | "Top 5 Accessibility Fixes by Impact" — each fix, expected score improvement, time to implement. |
-| Thu | Counter/milestone graphic | "X issues fixed through PagePulser" — community impact. |
+| Thu | Counter/milestone graphic | "X issues fixed through Kritano" — community impact. |
 | Fri | Feature announcement | Team accounts are live. "Website health is a team sport." |
 | Sat | Quote graphic | "Your website is your best salesperson. Make sure it's accessible to everyone." |
 | Sun | Month in review | Carousel summarising Month 1 highlights, stats, top content. |
@@ -802,24 +802,24 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | Milestone day. X,000 websites audited through PagePulser in our first month. What surprises me most? The average starting score is 54/100. There's so much room for improvement out there. |
-| Tue | If you run an agency, here's a move: audit a prospect's website before your sales call. Walk in with their PagePulser report. Show them issues they didn't know about. Offer to fix them. Close rate goes through the roof. |
+| Mon | Milestone day. X,000 websites audited through Kritano in our first month. What surprises me most? The average starting score is 54/100. There's so much room for improvement out there. |
+| Tue | If you run an agency, here's a move: audit a prospect's website before your sales call. Walk in with their Kritano report. Show them issues they didn't know about. Offer to fix them. Close rate goes through the roof. |
 | Wed | The 5 accessibility fixes with the biggest score impact: 1) Add alt text to all images 2) Fix colour contrast on text 3) Add form labels 4) Fix heading hierarchy 5) Ensure all links have descriptive text. Do these 5 and watch your score jump. |
-| Thu | Every fix matters. Every alt text added. Every contrast ratio improved. Every form label connected. Collectively, PagePulser users have fixed X issues this month. The web is literally getting better. |
-| Fri | Team accounts are live. Because website health shouldn't be one person's job. Add your devs, designers, and stakeholders to your PagePulser workspace. |
+| Thu | Every fix matters. Every alt text added. Every contrast ratio improved. Every form label connected. Collectively, Kritano users have fixed X issues this month. The web is literally getting better. |
+| Fri | Team accounts are live. Because website health shouldn't be one person's job. Add your devs, designers, and stakeholders to your Kritano workspace. |
 | Sat | 24/7/365. That's how long your website works for you. No sick days. No holidays. Make sure it's in good health. |
-| Sun | Month 1: done. What a ride. Thank you to every single person who's tried PagePulser. Your feedback, your scores, your improvements — you're making this journey incredible. |
+| Sun | Month 1: done. What a ride. Thank you to every single person who's tried Kritano. Your feedback, your scores, your improvements — you're making this journey incredible. |
 
 #### LinkedIn (2x/week)
 
 **Post 1 (Wed):**
-> **How Agencies Are Using PagePulser to Win More Clients**
+> **How Agencies Are Using Kritano to Win More Clients**
 >
-> One of the most exciting use cases emerging from PagePulser is in agencies and freelancers using it as a sales tool.
+> One of the most exciting use cases emerging from Kritano is in agencies and freelancers using it as a sales tool.
 >
 > The playbook is simple:
 >
-> 1. Before a prospect call, audit their website with PagePulser
+> 1. Before a prospect call, audit their website with Kritano
 > 2. Generate the PDF report
 > 3. Walk into the meeting with concrete data: "Your site scores 43 on accessibility and 51 on SEO. Here are the critical issues."
 > 4. Offer to fix them as part of your engagement
@@ -828,12 +828,12 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > Several agencies have told us this approach has significantly improved their close rates. It's hard to argue with data.
 >
-> If you're an agency or freelancer, PagePulser Pro supports multiple sites and branded PDF reports. Built for exactly this use case.
+> If you're an agency or freelancer, Kritano Pro supports multiple sites and branded PDF reports. Built for exactly this use case.
 
 **Post 2 (Fri):**
-> **Month 1 in Review: What PagePulser Taught Us About the Web**
+> **Month 1 in Review: What Kritano Taught Us About the Web**
 >
-> One month ago, we launched PagePulser. Here's what the data tells us:
+> One month ago, we launched Kritano. Here's what the data tells us:
 >
 > [Include real stats: audits completed, issues found, average scores, most common issues, improvement trends]
 >
@@ -880,7 +880,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 | Wed | Law firm websites have the best security scores (avg 79/100) but the worst performance scores (avg 44/100). Heavy images and unoptimised PDFs are the culprits. |
 | Thu | SaaS landing pages average 67/100 on SEO but only 51/100 on accessibility. Ironic — the tech industry should be leading on this. |
 | Fri | Interesting: e-commerce sites that score 70+ on accessibility have 23% lower bounce rates than those scoring under 50. Accessible design is better design for everyone. |
-| Sat | PagePulser industry benchmarks are coming soon. See how your website stacks up against others in your sector. |
+| Sat | Kritano industry benchmarks are coming soon. See how your website stacks up against others in your sector. |
 | Sun | What industry should we deep-dive into next? Reply with your sector and we'll audit 100 sites and share the results. |
 
 #### Instagram (Daily)
@@ -904,7 +904,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 | Wed | Found something funny: law firm websites have great security (they deal with sensitive client data) but terrible performance. Beautiful hero images that are 5MB each and never compressed. |
 | Thu | Tech companies should be accessibility leaders but SaaS landing pages average 51/100 on accessibility. Fancy animations and custom components that forgot about keyboard navigation. We can do better. |
 | Fri | Data point that might change your mind about accessibility: e-commerce sites scoring 70+ on accessibility have 23% lower bounce rates. Accessible design IS better design. Full stop. |
-| Sat | Building industry benchmarks into PagePulser. Soon you'll be able to see "your site scores 62, the average in your industry is 54." Context makes scores meaningful. |
+| Sat | Building industry benchmarks into Kritano. Soon you'll be able to see "your site scores 62, the average in your industry is 54." Context makes scores meaningful. |
 | Sun | What industry should we analyse next? Give me a sector and we'll audit 100 sites and publish the results. Education? Healthcare? Finance? Hospitality? |
 
 #### LinkedIn (2x/week)
@@ -939,7 +939,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 **Post 2 (Fri):**
 > **The Accessibility-Revenue Connection: Data From 10,000 Audits**
 >
-> After two months and tens of thousands of audits, a clear pattern has emerged in our PagePulser data:
+> After two months and tens of thousands of audits, a clear pattern has emerged in our Kritano data:
 >
 > Accessible websites perform better across almost every business metric we can correlate:
 >
@@ -979,19 +979,19 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | New: PagePulser API. Integrate website health checks into your CI/CD pipeline. Audit automatically on every deployment. Never ship accessibility regressions again. |
-| Tue | Advanced tip: use PagePulser's page-level breakdown to find your worst-performing pages. Often it's one or two pages dragging your whole score down. |
-| Wed | WCAG 2.2 added new success criteria including focus appearance, dragging movements, and redundant entry. PagePulser now checks for all of them. |
-| Thu | For developers: PagePulser findings include the specific DOM element, the WCAG criterion, and a code-level fix suggestion. Built for your workflow. |
-| Fri | New integration: connect PagePulser to Slack. Get notified in your team channel when an audit completes or a score drops below your threshold. |
-| Sat | Pro tip: set score thresholds for each category. PagePulser will alert you when any score drops below your minimum. Catch issues before your users do. |
+| Mon | New: Kritano API. Integrate website health checks into your CI/CD pipeline. Audit automatically on every deployment. Never ship accessibility regressions again. |
+| Tue | Advanced tip: use Kritano's page-level breakdown to find your worst-performing pages. Often it's one or two pages dragging your whole score down. |
+| Wed | WCAG 2.2 added new success criteria including focus appearance, dragging movements, and redundant entry. Kritano now checks for all of them. |
+| Thu | For developers: Kritano findings include the specific DOM element, the WCAG criterion, and a code-level fix suggestion. Built for your workflow. |
+| Fri | New integration: connect Kritano to Slack. Get notified in your team channel when an audit completes or a score drops below your threshold. |
+| Sat | Pro tip: set score thresholds for each category. Kritano will alert you when any score drops below your minimum. Catch issues before your users do. |
 | Sun | What feature should we build next? Reply with your wishlist. The most requested features get prioritised. |
 
 #### Instagram (Daily)
 
 | Day | Type | Content |
 |-----|------|---------|
-| Mon | Feature graphic | "PagePulser API: Audit on every deploy" — developer-focused, code-style visual. |
+| Mon | Feature graphic | "Kritano API: Audit on every deploy" — developer-focused, code-style visual. |
 | Tue | Carousel | "Find Your Worst Pages" — how to use page-level breakdown to focus your efforts. |
 | Wed | Infographic | "What's New in WCAG 2.2" — new criteria explained visually. |
 | Thu | Screenshot | Developer view: DOM element, WCAG reference, code suggestion. Show the detail level. |
@@ -1003,24 +1003,24 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | Just shipped the PagePulser API. You can now run audits programmatically. CI/CD integration. Automated testing. Deploy with confidence that you haven't broken accessibility. This is the one developers have been asking for. |
+| Mon | Just shipped the Kritano API. You can now run audits programmatically. CI/CD integration. Automated testing. Deploy with confidence that you haven't broken accessibility. This is the one developers have been asking for. |
 | Tue | Power user tip: don't just look at your overall score. Go to the page-level breakdown. Often your homepage is fine but your blog posts or product pages are dragging you down. Fix the outliers first. |
-| Wed | WCAG 2.2 introduced some great new criteria. Focus appearance (2.4.11) is my favourite — it ensures keyboard focus indicators are actually visible. So many sites fail this. PagePulser now checks for all 2.2 criteria. |
-| Thu | Developer friends: PagePulser findings now include the specific DOM selector, the WCAG criterion, and a code-level fix suggestion. Copy-paste the fix right into your codebase. We built this for your workflow. |
-| Fri | Slack integration is live. Your team can now get PagePulser notifications right in your Slack channel. Audit complete, score change, threshold alert — all in chat. |
+| Wed | WCAG 2.2 introduced some great new criteria. Focus appearance (2.4.11) is my favourite — it ensures keyboard focus indicators are actually visible. So many sites fail this. Kritano now checks for all 2.2 criteria. |
+| Thu | Developer friends: Kritano findings now include the specific DOM selector, the WCAG criterion, and a code-level fix suggestion. Copy-paste the fix right into your codebase. We built this for your workflow. |
+| Fri | Slack integration is live. Your team can now get Kritano notifications right in your Slack channel. Audit complete, score change, threshold alert — all in chat. |
 | Sat | Health thresholds are underrated. Set a minimum score for each category. If accessibility drops below 70, you get alerted immediately. Don't wait for users to complain — catch issues proactively. |
 | Sun | What should we build next? I'm genuinely asking. Reply with features you want and we'll prioritise based on demand. |
 
 #### LinkedIn (2x/week)
 
 **Post 1 (Tue):**
-> **Introducing the PagePulser API: Website Health in Your CI/CD Pipeline**
+> **Introducing the Kritano API: Website Health in Your CI/CD Pipeline**
 >
-> Today we're launching the PagePulser API, and I'm particularly excited about this one.
+> Today we're launching the Kritano API, and I'm particularly excited about this one.
 >
 > For development teams, accessibility often breaks silently. A new feature ships, and nobody notices that a dropdown menu lost keyboard accessibility, or a new image carousel has no alt text.
 >
-> With the PagePulser API, you can now:
+> With the Kritano API, you can now:
 >
 > - **Run audits on every deployment** as part of your CI/CD pipeline
 > - **Set pass/fail thresholds** — block deploys that drop your accessibility score
@@ -1038,7 +1038,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > The new way: monitor continuously, catch issues early, prevent complaints.
 >
-> This shift — from reactive to proactive — is what PagePulser enables:
+> This shift — from reactive to proactive — is what Kritano enables:
 >
 > - **Scheduled audits** catch new issues before users report them
 > - **Score thresholds** alert you when quality drops
@@ -1049,7 +1049,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 #### Blog (2x/week)
 
-**Blog 1:** "Integrating Accessibility Testing into Your CI/CD Pipeline with PagePulser"
+**Blog 1:** "Integrating Accessibility Testing into Your CI/CD Pipeline with Kritano"
 - Why automated a11y testing matters
 - API setup guide
 - GitHub Actions / GitLab CI examples
@@ -1074,20 +1074,20 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 | Mon | Accessibility is not a checklist. It's a mindset. But checklists help you get started. Here are the 10 most impactful accessibility checks every website should pass: [thread] |
 | Tue | The #1 mistake businesses make with SEO: optimising for keywords instead of optimising for humans. Write for your audience. Structure for search engines. In that order. |
 | Wed | Hot take: website accessibility should be as standard as having a mobile-responsive design. We got there with mobile. We can get there with accessibility. |
-| Thu | Performance budget tip: set a total page weight budget (e.g., 1.5MB) and a time budget (e.g., 3 seconds). Check every new feature against these budgets. PagePulser tracks both. |
-| Fri | Proud moment: a PagePulser user just told us they used their audit report to convince their CEO to invest in accessibility. Data drives decisions. |
+| Thu | Performance budget tip: set a total page weight budget (e.g., 1.5MB) and a time budget (e.g., 3 seconds). Check every new feature against these budgets. Kritano tracks both. |
+| Fri | Proud moment: a Kritano user just told us they used their audit report to convince their CEO to invest in accessibility. Data drives decisions. |
 | Sat | If you could wave a magic wand and fix one thing about the web, what would it be? For me: every image would have meaningful alt text. |
-| Sun | Grateful for this community. 3 months of PagePulser. Thousands of websites getting healthier. This is just the beginning. |
+| Sun | Grateful for this community. 3 months of Kritano. Thousands of websites getting healthier. This is just the beginning. |
 
 #### Instagram (Daily)
 
 | Day | Type | Content |
 |-----|------|---------|
 | Mon | Carousel | "10 Accessibility Checks Every Website Must Pass" — visual checklist format. |
-| Tue | Quote graphic | "Write for humans. Structure for search engines." — PagePulser |
+| Tue | Quote graphic | "Write for humans. Structure for search engines." — Kritano |
 | Wed | Carousel | "The Case for Accessibility as Standard" — comparison with mobile responsiveness journey. |
 | Thu | Infographic | "Setting a Performance Budget" — what to measure, recommended thresholds, how to enforce. |
-| Fri | Testimonial graphic | User quote about using PagePulser to convince leadership. Clean brand treatment. |
+| Fri | Testimonial graphic | User quote about using Kritano to convince leadership. Clean brand treatment. |
 | Sat | Community question | "If you could fix one thing about the web..." graphic with space for comments. |
 | Sun | 3-month milestone | Celebration graphic with key stats from the journey. |
 
@@ -1099,9 +1099,9 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 | Tue | The best SEO advice I can give: stop writing for search engines and start writing for the human on the other side of the screen. If your content answers their question clearly, Google will figure out the rest. |
 | Wed | Remember when we thought mobile-responsive design was optional? "Our customers don't use phones." Now it's standard. Accessibility is on the same trajectory. Get ahead of it. |
 | Thu | Performance budgets changed how our team thinks about web development. Every new feature gets assessed: "Does this keep us under 1.5MB total and 3-second load time?" If not, optimise or cut. |
-| Fri | Got a message today from someone who used their PagePulser report to convince their CEO to invest in accessibility. "The data made it impossible to ignore." This is exactly why we built clear, shareable reports. |
+| Fri | Got a message today from someone who used their Kritano report to convince their CEO to invest in accessibility. "The data made it impossible to ignore." This is exactly why we built clear, shareable reports. |
 | Sat | If I could fix one thing about the web: every image would have meaningful alt text. It's the simplest fix with the biggest accessibility impact. What would you fix? |
-| Sun | Three months ago, PagePulser didn't exist. Today, thousands of websites are healthier because of it. This community, your feedback, your commitment to a better web — you made this happen. Thank you. |
+| Sun | Three months ago, Kritano didn't exist. Today, thousands of websites are healthier because of it. This community, your feedback, your commitment to a better web — you made this happen. Thank you. |
 
 #### LinkedIn (2x/week)
 
@@ -1114,7 +1114,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > - **Innovators** (2010-2015): Government and NGO sites adopt WCAG
 > - **Early adopters** (2016-2020): Enterprise companies build accessibility teams
-> - **Early majority** (2021-2026): SMBs start to care (regulation, awareness, tools like PagePulser)
+> - **Early majority** (2021-2026): SMBs start to care (regulation, awareness, tools like Kritano)
 > - **Late majority** (2027-2030): Accessibility becomes expected, like HTTPS
 > - **Laggards** (2030+): Everyone else catches up
 >
@@ -1125,7 +1125,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 > Where is your business on this curve?
 
 **Post 2 (Fri):**
-> **3 Months of PagePulser: What the Data Tells Us About Web Health**
+> **3 Months of Kritano: What the Data Tells Us About Web Health**
 >
 > Three months, thousands of audits, millions of data points. Here's our quarterly review:
 >
@@ -1155,7 +1155,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 - Brand perception
 - Category: Accessibility
 
-**Blog 2:** "PagePulser Q1 Report: The State of Website Health"
+**Blog 2:** "Kritano Q1 Report: The State of Website Health"
 - Aggregate data from all audits
 - Industry breakdowns
 - Trend analysis
@@ -1170,23 +1170,23 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | What a quarter. PagePulser launched, grew, and helped make thousands of websites better. Here's what's coming next: [thread with roadmap teaser] |
-| Tue | Coming soon: PagePulser for WordPress. A plugin that connects your WP site directly to PagePulser for seamless auditing and monitoring. |
+| Mon | What a quarter. Kritano launched, grew, and helped make thousands of websites better. Here's what's coming next: [thread with roadmap teaser] |
+| Tue | Coming soon: Kritano for WordPress. A plugin that connects your WP site directly to Kritano for seamless auditing and monitoring. |
 | Wed | Coming soon: competitor benchmarking. See how your website health compares to your direct competitors. (Note: we only scan sites you verify ownership of, or publicly accessible pages with consent.) |
-| Thu | The best part about the next quarter: everything we've built is a foundation. The features coming will make PagePulser the most comprehensive website health platform out there. |
-| Fri | If you've been on the fence about PagePulser, now's the time. Run a free audit. See your scores. Fix the quick wins. You'll wonder why you didn't do it sooner. |
+| Thu | The best part about the next quarter: everything we've built is a foundation. The features coming will make Kritano the most comprehensive website health platform out there. |
+| Fri | If you've been on the fence about Kritano, now's the time. Run a free audit. See your scores. Fix the quick wins. You'll wonder why you didn't do it sooner. |
 | Sat | To everyone who's been with us from day one: thank you. Your feedback shaped this product. Your scores inspired us. Your commitment to a better web drives everything we do. |
-| Sun | Quarter 1: done. Quarter 2: let's go. The web is getting better, and PagePulser is here to help. See you next week with new features, new content, and new data. |
+| Sun | Quarter 1: done. Quarter 2: let's go. The web is getting better, and Kritano is here to help. See you next week with new features, new content, and new data. |
 
 #### Instagram (Daily)
 
 | Day | Type | Content |
 |-----|------|---------|
 | Mon | Carousel | "Q1 in Review + What's Coming in Q2" — highlights and roadmap. |
-| Tue | Feature teaser | WordPress plugin preview. "PagePulser for WordPress. Coming soon." |
+| Tue | Feature teaser | WordPress plugin preview. "Kritano for WordPress. Coming soon." |
 | Wed | Infographic | Roadmap visual — features planned for the next quarter. |
 | Thu | Quote graphic | "The foundation is built. Now we're building the future." |
-| Fri | CTA graphic | "Haven't tried PagePulser yet? Start with a free audit." Clean, compelling. |
+| Fri | CTA graphic | "Haven't tried Kritano yet? Start with a free audit." Clean, compelling. |
 | Sat | Community appreciation | Thank you post with user quotes and stats. |
 | Sun | Forward-looking graphic | "Quarter 2 starts now." Energy, momentum, excitement. |
 
@@ -1194,18 +1194,18 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 | Day | Post |
 |-----|------|
-| Mon | Q1 wrap-up. Three months of PagePulser. What started as an idea is now helping thousands of businesses understand their website health. Here's what's coming next... |
+| Mon | Q1 wrap-up. Three months of Kritano. What started as an idea is now helping thousands of businesses understand their website health. Here's what's coming next... |
 | Tue | WordPress plugin is in development. If you run WordPress (and 40% of the web does), you'll soon be able to audit directly from your WP dashboard. No separate login needed. |
-| Wed | Roadmap for Q2: more integrations, deeper analysis, industry benchmarks, enhanced recommendations. The foundation is solid — now we're building the features that make PagePulser indispensable. |
-| Thu | The thing about building a product is that v1 is just the beginning. Every audit you run, every piece of feedback you share, every feature request — it all makes PagePulser better. We're just getting started. |
-| Fri | If you haven't tried PagePulser yet, what are you waiting for? Free audit. Two minutes. You'll know your website's health score. It might surprise you. |
-| Sat | To the early adopters, the bug reporters, the feature requesters, the score improvers — thank you. You believed in PagePulser before anyone else. That means everything. |
+| Wed | Roadmap for Q2: more integrations, deeper analysis, industry benchmarks, enhanced recommendations. The foundation is solid — now we're building the features that make Kritano indispensable. |
+| Thu | The thing about building a product is that v1 is just the beginning. Every audit you run, every piece of feedback you share, every feature request — it all makes Kritano better. We're just getting started. |
+| Fri | If you haven't tried Kritano yet, what are you waiting for? Free audit. Two minutes. You'll know your website's health score. It might surprise you. |
+| Sat | To the early adopters, the bug reporters, the feature requesters, the score improvers — thank you. You believed in Kritano before anyone else. That means everything. |
 | Sun | Quarter 2 starts tomorrow. New features. New content. New data. The web is getting better and we're not slowing down. Let's go. |
 
 #### LinkedIn (2x/week)
 
 **Post 1 (Tue):**
-> **Our Product Roadmap for Q2: What's Coming to PagePulser**
+> **Our Product Roadmap for Q2: What's Coming to Kritano**
 >
 > Quarter 1 was about launching and proving the concept. Quarter 2 is about depth, integration, and scale.
 >
@@ -1226,12 +1226,12 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 > - Custom branding on PDF reports
 > - API v2 with expanded endpoints
 >
-> We're building PagePulser based on what our users actually need. If there's something you want to see, let me know in the comments.
+> We're building Kritano based on what our users actually need. If there's something you want to see, let me know in the comments.
 
 **Post 2 (Fri):**
-> **Thank You: Reflections on PagePulser's First Quarter**
+> **Thank You: Reflections on Kritano's First Quarter**
 >
-> Three months ago, we launched PagePulser with a simple mission: make website health accessible to everyone.
+> Three months ago, we launched Kritano with a simple mission: make website health accessible to everyone.
 >
 > Today, I can honestly say we're making progress:
 >
@@ -1242,13 +1242,13 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 >
 > But we're just getting started. The web still has a long way to go — 96% of sites still have accessibility issues. Performance is declining as pages get heavier. New regulations are raising the bar.
 >
-> PagePulser will be here, helping businesses keep up.
+> Kritano will be here, helping businesses keep up.
 >
 > Thank you for an incredible first quarter. The best is yet to come.
 
 #### Blog (2x/week)
 
-**Blog 1:** "PagePulser Product Roadmap: What's Coming in Q2 2026"
+**Blog 1:** "Kritano Product Roadmap: What's Coming in Q2 2026"
 - Feature previews
 - Integration announcements
 - Community-requested features
@@ -1277,7 +1277,7 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 
 ---
 
-## Campaign Labels for PagePulser Admin
+## Campaign Labels for Kritano Admin
 
 | Campaign Name | Color | Weeks |
 |---------------|-------|-------|
@@ -1293,6 +1293,6 @@ Authoritative but approachable. Data-driven. Helpful. Never preachy. Always acti
 - Instagram carousels should be 6-10 slides
 - LinkedIn posts target 1,200-1,500 characters for optimal reach
 - Blog posts target 1,500-2,500 words for SEO value
-- All content should follow the PagePulser brand voice: authoritative, clear, helpful, never preachy
+- All content should follow the Kritano brand voice: authoritative, clear, helpful, never preachy
 - Replace placeholder stats (X, X,000) with real data as it becomes available
 - Adjust content week-by-week based on what's resonating with the audience

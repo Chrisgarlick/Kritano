@@ -150,7 +150,7 @@ export default function ColdProspectsList() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Prospects List | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Prospects List | Kritano</title></Helmet>
       <div className="p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -158,7 +158,7 @@ export default function ColdProspectsList() {
             <Link to="/admin/cold-prospects" className="text-slate-500 hover:text-white">
               <Crosshair className="w-5 h-5" />
             </Link>
-            <h1 className="text-2xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Prospects</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight font-display">Prospects</h1>
             <span className="text-sm text-slate-500">{total.toLocaleString()} total</span>
           </div>
           {selected.size > 0 && (

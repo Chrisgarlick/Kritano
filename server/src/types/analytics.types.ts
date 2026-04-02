@@ -1,4 +1,4 @@
-// Analytics Types for PagePulser
+// Analytics Types for Kritano
 
 export interface ScoreDataPoint {
   auditId: string;

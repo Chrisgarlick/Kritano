@@ -206,7 +206,7 @@ export default function ProfilePage() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'pagepulser-data-export.zip';
+      a.download = 'kritano-data-export.zip';
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -311,7 +311,7 @@ export default function ProfilePage() {
       toast('Checkout canceled. No changes were made.', 'info');
       window.history.replaceState({}, '', window.location.pathname);
     }
-  }, []);
+  }, [toast, refreshSubscription]); // eslint — toast and refreshSubscription are stable refs
 
   const loadSubscription = async () => {
     try {
@@ -426,7 +426,7 @@ export default function ProfilePage() {
 
   return (
     <>
-      <Helmet><title>Profile | PagePulser</title></Helmet>
+      <Helmet><title>Profile | Kritano</title></Helmet>
       <div className="space-y-8">
       {/* Account Information */}
       <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
@@ -868,7 +868,7 @@ export default function ProfilePage() {
         <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Download My Data</h2>
           <p className="text-sm text-slate-500 dark:text-slate-500 mt-0.5">
-            Export a copy of all your PagePulser data
+            Export a copy of all your Kritano data
           </p>
         </div>
 

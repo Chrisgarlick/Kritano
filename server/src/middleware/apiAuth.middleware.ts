@@ -28,9 +28,9 @@ export async function authenticateApiKey(
 
     let key: string | undefined;
 
-    if (authHeader?.startsWith('Bearer pp_live_')) {
+    if (authHeader?.startsWith('Bearer kt_live_') || authHeader?.startsWith('Bearer pp_live_')) {
       key = authHeader.replace('Bearer ', '');
-    } else if (typeof apiKeyHeader === 'string' && apiKeyHeader.startsWith('pp_live_')) {
+    } else if (typeof apiKeyHeader === 'string' && (apiKeyHeader.startsWith('kt_live_') || apiKeyHeader.startsWith('pp_live_'))) {
       key = apiKeyHeader;
     }
 
@@ -38,7 +38,7 @@ export async function authenticateApiKey(
       res.status(401).json({
         error: 'API key required',
         code: 'API_KEY_REQUIRED',
-        message: 'Provide API key via Authorization header (Bearer pp_live_xxx) or X-API-Key header',
+        message: 'Provide API key via Authorization header (Bearer kt_live_xxx) or X-API-Key header',
       });
       return;
     }
@@ -180,8 +180,8 @@ export async function authenticateAny(
   const apiKeyHeader = req.headers['x-api-key'];
 
   if (
-    (authHeader && authHeader.startsWith('Bearer pp_live_')) ||
-    (typeof apiKeyHeader === 'string' && apiKeyHeader.startsWith('pp_live_'))
+    (authHeader && (authHeader.startsWith('Bearer kt_live_') || authHeader.startsWith('Bearer pp_live_'))) ||
+    (typeof apiKeyHeader === 'string' && (apiKeyHeader.startsWith('kt_live_') || apiKeyHeader.startsWith('pp_live_')))
   ) {
     return authenticateApiKey(req, res, next);
   }

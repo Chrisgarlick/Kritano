@@ -89,14 +89,15 @@ router.get('/:id/compliance', authenticate, async (req: Request, res: Response):
       issue_count: string;
     }>(`
       SELECT
-        rule_id,
-        severity,
-        COALESCE(wcag_criteria, '') as wcag_criteria,
-        COUNT(DISTINCT CONCAT(rule_id, '|', COALESCE(page_url, ''))) as issue_count
-      FROM audit_findings
-      WHERE audit_job_id = $1 AND category = 'accessibility'
-      GROUP BY rule_id, severity, wcag_criteria
-      ORDER BY rule_id
+        f.rule_id,
+        f.severity,
+        COALESCE(array_to_string(f.wcag_criteria, ','), '') as wcag_criteria,
+        COUNT(DISTINCT CONCAT(f.rule_id, '|', COALESCE(p.url, ''))) as issue_count
+      FROM audit_findings f
+      LEFT JOIN audit_pages p ON p.id = f.audit_page_id
+      WHERE f.audit_job_id = $1 AND f.category = 'accessibility'
+      GROUP BY f.rule_id, f.severity, array_to_string(f.wcag_criteria, ',')
+      ORDER BY f.rule_id
     `, [auditId]);
 
     // 5. Build WCAG → EN clause lookup

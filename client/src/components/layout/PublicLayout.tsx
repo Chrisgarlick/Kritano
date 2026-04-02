@@ -85,17 +85,17 @@ export function PublicLayout({ children }: Props) {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-900">
       <SkipLink />
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-100" aria-label="Main navigation">
+      <nav className="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-slate-100 dark:border-slate-700/50" aria-label="Main navigation">
         <div className="max-w-7xl mx-auto px-6 lg:px-20">
           <div className="flex items-center justify-between h-[72px]">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
               <div className="w-2 h-8 bg-indigo-600 rounded-sm group-hover:bg-indigo-500 transition-colors" />
-              <span className="font-display text-2xl text-slate-900">PagePulser</span>
+              <span className="font-display text-2xl text-slate-900 dark:text-white">Kritano</span>
             </Link>
 
             {/* Desktop nav links */}
@@ -115,7 +115,7 @@ export function PublicLayout({ children }: Props) {
                 <button
                   onClick={() => setServicesOpen(prev => !prev)}
                   className={`flex items-center gap-1 text-[15px] font-medium transition-colors ${
-                    isServicesActive ? 'text-indigo-600' : 'text-slate-600 hover:text-indigo-600'
+                    isServicesActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400'
                   }`}
                   aria-expanded={servicesOpen}
                   aria-haspopup="true"
@@ -127,10 +127,11 @@ export function PublicLayout({ children }: Props) {
                 {/* Dropdown panel */}
                 {servicesOpen && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3">
-                    <div className="w-[340px] bg-white rounded-xl border border-slate-200 shadow-lg shadow-slate-200/50 p-2">
+                    <div role="menu" aria-label="Services" className="w-[340px] bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg shadow-slate-200/50 dark:shadow-slate-900/50 p-2">
                       <Link
                         to="/services"
-                        className="block px-3 py-2 mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500 hover:text-indigo-600 transition-colors"
+                        role="menuitem"
+                        className="block px-3 py-2 mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                       >
                         All Services
                       </Link>
@@ -141,18 +142,19 @@ export function PublicLayout({ children }: Props) {
                           <Link
                             key={item.href}
                             to={item.href}
+                            role="menuitem"
                             className={`flex items-start gap-3 px-3 py-2.5 rounded-lg transition-colors ${
                               isActive
-                                ? 'bg-indigo-50 text-indigo-600'
-                                : 'text-slate-700 hover:bg-slate-50'
+                                ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400'
+                                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
                             }`}
                           >
-                            <div className={`mt-0.5 p-1.5 rounded-md ${isActive ? 'bg-indigo-100' : 'bg-slate-100'}`}>
+                            <div className={`mt-0.5 p-1.5 rounded-md ${isActive ? 'bg-indigo-100 dark:bg-indigo-900/30' : 'bg-slate-100 dark:bg-slate-700'}`}>
                               <Icon className="w-4 h-4" />
                             </div>
                             <div>
                               <div className="text-sm font-medium">{item.label}</div>
-                              <div className="text-xs text-slate-500">{item.description}</div>
+                              <div className="text-xs text-slate-500 dark:text-slate-400">{item.description}</div>
                             </div>
                           </Link>
                         );
@@ -169,8 +171,8 @@ export function PublicLayout({ children }: Props) {
                   to={link.href}
                   className={`text-[15px] font-medium transition-colors ${
                     location.pathname === link.href || location.pathname.startsWith(link.href + '/')
-                      ? 'text-indigo-600'
-                      : 'text-slate-600 hover:text-indigo-600'
+                      ? 'text-indigo-600 dark:text-indigo-400'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400'
                   }`}
                 >
                   {link.label}
@@ -191,7 +193,7 @@ export function PublicLayout({ children }: Props) {
                 <>
                   <Link
                     to="/login"
-                    className="text-slate-600 hover:text-slate-900 transition-colors font-medium text-sm"
+                    className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors font-medium text-sm"
                   >
                     Sign in
                   </Link>
@@ -208,7 +210,7 @@ export function PublicLayout({ children }: Props) {
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-slate-600 hover:text-slate-900"
+              className="md:hidden p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -226,7 +228,7 @@ export function PublicLayout({ children }: Props) {
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
-            className="md:hidden border-t border-slate-100 bg-white"
+            className="md:hidden border-t border-slate-100 dark:border-slate-700/50 bg-white dark:bg-slate-900"
           >
             <div className="px-6 py-4 space-y-1">
               {/* Services — first, with expandable sub-links */}
@@ -234,7 +236,7 @@ export function PublicLayout({ children }: Props) {
                 <button
                   onClick={() => setMobileServicesOpen(prev => !prev)}
                   className={`flex items-center justify-between w-full py-3 text-base font-medium transition-colors ${
-                    isServicesActive ? 'text-indigo-600' : 'text-slate-600'
+                    isServicesActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400'
                   }`}
                   aria-expanded={mobileServicesOpen}
                 >
@@ -246,7 +248,7 @@ export function PublicLayout({ children }: Props) {
                     <Link
                       to="/services"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block py-2 text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors"
+                      className="block py-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                     >
                       All Services
                     </Link>
@@ -259,8 +261,8 @@ export function PublicLayout({ children }: Props) {
                           onClick={() => setMobileMenuOpen(false)}
                           className={`flex items-center gap-2.5 py-2 text-sm font-medium transition-colors ${
                             location.pathname === item.href
-                              ? 'text-indigo-600'
-                              : 'text-slate-600 hover:text-slate-900'
+                              ? 'text-indigo-600 dark:text-indigo-400'
+                              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                           }`}
                         >
                           <Icon className="w-4 h-4" />
@@ -280,14 +282,14 @@ export function PublicLayout({ children }: Props) {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block py-3 text-base font-medium transition-colors ${
                     location.pathname === link.href
-                      ? 'text-indigo-600'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'text-indigo-600 dark:text-indigo-400'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="pt-4 border-t border-slate-100 space-y-3">
+              <div className="pt-4 border-t border-slate-100 dark:border-slate-700/50 space-y-3">
                 {isAuthenticated ? (
                   <Link
                     to="/dashboard"
@@ -301,7 +303,7 @@ export function PublicLayout({ children }: Props) {
                     <Link
                       to="/login"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block text-center py-3 text-slate-600 font-medium"
+                      className="block text-center py-3 text-slate-600 dark:text-slate-400 font-medium"
                     >
                       Sign in
                     </Link>
@@ -326,29 +328,29 @@ export function PublicLayout({ children }: Props) {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-50 border-t border-slate-200" aria-label="Site footer">
+      <footer className="bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700" aria-label="Site footer">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
             {/* Brand column */}
             <div className="col-span-2 md:col-span-1">
               <Link to="/" className="flex items-center gap-3 mb-4">
                 <div className="w-2 h-7 bg-indigo-600 rounded-sm" />
-                <span className="font-display text-xl text-slate-900">PagePulser</span>
+                <span className="font-display text-xl text-slate-900 dark:text-white">Kritano</span>
               </Link>
-              <p className="text-sm text-slate-500 leading-relaxed max-w-xs">
+              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">
                 Comprehensive website auditing for SEO, accessibility, security, and performance.
               </p>
             </div>
 
             {/* Product links */}
             <div>
-              <h2 className="font-semibold text-sm text-slate-900 mb-4 uppercase tracking-wider">
+              <h2 className="font-semibold text-sm text-slate-900 dark:text-white mb-4 uppercase tracking-wider">
                 Product
               </h2>
               <ul className="space-y-3">
                 {FOOTER_LINKS.product.map(link => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
+                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -358,13 +360,13 @@ export function PublicLayout({ children }: Props) {
 
             {/* Company links */}
             <div>
-              <h2 className="font-semibold text-sm text-slate-900 mb-4 uppercase tracking-wider">
+              <h2 className="font-semibold text-sm text-slate-900 dark:text-white mb-4 uppercase tracking-wider">
                 Company
               </h2>
               <ul className="space-y-3">
                 {FOOTER_LINKS.company.map(link => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
+                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -374,13 +376,13 @@ export function PublicLayout({ children }: Props) {
 
             {/* Resources links */}
             <div>
-              <h2 className="font-semibold text-sm text-slate-900 mb-4 uppercase tracking-wider">
+              <h2 className="font-semibold text-sm text-slate-900 dark:text-white mb-4 uppercase tracking-wider">
                 Resources
               </h2>
               <ul className="space-y-3">
                 {FOOTER_LINKS.resources.map(link => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
+                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -390,20 +392,20 @@ export function PublicLayout({ children }: Props) {
           </div>
 
           {/* Bottom bar */}
-          <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-slate-500">
-              &copy; {new Date().getFullYear()} PagePulser. All rights reserved.
+          <div className="pt-8 border-t border-slate-200 dark:border-slate-700 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              &copy; {new Date().getFullYear()} Kritano. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <Link to="/privacy" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">
+              <Link to="/privacy" className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">
+              <Link to="/terms" className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
                 Terms of Service
               </Link>
               <button
                 onClick={openCookiePreferences}
-                className="text-sm text-slate-500 hover:text-slate-700 transition-colors"
+                className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
               >
                 Cookie Settings
               </button>
@@ -415,7 +417,7 @@ export function PublicLayout({ children }: Props) {
         <div className="bg-slate-900">
           <div className="max-w-7xl mx-auto px-6 lg:px-20 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-white font-medium text-sm">
-              Ready to check your website's health?
+              Judge your website before others do.
             </p>
             <Link
               to="/register"

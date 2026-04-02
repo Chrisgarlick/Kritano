@@ -154,13 +154,13 @@ After running the migration:
 cd server && npm run migrate
 
 # Verify PostgreSQL settings
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c "SHOW shared_buffers; SHOW work_mem; SHOW max_connections;"
+docker exec kritano-db psql -U kritano -d kritano -c "SHOW shared_buffers; SHOW work_mem; SHOW max_connections;"
 
 # Verify redundant indexes are gone
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c "SELECT indexname FROM pg_indexes WHERE tablename = 'audit_findings' ORDER BY indexname;"
+docker exec kritano-db psql -U kritano -d kritano -c "SELECT indexname FROM pg_indexes WHERE tablename = 'audit_findings' ORDER BY indexname;"
 
 # Verify dead table dropped
-docker exec pagepulser-db psql -U pagepulser -d pagepulser -c "SELECT tablename FROM pg_tables WHERE tablename = 'site_known_pages';"
+docker exec kritano-db psql -U kritano -d kritano -c "SELECT tablename FROM pg_tables WHERE tablename = 'site_known_pages';"
 ```
 
 ## Implementation Order

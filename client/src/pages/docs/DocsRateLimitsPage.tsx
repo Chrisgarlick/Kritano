@@ -16,38 +16,38 @@ export default function DocsRateLimitsPage() {
     <PublicLayout>
       <PageSeo
         title="Rate Limits - API Docs"
-        description="Understand PagePulser API rate limits by plan tier, rate limit headers, and how to handle 429 responses."
+        description="Understand Kritano API rate limits by plan tier, rate limit headers, and how to handle 429 responses."
         path="/docs/rate-limits"
         useOverrides={true}
       />
       <DocsLayout>
         {/* Tier Limits */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h1 className="font-display text-2xl font-bold text-slate-900 mb-2">Rate Limits</h1>
-          <p className="text-slate-600 mb-6">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Rate Limits</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
             API requests are rate limited based on your subscription tier. Limits are applied <strong>per API key</strong> to ensure fair usage. There are two types of limits: <strong>request rate limits</strong> (per minute and per day) and <strong>concurrent audit limits</strong>.
           </p>
 
-          <h2 className="text-lg font-semibold text-slate-800 mb-3">Limits by Tier</h2>
-          <div className="border border-slate-200 rounded-lg overflow-hidden mb-6">
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3">Limits by Tier</h2>
+          <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden mb-6">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-slate-50">
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Tier</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Requests / min</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Requests / day</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Concurrent Audits</th>
+                <tr className="bg-slate-50 dark:bg-slate-800/50">
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Tier</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Requests / min</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Requests / day</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Concurrent Audits</th>
                 </tr>
               </thead>
               <tbody>
                 {TIERS.map(tier => (
-                  <tr key={tier.name} className="border-t border-slate-100 hover:bg-slate-50/50">
+                  <tr key={tier.name} className="border-t border-slate-100 dark:border-slate-700/50 hover:bg-slate-50/50">
                     <td className="px-4 py-3">
                       <span className={`text-xs font-bold px-2.5 py-1 rounded-full uppercase ${tier.style}`}>{tier.name}</span>
                     </td>
-                    <td className="px-4 py-3 text-slate-700 font-medium">{tier.rpm}</td>
-                    <td className="px-4 py-3 text-slate-700 font-medium">{tier.rpd}</td>
-                    <td className="px-4 py-3 text-slate-700 font-medium">{tier.concurrent}</td>
+                    <td className="px-4 py-3 text-slate-700 dark:text-slate-300 font-medium">{tier.rpm}</td>
+                    <td className="px-4 py-3 text-slate-700 dark:text-slate-300 font-medium">{tier.rpd}</td>
+                    <td className="px-4 py-3 text-slate-700 dark:text-slate-300 font-medium">{tier.concurrent}</td>
                   </tr>
                 ))}
               </tbody>
@@ -55,14 +55,14 @@ export default function DocsRateLimitsPage() {
           </div>
 
           <p className="text-sm text-slate-500">
-            Your current tier is shown in the <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">GET /api/v1/info</code> response. To upgrade, visit the <a href="/pricing" className="text-indigo-600 hover:underline">pricing page</a>.
+            Your current tier is shown in the <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">GET /api/v1/info</code> response. To upgrade, visit the <a href="/pricing" className="text-indigo-600 hover:underline">pricing page</a>.
           </p>
         </div>
 
         {/* Rate Limit Headers */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Rate Limit Headers</h2>
-          <p className="text-slate-600 mb-3">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Rate Limit Headers</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-3">
             Every API response includes these headers so you can track your usage in real time:
           </p>
           <CodeBlock
@@ -72,26 +72,26 @@ export default function DocsRateLimitsPage() {
 X-RateLimit-Remaining: 58
 X-RateLimit-Reset: 1706540400`}
           />
-          <div className="border border-slate-200 rounded-lg overflow-hidden mt-4">
+          <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden mt-4">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-slate-50">
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Header</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Description</th>
+                <tr className="bg-slate-50 dark:bg-slate-800/50">
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Header</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Description</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-t border-slate-100">
+                <tr className="border-t border-slate-100 dark:border-slate-700/50">
                   <td className="px-4 py-3 font-mono text-xs text-indigo-600 font-medium whitespace-nowrap">X-RateLimit-Limit</td>
-                  <td className="px-4 py-3 text-slate-600">Maximum requests allowed per minute for your tier</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-400">Maximum requests allowed per minute for your tier</td>
                 </tr>
-                <tr className="border-t border-slate-100">
+                <tr className="border-t border-slate-100 dark:border-slate-700/50">
                   <td className="px-4 py-3 font-mono text-xs text-indigo-600 font-medium whitespace-nowrap">X-RateLimit-Remaining</td>
-                  <td className="px-4 py-3 text-slate-600">Number of requests remaining in the current 60-second window</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-400">Number of requests remaining in the current 60-second window</td>
                 </tr>
-                <tr className="border-t border-slate-100">
+                <tr className="border-t border-slate-100 dark:border-slate-700/50">
                   <td className="px-4 py-3 font-mono text-xs text-indigo-600 font-medium whitespace-nowrap">X-RateLimit-Reset</td>
-                  <td className="px-4 py-3 text-slate-600">Unix timestamp (seconds) when the current rate limit window resets</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-400">Unix timestamp (seconds) when the current rate limit window resets</td>
                 </tr>
               </tbody>
             </table>
@@ -99,10 +99,10 @@ X-RateLimit-Reset: 1706540400`}
         </div>
 
         {/* Handling 429 */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Handling Rate Limit Errors</h2>
-          <p className="text-slate-600 mb-3">
-            When you exceed your per-minute or per-day rate limit, the API returns <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">429 Too Many Requests</code>:
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Handling Rate Limit Errors</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-3">
+            When you exceed your per-minute or per-day rate limit, the API returns <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">429 Too Many Requests</code>:
           </p>
           <CodeBlock
             language="json"
@@ -116,7 +116,7 @@ X-RateLimit-Reset: 1706540400`}
           />
 
           <p className="text-slate-600 mb-3 mt-4">
-            The <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">retryAfter</code> field tells you exactly how many seconds to wait before retrying.
+            The <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">retryAfter</code> field tells you exactly how many seconds to wait before retrying.
           </p>
 
           <div className="flex gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg mb-6">
@@ -153,12 +153,12 @@ X-RateLimit-Reset: 1706540400`}
         </div>
 
         {/* Concurrent Audit Limits */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Concurrent Audit Limits</h2>
-          <p className="text-slate-600 mb-3">
-            In addition to request rate limits, there's a limit on how many audits can be running at the same time. An audit counts as "active" when it's in any of these states: <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">pending</code>, <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">discovering</code>, <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">ready</code>, or <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">processing</code>.
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Concurrent Audit Limits</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-3">
+            In addition to request rate limits, there's a limit on how many audits can be running at the same time. An audit counts as "active" when it's in any of these states: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">pending</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">discovering</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">ready</code>, or <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">processing</code>.
           </p>
-          <p className="text-slate-600 mb-3">
+          <p className="text-slate-600 dark:text-slate-400 mb-3">
             If you try to create an audit when at your limit, you'll receive:
           </p>
           <CodeBlock

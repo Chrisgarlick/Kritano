@@ -60,7 +60,7 @@ export default function ServerErrorPage({
 
   return (
     <>
-      <Helmet><title>Server Error | PagePulser</title></Helmet>
+      <Helmet><title>Server Error | Kritano</title></Helmet>
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center px-4">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -69,7 +69,7 @@ export default function ServerErrorPage({
       </div>
 
       <div className="relative max-w-lg w-full text-center">
-        {/* Broken pulse line illustration */}
+        {/* Broken line illustration */}
         <div className="mb-8 flex justify-center">
           <div className="relative w-64 h-32">
             <svg
@@ -194,7 +194,7 @@ export default function ServerErrorPage({
           <Body size="sm" muted>
             If this problem persists, please{' '}
             <a
-              href="mailto:support@pagepulser.com"
+              href="mailto:support@kritano.com"
               className="text-indigo-600 dark:text-indigo-400 hover:underline"
             >
               contact support

@@ -5,7 +5,7 @@
  * The European Accessibility Act (EAA) mandates conformance with EN 301 549,
  * which incorporates WCAG 2.1 Level AA for Web content (Section 9).
  *
- * PagePulser tests against WCAG 2.2 AA — the mapping is 1:1 for Section 9 requirements
+ * Kritano tests against WCAG 2.2 AA — the mapping is 1:1 for Section 9 requirements
  * since WCAG 2.2 is a superset of 2.1.
  */
 

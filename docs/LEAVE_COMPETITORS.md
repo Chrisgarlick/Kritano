@@ -1,4 +1,4 @@
-# pagepulser - Competitor Comparison Feature
+# kritano - Competitor Comparison Feature
 
 Feature specification for scanning and comparing competitor websites.
 

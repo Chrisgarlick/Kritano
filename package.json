@@ -1,8 +1,8 @@
 {
-  "name": "pagepulser",
+  "name": "kritano",
   "version": "1.0.0",
   "private": true,
-  "description": "pagepulser - See What Others Miss",
+  "description": "kritano - See What Others Miss",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "npm run dev --prefix server",

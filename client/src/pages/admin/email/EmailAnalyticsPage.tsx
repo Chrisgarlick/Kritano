@@ -84,12 +84,12 @@ export default function EmailAnalyticsPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Email Analytics | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Email Analytics | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Email Analytics</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">Email Analytics</h1>
             <p className="text-sm text-slate-500 mt-1">
               Track delivery rates, opens, clicks, and bounces across all emails.
             </p>

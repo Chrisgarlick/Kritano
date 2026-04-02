@@ -1,4 +1,4 @@
-# pagepulser Spider System - Technical Plan
+# kritano Spider System - Technical Plan
 
 ## Executive Summary
 
@@ -1696,7 +1696,7 @@ describe('Audit Flow', () => {
    - Consider ethical scanning practices
 
 2. **User-Agent Identification** (Add to Phase 3)
-   - Ensure all security probes identify as pagepulser
+   - Ensure all security probes identify as kritano
    - Include contact URL in User-Agent
 
 3. **Timeout on Probes** ✅ (Already implemented)
@@ -1732,7 +1732,7 @@ describe('Audit Flow', () => {
 
 #### Phase 3 Additions (Updated)
 - [ ] Sensitive file probe rate limiting
-- [ ] Clear pagepulser identification in all requests
+- [ ] Clear kritano identification in all requests
 - [ ] Issue deduplication logic
 
 #### Phase 4 Additions (Updated)

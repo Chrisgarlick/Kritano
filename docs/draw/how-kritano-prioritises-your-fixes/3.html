@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 1080px; height: 1080px; overflow: hidden; }
+    .container { width: 1080px; height: 1080px; position: relative; overflow: hidden; font-family: 'Outfit', system-ui, sans-serif; background: #F8FAFC; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="position:absolute;top:80px;right:-80px;width:400px;height:400px;background:#EEF2FF;border-radius:50%;opacity:0.6;filter:blur(80px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-40px;left:60px;width:300px;height:300px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(80px);pointer-events:none;"></div>
+
+    <div style="position:absolute;top:48px;left:90px;right:90px;display:flex;align-items:center;justify-content:space-between;z-index:2;">
+      <div style="display:flex;gap:6px;">
+        <div style="width:24px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:24px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:24px;height:4px;border-radius:2px;background:#EF4444;"></div>
+        <div style="width:24px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:24px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:24px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+        <div style="width:24px;height:4px;border-radius:2px;background:#CBD5E1;"></div>
+      </div>
+      <div style="width:48px;height:48px;border-radius:12px;background:#FEF2F2;display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:14px;font-weight:700;color:#DC2626;">C</span>
+      </div>
+    </div>
+
+    <div style="position:relative;z-index:1;padding:90px 90px 70px;height:100%;">
+      <!-- Severity bar -->
+      <div style="width:100%;height:6px;background:#E2E8F0;border-radius:3px;margin-top:20px;margin-bottom:16px;overflow:hidden;">
+        <div style="width:100%;height:100%;background:#EF4444;border-radius:3px;"></div>
+      </div>
+
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:52px;font-weight:400;color:#EF4444;line-height:1.08;margin-bottom:8px;">Critical</h1>
+      <p style="font-size:20px;color:#64748B;line-height:1.4;margin-bottom:24px;">Fix immediately. These issues are actively harming your users, your security, or your search rankings right now.</p>
+
+      <!-- Impact + multiplier -->
+      <div style="display:flex;gap:16px;margin-bottom:20px;">
+        <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:20px;flex:1;text-align:center;">
+          <p style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;color:#EF4444;">×4</p>
+          <p style="font-size:13px;color:#64748B;margin-top:4px;">Score impact multiplier</p>
+        </div>
+        <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:20px;flex:2;">
+          <p style="font-size:14px;font-weight:600;color:#DC2626;margin-bottom:8px;">Urgency: Drop everything</p>
+          <p style="font-size:14px;color:#64748B;line-height:1.35;">One critical issue has 4× the score impact of a minor one. Three critical issues can drop a 90 to a 60.</p>
+        </div>
+      </div>
+
+      <!-- Examples -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:14px;padding:22px 24px;">
+        <p style="font-size:13px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Examples</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#EF4444;flex-shrink:0;"></div>
+            <span style="font-size:15px;color:#334155;">Exposed .env file with database credentials</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#EF4444;flex-shrink:0;"></div>
+            <span style="font-size:15px;color:#334155;">SSL certificate expired — full-page browser warning</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#EF4444;flex-shrink:0;"></div>
+            <span style="font-size:15px;color:#334155;">No alt text on 50+ images across the site</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#EF4444;flex-shrink:0;"></div>
+            <span style="font-size:15px;color:#334155;">Login form served over plain HTTP</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:absolute;bottom:32px;right:90px;">
+        <span style="font-family:'Instrument Serif',Georgia,serif;font-size:20px;color:#CBD5E1;">Kritano</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

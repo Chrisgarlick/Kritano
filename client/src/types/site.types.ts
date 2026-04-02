@@ -69,6 +69,7 @@ export interface Site {
 export interface SiteWithStats extends Site {
   stats: SiteStats;
   permission: SitePermission;
+  ownerTier?: string;
 }
 
 export interface ScoreHistoryEntry {
@@ -84,6 +85,7 @@ export interface ScoreHistoryEntry {
 export interface SiteDetail extends Site {
   stats: SiteStats;
   permission: SitePermission;
+  ownerTier?: string;
   scoreHistory: ScoreHistoryEntry[];
 }
 

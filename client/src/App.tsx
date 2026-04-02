@@ -112,6 +112,7 @@ const AdminMarketingCampaignsPage = lazy(() => import('./pages/admin/marketing/C
 const ColdProspectsDashboard = lazy(() => import('./pages/admin/cold-prospects/ColdProspectsDashboard'));
 const ColdProspectsList = lazy(() => import('./pages/admin/cold-prospects/ColdProspectsList'));
 const ColdProspectDetail = lazy(() => import('./pages/admin/cold-prospects/ColdProspectDetail'));
+const OutreachLogPage = lazy(() => import('./pages/admin/outreach-log/OutreachLogPage'));
 const AdminReferralsDashboard = lazy(() => import('./pages/admin/referrals/AdminReferralsDashboard'));
 const AdminFunnelPage = lazy(() => import('./pages/admin/analytics/FunnelPage'));
 const AdminTrendsPage = lazy(() => import('./pages/admin/analytics/TrendsPage'));
@@ -640,6 +641,16 @@ function App() {
                   element={
                     <AdminRoute>
                       <ColdProspectDetail />
+                    </AdminRoute>
+                  }
+                />
+
+                {/* Admin Outreach Log route */}
+                <Route
+                  path="/admin/outreach-log"
+                  element={
+                    <AdminRoute>
+                      <OutreachLogPage />
                     </AdminRoute>
                   }
                 />

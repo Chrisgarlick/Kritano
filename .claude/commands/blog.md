@@ -1,4 +1,4 @@
-Write a polished, publish-ready blog post in PagePulser's brand voice based on the following prompt:
+Write a polished, publish-ready blog post in Kritano's brand voice based on the following prompt:
 
 $ARGUMENTS
 

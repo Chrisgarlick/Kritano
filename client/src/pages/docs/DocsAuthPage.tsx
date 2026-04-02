@@ -10,64 +10,64 @@ export default function DocsAuthPage() {
     <PublicLayout>
       <PageSeo
         title="Authentication - API Docs"
-        description="Learn how to authenticate your PagePulser API requests using API keys and Bearer tokens."
+        description="Learn how to authenticate your Kritano API requests using API keys and Bearer tokens."
         path="/docs/authentication"
         useOverrides={true}
       />
       <DocsLayout>
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h1 className="font-display text-2xl font-bold text-slate-900 mb-2">Authentication</h1>
-          <p className="text-slate-600 mb-6">
-            The PagePulser API uses API keys to authenticate requests. You can create and manage API keys from your{' '}
-            <Link to="/settings/api-keys" className="text-indigo-600 font-medium hover:underline">Settings &rarr; API Keys</Link> page.
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Authentication</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
+            The Kritano API uses API keys to authenticate requests. You can create and manage API keys from your{' '}
+            <Link to="/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Settings &rarr; API Keys</Link> page.
           </p>
 
-          <h2 className="text-lg font-semibold text-slate-800 mb-3">API Key Format</h2>
-          <p className="text-slate-600 mb-3">
-            All API keys are prefixed with <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">pp_live_</code> followed by a randomly generated token. Your full key is only shown once at creation — store it securely.
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3">API Key Format</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-3">
+            All API keys are prefixed with <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">kt_live_</code> followed by a randomly generated token. Your full key is only shown once at creation — store it securely.
           </p>
-          <CodeBlock code="pp_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" language="http" label="API Key Format" />
+          <CodeBlock code="kt_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" language="http" label="API Key Format" />
 
-          <h2 className="text-lg font-semibold text-slate-800 mb-3 mt-8">Sending Your API Key</h2>
-          <p className="text-slate-600 mb-3">
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3 mt-8">Sending Your API Key</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-3">
             You can authenticate using either of two headers. The API checks them in this order:
           </p>
 
-          <h3 className="text-sm font-semibold text-slate-700 mb-2 mt-4">Option 1: Authorization Header (recommended)</h3>
-          <CodeBlock code="Authorization: Bearer pp_live_your_api_key_here" language="http" label="HTTP Header" />
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 mt-4">Option 1: Authorization Header (recommended)</h3>
+          <CodeBlock code="Authorization: Bearer kt_live_your_api_key_here" language="http" label="HTTP Header" />
 
-          <h3 className="text-sm font-semibold text-slate-700 mb-2 mt-4">Option 2: X-API-Key Header</h3>
-          <CodeBlock code="X-API-Key: pp_live_your_api_key_here" language="http" label="HTTP Header" />
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 mt-4">Option 2: X-API-Key Header</h3>
+          <CodeBlock code="X-API-Key: kt_live_your_api_key_here" language="http" label="HTTP Header" />
 
-          <div className="flex gap-3 p-4 bg-amber-50 border border-amber-200 rounded-lg my-6">
+          <div className="flex gap-3 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg my-6">
             <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
             <div>
-              <div className="font-semibold text-sm text-slate-900 mb-1">Keep Your Keys Secure</div>
-              <p className="text-sm text-slate-700">
+              <div className="font-semibold text-sm text-slate-900 dark:text-white mb-1">Keep Your Keys Secure</div>
+              <p className="text-sm text-slate-700 dark:text-slate-300">
                 Never expose your API keys in client-side code, public repositories, or browser requests. API keys grant access to your account resources based on their scopes. If you suspect a key has been compromised, revoke it immediately from the dashboard.
               </p>
             </div>
           </div>
 
-          <h2 className="text-lg font-semibold text-slate-800 mb-3 mt-8">Complete Example</h2>
-          <p className="text-slate-600 mb-3">
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3 mt-8">Complete Example</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-3">
             Here's a full request that authenticates and creates an audit:
           </p>
           <CodeBlock
             language="bash"
             label="cURL"
-            code={`curl -X POST "https://app.pagepulser.io/api/v1/audits" \\
-  -H "Authorization: Bearer pp_live_your_api_key" \\
+            code={`curl -X POST "https://app.kritano.io/api/v1/audits" \\
+  -H "Authorization: Bearer kt_live_your_api_key" \\
   -H "Content-Type: application/json" \\
   -d '{"url": "https://example.com"}'`}
           />
         </div>
 
         {/* Scopes */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h2 className="text-xl font-semibold text-slate-900 mb-2">API Scopes</h2>
           <p className="text-slate-600 mb-4">
-            When creating an API key you select which scopes it has. Each endpoint requires a specific scope — if your key is missing a required scope, you'll get a <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">403 Forbidden</code> response.
+            When creating an API key you select which scopes it has. Each endpoint requires a specific scope — if your key is missing a required scope, you'll get a <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">403 Forbidden</code> response.
           </p>
           <div className="border border-slate-200 rounded-lg overflow-hidden mb-4">
             <table className="w-full text-sm">
@@ -99,8 +99,8 @@ export default function DocsAuthPage() {
           <div className="flex gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div>
-              <div className="font-semibold text-sm text-slate-900 mb-1">Tip</div>
-              <p className="text-sm text-slate-700">
+              <div className="font-semibold text-sm text-slate-900 dark:text-white mb-1">Tip</div>
+              <p className="text-sm text-slate-700 dark:text-slate-300">
                 Follow the principle of least privilege — only grant scopes your integration actually needs. You can create multiple API keys with different scopes for different purposes.
               </p>
             </div>
@@ -108,10 +108,10 @@ export default function DocsAuthPage() {
         </div>
 
         {/* Auth Errors */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h2 className="text-xl font-semibold text-slate-900 mb-4">Authentication Errors</h2>
 
-          <h3 className="text-sm font-semibold text-slate-700 mb-2">Missing API Key (401)</h3>
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Missing API Key (401)</h3>
           <p className="text-slate-600 text-sm mb-2">Returned when no API key is provided in the request.</p>
           <CodeBlock
             language="json"
@@ -119,11 +119,11 @@ export default function DocsAuthPage() {
             code={`{
   "error": "API key required",
   "code": "API_KEY_REQUIRED",
-  "message": "Provide API key via Authorization header (Bearer pp_live_xxx) or X-API-Key header"
+  "message": "Provide API key via Authorization header (Bearer kt_live_xxx) or X-API-Key header"
 }`}
           />
 
-          <h3 className="text-sm font-semibold text-slate-700 mb-2 mt-6">Invalid API Key (401)</h3>
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 mt-6">Invalid API Key (401)</h3>
           <p className="text-slate-600 text-sm mb-2">Returned when the key is invalid, expired, or has been revoked.</p>
           <CodeBlock
             language="json"
@@ -135,7 +135,7 @@ export default function DocsAuthPage() {
 }`}
           />
 
-          <h3 className="text-sm font-semibold text-slate-700 mb-2 mt-6">Insufficient Scope (403)</h3>
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 mt-6">Insufficient Scope (403)</h3>
           <p className="text-slate-600 text-sm mb-2">Returned when your key doesn't have the required scope for an endpoint.</p>
           <CodeBlock
             language="json"
@@ -151,7 +151,7 @@ export default function DocsAuthPage() {
         </div>
 
         {/* Key Management */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h2 className="text-xl font-semibold text-slate-900 mb-4">Key Management</h2>
           <div className="space-y-4 text-sm text-slate-600">
             <div className="flex gap-3">

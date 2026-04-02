@@ -88,7 +88,7 @@ A proper website health check should look at the same things an audit does — j
 
 ## A Different Approach to Website Health
 
-This is exactly why I built PagePulser. Not to replace the deep, expert-led audits that complex sites need, but to fill the gap between them.
+This is exactly why I built Kritano. Not to replace the deep, expert-led audits that complex sites need, but to fill the gap between them.
 
 The idea is straightforward: instead of checking your website once a year and hoping nothing went wrong in between, you get regular, automated health checks that cover [accessibility, performance, SEO, and security](/blog/accessibility-seo-performance-why-you-shouldnt-choose) in one place. When something drifts — a new page with missing alt text, a performance regression, an expired security header — you know about it while it's still a quick fix, not a major remediation project.
 
@@ -106,7 +106,7 @@ If you're not currently monitoring your website between audits, here's a practic
 4. **Run your site through securityheaders.com** quarterly. If any headers disappear, you'll catch it before it becomes a vulnerability
 5. **Install the WAVE browser extension** and spot-check new pages after they're published. Ten seconds of checking alt text and heading structure prevents weeks of accessibility drift
 
-Or, if you'd rather not think about it at all, take a look at PagePulser. It runs these checks automatically and tells you when something needs attention — so you can focus on running your business instead of manually auditing your website every month.
+Or, if you'd rather not think about it at all, take a look at Kritano. It runs these checks automatically and tells you when something needs attention — so you can focus on running your business instead of manually auditing your website every month.
 
 <!-- Internal linking suggestions:
 - Link "Core Web Vitals" to the CWV explainer post
@@ -115,5 +115,5 @@ Or, if you'd rather not think about it at all, take a look at PagePulser. It run
 - Link "WCAG" to the web accessibility 2026 post
 - Link "accessibility scores" to the understanding accessibility scores post
 - Link "accessibility, performance, SEO" to the holistic website health post
-- Link "PagePulser" to the main product/pricing page
+- Link "Kritano" to the main product/pricing page
 -->

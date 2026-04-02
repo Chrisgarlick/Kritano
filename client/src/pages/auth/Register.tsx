@@ -59,14 +59,14 @@ export default function RegisterPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
         <Helmet>
-          <title>Early Access Full | PagePulser</title>
+          <title>Early Access Full | Kritano</title>
           <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <div className="max-w-md w-full">
           <div className="text-center mb-8">
-            <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400">PagePulser</p>
+            <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400">Kritano</p>
             <h1 className="mt-4 text-xl font-semibold text-slate-900 dark:text-white">Early Access is Full</h1>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-500">
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
               All founding member spots have been claimed. Join the waitlist and we'll notify you when we launch.
             </p>
           </div>
@@ -74,11 +74,11 @@ export default function RegisterPage() {
           <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
             {waitlistSubmitted ? (
               <div className="text-center">
-                <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Sparkles className="w-6 h-6 text-emerald-600" />
+                <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Sparkles className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                 </div>
                 <p className="text-slate-900 dark:text-white font-medium">You're on the list!</p>
-                <p className="text-sm text-slate-600 dark:text-slate-500 mt-2">We'll let you know when we launch.</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">We'll let you know when we launch.</p>
               </div>
             ) : (
               <form onSubmit={handleWaitlistSignup} className="space-y-4">
@@ -96,7 +96,7 @@ export default function RegisterPage() {
                     placeholder="you@example.com"
                   />
                 </div>
-                {waitlistError && <p className="text-sm text-red-600">{waitlistError}</p>}
+                {waitlistError && <p className="text-sm text-red-600 dark:text-red-400">{waitlistError}</p>}
                 <button
                   type="submit"
                   className="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition"
@@ -114,26 +114,26 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
       <Helmet>
-        <title>{isEarlyAccess ? 'Early Access' : 'Create Account'} | PagePulser</title>
+        <title>{isEarlyAccess ? 'Early Access' : 'Create Account'} | Kritano</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400">PagePulser</p>
+          <p className="text-3xl font-display text-indigo-600 dark:text-indigo-400">Kritano</p>
           {isEarlyAccess ? (
             <>
               <h1 className="mt-4 text-xl font-semibold text-slate-900 dark:text-white flex items-center justify-center gap-2">
                 <Sparkles className="w-5 h-5 text-amber-500" />
                 Claim Your Early Access
               </h1>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-500">
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                 {eaStatus.spotsRemaining} of 200 founding member spots remaining
               </p>
             </>
           ) : (
             <>
               <h1 className="mt-4 text-xl font-semibold text-slate-900 dark:text-white">Create your account</h1>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-500">
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                 Start scanning websites for SEO, accessibility, and security issues
               </p>
             </>

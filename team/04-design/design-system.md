@@ -1,6 +1,6 @@
 <!-- Version: 1 | Department: design | Updated: 2026-03-24 -->
 
-# Design System — PagePulser Iteration 2
+# Design System — Kritano Iteration 2
 
 This document extends the existing brand guidelines (`/docs/BRAND_GUIDELINES.md`) with design specifications for the three new features: Content Quality Score, Fix Snippets, and EAA Compliance Passport.
 

@@ -64,7 +64,7 @@ export function TrendIndicator({
     const isStable = direction === 'stable';
 
     if (isStable) {
-      return 'text-slate-500 dark:text-slate-500';
+      return 'text-slate-500 dark:text-slate-400';
     }
 
     // For normal metrics (higher is better)
@@ -79,7 +79,7 @@ export function TrendIndicator({
       if (isNegative) return 'text-emerald-600 dark:text-emerald-500';
     }
 
-    return 'text-slate-500';
+    return 'text-slate-500 dark:text-slate-400';
   };
 
   // Format delta value
@@ -122,7 +122,7 @@ export function TrendIndicator({
     >
       <IconComponent />
       {showDelta && formattedDelta && <span>{formattedDelta}</span>}
-      {label && <span className="text-slate-500 dark:text-slate-500 font-normal">{label}</span>}
+      {label && <span className="text-slate-500 dark:text-slate-400 font-normal">{label}</span>}
     </span>
   );
 }
@@ -170,7 +170,7 @@ export function TrendBadge({
     const isStable = direction === 'stable';
 
     if (isStable) {
-      return 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500';
+      return 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400';
     }
 
     if (!invertColors) {
@@ -183,7 +183,7 @@ export function TrendBadge({
       if (isNegative) return 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400';
     }
 
-    return 'bg-slate-100 text-slate-600';
+    return 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400';
   };
 
   const IconComponent = direction === 'up'

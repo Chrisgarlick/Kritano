@@ -122,7 +122,7 @@ The good news is that most of the fixes are straightforward, and the free tools 
 If you want to see where your website stands across all three metrics and get a clear plan for what to fix first, get in touch for a performance audit. I'll walk you through the results and help you prioritise the changes that'll make the biggest difference.
 
 <!-- Internal linking suggestions:
-- Link "accessibility audit" or "performance audit" to the PagePulser audit/pricing page
+- Link "accessibility audit" or "performance audit" to the Kritano audit/pricing page
 - Link "web accessibility" to the accessibility 2026 blog post if published
 - Link "TinyPNG" or "ShortPixel" to a page speed how-to post if one exists
 - Link "Google Search Console" to any GSC setup guide if published

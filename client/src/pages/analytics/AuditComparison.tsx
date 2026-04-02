@@ -48,16 +48,16 @@ function AuditSummaryCards({ audits }: { audits: AuditSummary[] }) {
           : null;
 
         return (
-          <div key={audit.id} className="bg-white rounded-lg border border-slate-200 p-4">
+          <div key={audit.id} className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
             <div className="flex items-start justify-between mb-3">
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <span className="w-5 h-5 rounded-full bg-indigo-600 text-white text-xs flex items-center justify-center flex-shrink-0">
                     {idx + 1}
                   </span>
-                  <h3 className="text-sm font-semibold text-slate-900 truncate">{audit.siteName}</h3>
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-white truncate">{audit.siteName}</h3>
                 </div>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   {new Date(audit.completedAt).toLocaleDateString()}
                 </p>
               </div>
@@ -72,12 +72,12 @@ function AuditSummaryCards({ audits }: { audits: AuditSummary[] }) {
             </div>
             <div className="grid grid-cols-2 gap-2 text-center">
               <div>
-                <p className="text-xs text-slate-500">Pages</p>
-                <p className="text-sm font-medium text-slate-700">{audit.pagesCrawled}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Pages</p>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{audit.pagesCrawled}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Issues</p>
-                <p className="text-sm font-medium text-slate-700">{audit.issues.total}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Issues</p>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{audit.issues.total}</p>
               </div>
             </div>
           </div>
@@ -110,13 +110,13 @@ function SeverityBreakdown({ audits }: { audits: AuditSummary[] }) {
               <span className="w-5 h-5 rounded-full bg-indigo-600 text-white text-xs flex items-center justify-center flex-shrink-0">
                 {idx + 1}
               </span>
-              <span className="text-sm font-medium text-slate-700 truncate">{audit.siteName}</span>
-              <span className="text-xs text-slate-500">
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">{audit.siteName}</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">
                 {new Date(audit.completedAt).toLocaleDateString()}
               </span>
-              <span className="text-xs text-slate-500 ml-auto">{uniqueTotal(audit)} unique issues</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 ml-auto">{uniqueTotal(audit)} unique issues</span>
             </div>
-            <div className="h-8 bg-slate-100 rounded overflow-hidden flex">
+            <div className="h-8 bg-slate-100 dark:bg-slate-800 rounded overflow-hidden flex">
               {SEVERITY_ORDER.map(sev => {
                 const count = audit.issues[sev];
                 if (count === 0) return null;
@@ -146,15 +146,15 @@ function SeverityBreakdown({ audits }: { audits: AuditSummary[] }) {
         {SEVERITY_ORDER.map(sev => (
           <div key={sev} className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded" style={{ backgroundColor: SEVERITY_COLORS[sev] }} />
-            <span className="text-xs text-slate-600">{SEVERITY_LABELS[sev]}</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400">{SEVERITY_LABELS[sev]}</span>
           </div>
         ))}
       </div>
 
       {/* Delta row (if 2+ audits) */}
       {audits.length >= 2 && (
-        <div className="border-t border-slate-200 pt-4">
-          <h4 className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">
+        <div className="border-t border-slate-200 dark:border-slate-700 pt-4">
+          <h4 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
             Change (First → Last)
           </h4>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -164,9 +164,9 @@ function SeverityBreakdown({ audits }: { audits: AuditSummary[] }) {
               const delta = last - first;
               return (
                 <div key={sev} className="text-center">
-                  <p className="text-xs text-slate-500 mb-0.5">{SEVERITY_LABELS[sev]}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-0.5">{SEVERITY_LABELS[sev]}</p>
                   <span className={`inline-flex items-center gap-0.5 text-sm font-medium ${
-                    delta > 0 ? 'text-red-600' : delta < 0 ? 'text-emerald-600' : 'text-slate-500'
+                    delta > 0 ? 'text-red-600 dark:text-red-400' : delta < 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'
                   }`}>
                     {delta > 0 ? <TrendingUp className="w-3.5 h-3.5" /> :
                      delta < 0 ? <TrendingDown className="w-3.5 h-3.5" /> :
@@ -296,9 +296,9 @@ export function AuditComparisonContent() {
   return (
     <div className="space-y-6">
       {/* Audit Selector */}
-      <div className="bg-white rounded-lg border border-slate-200 p-4">
+      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-medium text-slate-900">Selected Audits ({selectedAuditIds.length}/4)</h2>
+          <h2 className="font-medium text-slate-900 dark:text-white">Selected Audits ({selectedAuditIds.length}/4)</h2>
           {selectedAuditIds.length < 4 && (
             <Button
               variant="outline"
@@ -317,23 +317,23 @@ export function AuditComparisonContent() {
             {selectedAudits.map((audit, idx) => (
               <div
                 key={audit.id}
-                className="inline-flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-indigo-200 rounded-lg"
+                className="inline-flex items-center gap-2 px-3 py-2 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg"
               >
                 <span className="w-5 h-5 rounded-full bg-indigo-600 text-white text-xs flex items-center justify-center">
                   {idx + 1}
                 </span>
                 <div className="text-sm">
-                  <span className="font-medium text-slate-700">{audit.siteName}</span>
-                  <span className="text-slate-500 mx-1">&middot;</span>
-                  <span className="text-slate-500">
+                  <span className="font-medium text-slate-700 dark:text-slate-300">{audit.siteName}</span>
+                  <span className="text-slate-500 dark:text-slate-400 mx-1">&middot;</span>
+                  <span className="text-slate-500 dark:text-slate-400">
                     {new Date(audit.completedAt).toLocaleDateString()}
                   </span>
-                  <span className="text-slate-500 mx-1">&middot;</span>
-                  <span className="text-slate-500">{audit.pagesCrawled} pages</span>
+                  <span className="text-slate-500 dark:text-slate-400 mx-1">&middot;</span>
+                  <span className="text-slate-500 dark:text-slate-400">{audit.pagesCrawled} pages</span>
                 </div>
                 <button
                   onClick={() => removeAudit(audit.id)}
-                  className="text-slate-500 hover:text-red-500"
+                  className="text-slate-500 dark:text-slate-400 hover:text-red-500"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -341,39 +341,39 @@ export function AuditComparisonContent() {
             ))}
           </div>
         ) : (
-          <p className="text-slate-500 text-sm mb-4">
+          <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">
             Select at least 2 audits to compare
           </p>
         )}
 
         {/* Audit Picker Dropdown */}
         {showSelector && (
-          <div className="border border-slate-200 rounded-lg max-h-80 overflow-y-auto">
+          <div className="border border-slate-200 dark:border-slate-700 rounded-lg max-h-80 overflow-y-auto">
             {auditsLoading ? (
-              <div className="p-4 text-center text-slate-500">Loading audits...</div>
+              <div className="p-4 text-center text-slate-500 dark:text-slate-400">Loading audits...</div>
             ) : availableAudits.length === 0 ? (
-              <div className="p-4 text-center text-slate-500">No completed audits found</div>
+              <div className="p-4 text-center text-slate-500 dark:text-slate-400">No completed audits found</div>
             ) : (
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-slate-100 dark:divide-slate-700">
                 {availableAudits
                   .filter(a => !selectedAuditIds.includes(a.id))
                   .map(audit => (
                     <button
                       key={audit.id}
                       onClick={() => addAudit(audit.id)}
-                      className="w-full px-4 py-3 text-left hover:bg-slate-50 transition-colors"
+                      className="w-full px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                     >
                       <div className="flex items-center justify-between gap-3">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="font-medium text-slate-700">{audit.siteName}</span>
-                            <span className="text-slate-500 text-xs">({audit.domain})</span>
+                            <span className="font-medium text-slate-700 dark:text-slate-300">{audit.siteName}</span>
+                            <span className="text-slate-500 dark:text-slate-400 text-xs">({audit.domain})</span>
                           </div>
                           <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500">
                             <span>{audit.pagesCrawled} pages</span>
-                            <span className="text-slate-300">&middot;</span>
+                            <span className="text-slate-300 dark:text-slate-600">&middot;</span>
                             <span>{audit.totalIssues} issues</span>
-                            <span className="text-slate-300">&middot;</span>
+                            <span className="text-slate-300 dark:text-slate-600">&middot;</span>
                             <span className="truncate max-w-[200px]">{audit.targetUrl}</span>
                           </div>
                         </div>
@@ -399,14 +399,14 @@ export function AuditComparisonContent() {
 
       {/* Comparison Results */}
       {loading ? (
-        <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-4" />
-          <p className="text-slate-500">Comparing audits...</p>
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-8 text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-indigo-200 dark:border-indigo-800 border-t-indigo-600 rounded-full mx-auto mb-4" />
+          <p className="text-slate-500 dark:text-slate-400">Comparing audits...</p>
         </div>
       ) : error ? (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
           <AlertTriangle className="w-8 h-8 text-red-500 mx-auto mb-2" />
-          <p className="text-red-700">{error}</p>
+          <p className="text-red-700 dark:text-red-400">{error}</p>
         </div>
       ) : comparison ? (
         <div className="space-y-6">
@@ -414,8 +414,8 @@ export function AuditComparisonContent() {
           <AuditSummaryCards audits={comparison.audits} />
 
           {/* Score Comparison Table */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-lg font-medium text-slate-900 mb-4">Score Comparison</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Score Comparison</h2>
             <ScoreComparisonTable
               audits={comparison.audits}
               scoreDeltas={comparison.comparison.scoreDeltas}
@@ -423,8 +423,8 @@ export function AuditComparisonContent() {
           </div>
 
           {/* Score Bar Chart */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-lg font-medium text-slate-900 mb-4">Score Breakdown</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Score Breakdown</h2>
             <ScoreComparisonBar
               audits={comparison.audits}
               scoreDeltas={comparison.comparison.scoreDeltas}
@@ -432,17 +432,17 @@ export function AuditComparisonContent() {
           </div>
 
           {/* Severity Breakdown */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-lg font-medium text-slate-900 mb-1">Severity Breakdown</h2>
-            <p className="text-sm text-slate-500 mb-4">
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-1">Severity Breakdown</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
               Compare issue severity distribution across audits
             </p>
             <SeverityBreakdown audits={comparison.audits} />
           </div>
 
           {/* Issue Diff */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-lg font-medium text-slate-900 mb-4">Issue Changes</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Issue Changes</h2>
             <IssueDiffTable
               commonIssues={comparison.comparison.commonIssues}
               resolvedIssues={comparison.comparison.resolvedIssues}
@@ -456,7 +456,7 @@ export function AuditComparisonContent() {
               <Link
                 key={audit.id}
                 to={`/audits/${audit.id}`}
-                className="text-indigo-600 hover:text-indigo-800 hover:underline"
+                className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline"
               >
                 View {audit.siteName} audit &rarr;
               </Link>
@@ -464,10 +464,10 @@ export function AuditComparisonContent() {
           </div>
         </div>
       ) : selectedAuditIds.length < 2 ? (
-        <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
-          <GitCompare className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-slate-900 mb-2">Select Audits to Compare</h3>
-          <p className="text-slate-500">
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-8 text-center">
+          <GitCompare className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">Select Audits to Compare</h3>
+          <p className="text-slate-500 dark:text-slate-400">
             Choose 2-4 audits from any of your sites to see score changes and issue differences.
           </p>
         </div>
@@ -479,19 +479,19 @@ export function AuditComparisonContent() {
 export default function AuditComparison() {
   return (
     <DashboardLayout>
-      <Helmet><title>Compare Audits | PagePulser</title></Helmet>
+      <Helmet><title>Compare Audits | Kritano</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-              <Link to="/analytics" className="hover:text-indigo-600">&larr; Analytics</Link>
+            <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+              <Link to="/analytics" className="hover:text-indigo-600 dark:hover:text-indigo-400">&larr; Analytics</Link>
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <GitCompare className="w-6 h-6 text-indigo-600" />
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <GitCompare className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
               Compare Audits
             </h1>
-            <p className="text-slate-500 mt-1">
+            <p className="text-slate-500 dark:text-slate-400 mt-1">
               Compare scores and issues between audits
             </p>
           </div>

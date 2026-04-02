@@ -73,7 +73,7 @@ export default function ComingSoonSignupsPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Coming Soon Signups | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Coming Soon Signups | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -82,7 +82,7 @@ export default function ComingSoonSignupsPage() {
               <Link to="/admin/settings" className="text-slate-500 hover:text-white transition">
                 <ArrowLeft className="w-4 h-4" />
               </Link>
-              <h1 className="text-3xl font-bold text-white tracking-tight flex items-center space-x-2" style={{ fontFamily: "'Instrument Serif', serif" }}>
+              <h1 className="text-3xl font-bold text-white tracking-tight flex items-center space-x-2 font-display">
                 <Clock className="w-6 h-6" />
                 <span>Coming Soon Signups</span>
               </h1>

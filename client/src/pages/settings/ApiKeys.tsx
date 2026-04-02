@@ -121,7 +121,7 @@ export default function ApiKeysPage() {
 
   return (
     <>
-      <Helmet><title>API Keys | PagePulser</title></Helmet>
+      <Helmet><title>API Keys | Kritano</title></Helmet>
       <div className="space-y-6">
       {/* Info banner */}
       <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-4">
@@ -130,7 +130,7 @@ export default function ApiKeysPage() {
           <div>
             <h4 className="text-sm font-medium text-indigo-900 dark:text-indigo-300">API Access</h4>
             <p className="text-sm text-indigo-700 dark:text-indigo-400 mt-1">
-              Use API keys to integrate PagePulser with your CI/CD pipeline, custom scripts, or other tools.
+              Use API keys to integrate Kritano with your CI/CD pipeline, custom scripts, or other tools.
               Keys have access to create audits, view results, and export data.
             </p>
           </div>
@@ -219,7 +219,7 @@ export default function ApiKeysPage() {
           </div>
           <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No API keys yet</h3>
           <p className="text-slate-500 dark:text-slate-500 mb-6 max-w-sm mx-auto">
-            Create your first API key to start integrating PagePulser with your applications.
+            Create your first API key to start integrating Kritano with your applications.
           </p>
           <Button onClick={() => setShowCreateModal(true)}>
             <Plus className="w-4 h-4 mr-2" />
@@ -357,7 +357,7 @@ export default function ApiKeysPage() {
                     <h4 className="text-sm font-medium text-slate-900 dark:text-white mb-2">Quick Start</h4>
                     <code className="block text-xs bg-slate-900 text-slate-100 p-2 rounded overflow-x-auto">
                       curl -H "Authorization: Bearer {newKeySecret.slice(0, 20)}..." \<br />
-                      &nbsp;&nbsp;https://app.pagepulser.io/api/v1/audits
+                      &nbsp;&nbsp;https://app.kritano.io/api/v1/audits
                     </code>
                   </div>
 

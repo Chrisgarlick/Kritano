@@ -163,7 +163,7 @@ E-commerce accessibility is about one thing: making sure everyone can complete t
 
 In my honest opinion, the biggest mistake online retailers make isn't ignoring accessibility entirely — it's assuming their platform handles it. Shopify, WooCommerce, Magento — they all provide a reasonable starting point, but your theme, your plugins, your custom components, and your content all introduce issues that only you can fix.
 
-If you want to see where your shop stands, run an accessibility audit on PagePulser. It'll flag the specific issues across your product pages, checkout, and navigation — and help you prioritise the fixes that remove the biggest barriers for the most customers.
+If you want to see where your shop stands, run an accessibility audit on Kritano. It'll flag the specific issues across your product pages, checkout, and navigation — and help you prioritise the fixes that remove the biggest barriers for the most customers.
 
 <!-- Internal linking suggestions:
 - Link "alt text" to the complete guide to image alt text post
@@ -171,5 +171,5 @@ If you want to see where your shop stands, run an accessibility audit on PagePul
 - Link "form labels" to the understanding accessibility scores post
 - Link "European Accessibility Act" to the web accessibility 2026 post
 - Link "Core Web Vitals" to the CWV explainer post
-- Link "PagePulser audit" to the main product/pricing page
+- Link "Kritano audit" to the main product/pricing page
 -->

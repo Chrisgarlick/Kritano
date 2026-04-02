@@ -21,6 +21,12 @@ export class UserService {
       [input.email, passwordHash, input.firstName, input.lastName, input.companyName || null]
     );
 
+    // Create free subscription for new user
+    await pool.query(
+      `INSERT INTO subscriptions (user_id, tier, status) VALUES ($1, 'free', 'active')`,
+      [result.rows[0].id]
+    );
+
     return this.toSafeUser(result.rows[0]);
   }
 
@@ -175,6 +181,12 @@ export class UserService {
         profile.lastName || '',
         profile.avatarUrl,
       ]
+    );
+
+    // Create free subscription for new OAuth user
+    await pool.query(
+      `INSERT INTO subscriptions (user_id, tier, status) VALUES ($1, 'free', 'active')`,
+      [result.rows[0].id]
     );
 
     return this.toSafeUser(result.rows[0]);

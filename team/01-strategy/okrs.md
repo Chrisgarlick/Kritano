@@ -1,6 +1,6 @@
 <!-- Version: 1 | Department: strategy | Updated: 2026-03-24 -->
 
-# Vision, Mission, Values & OKRs — PagePulser
+# Vision, Mission, Values & OKRs — Kritano
 
 ## Vision
 
@@ -45,7 +45,7 @@ A working feature with rough edges beats a perfect spec in a document. The found
 
 ### Objective 3: Establish content intelligence as the positioning differentiator
 - **KR1:** Content Quality Score is the #1 cited feature in founding member feedback
-- **KR2:** 3 organic blog posts/social mentions reference PagePulser's content analysis specifically
+- **KR2:** 3 organic blog posts/social mentions reference Kritano's content analysis specifically
 - **KR3:** E-E-A-T and AEO check categories have ≥ 70% usage rate among Pro+ users
 - **KR4:** At least 1 agency founding member uses content scores in client-facing reports
 

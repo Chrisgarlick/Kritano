@@ -213,19 +213,19 @@ A row of coloured score badges matching the homepage hero:
 </div>
 ```
 
-## PagePulser Wordmark
+## Kritano Wordmark
 
 When branding is appropriate:
 
 ```html
 <span style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;color:#4F46E5;">
-  PagePulser
+  Kritano
 </span>
 ```
 
 On dark backgrounds:
 ```html
 <span style="font-family:'Instrument Serif',Georgia,serif;font-size:32px;color:#FFFFFF;">
-  PagePulser
+  Kritano
 </span>
 ```

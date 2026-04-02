@@ -13,7 +13,7 @@
 
 Stop wasting time on things that don't work. Focus on what does.
 
-**Hashtags:** #SEO #SEOMyths #TechnicalSEO #GoogleRanking #WebDesign #PagePulser #DigitalMarketing #SearchEngine #ContentMarketing #WebDevelopment #SEOTips #OrganicTraffic #SearchRankings #MarketingTips #DevTips #WebStandards #HTTPS #KeywordResearch
+**Hashtags:** #SEO #SEOMyths #TechnicalSEO #GoogleRanking #WebDesign #Kritano #DigitalMarketing #SearchEngine #ContentMarketing #WebDevelopment #SEOTips #OrganicTraffic #SearchRankings #MarketingTips #DevTips #WebStandards #HTTPS #KeywordResearch
 
 ---
 
@@ -26,7 +26,7 @@ Google has confirmed what works and what doesn't. Keyword stuffing, ignoring HTT
 
 Save this and share it with your marketing team.
 
-**Hashtags:** #SEO #SEOMyths #DigitalMarketing #GoogleRanking #TechnicalSEO #PagePulser #WebDesign #SearchEngine #ContentMarketing #WebDevelopment #OrganicTraffic #SEOTips #MarketingMyths #SearchRankings #DevTips #HTTPS #WebStandards #MarketingTips
+**Hashtags:** #SEO #SEOMyths #DigitalMarketing #GoogleRanking #TechnicalSEO #Kritano #WebDesign #SearchEngine #ContentMarketing #WebDevelopment #OrganicTraffic #SEOTips #MarketingMyths #SearchRankings #DevTips #HTTPS #WebStandards #MarketingTips
 
 ---
 
@@ -39,4 +39,4 @@ We've put 5 of the most persistent SEO myths side by side with what Google actua
 
 Which one surprised you most? Drop it in the comments.
 
-**Hashtags:** #SEO #SEOMyths #TechnicalSEO #GoogleRanking #PagePulser #DigitalMarketing #WebDesign #SearchEngine #ContentMarketing #WebDevelopment #SEOTips #OrganicTraffic #MythBusting #MarketingTips #SearchRankings #DevTips #HTTPS #WebStandards #KeywordResearch #MarketingMyths
+**Hashtags:** #SEO #SEOMyths #TechnicalSEO #GoogleRanking #Kritano #DigitalMarketing #WebDesign #SearchEngine #ContentMarketing #WebDevelopment #SEOTips #OrganicTraffic #MythBusting #MarketingTips #SearchRankings #DevTips #HTTPS #WebStandards #KeywordResearch #MarketingMyths

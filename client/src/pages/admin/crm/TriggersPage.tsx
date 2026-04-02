@@ -243,12 +243,12 @@ export default function TriggersPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Triggers | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Triggers | Kritano</title></Helmet>
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div className="flex items-center space-x-3 mb-4 sm:mb-0">
           <Zap className="w-6 h-6 text-indigo-400" />
-          <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>CRM Triggers</h1>
+          <h1 className="text-3xl font-bold text-white tracking-tight font-display">CRM Triggers</h1>
         </div>
         <button
           onClick={handleRefresh}

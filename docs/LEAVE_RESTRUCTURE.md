@@ -1,4 +1,4 @@
-# pagepulser - Site-Centric Restructure Plan
+# kritano - Site-Centric Restructure Plan
 
 A proposal to reorganize the application around "Sites" as the primary organizational unit, providing clearer audit history, site-specific competitors, and better UX.
 
@@ -781,7 +781,7 @@ After implementation, measure:
 
 ## Summary
 
-This restructure transforms pagepulser from an "audit tool" into a "website monitoring platform" by:
+This restructure transforms kritano from an "audit tool" into a "website monitoring platform" by:
 
 1. Making **Sites** the primary organizational unit
 2. Scoping **Competitors** to specific sites for relevance

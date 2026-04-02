@@ -255,9 +255,9 @@ export const EMAIL_BRAND_DEFAULTS: EmailBranding = {
   footerTextColor: '#64748b',
   linkColor: '#4f46e5',
   dividerColor: '#e2e8f0',
-  companyName: 'PagePulser',
+  companyName: 'Kritano',
   logoUrl: null,
-  footerText: 'Powered by PagePulser',
+  footerText: 'Powered by Kritano',
 };
 
 // ========================================

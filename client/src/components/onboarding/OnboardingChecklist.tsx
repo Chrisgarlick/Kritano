@@ -14,7 +14,7 @@ import { Heading, Body } from '../ui/Typography';
 import type { SiteWithStats } from '../../types/site.types';
 import type { Audit } from '../../types/audit.types';
 
-const DISMISSED_KEY = 'pagepulser_onboarding_dismissed';
+const DISMISSED_KEY = 'kritano_onboarding_dismissed';
 
 interface OnboardingChecklistProps {
   sites: SiteWithStats[];
@@ -58,7 +58,7 @@ export function OnboardingChecklist({ sites, audits, loading }: OnboardingCheckl
       title: 'Verify your domain',
       description: 'Prove ownership to unlock full scanning capabilities.',
       complete: hasVerified,
-      href: hasSite ? `/sites/${sites[0]?.id}` : '/sites',
+      href: '/settings/sites',
       ctaLabel: 'Verify',
       icon: <ShieldCheck className="w-5 h-5" />,
     },
@@ -128,7 +128,7 @@ export function OnboardingChecklist({ sites, audits, loading }: OnboardingCheckl
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div>
-            <Heading size="sm" as="h3">Get started with PagePulser</Heading>
+            <Heading size="sm" as="h3">Get started with Kritano</Heading>
             <Body size="sm" muted className="mt-0.5">
               {completedCount} of 3 complete
             </Body>

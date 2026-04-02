@@ -12,8 +12,8 @@ export const ARGON2_CONFIG: Argon2Options = {
 // JWT configuration
 export const JWT_CONFIG = {
   accessTokenExpiry: 14400 as const, // 4 hours in seconds
-  issuer: 'pagepulser.com',
-  audience: 'pagepulser-api',
+  issuer: 'kritano.com',
+  audience: 'kritano-api',
   algorithm: 'HS256' as const,
 };
 

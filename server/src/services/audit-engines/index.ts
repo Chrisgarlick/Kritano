@@ -193,6 +193,81 @@ export class AuditEngineCoordinator {
   }
 
   /**
+   * Analyze a single page with mobile-only engines (accessibility + performance).
+   * Called during the mobile audit pass — does not run SEO, security, content, or structured data.
+   */
+  async analyzeMobilePage(
+    crawlResult: CrawlResult,
+    page: Page | null,
+    config: AuditConfig
+  ): Promise<{ findings: Finding[] }> {
+    const findings: Finding[] = [];
+    const auditPromises: Promise<Finding[]>[] = [];
+
+    // Accessibility on mobile viewport (axe-core adapts automatically)
+    if (config.checkAccessibility && page) {
+      const wcagConfig: WcagConfig = {
+        version: config.wcagVersion || '2.2',
+        level: config.wcagLevel || 'AA',
+      };
+      const accessibilityEngine = createAccessibilityEngine(wcagConfig);
+      auditPromises.push(accessibilityEngine.analyze(page));
+    }
+
+    // Performance with mobile-specific rules
+    if (config.checkPerformance) {
+      auditPromises.push(this.performanceEngine.analyzeMobile(crawlResult, page));
+    }
+
+    const results = await Promise.all(auditPromises);
+    for (const result of results) {
+      findings.push(...result);
+    }
+
+    // Tag all findings as mobile
+    for (const finding of findings) {
+      finding.deviceType = 'mobile';
+    }
+
+    return { findings };
+  }
+
+  /**
+   * Deduplicate findings that appear on both desktop and mobile passes.
+   * Identical findings (same rule_id + page + selector) get merged to device_type='both',
+   * and the mobile duplicate is removed.
+   */
+  async deduplicateFindings(auditJobId: string): Promise<number> {
+    const result = await this.pool.query(`
+      WITH duplicates AS (
+        SELECT f1.id as desktop_id, f2.id as mobile_id
+        FROM audit_findings f1
+        JOIN audit_findings f2
+          ON f1.audit_job_id = f2.audit_job_id
+          AND f1.audit_page_id IS NOT DISTINCT FROM f2.audit_page_id
+          AND f1.rule_id = f2.rule_id
+          AND COALESCE(f1.selector, '') = COALESCE(f2.selector, '')
+        WHERE f1.device_type = 'desktop'
+          AND f2.device_type = 'mobile'
+          AND f1.audit_job_id = $1
+      ),
+      updated AS (
+        UPDATE audit_findings SET device_type = 'both'
+        WHERE id IN (SELECT desktop_id FROM duplicates)
+        RETURNING id
+      ),
+      deleted AS (
+        DELETE FROM audit_findings
+        WHERE id IN (SELECT mobile_id FROM duplicates)
+        RETURNING id
+      )
+      SELECT (SELECT COUNT(*) FROM deleted) as deduped_count
+    `, [auditJobId]);
+
+    return parseInt(result.rows[0]?.deduped_count || '0');
+  }
+
+  /**
    * Probe for exposed sensitive files (run once per audit)
    */
   async probeExposedFiles(baseUrl: string): Promise<Finding[]> {
@@ -205,7 +280,8 @@ export class AuditEngineCoordinator {
   async storeFindings(
     auditJobId: string,
     pageId: string | null,
-    findings: Finding[]
+    findings: Finding[],
+    deviceType: 'desktop' | 'mobile' = 'desktop'
   ): Promise<void> {
     if (findings.length === 0) return;
 
@@ -232,20 +308,22 @@ export class AuditEngineCoordinator {
         'impact' in finding ? finding.impact : null,
         'wcagCriteria' in finding ? finding.wcagCriteria : null,
         finding.helpUrl || null,
+        finding.deviceType || deviceType,
       ];
 
       values.push(...params);
       placeholders.push(
-        `($${paramIndex}, $${paramIndex + 1}, $${paramIndex + 2}, $${paramIndex + 3}, $${paramIndex + 4}, $${paramIndex + 5}, $${paramIndex + 6}, $${paramIndex + 7}, $${paramIndex + 8}, $${paramIndex + 9}, $${paramIndex + 10}, $${paramIndex + 11}, $${paramIndex + 12}, $${paramIndex + 13}, $${paramIndex + 14}, $${paramIndex + 15})`
+        `($${paramIndex}, $${paramIndex + 1}, $${paramIndex + 2}, $${paramIndex + 3}, $${paramIndex + 4}, $${paramIndex + 5}, $${paramIndex + 6}, $${paramIndex + 7}, $${paramIndex + 8}, $${paramIndex + 9}, $${paramIndex + 10}, $${paramIndex + 11}, $${paramIndex + 12}, $${paramIndex + 13}, $${paramIndex + 14}, $${paramIndex + 15}, $${paramIndex + 16})`
       );
-      paramIndex += 16;
+      paramIndex += 17;
     }
 
     const query = `
       INSERT INTO audit_findings (
         audit_job_id, audit_page_id, category, rule_id, rule_name,
         severity, message, description, recommendation, selector,
-        line_number, column_number, snippet, impact, wcag_criteria, help_url
+        line_number, column_number, snippet, impact, wcag_criteria, help_url,
+        device_type
       ) VALUES ${placeholders.join(', ')}
       ON CONFLICT DO NOTHING
     `;

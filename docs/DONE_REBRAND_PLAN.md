@@ -1,8 +1,8 @@
-# pagepulser Rebrand Plan
+# kritano Rebrand Plan
 
 ## Overview
 
-This document outlines the complete plan for rebranding from **Audit Armour** to **pagepulser** across the entire codebase, infrastructure, and business materials. This should also include changing the name of the database and any references to it in the worker logs etc.
+This document outlines the complete plan for rebranding from **Audit Armour** to **kritano** across the entire codebase, infrastructure, and business materials. This should also include changing the name of the database and any references to it in the worker logs etc.
 
 **Scope**: 40+ files across 16 categories
 
@@ -184,38 +184,38 @@ export const CATEGORY_COLORS = {
 
 | File | Change |
 |------|--------|
-| `package.json` | `"name": "pagepulser"` |
-| `client/package.json` | `"name": "pagepulser-client"` |
-| `server/package.json` | `"name": "pagepulser-server"`, description update |
+| `package.json` | `"name": "kritano"` |
+| `client/package.json` | `"name": "kritano-client"` |
+| `server/package.json` | `"name": "kritano-server"`, description update |
 
 ### 2.2 HTML & Meta Tags
 
 **File:** `client/index.html`
 
 ```html
-<title>pagepulser - See What Others Miss</title>
-<meta name="description" content="pagepulser reveals hidden SEO, accessibility, security, and performance issues on your website. See what others miss." />
+<title>kritano - See What Others Miss</title>
+<meta name="description" content="kritano reveals hidden SEO, accessibility, security, and performance issues on your website. See what others miss." />
 ```
 
 ### 2.3 React Components
 
 | File | Line | Change |
 |------|------|--------|
-| `client/src/pages/Home.tsx` | 14 | `AuditArmor` → `pagepulser` |
-| `client/src/pages/Home.tsx` | 96 | Footer copyright → `pagepulser` |
-| `client/src/pages/auth/Login.tsx` | 8 | `AuditArmor` → `pagepulser` |
-| `client/src/pages/auth/Register.tsx` | 8 | `AuditArmor` → `pagepulser` |
-| `client/src/pages/auth/RegisterSuccess.tsx` | 13 | `AuditArmor` → `pagepulser` |
-| `client/src/components/layout/DashboardLayout.tsx` | 59 | Logo text → `pagepulser` |
-| `client/src/pages/invitations/AcceptInvitation.tsx` | 140 | `AuditArmor` → `pagepulser` |
-| `client/src/pages/settings/ApiKeys.tsx` | 126, 139 | `Audit Armour` → `pagepulser` |
+| `client/src/pages/Home.tsx` | 14 | `AuditArmor` → `kritano` |
+| `client/src/pages/Home.tsx` | 96 | Footer copyright → `kritano` |
+| `client/src/pages/auth/Login.tsx` | 8 | `AuditArmor` → `kritano` |
+| `client/src/pages/auth/Register.tsx` | 8 | `AuditArmor` → `kritano` |
+| `client/src/pages/auth/RegisterSuccess.tsx` | 13 | `AuditArmor` → `kritano` |
+| `client/src/components/layout/DashboardLayout.tsx` | 59 | Logo text → `kritano` |
+| `client/src/pages/invitations/AcceptInvitation.tsx` | 140 | `AuditArmor` → `kritano` |
+| `client/src/pages/settings/ApiKeys.tsx` | 126, 139 | `Audit Armour` → `kritano` |
 
 ### 2.4 LocalStorage Keys
 
 **File:** `client/src/contexts/OrganizationContext.tsx`
 
 ```typescript
-const STORAGE_KEY = 'pagepulser-current-org';
+const STORAGE_KEY = 'kritano-current-org';
 ```
 
 ---
@@ -228,13 +228,13 @@ All crawler identification needs updating:
 
 | File | Line(s) | New Value |
 |------|---------|-----------|
-| `server/src/types/spider.types.ts` | 21 | `'pagepulser/1.0 (+https://pagepulser.io/bot)'` |
-| `server/src/routes/audits/index.ts` | 364 | `'pagepulser/1.0 (URL Check)'` |
-| `server/src/services/queue/audit-worker.service.ts` | 45, 1133, 1148 | `'pagepulser/1.0 (+https://pagepulser.io/bot)'` |
-| `server/src/services/spider/sitemap-parser.service.ts` | 32 | `'pagepulser/1.0'` |
-| `server/src/services/spider/robots-parser.service.ts` | 17, 256 | `'pagepulser'` |
-| `server/src/services/spider/coordinator.service.ts` | 17 | `'pagepulser/1.0 (+https://pagepulser.io/bot)'` |
-| `server/src/services/audit-engines/security.engine.ts` | 623, 639, 676 | `'pagepulser/1.0 Security Scanner'` |
+| `server/src/types/spider.types.ts` | 21 | `'kritano/1.0 (+https://kritano.io/bot)'` |
+| `server/src/routes/audits/index.ts` | 364 | `'kritano/1.0 (URL Check)'` |
+| `server/src/services/queue/audit-worker.service.ts` | 45, 1133, 1148 | `'kritano/1.0 (+https://kritano.io/bot)'` |
+| `server/src/services/spider/sitemap-parser.service.ts` | 32 | `'kritano/1.0'` |
+| `server/src/services/spider/robots-parser.service.ts` | 17, 256 | `'kritano'` |
+| `server/src/services/spider/coordinator.service.ts` | 17 | `'kritano/1.0 (+https://kritano.io/bot)'` |
+| `server/src/services/audit-engines/security.engine.ts` | 623, 639, 676 | `'kritano/1.0 Security Scanner'` |
 
 ### 3.2 Email Service
 
@@ -244,22 +244,22 @@ Update all brand references:
 
 ```typescript
 // Line 23
-this.fromAddress = process.env.EMAIL_FROM || 'pagepulser <noreply@pagepulser.io>';
+this.fromAddress = process.env.EMAIL_FROM || 'kritano <noreply@kritano.io>';
 
 // Line 124 - Verification email subject
-const subject = 'Verify your pagepulser account';
+const subject = 'Verify your kritano account';
 
 // Line 134 - Email header
-<h1 style="color: #4f46e5; margin: 0;">pagepulser</h1>
+<h1 style="color: #4f46e5; margin: 0;">kritano</h1>
 
 // Line 139 - Welcome text
-<p>Welcome to pagepulser! Please verify your email address...</p>
+<p>Welcome to kritano! Please verify your email address...</p>
 
 // Line 152 - Footer
-<p>If you didn't create an account with pagepulser...</p>
+<p>If you didn't create an account with kritano...</p>
 
 // Line 166 - Password reset
-const subject = 'Reset your pagepulser password';
+const subject = 'Reset your kritano password';
 
 // Update all email headers to use indigo-600 (#4f46e5) instead of blue
 ```
@@ -269,8 +269,8 @@ const subject = 'Reset your pagepulser password';
 **File:** `server/src/config/auth.config.ts`
 
 ```typescript
-issuer: 'pagepulser.io',
-audience: 'pagepulser-api',
+issuer: 'kritano.io',
+audience: 'kritano-api',
 ```
 
 ### 3.4 API Responses
@@ -279,13 +279,13 @@ audience: 'pagepulser-api',
 
 ```typescript
 // Line 81
-res.json({ status: 'ok', service: 'pagepulser', timestamp: new Date().toISOString() });
+res.json({ status: 'ok', service: 'kritano', timestamp: new Date().toISOString() });
 
 // Line 87
-name: 'pagepulser API',
+name: 'kritano API',
 
 // Line 153
-console.log(`👁️  pagepulser server running on http://localhost:${port}`);
+console.log(`👁️  kritano server running on http://localhost:${port}`);
 ```
 
 ### 3.5 Worker Process
@@ -294,10 +294,10 @@ console.log(`👁️  pagepulser server running on http://localhost:${port}`);
 
 ```typescript
 // Line 2
-* pagepulser Worker Process
+* kritano Worker Process
 
 // Line 264
-console.log('👁️  pagepulser Worker');
+console.log('👁️  kritano Worker');
 ```
 
 ### 3.6 PDF Reports
@@ -306,13 +306,13 @@ console.log('👁️  pagepulser Worker');
 
 ```typescript
 // Line 1108
-Author: 'pagepulser',
+Author: 'kritano',
 
 // Line 1110
-Creator: 'pagepulser'
+Creator: 'kritano'
 
 // Line 1523
-doc.text('Generated by pagepulser', ...)
+doc.text('Generated by kritano', ...)
 ```
 
 ### 3.7 API Documentation
@@ -320,7 +320,7 @@ doc.text('Generated by pagepulser', ...)
 **File:** `server/src/routes/docs/index.ts`
 
 Multiple updates needed:
-- Page title: `API Documentation | pagepulser`
+- Page title: `API Documentation | kritano`
 - Meta description
 - All brand text references
 - Update primary color from `#2563eb` to `#4f46e5`
@@ -337,11 +337,11 @@ Multiple updates needed:
 ```yaml
 services:
   db:
-    container_name: pagepulser-db
+    container_name: kritano-db
     environment:
-      POSTGRES_USER: pagepulser
-      POSTGRES_PASSWORD: pagepulser_dev_password
-      POSTGRES_DB: pagepulser
+      POSTGRES_USER: kritano
+      POSTGRES_PASSWORD: kritano_dev_password
+      POSTGRES_DB: kritano
 ```
 
 ### 4.2 Environment Files
@@ -349,36 +349,36 @@ services:
 **File:** `server/.env.example`
 
 ```bash
-DATABASE_URL=postgresql://pagepulser:pagepulser_dev_password@localhost:5433/pagepulser
-EMAIL_FROM=pagepulser <noreply@yourdomain.com>
+DATABASE_URL=postgresql://kritano:kritano_dev_password@localhost:5433/kritano
+EMAIL_FROM=kritano <noreply@yourdomain.com>
 ```
 
 **File:** `server/.env`
 
 ```bash
-DATABASE_URL=postgresql://pagepulser:pagepulser_dev_password@localhost:5433/pagepulser
-EMAIL_FROM=pagepulser <noreply@yourdomain.com>
+DATABASE_URL=postgresql://kritano:kritano_dev_password@localhost:5433/kritano
+EMAIL_FROM=kritano <noreply@yourdomain.com>
 ```
 
 ### 4.3 CLI Helper Script
 
-**File:** `aa` → Rename to `ss` (pagepulser)
+**File:** `aa` → Rename to `ss` (kritano)
 
 ```bash
 #!/bin/bash
 
-# pagepulser CLI helper
+# kritano CLI helper
 
-DB_CONTAINER="pagepulser-db"
-DB_USER="pagepulser"
-DB_NAME="pagepulser"
+DB_CONTAINER="kritano-db"
+DB_USER="kritano"
+DB_NAME="kritano"
 
 # Update all echo messages
-echo "Starting pagepulser..."
-echo "pagepulser is ready!"
-echo "Stopping pagepulser..."
-echo "Resetting pagepulser (deleting all data)..."
-echo "pagepulser CLI"
+echo "Starting kritano..."
+echo "kritano is ready!"
+echo "Stopping kritano..."
+echo "Resetting kritano (deleting all data)..."
+echo "kritano CLI"
 ```
 
 ### 4.4 Database Schema Comment
@@ -386,7 +386,7 @@ echo "pagepulser CLI"
 **File:** `server/src/db/schema.sql`
 
 ```sql
--- pagepulser Database Schema
+-- kritano Database Schema
 ```
 
 ---
@@ -397,7 +397,7 @@ echo "pagepulser CLI"
 
 | File | Change |
 |------|--------|
-| `PROJECT.md` | `AuditArmor` → `pagepulser` throughout |
+| `PROJECT.md` | `AuditArmor` → `kritano` throughout |
 | `DEVELOPMENT.md` | Update all references, container names |
 | `docs/SCRAPER_V1.md` | Header update |
 | `docs/SCRAPER_V2.md` | Header update, CLI examples |
@@ -455,8 +455,8 @@ client/src/assets/
 
 ```json
 {
-  "name": "pagepulser",
-  "short_name": "pagepulser",
+  "name": "kritano",
+  "short_name": "kritano",
   "description": "See What Others Miss",
   "start_url": "/",
   "display": "standalone",
@@ -581,7 +581,7 @@ If issues arise:
 1. **Git**: All changes should be in a single branch, easy to revert
 2. **Database**: Keep backup before migration
 3. **Docker**: Old container names still work if not removed
-4. **DNS**: pagepulser.io and auditarmor.io can both point to same infrastructure during transition
+4. **DNS**: kritano.io and auditarmor.io can both point to same infrastructure during transition
 
 ---
 

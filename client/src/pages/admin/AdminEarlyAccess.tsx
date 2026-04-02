@@ -116,12 +116,12 @@ export default function AdminEarlyAccessPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Early Access | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Early Access | Kritano</title></Helmet>
       {/* Header */}
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">
               Early Access
             </h1>
             <p className="text-sm text-slate-500 mt-1">Founding member campaign</p>

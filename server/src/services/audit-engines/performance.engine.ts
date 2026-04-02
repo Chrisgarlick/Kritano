@@ -16,12 +16,13 @@ interface PerformanceRule {
 // Context passed to rule checks
 interface PerformanceContext {
   url: string;
-  $: cheerio.Root;
+  $: ReturnType<typeof cheerio.load>;
   html: string;
   headers: Record<string, string>;
   responseTimeMs: number;
   pageSizeBytes: number;
   resources: ResourceInfo[];
+  deviceType?: 'desktop' | 'mobile';
 }
 
 // Thresholds (based on Web Vitals recommendations)
@@ -258,7 +259,7 @@ export class PerformanceEngine {
       check: (ctx) => {
         const findings: PerformanceFinding[] = [];
 
-        ctx.$('img').each((_, el) => {
+        ctx.$('img').each((_: number, el: any) => {
           const width = ctx.$(el).attr('width');
           const height = ctx.$(el).attr('height');
           const src = ctx.$(el).attr('src') || '';
@@ -289,7 +290,7 @@ export class PerformanceEngine {
       check: (ctx) => {
         const findings: PerformanceFinding[] = [];
 
-        ctx.$('head script[src]').each((_, el) => {
+        ctx.$('head script[src]').each((_: number, el: any) => {
           const async = ctx.$(el).attr('async');
           const defer = ctx.$(el).attr('defer');
           const src = ctx.$(el).attr('src') || '';
@@ -322,7 +323,7 @@ export class PerformanceEngine {
         const totalImages = images.length;
         let lazyLoadedCount = 0;
 
-        images.each((_, el) => {
+        images.each((_: number, el: any) => {
           if (ctx.$(el).attr('loading') === 'lazy') {
             lazyLoadedCount++;
           }
@@ -350,11 +351,11 @@ export class PerformanceEngine {
         let inlineScriptSize = 0;
         let inlineStyleSize = 0;
 
-        ctx.$('script:not([src])').each((_, el) => {
+        ctx.$('script:not([src])').each((_: number, el: any) => {
           inlineScriptSize += ctx.$(el).text().length;
         });
 
-        ctx.$('style').each((_, el) => {
+        ctx.$('style').each((_: number, el: any) => {
           inlineStyleSize += ctx.$(el).text().length;
         });
 
@@ -456,7 +457,7 @@ export class PerformanceEngine {
         let imagesWithoutSrcset = 0;
         let totalContentImages = 0;
 
-        ctx.$('img[src]').each((_, el) => {
+        ctx.$('img[src]').each((_: number, el: any) => {
           const src = ctx.$(el).attr('src') || '';
           if (src.startsWith('data:') || src.includes('tracking') || src.includes('pixel')) return;
 
@@ -486,7 +487,7 @@ export class PerformanceEngine {
       check: (ctx) => {
         const findings: PerformanceFinding[] = [];
 
-        ctx.$('head link[rel="stylesheet"]').each((_, el) => {
+        ctx.$('head link[rel="stylesheet"]').each((_: number, el: any) => {
           const href = ctx.$(el).attr('href') || '';
           const media = ctx.$(el).attr('media');
 
@@ -539,7 +540,7 @@ export class PerformanceEngine {
       check: (ctx) => {
         // Check @font-face in inline styles
         const styleContent: string[] = [];
-        ctx.$('style').each((_, el) => {
+        ctx.$('style').each((_: number, el: any) => {
           styleContent.push(ctx.$(el).text());
         });
 
@@ -555,7 +556,7 @@ export class PerformanceEngine {
 
         // Also check for Google Fonts without display=swap
         const findings: PerformanceFinding[] = [];
-        ctx.$('link[href*="fonts.googleapis.com"]').each((_, el) => {
+        ctx.$('link[href*="fonts.googleapis.com"]').each((_: number, el: any) => {
           const href = ctx.$(el).attr('href') || '';
           if (!href.includes('display=swap')) {
             findings.push(this.createFinding('missing-font-display', 'Google Fonts Missing display=swap', 'minor',
@@ -652,6 +653,7 @@ export class PerformanceEngine {
       responseTimeMs: crawlResult.responseTimeMs,
       pageSizeBytes: crawlResult.pageSizeBytes,
       resources: crawlResult.resources,
+      deviceType: crawlResult.deviceType,
     };
 
     const findings: PerformanceFinding[] = [];
@@ -812,6 +814,205 @@ export class PerformanceEngine {
       threshold,
       helpUrl: rule?.helpUrl,
     };
+  }
+
+  // ─── Mobile-specific rules ─────────────────────────────────────────────
+
+  private mobileRules: PerformanceRule[] = [
+    // Missing viewport meta tag
+    {
+      id: 'perf-mobile-viewport',
+      name: 'Missing or Malformed Viewport Meta Tag',
+      description: 'Pages without a proper viewport meta tag do not render correctly on mobile devices',
+      severity: 'critical',
+      helpUrl: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag',
+      check: (ctx) => {
+        const viewportMeta = ctx.$('meta[name="viewport"]');
+        if (viewportMeta.length === 0) {
+          return this.createFinding('perf-mobile-viewport', 'Missing Viewport Meta Tag', 'critical',
+            'No <meta name="viewport"> found. Mobile browsers will render the page at desktop width and scale down.',
+            'Add <meta name="viewport" content="width=device-width, initial-scale=1"> to the <head>');
+        }
+        const content = viewportMeta.attr('content') || '';
+        if (!content.includes('width=device-width')) {
+          return this.createFinding('perf-mobile-viewport', 'Viewport Meta Missing device-width', 'serious',
+            `Viewport meta content is "${content}" but does not include width=device-width.`,
+            'Set viewport content to "width=device-width, initial-scale=1"');
+        }
+        return null;
+      },
+    },
+
+    // Small font sizes on mobile
+    {
+      id: 'perf-mobile-font-size',
+      name: 'Small Base Font Size for Mobile',
+      description: 'Body font size below 16px causes iOS to zoom in on form inputs',
+      severity: 'moderate',
+      helpUrl: 'https://developer.chrome.com/docs/lighthouse/seo/font-size',
+      check: (ctx) => {
+        // Check inline styles on body for font-size < 16px
+        const bodyStyle = ctx.$('body').attr('style') || '';
+        const fontMatch = bodyStyle.match(/font-size:\s*(\d+)px/);
+        if (fontMatch && parseInt(fontMatch[1]) < 16) {
+          return this.createFinding('perf-mobile-font-size', 'Small Base Font Size', 'moderate',
+            `Body font-size is ${fontMatch[1]}px. Font sizes below 16px cause iOS Safari to zoom in on form inputs, hurting usability.`,
+            'Set body font-size to at least 16px for mobile, or use a responsive font-size with clamp()');
+        }
+        // Check for small font in <style> tags targeting body
+        const styleContent = ctx.$('style').text();
+        const cssMatch = styleContent.match(/body\s*\{[^}]*font-size:\s*(\d+)px/);
+        if (cssMatch && parseInt(cssMatch[1]) < 16) {
+          return this.createFinding('perf-mobile-font-size', 'Small Base Font Size', 'moderate',
+            `Body CSS font-size is ${cssMatch[1]}px. Font sizes below 16px cause iOS Safari to zoom in on form inputs.`,
+            'Set body font-size to at least 16px for mobile');
+        }
+        return null;
+      },
+    },
+
+    // Horizontal scroll / content wider than viewport
+    {
+      id: 'perf-mobile-overflow',
+      name: 'Content Wider Than Mobile Viewport',
+      description: 'Elements with fixed widths can cause horizontal scrolling on mobile',
+      severity: 'serious',
+      helpUrl: 'https://web.dev/responsive-web-design-basics/',
+      check: (ctx) => {
+        const findings: PerformanceFinding[] = [];
+        // Check for fixed-width tables
+        ctx.$('table').each((_: number, el: any) => {
+          const style = ctx.$(el).attr('style') || '';
+          const width = ctx.$(el).attr('width');
+          if ((width && parseInt(width) > 500) || style.includes('width:') && !style.includes('max-width')) {
+            findings.push(this.createFinding('perf-mobile-overflow', 'Fixed-Width Table May Overflow', 'moderate',
+              'A table has a fixed width that may exceed the mobile viewport, causing horizontal scrolling.',
+              'Wrap tables in a scrollable container or use responsive table patterns'));
+          }
+        });
+        // Check for elements with inline fixed widths > 400px
+        ctx.$('[style*="width"]').each((_: number, el: any) => {
+          const style = ctx.$(el).attr('style') || '';
+          const match = style.match(/width:\s*(\d+)px/);
+          if (match && parseInt(match[1]) > 500 && !style.includes('max-width')) {
+            const tag = (el as { tagName?: string }).tagName || 'element';
+            findings.push(this.createFinding('perf-mobile-overflow', 'Fixed-Width Element May Overflow', 'moderate',
+              `A <${tag}> has inline width: ${match[1]}px which may exceed mobile viewport width.`,
+              'Use max-width instead of fixed width, or use responsive CSS'));
+          }
+        });
+        return findings.length > 0 ? findings : null;
+      },
+    },
+
+    // Large images without srcset on mobile
+    {
+      id: 'perf-mobile-images',
+      name: 'Large Images Without Mobile Optimization',
+      description: 'Images over 200KB without srcset serve desktop-sized images to mobile devices',
+      severity: 'moderate',
+      helpUrl: 'https://web.dev/serve-responsive-images/',
+      check: (ctx) => {
+        const findings: PerformanceFinding[] = [];
+        const imageResources = ctx.resources.filter(r => r.type === 'image' && r.size > 200 * 1024);
+
+        for (const img of imageResources) {
+          // Check if the corresponding <img> has srcset
+          const imgEl = ctx.$(`img[src*="${new URL(img.url).pathname.split('/').pop()}"]`);
+          if (imgEl.length > 0 && !imgEl.attr('srcset') && !imgEl.attr('sizes')) {
+            findings.push(this.createFinding('perf-mobile-images', 'Large Image Without Mobile Variant', 'moderate',
+              `Image ${img.url.split('/').pop()} is ${Math.round(img.size / 1024)}KB and lacks srcset — mobile devices download the full desktop image.`,
+              'Add srcset and sizes attributes to serve smaller images on mobile',
+              img.size, 200 * 1024));
+          }
+        }
+        return findings.length > 0 ? findings : null;
+      },
+    },
+
+    // 300ms tap delay
+    {
+      id: 'perf-mobile-tap-delay',
+      name: 'Potential 300ms Tap Delay',
+      description: 'Without touch-action or proper viewport, touch interactions have a 300ms delay',
+      severity: 'minor',
+      helpUrl: 'https://developer.chrome.com/blog/300ms-tap-delay-gone-away/',
+      check: (ctx) => {
+        const viewportMeta = ctx.$('meta[name="viewport"]');
+        const content = viewportMeta.attr('content') || '';
+        // 300ms delay is eliminated when viewport has width=device-width
+        if (content.includes('width=device-width')) {
+          return null; // No delay with proper viewport
+        }
+        // Check for touch-action: manipulation in global styles
+        const styles = ctx.$('style').text();
+        if (styles.includes('touch-action') && styles.includes('manipulation')) {
+          return null;
+        }
+        return this.createFinding('perf-mobile-tap-delay', 'Potential 300ms Tap Delay', 'minor',
+          'Without width=device-width in the viewport meta tag, mobile browsers add a 300ms delay to touch events.',
+          'Add <meta name="viewport" content="width=device-width, initial-scale=1"> to eliminate the tap delay');
+      },
+    },
+  ];
+
+  /**
+   * Run mobile-specific performance rules only.
+   * Called during the mobile audit pass.
+   */
+  async analyzeMobile(crawlResult: CrawlResult, page?: Page | null): Promise<PerformanceFinding[]> {
+    const $ = cheerio.load(crawlResult.html);
+
+    const ctx: PerformanceContext = {
+      url: crawlResult.url,
+      $,
+      html: crawlResult.html,
+      headers: crawlResult.headers,
+      responseTimeMs: crawlResult.responseTimeMs,
+      pageSizeBytes: crawlResult.pageSizeBytes,
+      resources: crawlResult.resources,
+      deviceType: 'mobile',
+    };
+
+    const findings: PerformanceFinding[] = [];
+
+    // Run standard rules too (they apply to mobile as well)
+    for (const rule of this.rules) {
+      try {
+        const result = rule.check(ctx);
+        if (result) {
+          if (Array.isArray(result)) findings.push(...result);
+          else findings.push(result);
+        }
+      } catch (error) {
+        console.warn(`Performance rule ${rule.id} failed (mobile):`, error);
+      }
+    }
+
+    // Run mobile-specific rules
+    for (const rule of this.mobileRules) {
+      try {
+        const result = rule.check(ctx);
+        if (result) {
+          if (Array.isArray(result)) findings.push(...result);
+          else findings.push(result);
+        }
+      } catch (error) {
+        console.warn(`Mobile performance rule ${rule.id} failed:`, error);
+      }
+    }
+
+    // Core Web Vitals on mobile viewport
+    if (page) {
+      try {
+        const cwvFindings = await this.measureCoreWebVitals(page);
+        findings.push(...cwvFindings);
+      } catch (error) {
+        console.warn('Mobile Core Web Vitals measurement failed:', error);
+      }
+    }
+
+    return findings;
   }
 }
 

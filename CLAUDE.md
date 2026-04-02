@@ -27,7 +27,7 @@ Migration files live in `server/src/db/migrations/`. The runner (`server/src/db/
 
 ## Project Context
 
-This is **PagePulser**, a web accessibility auditing SaaS platform built with:
+This is **Kritano**, a web accessibility auditing SaaS platform built with:
 - **Backend**: Node.js, Express, PostgreSQL, BullMQ
 - **Frontend**: React, TypeScript, Tailwind CSS
 - **Infrastructure**: Docker, Redis

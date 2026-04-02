@@ -1,6 +1,6 @@
-# PagePulser Privacy & Data Audit
+# Kritano Privacy & Data Audit
 
-> **Purpose**: Complete overview of all personal data collected, stored, and processed by PagePulser. Used for GDPR compliance, privacy policy accuracy, and identifying improvement areas.
+> **Purpose**: Complete overview of all personal data collected, stored, and processed by Kritano. Used for GDPR compliance, privacy policy accuracy, and identifying improvement areas.
 >
 > **Last updated**: 14 March 2026
 
@@ -118,7 +118,7 @@
 | `current_period_start/end` | No | Billing cycle dates |
 | `trial_start/end` | No | Trial period dates |
 
-> **Note**: PagePulser does NOT store credit card numbers, CVVs, or bank details. All payment data is handled entirely by Stripe. We only store Stripe reference IDs.
+> **Note**: Kritano does NOT store credit card numbers, CVVs, or bank details. All payment data is handled entirely by Stripe. We only store Stripe reference IDs.
 
 **Table: `usage_records`**
 
@@ -403,7 +403,7 @@ Signals used:
 ### Data Flow Summary
 
 ```
-User → PagePulser App → PostgreSQL (primary store)
+User → Kritano App → PostgreSQL (primary store)
                      → Redis (ephemeral: queues, rate limits, caching)
                      → Stripe (payment only, via API)
                      → Resend (email delivery only, via API)
@@ -416,7 +416,7 @@ User → PagePulser App → PostgreSQL (primary store)
 
 ## 4. Cookies & Client-Side Storage
 
-### Cookies Set by PagePulser
+### Cookies Set by Kritano
 
 | Cookie | Category | Purpose | Duration | HttpOnly | Secure | SameSite |
 |--------|----------|---------|----------|----------|--------|----------|
@@ -437,7 +437,7 @@ User → PagePulser App → PostgreSQL (primary store)
 
 | Key | Purpose | Contains PII |
 |-----|---------|-------------|
-| `pagepulser-theme` | Light/dark mode preference | No |
+| `kritano-theme` | Light/dark mode preference | No |
 | `sidebar-collapsed` | Dashboard sidebar state | No |
 | `pp-cookie-consent` | Cookie consent preferences | No |
 

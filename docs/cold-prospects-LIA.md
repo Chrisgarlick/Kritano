@@ -1,6 +1,6 @@
 # Legitimate Interest Assessment (LIA) — Cold Prospect Outreach
 
-> **Data Controller**: PagePulser
+> **Data Controller**: Kritano
 > **Assessment Date**: 14 March 2026
 > **Assessor**: [Name / Role]
 > **Review Date**: 14 September 2026 (6-monthly review)
@@ -10,7 +10,7 @@
 
 ## 1. Overview
 
-This Legitimate Interest Assessment covers PagePulser's cold prospect outreach pipeline, which identifies newly registered domains, extracts publicly available business contact information, and sends outreach emails offering website auditing services.
+This Legitimate Interest Assessment covers Kritano's cold prospect outreach pipeline, which identifies newly registered domains, extracts publicly available business contact information, and sends outreach emails offering website auditing services.
 
 ### Processing Activity Summary
 
@@ -32,7 +32,7 @@ This Legitimate Interest Assessment covers PagePulser's cold prospect outreach p
 
 > *Is there a legitimate interest behind the processing?*
 
-### **Yes.** PagePulser has a legitimate commercial interest in:
+### **Yes.** Kritano has a legitimate commercial interest in:
 
 1. **Business growth** — Reaching potential customers who have recently launched websites and may benefit from accessibility auditing, SEO analysis, and compliance checking.
 
@@ -111,7 +111,7 @@ We do **not** collect:
 
 | Factor | Assessment | Mitigation |
 |--------|------------|------------|
-| **No prior relationship** | The business hasn't interacted with PagePulser before | First email clearly states who we are, where we got their details, and how to opt out |
+| **No prior relationship** | The business hasn't interacted with Kritano before | First email clearly states who we are, where we got their details, and how to opt out |
 | **Automated collection** | Domain data is collected automatically | Very low volume (10–20/day); quality-filtered; only generic business emails targeted |
 | **Cross-border processing** | Prospects may be in any jurisdiction | We respect GDPR regardless of location; filter by country where possible |
 | **Sole traders** | Some "businesses" may be sole traders with full consumer GDPR protection | Mitigated by targeting generic mailboxes (info@, hello@) rather than named personal emails. A sole trader's info@ is still a business address. |
@@ -126,7 +126,7 @@ We do **not** collect:
 3. **Single contact per domain**: Each domain receives a maximum of 1 email. No follow-ups, no drip sequences, no repeated contact.
 
 4. **Transparent first contact**: The email includes:
-   - Clear identification of PagePulser as the sender
+   - Clear identification of Kritano as the sender
    - How we found their contact details ("We noticed you recently launched [domain]")
    - A clear, prominent unsubscribe link
    - Our contact details for data protection queries
@@ -163,7 +163,7 @@ Under the Privacy and Electronic Communications Regulations 2003 (as amended), B
 | The email is relevant to their business role | ✅ Website auditing is directly relevant to website owners |
 | Every email includes an opt-out mechanism | ✅ Unsubscribe link in every email |
 | Opt-outs are honoured promptly | ✅ Immediate via `cold_prospect_unsubscribes` |
-| The sender is identified clearly | ✅ PagePulser branding and contact details in every email |
+| The sender is identified clearly | ✅ Kritano branding and contact details in every email |
 | A valid postal address is included | ⚠️ **TODO: Add registered business address to email footer** |
 
 > **Note**: If targeting sole traders, partnerships, or individuals, prior consent (opt-in) is required under PECR. Our filtering attempts to exclude these, but cannot guarantee 100% accuracy.
@@ -310,4 +310,4 @@ WHOIS Data Service (e.g. WhoisDS)
 
 ---
 
-*This document should be stored securely and made available to any supervisory authority upon request. It demonstrates that PagePulser has considered and balanced the rights of data subjects against its legitimate business interests, in accordance with GDPR Article 6(1)(f) and Recital 47.*
+*This document should be stored securely and made available to any supervisory authority upon request. It demonstrates that Kritano has considered and balanced the rights of data subjects against its legitimate business interests, in accordance with GDPR Article 6(1)(f) and Recital 47.*

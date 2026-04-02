@@ -14,7 +14,7 @@ const DEFAULT_SPIDER_CONFIG: SpiderConfig = {
   timeoutMs: 30000,
   respectRobotsTxt: true,
   includeSubdomains: false,
-  userAgent: 'PagePulser-Scanner/1.0 (+https://pagepulser.com/bot)',
+  userAgent: 'KritanoBot/1.0 (+https://kritano.com/bot)',
 };
 
 export interface CoordinatorConfig {

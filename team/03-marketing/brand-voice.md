@@ -1,6 +1,6 @@
-# PagePulser Brand Voice Guide
+# Kritano Brand Voice Guide
 
-> The canonical voice reference for all PagePulser content. Replaces the earlier `docs/marketing/brand_voice.md` (a personal voice analysis of chrisgarlick.com) with a guide built specifically for the PagePulser brand.
+> The canonical voice reference for all Kritano content. Replaces the earlier `docs/marketing/brand_voice.md` (a personal voice analysis of chrisgarlick.com) with a guide built specifically for the Kritano brand.
 
 ---
 
@@ -10,7 +10,7 @@
 
 **Brand archetype:** The Sage — wisdom, insight, and expertise — with an Explorer's curiosity for revealing what's hidden.
 
-**Founder influence:** PagePulser's voice inherits its conversational accessibility and honest opinions from founder Chris Garlick's personal writing style, but channels them through a more precise, data-driven SaaS lens. The warmth stays; the chattiness is tightened.
+**Founder influence:** Kritano's voice inherits its conversational accessibility and honest opinions from founder Chris Garlick's personal writing style, but channels them through a more precise, data-driven SaaS lens. The warmth stays; the chattiness is tightened.
 
 ---
 
@@ -19,7 +19,7 @@
 ### 2.1 Authoritative Without Arrogance
 We know our craft. We state things directly and back claims with evidence. We never lecture, condescend, or use authority as a substitute for clarity.
 
-**PagePulser examples:**
+**Kritano examples:**
 - "The clarity your website deserves."
 - "We'd rather show you 10 real issues than 100 false positives."
 - "It flags the issues that actually affect your rankings, not vanity metrics that don't move the needle."
@@ -27,15 +27,15 @@ We know our craft. We state things directly and back claims with evidence. We ne
 ### 2.2 Clear Over Clever
 No jargon soup. Technical concepts are always made accessible. If we use a technical term, we explain it immediately. We favour precision over flair — every word should earn its place.
 
-**PagePulser examples:**
-- "PagePulser measures your Core Web Vitals — LCP, INP, and CLS — alongside other performance metrics."
+**Kritano examples:**
+- "Kritano measures your Core Web Vitals — LCP, INP, and CLS — alongside other performance metrics."
 - "We translate technical findings into plain language with clear next steps. No jargon, no confusion."
 - "You don't need to be a developer to understand the results — that was a non-negotiable from day one."
 
 ### 2.3 Helpful, Not Just Critical
 Findings always come with guidance. We don't just point out problems — we explain how to fix them and why it matters. Our tone is constructive, never alarmist.
 
-**PagePulser examples:**
+**Kritano examples:**
 - "The number isn't a judgement — it's a starting point."
 - "Most websites I've audited start somewhere between 40 and 60. That's normal."
 - "The free tier tells you *what's wrong*. The paid tiers tell you *how to fix it*."
@@ -43,15 +43,15 @@ Findings always come with guidance. We don't just point out problems — we expl
 ### 2.4 Honest and Direct
 We acknowledge trade-offs openly. We don't oversell or create artificial urgency. When something has a downside, we say so. This earns trust.
 
-**PagePulser examples:**
+**Kritano examples:**
 - "Don't be discouraged if your initial scores are lower than you expected."
 - "For many smaller sites, that might be all you need."
 - "Here's the honest take..."
 
 ### 2.5 Forward-Thinking
-We help people see what's coming, not just what's broken. We position PagePulser at the frontier — covering AI readiness and emerging standards alongside established best practices.
+We help people see what's coming, not just what's broken. We position Kritano at the frontier — covering AI readiness and emerging standards alongside established best practices.
 
-**PagePulser examples:**
+**Kritano examples:**
 - "How likely are AI models and answer engines to cite your pages? This is a newer dimension that most audit tools don't touch."
 - "The web evolves, and so do we."
 
@@ -69,7 +69,7 @@ We help people see what's coming, not just what's broken. We position PagePulser
 | **Sentence length** | Short to medium | Mixed (short for emphasis, longer for explanation) | Short and scannable | Short |
 
 ### Point of View Rules
-- **Public website pages** (Home, About, Services, Pricing): First person plural ("we", "our") — PagePulser is the speaker.
+- **Public website pages** (Home, About, Services, Pricing): First person plural ("we", "our") — Kritano is the speaker.
 - **Blog posts**: First person singular ("I") when sharing opinion or experience (the founder's voice); first person plural when describing the product. This is intentional — the blog carries the human voice behind the brand.
 - **Product UI**: Second person ("you", "your") — direct and action-oriented.
 - **Email**: First person plural with second person address ("We noticed your scores improved — here's what changed").
@@ -152,7 +152,7 @@ CTAs should feel like invitations, not demands. They are direct but never pushy.
 - Use em dashes for asides and clarity
 - Keep CTAs warm and inviting
 - Write as though you're speaking to a smart business owner who isn't technical
-- Use "we" for PagePulser and "I" for founder's blog voice
+- Use "we" for Kritano and "I" for founder's blog voice
 - Include practical, actionable guidance with every finding or recommendation
 
 ### DON'T:
@@ -195,7 +195,7 @@ Our approach is "here's what's wrong, here's how to fix it, start when you're re
 
 ## 8. Content Pillars
 
-PagePulser content should reflect the product's six audit dimensions, not just one. The four primary content themes are:
+Kritano content should reflect the product's six audit dimensions, not just one. The four primary content themes are:
 
 1. **Accessibility** — WCAG compliance, inclusive design, legal requirements
 2. **SEO** — Technical SEO, rankings, structured data, search visibility
@@ -218,8 +218,8 @@ Blog content should be **balanced across all six pillars**, not weighted toward 
 ### Too Corporate (generic SaaS):
 > "Our comprehensive website performance analysis solution leverages industry-leading scanning technology to deliver actionable insights that drive measurable improvements."
 
-### PagePulser Voice (the target):
-> "Most website owners don't realise their site takes six seconds to load on mobile — long enough for half their visitors to leave. PagePulser measures your Core Web Vitals and shows you exactly what's slowing things down, from uncompressed images to render-blocking scripts."
+### Kritano Voice (the target):
+> "Most website owners don't realise their site takes six seconds to load on mobile — long enough for half their visitors to leave. Kritano measures your Core Web Vitals and shows you exactly what's slowing things down, from uncompressed images to render-blocking scripts."
 
 **What makes it work:** Specific (six seconds, Core Web Vitals, render-blocking scripts), empathetic (acknowledges the owner doesn't know), constructive (tells you what you'll learn), and direct (no wasted words).
 
@@ -261,7 +261,7 @@ The `docs/marketing/brand_voice.md` file contains a detailed analysis of Chris G
 
 **How the two relate:**
 
-| Attribute | Founder Voice (chrisgarlick.com) | PagePulser Voice |
+| Attribute | Founder Voice (chrisgarlick.com) | Kritano Voice |
 |---|---|---|
 | **Archetype** | The Friendly Expert | The Sage |
 | **Formality** | Lower — chatty, colloquial | Higher — editorial, precise |
@@ -271,7 +271,7 @@ The `docs/marketing/brand_voice.md` file contains a detailed analysis of Chris G
 | **Colloquialisms** | Frequent ("arm and a leg", "bailed") | Occasional, only when natural |
 | **Opinions** | "In my honest opinion..." | Stated directly, backed by data |
 
-The founder's voice flows through the blog (especially opinion pieces and the launch post). The PagePulser brand voice governs everything else. When in doubt, ask: "Would a trusted consultant say it this way?" If yes, it's on-brand.
+The founder's voice flows through the blog (especially opinion pieces and the launch post). The Kritano brand voice governs everything else. When in doubt, ask: "Would a trusted consultant say it this way?" If yes, it's on-brand.
 
 ---
 

@@ -67,7 +67,7 @@ export default function RevenuePage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Revenue | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Revenue | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -76,7 +76,7 @@ export default function RevenuePage() {
               <DollarSign className="w-6 h-6 text-emerald-400" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Revenue Dashboard</h1>
+              <h1 className="text-3xl font-bold text-white tracking-tight font-display">Revenue Dashboard</h1>
               <p className="text-sm text-slate-500">MRR, ARR, and subscriber metrics</p>
             </div>
           </div>

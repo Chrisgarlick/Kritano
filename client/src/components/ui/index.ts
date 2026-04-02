@@ -1,7 +1,7 @@
 /**
  * UI Component Library
  *
- * PagePulser's design system components.
+ * Kritano's design system components.
  * Import from this file for convenience:
  *
  * import { Button, ScoreDisplay, Typography } from '@/components/ui';

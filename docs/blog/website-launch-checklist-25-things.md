@@ -149,9 +149,9 @@ Browser caching headers should be set so returning visitors don't re-download st
 
 If I had to pick one thing from this entire list, it's this: **don't treat these as four separate checklists.** [Accessibility, SEO, security, and performance overlap](/blog/accessibility-seo-performance-why-you-shouldnt-choose) constantly. A compressed image with proper alt text and dimensions handles performance, accessibility, and SEO in one go. A clean heading hierarchy helps screen readers and search engines equally. Security headers protect your users and your reputation simultaneously.
 
-The most efficient way to check all of this isn't running four separate tools and reconciling four separate reports. It's using something that looks at your site holistically — which is exactly what PagePulser does. Run a single audit and you'll get your accessibility score, performance metrics, security checks, and SEO analysis in one place, with every issue prioritised by severity so you know what to fix first.
+The most efficient way to check all of this isn't running four separate tools and reconciling four separate reports. It's using something that looks at your site holistically — which is exactly what Kritano does. Run a single audit and you'll get your accessibility score, performance metrics, security checks, and SEO analysis in one place, with every issue prioritised by severity so you know what to fix first.
 
-Whether you use PagePulser or work through this list manually, the important thing is that you check before you launch. Every item on this list is something I've seen missed on a live site — and every one of them is easier to fix before launch day than after.
+Whether you use Kritano or work through this list manually, the important thing is that you check before you launch. Every item on this list is something I've seen missed on a live site — and every one of them is easier to fix before launch day than after.
 
 <!-- Internal linking suggestions:
 - Link "alt text" to the complete guide to image alt text post
@@ -161,5 +161,5 @@ Whether you use PagePulser or work through this list manually, the important thi
 - Link "securityheaders.com" to the security post
 - Link "accessibility, SEO, security, and performance overlap" to the holistic website health post
 - Link "regular health checks" or "after launch" to the regular health checks post
-- Link "PagePulser" to the main product/pricing page
+- Link "Kritano" to the main product/pricing page
 -->

@@ -1,6 +1,6 @@
 # Blog Ideas
 
-Blog post ideas for the PagePulser blog. Each entry includes a title, category, tags, and brief description.
+Blog post ideas for the Kritano blog. Each entry includes a title, category, tags, and brief description.
 
 ## Categories Reference
 
@@ -244,19 +244,19 @@ The connection between Schema.org markup and how AI search engines understand an
 
 ## Guides
 
-### 39. How to Run Your First Website Audit with PagePulser
+### 39. How to Run Your First Website Audit with Kritano
 **Category:** `guides`
-**Tags:** `getting-started`, `tutorial`, `first-audit`, `pagepulser`
+**Tags:** `getting-started`, `tutorial`, `first-audit`, `kritano`
 A step-by-step walkthrough for new users — from signing up to reading your first audit report.
 
 ### 40. Understanding Your Audit Report: Scores, Issues, and Priorities
 **Category:** `guides`
 **Tags:** `audit-report`, `scores`, `issue-severity`, `prioritisation`
-How to read PagePulser's audit results — what the scores mean, how issues are prioritised, and where to start fixing.
+How to read Kritano's audit results — what the scores mean, how issues are prioritised, and where to start fixing.
 
 ### 41. Setting Up Scheduled Audits for Continuous Monitoring
 **Category:** `guides`
-**Tags:** `scheduled-audits`, `monitoring`, `automation`, `pagepulser`
+**Tags:** `scheduled-audits`, `monitoring`, `automation`, `kritano`
 How to configure recurring audits to track your site health over time without manual effort.
 
 ### 42. Exporting Audit Reports: PDF and CSV for Stakeholders
@@ -286,7 +286,7 @@ A real-world walkthrough of the performance optimisations that tripled a SaaS ma
 ### 46. Fixing 200+ Accessibility Issues: A Government Website Case Study
 **Category:** `case-studies`
 **Tags:** `accessibility`, `government`, `wcag`, `compliance`
-How a public sector organisation used PagePulser to identify and remediate WCAG 2.2 AA violations across 500 pages.
+How a public sector organisation used Kritano to identify and remediate WCAG 2.2 AA violations across 500 pages.
 
 ### 47. From F to A: How an E-Commerce Site Secured Their Headers
 **Category:** `case-studies`
@@ -315,7 +315,7 @@ Our new content engine scores readability, detects thin content, and flags dupli
 ### 51. Structured Data Auditing Is Here
 **Category:** `product-updates`
 **Tags:** `structured-data`, `schema`, `new-feature`, `rich-results`
-PagePulser now validates your Schema.org markup, checks for errors, and previews how your pages appear in search results.
+Kritano now validates your Schema.org markup, checks for errors, and previews how your pages appear in search results.
 
 ### 52. Team Collaboration: Shared Sites and Role-Based Access
 **Category:** `product-updates`
@@ -335,4 +335,4 @@ Our new AEO score evaluates how well your content is positioned to be surfaced b
 ### 55. E-E-A-T Signals: Measuring Trust and Authority
 **Category:** `product-updates`
 **Tags:** `eeat`, `trust`, `authority`, `new-feature`
-PagePulser now detects E-E-A-T signals on your pages — author bylines, trust badges, editorial policies, and more.
+Kritano now detects E-E-A-T signals on your pages — author bylines, trust badges, editorial policies, and more.

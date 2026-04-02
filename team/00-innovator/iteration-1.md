@@ -2,7 +2,7 @@
 
 # Iteration 1 — Innovator Brief
 
-**Project:** PagePulser (EXISTING — iteration, not fresh start)
+**Project:** Kritano (EXISTING — iteration, not fresh start)
 **Current state:** Post full-audit, most code fixes applied. Weighted score 7.3 → 8.5/10.
 **Phase:** Pre-launch, building toward founding member launch (200 spots)
 **Core focus:** SEO, content, and accessibility auditing (not accessibility-only)
@@ -11,7 +11,7 @@
 
 ## Current State Summary
 
-PagePulser is an SEO, content, and accessibility auditing SaaS — its core value proposition spans all three disciplines, not just accessibility. It has shipped 15 phases of development with a comprehensive audit engine (SEO, accessibility, security, performance, content/E-E-A-T, AEO, structured data), tiered billing, team collaboration, public API, blog CMS, CRM, cold prospect pipeline, referral program, and admin tooling. A full-team audit identified 79 issues; most code-addressable ones have been fixed. The platform is functionally complete but lacks the differentiating polish and features that would make the founding member launch compelling.
+Kritano is an SEO, content, and accessibility auditing SaaS — its core value proposition spans all three disciplines, not just accessibility. It has shipped 15 phases of development with a comprehensive audit engine (SEO, accessibility, security, performance, content/E-E-A-T, AEO, structured data), tiered billing, team collaboration, public API, blog CMS, CRM, cold prospect pipeline, referral program, and admin tooling. A full-team audit identified 79 issues; most code-addressable ones have been fixed. The platform is functionally complete but lacks the differentiating polish and features that would make the founding member launch compelling.
 
 ### What's Been Fixed Since Audit
 - Change-password endpoint (CRITICAL → fixed)
@@ -68,7 +68,7 @@ PagePulser is an SEO, content, and accessibility auditing SaaS — its core valu
 
 ### Enhancements (High Impact, Medium Effort)
 
-6. **Shareable public audit reports** — Time-limited public URLs for sharing audit results. Agencies share with clients, developers share with stakeholders. Creates a viral loop — every shared report is a PagePulser ad.
+6. **Shareable public audit reports** — Time-limited public URLs for sharing audit results. Agencies share with clients, developers share with stakeholders. Creates a viral loop — every shared report is a Kritano ad.
    - **Impact:** HIGH | **Effort:** MEDIUM | **Departments:** Product, Software
 
 7. **EAA Compliance Report mode** — Map existing WCAG findings to EN 301 549 clauses. Add "EAA Ready / At Risk / Non-Compliant" status badge. 80% presentation, 20% logic. The European Accessibility Act is already in force — this is time-sensitive positioning.
@@ -88,7 +88,7 @@ PagePulser is an SEO, content, and accessibility auditing SaaS — its core valu
 11. **Accessibility statement generator** — Auto-generate a WCAG-conformant accessibility statement from audit results. Lists known issues, remediation timeline, contact info. No major competitor offers this. Natural conversion driver from free to paid.
     - **Impact:** HIGH | **Effort:** MEDIUM | **Departments:** Product, Software
 
-12. **Public audit badge/widget** — Embeddable "Verified by PagePulser" badges linking to public score pages. Viral distribution channel. Gated to Starter+ tier.
+12. **Public audit badge/widget** — Embeddable "Verified by Kritano" badges linking to public score pages. Viral distribution channel. Gated to Starter+ tier.
     - **Impact:** HIGH | **Effort:** MEDIUM | **Departments:** Product, Software, Design, Growth
 
 ### Technical Debt

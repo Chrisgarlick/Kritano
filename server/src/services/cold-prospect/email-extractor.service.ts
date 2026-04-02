@@ -74,7 +74,7 @@ function fetchPage(url: string, timeoutMs: number = 8000, maxRedirects: number =
     const client = url.startsWith('https') ? https : http;
     const req = client.get(url, {
       timeout: timeoutMs,
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PagePulser/1.0)' },
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Kritano/1.0)' },
     }, (res) => {
       // Follow redirects
       if ((res.statusCode === 301 || res.statusCode === 302) && res.headers.location) {

@@ -83,7 +83,7 @@ export default function TrendsPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Trends | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Trends | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -92,7 +92,7 @@ export default function TrendsPage() {
               <TrendingUp className="w-6 h-6 text-indigo-400" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Global Trends</h1>
+              <h1 className="text-3xl font-bold text-white tracking-tight font-display">Global Trends</h1>
               <p className="text-sm text-slate-500">Platform-wide audit trends and issue patterns</p>
             </div>
           </div>

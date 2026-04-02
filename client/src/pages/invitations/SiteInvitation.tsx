@@ -130,12 +130,12 @@ export default function SiteInvitationPage() {
 
   return (
     <>
-      <Helmet><title>Site Invitation | PagePulser</title></Helmet>
+      <Helmet><title>Site Invitation | Kritano</title></Helmet>
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8 max-w-md w-full">
         {/* Logo */}
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">PagePulser</h2>
+          <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">Kritano</h2>
         </div>
 
         {isExpired ? (

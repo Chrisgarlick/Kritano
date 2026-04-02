@@ -69,7 +69,7 @@ export function SocialButtons({ mode }: SocialButtonsProps) {
           type="button"
           onClick={() => handleSocialLogin('google')}
           disabled={loadingProvider !== null}
-          className="w-full flex items-center justify-center gap-3 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-3 px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <GoogleIcon />
           {loadingProvider === 'google' ? 'Redirecting...' : `${label} with Google`}

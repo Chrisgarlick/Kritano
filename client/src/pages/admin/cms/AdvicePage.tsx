@@ -184,12 +184,12 @@ export default function AdvicePage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Audit Advice | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Audit Advice | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Advice Editor</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">Advice Editor</h1>
             <p className="text-sm text-slate-500 mt-1">
               Manage contextual advice snippets that appear alongside audit findings
             </p>

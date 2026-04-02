@@ -29,11 +29,11 @@ function SiteSummaryCards({ sites }: { sites: SiteComparisonEntry[] }) {
           : null;
 
         return (
-          <div key={site.id} className="bg-white rounded-lg border border-slate-200 p-4">
+          <div key={site.id} className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
             <div className="flex items-start justify-between mb-3">
               <div className="min-w-0">
-                <h3 className="text-sm font-semibold text-slate-900 truncate">{site.name}</h3>
-                <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white truncate">{site.name}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5">
                   <Globe className="w-3 h-3 flex-shrink-0" />
                   <span className="truncate">{site.domain}</span>
                 </p>
@@ -49,22 +49,22 @@ function SiteSummaryCards({ sites }: { sites: SiteComparisonEntry[] }) {
             </div>
             <div className="grid grid-cols-3 gap-2 text-center">
               <div>
-                <p className="text-xs text-slate-500">Last Audit</p>
-                <p className="text-sm font-medium text-slate-700">
+                <p className="text-xs text-slate-500 dark:text-slate-400">Last Audit</p>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
                   {site.latestAudit
                     ? new Date(site.latestAudit.completedAt).toLocaleDateString()
                     : 'N/A'}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Issues</p>
-                <p className="text-sm font-medium text-slate-700">
+                <p className="text-xs text-slate-500 dark:text-slate-400">Issues</p>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
                   {site.latestAudit?.totalIssues ?? 'N/A'}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Categories</p>
-                <p className="text-sm font-medium text-slate-700">{validScores.length}/6</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Categories</p>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{validScores.length}/6</p>
               </div>
             </div>
           </div>
@@ -75,14 +75,14 @@ function SiteSummaryCards({ sites }: { sites: SiteComparisonEntry[] }) {
 }
 
 function DeltaCell({ value }: { value: number | null }) {
-  if (value === null) return <span className="text-slate-500 text-xs">N/A</span>;
+  if (value === null) return <span className="text-slate-500 dark:text-slate-400 text-xs">N/A</span>;
   if (value > 0) return (
-    <span className="inline-flex items-center gap-0.5 text-xs font-medium text-emerald-600">
+    <span className="inline-flex items-center gap-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
       <TrendingUp className="w-3 h-3" />+{value}
     </span>
   );
   if (value < 0) return (
-    <span className="inline-flex items-center gap-0.5 text-xs font-medium text-red-600">
+    <span className="inline-flex items-center gap-0.5 text-xs font-medium text-red-600 dark:text-red-400">
       <TrendingDown className="w-3 h-3" />{value}
     </span>
   );
@@ -100,17 +100,17 @@ function LatestVsAverageTable({ sites }: { sites: SiteComparisonEntry[] }) {
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-slate-200">
-            <th className="text-left py-3 px-4 text-xs font-medium text-slate-500 uppercase tracking-wider">
+          <tr className="border-b border-slate-200 dark:border-slate-700">
+            <th className="text-left py-3 px-4 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Category
             </th>
             {sites.map(site => (
-              <th key={site.id} colSpan={3} className="text-center py-3 px-3 text-xs font-medium text-slate-500 uppercase tracking-wider border-l border-slate-100">
+              <th key={site.id} colSpan={3} className="text-center py-3 px-3 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider border-l border-slate-100 dark:border-slate-700/50">
                 <div className="truncate max-w-[120px] mx-auto">{site.name}</div>
               </th>
             ))}
           </tr>
-          <tr className="border-b border-slate-100">
+          <tr className="border-b border-slate-100 dark:border-slate-700/50">
             <th />
             {sites.map(site => (
               <>
@@ -123,15 +123,15 @@ function LatestVsAverageTable({ sites }: { sites: SiteComparisonEntry[] }) {
         </thead>
         <tbody>
           {categories.map(cat => (
-            <tr key={cat} className="border-b border-slate-50">
-              <td className="py-2 px-4 text-sm text-slate-700">{CATEGORY_LABELS[cat]}</td>
+            <tr key={cat} className="border-b border-slate-50 dark:border-slate-700/30">
+              <td className="py-2 px-4 text-sm text-slate-700 dark:text-slate-300">{CATEGORY_LABELS[cat]}</td>
               {sites.map(site => {
                 const latest = site.latestAudit?.scores?.[cat] ?? null;
                 const avg = site.historicalAverage?.[cat] ?? null;
                 const delta = latest !== null && avg !== null ? latest - avg : null;
                 return (
                   <>
-                    <td key={`${site.id}-l`} className="py-2 px-2 text-center border-l border-slate-50">
+                    <td key={`${site.id}-l`} className="py-2 px-2 text-center border-l border-slate-50 dark:border-slate-700/30">
                       <span className="text-sm font-semibold" style={{ color: getScoreColor(latest) }}>
                         {latest ?? 'N/A'}
                       </span>
@@ -172,14 +172,14 @@ function IssueCountComparison({ sites }: { sites: SiteComparisonEntry[] }) {
         const color = count > 50 ? '#ef4444' : count > 20 ? '#f59e0b' : '#10b981';
         return (
           <div key={site.id} className="flex items-center gap-3">
-            <div className="w-32 text-sm text-slate-700 truncate flex-shrink-0">{site.name}</div>
-            <div className="flex-1 h-6 bg-slate-100 rounded overflow-hidden">
+            <div className="w-32 text-sm text-slate-700 dark:text-slate-300 truncate flex-shrink-0">{site.name}</div>
+            <div className="flex-1 h-6 bg-slate-100 dark:bg-slate-800 rounded overflow-hidden">
               <div
                 className="h-full rounded transition-all duration-500"
                 style={{ width: `${pct}%`, backgroundColor: color }}
               />
             </div>
-            <span className="text-sm font-medium text-slate-700 w-10 text-right">{count}</span>
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 w-10 text-right">{count}</span>
           </div>
         );
       })}
@@ -285,9 +285,9 @@ export function SiteComparisonContent() {
   return (
     <div className="space-y-6">
       {/* Site Selector */}
-      <div className="bg-white rounded-lg border border-slate-200 p-4">
+      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-medium text-slate-900">Selected Sites ({selectedSiteIds.length}/6)</h2>
+          <h2 className="font-medium text-slate-900 dark:text-white">Selected Sites ({selectedSiteIds.length}/6)</h2>
           <div className="flex gap-2">
             {availableSites.length > 1 && selectedSiteIds.length < availableSites.length && (
               <Button
@@ -317,15 +317,15 @@ export function SiteComparisonContent() {
             {selectedSites.map(site => (
               <div
                 key={site.id}
-                className="inline-flex items-center gap-2 px-3 py-2 bg-indigo-50 border border-indigo-200 rounded-lg"
+                className="inline-flex items-center gap-2 px-3 py-2 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg"
               >
                 <div className="text-sm">
-                  <span className="font-medium text-slate-700">{site.name}</span>
-                  <span className="text-slate-500 text-xs ml-1">({site.domain})</span>
+                  <span className="font-medium text-slate-700 dark:text-slate-300">{site.name}</span>
+                  <span className="text-slate-500 dark:text-slate-400 text-xs ml-1">({site.domain})</span>
                 </div>
                 <button
                   onClick={() => removeSite(site.id)}
-                  className="text-slate-500 hover:text-red-500"
+                  className="text-slate-500 dark:text-slate-400 hover:text-red-500"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -340,20 +340,20 @@ export function SiteComparisonContent() {
 
         {/* Site Picker Dropdown */}
         {showSelector && (
-          <div className="border border-slate-200 rounded-lg max-h-64 overflow-y-auto">
+          <div className="border border-slate-200 dark:border-slate-700 rounded-lg max-h-64 overflow-y-auto">
             {sitesLoading ? (
               <div className="p-4 text-center text-slate-500">Loading sites...</div>
             ) : availableSites.length === 0 ? (
               <div className="p-4 text-center text-slate-500">No sites found</div>
             ) : (
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-slate-100 dark:divide-slate-700">
                 {availableSites
                   .filter(s => !selectedSiteIds.includes(s.id))
                   .map(site => (
                     <button
                       key={site.id}
                       onClick={() => addSite(site.id)}
-                      className="w-full px-4 py-3 text-left hover:bg-slate-50 transition-colors"
+                      className="w-full px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
                     >
                       <span className="font-medium text-slate-700">{site.name}</span>
                       <span className="text-slate-500 text-sm ml-2">({site.domain})</span>
@@ -367,14 +367,14 @@ export function SiteComparisonContent() {
 
       {/* Comparison Results */}
       {loading ? (
-        <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-4" />
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-8 text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-indigo-200 dark:border-indigo-800 border-t-indigo-600 rounded-full mx-auto mb-4" />
           <p className="text-slate-500">Comparing sites...</p>
         </div>
       ) : error ? (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
           <AlertTriangle className="w-8 h-8 text-red-500 mx-auto mb-2" />
-          <p className="text-red-700">{error}</p>
+          <p className="text-red-700 dark:text-red-400">{error}</p>
         </div>
       ) : comparison ? (
         <div className="space-y-6">
@@ -382,31 +382,31 @@ export function SiteComparisonContent() {
           <SiteSummaryCards sites={comparison.sites} />
 
           {/* Radar Chart */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-lg font-medium text-slate-900 mb-4">Score Comparison</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Score Comparison</h2>
             <ScoreRadarChart sites={comparison.sites} height={400} />
           </div>
 
           {/* Ranking Table */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-lg font-medium text-slate-900 mb-4">Site Rankings</h2>
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-4">Site Rankings</h2>
             <SiteRankingTable sites={comparison.sites} />
           </div>
 
           {/* Latest vs Historical Average */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
-            <h2 className="text-lg font-medium text-slate-900 mb-1">Latest vs Historical Average</h2>
-            <p className="text-sm text-slate-500 mb-4">
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-medium text-slate-900 dark:text-white mb-1">Latest vs Historical Average</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
               Compare each site's latest audit scores against their historical averages
             </p>
             <LatestVsAverageTable sites={comparison.sites} />
           </div>
 
           {/* Issue Count Comparison */}
-          <div className="bg-white rounded-lg border border-slate-200 p-6">
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
             <div className="flex items-center gap-2 mb-4">
               <BarChart3 className="w-5 h-5 text-slate-500" />
-              <h2 className="text-lg font-medium text-slate-900">Issue Count Comparison</h2>
+              <h2 className="text-lg font-medium text-slate-900 dark:text-white">Issue Count Comparison</h2>
             </div>
             <IssueCountComparison sites={comparison.sites} />
           </div>
@@ -418,9 +418,9 @@ export function SiteComparisonContent() {
         </div>
       ) : selectedSiteIds.length < 2 ? (
         <div className="bg-white rounded-lg border border-slate-200 p-8 text-center">
-          <Layers className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-slate-900 mb-2">Select Sites to Compare</h3>
-          <p className="text-slate-500">
+          <Layers className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">Select Sites to Compare</h3>
+          <p className="text-slate-500 dark:text-slate-400">
             Choose 2-6 sites to see how they compare across all metrics.
           </p>
         </div>
@@ -432,19 +432,19 @@ export function SiteComparisonContent() {
 export default function SiteComparison() {
   return (
     <DashboardLayout>
-      <Helmet><title>Compare Sites | PagePulser</title></Helmet>
+      <Helmet><title>Compare Sites | Kritano</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-              <Link to="/analytics" className="hover:text-indigo-600">&larr; Analytics</Link>
+            <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+              <Link to="/analytics" className="hover:text-indigo-600 dark:hover:text-indigo-400">&larr; Analytics</Link>
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <Layers className="w-6 h-6 text-indigo-600" />
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <Layers className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
               Compare Sites
             </h1>
-            <p className="text-slate-500 mt-1">
+            <p className="text-slate-500 dark:text-slate-400 mt-1">
               Benchmark your sites against each other
             </p>
           </div>

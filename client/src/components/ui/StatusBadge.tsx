@@ -95,7 +95,7 @@ const statusConfig: Record<StatusType, {
   cancelled: {
     label: 'Cancelled',
     bgColor: 'bg-slate-100 dark:bg-slate-800',
-    textColor: 'text-slate-600 dark:text-slate-500',
+    textColor: 'text-slate-600 dark:text-slate-400',
     dotColor: 'bg-slate-400',
     icon: XCircleIcon,
     animation: undefined,
@@ -243,7 +243,7 @@ const severityConfig: Record<SeverityType, {
   info: {
     label: 'Info',
     bgColor: 'bg-slate-100 dark:bg-slate-800',
-    textColor: 'text-slate-600 dark:text-slate-500',
+    textColor: 'text-slate-600 dark:text-slate-400',
     dotColor: 'bg-slate-400',
   },
 };
@@ -287,7 +287,7 @@ interface CountBadgeProps {
 }
 
 const countVariants = {
-  default: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500',
+  default: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400',
   primary: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400',
   success: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400',
   warning: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400',

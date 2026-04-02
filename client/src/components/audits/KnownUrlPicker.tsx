@@ -170,13 +170,13 @@ export function KnownUrlPicker({
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
         <div
-          className="relative bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col"
+          className="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col"
           onKeyDown={handleKeyDown}
         >
           {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-200">
+          <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between">
-              <h2 id="url-picker-title" className="text-lg font-semibold text-slate-900">
+              <h2 id="url-picker-title" className="text-lg font-semibold text-slate-900 dark:text-white">
                 Browse Known Pages
               </h2>
               <button
@@ -189,13 +189,13 @@ export function KnownUrlPicker({
                 </svg>
               </button>
             </div>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               Select a page to audit from your sitemap or previously audited pages.
             </p>
           </div>
 
           {/* Search and Discover */}
-          <div className="px-6 py-3 border-b border-slate-100 flex items-center gap-3">
+          <div className="px-6 py-3 border-b border-slate-100 dark:border-slate-700/50 flex items-center gap-3">
             <div className="relative flex-1">
               <svg
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"
@@ -216,13 +216,13 @@ export function KnownUrlPicker({
                 placeholder="Search pages by path..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full pl-10 pr-4 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
             <button
               onClick={handleDiscover}
               disabled={discovering}
-              className="px-3 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+              className="px-3 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/40 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
             >
               {discovering ? (
                 <>
@@ -263,13 +263,13 @@ export function KnownUrlPicker({
               </div>
             ) : pages.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
                   <svg className="w-6 h-6 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
-                <h3 className="text-sm font-medium text-slate-900 mb-1">No pages found</h3>
-                <p className="text-sm text-slate-500 max-w-xs">
+                <h3 className="text-sm font-medium text-slate-900 dark:text-white mb-1">No pages found</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xs">
                   {search
                     ? 'Try a different search term or discover pages from your sitemap.'
                     : 'Click "Discover from Sitemap" to find pages on your site.'}
@@ -281,13 +281,13 @@ export function KnownUrlPicker({
                   key={page.id}
                   onClick={() => handleSelectPage(page)}
                   onMouseEnter={() => setSelectedIndex(index)}
-                  className={`w-full text-left px-6 py-3 border-b border-slate-100 hover:bg-slate-50 transition-colors ${
-                    index === selectedIndex ? 'bg-indigo-50' : ''
+                  className={`w-full text-left px-6 py-3 border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors ${
+                    index === selectedIndex ? 'bg-indigo-50 dark:bg-indigo-900/20' : ''
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-slate-900 truncate" title={page.url}>
+                      <div className="text-sm font-medium text-slate-900 dark:text-white truncate" title={page.url}>
                         {page.urlPath || '/'}
                       </div>
                       <div className="text-xs text-slate-500 truncate mt-0.5" title={page.url}>
@@ -297,9 +297,9 @@ export function KnownUrlPicker({
                     <div className="flex items-center gap-2 flex-shrink-0">
                       {/* Source badge */}
                       <span className={`px-2 py-0.5 text-xs rounded-full ${
-                        page.source === 'sitemap' ? 'bg-blue-100 text-blue-700' :
-                        page.source === 'audit' ? 'bg-emerald-100 text-emerald-700' :
-                        'bg-slate-100 text-slate-600'
+                        page.source === 'sitemap' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' :
+                        page.source === 'audit' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' :
+                        'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
                       }`}>
                         {page.source}
                       </span>
@@ -318,22 +318,22 @@ export function KnownUrlPicker({
 
           {/* Footer with pagination */}
           {pagination.total > 0 && (
-            <div className="px-6 py-3 border-t border-slate-200 flex items-center justify-between">
-              <span className="text-sm text-slate-500">
+            <div className="px-6 py-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <span className="text-sm text-slate-500 dark:text-slate-400">
                 {pagination.offset + 1}-{Math.min(pagination.offset + pagination.limit, pagination.total)} of {pagination.total} pages
               </span>
               <div className="flex gap-2">
                 <button
                   onClick={() => setPagination(p => ({ ...p, offset: Math.max(0, p.offset - p.limit) }))}
                   disabled={pagination.offset === 0}
-                  className="px-3 py-1 text-sm border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1 text-sm border border-slate-200 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Previous
                 </button>
                 <button
                   onClick={() => setPagination(p => ({ ...p, offset: p.offset + p.limit }))}
                   disabled={pagination.offset + pagination.limit >= pagination.total}
-                  className="px-3 py-1 text-sm border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-3 py-1 text-sm border border-slate-200 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next
                 </button>

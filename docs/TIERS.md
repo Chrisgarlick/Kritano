@@ -1,4 +1,4 @@
-# PagePulser Tier Capabilities
+# Kritano Tier Capabilities
 
 ## Audit & Crawl Limits
 
@@ -23,6 +23,7 @@
 | Google Dorking | - | - | Yes | Yes | Yes |
 | E-E-A-T Analysis | - | - | Yes | Yes | Yes |
 | AEO Analysis | - | - | Yes | Yes | Yes |
+| Mobile Audit Pass | - | Yes | Yes | Yes | Yes |
 
 ## Sites & Sharing
 
@@ -81,8 +82,8 @@
 | Bonus audits per referral | 5 | 5 | 8 | 12 | 12 |
 | Referred user bonus | 3 | 3 | 3 | 3 | 3 |
 | Max referrals/month | 50 | 50 | 50 | 50 | 50 |
-| Milestone: 5 referrals | Free Starter (30d) | Free Starter (30d) | Free Starter (30d) | Free Starter (30d) | Free Starter (30d) |
-| Milestone: 10 referrals | Free Pro (30d) | Free Pro (30d) | Free Pro (30d) | Free Pro (30d) | Free Pro (30d) |
+| Milestone: 5 referrals | Starter features (30d) | Starter features (30d) | Starter features (30d) | Starter features (30d) | Starter features (30d) |
+| Milestone: 10 referrals | Pro features (30d) | Pro features (30d) | Pro features (30d) | Pro features (30d) | Pro features (30d) |
 
 ## Admin Features (not tier-gated)
 
@@ -122,3 +123,4 @@
 - **Content Quality Score (CQS)** is a weighted average of 5 content sub-scores: quality (25%), E-E-A-T (25%), readability (20%), engagement (15%), structure (15%).
 - **Fix snippets** provide template-based code fixes for the top 50 most common findings. Templates are code-side, not database-stored.
 - **EAA Compliance Passport** maps WCAG findings to EN 301 549 clauses and derives compliance status. Automated testing only — disclaimer required.
+- **Mobile audit pass** re-visits crawled pages with a mobile viewport and user agent. Runs accessibility (axe-core) and performance engines only — catches touch target issues, reflow problems, mobile CLS, and responsive layout bugs. Findings are tagged with `device_type` (desktop/mobile/both). Desktop crawl discovers pages; mobile pass audits them.

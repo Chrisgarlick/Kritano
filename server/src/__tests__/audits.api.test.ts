@@ -1,14 +1,96 @@
-import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterAll, vi } from 'vitest';
 import supertest from 'supertest';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import { Pool } from 'pg';
-import { auditsRouter, setPool } from '../routes/audits/index';
 
-// Mock database pool
-const mockPool = {
-  query: vi.fn(),
-} as unknown as Pool;
+// Mock service dependencies BEFORE importing the router
+vi.mock('../services/site.service', () => ({
+  findOrCreateSiteForDomain: vi.fn().mockResolvedValue({
+    id: 'site-1',
+    domain: 'example.com',
+    verified: true,
+    owner_id: 'test-user-id',
+  }),
+  findOrCreateUrl: vi.fn().mockResolvedValue({
+    id: 'url-1',
+    url: 'https://example.com',
+  }),
+  getUserTierLimits: vi.fn().mockResolvedValue({
+    tier: 'free',
+    max_pages_per_audit: 5,
+    max_audit_depth: 3,
+    concurrent_audits: 3,
+    max_audits_per_month: 10,
+    available_checks: ['seo', 'accessibility', 'security', 'performance', 'content'],
+  }),
+  getSiteOwnerTierLimits: vi.fn().mockResolvedValue({
+    tier: 'free',
+    max_pages_per_audit: 5,
+    max_audit_depth: 3,
+    concurrent_audits: 3,
+    available_checks: ['seo', 'accessibility', 'security', 'performance', 'content'],
+  }),
+  isSiteVerified: vi.fn().mockResolvedValue(true),
+}));
+
+vi.mock('../middleware/site.middleware', () => ({
+  getSiteWithAccess: vi.fn().mockResolvedValue({ permission: 'owner' }),
+}));
+
+vi.mock('../services/audit.service', () => ({
+  auditService: {
+    logAuditCreated: vi.fn().mockResolvedValue(undefined),
+    logAuditCancelled: vi.fn().mockResolvedValue(undefined),
+    logAuditDeleted: vi.fn().mockResolvedValue(undefined),
+    logExportCsv: vi.fn().mockResolvedValue(undefined),
+    logExportJson: vi.fn().mockResolvedValue(undefined),
+    logExportPdf: vi.fn().mockResolvedValue(undefined),
+    logFindingDismissed: vi.fn().mockResolvedValue(undefined),
+    logFindingRestored: vi.fn().mockResolvedValue(undefined),
+  },
+}));
+
+vi.mock('../services/consent.service', () => ({
+  logAuditConsent: vi.fn().mockResolvedValue(undefined),
+  getUserConsentPreference: vi.fn().mockResolvedValue(null),
+}));
+
+vi.mock('../data/fix-templates', () => ({
+  resolveFixSnippet: vi.fn().mockReturnValue({
+    explanation: 'Add a title tag',
+    code: '<title>Example</title>',
+    effort: 'low',
+  }),
+}));
+
+vi.mock('../data/cqs-impact-map', () => ({
+  getCqsImpact: vi.fn().mockReturnValue(null),
+}));
+
+vi.mock('../services/schema-generator.service', () => ({
+  generateSchemaForPage: vi.fn().mockResolvedValue(null),
+  generateSchemaForSite: vi.fn().mockResolvedValue(null),
+}));
+
+vi.mock('../services/pdf-branding.service', () => ({
+  resolvePdfBranding: vi.fn().mockResolvedValue({}),
+}));
+
+vi.mock('../services/pdf-report.service', () => ({
+  generateAuditPdf: vi.fn().mockResolvedValue(Buffer.from('pdf')),
+  buildReportHtml: vi.fn().mockReturnValue('<html></html>'),
+  buildReportMarkdown: vi.fn().mockReturnValue('# Report'),
+}));
+
+vi.mock('../data/en-301-549-mapping', () => ({
+  enMapping: [],
+  buildWcagToEnMap: vi.fn().mockReturnValue(new Map()),
+}));
+
+vi.mock('../utils/ip.utils', () => ({
+  validateUrlForSsrf: vi.fn(),
+}));
 
 // Mock authentication middleware
 vi.mock('../middleware/auth.middleware', () => ({
@@ -17,6 +99,13 @@ vi.mock('../middleware/auth.middleware', () => ({
     next();
   },
 }));
+
+import { auditsRouter, setPool } from '../routes/audits/index';
+
+// Mock database pool
+const mockPool = {
+  query: vi.fn(),
+} as unknown as Pool;
 
 describe('Audits API', () => {
   let app: express.Application;
@@ -33,22 +122,30 @@ describe('Audits API', () => {
     request = supertest(app);
   });
 
+  beforeEach(() => {
+    (mockPool.query as ReturnType<typeof vi.fn>).mockReset();
+  });
+
   afterAll(() => {
     vi.clearAllMocks();
   });
 
   describe('POST /api/audits', () => {
     it('should create a new audit', async () => {
-      // Mock count query (check concurrent audits)
       (mockPool.query as ReturnType<typeof vi.fn>)
+        // concurrent audit count
         .mockResolvedValueOnce({ rows: [{ count: '0' }] })
-        // Mock insert query
+        // monthly audit count
+        .mockResolvedValueOnce({ rows: [{ count: '0' }] })
+        // insert audit job
         .mockResolvedValueOnce({
           rows: [{
             id: 'audit-123',
             target_url: 'https://example.com',
             target_domain: 'example.com',
             status: 'pending',
+            site_id: 'site-1',
+            url_id: 'url-1',
             created_at: new Date().toISOString(),
           }],
         });
@@ -90,7 +187,22 @@ describe('Audits API', () => {
         });
 
       expect(response.status).toBe(429);
-      expect(response.body.code).toBe('AUDIT_LIMIT_REACHED');
+      expect(response.body.code).toBe('CONCURRENT_LIMIT_REACHED');
+    });
+
+    it('should enforce monthly audit limit', async () => {
+      (mockPool.query as ReturnType<typeof vi.fn>)
+        .mockResolvedValueOnce({ rows: [{ count: '0' }] }) // concurrent: OK
+        .mockResolvedValueOnce({ rows: [{ count: '10' }] }); // monthly: at limit
+
+      const response = await request
+        .post('/api/audits')
+        .send({
+          targetUrl: 'https://example.com',
+        });
+
+      expect(response.status).toBe(429);
+      expect(response.body.code).toBe('MONTHLY_LIMIT_REACHED');
     });
   });
 
@@ -222,6 +334,8 @@ describe('Audits API', () => {
       const originalAudit = {
         target_url: 'https://example.com',
         target_domain: 'example.com',
+        organization_id: null,
+        site_id: 'site-1',
         max_pages: 50,
         max_depth: 3,
         respect_robots_txt: true,
@@ -230,6 +344,8 @@ describe('Audits API', () => {
         check_accessibility: true,
         check_security: true,
         check_performance: true,
+        check_content: true,
+        include_mobile: false,
         wcag_version: '2.2',
         wcag_level: 'AA',
       };
@@ -254,7 +370,6 @@ describe('Audits API', () => {
 
   // Note: These tests are skipped because Express route ordering matters.
   // In production, /check-url and /recent-urls are matched before /:id routes.
-  // The actual endpoints work correctly in the running server.
   describe.skip('GET /api/audits/check-url', () => {
     it('should check URL reachability', async () => {
       const response = await request.get('/api/audits/check-url');
@@ -323,7 +438,7 @@ describe('Audits API', () => {
     it('should dismiss a finding', async () => {
       (mockPool.query as ReturnType<typeof vi.fn>)
         .mockResolvedValueOnce({ rows: [{ id: 'audit-123' }] })
-        .mockResolvedValueOnce({ rows: [{ id: 'finding-1', status: 'dismissed' }] });
+        .mockResolvedValueOnce({ rows: [{ id: 'finding-1', status: 'dismissed', rule_id: 'test', message: 'test' }] });
 
       const response = await request
         .patch('/api/audits/audit-123/findings/finding-1/dismiss')

@@ -166,13 +166,13 @@ export default function SeoManagerPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>SEO Manager - Admin - PagePulser</title></Helmet>
+      <Helmet><title>SEO Manager - Admin - Kritano</title></Helmet>
 
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>SEO Manager</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">SEO Manager</h1>
             <p className="text-slate-500 mt-1">
               Manage meta tags, Open Graph data and structured data for all routes.
             </p>
@@ -364,7 +364,7 @@ export default function SeoManagerPage() {
                               type="text"
                               value={form.og_image || ''}
                               onChange={(e) => setForm({ ...form, og_image: e.target.value })}
-                              placeholder="https://pagepulser.com/og-image.png"
+                              placeholder="https://kritano.com/og-image.png"
                               maxLength={1000}
                               className="w-full px-3 py-2 bg-white/[0.03] border border-white/[0.08] rounded-md text-sm text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                             />
@@ -380,7 +380,7 @@ export default function SeoManagerPage() {
                               type="text"
                               value={form.featured_image || ''}
                               onChange={(e) => setForm({ ...form, featured_image: e.target.value })}
-                              placeholder="https://pagepulser.com/images/page-hero.jpg"
+                              placeholder="https://kritano.com/images/page-hero.jpg"
                               maxLength={1000}
                               className="w-full px-3 py-2 bg-white/[0.03] border border-white/[0.08] rounded-md text-sm text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                             />
@@ -431,7 +431,7 @@ export default function SeoManagerPage() {
                               type="text"
                               value={form.canonical_url || ''}
                               onChange={(e) => setForm({ ...form, canonical_url: e.target.value })}
-                              placeholder={`https://pagepulser.com${route.path}`}
+                              placeholder={`https://kritano.com${route.path}`}
                               maxLength={1000}
                               className="w-full px-3 py-2 bg-white/[0.03] border border-white/[0.08] rounded-md text-sm text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                             />
@@ -463,10 +463,10 @@ export default function SeoManagerPage() {
                           <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider">Google Preview</h3>
                           <div className="bg-white rounded-lg p-4 space-y-1">
                             <div className="text-sm text-green-700 font-mono truncate">
-                              pagepulser.com{route.path === '/' ? '' : route.path}
+                              kritano.com{route.path === '/' ? '' : route.path}
                             </div>
                             <div className="text-xl text-blue-800 hover:underline cursor-default truncate">
-                              {previewTitle || route.defaultTitle} | PagePulser
+                              {previewTitle || route.defaultTitle} | Kritano
                             </div>
                             <div className="text-sm text-gray-600 line-clamp-2">
                               {previewDescription || route.defaultDescription}
@@ -492,7 +492,7 @@ export default function SeoManagerPage() {
                               </div>
                             )}
                             <div className="p-3 space-y-1">
-                              <div className="text-xs text-slate-500 uppercase">pagepulser.com</div>
+                              <div className="text-xs text-slate-500 uppercase">kritano.com</div>
                               <div className="text-sm text-white font-medium truncate">
                                 {form.og_title || previewTitle || route.defaultTitle}
                               </div>

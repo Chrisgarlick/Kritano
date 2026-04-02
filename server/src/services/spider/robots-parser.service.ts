@@ -14,7 +14,7 @@ export class RobotsParserService {
   private userAgent: string;
   private loaded: boolean = false;
 
-  constructor(userAgent: string = 'PagePulser-Scanner') {
+  constructor(userAgent: string = 'KritanoBot') {
     // Extract just the bot name from user agent string
     this.userAgent = userAgent.split('/')[0].toLowerCase();
   }
@@ -253,7 +253,7 @@ export class RobotsParserService {
 }
 
 /**
- * Create a robots.txt parser for PagePulser
+ * Create a robots.txt parser for Kritano
  */
 export function createRobotsParser(userAgent?: string): RobotsParserService {
   return new RobotsParserService(userAgent);

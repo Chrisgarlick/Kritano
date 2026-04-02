@@ -1,4 +1,4 @@
-# Tone of Voice — PagePulser Blog
+# Tone of Voice — Kritano Blog
 
 > Sourced from the brand voice analysis of chrisgarlick.com. This is the definitive voice guide for all blog content.
 

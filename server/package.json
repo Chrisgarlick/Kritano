@@ -1,7 +1,7 @@
 {
-  "name": "pagepulser-server",
+  "name": "kritano-server",
   "version": "1.0.0",
-  "description": "pagepulser backend server",
+  "description": "kritano backend server",
   "main": "dist/index.js",
   "engines": {
     "node": ">=20.0.0"

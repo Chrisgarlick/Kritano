@@ -57,8 +57,8 @@ export function ScoreRadarChart({ sites, height = 400 }: ScoreRadarChartProps) {
     const category = payload[0]?.payload?.category;
 
     return (
-      <div className="bg-white border border-slate-200 rounded-lg shadow-lg p-3">
-        <p className="text-sm font-medium text-slate-900 mb-2">{category}</p>
+      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-3">
+        <p className="text-sm font-medium text-slate-900 dark:text-white mb-2">{category}</p>
         <div className="space-y-1">
           {payload.map((entry: any) => {
             const site = sites.find(s => s.id === entry.dataKey);
@@ -69,11 +69,11 @@ export function ScoreRadarChart({ sites, height = 400 }: ScoreRadarChartProps) {
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: entry.color }}
                   />
-                  <span className="text-slate-600 truncate max-w-[120px]">
+                  <span className="text-slate-600 dark:text-slate-400 truncate max-w-[120px]">
                     {site?.name || site?.domain}
                   </span>
                 </span>
-                <span className="font-medium text-slate-900">
+                <span className="font-medium text-slate-900 dark:text-white">
                   {entry.value !== null && entry.value !== 0 ? entry.value : 'N/A'}
                 </span>
               </div>
@@ -87,10 +87,10 @@ export function ScoreRadarChart({ sites, height = 400 }: ScoreRadarChartProps) {
   if (sites.length === 0) {
     return (
       <div
-        className="flex items-center justify-center bg-slate-50 rounded-lg border border-slate-200"
+        className="flex items-center justify-center bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700"
         style={{ height }}
       >
-        <p className="text-slate-500">No sites to compare</p>
+        <p className="text-slate-500 dark:text-slate-400">No sites to compare</p>
       </div>
     );
   }
@@ -115,7 +115,7 @@ export function ScoreRadarChart({ sites, height = 400 }: ScoreRadarChartProps) {
           formatter={(value: string) => {
             const site = sites.find(s => s.id === value);
             return (
-              <span className="text-sm text-slate-600">
+              <span className="text-sm text-slate-600 dark:text-slate-400">
                 {site?.name || site?.domain}
               </span>
             );

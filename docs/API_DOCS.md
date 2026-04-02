@@ -42,12 +42,12 @@ None. The existing `page_seo` table handles everything — we just need admin SE
 
 ### 2. Seed default SEO entries (optional migration)
 - Add a migration that inserts default `page_seo` rows for each docs route with good defaults:
-  - `/docs` — "API Documentation | PagePulser"
-  - `/docs/authentication` — "Authentication - API Docs | PagePulser"
-  - `/docs/rate-limits` — "Rate Limits - API Docs | PagePulser"
-  - `/docs/errors` — "Error Handling - API Docs | PagePulser"
-  - `/docs/audits` — "Audit Endpoints - API Docs | PagePulser"
-  - `/docs/webhooks` — "Webhooks - API Docs | PagePulser"
+  - `/docs` — "API Documentation | Kritano"
+  - `/docs/authentication` — "Authentication - API Docs | Kritano"
+  - `/docs/rate-limits` — "Rate Limits - API Docs | Kritano"
+  - `/docs/errors` — "Error Handling - API Docs | Kritano"
+  - `/docs/audits` — "Audit Endpoints - API Docs | Kritano"
+  - `/docs/webhooks` — "Webhooks - API Docs | Kritano"
 - Each entry should include `og_type: 'article'`, sensible descriptions, and `structured_data` with TechArticle JSON-LD schema.
 
 ## Frontend Changes
@@ -71,7 +71,7 @@ Each page is a React component using `PageSeo` with `useOverrides={true}`:
 
 - **`client/src/pages/docs/DocsAuthPage.tsx`** — `/docs/authentication`
   - How to create API keys (link to dashboard)
-  - Auth header format (`Authorization: Bearer pp_live_xxx` or `X-API-Key`)
+  - Auth header format (`Authorization: Bearer kt_live_xxx` or `X-API-Key`)
   - Available scopes table: `audits:read`, `audits:write`, `findings:read`, `findings:write`, `exports:read`
   - Key security best practices
 
@@ -122,7 +122,7 @@ Each page is a React component using `PageSeo` with `useOverrides={true}`:
 - **File:** `client/src/config/routeRegistry.ts`
 - Add entries for all 6 docs routes with `category: 'public'`:
   ```ts
-  { path: '/docs', label: 'API Docs', category: 'public', defaultTitle: 'API Documentation | PagePulser', defaultDescription: '...' },
+  { path: '/docs', label: 'API Docs', category: 'public', defaultTitle: 'API Documentation | Kritano', defaultDescription: '...' },
   { path: '/docs/authentication', label: 'API Auth', category: 'public', ... },
   { path: '/docs/rate-limits', label: 'Rate Limits', category: 'public', ... },
   { path: '/docs/errors', label: 'Error Handling', category: 'public', ... },

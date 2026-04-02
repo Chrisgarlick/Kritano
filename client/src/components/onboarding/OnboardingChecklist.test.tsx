@@ -60,14 +60,14 @@ describe('OnboardingChecklist', () => {
     expect(verifyStep).toBeInTheDocument();
   });
 
-  it('marks "Run your first audit" as complete when a completed audit exists', () => {
+  it('shows celebration when all steps are complete', () => {
     renderChecklist({
       sites: [{ id: 's1', domain: 'example.com', verified: true } as never],
       audits: [{ id: 'a1', status: 'completed' } as never],
     });
 
-    const auditStep = screen.getByText('Run your first audit').closest('[class]');
-    expect(auditStep).toBeInTheDocument();
+    // All 3 steps complete → celebration mode renders instead of individual steps
+    expect(screen.getByText(/all set/i)).toBeInTheDocument();
   });
 
   it('does not render when loading', () => {
@@ -78,7 +78,7 @@ describe('OnboardingChecklist', () => {
   });
 
   it('does not render when previously dismissed', () => {
-    localStorage.setItem('pagepulser_onboarding_dismissed', 'true');
+    localStorage.setItem('kritano_onboarding_dismissed', 'true');
     renderChecklist();
 
     expect(screen.queryByText('Add your first site')).not.toBeInTheDocument();
@@ -92,7 +92,7 @@ describe('OnboardingChecklist', () => {
     const dismissButton = screen.getByRole('button', { name: /dismiss/i });
     if (dismissButton) {
       await user.click(dismissButton);
-      expect(localStorage.getItem('pagepulser_onboarding_dismissed')).toBe('true');
+      expect(localStorage.getItem('kritano_onboarding_dismissed')).toBe('true');
     }
   });
 

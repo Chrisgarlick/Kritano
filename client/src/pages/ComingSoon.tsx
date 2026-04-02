@@ -33,7 +33,7 @@ export default function ComingSoon({ headline, description }: ComingSoonProps) {
   return (
     <>
       <Helmet>
-        <title>PagePulser - Coming Soon</title>
+        <title>Kritano - Coming Soon</title>
       </Helmet>
       <div className="min-h-screen bg-white dark:bg-slate-950 flex flex-col items-center justify-center px-4 relative overflow-hidden">
         {/* Background gradient accent */}
@@ -46,17 +46,16 @@ export default function ComingSoon({ headline, description }: ComingSoonProps) {
           {/* Logo */}
           <div className="flex items-center justify-center space-x-2">
             <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">P</span>
+              <span className="text-white font-bold text-lg">K</span>
             </div>
-            <span className="text-2xl font-bold text-slate-900 dark:text-white" style={{ fontFamily: "'Instrument Serif', serif" }}>
-              PagePulser
+            <span className="text-2xl font-bold text-slate-900 dark:text-white font-display">
+              Kritano
             </span>
           </div>
 
           {/* Headline */}
           <h1
-            className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white leading-tight"
-            style={{ fontFamily: "'Instrument Serif', serif" }}
+            className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white leading-tight font-display"
           >
             {headline}
           </h1>
@@ -115,7 +114,7 @@ export default function ComingSoon({ headline, description }: ComingSoonProps) {
 
           {/* Footer */}
           <p className="text-sm text-slate-500 dark:text-slate-600 pt-8">
-            &copy; {new Date().getFullYear()} PagePulser. All rights reserved.
+            &copy; {new Date().getFullYear()} Kritano. All rights reserved.
           </p>
         </div>
       </div>

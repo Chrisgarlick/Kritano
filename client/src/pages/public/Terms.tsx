@@ -10,42 +10,42 @@ export default function Terms() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Terms of Service | PagePulser"
-        description="PagePulser terms of service covering website scanning liability, acceptable use, subscriptions, and data ownership."
+        title="Terms of Service | Kritano"
+        description="Kritano terms of service covering website scanning liability, acceptable use, subscriptions, and data ownership."
         path="/terms"
       />
 
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">
-          <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-6">
+          <p className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-6">
             Legal
           </p>
-          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
+          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.05] mb-4">
             Terms of Service
           </h1>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Effective date: 8 March 2026
           </p>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-20">
-        <div className="border-t border-slate-200" />
+        <div className="border-t border-slate-200 dark:border-slate-700" />
       </div>
 
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-16">
-        <div className="max-w-3xl prose prose-slate prose-lg prose-headings:font-display prose-headings:text-slate-900 prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-8 prose-p:text-slate-600 prose-p:leading-relaxed prose-li:text-slate-600 prose-a:text-indigo-600 prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-900">
+        <div className="max-w-3xl prose prose-slate prose-lg dark:prose-invert prose-headings:font-display prose-headings:text-slate-900 dark:prose-headings:text-white prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-8 prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-p:leading-relaxed prose-li:text-slate-600 dark:prose-li:text-slate-400 prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-900 dark:prose-strong:text-white">
 
           <h2>1. Acceptance of Terms</h2>
           <p>
-            By accessing or using PagePulser ("the Service"), you agree to be bound by these Terms of Service.
+            By accessing or using Kritano ("the Service"), you agree to be bound by these Terms of Service.
             If you do not agree to these terms, you must not use the Service. Continued use of the Service
             following any changes to these terms constitutes acceptance of those changes.
           </p>
 
           <h2>2. Description of Service</h2>
           <p>
-            PagePulser is a web auditing platform that analyses websites for search engine optimisation (SEO),
+            Kritano is a web auditing platform that analyses websites for search engine optimisation (SEO),
             accessibility compliance (WCAG 2.2), security vulnerabilities, and performance issues. The Service
             generates reports with prioritised findings, severity ratings, and actionable remediation guidance.
           </p>
@@ -75,11 +75,11 @@ export default function Terms() {
             </li>
             <li>
               <strong>User responsibility.</strong> You accept full responsibility for the consequences of
-              scanning any website through PagePulser. This includes, but is not limited to, any impact on
+              scanning any website through Kritano. This includes, but is not limited to, any impact on
               server performance, availability, or functionality of the scanned website.
             </li>
             <li>
-              <strong>No liability.</strong> PagePulser is not liable for any damages, downtime, data loss,
+              <strong>No liability.</strong> Kritano is not liable for any damages, downtime, data loss,
               or other issues that may arise from your use of the scanning functionality. The Service is
               provided on an "as-is" basis for informational purposes only.
             </li>
@@ -109,15 +109,15 @@ export default function Terms() {
 
           <h2>7. Intellectual Property</h2>
           <p>
-            The PagePulser platform, including its software, design, documentation, and branding, is owned by
-            PagePulser and protected by intellectual property laws. You retain ownership of your audit data and
+            The Kritano platform, including its software, design, documentation, and branding, is owned by
+            Kritano and protected by intellectual property laws. You retain ownership of your audit data and
             reports. By using the Service, you grant us a limited licence to process your data solely for the
             purpose of delivering the Service.
           </p>
 
           <h2>8. Subscriptions &amp; Billing</h2>
           <p>
-            PagePulser offers multiple subscription tiers, including a free tier. Paid subscriptions are billed
+            Kritano offers multiple subscription tiers, including a free tier. Paid subscriptions are billed
             monthly or annually in advance. You may cancel your subscription at any time; cancellation takes
             effect at the end of the current billing period. We reserve the right to change pricing with 30
             days' notice. Free trial periods, where offered, convert to paid subscriptions unless cancelled
@@ -126,7 +126,7 @@ export default function Terms() {
 
           <h2>9. Limitation of Liability</h2>
           <p>
-            To the maximum extent permitted by law, PagePulser's total liability for any claims arising from
+            To the maximum extent permitted by law, Kritano's total liability for any claims arising from
             or relating to the Service shall not exceed the amount you paid for the Service in the 12 months
             preceding the claim. We shall not be liable for any indirect, incidental, special, consequential,
             or punitive damages, including loss of profits, data, or business opportunities.

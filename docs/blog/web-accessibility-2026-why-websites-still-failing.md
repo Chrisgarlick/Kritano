@@ -129,7 +129,7 @@ I've seen firsthand how even small improvements — fixing contrast, adding form
 If you're not sure where your website stands, get in touch for an accessibility audit. I'll walk you through exactly what needs fixing, what to prioritise, and how to get there without it costing an arm and a leg.
 
 <!-- Internal linking suggestions:
-- Link "accessibility audit" to the PagePulser audit/pricing page
+- Link "accessibility audit" to the Kritano audit/pricing page
 - Link "WCAG 2.1 Level AA" to an explainer post on WCAG if one exists
 - Link "heading hierarchy" to any existing SEO or content structure post
 - Link "Lighthouse" to the Core Web Vitals explainer if published

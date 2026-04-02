@@ -94,10 +94,10 @@ export default function AdminOrganizationsPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Organizations | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Organizations | Kritano</title></Helmet>
       {/* Page Title & Filters */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-          <h1 className="text-3xl font-bold text-white tracking-tight mb-4 sm:mb-0" style={{ fontFamily: "'Instrument Serif', serif" }}>
+          <h1 className="text-3xl font-bold text-white tracking-tight mb-4 sm:mb-0 font-display">
             Organizations ({pagination.total})
           </h1>
           <div className="flex space-x-2">

@@ -115,7 +115,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
     case 'heading': {
       const text = (props.text as string) || '';
       const level = (props.level as number) || 2;
-      const classes = 'font-sans font-semibold text-slate-900';
+      const classes = 'font-sans font-semibold text-slate-900 dark:text-white';
       if (level === 2) return <h2 className={`${classes} text-2xl mt-10 mb-4`}>{text}</h2>;
       if (level === 3) return <h3 className={`${classes} text-xl mt-8 mb-3`}>{text}</h3>;
       return <h4 className={`${classes} text-lg mt-6 mb-2`}>{text}</h4>;
@@ -142,7 +142,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
             className="w-full rounded-lg shadow-sm"
           />
           {caption && (
-            <figcaption className="mt-2 text-center text-sm text-slate-500">{caption}</figcaption>
+            <figcaption className="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">{caption}</figcaption>
           )}
         </figure>
       );
@@ -168,7 +168,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
               {title && (
                 <p className={`mb-1 font-semibold ${cfg.titleColor}`}>{title}</p>
               )}
-              <div className="prose prose-sm max-w-none text-slate-700">
+              <div className="prose prose-sm max-w-none text-slate-700 dark:text-slate-300">
                 <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
                   {body}
                 </ReactMarkdown>
@@ -211,10 +211,10 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
       const attribution = (props.attribution as string) || '';
 
       return (
-        <blockquote className="my-8 border-l-4 border-indigo-300 bg-indigo-50/50 py-4 pl-6 pr-4">
-          <p className="text-lg italic text-slate-700">{text}</p>
+        <blockquote className="my-8 border-l-4 border-indigo-300 dark:border-indigo-600 bg-indigo-50/50 dark:bg-indigo-900/10 py-4 pl-6 pr-4">
+          <p className="text-lg italic text-slate-700 dark:text-slate-300">{text}</p>
           {attribution && (
-            <cite className="mt-2 block text-sm font-medium not-italic text-slate-500">
+            <cite className="mt-2 block text-sm font-medium not-italic text-slate-500 dark:text-slate-400">
               -- {attribution}
             </cite>
           )}
@@ -226,7 +226,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
     // DIVIDER
     // ============================================================
     case 'divider': {
-      return <hr className="my-10 border-t border-slate-200" />;
+      return <hr className="my-10 border-t border-slate-200 dark:border-slate-700" />;
     }
 
     // ============================================================
@@ -238,7 +238,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
 
       if (!embedUrl) {
         return (
-          <div className="my-6 rounded-lg border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
+          <div className="my-6 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-6 text-center text-sm text-slate-500 dark:text-slate-400">
             Unsupported embed URL
           </div>
         );
@@ -268,7 +268,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
       const btnClasses =
         variant === 'primary'
           ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
-          : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50';
+          : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700';
 
       return (
         <div className="my-8 text-center">
@@ -294,9 +294,9 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
       const source = (props.source as string) || '';
 
       return (
-        <div className="my-8 rounded-lg border border-indigo-100 bg-gradient-to-br from-indigo-50 to-white p-8 text-center">
-          <p className="font-display text-5xl font-normal text-indigo-600">{stat}</p>
-          <p className="mt-3 text-base text-slate-700">{description}</p>
+        <div className="my-8 rounded-lg border border-indigo-100 dark:border-indigo-800 bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-900/20 dark:to-slate-800 p-8 text-center">
+          <p className="font-display text-5xl font-normal text-indigo-600 dark:text-indigo-400">{stat}</p>
+          <p className="mt-3 text-base text-slate-700 dark:text-slate-300">{description}</p>
           {source && (
             <p className="mt-2 text-xs text-slate-500">Source: {source}</p>
           )}
@@ -312,13 +312,13 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
       const customText = (props.customText as string) || `View rule: ${ruleId}`;
 
       return (
-        <div className="my-6 flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-indigo-100 text-indigo-600">
+        <div className="my-6 flex items-center gap-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm transition-shadow hover:shadow-md">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
             <ExternalLink className="h-5 w-5" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="font-medium text-slate-900">{customText}</p>
-            <p className="truncate text-sm text-slate-500">{ruleId}</p>
+            <p className="font-medium text-slate-900 dark:text-white">{customText}</p>
+            <p className="truncate text-sm text-slate-500 dark:text-slate-400">{ruleId}</p>
           </div>
         </div>
       );
@@ -352,7 +352,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
     // ============================================================
     default: {
       return (
-        <div className="my-4 rounded border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
+        <div className="my-4 rounded border border-dashed border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 p-4 text-sm text-slate-500 dark:text-slate-400">
           Unknown block type: <code>{type}</code>
         </div>
       );

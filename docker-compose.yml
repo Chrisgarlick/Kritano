@@ -1,12 +1,12 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: pagepulser-db
+    container_name: kritano-db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: pagepulser
-      POSTGRES_PASSWORD: pagepulser_dev_password
-      POSTGRES_DB: pagepulser
+      POSTGRES_USER: kritano
+      POSTGRES_PASSWORD: kritano_dev_password
+      POSTGRES_DB: kritano
     ports:
       - "5433:5432"  # Using 5433 externally to avoid conflict
     volumes:
@@ -32,14 +32,14 @@ services:
         limits:
           memory: 512M
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U pagepulser -d pagepulser"]
+      test: ["CMD-SHELL", "pg_isready -U kritano -d kritano"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: pagepulser-redis
+    container_name: kritano-redis
     restart: unless-stopped
     ports:
       - "6380:6379"  # Using 6380 externally to avoid conflict
@@ -58,7 +58,7 @@ services:
 
   mailpit:
     image: axllent/mailpit:latest
-    container_name: pagepulser-mailpit
+    container_name: kritano-mailpit
     restart: unless-stopped
     ports:
       - "8025:8025"  # Web UI

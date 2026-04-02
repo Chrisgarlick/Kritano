@@ -11,12 +11,12 @@
 import { Helmet } from 'react-helmet-async';
 import { useSeoOverride } from '../../hooks/useSeoOverrides';
 
-const SITE_NAME = 'PagePulser';
-const BASE_URL = 'https://pagepulser.com';
+const SITE_NAME = 'Kritano';
+const BASE_URL = 'https://kritano.com';
 const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.png`;
 
 interface PageSeoProps {
-  /** Page title — " | PagePulser" is appended automatically */
+  /** Page title — " | Kritano" is appended automatically */
   title: string;
   /** Meta description (also used for og:description and twitter:description) */
   description: string;

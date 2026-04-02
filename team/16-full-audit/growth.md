@@ -29,7 +29,7 @@
 **Location:** `client/src/pages/referrals/ReferralDashboard.tsx`
 **Finding:** The referral dashboard only offers copy-link and email invite (max 5). There are no one-click social sharing buttons (Twitter/X, LinkedIn, WhatsApp) or pre-written share messages. The referral link is displayed in a monospace box with no context about what the recipient will see.
 **Impact:** Social sharing is the highest-leverage referral channel for B2B SaaS. Making users manually compose messages significantly reduces sharing frequency.
-**Recommendation:** Add social share buttons with pre-written messages like "I found X accessibility issues on my site in 30 seconds with PagePulser -- try it free: [link]". Include Open Graph metadata so the shared link previews well.
+**Recommendation:** Add social share buttons with pre-written messages like "I found X accessibility issues on my site in 30 seconds with Kritano -- try it free: [link]". Include Open Graph metadata so the shared link previews well.
 
 ### Cold Outreach Contradicts CLAUDE.md Instructions
 **Severity:** MEDIUM
@@ -58,7 +58,7 @@
 
 2. **Implement win-back email sequences for churned users.** The `churn_risk` trigger fires when status hits "churning," but there is no trigger for "churned" (60+ days inactive). A graduated sequence -- day 14 (churning nudge, already exists), day 30 (what you're missing), day 60 (last chance offer, e.g., 1 free audit) -- would recover some percentage of lost users at nearly zero cost.
 
-3. **Leverage audit results as a viral loop.** When users complete an audit, there is no prompt to share their score or report. Adding a "Share your accessibility score" card with a branded, public-facing score page (e.g., pagepulser.com/score/abc123) would create organic social proof and drive inbound signups from people who see others using the tool.
+3. **Leverage audit results as a viral loop.** When users complete an audit, there is no prompt to share their score or report. Adding a "Share your accessibility score" card with a branded, public-facing score page (e.g., kritano.com/score/abc123) would create organic social proof and drive inbound signups from people who see others using the tool.
 
 4. **Blog post -> registration conversion tracking.** With 15+ SEO posts driving organic traffic, adding inline CTAs (e.g., "Run a free audit on your site") within blog content and tracking which posts drive the most registrations would let you double down on what works. Currently the blog and registration funnel are disconnected.
 
@@ -66,4 +66,4 @@
 
 ## Summary
 
-PagePulser's growth infrastructure is remarkably mature for an early-stage product. The lead scoring, behavioral trigger system, and CRM are genuinely best-in-class implementations that most startups do not build until much later. The referral program and early access funnel have solid mechanics. The biggest gap is the absence of in-product onboarding -- the system excels at identifying where users are in their lifecycle but does not actively guide them through the critical first steps. Fixing the onboarding experience, adding attribution tracking, enabling the trial expiry auto-sends, and adding social sharing to the referral program would meaningfully improve conversion at every stage of the funnel. The cold prospect pipeline is well-built but should be reconciled with the stated preference for manual outreach.
+Kritano's growth infrastructure is remarkably mature for an early-stage product. The lead scoring, behavioral trigger system, and CRM are genuinely best-in-class implementations that most startups do not build until much later. The referral program and early access funnel have solid mechanics. The biggest gap is the absence of in-product onboarding -- the system excels at identifying where users are in their lifecycle but does not actively guide them through the critical first steps. Fixing the onboarding experience, adding attribution tracking, enabling the trial expiry auto-sends, and adding social sharing to the referral program would meaningfully improve conversion at every stage of the funnel. The cold prospect pipeline is well-built but should be reconciled with the stated preference for manual outreach.

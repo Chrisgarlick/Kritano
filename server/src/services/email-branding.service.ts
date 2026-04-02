@@ -23,8 +23,8 @@ interface SiteBrandingFields {
  * Resolve email branding based on tier and site/org settings.
  *
  * Resolution chain:
- * 1. Free tier → PagePulser defaults
- * 2. Starter/Pro → site colors, still "Powered by PagePulser"
+ * 1. Free tier → Kritano defaults
+ * 2. Starter/Pro → site colors, still "Powered by Kritano"
  * 3. Agency+ → full white-label with org logo, custom colors, custom footer
  */
 export async function resolveEmailBranding(

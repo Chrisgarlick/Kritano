@@ -88,44 +88,44 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
       {/* Selected slots */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Slot A */}
-        <div className={`rounded-lg border-2 border-dashed p-4 ${slotA ? 'border-indigo-300 bg-indigo-50/50' : 'border-slate-200'}`}>
-          <div className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">URL A</div>
+        <div className={`rounded-lg border-2 border-dashed p-4 ${slotA ? 'border-indigo-300 dark:border-indigo-600 bg-indigo-50/50 dark:bg-indigo-900/20' : 'border-slate-200 dark:border-slate-600'}`}>
+          <div className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">URL A</div>
           {slotA ? (
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">{slotA.url}</p>
-                <p className="text-xs text-slate-500">{slotA.siteName}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{slotA.url}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{slotA.siteName}</p>
               </div>
               <button
                 onClick={() => setSlotA(null)}
-                className="text-slate-500 hover:text-red-500 flex-shrink-0"
+                className="text-slate-500 dark:text-slate-400 hover:text-red-500 flex-shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <p className="text-sm text-slate-500">Select a URL from the list below</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Select a URL from the list below</p>
           )}
         </div>
 
         {/* Slot B */}
-        <div className={`rounded-lg border-2 border-dashed p-4 ${slotB ? 'border-indigo-300 bg-indigo-50/50' : 'border-slate-200'}`}>
-          <div className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">URL B</div>
+        <div className={`rounded-lg border-2 border-dashed p-4 ${slotB ? 'border-indigo-300 dark:border-indigo-600 bg-indigo-50/50 dark:bg-indigo-900/20' : 'border-slate-200 dark:border-slate-600'}`}>
+          <div className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">URL B</div>
           {slotB ? (
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">{slotB.url}</p>
-                <p className="text-xs text-slate-500">{slotB.siteName}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{slotB.url}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{slotB.siteName}</p>
               </div>
               <button
                 onClick={() => setSlotB(null)}
-                className="text-slate-500 hover:text-red-500 flex-shrink-0"
+                className="text-slate-500 dark:text-slate-400 hover:text-red-500 flex-shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <p className="text-sm text-slate-500">Select a second URL to compare</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Select a second URL to compare</p>
           )}
         </div>
       </div>
@@ -144,39 +144,39 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
 
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 dark:text-slate-400" />
         <input
           type="text"
           placeholder="Search URLs, sites..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+          className="w-full pl-10 pr-4 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
         />
       </div>
 
       {/* URL list */}
-      <div className="border border-slate-200 rounded-lg max-h-96 overflow-y-auto">
+      <div className="border border-slate-200 dark:border-slate-700 rounded-lg max-h-96 overflow-y-auto bg-white dark:bg-slate-800">
         {urlsLoading ? (
           <div className="p-8 text-center">
-            <div className="animate-spin w-6 h-6 border-4 border-indigo-200 border-t-indigo-600 rounded-full mx-auto mb-2" />
-            <p className="text-sm text-slate-500">Loading URLs...</p>
+            <div className="animate-spin w-6 h-6 border-4 border-indigo-200 dark:border-indigo-800 border-t-indigo-600 rounded-full mx-auto mb-2" />
+            <p className="text-sm text-slate-500 dark:text-slate-400">Loading URLs...</p>
           </div>
         ) : groupedUrls.length === 0 ? (
           <div className="p-8 text-center">
-            <Link2 className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-            <p className="text-sm text-slate-500">
+            <Link2 className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               {search ? 'No URLs match your search' : 'No audited URLs found'}
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-slate-100 dark:divide-slate-700">
             {groupedUrls.map(([siteId, group]) => (
               <div key={siteId}>
-                <div className="px-4 py-2 bg-slate-50 border-b border-slate-100 sticky top-0">
-                  <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                <div className="px-4 py-2 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700 sticky top-0">
+                  <span className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
                     {group.siteName}
                   </span>
-                  <span className="text-xs text-slate-500 ml-2">({group.siteDomain})</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 ml-2">({group.siteDomain})</span>
                 </div>
                 {group.urls.map(u => {
                   const selected = isSelected(u.urlId);
@@ -187,16 +187,16 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
                       disabled={selected || (!!slotA && !!slotB)}
                       className={`w-full px-4 py-3 text-left transition-colors ${
                         selected
-                          ? 'bg-indigo-50 cursor-default'
+                          ? 'bg-indigo-50 dark:bg-indigo-900/20 cursor-default'
                           : slotA && slotB
                           ? 'opacity-50 cursor-not-allowed'
-                          : 'hover:bg-slate-50 cursor-pointer'
+                          : 'hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer'
                       }`}
                     >
                       <div className="flex items-center justify-between gap-3">
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm text-slate-700 truncate">{u.urlPath || '/'}</p>
-                          <p className="text-xs text-slate-500 truncate">{u.url}</p>
+                          <p className="text-sm text-slate-700 dark:text-slate-300 truncate">{u.urlPath || '/'}</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{u.url}</p>
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
                           {u.seoScore !== null && (
@@ -215,11 +215,11 @@ export function UrlSelector({ onCompare, loading }: UrlSelectorProps) {
                               Content {u.contentScore}
                             </span>
                           )}
-                          <span className="text-xs text-slate-500">
+                          <span className="text-xs text-slate-500 dark:text-slate-400">
                             {new Date(u.lastAuditedAt).toLocaleDateString()}
                           </span>
                           {selected && (
-                            <span className="text-xs font-medium text-indigo-600">Selected</span>
+                            <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400">Selected</span>
                           )}
                         </div>
                       </div>

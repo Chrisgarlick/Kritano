@@ -202,12 +202,12 @@ export default function PostsPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Blog Posts | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Blog Posts | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Blog Posts</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">Blog Posts</h1>
             <p className="text-sm text-slate-500 mt-1">
               {stats.total} post{stats.total !== 1 ? 's' : ''} total &mdash; create and manage blog content
             </p>

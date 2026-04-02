@@ -54,9 +54,9 @@ export function UnverifiedDomainConsentModal({
 
       {/* Modal */}
       <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+        <div className="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
           {/* Header */}
-          <div className="bg-amber-50 px-4 py-4 sm:px-6 border-b border-amber-200">
+          <div className="bg-amber-50 dark:bg-amber-900/20 px-4 py-4 sm:px-6 border-b border-amber-200 dark:border-amber-800">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <svg
@@ -76,13 +76,13 @@ export function UnverifiedDomainConsentModal({
               </div>
               <div className="ml-3">
                 <h3
-                  className="text-lg font-semibold text-amber-800"
+                  className="text-lg font-semibold text-amber-800 dark:text-amber-300"
                   id="consent-modal-title"
                 >
                   Scanning Unverified Domain
                 </h3>
-                <p className="text-sm text-amber-700 mt-1">
-                  <span className="font-mono bg-amber-100 px-1 rounded">{domain}</span>
+                <p className="text-sm text-amber-700 dark:text-amber-400 mt-1">
+                  <span className="font-mono bg-amber-100 dark:bg-amber-900/30 px-1 rounded">{domain}</span>
                 </p>
               </div>
             </div>
@@ -90,7 +90,7 @@ export function UnverifiedDomainConsentModal({
 
           {/* Body */}
           <div className="px-4 py-4 sm:px-6">
-            <p className="text-sm text-slate-600 mb-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               You are about to scan a domain that has not been verified as belonging to your
               organization. Please confirm the following before proceeding:
             </p>
@@ -102,9 +102,9 @@ export function UnverifiedDomainConsentModal({
                   type="checkbox"
                   checked={hasAuthorization}
                   onChange={(e) => setHasAuthorization(e.target.checked)}
-                  className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                  className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                 />
-                <span className="text-sm text-slate-700">
+                <span className="text-sm text-slate-700 dark:text-slate-300">
                   I have <strong>explicit authorization</strong> from the domain owner to scan this
                   website
                 </span>
@@ -115,9 +115,9 @@ export function UnverifiedDomainConsentModal({
                   type="checkbox"
                   checked={understandsPerformance}
                   onChange={(e) => setUnderstandsPerformance(e.target.checked)}
-                  className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                  className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                 />
-                <span className="text-sm text-slate-700">
+                <span className="text-sm text-slate-700 dark:text-slate-300">
                   I understand this scan may <strong>impact the target website&apos;s performance</strong>
                 </span>
               </label>
@@ -127,20 +127,20 @@ export function UnverifiedDomainConsentModal({
                   type="checkbox"
                   checked={acceptsLiability}
                   onChange={(e) => setAcceptsLiability(e.target.checked)}
-                  className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
+                  className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
                 />
-                <span className="text-sm text-slate-700">
+                <span className="text-sm text-slate-700 dark:text-slate-300">
                   I accept <strong>full responsibility</strong> for any consequences of this scan
                 </span>
               </label>
             </div>
 
             {/* Scan Limitations */}
-            <div className="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-200">
-              <h4 className="text-sm font-medium text-slate-700 mb-2">
+            <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+              <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Scan Limitations (for unverified domains):
               </h4>
-              <ul className="text-xs text-slate-600 space-y-1">
+              <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
                   Maximum {scanLimits.maxPages} pages
@@ -165,7 +165,7 @@ export function UnverifiedDomainConsentModal({
             </div>
 
             {/* Don't show again */}
-            <div className="mt-4 pt-3 border-t border-slate-200">
+            <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
@@ -181,7 +181,7 @@ export function UnverifiedDomainConsentModal({
           </div>
 
           {/* Footer */}
-          <div className="bg-slate-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-slate-200">
+          <div className="bg-slate-50 dark:bg-slate-800/50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-slate-200 dark:border-slate-700">
             <Button
               onClick={handleAccept}
               disabled={!canProceed}

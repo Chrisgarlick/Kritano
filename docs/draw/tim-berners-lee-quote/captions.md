@@ -7,7 +7,7 @@
 
 The man who invented the web said this in 1997. Nearly 30 years later, 96% of websites still fail basic accessibility checks.
 
-**Hashtags:** #WebAccessibility #A11y #TimBernersLee #WCAG #InclusiveDesign #AccessibilityMatters #PagePulser #WebDesign #WebDevelopment #DigitalAccessibility #AccessibleWeb #EqualAccess #DisabilityInclusion #WebStandards #TechForGood #UXDesign #DigitalInclusion #QuoteOfTheDay
+**Hashtags:** #WebAccessibility #A11y #TimBernersLee #WCAG #InclusiveDesign #AccessibilityMatters #Kritano #WebDesign #WebDevelopment #DigitalAccessibility #AccessibleWeb #EqualAccess #DisabilityInclusion #WebStandards #TechForGood #UXDesign #DigitalInclusion #QuoteOfTheDay
 
 ---
 
@@ -20,7 +20,7 @@ The inventor of the web built it to be universal. We've spent 30 years making it
 
 Time to close it.
 
-**Hashtags:** #WebAccessibility #A11y #TimBernersLee #InclusiveDesign #WCAG #AccessibilityMatters #PagePulser #WebDesign #DigitalAccessibility #WebDevelopment #AccessibleWeb #DisabilityInclusion #EqualAccess #WebStandards #TechForGood #QuoteOfTheDay #Motivation #DevTips
+**Hashtags:** #WebAccessibility #A11y #TimBernersLee #InclusiveDesign #WCAG #AccessibilityMatters #Kritano #WebDesign #DigitalAccessibility #WebDevelopment #AccessibleWeb #DisabilityInclusion #EqualAccess #WebStandards #TechForGood #QuoteOfTheDay #Motivation #DevTips
 
 ---
 
@@ -33,4 +33,4 @@ The web was designed to be for everyone. If your site isn't accessible, it's not
 
 Link in bio to check yours.
 
-**Hashtags:** #WebAccessibility #A11y #TimBernersLee #WCAG #InclusiveDesign #AccessibilityMatters #PagePulser #WebDesign #WebDevelopment #DigitalAccessibility #AccessibleWeb #WebAudit #EqualAccess #DisabilityInclusion #TechForGood #WebStandards #QuoteOfTheDay #SiteHealth
+**Hashtags:** #WebAccessibility #A11y #TimBernersLee #WCAG #InclusiveDesign #AccessibilityMatters #Kritano #WebDesign #WebDevelopment #DigitalAccessibility #AccessibleWeb #WebAudit #EqualAccess #DisabilityInclusion #TechForGood #WebStandards #QuoteOfTheDay #SiteHealth

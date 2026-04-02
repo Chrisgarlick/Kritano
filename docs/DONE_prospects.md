@@ -118,4 +118,4 @@ Only qualified prospects are stored in the `cold_prospects` table. Status progre
 
 - `qualified` — Live site with contact email, ready for outreach
 - `contacted` — Outreach email sent
-- `converted` — Signed up as a PagePulser user
+- `converted` — Signed up as a Kritano user

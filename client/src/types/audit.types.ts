@@ -46,6 +46,10 @@ export interface Audit {
   is_competitor?: boolean;
   competitor_profile_id?: string | null;
   check_file_extraction?: boolean;
+  // Mobile audit
+  include_mobile?: boolean;
+  mobile_accessibility_score?: number | null;
+  mobile_performance_score?: number | null;
   // Queue info (from SSE)
   queue_position?: number | null;
   estimated_wait_seconds?: number | null;
@@ -78,6 +82,7 @@ export interface Finding {
   impact: string | null;
   wcag_criteria: string[] | null;
   help_url: string | null;
+  device_type?: 'desktop' | 'mobile' | 'both';
   status?: 'active' | 'dismissed';
   page_url?: string;
   fixSnippet?: FixSnippet;
@@ -112,6 +117,11 @@ export interface AuditPage {
   content_score: number | null;
   structured_data_score: number | null;
   cqs_score?: number | null;
+  // Mobile scores
+  mobile_accessibility_score?: number | null;
+  mobile_performance_score?: number | null;
+  mobile_accessibility_issues?: number;
+  mobile_performance_issues?: number;
   // Content subscores
   content_quality_score?: number | null;
   content_readability_score?: number | null;

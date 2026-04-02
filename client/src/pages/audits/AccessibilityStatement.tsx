@@ -148,7 +148,7 @@ function buildPlainText(data: StatementData, contact: ContactInfo): string {
 
   lines.push('Assessment Method');
   lines.push(
-    `This assessment was conducted using PagePulser automated testing on ${date}. ${data.pagesAudited} page${data.pagesAudited !== 1 ? 's were' : ' was'} audited, identifying ${data.totalIssues} unique accessibility issue${data.totalIssues !== 1 ? 's' : ''}.`
+    `This assessment was conducted using Kritano automated testing on ${date}. ${data.pagesAudited} page${data.pagesAudited !== 1 ? 's were' : ' was'} audited, identifying ${data.totalIssues} unique accessibility issue${data.totalIssues !== 1 ? 's' : ''}.`
   );
   lines.push('');
   lines.push(
@@ -261,7 +261,7 @@ function buildHtml(data: StatementData, contact: ContactInfo): string {
   ${issuesHtml}
 
   <h2>Assessment Method</h2>
-  <p>This assessment was conducted using PagePulser automated testing on ${escapeHtml(date)}. ${data.pagesAudited} page${data.pagesAudited !== 1 ? 's were' : ' was'} audited, identifying ${data.totalIssues} unique accessibility issue${data.totalIssues !== 1 ? 's' : ''}.</p>
+  <p>This assessment was conducted using Kritano automated testing on ${escapeHtml(date)}. ${data.pagesAudited} page${data.pagesAudited !== 1 ? 's were' : ' was'} audited, identifying ${data.totalIssues} unique accessibility issue${data.totalIssues !== 1 ? 's' : ''}.</p>
   <p class="note">Please note that automated testing can detect many, but not all, accessibility issues. We recommend supplementing automated results with manual testing and user feedback.</p>
 
   <h2>Contact Information</h2>
@@ -372,7 +372,7 @@ export default function AccessibilityStatementPage() {
     return (
       <DashboardLayout>
         <Helmet>
-          <title>Accessibility Statement | PagePulser</title>
+          <title>Accessibility Statement | Kritano</title>
         </Helmet>
         <div className="max-w-3xl mx-auto">
           <div className="mb-6">
@@ -410,7 +410,7 @@ export default function AccessibilityStatementPage() {
     <DashboardLayout>
       <Helmet>
         <title>
-          {data ? `Accessibility Statement — ${data.domain}` : 'Accessibility Statement'} | PagePulser
+          {data ? `Accessibility Statement — ${data.domain}` : 'Accessibility Statement'} | Kritano
         </title>
       </Helmet>
 
@@ -683,7 +683,7 @@ export default function AccessibilityStatementPage() {
                   Assessment Method
                 </Heading>
                 <Body className="text-slate-600 dark:text-slate-400 mb-3">
-                  This assessment was conducted using PagePulser automated testing on{' '}
+                  This assessment was conducted using Kritano automated testing on{' '}
                   {generateStatementDate(data.auditDate)}.{' '}
                   {data.pagesAudited} page{data.pagesAudited !== 1 ? 's were' : ' was'} audited, identifying{' '}
                   {data.totalIssues} unique accessibility issue{data.totalIssues !== 1 ? 's' : ''}.

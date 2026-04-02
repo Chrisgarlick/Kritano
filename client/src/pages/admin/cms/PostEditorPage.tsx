@@ -369,7 +369,7 @@ export default function PostEditorPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Post Editor | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Post Editor | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -381,7 +381,7 @@ export default function PostEditorPage() {
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>
+              <h1 className="text-2xl font-bold text-white tracking-tight font-display">
                 {isNew ? 'New Post' : 'Edit Post'}
               </h1>
               {post && (

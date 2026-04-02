@@ -77,36 +77,36 @@ export default function PostListPage() {
     <PublicLayout>
       <PageSeo
         title={category ? `${CATEGORY_LABELS[category] || category} Articles` : 'Blog'}
-        description="SEO guides, accessibility tips, security insights, and web performance best practices from PagePulser."
+        description="SEO guides, accessibility tips, security insights, and web performance best practices from Kritano."
         path="/blog"
         structuredData={{
           '@context': 'https://schema.org',
           '@type': 'Blog',
-          name: 'PagePulser Blog',
+          name: 'Kritano Blog',
           description: 'SEO guides, accessibility tips, and web performance insights.',
-          url: 'https://pagepulser.com/blog',
+          url: 'https://kritano.com/blog',
         }}
       />
 
       <div className="max-w-6xl mx-auto px-6 lg:px-20 py-16 lg:py-24">
         {/* Page title */}
         <div className="mb-16">
-          <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-4">
+          <p className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-4">
             Blog
           </p>
-          <h1 className="font-display text-4xl lg:text-5xl text-slate-900 leading-tight mb-4">
+          <h1 className="font-display text-4xl lg:text-5xl text-slate-900 dark:text-white leading-tight mb-4">
             {category ? `${CATEGORY_LABELS[category] || category}` : 'Insights & Guides'}
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl">
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
             SEO guides, accessibility tips, security insights, and web performance best practices.
           </p>
           {tag && (
             <div className="mt-4 flex items-center gap-2">
               <Tag className="w-4 h-4 text-indigo-500" />
-              <span className="text-sm text-indigo-600 font-medium">#{tag}</span>
+              <span className="text-sm text-indigo-600 dark:text-indigo-400 font-medium">#{tag}</span>
               <button
                 onClick={() => setFilter('tag', null)}
-                className="text-xs text-slate-500 hover:text-slate-600 ml-2"
+                className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 ml-2"
               >
                 Clear
               </button>
@@ -121,8 +121,8 @@ export default function PostListPage() {
               onClick={() => setFilter('category', null)}
               className={`text-sm px-4 py-2 rounded-lg transition-colors font-medium ${
                 !category
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                  ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
               }`}
             >
               All
@@ -133,8 +133,8 @@ export default function PostListPage() {
                 onClick={() => setFilter('category', c.category)}
                 className={`text-sm px-4 py-2 rounded-lg transition-colors font-medium ${
                   category === c.category
-                    ? 'bg-slate-900 text-white'
-                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
                 }`}
               >
                 {CATEGORY_LABELS[c.category] || c.category}
@@ -152,12 +152,12 @@ export default function PostListPage() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="bg-slate-50 rounded-xl h-80 animate-pulse" />
+              <div key={i} className="bg-slate-50 dark:bg-slate-800 rounded-xl h-80 animate-pulse" />
             ))}
           </div>
         ) : posts.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-lg text-slate-500">No posts found</p>
+            <p className="text-lg text-slate-500 dark:text-slate-400">No posts found</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -165,10 +165,10 @@ export default function PostListPage() {
               <Link
                 key={post.id}
                 to={`/blog/${post.slug}`}
-                className="bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-lg hover:border-indigo-200 transition-all duration-200 group"
+                className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg hover:border-indigo-200 dark:hover:border-indigo-800 transition-all duration-200 group"
               >
                 {post.featured_image_url && (
-                  <div className="aspect-video bg-slate-100 overflow-hidden">
+                  <div className="aspect-video bg-slate-100 dark:bg-slate-700 overflow-hidden">
                     <img
                       src={post.featured_image_url}
                       alt=""
@@ -180,25 +180,25 @@ export default function PostListPage() {
                 )}
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md uppercase tracking-wider">
+                    <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 px-2.5 py-1 rounded-md uppercase tracking-wider">
                       {CATEGORY_LABELS[post.category] || post.category}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-slate-500">
+                    <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
                       <Clock className="w-3 h-3" />
                       {post.reading_time_minutes} min
                     </span>
                   </div>
-                  <h2 className="text-lg font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2 mb-2">
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2 mb-2">
                     {post.title}
                   </h2>
                   {post.subtitle && (
-                    <p className="text-sm text-slate-500 line-clamp-1 mb-1">{post.subtitle}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-1 mb-1">{post.subtitle}</p>
                   )}
-                  <p className="text-sm text-slate-500 line-clamp-3 leading-relaxed">{post.excerpt}</p>
-                  <div className="mt-4 flex items-center justify-between pt-4 border-t border-slate-100">
-                    <span className="text-xs font-medium text-slate-600">{post.author_name}</span>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed">{post.excerpt}</p>
+                  <div className="mt-4 flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/50">
+                    <span className="text-xs font-medium text-slate-600 dark:text-slate-300">{post.author_name}</span>
                     {post.published_at && (
-                      <time className="text-xs text-slate-500">
+                      <time className="text-xs text-slate-500 dark:text-slate-400">
                         {new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </time>
                     )}
@@ -219,11 +219,11 @@ export default function PostListPage() {
                 setSearchParams(params);
               }}
               disabled={page <= 1}
-              className="flex items-center gap-1 text-sm text-slate-600 hover:text-indigo-600 disabled:opacity-30 font-medium"
+              className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 disabled:opacity-30 font-medium"
             >
               <ChevronLeft className="w-4 h-4" /> Previous
             </button>
-            <span className="text-sm text-slate-500">
+            <span className="text-sm text-slate-500 dark:text-slate-400">
               Page {page} of {totalPages}
             </span>
             <button
@@ -233,7 +233,7 @@ export default function PostListPage() {
                 setSearchParams(params);
               }}
               disabled={page >= totalPages}
-              className="flex items-center gap-1 text-sm text-slate-600 hover:text-indigo-600 disabled:opacity-30 font-medium"
+              className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 disabled:opacity-30 font-medium"
             >
               Next <ChevronRight className="w-4 h-4" />
             </button>

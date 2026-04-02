@@ -2,7 +2,7 @@
 
 ## Overview / Summary
 
-A new Claude Code skill invoked via `/draw <prompt>` that generates **brand-consistent visual assets** — either SVG or self-contained HTML files — for use as **social media posts**. Outputs are 1:1 aspect ratio, styled to match PagePulser's editorial design language (as seen on the homepage: atmospheric gradients, Instrument Serif display type, indigo/amber palette, clean card layouts, circular progress rings). Multiple variations are generated per prompt and saved to `/docs/draw/<slugified-prompt>/1.html` (or `.svg`).
+A new Claude Code skill invoked via `/draw <prompt>` that generates **brand-consistent visual assets** — either SVG or self-contained HTML files — for use as **social media posts**. Outputs are 1:1 aspect ratio, styled to match Kritano's editorial design language (as seen on the homepage: atmospheric gradients, Instrument Serif display type, indigo/amber palette, clean card layouts, circular progress rings). Multiple variations are generated per prompt and saved to `/docs/draw/<slugified-prompt>/1.html` (or `.svg`).
 
 ## Key Decisions
 
@@ -16,11 +16,11 @@ A new Claude Code skill invoked via `/draw <prompt>` that generates **brand-cons
 | **Slug generation** | Lowercase, hyphens, max 50 chars, stripped of special chars | Filesystem-safe, readable folder names |
 | **Self-contained** | Each file must work standalone in a browser | No external CSS files, no JS dependencies. Google Fonts via `<link>` is OK. Inline styles or `<style>` block. |
 | **Append behaviour** | If folder exists, continue numbering from highest existing | Allows iterating on a prompt across conversations |
-| **Brand adherence** | Always PagePulser brand style | Not generic — these are brand social assets |
+| **Brand adherence** | Always Kritano brand style | Not generic — these are brand social assets |
 
 ## Visual Style Reference: The Homepage
 
-The homepage (`client/src/pages/Home.tsx`) defines PagePulser's visual DNA. Every `/draw` output should feel like it belongs on the same page:
+The homepage (`client/src/pages/Home.tsx`) defines Kritano's visual DNA. Every `/draw` output should feel like it belongs on the same page:
 
 ### Atmospheric Elements
 - **Blurred gradient accents**: Large `rounded-full` circles with `opacity-60 blur-3xl` in `indigo-50` and `amber-50`
@@ -58,7 +58,7 @@ The homepage (`client/src/pages/Home.tsx`) defines PagePulser's visual DNA. Ever
 ```
 .claude/skills/draw/
 ├── SKILL.md              # Main skill definition (workflow, input/output)
-├── brand-style.md        # PagePulser visual DNA extracted from homepage
+├── brand-style.md        # Kritano visual DNA extracted from homepage
 └── templates.md          # Reusable HTML/SVG patterns and snippets
 ```
 
@@ -82,7 +82,7 @@ docs/draw/
 ```yaml
 ---
 name: draw
-description: Generate brand-consistent visual assets (HTML or SVG) for social media. Creates 1:1 ratio images matching PagePulser's editorial design language. Use when the user wants social graphics, illustrations, diagrams, or visual content.
+description: Generate brand-consistent visual assets (HTML or SVG) for social media. Creates 1:1 ratio images matching Kritano's editorial design language. Use when the user wants social graphics, illustrations, diagrams, or visual content.
 user-invocable: true
 argument-hint: [description of what to draw]
 ---
@@ -160,7 +160,7 @@ Every HTML output must follow this structure:
 Extracted from the homepage and brand guidelines — the visual rules every output must follow:
 
 ### Mandatory Brand Elements
-- **Always** use the PagePulser font stack (Instrument Serif / Outfit / JetBrains Mono)
+- **Always** use the Kritano font stack (Instrument Serif / Outfit / JetBrains Mono)
 - **Always** use the indigo/amber/slate palette — never introduce off-brand colours
 - **Always** include atmospheric depth (blurred gradient circles, subtle backgrounds)
 - **Always** maintain generous whitespace — don't fill every pixel
@@ -196,13 +196,13 @@ Extracted from the homepage and brand guidelines — the visual rules every outp
 
 ### Do's and Don'ts
 - **Do** leave 80-120px padding from canvas edges
-- **Do** use the PagePulser logo/wordmark when relevant (Instrument Serif "PagePulser" text)
+- **Do** use the Kritano logo/wordmark when relevant (Instrument Serif "Kritano" text)
 - **Do** use score rings, status dots, severity badges as visual elements
 - **Don't** use stock imagery or external images
 - **Don't** use colours outside the brand palette
 - **Don't** use fonts outside the three brand fonts
 - **Don't** create busy, cluttered compositions — editorial restraint
-- **Don't** add the PagePulser URL/watermark unless the prompt asks for it
+- **Don't** add the Kritano URL/watermark unless the prompt asks for it
 
 ## Reference File: `templates.md`
 

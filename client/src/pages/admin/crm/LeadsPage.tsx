@@ -219,7 +219,7 @@ export default function LeadsPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Leads | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Leads | Kritano</title></Helmet>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div className="flex items-center gap-3 mb-4 sm:mb-0">
@@ -227,7 +227,7 @@ export default function LeadsPage() {
             <Users className="w-6 h-6 text-indigo-400" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>CRM Leads</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">CRM Leads</h1>
             <p className="text-sm text-slate-500">
               {pagination.total > 0
                 ? `${pagination.total} lead${pagination.total === 1 ? '' : 's'} tracked`

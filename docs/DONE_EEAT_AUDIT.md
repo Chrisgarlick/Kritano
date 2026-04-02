@@ -2,7 +2,7 @@ This Markdown file is the "Logic Core" for your engineering team. It transforms 
 
 ---
 
-# AI Agent Instruction: pagepulser E-E-A-T Signal Engine (MVP)
+# AI Agent Instruction: kritano E-E-A-T Signal Engine (MVP)
 
 ## **1. Purpose**
 
@@ -98,7 +98,7 @@ Your agent must append this to the existing `content_report`:
 
 1. **Phase 1 (Scraper):** Update the scraper to look for specific CSS selectors like `.author-bio`, `.entry-content a[rel="nofollow"]`, and footer address strings.
 2. **Phase 2 (Logic):** Create a "Regex Dictionary" of Experience Phrases and Technical Entities.
-3. **Phase 3 (UI):** Render these as **"Trust Badges"** on the pagepulser dashboard. If a site hits Tier 3, give them a **Neon Lime** "Expert Site" badge.
+3. **Phase 3 (UI):** Render these as **"Trust Badges"** on the kritano dashboard. If a site hits Tier 3, give them a **Neon Lime** "Expert Site" badge.
 
 ---
 

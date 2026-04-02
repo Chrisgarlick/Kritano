@@ -1,10 +1,10 @@
-# PagePulser Blog & Content CMS
+# Kritano Blog & Content CMS
 
 ## 1. Purpose
 
 A modular blog and content publishing system that serves two goals:
 
-1. **SEO & Marketing** — Publish guides, case studies, and data-driven articles (e.g. "87% of sites we scan have broken Schema") to drive organic traffic to PagePulser
+1. **SEO & Marketing** — Publish guides, case studies, and data-driven articles (e.g. "87% of sites we scan have broken Schema") to drive organic traffic to Kritano
 2. **Product Education** — Help users understand audit findings with in-depth articles linked directly from the dashboard
 
 The blog is **public-facing** (no auth required to read) but **admin-authored** (only super admins can create/edit/publish content through the admin panel).
@@ -448,13 +448,13 @@ Install `react-helmet-async` for per-page meta tags.
 
 **Post list page:**
 ```html
-<title>Blog | PagePulser</title>
-<meta name="description" content="SEO guides, accessibility tips, and web performance insights from PagePulser." />
+<title>Blog | Kritano</title>
+<meta name="description" content="SEO guides, accessibility tips, and web performance insights from Kritano." />
 ```
 
 **Post detail page:**
 ```html
-<title>{post.seo_title || post.title} | PagePulser</title>
+<title>{post.seo_title || post.title} | Kritano</title>
 <meta name="description" content="{post.seo_description || post.excerpt}" />
 <meta property="og:title" content="{post.title}" />
 <meta property="og:description" content="{post.excerpt}" />
@@ -462,7 +462,7 @@ Install `react-helmet-async` for per-page meta tags.
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="{post.published_at}" />
 <meta property="article:tag" content="{post.tags}" />
-<link rel="canonical" href="https://pagepulser.com/blog/{post.slug}" />
+<link rel="canonical" href="https://kritano.com/blog/{post.slug}" />
 ```
 
 **Structured data** — auto-generated `Article` schema per post:
@@ -474,7 +474,7 @@ Install `react-helmet-async` for per-page meta tags.
   "description": "...",
   "image": "...",
   "author": { "@type": "Person", "name": "..." },
-  "publisher": { "@type": "Organization", "name": "PagePulser" },
+  "publisher": { "@type": "Organization", "name": "Kritano" },
   "datePublished": "...",
   "dateModified": "..."
 }
@@ -488,12 +488,12 @@ Install `react-helmet-async` for per-page meta tags.
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://pagepulser.com/blog</loc>
+    <loc>https://kritano.com/blog</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pagepulser.com/blog/fix-broken-schema</loc>
+    <loc>https://kritano.com/blog/fix-broken-schema</loc>
     <lastmod>2026-02-10T12:00:00Z</lastmod>
     <priority>0.6</priority>
   </url>
@@ -608,7 +608,7 @@ POST /api/admin/cms/posts/:id/export?format=pdf
 
 Pipeline:
 1. Render the block array to a complete HTML document (same as public blog rendering, but wrapped in print-friendly CSS)
-2. Apply PagePulser branding (header with logo, footer with URL)
+2. Apply Kritano branding (header with logo, footer with URL)
 3. Pass to Playwright `page.pdf()` with A4 format
 4. Return PDF buffer
 

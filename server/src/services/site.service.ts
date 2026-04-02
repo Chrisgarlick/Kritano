@@ -87,7 +87,11 @@ export async function getUserSites(userId: string): Promise<UserSiteAccess[]> {
         WHERE site_id = s.id AND status = 'completed'
         ORDER BY completed_at DESC LIMIT 1
       ) as latest_performance_score,
-      COUNT(DISTINCT su.id)::text as url_count
+      COUNT(DISTINCT su.id)::text as url_count,
+      COALESCE(
+        (SELECT sub.tier FROM subscriptions sub WHERE sub.user_id = COALESCE(s.owner_id, s.created_by) AND sub.status IN ('active', 'trialing') ORDER BY sub.created_at DESC LIMIT 1),
+        'free'
+      ) as owner_tier
      FROM sites s
      LEFT JOIN audit_jobs aj ON aj.site_id = s.id
      LEFT JOIN site_urls su ON su.site_id = s.id
@@ -126,7 +130,11 @@ export async function getUserSites(userId: string): Promise<UserSiteAccess[]> {
         WHERE site_id = s.id AND status = 'completed'
         ORDER BY completed_at DESC LIMIT 1
       ) as latest_performance_score,
-      COUNT(DISTINCT su.id)::text as url_count
+      COUNT(DISTINCT su.id)::text as url_count,
+      COALESCE(
+        (SELECT sub.tier FROM subscriptions sub WHERE sub.user_id = COALESCE(s.owner_id, s.created_by) AND sub.status IN ('active', 'trialing') ORDER BY sub.created_at DESC LIMIT 1),
+        'free'
+      ) as owner_tier
      FROM sites s
      JOIN site_shares ss ON ss.site_id = s.id
      LEFT JOIN audit_jobs aj ON aj.site_id = s.id
@@ -172,6 +180,7 @@ export async function getUserSites(userId: string): Promise<UserSiteAccess[]> {
       },
     },
     permission,
+    ownerTier: row.owner_tier || 'free',
     sharedBy,
     sharedAt,
   });
@@ -330,22 +339,13 @@ export async function deleteSite(siteId: string): Promise<void> {
 // =============================================
 
 /**
- * Get user's subscription tier limits
- * Checks user-level subscription first, then falls back to org-level subscription
+ * Get user's subscription tier limits.
+ * Pure user-centric: only checks the user's own subscription row.
  */
 export async function getUserTierLimits(userId: string): Promise<Record<string, unknown> | null> {
-  // Get user's tier - try user-based subscription, then org-based, then fall back to free
   const tierResult = await pool.query<{ tier: string }>(
     `SELECT COALESCE(
       (SELECT s.tier FROM subscriptions s WHERE s.user_id = $1 AND s.status IN ('active', 'trialing') ORDER BY s.created_at DESC LIMIT 1),
-      (SELECT s.tier FROM subscriptions s
-       JOIN organizations o ON o.id = s.organization_id
-       WHERE o.owner_id = $1 AND s.status IN ('active', 'trialing')
-       ORDER BY s.created_at DESC LIMIT 1),
-      (SELECT s.tier FROM subscriptions s
-       JOIN organization_members om ON om.organization_id = s.organization_id
-       WHERE om.user_id = $1 AND s.status IN ('active', 'trialing')
-       ORDER BY s.created_at DESC LIMIT 1),
       'free'
     ) as tier`,
     [userId]
@@ -911,7 +911,7 @@ export async function generateVerificationToken(siteId: string, regenerate: bool
   }
 
   // Generate new token
-  const token = `pagepulser-verify-${crypto.randomUUID()}`;
+  const token = `kritano-verify-${crypto.randomUUID()}`;
 
   await pool.query(
     `UPDATE sites SET verification_token = $1, updated_at = NOW() WHERE id = $2`,

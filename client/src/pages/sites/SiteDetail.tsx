@@ -6,7 +6,8 @@ import { Button } from '../../components/ui/Button';
 import { Alert } from '../../components/ui/Alert';
 import { SkeletonCard } from '../../components/ui/Skeleton';
 import { useToast } from '../../components/ui/Toast';
-import { sitesApi, analyticsApi } from '../../services/api';
+import { sitesApi, analyticsApi, auditsApi } from '../../services/api';
+import { ComplianceWidget } from '../../components/audit/ComplianceBadge';
 import { ScoreLineChart, IssueTrendChart, DateRangePicker } from '../../components/analytics';
 import type { ScoreHistory, IssueTrends, TimeRange } from '../../types/analytics.types';
 import { formatDate } from '../../utils/format';
@@ -16,6 +17,13 @@ import { PERMISSION_INFO } from '../../types/site.types';
 import { useAuth } from '../../contexts/AuthContext';
 
 type TabType = 'overview' | 'audits' | 'urls' | 'analytics' | 'sharing' | 'settings';
+
+const TIER_BADGE_CONFIG: Record<string, { label: string; className: string }> = {
+  starter: { label: 'Starter', className: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' },
+  pro: { label: 'Pro', className: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400' },
+  agency: { label: 'Agency', className: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400' },
+  enterprise: { label: 'Enterprise', className: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' },
+};
 
 interface Audit {
   id: string;
@@ -133,6 +141,11 @@ export default function SiteDetailPage() {
 
   const [activeTab, setActiveTab] = useState<TabType>('overview');
 
+  // Compliance state
+  const [complianceStatus, setComplianceStatus] = useState<'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed' | null>(null);
+  const [complianceSummary, setComplianceSummary] = useState<{ failing: number; totalClauses: number } | null>(null);
+  const [latestCompletedAuditId, setLatestCompletedAuditId] = useState<string | null>(null);
+
   // Audits state
   const [audits, setAudits] = useState<Audit[]>([]);
   const [auditsLoading, setAuditsLoading] = useState(false);
@@ -177,10 +190,11 @@ export default function SiteDetailPage() {
       setLoading(true);
       setError(null);
       const response = await sitesApi.get(siteId);
-      // Merge permission into site object (it's returned at top level)
+      // Merge permission and ownerTier into site object (they're returned at top level)
       setSite({
         ...response.data.site,
         permission: response.data.permission,
+        ownerTier: response.data.ownerTier,
       });
       setScoreHistory(response.data.scoreHistory);
     } catch (err: any) {
@@ -265,6 +279,22 @@ export default function SiteDetailPage() {
   useEffect(() => {
     fetchSite();
   }, [fetchSite]);
+
+  // Fetch compliance status from the latest completed audit
+  useEffect(() => {
+    if (audits.length > 0) {
+      const latestCompleted = audits.find(a => a.status === 'completed');
+      if (latestCompleted) {
+        setLatestCompletedAuditId(latestCompleted.id);
+        auditsApi.getCompliance(latestCompleted.id).then(res => {
+          setComplianceStatus(res.data.status);
+          setComplianceSummary({ failing: res.data.summary.failing, totalClauses: res.data.summary.totalClauses });
+        }).catch(() => {
+          setComplianceStatus('not_assessed');
+        });
+      }
+    }
+  }, [audits]);
 
   useEffect(() => {
     if (activeTab === 'overview' || activeTab === 'audits') {
@@ -424,10 +454,10 @@ export default function SiteDetailPage() {
 
   const handleCopyBadgeCode = (type: 'html' | 'markdown') => {
     if (!siteId) return;
-    const badgeUrl = `https://pagepulser.com/api/public/badges/${siteId}.svg`;
+    const badgeUrl = `https://kritano.com/api/public/badges/${siteId}.svg`;
     const snippet = type === 'html'
-      ? `<a href="https://pagepulser.com"><img src="${badgeUrl}" alt="PagePulser Score" /></a>`
-      : `[![PagePulser Score](${badgeUrl})](https://pagepulser.com)`;
+      ? `<a href="https://kritano.com"><img src="${badgeUrl}" alt="Kritano Score" /></a>`
+      : `[![Kritano Score](${badgeUrl})](https://kritano.com)`;
     navigator.clipboard.writeText(snippet).then(() => {
       setBadgeCopied(type);
       toast('Copied to clipboard', 'success');
@@ -479,7 +509,7 @@ export default function SiteDetailPage() {
 
   return (
     <DashboardLayout>
-      <Helmet><title>Site Details | PagePulser</title></Helmet>
+      <Helmet><title>Site Details | Kritano</title></Helmet>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -497,6 +527,11 @@ export default function SiteDetailPage() {
               <span className="px-2 py-0.5 text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full capitalize">
                 {PERMISSION_INFO[site.permission].label}
               </span>
+              {site.ownerTier && TIER_BADGE_CONFIG[site.ownerTier] && (
+                <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${TIER_BADGE_CONFIG[site.ownerTier].className}`}>
+                  {TIER_BADGE_CONFIG[site.ownerTier].label}
+                </span>
+              )}
             </div>
             <p className="text-slate-500 dark:text-slate-500 mt-1">{site.domain}</p>
             {site.description && (
@@ -612,6 +647,16 @@ export default function SiteDetailPage() {
                   </button>
                 )}
               </div>
+
+              {/* EAA Compliance Widget */}
+              {complianceStatus && latestCompletedAuditId && (
+                <ComplianceWidget
+                  status={complianceStatus}
+                  failingClauses={complianceSummary?.failing ?? 0}
+                  totalClauses={complianceSummary?.totalClauses ?? 0}
+                  auditId={latestCompletedAuditId}
+                />
+              )}
             </div>
           </div>
         )}
@@ -1031,7 +1076,7 @@ export default function SiteDetailPage() {
                           </div>
                           <div>
                             <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">Host / Name</p>
-                            <code className="block p-2 bg-slate-100 dark:bg-slate-900 rounded text-sm font-mono">_pagepulser</code>
+                            <code className="block p-2 bg-slate-100 dark:bg-slate-900 rounded text-sm font-mono">_kritano</code>
                           </div>
                           <div>
                             <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-1">Value</p>
@@ -1048,7 +1093,7 @@ export default function SiteDetailPage() {
                           <ol className="mt-2 ml-4 list-decimal space-y-1.5">
                             <li>Log in to your DNS provider (wherever you bought or manage your domain)</li>
                             <li>Find the DNS records or DNS management section</li>
-                            <li>Add a new <strong>TXT</strong> record with host <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">_pagepulser</code></li>
+                            <li>Add a new <strong>TXT</strong> record with host <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">_kritano</code></li>
                             <li>Paste the token above as the record value</li>
                             <li>Save the record and wait a few minutes for DNS propagation (can take up to 24 hours, but usually 5-10 minutes)</li>
                             <li>Click "Verify DNS" below once the record is live</li>
@@ -1097,7 +1142,7 @@ export default function SiteDetailPage() {
                             <li>Navigate to your website's <strong>public root</strong> directory (where your <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">index.html</code> or <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">index.php</code> lives — for Laravel/Symfony this is the <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">public/</code> folder)</li>
                             <li>Create the <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">.well-known</code> directory if it doesn't exist: <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">mkdir -p .well-known</code></li>
                             <li>Create the verification file with your token:
-                              <code className="block mt-1 p-1.5 bg-slate-100 dark:bg-slate-900 rounded text-xs font-mono break-all">echo "{verificationInstructions.instructions.file.content}" &gt; .well-known/pagepulser-verification.txt</code>
+                              <code className="block mt-1 p-1.5 bg-slate-100 dark:bg-slate-900 rounded text-xs font-mono break-all">echo "{verificationInstructions.instructions.file.content}" &gt; .well-known/kritano-verification.txt</code>
                             </li>
                             <li>Check the file is accessible by visiting <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded break-all">https://{site.domain}{verificationInstructions.instructions.file.path}</code> in your browser — you should see the token text</li>
                             <li>If you get a 403 or 404, your web server may block dotfile directories — check your server config allows access to <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">/.well-known/</code></li>
@@ -1159,7 +1204,7 @@ export default function SiteDetailPage() {
                 <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
                   <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">Public Badge</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-500 mb-4">
-                    Embed a "Verified by PagePulser" badge on your website showing your latest audit score.
+                    Embed a "Verified by Kritano" badge on your website showing your latest audit score.
                   </p>
 
                   {!isPaidTier ? (
@@ -1206,7 +1251,7 @@ export default function SiteDetailPage() {
                             <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600 inline-block">
                               <img
                                 src={`/api/public/badges/${siteId}.svg`}
-                                alt="PagePulser Score Badge"
+                                alt="Kritano Score Badge"
                                 className="h-7"
                               />
                             </div>
@@ -1217,7 +1262,7 @@ export default function SiteDetailPage() {
                             <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-2">HTML Embed Code</p>
                             <div className="flex items-start gap-2">
                               <code className="flex-1 block p-3 bg-slate-100 dark:bg-slate-900 rounded text-xs font-mono text-slate-700 dark:text-slate-300 break-all select-all">
-                                {`<a href="https://pagepulser.com"><img src="https://pagepulser.com/api/public/badges/${siteId}.svg" alt="PagePulser Score" /></a>`}
+                                {`<a href="https://kritano.com"><img src="https://kritano.com/api/public/badges/${siteId}.svg" alt="Kritano Score" /></a>`}
                               </code>
                               <Button
                                 size="sm"
@@ -1234,7 +1279,7 @@ export default function SiteDetailPage() {
                             <p className="text-xs font-medium text-slate-500 dark:text-slate-500 uppercase tracking-wider mb-2">Markdown</p>
                             <div className="flex items-start gap-2">
                               <code className="flex-1 block p-3 bg-slate-100 dark:bg-slate-900 rounded text-xs font-mono text-slate-700 dark:text-slate-300 break-all select-all">
-                                {`[![PagePulser Score](https://pagepulser.com/api/public/badges/${siteId}.svg)](https://pagepulser.com)`}
+                                {`[![Kritano Score](https://kritano.com/api/public/badges/${siteId}.svg)](https://kritano.com)`}
                               </code>
                               <Button
                                 size="sm"

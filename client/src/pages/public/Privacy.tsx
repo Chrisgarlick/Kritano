@@ -10,35 +10,35 @@ export default function Privacy() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Privacy Policy | PagePulser"
-        description="PagePulser privacy policy covering data collection, cookies, GDPR rights, and how we protect your information."
+        title="Privacy Policy | Kritano"
+        description="Kritano privacy policy covering data collection, cookies, GDPR rights, and how we protect your information."
         path="/privacy"
       />
 
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">
-          <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-6">
+          <p className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-6">
             Legal
           </p>
-          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
+          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.05] mb-4">
             Privacy Policy
           </h1>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Effective date: 14 March 2026
           </p>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-20">
-        <div className="border-t border-slate-200" />
+        <div className="border-t border-slate-200 dark:border-slate-700" />
       </div>
 
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-16">
-        <div className="max-w-3xl prose prose-slate prose-lg prose-headings:font-display prose-headings:text-slate-900 prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-8 prose-p:text-slate-600 prose-p:leading-relaxed prose-li:text-slate-600 prose-a:text-indigo-600 prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-900 prose-code:text-indigo-600 prose-code:bg-indigo-50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-table:text-sm prose-th:bg-slate-50 prose-th:text-slate-700 prose-th:font-semibold prose-td:text-slate-600">
+        <div className="max-w-3xl prose prose-slate prose-lg dark:prose-invert prose-headings:font-display prose-headings:text-slate-900 dark:prose-headings:text-white prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-8 prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-p:leading-relaxed prose-li:text-slate-600 dark:prose-li:text-slate-400 prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-900 dark:prose-strong:text-white prose-code:text-indigo-600 dark:prose-code:text-indigo-400 prose-code:bg-indigo-50 dark:prose-code:bg-indigo-900/20 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-table:text-sm prose-th:bg-slate-50 dark:prose-th:bg-slate-800 prose-th:text-slate-700 dark:prose-th:text-slate-300 prose-th:font-semibold prose-td:text-slate-600 dark:prose-td:text-slate-400">
 
           <h2>1. Introduction</h2>
           <p>
-            PagePulser ("we", "us", "our") is committed to protecting your privacy. This Privacy Policy
+            Kritano ("we", "us", "our") is committed to protecting your privacy. This Privacy Policy
             explains how we collect, use, store, and share your personal data when you use our website
             auditing platform. This policy applies to all users of our website and services.
           </p>
@@ -139,7 +139,7 @@ export default function Privacy() {
               </thead>
               <tbody>
                 <tr>
-                  <td><code>pagepulser-theme</code></td>
+                  <td><code>kritano-theme</code></td>
                   <td>Stores your light/dark mode preference</td>
                 </tr>
                 <tr>
@@ -279,7 +279,7 @@ export default function Privacy() {
 
           <h2>14. Children</h2>
           <p>
-            PagePulser is not intended for use by anyone under the age of 16. We do not knowingly collect
+            Kritano is not intended for use by anyone under the age of 16. We do not knowingly collect
             personal data from children. If you believe a child under 16 has provided us with personal data,
             please <Link to="/contact">contact us</Link> and we will delete it promptly.
           </p>

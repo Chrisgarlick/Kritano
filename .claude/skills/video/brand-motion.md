@@ -1,10 +1,10 @@
-# PagePulser Brand Motion — Video Asset Reference
+# Kritano Brand Motion — Video Asset Reference
 
-This file defines the motion rules for all `/video` outputs. Every generated animation must feel like a natural extension of the PagePulser brand — smooth, confident, unhurried.
+This file defines the motion rules for all `/video` outputs. Every generated animation must feel like a natural extension of the Kritano brand — smooth, confident, unhurried.
 
 ## Motion Philosophy
 
-PagePulser motion is:
+Kritano motion is:
 - **Smooth**: No jarring cuts or snappy transitions. Everything eases in and out gracefully.
 - **Confident**: Elements move with purpose. No bouncing or wobbling unless intentional emphasis.
 - **Unhurried**: Content holds long enough to read. The viewer should never feel rushed.

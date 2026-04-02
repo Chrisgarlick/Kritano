@@ -7,7 +7,7 @@ Every website deserves a health check.
 
 Not just the big ones. Not just the ones with compliance deadlines. Every single one.
 
-**Hashtags:** #PagePulser #WebAudit #SiteHealth #WebDesign #SEO #WebAccessibility #WebSecurity #WebPerformance #BrandStatement #DigitalMarketing #WebDevelopment #A11y #WCAG #FreeTools #WebStandards #SaaS #TechForGood #InclusiveDesign
+**Hashtags:** #Kritano #WebAudit #SiteHealth #WebDesign #SEO #WebAccessibility #WebSecurity #WebPerformance #BrandStatement #DigitalMarketing #WebDevelopment #A11y #WCAG #FreeTools #WebStandards #SaaS #TechForGood #InclusiveDesign
 
 ---
 
@@ -18,9 +18,9 @@ Every website deserves a health check.
 
 Your users deserve to know the site works. Your business deserves to know it's secure. Your content deserves to be found.
 
-That's why we built PagePulser.
+That's why we built Kritano.
 
-**Hashtags:** #PagePulser #WebAudit #SiteHealth #BrandStatement #WebDesign #SEO #WebAccessibility #WebSecurity #WebPerformance #DigitalMarketing #WebDevelopment #A11y #WCAG #TechForGood #InclusiveDesign #FreeTools #BuildInPublic
+**Hashtags:** #Kritano #WebAudit #SiteHealth #BrandStatement #WebDesign #SEO #WebAccessibility #WebSecurity #WebPerformance #DigitalMarketing #WebDevelopment #A11y #WCAG #TechForGood #InclusiveDesign #FreeTools #BuildInPublic
 
 ---
 
@@ -31,4 +31,4 @@ Every website deserves a health check.
 
 Link in bio.
 
-**Hashtags:** #PagePulser #WebAudit #SiteHealth #BrandStatement #WebDesign #SEO #WebAccessibility #WebSecurity #WebPerformance #DigitalMarketing #WebDevelopment #A11y #WCAG #FreeTools #TechForGood #InclusiveDesign #SaaS #Motivation
+**Hashtags:** #Kritano #WebAudit #SiteHealth #BrandStatement #WebDesign #SEO #WebAccessibility #WebSecurity #WebPerformance #DigitalMarketing #WebDevelopment #A11y #WCAG #FreeTools #TechForGood #InclusiveDesign #SaaS #Motivation

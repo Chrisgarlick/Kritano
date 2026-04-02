@@ -2,7 +2,7 @@
 
 ## Overview/Summary
 
-Add a "Related Posts" feature to the PagePulser blog system using a **hybrid approach**: posts are auto-matched by shared tags and category, but admins can manually override related posts via the post editor sidebar. The public blog post detail page displays up to 3 related post cards in a responsive grid between the tags section and the CTA banner.
+Add a "Related Posts" feature to the Kritano blog system using a **hybrid approach**: posts are auto-matched by shared tags and category, but admins can manually override related posts via the post editor sidebar. The public blog post detail page displays up to 3 related post cards in a responsive grid between the tags section and the CTA banner.
 
 **Why this matters:** When a reader finishes a blog post, there's currently no way to discover more content. Related posts increase page views, reduce bounce rate, and keep readers engaged with the site — all of which improve SEO signals and conversion potential.
 

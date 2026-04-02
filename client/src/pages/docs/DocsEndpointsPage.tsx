@@ -11,40 +11,40 @@ export default function DocsEndpointsPage() {
     <PublicLayout>
       <PageSeo
         title="Endpoints - API Docs"
-        description="Complete reference for all PagePulser API v1 endpoints — create audits, list results, retrieve findings, and more."
+        description="Complete reference for all Kritano API v1 endpoints — create audits, list results, retrieve findings, and more."
         path="/docs/endpoints"
         useOverrides={true}
       />
       <DocsLayout>
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h1 className="font-display text-2xl font-bold text-slate-900 mb-2">Endpoints</h1>
-          <p className="text-slate-600 mb-2">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Endpoints</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-2">
             All endpoints are relative to the base URL:
           </p>
-          <CodeBlock code="https://app.pagepulser.io/api/v1" language="http" label="Base URL" />
-          <p className="text-slate-600 mt-4 mb-2">
-            Every endpoint requires authentication via <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">Authorization: Bearer pp_live_xxx</code>. See the <a href="/docs/authentication" className="text-indigo-600 hover:underline">authentication guide</a> for details.
+          <CodeBlock code="https://app.kritano.io/api/v1" language="http" label="Base URL" />
+          <p className="text-slate-600 dark:text-slate-400 mt-4 mb-2">
+            Every endpoint requires authentication via <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">Authorization: Bearer kt_live_xxx</code>. See the <a href="/docs/authentication" className="text-indigo-600 dark:text-indigo-400 hover:underline">authentication guide</a> for details.
           </p>
         </div>
 
         {/* ── GET /api/v1/info ── */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">API Info</h2>
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">API Info</h2>
           <EndpointCard method="GET" path="/api/v1/info" description="Get API version, your tier, and current rate limits" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:read</code>
               </div>
             </div>
 
-            <p className="text-sm text-slate-600 mb-4">Returns your API version, subscription tier, rate limit numbers, and the scopes assigned to your API key. Useful for verifying your key works and checking current limits.</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">Returns your API version, subscription tier, rate limit numbers, and the scopes assigned to your API key. Useful for verifying your key works and checking current limits.</p>
 
             <CodeBlock
               language="bash"
               label="cURL"
-              code={`curl "https://app.pagepulser.io/api/v1/info" \\
-  -H "Authorization: Bearer pp_live_your_key"`}
+              code={`curl "https://app.kritano.io/api/v1/info" \\
+  -H "Authorization: Bearer kt_live_your_key"`}
             />
             <CodeBlock
               language="json"
@@ -65,18 +65,18 @@ export default function DocsEndpointsPage() {
         </div>
 
         {/* ── POST /api/v1/audits ── */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Create Audit</h2>
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Create Audit</h2>
           <EndpointCard method="POST" path="/api/v1/audits" description="Create a new website audit" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:write</code>
               </div>
             </div>
 
-            <p className="text-sm text-slate-600 mb-4">
-              Start a new website audit. The audit is queued and processed asynchronously — the response returns immediately with status <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">"pending"</code>. Poll <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">GET /api/v1/audits/:id</code> to track progress.
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+              Start a new website audit. The audit is queued and processed asynchronously — the response returns immediately with status <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">"pending"</code>. Poll <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">GET /api/v1/audits/:id</code> to track progress.
             </p>
 
             <ParamTable
@@ -95,8 +95,8 @@ export default function DocsEndpointsPage() {
             <CodeBlock
               language="bash"
               label="cURL"
-              code={`curl -X POST "https://app.pagepulser.io/api/v1/audits" \\
-  -H "Authorization: Bearer pp_live_your_key" \\
+              code={`curl -X POST "https://app.kritano.io/api/v1/audits" \\
+  -H "Authorization: Bearer kt_live_your_key" \\
   -H "Content-Type: application/json" \\
   -d '{
     "url": "https://example.com",
@@ -129,7 +129,7 @@ export default function DocsEndpointsPage() {
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
                 <code className="text-xs bg-red-50 text-red-700 px-1.5 py-0.5 rounded font-mono flex-shrink-0">400</code>
-                <span className="text-slate-600">Invalid URL format or validation error (see <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">details</code> array for per-field errors)</span>
+                <span className="text-slate-600">Invalid URL format or validation error (see <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">details</code> array for per-field errors)</span>
               </div>
               <div className="flex items-start gap-2">
                 <code className="text-xs bg-red-50 text-red-700 px-1.5 py-0.5 rounded font-mono flex-shrink-0">429</code>
@@ -140,17 +140,17 @@ export default function DocsEndpointsPage() {
         </div>
 
         {/* ── GET /api/v1/audits ── */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">List Audits</h2>
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">List Audits</h2>
           <EndpointCard method="GET" path="/api/v1/audits" description="List all audits with pagination and filtering" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:read</code>
               </div>
             </div>
 
-            <p className="text-sm text-slate-600 mb-4">List all audits for your account. Results are sorted by creation date (newest first) and support pagination and filtering.</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">List all audits for your account. Results are sorted by creation date (newest first) and support pagination and filtering.</p>
 
             <ParamTable
               title="Query Parameters"
@@ -166,8 +166,8 @@ export default function DocsEndpointsPage() {
             <CodeBlock
               language="bash"
               label="cURL"
-              code={`curl "https://app.pagepulser.io/api/v1/audits?status=completed&domain=example.com&limit=10" \\
-  -H "Authorization: Bearer pp_live_your_key"`}
+              code={`curl "https://app.kritano.io/api/v1/audits?status=completed&domain=example.com&limit=10" \\
+  -H "Authorization: Bearer kt_live_your_key"`}
             />
             <CodeBlock
               language="json"
@@ -218,17 +218,17 @@ export default function DocsEndpointsPage() {
         </div>
 
         {/* ── GET /api/v1/audits/:id ── */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Get Audit</h2>
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Get Audit</h2>
           <EndpointCard method="GET" path="/api/v1/audits/:id" description="Get detailed audit information including config and scores" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:read</code>
               </div>
             </div>
 
-            <p className="text-sm text-slate-600 mb-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Retrieve detailed information about a specific audit including its configuration, progress, scores, and HATEOAS links. Use this endpoint to poll for audit completion.
             </p>
 
@@ -243,8 +243,8 @@ export default function DocsEndpointsPage() {
             <CodeBlock
               language="bash"
               label="cURL"
-              code={`curl "https://app.pagepulser.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000" \\
-  -H "Authorization: Bearer pp_live_your_key"`}
+              code={`curl "https://app.kritano.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000" \\
+  -H "Authorization: Bearer kt_live_your_key"`}
             />
             <CodeBlock
               language="json"
@@ -316,17 +316,17 @@ export default function DocsEndpointsPage() {
         </div>
 
         {/* ── GET /api/v1/audits/:id/findings ── */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Get Findings</h2>
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Get Findings</h2>
           <EndpointCard method="GET" path="/api/v1/audits/:id/findings" description="Retrieve findings with filtering by category and severity" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">findings:read</code>
               </div>
             </div>
 
-            <p className="text-sm text-slate-600 mb-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Retrieve all findings for a completed audit. Results are sorted by severity (critical first) then by creation date. Supports filtering by category and severity.
             </p>
 
@@ -350,8 +350,8 @@ export default function DocsEndpointsPage() {
             <CodeBlock
               language="bash"
               label="cURL — All critical accessibility findings"
-              code={`curl "https://app.pagepulser.io/api/v1/audits/550e8400.../findings?category=accessibility&severity=critical" \\
-  -H "Authorization: Bearer pp_live_your_key"`}
+              code={`curl "https://app.kritano.io/api/v1/audits/550e8400.../findings?category=accessibility&severity=critical" \\
+  -H "Authorization: Bearer kt_live_your_key"`}
             />
             <CodeBlock
               language="json"
@@ -397,18 +397,18 @@ export default function DocsEndpointsPage() {
         </div>
 
         {/* ── POST /api/v1/audits/:id/cancel ── */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Cancel Audit</h2>
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Cancel Audit</h2>
           <EndpointCard method="POST" path="/api/v1/audits/:id/cancel" description="Cancel a pending or in-progress audit" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:write</code>
               </div>
             </div>
 
-            <p className="text-sm text-slate-600 mb-4">
-              Cancel a running audit. Only audits in these states can be cancelled: <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">pending</code>, <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">discovering</code>, <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">ready</code>, <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">processing</code>. No request body is needed.
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+              Cancel a running audit. Only audits in these states can be cancelled: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">pending</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">discovering</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">ready</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">processing</code>. No request body is needed.
             </p>
 
             <ParamTable
@@ -421,8 +421,8 @@ export default function DocsEndpointsPage() {
             <CodeBlock
               language="bash"
               label="cURL"
-              code={`curl -X POST "https://app.pagepulser.io/api/v1/audits/550e8400.../cancel" \\
-  -H "Authorization: Bearer pp_live_your_key"`}
+              code={`curl -X POST "https://app.kritano.io/api/v1/audits/550e8400.../cancel" \\
+  -H "Authorization: Bearer kt_live_your_key"`}
             />
             <CodeBlock
               language="json"
@@ -443,18 +443,18 @@ export default function DocsEndpointsPage() {
         </div>
 
         {/* ── DELETE /api/v1/audits/:id ── */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Delete Audit</h2>
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Delete Audit</h2>
           <EndpointCard method="DELETE" path="/api/v1/audits/:id" description="Permanently delete an audit and all its data" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:write</code>
               </div>
             </div>
 
-            <p className="text-sm text-slate-600 mb-4">
-              Permanently delete an audit and all associated findings and page data. Only audits in terminal states can be deleted: <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">completed</code>, <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">failed</code>, <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">cancelled</code>. This action cannot be undone.
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+              Permanently delete an audit and all associated findings and page data. Only audits in terminal states can be deleted: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">completed</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">failed</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">cancelled</code>. This action cannot be undone.
             </p>
 
             <ParamTable
@@ -467,8 +467,8 @@ export default function DocsEndpointsPage() {
             <CodeBlock
               language="bash"
               label="cURL"
-              code={`curl -X DELETE "https://app.pagepulser.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000" \\
-  -H "Authorization: Bearer pp_live_your_key"`}
+              code={`curl -X DELETE "https://app.kritano.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000" \\
+  -H "Authorization: Bearer kt_live_your_key"`}
             />
 
             <div className="flex gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg mt-4">

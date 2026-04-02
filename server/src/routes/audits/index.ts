@@ -51,6 +51,7 @@ const startAuditSchema = z.object({
     checkContent: z.boolean().optional(),
     checkStructuredData: z.boolean().optional(),
     checkFileExtraction: z.boolean().optional(),
+    includeMobile: z.boolean().optional(),
     wcagVersion: z.enum(['2.1', '2.2']).optional(),
     wcagLevel: z.enum(['A', 'AA', 'AAA']).optional(),
     targetKeyword: z.string().optional(), // For content analysis keyword optimization
@@ -98,6 +99,17 @@ router.post(
         res.status(400).json({
           error: 'Invalid URL format',
           code: 'INVALID_URL',
+        });
+        return;
+      }
+
+      // SSRF validation — block private/internal IP targets
+      try {
+        validateUrlForSsrf(targetUrl.toString());
+      } catch (ssrfErr: any) {
+        res.status(400).json({
+          error: ssrfErr.message || 'URL targets a private or internal address',
+          code: 'SSRF_BLOCKED',
         });
         return;
       }
@@ -157,6 +169,23 @@ router.post(
         return;
       }
 
+      // Monthly audit limit check (user-based)
+      const maxAuditsPerMonth = (userTierLimits?.max_audits_per_month as number | null) ?? null;
+      if (maxAuditsPerMonth !== null) {
+        const monthlyAudits = await pool.query<{ count: string }>(
+          `SELECT COUNT(*) as count FROM audit_jobs WHERE user_id = $1 AND created_at > NOW() - INTERVAL '30 days'`,
+          [userId]
+        );
+        if (parseInt(monthlyAudits.rows[0].count, 10) >= maxAuditsPerMonth) {
+          res.status(429).json({
+            error: `Monthly audit limit reached (${maxAuditsPerMonth} audits per month). Upgrade your plan for more audits.`,
+            code: 'MONTHLY_LIMIT_REACHED',
+            maxPerMonth: maxAuditsPerMonth,
+          });
+          return;
+        }
+      }
+
       // Apply tier limits to options
       const options = input.options || {};
       let maxPages = Math.min(options.maxPages ?? 100, maxPagesLimit);
@@ -180,6 +209,9 @@ router.post(
         // Always run structured data engine — it's lightweight HTML parsing
         // and the Schema tab should show data for all users
       }
+
+      // Mobile audit pass — available for Starter+ (any non-free tier)
+      const includeMobile = options.includeMobile !== false && tierLimits?.tier !== 'free';
 
       // File extraction is opt-in and gated to starter+
       let checkFileExtraction = (options.checkFileExtraction ?? false) && (availableChecks ? availableChecks.includes('file-extraction') : false);
@@ -232,8 +264,8 @@ router.post(
           max_pages, max_depth, respect_robots_txt, include_subdomains,
           check_seo, check_accessibility, check_security, check_performance, check_content, check_structured_data,
           check_file_extraction,
-          wcag_version, wcag_level, unverified_mode
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
+          wcag_version, wcag_level, unverified_mode, include_mobile
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
         RETURNING *
       `, [
         userId,
@@ -255,6 +287,7 @@ router.post(
         options.wcagVersion ?? '2.2',
         options.wcagLevel ?? 'AA',
         unverifiedMode,
+        includeMobile,
       ]);
 
       const audit = result.rows[0];
@@ -413,7 +446,7 @@ router.get('/check-url', authenticate, async (req: Request, res: Response): Prom
           signal: controller.signal,
           redirect: 'follow',
           headers: {
-            'User-Agent': 'pagepulser/1.0 (URL Check)',
+            'User-Agent': 'kritano/1.0 (URL Check)',
           },
         });
         clearTimeout(timeout);
@@ -1099,7 +1132,7 @@ router.get('/:id/findings', authenticate, async (req: Request, res: Response): P
   try {
     const userId = req.user!.id;
     const auditId = req.params.id;
-    const { category, severity, page = '1', limit = '50', sort } = req.query;
+    const { category, severity, device, page = '1', limit = '50', sort } = req.query;
 
     // Verify audit ownership
     const auditCheck = await pool.query(
@@ -1132,6 +1165,11 @@ router.get('/:id/findings', authenticate, async (req: Request, res: Response): P
     if (severity) {
       params.push(severity);
       query += ` AND f.severity = $${params.length}`;
+    }
+
+    if (device && device !== 'all') {
+      params.push(device);
+      query += ` AND f.device_type = $${params.length}`;
     }
 
     // Order by severity (critical first)
@@ -1705,7 +1743,7 @@ router.get('/:id/export/csv', authenticate, async (req: Request, res: Response):
     const isFree = tier === 'free';
 
     const domain = auditCheck.rows[0].target_domain;
-    const headers = ['Category', 'Severity', 'Rule ID', 'Rule Name', 'Message', 'Page URL', 'Recommendation', 'Selector', 'WCAG Criteria', 'Help URL', 'Fix Explanation', 'Fix Code', 'Fix Effort'];
+    const headers = ['Category', 'Severity', 'Rule ID', 'Rule Name', 'Message', 'Page URL', 'Device', 'Recommendation', 'Selector', 'WCAG Criteria', 'Help URL', 'Fix Explanation', 'Fix Code', 'Fix Effort'];
     const csvRows = [headers.join(',')];
 
     for (const row of result.rows) {
@@ -1728,6 +1766,7 @@ router.get('/:id/export/csv', authenticate, async (req: Request, res: Response):
         escape(row.rule_name),
         escape(row.message),
         escape(row.page_url),
+        escape(row.device_type || 'desktop'),
         escape(row.recommendation),
         escape(row.selector),
         escape(Array.isArray(row.wcag_criteria) ? row.wcag_criteria.join('; ') : null),
@@ -1866,12 +1905,12 @@ router.get('/:id/export/markdown', authenticate, async (req: Request, res: Respo
     }
 
     const defaultBranding: ResolvedBranding = {
-      companyName: 'PagePulser',
+      companyName: 'Kritano',
       logoUrl: null,
       primaryColor: '#4f46e5',
       secondaryColor: '#6366f1',
       accentColor: '#f59e0b',
-      footerText: 'Generated by PagePulser',
+      footerText: 'Generated by Kritano',
       canExportPdf: false,
       canWhiteLabel: false,
     };
@@ -1937,12 +1976,12 @@ router.get('/:id/export/html', authenticate, async (req: Request, res: Response)
     }
 
     const defaultBranding: ResolvedBranding = {
-      companyName: 'PagePulser',
+      companyName: 'Kritano',
       logoUrl: null,
       primaryColor: '#4f46e5',
       secondaryColor: '#6366f1',
       accentColor: '#f59e0b',
-      footerText: 'Generated by PagePulser',
+      footerText: 'Generated by Kritano',
       canExportPdf: false,
       canWhiteLabel: false,
     };
@@ -2055,12 +2094,13 @@ router.get('/:id/export/pdf', authenticate, async (req: Request, res: Response):
           wcag_criteria: string;
           issue_count: string;
         }>(`
-          SELECT rule_id, severity, COALESCE(wcag_criteria, '') as wcag_criteria,
-                 COUNT(DISTINCT CONCAT(rule_id, '|', COALESCE(page_url, ''))) as issue_count
-          FROM audit_findings
-          WHERE audit_job_id = $1 AND category = 'accessibility'
-          GROUP BY rule_id, severity, wcag_criteria
-          ORDER BY rule_id
+          SELECT f.rule_id, f.severity, COALESCE(array_to_string(f.wcag_criteria, ','), '') as wcag_criteria,
+                 COUNT(DISTINCT CONCAT(f.rule_id, '|', COALESCE(p.url, ''))) as issue_count
+          FROM audit_findings f
+          LEFT JOIN audit_pages p ON p.id = f.audit_page_id
+          WHERE f.audit_job_id = $1 AND f.category = 'accessibility'
+          GROUP BY f.rule_id, f.severity, array_to_string(f.wcag_criteria, ',')
+          ORDER BY f.rule_id
         `, [auditId]);
 
         const wcagToEn = buildWcagToEnMap();
@@ -2318,14 +2358,14 @@ router.post('/:id/rerun', authenticate, async (req: Request, res: Response): Pro
       return;
     }
 
-    // Create new audit with same config
+    // Create new audit with same config (preserving mobile flag from original)
     const result = await pool.query<AuditJob>(`
       INSERT INTO audit_jobs (
         user_id, organization_id, site_id, target_url, target_domain,
         max_pages, max_depth, respect_robots_txt, include_subdomains,
         check_seo, check_accessibility, check_security, check_performance, check_content,
-        wcag_version, wcag_level
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+        wcag_version, wcag_level, include_mobile
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
       RETURNING *
     `, [
       userId, orig.organization_id, orig.site_id, orig.target_url, orig.target_domain,
@@ -2333,6 +2373,7 @@ router.post('/:id/rerun', authenticate, async (req: Request, res: Response): Pro
       orig.check_seo, orig.check_accessibility, orig.check_security, orig.check_performance,
       orig.check_content ?? true,
       orig.wcag_version, orig.wcag_level,
+      orig.include_mobile ?? false,
     ]);
 
     res.status(201).json({ audit: result.rows[0] });

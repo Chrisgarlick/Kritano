@@ -186,13 +186,13 @@ export default function ColdProspectsDashboard() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Cold Prospects | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Cold Prospects | Kritano</title></Helmet>
       <div className="p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Crosshair className="w-6 h-6 text-indigo-400" />
-            <h1 className="text-2xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Cold Prospects</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight font-display">Cold Prospects</h1>
           </div>
           <div className="flex items-center gap-2">
             <label

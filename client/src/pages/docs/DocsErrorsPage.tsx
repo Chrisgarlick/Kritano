@@ -34,36 +34,36 @@ export default function DocsErrorsPage() {
     <PublicLayout>
       <PageSeo
         title="Error Handling - API Docs"
-        description="PagePulser API error codes, response format, and troubleshooting guide."
+        description="Kritano API error codes, response format, and troubleshooting guide."
         path="/docs/errors"
         useOverrides={true}
       />
       <DocsLayout>
         {/* HTTP Status Codes */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h1 className="font-display text-2xl font-bold text-slate-900 mb-2">Error Handling</h1>
-          <p className="text-slate-600 mb-6">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Error Handling</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
             The API uses conventional HTTP response codes to indicate success or failure. Codes in the <strong>2xx</strong> range indicate success, <strong>4xx</strong> indicate client errors, and <strong>5xx</strong> indicate server errors.
           </p>
 
-          <h2 className="text-lg font-semibold text-slate-800 mb-3">HTTP Status Codes</h2>
-          <div className="border border-slate-200 rounded-lg overflow-hidden mb-6">
+          <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3">HTTP Status Codes</h2>
+          <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden mb-6">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-slate-50">
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Code</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Description</th>
+                <tr className="bg-slate-50 dark:bg-slate-800/50">
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Code</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Description</th>
                 </tr>
               </thead>
               <tbody>
                 {STATUS_CODES.map(s => (
-                  <tr key={s.code} className="border-t border-slate-100 hover:bg-slate-50/50">
+                  <tr key={s.code} className="border-t border-slate-100 dark:border-slate-700/50 hover:bg-slate-50/50">
                     <td className="px-4 py-3">
                       <code className={`text-sm px-2 py-0.5 rounded font-mono font-medium ${
                         s.category === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'
                       }`}>{s.code}</code>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{s.description}</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{s.description}</td>
                   </tr>
                 ))}
               </tbody>
@@ -72,10 +72,10 @@ export default function DocsErrorsPage() {
         </div>
 
         {/* Error Response Format */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Error Response Format</h2>
-          <p className="text-slate-600 mb-3">
-            All error responses return a consistent JSON structure with an <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">error</code> field, a machine-readable <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">code</code>, and a human-readable <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">message</code>:
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Error Response Format</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-3">
+            All error responses return a consistent JSON structure with an <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">error</code> field, a machine-readable <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">code</code>, and a human-readable <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">message</code>:
           </p>
           <CodeBlock
             language="json"
@@ -87,9 +87,9 @@ export default function DocsErrorsPage() {
 }`}
           />
 
-          <h3 className="text-sm font-semibold text-slate-700 mb-2 mt-6">Validation Errors</h3>
-          <p className="text-slate-600 text-sm mb-2">
-            Validation errors include a <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">details</code> array with per-field error information:
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 mt-6">Validation Errors</h3>
+          <p className="text-slate-600 dark:text-slate-400 text-sm mb-2">
+            Validation errors include a <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">details</code> array with per-field error information:
           </p>
           <CodeBlock
             language="json"
@@ -110,8 +110,8 @@ export default function DocsErrorsPage() {
 }`}
           />
 
-          <h3 className="text-sm font-semibold text-slate-700 mb-2 mt-6">Scope Errors</h3>
-          <p className="text-slate-600 text-sm mb-2">
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 mt-6">Scope Errors</h3>
+          <p className="text-slate-600 dark:text-slate-400 text-sm mb-2">
             Scope errors include both the required scopes and your key's current scopes:
           </p>
           <CodeBlock
@@ -126,9 +126,9 @@ export default function DocsErrorsPage() {
 }`}
           />
 
-          <h3 className="text-sm font-semibold text-slate-700 mb-2 mt-6">Rate Limit Errors</h3>
-          <p className="text-slate-600 text-sm mb-2">
-            Rate limit errors include a <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">retryAfter</code> value in seconds:
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 mt-6">Rate Limit Errors</h3>
+          <p className="text-slate-600 dark:text-slate-400 text-sm mb-2">
+            Rate limit errors include a <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">retryAfter</code> value in seconds:
           </p>
           <CodeBlock
             language="json"
@@ -143,23 +143,23 @@ export default function DocsErrorsPage() {
         </div>
 
         {/* Error Code Reference */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Error Code Reference</h2>
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Error Code Reference</h2>
           <p className="text-slate-600 mb-4">
-            Use the <code className="text-sm bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">code</code> field to programmatically handle specific errors:
+            Use the <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">code</code> field to programmatically handle specific errors:
           </p>
-          <div className="border border-slate-200 rounded-lg overflow-hidden">
+          <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-slate-50">
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Code</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">HTTP</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Description</th>
+                <tr className="bg-slate-50 dark:bg-slate-800/50">
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Code</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">HTTP</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Description</th>
                 </tr>
               </thead>
               <tbody>
                 {ERROR_CODES.map(e => (
-                  <tr key={e.code} className="border-t border-slate-100 hover:bg-slate-50/50">
+                  <tr key={e.code} className="border-t border-slate-100 dark:border-slate-700/50 hover:bg-slate-50/50">
                     <td className="px-4 py-3 font-mono text-xs text-red-600 font-medium whitespace-nowrap">{e.code}</td>
                     <td className="px-4 py-3"><code className="text-xs bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">{e.status}</code></td>
                     <td className="px-4 py-3 text-slate-600">{e.meaning}</td>
@@ -171,13 +171,13 @@ export default function DocsErrorsPage() {
         </div>
 
         {/* Troubleshooting */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Troubleshooting</h2>
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Troubleshooting</h2>
           <div className="space-y-4">
             {[
               {
                 q: 'I\'m getting 401 but my key looks correct',
-                a: 'Make sure the key starts with pp_live_ and you\'re using the full key (not just the prefix shown in the dashboard). Check if the key has been revoked or has expired.',
+                a: 'Make sure the key starts with kt_live_ and you\'re using the full key (not just the prefix shown in the dashboard). Check if the key has been revoked or has expired.',
               },
               {
                 q: 'I\'m getting 403 but I have the key',

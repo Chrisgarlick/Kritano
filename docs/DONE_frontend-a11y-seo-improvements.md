@@ -2,7 +2,7 @@
 
 ## Overview
 
-A comprehensive plan to bring PagePulser's frontend up to WCAG 2.2 Level AA compliance and implement SEO best practices across all public-facing pages. The audit identified 24 issues — 10 high priority and 14 medium priority. Several things are already done well (prefers-reduced-motion, lang attribute, IconButton aria-label requirement, Alert roles, input label associations, focus rings).
+A comprehensive plan to bring Kritano's frontend up to WCAG 2.2 Level AA compliance and implement SEO best practices across all public-facing pages. The audit identified 24 issues — 10 high priority and 14 medium priority. Several things are already done well (prefers-reduced-motion, lang attribute, IconButton aria-label requirement, Alert roles, input label associations, focus rings).
 
 ## Key Decisions
 
@@ -41,10 +41,10 @@ Wraps `react-helmet-async` with standardised meta tags:
 
 ```typescript
 interface PageSeoProps {
-  title: string;               // Page title (appended with " | PagePulser")
+  title: string;               // Page title (appended with " | Kritano")
   description: string;         // Meta description + og:description
   path: string;                // Path for canonical URL (e.g., "/pricing")
-  ogImage?: string;            // OG image URL (default: PagePulser social card)
+  ogImage?: string;            // OG image URL (default: Kritano social card)
   ogType?: string;             // Default: "website"
   structuredData?: object;     // JSON-LD structured data
   noindex?: boolean;           // For auth/dashboard pages
@@ -193,28 +193,28 @@ Changes:
 
 | Page | `title` | `description` | `path` | Structured Data |
 |------|---------|--------------|--------|-----------------|
-| Home | `Website Auditing for SEO, Accessibility, Security & Performance` | `PagePulser audits your website...` | `/` | `WebApplication` |
-| About | `About PagePulser` | `Learn about PagePulser's mission...` | `/about` | `Organization` |
-| Services | `Services \| PagePulser` | `Comprehensive website auditing...` | `/services` | `Service` (×4) |
-| Pricing | `Pricing \| PagePulser` | `Free and paid plans for...` | `/pricing` | `Product` with `offers` |
-| Contact | `Contact \| PagePulser` | `Get in touch with the PagePulser team...` | `/contact` | `ContactPage` |
-| Blog List | `Blog \| PagePulser` | `SEO guides, accessibility tips...` | `/blog` | `Blog` |
+| Home | `Website Auditing for SEO, Accessibility, Security & Performance` | `Kritano audits your website...` | `/` | `WebApplication` |
+| About | `About Kritano` | `Learn about Kritano's mission...` | `/about` | `Organization` |
+| Services | `Services \| Kritano` | `Comprehensive website auditing...` | `/services` | `Service` (×4) |
+| Pricing | `Pricing \| Kritano` | `Free and paid plans for...` | `/pricing` | `Product` with `offers` |
+| Contact | `Contact \| Kritano` | `Get in touch with the Kritano team...` | `/contact` | `ContactPage` |
+| Blog List | `Blog \| Kritano` | `SEO guides, accessibility tips...` | `/blog` | `Blog` |
 | Blog Detail | Keep existing (already good) | — | — | — |
 
 #### 5.2 Auth Pages — Add Title Tags
 
 **Files:** `Login.tsx`, `Register.tsx`, `RegisterSuccess.tsx`
 
-Add `<Helmet><title>Sign In | PagePulser</title></Helmet>` (with `noindex` meta tag since these shouldn't be indexed).
+Add `<Helmet><title>Sign In | Kritano</title></Helmet>` (with `noindex` meta tag since these shouldn't be indexed).
 
 #### 5.3 Fix `index.html` Default Title
 
 **File:** `client/index.html`
 
-Change `pagepulser` → `PagePulser` in the default title. Add default OG meta tags:
+Change `kritano` → `Kritano` in the default title. Add default OG meta tags:
 
 ```html
-<meta property="og:site_name" content="PagePulser" />
+<meta property="og:site_name" content="Kritano" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 ```
@@ -231,7 +231,7 @@ Change `pagepulser` → `PagePulser` in the default title. Add default OG meta t
 User-agent: *
 Allow: /
 
-Sitemap: https://pagepulser.com/sitemap.xml
+Sitemap: https://kritano.com/sitemap.xml
 
 # Disallow authenticated areas
 Disallow: /dashboard
@@ -252,12 +252,12 @@ Static sitemap with public pages:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://pagepulser.com/</loc><priority>1.0</priority></url>
-  <url><loc>https://pagepulser.com/about</loc><priority>0.7</priority></url>
-  <url><loc>https://pagepulser.com/services</loc><priority>0.8</priority></url>
-  <url><loc>https://pagepulser.com/pricing</loc><priority>0.9</priority></url>
-  <url><loc>https://pagepulser.com/contact</loc><priority>0.5</priority></url>
-  <url><loc>https://pagepulser.com/blog</loc><priority>0.8</priority></url>
+  <url><loc>https://kritano.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://kritano.com/about</loc><priority>0.7</priority></url>
+  <url><loc>https://kritano.com/services</loc><priority>0.8</priority></url>
+  <url><loc>https://kritano.com/pricing</loc><priority>0.9</priority></url>
+  <url><loc>https://kritano.com/contact</loc><priority>0.5</priority></url>
+  <url><loc>https://kritano.com/blog</loc><priority>0.8</priority></url>
 </urlset>
 ```
 
@@ -269,8 +269,8 @@ Blog post URLs should eventually be generated dynamically via a server-side site
 
 ```json
 {
-  "name": "PagePulser",
-  "short_name": "PagePulser",
+  "name": "Kritano",
+  "short_name": "Kritano",
   "description": "Website auditing for SEO, accessibility, security, and performance",
   "start_url": "/",
   "display": "standalone",
@@ -354,7 +354,7 @@ Add `role="img"` and `aria-label` to each SVG:
 Change the brand heading from `<h1>` to a styled `<p>` or `<div>`, and promote the page title to `<h1>`:
 
 ```tsx
-<p className="text-2xl font-bold text-indigo-600">PagePulser</p>
+<p className="text-2xl font-bold text-indigo-600">Kritano</p>
 <h1 className="text-xl font-semibold">Sign in to your account</h1>
 ```
 

@@ -89,7 +89,7 @@ export default function AdminScheduleDetailPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Schedule Details | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Schedule Details | Kritano</title></Helmet>
       <div className="p-6 max-w-4xl">
         <Link
           to="/admin/schedules"

@@ -18,7 +18,7 @@ Modern websites use multiple layers of bot detection:
 |-----------------|-------------|----------------|
 | **navigator.webdriver** | JavaScript check for automation | DETECTABLE - Returns `true` in Playwright |
 | **navigator.plugins** | Empty array in headless browsers | DETECTABLE - No plugin spoofing |
-| **User-Agent Analysis** | Bot identification via UA string | DETECTABLE - Uses `pagepulser/1.0` |
+| **User-Agent Analysis** | Bot identification via UA string | DETECTABLE - Uses `kritano/1.0` |
 | **TLS/JA3 Fingerprinting** | SSL handshake patterns | DETECTABLE - Standard Chromium fingerprint |
 | **IP Reputation** | Known datacenter/proxy IPs | DETECTABLE - Single IP, no rotation |
 | **Behavioral Analysis** | Mouse movement, timing patterns | DETECTABLE - No human simulation |

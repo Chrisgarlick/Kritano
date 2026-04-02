@@ -1,4 +1,4 @@
-# pagepulser - Phase 4: Innovation Roadmap
+# kritano - Phase 4: Innovation Roadmap
 
 Detailed implementation plan for transformative features including AI-powered insights, API access, CI/CD integration, and team collaboration.
 
@@ -273,18 +273,18 @@ CREATE INDEX idx_api_keys_user ON api_keys(user_id);
 #### Key Format
 
 ```
-pp_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx  (production)
-pp_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxx  (sandbox)
+kt_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx  (production)
+kt_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxx  (sandbox)
 ```
 
 #### Authentication Flow
 
 ```
-Authorization: Bearer pp_live_xxxxx
+Authorization: Bearer kt_live_xxxxx
 
 OR
 
-X-API-Key: pp_live_xxxxx
+X-API-Key: kt_live_xxxxx
 ```
 
 ### 2.2 Rate Limiting Tiers
@@ -435,7 +435,7 @@ CREATE TABLE webhooks (
 
 ### 3.1 GitHub Action
 
-**Repository:** `pagepulser/github-action`
+**Repository:** `kritano/github-action`
 
 #### Usage
 
@@ -453,9 +453,9 @@ jobs:
   audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: pagepulser/action@v1
+      - uses: kritano/action@v1
         with:
-          api-key: ${{ secrets.PAGEPULSER_API_KEY }}
+          api-key: ${{ secrets.KRITANO_API_KEY }}
           url: https://preview-${{ github.event.pull_request.number }}.example.com
           # Or use deployment URL
           # url: ${{ steps.deploy.outputs.url }}
@@ -499,7 +499,7 @@ outputs:
 #### PR Comment
 
 ```markdown
-## 🛡️ pagepulser Results
+## 🛡️ kritano Results
 
 | Category | Score | Change |
 |----------|-------|--------|
@@ -513,34 +513,34 @@ outputs:
 - **New Issues:** 5
 - **Resolved:** 8
 
-[View Full Report](https://app.pagepulser.io/audits/xxx)
+[View Full Report](https://app.kritano.io/audits/xxx)
 
 ---
-⚠️ **Accessibility score dropped by 5 points.** Review the [accessibility findings](https://app.pagepulser.io/audits/xxx?category=accessibility) before merging.
+⚠️ **Accessibility score dropped by 5 points.** Review the [accessibility findings](https://app.kritano.io/audits/xxx?category=accessibility) before merging.
 ```
 
 ### 3.2 CLI Tool
 
-**Package:** `@pagepulser/cli`
+**Package:** `@kritano/cli`
 
 #### Installation
 
 ```bash
-npm install -g @pagepulser/cli
+npm install -g @kritano/cli
 # or
-npx @pagepulser/cli scan https://example.com
+npx @kritano/cli scan https://example.com
 ```
 
 #### Commands
 
 ```bash
 # Authentication
-pagepulser login
-pagepulser logout
-pagepulser whoami
+kritano login
+kritano logout
+kritano whoami
 
 # Scanning
-pagepulser scan <url> [options]
+kritano scan <url> [options]
   --max-pages <n>       Maximum pages to crawl (default: 100)
   --max-depth <n>       Maximum crawl depth (default: 5)
   --checks <list>       Comma-separated checks (default: all)
@@ -550,19 +550,19 @@ pagepulser scan <url> [options]
   --baseline <id>       Compare against previous audit
 
 # Results
-pagepulser status <audit-id>
-pagepulser findings <audit-id> [--category] [--severity]
-pagepulser report <audit-id> [--format pdf|json|csv]
+kritano status <audit-id>
+kritano findings <audit-id> [--category] [--severity]
+kritano report <audit-id> [--format pdf|json|csv]
 
 # History
-pagepulser list [--domain] [--status] [--limit]
-pagepulser compare <audit-id-1> <audit-id-2>
+kritano list [--domain] [--status] [--limit]
+kritano compare <audit-id-1> <audit-id-2>
 ```
 
 #### Example Output
 
 ```
-$ pagepulser scan https://example.com --wait
+$ kritano scan https://example.com --wait
 
 🔍 Starting audit for https://example.com...
 
@@ -583,7 +583,7 @@ Current: https://example.com/blog/article-5
 Critical Issues: 3
 Total Issues: 58
 
-View full report: https://app.pagepulser.io/audits/abc123
+View full report: https://app.kritano.io/audits/abc123
 ```
 
 ### 3.3 Regression Prevention

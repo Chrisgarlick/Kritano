@@ -68,7 +68,7 @@ function ScoreCard({ score, label, icon: Icon }: { score: number | null; label: 
       <div className={`text-3xl font-bold font-['Instrument_Serif'] ${getScoreColor(score)}`}>
         {score !== null ? score : '--'}
       </div>
-      <div className="text-sm text-slate-600 mt-1 font-['Outfit']">{label}</div>
+      <div className="text-sm text-slate-600 dark:text-slate-400 mt-1 font-['Outfit']">{label}</div>
     </div>
   );
 }
@@ -99,7 +99,7 @@ export default function SharedReport() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin motion-reduce:animate-none" />
       </div>
     );
@@ -107,21 +107,21 @@ export default function SharedReport() {
 
   if (error === 'expired') {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <Helmet><title>Report Expired | PagePulser</title></Helmet>
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm max-w-md w-full p-8 text-center">
-          <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+        <Helmet><title>Report Expired | Kritano</title></Helmet>
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm max-w-md w-full p-8 text-center">
+          <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-4">
             <Clock className="w-6 h-6 text-amber-600" />
           </div>
-          <Heading size="md" as="h1" className="text-slate-900 mb-2">Report Link Expired</Heading>
-          <Body size="md" className="text-slate-600 mb-6">
+          <Heading size="md" as="h1" className="text-slate-900 dark:text-white mb-2">Report Link Expired</Heading>
+          <Body size="md" className="text-slate-600 dark:text-slate-400 mb-6">
             This shared report link has expired or is no longer available. Shared links are valid for 48 hours.
           </Body>
           <Link
             to="/"
             className="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
           >
-            Go to PagePulser
+            Go to Kritano
           </Link>
         </div>
       </div>
@@ -130,21 +130,21 @@ export default function SharedReport() {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <Helmet><title>Error | PagePulser</title></Helmet>
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm max-w-md w-full p-8 text-center">
-          <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+        <Helmet><title>Error | Kritano</title></Helmet>
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm max-w-md w-full p-8 text-center">
+          <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-4">
             <AlertTriangle className="w-6 h-6 text-red-600" />
           </div>
-          <Heading size="md" as="h1" className="text-slate-900 mb-2">Something went wrong</Heading>
-          <Body size="md" className="text-slate-600 mb-6">
+          <Heading size="md" as="h1" className="text-slate-900 dark:text-white mb-2">Something went wrong</Heading>
+          <Body size="md" className="text-slate-600 dark:text-slate-400 mb-6">
             We could not load this report. Please try again later or contact the person who shared this link.
           </Body>
           <Link
             to="/"
             className="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
           >
-            Go to PagePulser
+            Go to Kritano
           </Link>
         </div>
       </div>
@@ -156,22 +156,22 @@ export default function SharedReport() {
   const totalFindingsBySeverity = Object.values(findingsSummary).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <Helmet>
-        <title>Audit Report: {audit.targetDomain} | PagePulser</title>
+        <title>Audit Report: {audit.targetDomain} | Kritano</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       {/* Header */}
-      <header className="bg-white border-b border-slate-200">
+      <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm font-['Instrument_Serif']">P</span>
+              <span className="text-white font-bold text-sm font-['Instrument_Serif']">K</span>
             </div>
-            <span className="text-lg font-semibold text-slate-900 font-['Instrument_Serif']">PagePulser</span>
+            <span className="text-lg font-semibold text-slate-900 dark:text-white font-['Instrument_Serif']">Kritano</span>
           </Link>
-          <span className="text-xs text-slate-500 font-['Outfit'] bg-slate-100 px-2.5 py-1 rounded-full">Shared Report</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-['Outfit'] bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full">Shared Report</span>
         </div>
       </header>
 
@@ -179,9 +179,9 @@ export default function SharedReport() {
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {/* Title section */}
         <div className="mb-8">
-          <Display size="sm" as="h1" className="text-slate-900 mb-1">{audit.targetDomain}</Display>
-          <Body size="sm" className="text-slate-500 font-mono">{audit.targetUrl}</Body>
-          <div className="flex items-center gap-4 mt-2 text-sm text-slate-500 font-['Outfit']">
+          <Display size="sm" as="h1" className="text-slate-900 dark:text-white mb-1">{audit.targetDomain}</Display>
+          <Body size="sm" className="text-slate-500 dark:text-slate-400 font-mono">{audit.targetUrl}</Body>
+          <div className="flex items-center gap-4 mt-2 text-sm text-slate-500 dark:text-slate-400 font-['Outfit']">
             {audit.completedAt && (
               <span>Completed {new Date(audit.completedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
             )}
@@ -204,8 +204,8 @@ export default function SharedReport() {
         {/* Issues summary */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* By Severity */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-            <Heading size="xs" as="h2" className="text-slate-900 mb-4">Issues by Severity</Heading>
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+            <Heading size="xs" as="h2" className="text-slate-900 dark:text-white mb-4">Issues by Severity</Heading>
             {totalFindingsBySeverity === 0 ? (
               <Body size="sm" muted>No issues found.</Body>
             ) : (
@@ -225,8 +225,8 @@ export default function SharedReport() {
           </div>
 
           {/* By Category */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-            <Heading size="xs" as="h2" className="text-slate-900 mb-4">Issues by Category</Heading>
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6">
+            <Heading size="xs" as="h2" className="text-slate-900 dark:text-white mb-4">Issues by Category</Heading>
             {Object.keys(categorySummary).length === 0 ? (
               <Body size="sm" muted>No issues found.</Body>
             ) : (
@@ -236,12 +236,12 @@ export default function SharedReport() {
                   if (count === 0) return null;
                   const Icon = config.icon;
                   return (
-                    <div key={key} className="flex items-center justify-between px-4 py-2.5 rounded-lg border border-slate-100 bg-slate-50">
+                    <div key={key} className="flex items-center justify-between px-4 py-2.5 rounded-lg border border-slate-100 dark:border-slate-700/50 bg-slate-50 dark:bg-slate-800/50">
                       <div className="flex items-center gap-2">
                         <Icon className={`w-4 h-4 ${config.color}`} />
-                        <span className="text-sm font-medium text-slate-700">{config.label}</span>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{config.label}</span>
                       </div>
-                      <span className="text-sm font-bold text-slate-900">{count} unique issue{count !== 1 ? 's' : ''}</span>
+                      <span className="text-sm font-bold text-slate-900 dark:text-white">{count} unique issue{count !== 1 ? 's' : ''}</span>
                     </div>
                   );
                 })}
@@ -251,34 +251,34 @@ export default function SharedReport() {
         </div>
 
         {/* Audit metadata */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 mb-8">
-          <Heading size="xs" as="h2" className="text-slate-900 mb-4">Audit Summary</Heading>
+        <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 mb-8">
+          <Heading size="xs" as="h2" className="text-slate-900 dark:text-white mb-4">Audit Summary</Heading>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div>
               <Body size="xs" muted className="uppercase tracking-wider">Pages Found</Body>
-              <Body size="lg" className="text-slate-900 font-bold">{audit.pagesFound}</Body>
+              <Body size="lg" className="text-slate-900 dark:text-white font-bold">{audit.pagesFound}</Body>
             </div>
             <div>
               <Body size="xs" muted className="uppercase tracking-wider">Pages Crawled</Body>
-              <Body size="lg" className="text-slate-900 font-bold">{audit.pagesCrawled}</Body>
+              <Body size="lg" className="text-slate-900 dark:text-white font-bold">{audit.pagesCrawled}</Body>
             </div>
             <div>
               <Body size="xs" muted className="uppercase tracking-wider">Total Issues</Body>
-              <Body size="lg" className="text-slate-900 font-bold">{audit.totalIssues}</Body>
+              <Body size="lg" className="text-slate-900 dark:text-white font-bold">{audit.totalIssues}</Body>
             </div>
             <div>
               <Body size="xs" muted className="uppercase tracking-wider">Critical Issues</Body>
-              <Body size="lg" className={`font-bold ${audit.criticalIssues > 0 ? 'text-red-600' : 'text-slate-900'}`}>{audit.criticalIssues}</Body>
+              <Body size="lg" className={`font-bold ${audit.criticalIssues > 0 ? 'text-red-600' : 'text-slate-900 dark:text-white'}`}>{audit.criticalIssues}</Body>
             </div>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 mt-auto">
+      <footer className="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-auto">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 text-center">
-          <Body size="sm" className="text-slate-500 mb-3">
-            Powered by <Link to="/" className="text-indigo-600 hover:text-indigo-700 font-medium">PagePulser</Link>
+          <Body size="sm" className="text-slate-500 dark:text-slate-400 mb-3">
+            Powered by <Link to="/" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium">Kritano</Link>
           </Body>
           <Link
             to="/register"

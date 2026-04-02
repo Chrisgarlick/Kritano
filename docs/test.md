@@ -1,4 +1,4 @@
-# PagePulser — Full Test Plan
+# Kritano — Full Test Plan
 
 A step-by-step walkthrough to verify every user-facing feature before go-live. Work through each section in order — later sections depend on data created in earlier ones.
 
@@ -200,7 +200,7 @@ For each sub-page verify:
 > 2. **CRITICAL — `/forgot-password` returns 404**: The forgot password page does not exist as a route. Clicking "Forgot password?" on the login page navigates to `/forgot-password` which shows a 404 page. The entire password reset flow is broken.
 > 3. **MISSING FEATURE — Active Sessions / Logout All Devices**: The `/settings/profile` page has no "Active Sessions" list or "Logout All Devices" button as described in test 2.8.
 > 4. **MINOR — "Member Since" shows "Unknown"**: On the profile page, the Member Since field displays "Unknown" instead of the actual registration date.
-> 5. **NOTE — Seed admin user not created**: The seed user `admin@pagepulser.com` from `.env` does not exist in the database. The actual admin is `cgarlick94@gmail.com`.
+> 5. **NOTE — Seed admin user not created**: The seed user `admin@kritano.com` from `.env` does not exist in the database. The actual admin is `cgarlick94@gmail.com`.
 
 ### 2.1 Registration
 
@@ -492,9 +492,9 @@ Wait for an audit to complete, then:
 ### 4.3 Domain Verification
 
 - [x] On a site's settings, click "Start Verification" — token is generated, two verification options appear ✅
-- [x] **DNS option**: shows Record Type (TXT), Host (_pagepulser), and Value (pagepulser-verify-UUID) fields separately ✅
+- [x] **DNS option**: shows Record Type (TXT), Host (_kritano), and Value (kritano-verify-UUID) fields separately ✅
 - [x] Step-by-step guide expands with DNS provider instructions (6 clear steps: log in, find DNS, add TXT record, paste token, save, verify) ✅
-- [x] **File option**: shows full URL (https://example.com/.well-known/pagepulser-verification.txt) and token content ✅
+- [x] **File option**: shows full URL (https://example.com/.well-known/kritano-verification.txt) and token content ✅
 - [x] Step-by-step guide expands with SSH/FTP instructions including `mkdir -p .well-known`, echo command, browser check, and 403/404 troubleshooting ✅
 - [x] Introductory text explains which method suits which situation ("Best if you have access to DNS settings" vs "Best if you have SSH or FTP access") ✅
 - [ ] Complete one verification method — **NOT TESTED** (don't own example.com)
@@ -718,7 +718,7 @@ Wait for an audit to complete, then:
 
 - [x] Navigate to `/settings/api-keys` — **PASS** — Page loads with "Create API Key" button
 - [x] Click "Create API Key" — modal opens with name field — **PASS**
-- [x] Create key with name "Test CI Key" — key created with `pp_live_` prefix — **PASS** — Key value shown
+- [x] Create key with name "Test CI Key" — key created with `kt_live_` prefix — **PASS** — Key value shown
 - [x] **BUG:** Key immediately appears under "Revoked Keys (1)" instead of active keys — **FAIL** — Newly created API key is instantly marked as revoked
 - [ ] View key stats — usage count, last used — **NOT TESTED** — Key was revoked on creation
 - [ ] Revoke a key — confirmation, key is revoked — **NOT TESTED**
@@ -762,7 +762,7 @@ Wait for an audit to complete, then:
 
 - [x] Enter up to 5 comma-separated email addresses — **PASS** — Input accepts comma-separated emails
 - [x] Click "Send Invites" — loading state, then success message "2 invite(s) sent successfully!" — **PASS**
-- [x] Check Mailpit — referral invitation emails received — **PASS** — Both friend1@example.com and friend2@example.com received "Jane Tester invited you to try PagePulser" emails
+- [x] Check Mailpit — referral invitation emails received — **PASS** — Both friend1@example.com and friend2@example.com received "Jane Tester invited you to try Kritano" emails
 - [ ] Enter > 5 emails — button does nothing (client-side limit) — **NOT TESTED**
 - [ ] Enter invalid email — error message — **NOT TESTED**
 
@@ -855,7 +855,7 @@ Wait for an audit to complete, then:
 
 - [x] Click theme toggle in sidebar (sun/moon icon) — **PASS** — Toggles between "Switch to light mode" and "Switch to dark mode"
 - [x] All pages switch between light and dark mode — **PASS** — Dashboard verified in both themes; light mode shows clean white UI, dark mode shows dark slate UI
-- [x] Preference persists across page reloads (stored in localStorage) — **PASS** — `pagepulser-theme: "dark"` persists in localStorage
+- [x] Preference persists across page reloads (stored in localStorage) — **PASS** — `kritano-theme: "dark"` persists in localStorage
 - [x] Check key pages in dark mode:
   - [x] Dashboard — all cards, charts, text readable — **PASS** — Verified via screenshot
 
@@ -1259,7 +1259,7 @@ Other trigger types to verify auto-send:
 - [x] "Coming Soon Mode" section with toggle — **PASS**
 - [x] Edit headline ("Something great is on its way.") and description — **PASS** — Editable text fields
 - [x] "Save Content" button present — **PASS**
-- [x] Preview section shows how the coming soon page will look — **PASS** — Live preview with PagePulser branding, headline, description, "Notify me" button
+- [x] Preview section shows how the coming soon page will look — **PASS** — Live preview with Kritano branding, headline, description, "Notify me" button
 - [x] "View Signups" link navigates to `/admin/coming-soon` — **PASS**
 - [ ] Toggle on — warning banner appears — **NOT TESTED**
 - [ ] Coming soon page renders for public users — **NOT TESTED**
@@ -1433,7 +1433,7 @@ Ensure Mailpit is running at `http://localhost:8025`.
 
 ### 25.1 API Key Authentication
 
-- [x] API v1 endpoint requires API key — **PASS** — `GET /api/v1/info` returns `{"error":"API key required","code":"API_KEY_REQUIRED","message":"Provide API key via Authorization header (Bearer pp_live_xxx) or X-API-Key header"}`
+- [x] API v1 endpoint requires API key — **PASS** — `GET /api/v1/info` returns `{"error":"API key required","code":"API_KEY_REQUIRED","message":"Provide API key via Authorization header (Bearer kt_live_xxx) or X-API-Key header"}`
 - [ ] Create an API key via `/settings/api-keys` — **BLOCKED** — API keys created as revoked (Bug from Part 7.8)
 - [ ] Make request with valid key — **BLOCKED**
 - [ ] Make request with invalid/revoked key — **NOT TESTED**
@@ -1514,7 +1514,7 @@ Verify that tier limits are properly enforced across the application.
 
 ## Part 28: Blog & RSS
 
-- [x] Blog RSS feed available at `/api/blog/feed.xml` — valid Atom format — **PASS** — Returns valid Atom XML with `<feed xmlns="http://www.w3.org/2005/Atom">`, title "PagePulser Blog"
+- [x] Blog RSS feed available at `/api/blog/feed.xml` — valid Atom format — **PASS** — Returns valid Atom XML with `<feed xmlns="http://www.w3.org/2005/Atom">`, title "Kritano Blog"
 - [x] Blog sitemap at `/api/blog/sitemap.xml` — valid XML sitemap — **PASS** — Returns valid sitemap with `/blog` URL
 - [x] Blog page loads at `/blog` — **PASS** — "No posts found" (empty, 0 posts loaded)
 - [ ] Blog categories endpoint — **NOT TESTED** (no published posts)
@@ -1526,7 +1526,7 @@ Verify that tier limits are properly enforced across the application.
 
 ### 29.1 Docs Overview
 
-- [x] Navigate to `/docs` — hero section with "API Version 1.0" badge, "Build with the PagePulser API" headline — **PASS**
+- [x] Navigate to `/docs` — hero section with "API Version 1.0" badge, "Build with the Kritano API" headline — **PASS**
 - [x] "Read the Docs" CTA links to `/docs/authentication` — **PASS**
 - [x] "Get API Key" CTA links to `/settings/api-keys` — **PASS**
 - [x] Quick start cards: Authentication, Quick Start (Endpoints), Rate Limits — **PASS**
@@ -1554,7 +1554,7 @@ Verify that tier limits are properly enforced across the application.
 
 - [ ] Request a data export → verify `account_data_exports` record created with status `pending`
 - [ ] GDPR worker picks up pending export within its poll cycle
-- [ ] Worker generates ZIP file in `/tmp/pagepulser-exports/` with all user data
+- [ ] Worker generates ZIP file in `/tmp/kritano-exports/` with all user data
 - [ ] Export record updated to `completed` with file path, file size, and 24h expiry
 - [ ] Export email notification sent
 - [ ] After 24 hours — worker marks export as `expired` and deletes the ZIP file from disk
@@ -1619,7 +1619,7 @@ Verify that tier limits are properly enforced across the application.
 - [x] Loading states show on all async operations — **PASS** — Seen on audit progress, send invites
 - [x] Empty states render helpfully on all list pages — **PASS** — Referrals, blog posts, schedules all show helpful empty states
 - [x] Browser back/forward navigation works correctly — **PASS** — Verified back navigation from new audit to dashboard
-- [x] Page titles update correctly for each route — **PASS** — Seen "Sign In | PagePulser", "Referrals - PagePulser", etc.
+- [x] Page titles update correctly for each route — **PASS** — Seen "Sign In | Kritano", "Referrals - Kritano", etc.
 - [ ] All links open in correct context (internal vs external) — **NOT FULLY TESTED**
 - [ ] Favicon and app icons display correctly — **NOT TESTED**
 
@@ -1712,7 +1712,7 @@ Verify that tier limits are properly enforced across the application.
 
 - **LIA Compliance** (Part 18.6) — PASS: Cold prospect sends use generic business emails only (info@, support@), email templates include unsubscribe links, data source disclosure text ("your website was identified as a potential fit"), single contact per domain enforced
 - **Email lifecycle flows** (Part 24) — PASS: 6 emails verified in Mailpit:
-  - Registration verification email: PagePulser branding, personalized "Hi Chris", verify button with token URL, 24h expiry, security notice
+  - Registration verification email: Kritano branding, personalized "Hi Chris", verify button with token URL, 24h expiry, security notice
   - Password reset email: Branding, "Hi Chris", reset button, 1h expiry, security notice
   - Audit completed email: Domain name, scores table, issues count, CTA
   - Referral invite emails: Personalized inviter name, referral link

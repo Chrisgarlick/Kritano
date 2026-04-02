@@ -41,7 +41,7 @@
 ### 4. CORS Origin Is a Single Value, Not a List
 **Severity:** LOW
 **Location:** `server/src/index.ts:70`
-**Finding:** `CORS_ORIGIN` is treated as a single origin string. If the app needs to serve multiple origins (e.g., `www.pagepulser.com` and `pagepulser.com`, or a staging domain), there is no mechanism for that.
+**Finding:** `CORS_ORIGIN` is treated as a single origin string. If the app needs to serve multiple origins (e.g., `www.kritano.com` and `kritano.com`, or a staging domain), there is no mechanism for that.
 **Impact:** Currently fine for a single-domain deployment, but will require code changes if multiple origins are needed (e.g., staging environments).
 **Recommendation:** Consider parsing `CORS_ORIGIN` as a comma-separated list and using a function-based origin validator.
 
@@ -73,4 +73,4 @@
 
 ## Summary
 
-PagePulser's security foundation is genuinely strong. The authentication system -- Argon2id hashing, refresh token rotation with reuse detection, CSRF protection, rate limiting, account lockout, anti-enumeration responses, and SSRF guards -- reflects thoughtful security engineering well above what most SaaS projects at this stage implement. The one critical issue is that the change-password endpoint is broken due to reading from a non-existent request property (`req.userId` instead of `req.user.id`), and it also skips password strength validation. The duplicate pool instantiation should be cleaned up to avoid wasting database connections. The codebase is well-organized with consistent patterns, parameterized queries everywhere, and proper error handling. Addressing the critical and high items would bring this to a 9/10.
+Kritano's security foundation is genuinely strong. The authentication system -- Argon2id hashing, refresh token rotation with reuse detection, CSRF protection, rate limiting, account lockout, anti-enumeration responses, and SSRF guards -- reflects thoughtful security engineering well above what most SaaS projects at this stage implement. The one critical issue is that the change-password endpoint is broken due to reading from a non-existent request property (`req.userId` instead of `req.user.id`), and it also skips password strength validation. The duplicate pool instantiation should be cleaned up to avoid wasting database connections. The codebase is well-organized with consistent patterns, parameterized queries everywhere, and proper error handling. Addressing the critical and high items would bring this to a 9/10.

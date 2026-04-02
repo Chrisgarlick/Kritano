@@ -3,13 +3,13 @@
 ## Variation 1 — Light with Full Page Mockup
 
 **Caption:**
-This is what a PagePulser audit report looks like.
+This is what a Kritano audit report looks like.
 
 Every finding. Every severity level. Every fix — explained in plain English. Score summary at the top, prioritised issues below, and guidance your team can actually act on.
 
 Send it to a client. Share it with your dev team. Attach it to a compliance record.
 
-**Hashtags:** #PagePulser #WebAudit #PDFReport #SiteHealth #SEO #WebAccessibility #WebSecurity #Reporting #ClientReports #WebDevelopment #AgencyLife #WCAG #A11y #Compliance #WebDesign #DevTools #FreeTools #SaaS
+**Hashtags:** #Kritano #WebAudit #PDFReport #SiteHealth #SEO #WebAccessibility #WebSecurity #Reporting #ClientReports #WebDevelopment #AgencyLife #WCAG #A11y #Compliance #WebDesign #DevTools #FreeTools #SaaS
 
 ---
 
@@ -25,7 +25,7 @@ Not a wall of error codes. Not a data dump. A proper document with:
 
 Every finding comes with context and guidance. Ready to send the moment your audit finishes.
 
-**Hashtags:** #PagePulser #WebAudit #ClientReports #PDFReport #SiteHealth #SEO #WebAccessibility #Reporting #AgencyLife #WebDevelopment #WCAG #Compliance #WebDesign #DevTools #ProductFeature #SaaS #BuildInPublic
+**Hashtags:** #Kritano #WebAudit #ClientReports #PDFReport #SiteHealth #SEO #WebAccessibility #Reporting #AgencyLife #WebDevelopment #WCAG #Compliance #WebDesign #DevTools #ProductFeature #SaaS #BuildInPublic
 
 ---
 
@@ -38,4 +38,4 @@ PDF for branded client reports. CSV for spreadsheet analysis and JIRA imports. B
 
 Use them for client deliverables, compliance records, or team stand-ups. Whatever you need.
 
-**Hashtags:** #PagePulser #WebAudit #Reporting #PDFExport #CSVExport #SiteHealth #SEO #WebAccessibility #ClientReports #AgencyLife #WebDevelopment #Compliance #EAA #WCAG #DevTools #SaaS #WebDesign #ProductFeature
+**Hashtags:** #Kritano #WebAudit #Reporting #PDFExport #CSVExport #SiteHealth #SEO #WebAccessibility #ClientReports #AgencyLife #WebDevelopment #Compliance #EAA #WCAG #DevTools #SaaS #WebDesign #ProductFeature

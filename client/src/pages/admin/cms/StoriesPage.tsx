@@ -194,12 +194,12 @@ export default function StoriesPage() {
 
   return (
     <AdminLayout>
-      <Helmet><title>Admin: Success Stories | PagePulser</title></Helmet>
+      <Helmet><title>Admin: Success Stories | Kritano</title></Helmet>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight" style={{ fontFamily: "'Instrument Serif', serif" }}>Success Stories</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight font-display">Success Stories</h1>
             <p className="text-sm text-slate-500 mt-1">
               Showcase customer audit score improvements on the public site
             </p>

@@ -43,18 +43,18 @@ const sizeConfig: Record<RingSize, { size: number; strokeWidth: number }> = {
 
 // Score-based color thresholds
 function getScoreColor(value: number): string {
-  if (value >= 90) return '#10b981'; // emerald-500
+  if (value >= 90) return '#059669'; // emerald-600
   if (value >= 70) return '#f59e0b'; // amber-500
   if (value >= 50) return '#f97316'; // orange-500
-  return '#ef4444'; // red-500
+  return '#dc2626'; // red-600
 }
 
 // Score-based color classes for Tailwind
 function getScoreColorClass(value: number): string {
-  if (value >= 90) return 'text-emerald-500';
+  if (value >= 90) return 'text-emerald-600';
   if (value >= 70) return 'text-amber-500';
   if (value >= 50) return 'text-orange-500';
-  return 'text-red-500';
+  return 'text-red-600';
 }
 
 export function ProgressRing({

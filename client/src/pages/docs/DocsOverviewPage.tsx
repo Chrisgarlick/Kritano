@@ -16,7 +16,7 @@ export default function DocsOverviewPage() {
     <PublicLayout>
       <PageSeo
         title="API Documentation"
-        description="Comprehensive API documentation for PagePulser — automate website audits, retrieve findings, and build custom integrations."
+        description="Comprehensive API documentation for Kritano — automate website audits, retrieve findings, and build custom integrations."
         path="/docs"
         useOverrides={true}
       />
@@ -30,7 +30,7 @@ export default function DocsOverviewPage() {
               API Version 1.0
             </div>
             <h1 className="font-display text-4xl lg:text-5xl font-bold mb-5 leading-tight">
-              Build with the <span className="text-indigo-300">PagePulser API</span>
+              Build with the <span className="text-indigo-300">Kritano API</span>
             </h1>
             <p className="text-lg text-slate-300 leading-relaxed mb-8">
               Integrate powerful website auditing into your workflow. Automate accessibility, SEO, security, and performance checks at scale.
@@ -53,12 +53,12 @@ export default function DocsOverviewPage() {
           {QUICK_START.map(card => {
             const Icon = card.icon;
             return (
-              <Link key={card.href} to={card.href} className="bg-white border border-slate-200 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+              <Link key={card.href} to={card.href} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${card.color}`}>
                   <Icon className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">{card.label}</h3>
-                <p className="text-sm text-slate-500">{card.description}</p>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">{card.label}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{card.description}</p>
               </Link>
             );
           })}
@@ -67,22 +67,22 @@ export default function DocsOverviewPage() {
 
       <DocsLayout>
         {/* Getting Started */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="font-display text-2xl font-bold text-slate-900 mb-4">Getting Started</h2>
-          <p className="text-slate-600 mb-6">
-            The PagePulser API lets you programmatically create website audits, retrieve detailed findings, and integrate audit results into your own tools and workflows. Follow these three steps to make your first API call.
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-4">Getting Started</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
+            The Kritano API lets you programmatically create website audits, retrieve detailed findings, and integrate audit results into your own tools and workflows. Follow these three steps to make your first API call.
           </p>
 
           {/* Step 1 */}
           <div className="flex gap-4 mb-8">
             <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">1</div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">Get your API key</h3>
-              <p className="text-slate-600 mb-3">
-                Go to <Link to="/settings/api-keys" className="text-indigo-600 font-medium hover:underline">Settings &rarr; API Keys</Link> and create a new key. Select the scopes you need — at minimum <code className="text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">audits:read</code> and <code className="text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">audits:write</code>.
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">Get your API key</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-3">
+                Go to <Link to="/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Settings &rarr; API Keys</Link> and create a new key. Select the scopes you need — at minimum <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:read</code> and <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:write</code>.
               </p>
-              <p className="text-slate-600 text-sm">
-                Your key will look like: <code className="text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">pp_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
+                Your key will look like: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">kt_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>
               </p>
             </div>
           </div>
@@ -91,15 +91,15 @@ export default function DocsOverviewPage() {
           <div className="flex gap-4 mb-8">
             <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">2</div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">Create an audit</h3>
-              <p className="text-slate-600 mb-3">
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">Create an audit</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-3">
                 Send a POST request to create your first audit. The API will queue the audit and return immediately with a pending status.
               </p>
               <CodeBlock
                 language="bash"
                 label="cURL"
-                code={`curl -X POST "https://app.pagepulser.io/api/v1/audits" \\
-  -H "Authorization: Bearer pp_live_your_api_key" \\
+                code={`curl -X POST "https://app.kritano.io/api/v1/audits" \\
+  -H "Authorization: Bearer kt_live_your_api_key" \\
   -H "Content-Type: application/json" \\
   -d '{
     "url": "https://example.com",
@@ -131,58 +131,58 @@ export default function DocsOverviewPage() {
           <div className="flex gap-4 mb-8">
             <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">3</div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-slate-800 mb-2">Poll for results &amp; fetch findings</h3>
-              <p className="text-slate-600 mb-3">
-                Poll the audit endpoint until <code className="text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">status</code> is <code className="text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">"completed"</code>, then fetch findings:
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">Poll for results &amp; fetch findings</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-3">
+                Poll the audit endpoint until <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">status</code> is <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">"completed"</code>, then fetch findings:
               </p>
               <CodeBlock
                 language="bash"
                 label="cURL — Check status"
-                code={`curl "https://app.pagepulser.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000" \\
-  -H "Authorization: Bearer pp_live_your_api_key"`}
+                code={`curl "https://app.kritano.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000" \\
+  -H "Authorization: Bearer kt_live_your_api_key"`}
               />
               <CodeBlock
                 language="bash"
                 label="cURL — Get findings"
-                code={`curl "https://app.pagepulser.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000/findings" \\
-  -H "Authorization: Bearer pp_live_your_api_key"`}
+                code={`curl "https://app.kritano.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000/findings" \\
+  -H "Authorization: Bearer kt_live_your_api_key"`}
               />
             </div>
           </div>
         </div>
 
         {/* Base URL & Headers */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Base URL</h2>
-          <CodeBlock code="https://app.pagepulser.io/api/v1" language="http" label="Base URL" />
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Base URL</h2>
+          <CodeBlock code="https://app.kritano.io/api/v1" language="http" label="Base URL" />
 
-          <p className="text-slate-600 mt-4 mb-2">All requests must include:</p>
-          <ul className="list-disc list-inside text-slate-600 space-y-1 text-sm">
-            <li><code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">Authorization: Bearer pp_live_xxx</code> or <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">X-API-Key: pp_live_xxx</code></li>
-            <li><code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">Content-Type: application/json</code> for POST requests</li>
+          <p className="text-slate-600 dark:text-slate-400 mt-4 mb-2">All requests must include:</p>
+          <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-1 text-sm">
+            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">Authorization: Bearer kt_live_xxx</code> or <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-API-Key: kt_live_xxx</code></li>
+            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">Content-Type: application/json</code> for POST requests</li>
           </ul>
 
-          <p className="text-slate-600 mt-4 mb-2">All responses include rate limit headers:</p>
-          <ul className="list-disc list-inside text-slate-600 space-y-1 text-sm">
-            <li><code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">X-RateLimit-Limit</code> — Max requests per minute for your tier</li>
-            <li><code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">X-RateLimit-Remaining</code> — Requests remaining in current window</li>
-            <li><code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">X-RateLimit-Reset</code> — Unix timestamp when window resets</li>
+          <p className="text-slate-600 dark:text-slate-400 mt-4 mb-2">All responses include rate limit headers:</p>
+          <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-1 text-sm">
+            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Limit</code> — Max requests per minute for your tier</li>
+            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Remaining</code> — Requests remaining in current window</li>
+            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Reset</code> — Unix timestamp when window resets</li>
           </ul>
         </div>
 
         {/* API Scopes */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">API Scopes</h2>
-          <p className="text-slate-600 mb-4">
-            Each API key is created with specific scopes that control what it can access. Endpoints require specific scopes — if your key is missing a required scope, you'll receive a <code className="text-xs bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-mono">403</code> error.
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">API Scopes</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            Each API key is created with specific scopes that control what it can access. Endpoints require specific scopes — if your key is missing a required scope, you'll receive a <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">403</code> error.
           </p>
-          <div className="border border-slate-200 rounded-lg overflow-hidden">
+          <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-slate-50">
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Scope</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Used By</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Description</th>
+                <tr className="bg-slate-50 dark:bg-slate-800/50">
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Scope</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Used By</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Description</th>
                 </tr>
               </thead>
               <tbody>
@@ -193,10 +193,10 @@ export default function DocsOverviewPage() {
                   { scope: 'findings:write', used: '—', desc: 'Reserved for future use' },
                   { scope: 'exports:read', used: '—', desc: 'Reserved for future use' },
                 ].map(s => (
-                  <tr key={s.scope} className="border-t border-slate-100">
+                  <tr key={s.scope} className="border-t border-slate-100 dark:border-slate-700/50">
                     <td className="px-4 py-3 font-mono text-xs text-indigo-600 font-medium whitespace-nowrap">{s.scope}</td>
                     <td className="px-4 py-3 font-mono text-xs text-slate-500">{s.used}</td>
-                    <td className="px-4 py-3 text-slate-600">{s.desc}</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{s.desc}</td>
                   </tr>
                 ))}
               </tbody>
@@ -205,15 +205,15 @@ export default function DocsOverviewPage() {
         </div>
 
         {/* Endpoints overview */}
-        <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 mb-4">Endpoints at a Glance</h2>
-          <div className="border border-slate-200 rounded-lg overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">Endpoints at a Glance</h2>
+          <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-slate-50">
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Method</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider">Endpoint</th>
-                  <th className="text-left px-4 py-3 font-semibold text-slate-700 text-xs uppercase tracking-wider hidden sm:table-cell">Description</th>
+                <tr className="bg-slate-50 dark:bg-slate-800/50">
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Method</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider">Endpoint</th>
+                  <th className="text-left px-4 py-3 font-semibold text-slate-700 dark:text-slate-300 text-xs uppercase tracking-wider hidden sm:table-cell">Description</th>
                 </tr>
               </thead>
               <tbody>
@@ -230,14 +230,14 @@ export default function DocsOverviewPage() {
                     <td className="px-4 py-3">
                       <span className={`text-[10px] font-bold font-mono uppercase px-2 py-0.5 rounded ${e.color}`}>{e.method}</span>
                     </td>
-                    <td className="px-4 py-3 font-mono text-xs text-slate-800">{e.path}</td>
-                    <td className="px-4 py-3 text-slate-600 hidden sm:table-cell">{e.desc}</td>
+                    <td className="px-4 py-3 font-mono text-xs text-slate-800 dark:text-slate-200">{e.path}</td>
+                    <td className="px-4 py-3 text-slate-600 dark:text-slate-400 hidden sm:table-cell">{e.desc}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <Link to="/docs/endpoints" className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-indigo-600 hover:text-indigo-700">
+          <Link to="/docs/endpoints" className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
             View full endpoint reference <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

@@ -587,6 +587,7 @@ export const sitesApi = {
       site: SiteWithStats;
       permission: SitePermission;
       isOwner: boolean;
+      ownerTier: string;
       scoreHistory: ScoreHistoryEntry[];
     }>(`/sites/${siteId}`),
 
@@ -914,7 +915,7 @@ export const adminApi = {
   getUser: (userId: string) =>
     api.get<{ user: AdminUser }>(`/admin/users/${userId}`),
 
-  updateUser: (userId: string, data: { is_super_admin?: boolean }) =>
+  updateUser: (userId: string, data: { is_super_admin?: boolean; tier?: string }) =>
     api.patch<{ user: AdminUser }>(`/admin/users/${userId}`, data),
 
   deleteUser: (userId: string) =>
@@ -2798,6 +2799,85 @@ export const accountApi = {
 
   cancelAccountDeletion: () =>
     api.post<{ message: string }>('/account/cancel-deletion'),
+};
+
+// =============================================
+// COLD OUTREACH LOG
+// =============================================
+
+export interface OutreachLogEntry {
+  id: string;
+  email: string;
+  name?: string;
+  domain?: string;
+  date_sent: string;
+  subject?: string;
+  notes?: string;
+  status: 'sent' | 'replied' | 'nurturing' | 'converted' | 'dead';
+  replied: boolean;
+  reply_date?: string;
+  reply_notes?: string;
+  free_audit_given: boolean;
+  free_audit_date?: string;
+  became_user: boolean;
+  user_signup_date?: string;
+  user_id?: string;
+  became_paid: boolean;
+  paid_date?: string;
+  plan_tier?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OutreachLogStats {
+  total: number;
+  replied: number;
+  replyRate: string;
+  freeAudits: number;
+  users: number;
+  userRate: string;
+  paid: number;
+  paidRate: string;
+  byStatus: Record<string, number>;
+  sentLast7d: number;
+  sentLast30d: number;
+}
+
+export const outreachLogApi = {
+  list: (params: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    search?: string;
+    sort?: string;
+    order?: string;
+    replied?: string;
+    became_user?: string;
+    became_paid?: string;
+    free_audit?: string;
+  } = {}) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, val]) => {
+      if (val !== undefined) searchParams.set(key, String(val));
+    });
+    const qs = searchParams.toString();
+    return api.get<{ items: OutreachLogEntry[]; total: number; page: number; limit: number; totalPages: number }>(
+      `/admin/outreach-log${qs ? `?${qs}` : ''}`
+    );
+  },
+
+  stats: () => api.get<OutreachLogStats>('/admin/outreach-log/stats'),
+
+  get: (id: string) => api.get<OutreachLogEntry>(`/admin/outreach-log/${id}`),
+
+  create: (data: Partial<OutreachLogEntry>) =>
+    api.post<OutreachLogEntry>('/admin/outreach-log', data),
+
+  update: (id: string, data: Partial<OutreachLogEntry>) =>
+    api.patch<OutreachLogEntry>(`/admin/outreach-log/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete<{ deleted: boolean }>(`/admin/outreach-log/${id}`),
 };
 
 export default api;

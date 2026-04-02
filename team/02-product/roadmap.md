@@ -1,6 +1,6 @@
 <!-- Version: 1 | Department: product | Updated: 2026-03-24 -->
 
-# Product Roadmap — PagePulser
+# Product Roadmap — Kritano
 
 ## Now (Iteration 2 — Founding Member Launch)
 
@@ -47,10 +47,10 @@ Strategic features subject to change based on market feedback.
 | 13 | **Public Score Directory** | Viral growth engine + SEO flywheel. Requires critical mass of users. | XL |
 | 14 | **Dark Mode (Complete)** | Expected by developer audience. 1,734 dark: variants exist. | M |
 | 15 | **Category Deep-Dive Reports** | Per-category narrative reports (template-based). | M |
-| 16 | **White-Label Platform** | Agencies deploy PagePulser under their own brand. Enterprise play. | XL |
+| 16 | **White-Label Platform** | Agencies deploy Kritano under their own brand. Enterprise play. | XL |
 | 17 | **Browser Extension** | "Grammarly for HTML" — lightweight a11y/SEO checker on any page. Acquisition channel. | L |
 | 18 | **Google Search Console Integration** | Correlate audit scores with real search traffic. Proves ROI. | M |
-| 19 | **Competitive Industry Benchmarks** | Anonymised aggregate scores by industry. Positions PagePulser as authority. | L |
+| 19 | **Competitive Industry Benchmarks** | Anonymised aggregate scores by industry. Positions Kritano as authority. | L |
 
 ---
 

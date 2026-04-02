@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Gift, Copy, Check, Send, Users, Award, Clock, XCircle } from 'lucide-react';
+import { Gift, Copy, Check, Send, Users, Award, Clock, XCircle, Info, Star, Zap, Trophy } from 'lucide-react';
 import { Sidebar } from '../../components/layout/Sidebar';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Alert } from '../../components/ui/Alert';
 import { referralsApi } from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface ReferralStats {
   totalReferred: number;
@@ -37,7 +38,16 @@ const statusConfig: Record<string, { label: string; color: string; icon: React.E
   voided: { label: 'Voided', color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400', icon: XCircle },
 };
 
+const TIER_BONUS_AUDITS: Record<string, number> = {
+  free: 5,
+  starter: 5,
+  pro: 8,
+  agency: 12,
+  enterprise: 12,
+};
+
 export default function ReferralDashboard() {
+  const { subscription } = useAuth();
   const [stats, setStats] = useState<ReferralStats | null>(null);
   const [referrals, setReferrals] = useState<ReferralItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,6 +55,10 @@ export default function ReferralDashboard() {
   const [inviteEmails, setInviteEmails] = useState('');
   const [inviting, setInviting] = useState(false);
   const [inviteResult, setInviteResult] = useState<{ sent: number; errors: string[] } | null>(null);
+  const [showRewards, setShowRewards] = useState(false);
+
+  const currentTier = subscription?.tier || 'free';
+  const bonusPerReferral = TIER_BONUS_AUDITS[currentTier] || 5;
 
   useEffect(() => {
     loadData();
@@ -98,7 +112,7 @@ export default function ReferralDashboard() {
 
   return (
     <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
-      <Helmet><title>Referrals - PagePulser</title></Helmet>
+      <Helmet><title>Referrals - Kritano</title></Helmet>
       <Sidebar />
       <main className="flex-1 p-6 lg:p-8 max-w-5xl mx-auto w-full">
         <div className="mb-8">
@@ -138,7 +152,7 @@ export default function ReferralDashboard() {
               <div className="flex items-center gap-2 mt-3">
                 <span className="text-xs text-slate-500 dark:text-slate-400">Share via:</span>
                 <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('I use PagePulser to audit my website for accessibility, SEO, and security issues — try it free:')}&url=${encodeURIComponent(stats.referralLink)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('I use Kritano to audit my website for accessibility, SEO, and security issues — try it free:')}&url=${encodeURIComponent(stats.referralLink)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
@@ -156,7 +170,7 @@ export default function ReferralDashboard() {
                   LinkedIn
                 </a>
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent('Check out PagePulser — it finds accessibility, SEO, and security issues on your website: ' + stats.referralLink)}`}
+                  href={`https://wa.me/?text=${encodeURIComponent('Check out Kritano — it finds accessibility, SEO, and security issues on your website: ' + stats.referralLink)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
@@ -175,6 +189,103 @@ export default function ReferralDashboard() {
               <StatCard label="Bonus Audits Left" value={stats.bonusAuditsRemaining} icon={Gift} color="amber" />
             </div>
 
+            {/* What You Earn */}
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
+              <button
+                onClick={() => setShowRewards(!showRewards)}
+                className="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors rounded-lg"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                    <Star className="w-4.5 h-4.5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-slate-900 dark:text-white">What You Earn</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-500">See rewards for you and your friend</p>
+                  </div>
+                </div>
+                <svg
+                  className={`w-5 h-5 text-slate-400 transition-transform ${showRewards ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {showRewards && (
+                <div className="px-4 pb-4 pt-0 space-y-4">
+                  <div className="border-t border-slate-200 dark:border-slate-700 pt-4" />
+
+                  {/* Per-referral rewards */}
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div className="flex items-start gap-3 p-3 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50">
+                      <Zap className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-900 dark:text-white">You get</p>
+                        <p className="text-lg font-bold text-indigo-600 dark:text-indigo-400">{bonusPerReferral} bonus audits</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-500 mt-0.5">Per qualified referral on your {currentTier.charAt(0).toUpperCase() + currentTier.slice(1)} plan</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
+                      <Gift className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-900 dark:text-white">Your friend gets</p>
+                        <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">3 bonus audits</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-500 mt-0.5">Added to their account on sign-up</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Milestone rewards */}
+                  <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Trophy className="w-4 h-4 text-amber-500" />
+                      <p className="text-sm font-medium text-slate-900 dark:text-white">Milestone Rewards</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-600 dark:text-slate-400">5 qualified referrals</span>
+                        <span className="font-medium text-slate-900 dark:text-white">Starter free for 30 days</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-600 dark:text-slate-400">10 qualified referrals</span>
+                        <span className="font-medium text-slate-900 dark:text-white">Pro free for 30 days</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-3">
+                      Milestone rewards unlock higher-tier features for 30 days on top of your current plan. Your normal billing continues unchanged.
+                    </p>
+                  </div>
+
+                  {/* Bonus table by tier */}
+                  <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Info className="w-4 h-4 text-slate-400" />
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Bonus audits scale with your plan</p>
+                    </div>
+                    <div className="grid grid-cols-5 gap-1 text-center">
+                      {(['free', 'starter', 'pro', 'agency', 'enterprise'] as const).map((tier) => (
+                        <div
+                          key={tier}
+                          className={`py-1.5 px-1 rounded text-xs ${
+                            tier === currentTier
+                              ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold ring-1 ring-indigo-300 dark:ring-indigo-700'
+                              : 'text-slate-500 dark:text-slate-500'
+                          }`}
+                        >
+                          <div className="font-medium capitalize truncate">{tier}</div>
+                          <div className="text-lg font-bold mt-0.5">{TIER_BONUS_AUDITS[tier]}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Milestone Progress */}
             {nextMilestone && (
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6">
@@ -183,8 +294,8 @@ export default function ReferralDashboard() {
                 </h3>
                 <p className="text-sm text-slate-500 dark:text-slate-500 mb-3">
                   {nextMilestone === 5
-                    ? 'Reach 5 qualified referrals for a free month of Starter!'
-                    : 'Reach 10 qualified referrals for a free month of Pro!'}
+                    ? 'Reach 5 qualified referrals to unlock Starter free for 30 days!'
+                    : 'Reach 10 qualified referrals to unlock Pro free for 30 days!'}
                 </p>
                 <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5">
                   <div

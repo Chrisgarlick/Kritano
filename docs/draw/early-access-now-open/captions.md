@@ -8,7 +8,7 @@ Early access is live. 50% off every plan. For life.
 Not a trial. Not a promo code. Not "for the first 3 months". Your price stays at 50% off forever — as long as you join during early access.
 
 Here's how:
-1. Sign up at pagepulser.com
+1. Sign up at kritano.com
 2. Choose any paid plan
 3. 50% is applied automatically
 
@@ -18,14 +18,14 @@ Limited spots. Closes at public launch. No extensions.
 
 Link in bio.
 
-**Hashtags:** #PagePulser #EarlyAccess #LaunchOffer #50PercentOff #WebAudit #SiteHealth #SEO #WebAccessibility #WebSecurity #WebPerformance #StartupLaunch #SaaS #LifetimeDeal #IndieHacker #BuildInPublic #WebDesign #WebDevelopment #FreeTools #TechStartup #ProductLaunch
+**Hashtags:** #Kritano #EarlyAccess #LaunchOffer #50PercentOff #WebAudit #SiteHealth #SEO #WebAccessibility #WebSecurity #WebPerformance #StartupLaunch #SaaS #LifetimeDeal #IndieHacker #BuildInPublic #WebDesign #WebDevelopment #FreeTools #TechStartup #ProductLaunch
 
 ---
 
 ## Variation 2 — Dark with Benefits List
 
 **Caption:**
-PagePulser early access is open.
+Kritano early access is open.
 
 What you get:
 → Lifetime 50% discount (your price never goes up)
@@ -38,7 +38,7 @@ What happens at launch:
 
 This is the best deal we'll ever offer. Link in bio.
 
-**Hashtags:** #PagePulser #EarlyAccess #LifetimeDeal #50PercentOff #WebAudit #SiteHealth #SEO #WebAccessibility #StartupLaunch #SaaS #IndieHacker #BuildInPublic #ProductLaunch #WebDesign #WebDevelopment #FreeTools #TechStartup #LaunchOffer #GetInEarly #WebSecurity
+**Hashtags:** #Kritano #EarlyAccess #LifetimeDeal #50PercentOff #WebAudit #SiteHealth #SEO #WebAccessibility #StartupLaunch #SaaS #IndieHacker #BuildInPublic #ProductLaunch #WebDesign #WebDevelopment #FreeTools #TechStartup #LaunchOffer #GetInEarly #WebSecurity
 
 ---
 
@@ -56,4 +56,4 @@ We're not going to run this offer again. This is it.
 
 Link in bio to join.
 
-**Hashtags:** #PagePulser #EarlyAccess #LifetimeDeal #50PercentOff #LaunchOffer #WebAudit #SiteHealth #SEO #WebAccessibility #WebSecurity #WebPerformance #SaaS #StartupLaunch #IndieHacker #BuildInPublic #ProductLaunch #JoinNow #LimitedSpots #TechStartup #WebDesign
+**Hashtags:** #Kritano #EarlyAccess #LifetimeDeal #50PercentOff #LaunchOffer #WebAudit #SiteHealth #SEO #WebAccessibility #WebSecurity #WebPerformance #SaaS #StartupLaunch #IndieHacker #BuildInPublic #ProductLaunch #JoinNow #LimitedSpots #TechStartup #WebDesign

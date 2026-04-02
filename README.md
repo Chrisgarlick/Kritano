@@ -1,4 +1,4 @@
-# PagePulser
+# Kritano
 
 Web accessibility auditing SaaS platform.
 
@@ -19,8 +19,8 @@ Web accessibility auditing SaaS platform.
 ### 1. Clone and install dependencies
 
 ```bash
-git clone <repo-url> pagepulser
-cd pagepulser
+git clone <repo-url> kritano
+cd kritano
 npm run install:all
 ```
 
@@ -77,7 +77,7 @@ This starts both the API server and the React client concurrently:
 ## Project Structure
 
 ```
-pagepulser/
+kritano/
   client/          React frontend (Vite + TypeScript + Tailwind)
   server/          Express API + BullMQ worker
     src/

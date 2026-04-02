@@ -51,10 +51,10 @@ export default function ServiceDetailPage() {
     description: service.seo.description,
     provider: {
       '@type': 'Organization',
-      name: 'PagePulser',
-      url: 'https://pagepulser.com',
+      name: 'Kritano',
+      url: 'https://kritano.com',
     },
-    url: `https://pagepulser.com/services/${serviceSlug}`,
+    url: `https://kritano.com/services/${serviceSlug}`,
   };
 
   return (
@@ -70,16 +70,16 @@ export default function ServiceDetailPage() {
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-8">
-          <ol className="flex items-center gap-2 text-sm text-slate-500">
+          <ol className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
             <li>
-              <Link to="/services" className="hover:text-indigo-600 transition-colors">
+              <Link to="/services" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                 Services
               </Link>
             </li>
             <li aria-hidden="true">
               <ChevronRight className="w-4 h-4" />
             </li>
-            <li className="text-slate-900 font-medium">{service.title}</li>
+            <li className="text-slate-900 dark:text-white font-medium">{service.title}</li>
           </ol>
         </nav>
 
@@ -89,20 +89,20 @@ export default function ServiceDetailPage() {
           >
             <Icon className={`w-8 h-8 ${service.colorScheme.text}`} />
           </div>
-          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
+          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.05] mb-4">
             {service.title}
           </h1>
           <p className={`text-xl font-medium mb-6 ${service.colorScheme.text}`}>
             {service.subtitle}
           </p>
-          <p className="text-lg text-slate-600 leading-relaxed">
+          <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
             {service.heroDescription}
           </p>
         </div>
       </section>
 
       {/* Feature Breakdown */}
-      <section className="bg-slate-50 border-t border-b border-slate-200">
+      <section className="bg-slate-50 dark:bg-slate-800/50 border-t border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <p
@@ -110,7 +110,7 @@ export default function ServiceDetailPage() {
             >
               What We Check
             </p>
-            <h2 className="font-display text-4xl text-slate-900 leading-tight">
+            <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight">
               Comprehensive feature breakdown
             </h2>
           </div>
@@ -119,9 +119,9 @@ export default function ServiceDetailPage() {
             {service.featureGroups.map((group) => (
               <div
                 key={group.title}
-                className="bg-white border border-slate-200 rounded-lg shadow-sm p-6"
+                className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6"
               >
-                <h3 className="font-semibold text-slate-900 mb-5 text-sm uppercase tracking-wider">
+                <h3 className="font-semibold text-slate-900 dark:text-white mb-5 text-sm uppercase tracking-wider">
                   {group.title}
                 </h3>
                 <ul className="space-y-3">
@@ -130,7 +130,7 @@ export default function ServiceDetailPage() {
                       <CheckCircle
                         className={`w-4 h-4 flex-shrink-0 mt-0.5 ${service.colorScheme.text}`}
                       />
-                      <span className="text-slate-600 text-sm leading-relaxed">{item}</span>
+                      <span className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -148,7 +148,7 @@ export default function ServiceDetailPage() {
           >
             Methodology
           </p>
-          <h2 className="font-display text-4xl text-slate-900 leading-tight">
+          <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight">
             How we audit
           </h2>
         </div>
@@ -161,15 +161,15 @@ export default function ServiceDetailPage() {
               >
                 {step.step}
               </div>
-              <h3 className="font-semibold text-slate-900 mb-2">{step.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{step.description}</p>
+              <h3 className="font-semibold text-slate-900 dark:text-white mb-2">{step.title}</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{step.description}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Common Issues */}
-      <section className="bg-slate-50 border-t border-b border-slate-200">
+      <section className="bg-slate-50 dark:bg-slate-800/50 border-t border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <p
@@ -177,7 +177,7 @@ export default function ServiceDetailPage() {
             >
               Common Findings
             </p>
-            <h2 className="font-display text-4xl text-slate-900 leading-tight">
+            <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight">
               Issues we commonly detect
             </h2>
           </div>
@@ -188,17 +188,17 @@ export default function ServiceDetailPage() {
               return (
                 <div
                   key={issue.title}
-                  className="bg-white border border-slate-200 rounded-lg shadow-sm p-6"
+                  className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6"
                 >
                   <span
                     className={`inline-block px-2.5 py-0.5 rounded text-xs font-medium capitalize mb-3 ${style.bg} ${style.text} border ${style.border}`}
                   >
                     {issue.severity}
                   </span>
-                  <h3 className="font-semibold text-slate-900 mb-2 text-sm">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2 text-sm">
                     {issue.title}
                   </h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">
+                  <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
                     {issue.description}
                   </p>
                 </div>
@@ -211,10 +211,10 @@ export default function ServiceDetailPage() {
       {/* Why It Matters */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="font-display text-4xl text-slate-900 leading-tight mb-4">
+          <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight mb-4">
             {service.businessImpact.headline}
           </h2>
-          <p className="text-lg text-slate-600 leading-relaxed">
+          <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
             {service.businessImpact.description}
           </p>
         </div>
@@ -223,27 +223,27 @@ export default function ServiceDetailPage() {
           {service.businessImpact.stats.map((stat) => (
             <div
               key={stat.label}
-              className="text-center bg-white border border-slate-200 rounded-lg shadow-sm p-8"
+              className="text-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-8"
             >
               <p
                 className={`font-display text-4xl lg:text-5xl mb-3 ${service.colorScheme.text}`}
               >
                 {stat.value}
               </p>
-              <p className="text-slate-500 text-sm leading-relaxed">{stat.label}</p>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{stat.label}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Related Services */}
-      <section className="bg-slate-50 border-t border-slate-200">
+      <section className="bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-4">
+            <p className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-4">
               Complete Coverage
             </p>
-            <h2 className="font-display text-4xl text-slate-900 leading-tight">
+            <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight">
               Explore other audit pillars
             </h2>
           </div>
@@ -257,18 +257,18 @@ export default function ServiceDetailPage() {
                 <Link
                   key={slug}
                   to={`/services/${slug}`}
-                  className="bg-white border border-slate-200 rounded-lg shadow-sm p-6 hover:shadow-md hover:-translate-y-0.5 transition-all group"
+                  className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 hover:shadow-md hover:-translate-y-0.5 transition-all group"
                 >
                   <div
                     className={`inline-flex items-center justify-center w-12 h-12 rounded-xl border ${related.colorScheme.bg} ${related.colorScheme.border} mb-4`}
                   >
                     <RelatedIcon className={`w-6 h-6 ${related.colorScheme.text}`} />
                   </div>
-                  <h3 className="font-semibold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                     {related.title}
                   </h3>
-                  <p className="text-slate-500 text-sm mb-4">{related.subtitle}</p>
-                  <span className="inline-flex items-center gap-1 text-indigo-600 text-sm font-medium">
+                  <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">{related.subtitle}</p>
+                  <span className="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 text-sm font-medium">
                     Learn more
                     <ArrowRight className="w-4 h-4" />
                   </span>
@@ -282,10 +282,10 @@ export default function ServiceDetailPage() {
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
         <div className="text-center max-w-2xl mx-auto">
-          <h2 className="font-display text-4xl text-slate-900 leading-tight mb-6">
+          <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight mb-6">
             {service.cta.headline}
           </h2>
-          <p className="text-lg text-slate-600 leading-relaxed mb-10">
+          <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
             {service.cta.description}
           </p>
           <Link
