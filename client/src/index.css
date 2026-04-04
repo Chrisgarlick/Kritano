@@ -28,6 +28,18 @@ body {
   font-family: var(--font-body);
 }
 
+/* Fix browser autofill forcing light backgrounds in dark mode */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill,
+.dark select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #1e293b inset !important;
+  -webkit-text-fill-color: #f1f5f9 !important;
+  border-color: #475569 !important;
+  caret-color: #f1f5f9;
+}
+
 /* =============================================
    Typography Utility Classes
    ============================================= */

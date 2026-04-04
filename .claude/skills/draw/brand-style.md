@@ -154,13 +154,29 @@ box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
 - **Alignment**: Left-aligned or centred. Never right-aligned as primary layout.
 - **Grid**: Use CSS flexbox/grid for alignment. Items should feel intentionally placed.
 
+## Logo & Branding
+
+Logo SVG assets are in `client/public/brand/`. For self-contained HTML draw outputs, use the **inline SVG logo** in the branding area (typically bottom-right or bottom-centre):
+
+### Inline SVG Logo (for draw outputs)
+```html
+<svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px;display:inline-block;">
+  <rect width="32" height="32" rx="7" fill="#4f46e5"/>
+  <rect x="3" y="3" width="26" height="26" rx="5" fill="#312e81"/>
+  <path d="M10 7 L10 25 L13.5 25 L13.5 17.5 L19.5 25 L24 25 L17 16 L23.5 7 L19.5 7 L13.5 14.5 L13.5 7 Z" fill="white"/>
+  <circle cx="24" cy="6.5" r="2.5" fill="#fbbf24"/>
+</svg>
+```
+
+Place this inline SVG immediately before the "Kritano" text in the branding span. The logo is an AI evaluation chip with a K letterform and amber spark.
+
 ## Do's
 
 - Use the Kritano font stack — always
 - Use the brand palette — always
 - Include atmospheric depth (blurred gradients)
 - Use score rings, status dots, and severity badges as visual vocabulary
-- Reference "Kritano" as text where branding makes sense (Instrument Serif, indigo-600)
+- Include the inline SVG logo before "Kritano" text in branding areas
 - Keep text large enough for mobile social feeds
 - Create distinct variations — different backgrounds, layouts, and compositions
 

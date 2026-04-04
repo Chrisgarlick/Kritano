@@ -5,11 +5,8 @@ import { randomUUID } from 'crypto';
 import type { OrganizationDomain } from '../types/organization.types.js';
 import {
   VERIFICATION_TOKEN_PREFIX,
-  LEGACY_VERIFICATION_TOKEN_PREFIX,
   VERIFICATION_FILE_PATH,
-  LEGACY_VERIFICATION_FILE_PATH,
   VERIFICATION_DNS_SUBDOMAIN,
-  LEGACY_VERIFICATION_DNS_SUBDOMAIN,
   VERIFICATION_LIMITS,
 } from '../constants/consent.constants.js';
 
@@ -115,17 +112,15 @@ export async function generateVerificationToken(
  * Looks for kritano-verify=<token> in:
  * 1. Root domain TXT records
  * 2. _kritano.<domain> TXT records
- * Also checks legacy pagepulser-verify= prefix and _pagepulser subdomain for backward compat
  */
 export async function verifyDnsTxt(
   domain: string,
   expectedToken: string
 ): Promise<VerificationResult> {
   const expectedValue = `${VERIFICATION_TOKEN_PREFIX}${expectedToken}`;
-  const legacyExpectedValue = `${LEGACY_VERIFICATION_TOKEN_PREFIX}${expectedToken}`;
 
   try {
-    // Try root domain with new prefix
+    // Try root domain
     const rootResult = await queryDnsTxt(domain, expectedValue);
     if (rootResult.verified) {
       return rootResult;
@@ -138,21 +133,6 @@ export async function verifyDnsTxt(
     );
     if (subdomainResult.verified) {
       return subdomainResult;
-    }
-
-    // Try legacy prefix on root domain (backward compat)
-    const legacyRootResult = await queryDnsTxt(domain, legacyExpectedValue);
-    if (legacyRootResult.verified) {
-      return legacyRootResult;
-    }
-
-    // Try legacy _pagepulser subdomain (backward compat)
-    const legacySubdomainResult = await queryDnsTxt(
-      `${LEGACY_VERIFICATION_DNS_SUBDOMAIN}.${domain}`,
-      legacyExpectedValue
-    );
-    if (legacySubdomainResult.verified) {
-      return legacySubdomainResult;
     }
 
     return {
@@ -226,25 +206,12 @@ async function queryDnsTxt(domain: string, expectedValue: string): Promise<Verif
 /**
  * Verify domain ownership via file upload
  * Fetches /.well-known/kritano-verify.txt and checks content
- * Also checks legacy /.well-known/pagepulser-verify.txt for backward compat
  */
 export async function verifyFile(
   domain: string,
   expectedToken: string
 ): Promise<VerificationResult> {
-  // Try new path first
-  const newResult = await fetchVerificationFile(`https://${domain}${VERIFICATION_FILE_PATH}`, expectedToken);
-  if (newResult.verified) {
-    return newResult;
-  }
-
-  // Try legacy path (backward compat)
-  const legacyResult = await fetchVerificationFile(`https://${domain}${LEGACY_VERIFICATION_FILE_PATH}`, expectedToken);
-  if (legacyResult.verified) {
-    return legacyResult;
-  }
-
-  return newResult; // Return the new path error for user messaging
+  return await fetchVerificationFile(`https://${domain}${VERIFICATION_FILE_PATH}`, expectedToken);
 }
 
 async function fetchVerificationFile(

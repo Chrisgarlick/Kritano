@@ -5,5 +5,22 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#4f46e5"
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/brand/favicon-16.svg",
+      "sizes": "16x16",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/brand/favicon-32.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/brand/favicon-64.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ]
 }

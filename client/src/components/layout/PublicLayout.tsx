@@ -85,7 +85,7 @@ export function PublicLayout({ children }: Props) {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-slate-900">
+    <div className="light min-h-screen flex flex-col bg-white" style={{ colorScheme: 'light' }}>
       <SkipLink />
 
       {/* Navigation */}
@@ -94,7 +94,7 @@ export function PublicLayout({ children }: Props) {
           <div className="flex items-center justify-between h-[72px]">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-2 h-8 bg-indigo-600 rounded-sm group-hover:bg-indigo-500 transition-colors" />
+              <img src="/brand/favicon-32.svg" alt="Kritano" width="32" height="32" className="group-hover:scale-105 transition-transform" />
               <span className="font-display text-2xl text-slate-900 dark:text-white">Kritano</span>
             </Link>
 
@@ -334,7 +334,7 @@ export function PublicLayout({ children }: Props) {
             {/* Brand column */}
             <div className="col-span-2 md:col-span-1">
               <Link to="/" className="flex items-center gap-3 mb-4">
-                <div className="w-2 h-7 bg-indigo-600 rounded-sm" />
+                <img src="/brand/favicon-32.svg" alt="Kritano" width="28" height="28" />
                 <span className="font-display text-xl text-slate-900 dark:text-white">Kritano</span>
               </Link>
               <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">

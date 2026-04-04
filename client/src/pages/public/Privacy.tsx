@@ -147,7 +147,7 @@ export default function Privacy() {
                   <td>Remembers sidebar state in the dashboard</td>
                 </tr>
                 <tr>
-                  <td><code>pp-cookie-consent</code></td>
+                  <td><code>kritano-cookie-consent</code></td>
                   <td>Records your cookie consent preferences</td>
                 </tr>
               </tbody>

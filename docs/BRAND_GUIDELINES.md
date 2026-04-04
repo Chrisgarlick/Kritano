@@ -14,6 +14,34 @@
 - Feature-focused: "Six audits. One clear score."
 - "Insights at Every Beat"
 
+### Logo System
+
+The Kritano logo is an **AI evaluation chip** — a processor icon with connector pins on all four sides, an inner chip surface with scan lines, a bold geometric **K** letterform in white, and an amber "insight spark" dot. It represents structured analysis, intelligence, and precision.
+
+**Logo assets** are located in `client/public/brand/`:
+
+| File | Usage |
+|------|-------|
+| `logo-mark-light.svg` | Icon mark (160×160) for light backgrounds |
+| `logo-mark-dark.svg` | Icon mark (160×160) for dark backgrounds — uses lighter indigo (#6366f1) |
+| `logo-lockup-light.svg` | Icon + "Kritano" wordmark (320×80) for light backgrounds |
+| `logo-lockup-dark.svg` | Icon + "Kritano" wordmark (320×80) for dark backgrounds |
+| `favicon-64.svg` | High-DPI favicon (64×64) |
+| `favicon-32.svg` | Standard favicon (32×32) — also used as primary `favicon.svg` |
+| `favicon-16.svg` | Browser tab favicon (16×16) |
+
+**Logo colours:**
+- Outer chip frame: `#4f46e5` (indigo-600) on light, `#6366f1` (indigo-500) on dark
+- Inner chip surface: `#312e81` (indigo-900) on light, `#4f46e5` (indigo-600) on dark
+- K letterform: white
+- Amber spark: `#fbbf24` (amber-400)
+
+**Usage rules:**
+- Always pair the icon with the "Kritano" wordmark in Instrument Serif when space allows
+- Use the favicon/mark versions for compact contexts (nav icons, tab icons, social avatars)
+- Never stretch, rotate, or recolour the logo
+- Maintain minimum clear space equal to the width of one connector pin around the logo
+
 ### Brand Etymology
 **Page** (web page, digital content) + **Pulser** (one who takes a pulse, measures vital signs)
 

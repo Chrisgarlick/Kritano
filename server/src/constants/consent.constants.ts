@@ -93,30 +93,14 @@ export const LEGAL_URLS = {
 export const VERIFICATION_TOKEN_PREFIX = 'kritano-verify=';
 
 /**
- * Legacy verification token prefix (pre-rebrand)
- * Kept for backward compatibility with existing verified domains
- */
-export const LEGACY_VERIFICATION_TOKEN_PREFIX = 'pagepulser-verify=';
-
-/**
  * Well-known path for file-based verification
  */
 export const VERIFICATION_FILE_PATH = '/.well-known/kritano-verify.txt';
 
 /**
- * Legacy well-known path (pre-rebrand)
- */
-export const LEGACY_VERIFICATION_FILE_PATH = '/.well-known/pagepulser-verify.txt';
-
-/**
  * DNS TXT record subdomain for verification (alternative to root domain)
  */
 export const VERIFICATION_DNS_SUBDOMAIN = '_kritano';
-
-/**
- * Legacy DNS subdomain (pre-rebrand)
- */
-export const LEGACY_VERIFICATION_DNS_SUBDOMAIN = '_pagepulser';
 
 /**
  * Verification attempt limits

@@ -310,7 +310,7 @@ Every video HTML output MUST use this skeleton:
 
     <!-- Brand reserve -->
     <div class="brand-reserve">
-      <span class="wordmark" style="color: var(--slate-500);">Kritano</span>
+      <span class="wordmark" style="color: var(--slate-500);"><svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:8px;display:inline-block;"><rect width="32" height="32" rx="7" fill="#4f46e5"/><rect x="3" y="3" width="26" height="26" rx="5" fill="#312e81"/><path d="M10 7 L10 25 L13.5 25 L13.5 17.5 L19.5 25 L24 25 L17 16 L23.5 7 L19.5 7 L13.5 14.5 L13.5 7 Z" fill="white"/><circle cx="24" cy="6.5" r="2.5" fill="#fbbf24"/></svg>Kritano</span>
     </div>
 
   </div>

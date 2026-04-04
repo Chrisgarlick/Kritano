@@ -59,7 +59,7 @@ When generating multi-slide carousels, these elements MUST be identical across e
 
 - **Slide indicator position**: Always `position: absolute; top: 48px; left: 100px;` — taken out of document flow so it doesn't shift based on content padding. Use `z-index: 2`.
 - **Content padding**: All slides use the same padding (e.g. `padding: 90px 100px`). The indicator sits above this area via absolute positioning.
-- **Branding position**: Kritano wordmark at a consistent absolute bottom-right or bottom-centre across all slides.
+- **Branding position**: Kritano inline SVG logo + wordmark at a consistent absolute bottom-right or bottom-centre across all slides. Always include the inline SVG chip icon before the "Kritano" text (see `brand-style.md` for the SVG code).
 - **Font sizes for matching elements**: Issue number badges, titles, body text, quick fix cards should use the same sizes across all issue slides.
 
 ### 7. Generate variations

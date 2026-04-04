@@ -163,9 +163,7 @@ export function Sidebar() {
       {/* Logo */}
       <div className={`flex items-center h-16 px-4 border-b border-slate-200/50 dark:border-slate-700/50 ${isCollapsed ? 'justify-center' : ''}`}>
         <Link to="/dashboard" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:shadow-lg group-hover:shadow-indigo-500/30 transition-shadow">
-            <span className="text-white font-bold text-base">K</span>
-          </div>
+          <img src="/brand/favicon-32.svg" alt="Kritano" width="36" height="36" className="rounded-lg group-hover:scale-105 transition-transform" />
           {!isCollapsed && (
             <span className="text-lg font-semibold text-slate-900 dark:text-white tracking-tight">
               Kritano

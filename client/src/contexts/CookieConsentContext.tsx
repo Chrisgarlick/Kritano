@@ -11,7 +11,7 @@ import { consentApi } from '../services/api';
 import CookieBanner from '../components/cookies/CookieBanner';
 import CookiePreferencesModal from '../components/cookies/CookiePreferencesModal';
 
-const STORAGE_KEY = 'pp-cookie-consent';
+const STORAGE_KEY = 'kritano-cookie-consent';
 // Keep in sync with server: server/src/constants/consent.constants.ts COOKIE_CONSENT_VERSION
 const CONSENT_VERSION = '1.0';
 

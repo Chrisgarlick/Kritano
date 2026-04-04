@@ -254,6 +254,22 @@ Same as `/draw` — see `brand-style.md` in the draw skill for the full palette.
 - **Secondary text dark**: `#CBD5E1` (slate-300)
 - **Wordmark**: `#64748B` (slate-500) on any background
 
+## Logo & Branding
+
+Logo SVG assets are in `client/public/brand/`. For self-contained video HTML outputs, use the **inline SVG logo** in the brand-reserve area:
+
+### Inline SVG Logo (for video outputs)
+```html
+<svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:8px;display:inline-block;">
+  <rect width="32" height="32" rx="7" fill="#4f46e5"/>
+  <rect x="3" y="3" width="26" height="26" rx="5" fill="#312e81"/>
+  <path d="M10 7 L10 25 L13.5 25 L13.5 17.5 L19.5 25 L24 25 L17 16 L23.5 7 L19.5 7 L13.5 14.5 L13.5 7 Z" fill="white"/>
+  <circle cx="24" cy="6.5" r="2.5" fill="#fbbf24"/>
+</svg>
+```
+
+Place this inline SVG immediately before the "KRITANO" text in the `.brand-reserve` wordmark span. The logo is an AI evaluation chip with a K letterform and amber spark.
+
 ## Do's
 
 - Use smooth, confident easing — no linear content transitions
