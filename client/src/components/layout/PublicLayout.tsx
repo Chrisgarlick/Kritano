@@ -131,9 +131,10 @@ export function PublicLayout({ children }: Props) {
                       <Link
                         to="/services"
                         role="menuitem"
-                        className="block px-3 py-2 mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-2.5 mb-1 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
                       >
                         All Services
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                       {SERVICE_ITEMS.map(item => {
                         const Icon = item.icon;
@@ -231,27 +232,29 @@ export function PublicLayout({ children }: Props) {
             className="md:hidden border-t border-slate-100 dark:border-slate-700/50 bg-white dark:bg-slate-900"
           >
             <div className="px-6 py-4 space-y-1">
-              {/* Services — first, with expandable sub-links */}
+              {/* Services — link + expandable sub-links */}
               <div>
-                <button
-                  onClick={() => setMobileServicesOpen(prev => !prev)}
-                  className={`flex items-center justify-between w-full py-3 text-base font-medium transition-colors ${
-                    isServicesActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400'
-                  }`}
-                  aria-expanded={mobileServicesOpen}
-                >
-                  Services
-                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
-                </button>
+                <div className="flex items-center justify-between">
+                  <Link
+                    to="/services"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex-1 py-3 text-base font-medium transition-colors ${
+                      isServicesActive ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400'
+                    }`}
+                  >
+                    Services
+                  </Link>
+                  <button
+                    onClick={() => setMobileServicesOpen(prev => !prev)}
+                    className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
+                    aria-expanded={mobileServicesOpen}
+                    aria-label="Expand service links"
+                  >
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileServicesOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                </div>
                 {mobileServicesOpen && (
                   <div className="pl-4 pb-2 space-y-1">
-                    <Link
-                      to="/services"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block py-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                    >
-                      All Services
-                    </Link>
                     {SERVICE_ITEMS.map(item => {
                       const Icon = item.icon;
                       return (

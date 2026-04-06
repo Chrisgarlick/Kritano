@@ -187,6 +187,109 @@ body {
     #020617;
 }
 
+/* =============================================
+   Vital Signs Pulse — Signature Breathing Glow
+   ============================================= */
+
+@keyframes pulse-breathe {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =============================================
+   Homepage Audit Demo Animations
+   ============================================= */
+
+/* Typing cursor blink */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink-cursor {
+  animation: blink-cursor 1s step-end infinite;
+}
+
+/* Staggered fade-slide for demo elements */
+@keyframes demo-fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-demo-fade-in {
+  animation: demo-fade-in 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+/* Score ring fill for demo (uses stroke-dashoffset) */
+@keyframes demo-ring-fill {
+  from { stroke-dashoffset: var(--demo-circumference, 283); }
+  to { stroke-dashoffset: var(--demo-offset, 0); }
+}
+
+.animate-demo-ring-fill {
+  animation: demo-ring-fill 1.2s ease-out forwards;
+}
+
+/* Counter increment effect */
+@keyframes demo-number-pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-demo-number-pop {
+  animation: demo-number-pop 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+/* Finding card slide in from right */
+@keyframes demo-slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-demo-slide-right {
+  animation: demo-slide-in-right 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+/* Scan line sweep */
+@keyframes scan-sweep {
+  0% { top: 0; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.animate-scan-sweep {
+  animation: scan-sweep 2s ease-in-out infinite;
+}
+
+/* Hero score glow on dashboard */
+.hero-score-glow {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 140px;
+  height: 140px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+  animation: pulse-breathe 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.dark .hero-score-glow {
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+}
+
 /* Glassmorphism for premium elements */
 .glass-panel {
   background: rgba(255, 255, 255, 0.7);

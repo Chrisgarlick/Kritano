@@ -22,6 +22,8 @@ interface Plan {
   popular?: boolean;
   cta: string;
   ctaLink: string;
+  accentColor: string;
+  pageCount: string;
   highlights: string[];
 }
 
@@ -34,12 +36,12 @@ const PLANS: Plan[] = [
     description: 'For personal projects.',
     cta: 'Get Started',
     ctaLink: '/register',
+    accentColor: 'border-t-slate-400',
+    pageCount: '50',
     highlights: [
-      '1 site',
-      '50 pages per audit',
-      '5 audits/month',
+      '1 site &middot; 5 audits/month',
       'SEO, Security & Content checks',
-      '30-day retention',
+      '30-day data retention',
     ],
   },
   {
@@ -50,13 +52,12 @@ const PLANS: Plan[] = [
     description: 'For freelancers & small teams.',
     cta: 'Start Free Trial',
     ctaLink: '/register?trial=starter',
+    accentColor: 'border-t-indigo-500',
+    pageCount: '250',
     highlights: [
-      '3 sites',
-      '250 pages per audit',
-      '10 audits/month',
+      '3 sites &middot; 10 audits/month',
       '+ Accessibility & Performance',
-      'Weekly scheduling',
-      'PDF exports',
+      'Weekly scheduling &middot; PDF exports',
     ],
   },
   {
@@ -68,14 +69,12 @@ const PLANS: Plan[] = [
     popular: true,
     cta: 'Start Free Trial',
     ctaLink: '/register?trial=pro',
+    accentColor: 'border-t-violet-500',
+    pageCount: '1,000',
     highlights: [
-      '10 sites',
-      '1,000 pages per audit',
-      'Unlimited audits',
+      '10 sites &middot; Unlimited audits',
       '+ E-E-A-T, AEO & Google Dorking',
-      'Daily scheduling',
-      'PDF, CSV & JSON exports',
-      '5 seats',
+      'Daily scheduling &middot; 5 seats',
     ],
   },
   {
@@ -86,14 +85,12 @@ const PLANS: Plan[] = [
     description: 'For agencies & consultants.',
     cta: 'Start Free Trial',
     ctaLink: '/register?trial=agency',
+    accentColor: 'border-t-amber-500',
+    pageCount: '5,000',
     highlights: [
-      '50 sites',
-      '5,000 pages per audit',
-      'Unlimited audits',
-      '+ Structured Data checks',
-      'Hourly scheduling',
+      '50 sites &middot; Unlimited audits',
       'Full white-label exports',
-      'Unlimited seats',
+      'Hourly scheduling &middot; Unlimited seats',
     ],
   },
   {
@@ -104,14 +101,12 @@ const PLANS: Plan[] = [
     description: 'For large organisations.',
     cta: 'Contact Sales',
     ctaLink: '/contact',
+    accentColor: 'border-t-emerald-500',
+    pageCount: '10,000',
     highlights: [
-      'Unlimited sites',
-      '10,000 pages per audit',
-      'Unlimited audits',
-      'All checks included',
-      '15-min scheduling',
+      'Unlimited sites &middot; All checks',
+      '15-min scheduling &middot; Unlimited API',
       'Unlimited data retention',
-      'Unlimited API requests',
     ],
   },
 ];
@@ -239,7 +234,7 @@ const FAQS = [
   },
   {
     q: 'Do you offer refunds?',
-    a: 'We offer a full refund within 14 days of your first payment if you are not satisfied. Contact us at support@kritano.com.',
+    a: 'We offer a full refund within 14 days of your first payment if you are not satisfied. Contact us at info@kritano.com.',
   },
 ];
 
@@ -332,67 +327,80 @@ export default function Pricing() {
           {PLANS.map((plan) => (
             <div
               key={plan.name}
-              className={`rounded-xl p-5 flex flex-col ${
+              className={`rounded-xl flex flex-col border-t-[3px] ${plan.accentColor} ${
                 plan.popular
                   ? 'bg-slate-900 dark:bg-slate-950 text-white ring-2 ring-indigo-600 relative'
                   : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700'
               }`}
             >
-              {plan.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-indigo-600 text-white text-[10px] font-semibold rounded-full uppercase tracking-wider whitespace-nowrap">
-                  Most Popular
-                </span>
-              )}
-
-              {/* Plan name & description */}
-              <div className="mb-4">
-                <h3 className={`text-base font-semibold mb-1 ${plan.popular ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
-                  {plan.name}
-                </h3>
-                <p className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-500' : 'text-slate-500 dark:text-slate-400'}`}>
-                  {plan.description}
-                </p>
-              </div>
-
-              {/* Price */}
-              <div className="mb-5">
-                <span className={`font-display text-3xl ${plan.popular ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
-                  {billingPeriod === 'annual' ? plan.annualPrice : plan.monthlyPrice}
-                </span>
-                {plan.priceDetail && (
-                  <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-500' : 'text-slate-500 dark:text-slate-400'}`}>
-                    {billingPeriod === 'annual' && plan.monthlyPrice !== '$0' && plan.monthlyPrice !== 'Custom'
-                      ? '/year'
-                      : plan.priceDetail}
+              <div className="p-5 flex flex-col flex-grow">
+                {plan.popular && (
+                  <span className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-indigo-600 text-white text-[10px] font-semibold rounded-full uppercase tracking-wider whitespace-nowrap">
+                    Most Popular
                   </span>
                 )}
-              </div>
 
-              {/* Features */}
-              <ul className="space-y-2.5 mb-6 flex-grow">
-                {plan.highlights.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2">
-                    <CheckCircle className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
-                      plan.popular ? 'text-indigo-400' : 'text-indigo-600'
-                    }`} />
-                    <span className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-300' : 'text-slate-600 dark:text-slate-400'}`}>
-                      {feature}
+                {/* Plan name & description */}
+                <div className="mb-3">
+                  <h3 className={`text-base font-semibold mb-1 ${plan.popular ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
+                    {plan.name}
+                  </h3>
+                  <p className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-500' : 'text-slate-500 dark:text-slate-400'}`}>
+                    {plan.description}
+                  </p>
+                </div>
+
+                {/* Price */}
+                <div className="mb-4">
+                  <span className={`font-display text-3xl ${plan.popular ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
+                    {billingPeriod === 'annual' ? plan.annualPrice : plan.monthlyPrice}
+                  </span>
+                  {plan.priceDetail && (
+                    <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-500' : 'text-slate-500 dark:text-slate-400'}`}>
+                      {billingPeriod === 'annual' && plan.monthlyPrice !== '$0' && plan.monthlyPrice !== 'Custom'
+                        ? '/year'
+                        : plan.priceDetail}
                     </span>
-                  </li>
-                ))}
-              </ul>
+                  )}
+                </div>
 
-              {/* CTA */}
-              <Link
-                to={plan.ctaLink}
-                className={`block text-center px-4 py-2.5 rounded-lg font-medium text-sm transition-colors ${
-                  plan.popular
-                    ? 'bg-indigo-600 hover:bg-indigo-500 text-white'
-                    : 'border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
-                }`}
-              >
-                {plan.cta}
-              </Link>
+                {/* Hero metric: pages per audit */}
+                <div className={`mb-4 pb-4 border-b ${plan.popular ? 'border-slate-700' : 'border-slate-100 dark:border-slate-700'}`}>
+                  <span className={`font-display text-2xl ${plan.popular ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                    {plan.pageCount}
+                  </span>
+                  <span className={`text-xs ml-1 ${plan.popular ? 'text-slate-500' : 'text-slate-500 dark:text-slate-400'}`}>
+                    pages / audit
+                  </span>
+                </div>
+
+                {/* Features — trimmed to 3 key items */}
+                <ul className="space-y-2.5 mb-5 flex-grow">
+                  {plan.highlights.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2">
+                      <CheckCircle className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
+                        plan.popular ? 'text-indigo-400' : 'text-indigo-600'
+                      }`} />
+                      <span
+                        className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-300' : 'text-slate-600 dark:text-slate-400'}`}
+                        dangerouslySetInnerHTML={{ __html: feature }}
+                      />
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <Link
+                  to={plan.ctaLink}
+                  className={`block text-center px-4 py-2.5 rounded-lg font-medium text-sm transition-colors ${
+                    plan.popular
+                      ? 'bg-indigo-600 hover:bg-indigo-500 text-white'
+                      : 'border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  {plan.cta}
+                </Link>
+              </div>
             </div>
           ))}
         </div>

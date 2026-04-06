@@ -151,14 +151,17 @@ export default function DashboardPage() {
             {/* Health Score Hero */}
             {avgScore !== null && (
               <div className="mb-8 animate-reveal-up stagger-1">
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
-                  <div className="flex items-center gap-8">
-                    <ScoreDisplay
-                      score={avgScore}
-                      label="Overall Health"
-                      size="lg"
-                      showQualityLabel
-                    />
+                <div className="relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm overflow-hidden">
+                  <div className="flex items-center gap-8 relative z-10">
+                    <div className="relative">
+                      <div className="hero-score-glow" style={{ left: '50%', transform: 'translate(-50%, -50%)' }} />
+                      <ScoreDisplay
+                        score={avgScore}
+                        label="Overall Health"
+                        size="lg"
+                        showQualityLabel
+                      />
+                    </div>
                     <div className="flex-1">
                       <Heading size="md">Your sites are doing well</Heading>
                       <Body muted className="mt-1">

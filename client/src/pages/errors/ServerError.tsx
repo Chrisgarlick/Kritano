@@ -194,7 +194,7 @@ export default function ServerErrorPage({
           <Body size="sm" muted>
             If this problem persists, please{' '}
             <a
-              href="mailto:support@kritano.com"
+              href="mailto:info@kritano.com"
               className="text-indigo-600 dark:text-indigo-400 hover:underline"
             >
               contact support

@@ -245,6 +245,13 @@ export class EmailService {
    * Low-level email send (fallback when template system is unavailable).
    * Supports SMTP (Mailpit), Resend, or console logging.
    */
+  /**
+   * Send a generic email (used for contact form notifications, admin alerts, etc.).
+   */
+  async sendGenericEmail(to: string, subject: string, html: string): Promise<void> {
+    await this.sendEmailDirect(to, subject, html);
+  }
+
   private async sendEmailDirect(to: string, subject: string, html: string): Promise<void> {
     if (this.smtpTransport) {
       try {
@@ -327,7 +334,8 @@ export class EmailService {
     const unsubscribeHtml = includeUnsubscribe && unsubscribeUrl
       ? `<p style="color: #9ca3af; font-size: 12px; text-align: center; margin: 4px 0;"><a href="${unsubscribeUrl}" style="color: #9ca3af;">Unsubscribe</a> from these emails.</p>`
       : '';
-    return `<hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">${addressHtml}${unsubscribeHtml}`;
+    const noReplyHtml = `<p style="color: #9ca3af; font-size: 12px; text-align: center; margin: 4px 0;">This is an automated message — please do not reply. For support, email <a href="mailto:info@kritano.com" style="color: #9ca3af;">info@kritano.com</a>.</p>`;
+    return `<hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">${noReplyHtml}${addressHtml}${unsubscribeHtml}`;
   }
 
   private buildVerificationHtml(firstName: string, verifyUrl: string): string {

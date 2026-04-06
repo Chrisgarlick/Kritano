@@ -82,7 +82,7 @@ export default function DocsLayout({ children }: Props) {
         </aside>
 
         {/* Content */}
-        <div className="flex-1 min-w-0">{children}</div>
+        <div className="flex-1 min-w-0 overflow-hidden">{children}</div>
       </div>
     </div>
   );

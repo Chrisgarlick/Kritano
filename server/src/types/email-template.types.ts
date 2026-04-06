@@ -257,7 +257,7 @@ export const EMAIL_BRAND_DEFAULTS: EmailBranding = {
   dividerColor: '#e2e8f0',
   companyName: 'Kritano',
   logoUrl: null,
-  footerText: 'Powered by Kritano',
+  footerText: 'This is an automated message from Kritano. Please do not reply to this email. For support, contact info@kritano.com.',
 };
 
 // ========================================

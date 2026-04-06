@@ -1,7 +1,11 @@
 /**
  * Services Page
  *
- * Detailed breakdown of Kritano's core audit services.
+ * Redesigned with:
+ * - Category colour top borders on service cards
+ * - Stat highlights per service (rules count, checks)
+ * - Content Intelligence callout (differentiator)
+ * - Visual variety between sections
  */
 
 import { Link } from 'react-router-dom';
@@ -18,83 +22,88 @@ import {
   BarChart3,
   Search,
   Gauge,
+  BookOpen,
 } from 'lucide-react';
 
 const SERVICES = [
   {
     id: 'seo',
-    icon: <TrendingUp className="w-7 h-7" />,
-    iconColor: 'text-violet-600 bg-violet-50 border-violet-100',
+    icon: <TrendingUp className="w-6 h-6" />,
+    accentColor: 'border-t-violet-500',
+    iconColor: 'text-violet-600 bg-violet-50',
     title: 'SEO Auditing',
     subtitle: 'Get found. Get traffic.',
+    stat: '100+',
+    statLabel: 'ranking factors',
     description:
-      'Our SEO engine analyses your pages against 100+ ranking factors, from metadata and structured data to Core Web Vitals and mobile-friendliness. Every finding includes clear fix guidance so your team can act immediately.',
+      'Metadata, structured data, broken links, Core Web Vitals, and mobile-friendliness — with clear fix guidance for every issue.',
     features: [
-      'Title tag and meta description analysis',
-      'Heading hierarchy and content structure',
-      'Broken links and redirect chain detection',
-      'Open Graph and Twitter Card validation',
-      'Structured data (Schema.org) checks',
-      'Sitemap and robots.txt validation',
-      'Core Web Vitals integration',
-      'Mobile-friendliness assessment',
+      'Title tags & meta descriptions',
+      'Heading hierarchy & structure',
+      'Broken links & redirects',
+      'Schema.org validation',
+      'Sitemap & robots.txt',
+      'Core Web Vitals',
     ],
   },
   {
     id: 'accessibility',
-    icon: <Accessibility className="w-7 h-7" />,
-    iconColor: 'text-emerald-600 bg-emerald-50 border-emerald-100',
+    icon: <Accessibility className="w-6 h-6" />,
+    accentColor: 'border-t-emerald-500',
+    iconColor: 'text-emerald-600 bg-emerald-50',
     title: 'Accessibility (WCAG 2.2)',
     subtitle: 'Inclusive by design.',
+    stat: 'AA',
+    statLabel: 'WCAG compliance',
     description:
-      'Ensure your website is usable by everyone, regardless of ability. Kritano checks your pages against WCAG 2.2 Level AA criteria, helping you meet legal requirements and reach a wider audience.',
+      'Ensure your site is usable by everyone. Checks against WCAG 2.2 Level AA — colour contrast, keyboard nav, screen readers, ARIA, and more.',
     features: [
-      'Color contrast ratio validation',
-      'Image alt text and ARIA label checks',
-      'Keyboard navigation assessment',
+      'Colour contrast validation',
+      'Alt text & ARIA labels',
+      'Keyboard navigation',
       'Screen reader compatibility',
-      'Form label and error handling',
-      'Focus management and skip links',
-      'Language attribute validation',
-      'Semantic HTML structure analysis',
+      'Form label & error handling',
+      'Semantic HTML structure',
     ],
   },
   {
     id: 'security',
-    icon: <Shield className="w-7 h-7" />,
-    iconColor: 'text-red-600 bg-red-50 border-red-100',
+    icon: <Shield className="w-6 h-6" />,
+    accentColor: 'border-t-red-500',
+    iconColor: 'text-red-600 bg-red-50',
     title: 'Security Scanning',
     subtitle: 'Protect your visitors.',
+    stat: '40+',
+    statLabel: 'security checks',
     description:
-      'Identify security vulnerabilities before attackers do. Our scanner checks for exposed sensitive files, insecure resources, missing security headers, and common misconfigurations that put your users at risk.',
+      'Exposed files, missing headers, mixed content, cookie flags, and common misconfigurations that put your users at risk.',
     features: [
-      'HTTPS and SSL certificate validation',
-      'Security header analysis (CSP, HSTS, etc.)',
+      'HTTPS & SSL validation',
+      'Security headers (CSP, HSTS)',
+      'Exposed .env & backups',
       'Mixed content detection',
-      'Exposed sensitive files (.env, backups)',
       'Cookie security flags',
-      'Subresource integrity checks',
-      'CORS configuration review',
-      'Information disclosure detection',
+      'CORS configuration',
     ],
   },
   {
     id: 'performance',
-    icon: <Zap className="w-7 h-7" />,
-    iconColor: 'text-amber-600 bg-amber-50 border-amber-100',
+    icon: <Zap className="w-6 h-6" />,
+    accentColor: 'border-t-sky-500',
+    iconColor: 'text-sky-600 bg-sky-50',
     title: 'Performance Analysis',
     subtitle: 'Speed wins.',
+    stat: '3',
+    statLabel: 'Core Web Vitals',
     description:
-      "Page speed directly impacts user experience and search rankings. Our performance engine identifies exactly what's slowing your pages down, with prioritised recommendations for maximum impact.",
+      'Page speed directly impacts rankings and conversions. We identify exactly what slows your pages down, prioritised by impact.',
     features: [
-      'Core Web Vitals (LCP, INP, CLS)',
-      'Resource size and optimisation analysis',
-      'Image format and compression checks',
-      'JavaScript and CSS optimisation',
-      'Caching header validation',
-      'Render-blocking resource detection',
-      'Font loading optimisation',
-      'Third-party script impact analysis',
+      'LCP, INP & CLS',
+      'Image optimisation',
+      'JS & CSS analysis',
+      'Caching headers',
+      'Render-blocking resources',
+      'Third-party script impact',
     ],
   },
 ];
@@ -121,157 +130,166 @@ export default function Services() {
       {/* Hero */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">
-          <p className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-6">
+          <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-6">
             Services
           </p>
-          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.05] mb-8">
-            Four pillars of website health.
+          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-8">
+            Six dimensions of website health.
           </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
-            Every Kritano audit covers SEO, accessibility, security, and performance.
-            Each pillar is powered by a dedicated scanning engine with hundreds of
-            rules maintained by domain experts.
+          <p className="text-xl text-slate-600 leading-relaxed">
+            Every Kritano audit covers SEO, accessibility, security, performance, content quality,
+            and structured data. Each dimension is powered by a dedicated engine with hundreds of
+            rules — and every finding tells you exactly how to fix it.
           </p>
         </div>
       </section>
 
-      {/* Services - zig-zag layout */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-20 pb-8">
-        {SERVICES.map((service, index) => {
-          const isEven = index % 2 === 0;
-          return (
-            <section
+      {/* Service Cards — 2×2 grid with colour accents */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 pb-16">
+        <div className="grid md:grid-cols-2 gap-6">
+          {SERVICES.map((service) => (
+            <div
               key={service.id}
-              className={`py-20 ${index < SERVICES.length - 1 ? 'border-b border-slate-200 dark:border-slate-700' : ''}`}
+              className={`bg-white border border-slate-200 border-t-[3px] ${service.accentColor} rounded-xl overflow-hidden hover:shadow-md transition-shadow`}
             >
-              <div className={`grid lg:grid-cols-2 gap-16 items-start ${!isEven ? 'lg:direction-rtl' : ''}`}>
-                {/* Info - appears first on even rows, second on odd rows */}
-                <div className={!isEven ? 'lg:order-2' : ''}>
-                  <div className={`inline-flex items-center justify-center w-14 h-14 rounded-xl border ${service.iconColor} mb-6`}>
-                    {service.icon}
+              <div className="p-8">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-5">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-11 h-11 rounded-lg ${service.iconColor} flex items-center justify-center`}>
+                      {service.icon}
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-semibold text-slate-900">
+                        <Link to={`/services/${service.id}`} className="hover:text-indigo-600 transition-colors">
+                          {service.title}
+                        </Link>
+                      </h2>
+                      <p className="text-sm text-indigo-600 font-medium">{service.subtitle}</p>
+                    </div>
                   </div>
-                  <h2 className="font-display text-3xl lg:text-4xl text-slate-900 dark:text-white leading-tight mb-3">
-                    <Link to={`/services/${service.id}`} className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                      {service.title}
-                    </Link>
-                  </h2>
-                  <p className="text-lg text-indigo-600 dark:text-indigo-400 font-medium mb-6">{service.subtitle}</p>
-                  <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
-                    {service.description}
-                  </p>
-                  <div className="flex items-center gap-4 flex-wrap">
-                    <Link
-                      to="/register"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors text-sm"
-                    >
-                      Try {service.title} Free
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                    <Link
-                      to={`/services/${service.id}`}
-                      aria-label={`Learn more about ${service.title}`}
-                      className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                    >
-                      Learn more
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
+                  {/* Stat highlight */}
+                  <div className="text-right flex-shrink-0">
+                    <p className="font-display text-2xl text-slate-900">{service.stat}</p>
+                    <p className="text-[10px] text-slate-400 uppercase tracking-wider font-medium">{service.statLabel}</p>
                   </div>
                 </div>
 
-                {/* Features list - appears second on even rows, first on odd rows */}
-                <div className={`bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-8 ${!isEven ? 'lg:order-1' : ''}`}>
-                  <h3 className="font-semibold text-slate-900 dark:text-white mb-6 text-sm uppercase tracking-wider">
-                    What We Check
-                  </h3>
-                  <ul className="space-y-4">
-                    {service.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
-                        <span className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                <p className="text-sm text-slate-500 leading-relaxed mb-6">
+                  {service.description}
+                </p>
+
+                {/* Compact feature list — 2 columns */}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-6">
+                  {service.features.map((feature) => (
+                    <div key={feature} className="flex items-center gap-2">
+                      <CheckCircle className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <span className="text-xs text-slate-600">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-4">
+                  <Link
+                    to="/register"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-sm"
+                  >
+                    Try Free
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <Link
+                    to={`/services/${service.id}`}
+                    className="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors flex items-center gap-1"
+                  >
+                    Learn more <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
-            </section>
-          );
-        })}
-      </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      {/* Additional Features */}
-      <section className="bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
-        <div className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-4">
+      {/* Content Intelligence Callout — Differentiator */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 pb-16">
+        <div className="bg-gradient-to-r from-teal-50 to-indigo-50/30 border border-teal-200/60 rounded-2xl p-8 lg:p-10">
+          <div className="flex flex-col lg:flex-row items-start gap-8">
+            <div className="flex-shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center">
+                <BookOpen className="w-6 h-6" />
+              </div>
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <h2 className="text-lg font-semibold text-slate-900">Content Intelligence</h2>
+                <span className="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-teal-100 text-teal-700 rounded-full">Only on Kritano</span>
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed mb-4 max-w-2xl">
+                The only audit tool that scores your content the way search engines evaluate it.
+                E-E-A-T analysis, Answer Engine Optimisation, readability scoring, and engagement
+                markers — unified into a Content Quality Score across 400+ checks.
+              </p>
+              <Link to="/register" className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-700 hover:text-teal-900 transition-colors">
+                Try Content Intelligence free <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Beyond Auditing */}
+      <section className="bg-slate-50 border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-4">
               Beyond Auditing
             </p>
-            <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight">
+            <h2 className="font-display text-4xl text-slate-900 leading-tight">
               Tools that support the whole journey
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <MiniFeature
-              icon={<FileText className="w-5 h-5" />}
-              title="PDF & CSV Reports"
-              description="Export detailed reports for stakeholders, clients, or compliance audits."
-            />
-            <MiniFeature
-              icon={<BarChart3 className="w-5 h-5" />}
-              title="Trend Analytics"
-              description="Track scores over time and compare audits to measure real progress."
-            />
-            <MiniFeature
-              icon={<Search className="w-5 h-5" />}
-              title="Multi-Page Crawling"
-              description="Audit individual pages or crawl your entire site in one scan."
-            />
-            <MiniFeature
-              icon={<Gauge className="w-5 h-5" />}
-              title="Scheduled Audits"
-              description="Set it and forget it. Run automated audits on your preferred schedule."
-            />
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: <FileText className="w-5 h-5" />, title: 'PDF & CSV Reports', description: 'Branded exports for clients, stakeholders, and compliance.' },
+              { icon: <BarChart3 className="w-5 h-5" />, title: 'Trend Analytics', description: 'Track scores over time. Compare audits. Measure real progress.' },
+              { icon: <Search className="w-5 h-5" />, title: 'Multi-Page Crawling', description: 'Audit one page or crawl your entire site in one scan.' },
+              { icon: <Gauge className="w-5 h-5" />, title: 'Scheduled Audits', description: 'Automated monitoring on your preferred schedule.' },
+            ].map((item) => (
+              <div key={item.title} className="bg-white border border-slate-200 rounded-xl p-5 text-center hover:shadow-sm transition-shadow">
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 mb-3">
+                  {item.icon}
+                </div>
+                <h3 className="font-semibold text-slate-900 mb-1.5 text-sm">{item.title}</h3>
+                <p className="text-slate-500 text-xs leading-relaxed">{item.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
-        <div className="text-center max-w-2xl mx-auto">
-          <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight mb-6">
-            See Kritano in action
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
-            Run your first audit in under two minutes. No credit card, no commitment.
-          </p>
-          <Link
-            to="/register"
-            className="inline-flex px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors"
-          >
-            Start Free Audit
-          </Link>
+        <div className="bg-indigo-600 rounded-2xl p-10 md:p-14 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:32px_32px]" />
+          <div className="relative text-center max-w-xl mx-auto">
+            <h2 className="font-display text-3xl lg:text-4xl text-white leading-tight mb-5">
+              See Kritano in action
+            </h2>
+            <p className="text-indigo-200 leading-relaxed mb-8">
+              Run your first audit in under two minutes. No credit card, no commitment.
+            </p>
+            <Link
+              to="/register"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-indigo-700 rounded-lg font-semibold hover:bg-indigo-50 transition-colors"
+            >
+              Start Free Audit
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
     </PublicLayout>
-  );
-}
-
-function MiniFeature({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="text-center">
-      <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 mb-4">
-        {icon}
-      </div>
-      <h3 className="font-semibold text-slate-900 dark:text-white mb-2 text-sm">{title}</h3>
-      <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{description}</p>
-    </div>
   );
 }

@@ -17,6 +17,7 @@ import emailRouter from './email/index.js';
 import { blogRouter } from './blog.js';
 import { referralsRouter } from './referrals/index.js';
 import { cookieConsentRouter } from './consent/cookie-consent.js';
+import { emailService } from '../services/email.service.js';
 import { seoRouter } from './seo.js';
 import { accountRouter } from './account/index.js';
 import { userWebhooksRouter } from './webhooks/user-webhooks.js';
@@ -161,6 +162,26 @@ router.post('/contact', async (req: Request, res: Response): Promise<void> => {
        VALUES ($1, $2, $3, $4, $5)`,
       [name, email, subject || null, message, ip]
     );
+
+    // Email notification to info@kritano.com
+    const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'info@kritano.com';
+    try {
+      await emailService.sendGenericEmail(
+        CONTACT_EMAIL,
+        `Contact Form: ${subject || 'General Enquiry'} — from ${name}`,
+        `<h2>New contact form submission</h2>
+         <p><strong>Name:</strong> ${name}</p>
+         <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+         <p><strong>Subject:</strong> ${subject || 'Not specified'}</p>
+         <hr/>
+         <p>${message.replace(/\n/g, '<br/>')}</p>
+         <hr/>
+         <p style="color: #64748b; font-size: 12px;">Reply directly to <a href="mailto:${email}">${email}</a></p>`
+      );
+    } catch (emailErr) {
+      // Don't fail the submission if email notification fails
+      console.error('Failed to send contact notification email:', emailErr);
+    }
 
     res.json({ success: true, message: 'Thank you! We\'ll get back to you within one business day.' });
   } catch (error) {
@@ -642,6 +663,21 @@ router.post('/coming-soon/signup', async (req: Request, res: Response): Promise<
        ON CONFLICT (email) DO NOTHING`,
       [email, name || null, ip]
     );
+
+    // Notify you at info@
+    const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'info@kritano.com';
+    try {
+      await emailService.sendGenericEmail(
+        CONTACT_EMAIL,
+        `Waitlist signup: ${email}`,
+        `<h2>New waitlist signup</h2>
+         <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+         ${name ? `<p><strong>Name:</strong> ${name}</p>` : ''}
+         <p style="color: #64748b; font-size: 12px;">Submitted via the Coming Soon page.</p>`
+      );
+    } catch (emailErr) {
+      console.error('Failed to send waitlist notification email:', emailErr);
+    }
 
     res.json({ success: true, message: "Thanks! We'll let you know when we launch." });
   } catch (error) {

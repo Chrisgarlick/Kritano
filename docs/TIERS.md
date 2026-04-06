@@ -61,6 +61,20 @@
 | CQS breakdown (5 sub-scores) | - | Yes | Yes | Yes | Yes |
 | CQS per-page detail + trends | - | - | Yes | Yes | Yes |
 
+## AI Generate (SEO & Content)
+
+| | Free | Starter | Pro | Agency | Enterprise |
+|---|---|---|---|---|---|
+| AI Generate access | - | - | Yes | Yes | Yes |
+| Generations per day | - | - | 20 | 50 | Unlimited |
+| Generations per month | - | - | 200 | 500 | Unlimited |
+| Keyword suggestions | - | - | Yes | Yes | Yes |
+| Meta description rewrites | - | - | Yes | Yes | Yes |
+| Title tag suggestions | - | - | Yes | Yes | Yes |
+| Content improvement plan | - | - | Yes | Yes | Yes |
+| Opening hook rewrites | - | - | Yes | Yes | Yes |
+| Alt text suggestions | - | - | Yes | Yes | Yes |
+
 ## API & Data
 
 | | Free | Starter | Pro | Agency | Enterprise |
