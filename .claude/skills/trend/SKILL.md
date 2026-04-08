@@ -107,12 +107,14 @@ For each selected trend, generate:
 - 1-3 paragraphs with a clear insight
 - End with a question to drive engagement
 
-#### e) Reddit Post
-- Educational, zero self-promotion in the body
+#### e) Reddit (comments + post)
+- **Primary output: 3-5 comment ideas** for replying to existing threads in relevant subreddits (karma building phase)
+- Each comment should target a specific subreddit and thread topic
+- Also generate a full post for when the account has enough karma
+- Zero self-promotion - the goal is reputation, not traffic
 - Match the target subreddit's tone
-- Include 2-4 suggested subreddits where the post fits
-- End with a discussion question
-- See `content-formats.md` for full Reddit rules and subreddit targets per pillar
+- Include suggested subreddits
+- See `content-formats.md` for full Reddit rules, comment angles, and subreddit targets per pillar
 
 ### 6. Apply editorial filter
 

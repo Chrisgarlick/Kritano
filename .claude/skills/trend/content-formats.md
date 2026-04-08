@@ -145,31 +145,96 @@ This is the meat of the post. 3-5 sentences.]
 
 ---
 
-## Reddit Post
+## Reddit
 
-### Structure
+The Kritano Reddit account is in **karma-building phase**. The primary output is comment ideas, not full posts. Once the account has enough karma and history (roughly 100-200+ karma, a few weeks of commenting), switch to generating full posts alongside comments.
+
+### Account: Kritano
+
+Post from the Kritano brand account, NOT a personal account. During the karma phase, the account should feel like a knowledgeable team rather than a corporate mouthpiece. Use "we" sparingly - prefer direct, helpful statements without a pronoun where possible.
+
+---
+
+### Reddit Comments (Primary output - karma building phase)
+
+Generate 3-5 comment ideas per trend. These are replies to existing threads in relevant subreddits, not standalone posts.
+
+#### Comment Structure
 
 ```
-[TITLE — clear, specific, not clickbaity. Must work as a standalone question or statement.]
+COMMENT 1
+Subreddit: r/[subreddit]
+Reply to threads about: [topic/keyword to search for]
+Comment:
+[2-4 sentences. Answer a question, add a useful detail, or share a relevant insight. Be genuinely helpful.]
 
-[BODY — 2-5 paragraphs. Educational, adds genuine value to the subreddit. No self-promotion in the body.]
+COMMENT 2
+...
+```
+
+#### Comment Rules
+
+- **Answer questions directly** - if someone asks "how do I check X?", give them the answer, not a link
+- **Add value to the discussion** - share a specific detail, stat, or experience that moves the conversation forward
+- **Never promote Kritano** - not even subtly. The goal is karma and reputation, not traffic
+- **Keep it short** - Reddit comments that get upvoted are concise and to the point. 2-4 sentences is ideal.
+- **Be specific** - name tools, cite numbers, reference standards. Vague advice gets ignored.
+- **Match the subreddit tone** - r/webdev is casual and technical, r/SEO is data-driven, r/accessibility is earnest and advocacy-focused
+- **British English** throughout
+- **No em dashes** - use ` - ` instead
+- **No smart/curly quotes** - straight quotes only
+
+#### Comment Angles
+
+| Angle | When to use | Example |
+|-------|-------------|---------|
+| **Quick answer** | Someone asked a question you can answer in 2 sentences | "Schema markup is the biggest lever here. Run your URL through Google's Rich Results Test - it will show you exactly what structured data is missing." |
+| **Add context** | Thread is discussing the trend but missing a key detail | "Worth noting that AI Overviews only cite 2-7 sources per answer, so the stakes are much higher than traditional organic where you had 10 slots." |
+| **Respectful correction** | Someone shared misinformation about one of the 6 pillars | "This is partially right but llms.txt is separate from robots.txt - it is specifically for LLM crawlers, not search engine bots. The spec is at llmstxt.org." |
+| **Tool recommendation** | Someone needs a tool (never Kritano unless directly asked) | "For accessibility audits, axe DevTools catches most WCAG violations. For a broader check across multiple pillars, Lighthouse is a good starting point." |
+| **Shared experience** | Thread is asking "has anyone else seen X?" | "We have been seeing the same thing. Schema markup + structured headings seem to be the biggest factors in getting cited by AI Overviews." |
+
+---
+
+### Reddit Post (for when karma is established)
+
+Only generate full posts once the Kritano account has enough karma and history. Include both post AND comment ideas in the output.
+
+#### Post Structure
+
+```
+[TITLE - clear, specific, not clickbaity. Must work as a standalone question or statement.]
+
+[BODY - 2-5 paragraphs. Educational, adds genuine value to the subreddit. No self-promotion in the body.]
 
 [Optional: link to a relevant source (not Kritano) that backs up the point.]
 
-[ENGAGEMENT — end with a question or invite discussion. Reddit rewards conversation starters.]
+[ENGAGEMENT - end with a question or invite discussion. Reddit rewards conversation starters.]
 ```
 
-### Reddit Rules
+#### Post Rules
 
-- **No self-promotion** — Reddit hates it. The post must stand on its own as valuable content. Never link to Kritano in the body. The only acceptable mention is a brief, relevant comment reply if someone asks "how do I check this?"
-- **Match the subreddit tone** — r/webdev is casual and technical, r/SEO is data-driven, r/accessibility is earnest and advocacy-focused
-- **Titles matter enormously** — Reddit titles cannot be edited after posting. Make them clear and specific.
-- **Lead with value or a question** — "I just analysed 50 sites for AI readiness and here's what I found" beats "GEO is the future of SEO"
-- **Be honest about what you don't know** — Reddit respects humility and punishes overconfidence
+- **No self-promotion** - Reddit hates it. The post must stand on its own as valuable content. Never link to Kritano in the body. The only acceptable mention is a brief, relevant comment reply if someone asks "how do I check this?"
+- **Match the subreddit tone** - r/webdev is casual and technical, r/SEO is data-driven, r/accessibility is earnest and advocacy-focused
+- **Titles matter enormously** - Reddit titles cannot be edited after posting. Make them clear and specific.
+- **Lead with value or a question** - "We analysed 50 sites for AI readiness and here is what we found" beats "GEO is the future of SEO"
+- **Be honest about what you don't know** - Reddit respects humility and punishes overconfidence
 - **British English** throughout
-- **No em dashes** — use ` - ` instead
-- **No smart/curly quotes** — straight quotes only
-- **Include suggested subreddits** — list 2-4 relevant subreddits where the post would fit
+- **No em dashes** - use ` - ` instead
+- **No smart/curly quotes** - straight quotes only
+- **Include suggested subreddits** - list 2-4 relevant subreddits where the post would fit
+
+#### Post Variations by Angle
+
+| Angle | Title Style | Body Style |
+|-------|-------------|------------|
+| **Data share** | "We analysed X sites and found..." | Lead with findings, methodology second |
+| **Question** | "Has anyone else noticed [trend]?" | Short context, invite discussion |
+| **PSA/Warning** | "[Platform] just changed [thing] - here is what it means" | Factual, practical, solution-oriented |
+| **Guide** | "Quick guide: how to [do thing]" | Step-by-step, specific, tool names |
+| **Discussion** | "Hot take: [opinion]" | State position, back with reasoning, invite pushback |
+
+---
 
 ### Target Subreddits by Pillar
 
@@ -181,16 +246,6 @@ This is the meat of the post. 3-5 sentences.]
 | Performance | r/webdev, r/frontend, r/webperf |
 | Content Quality | r/SEO, r/content_marketing, r/copywriting |
 | AI Readiness | r/SEO, r/artificial, r/webdev |
-
-### Reddit Post Variations by Angle
-
-| Angle | Title Style | Body Style |
-|-------|-------------|------------|
-| **Data share** | "I analysed X sites and found..." | Lead with findings, methodology second |
-| **Question** | "Has anyone else noticed [trend]?" | Short context, invite discussion |
-| **PSA/Warning** | "[Platform] just changed [thing] - here's what it means" | Factual, practical, solution-oriented |
-| **Guide** | "Quick guide: how to [do thing]" | Step-by-step, specific, tool names |
-| **Discussion** | "Hot take: [opinion]" | State position, back with reasoning, invite pushback |
 
 ---
 
