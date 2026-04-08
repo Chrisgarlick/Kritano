@@ -10,6 +10,9 @@ build/
 .env.local
 .env.*.local
 
+# Claude Code MCP config (contains API tokens)
+.claude/mcp.json
+
 # IDE
 .vscode/
 .idea/
@@ -38,3 +41,6 @@ test-results/
 
 # Cold prospect CLI runtime data
 server/prospect-settings.json
+
+# Trend files
+/docs/trend

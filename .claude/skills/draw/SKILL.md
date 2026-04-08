@@ -103,12 +103,30 @@ The file should contain a caption and hashtags **for each slide/variation**, str
 - 15-20 hashtags — mix of broad (#WebDesign, #SEO) and niche (#WCAG, #A11y, #CoreWebVitals)
 - Always include #Kritano
 
-### 10. Output summary
+### 10. Convert to PNG
 
-After writing all files, output:
-- The file paths created (including `captions.md`)
+After writing all HTML/SVG files, convert each one to a PNG using Playwright.
+
+Run this bash command for **each** generated file:
+
+```bash
+npx playwright screenshot \
+  --viewport-size="1080,1080" \
+  --full-page \
+  "file:///absolute/path/to/N.html" \
+  "/absolute/path/to/N.png"
+```
+
+- Use `file://` URLs with the absolute path to each HTML/SVG file
+- Output the PNG to the same folder with the same name but `.png` extension (e.g. `1.html` → `1.png`)
+- If the screenshot command fails for any file, note the error and continue with the remaining files
+
+### 11. Output summary
+
+After writing all files and converting to PNG, output:
+- The file paths created (HTML/SVG, PNG, and `captions.md`)
 - A one-line description of each variation
-- A note that they can be opened in a browser at 1080×1080
+- Confirm which PNGs were successfully generated
 
 ## HTML Template
 

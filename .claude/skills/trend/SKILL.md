@@ -1,0 +1,219 @@
+---
+name: trend
+description: Scan the web for trending news across Kritano's 6 pillars (Accessibility, SEO, Security, Performance, Content Quality, AI Readiness), then generate ready-to-post social media content. Use when the user wants trending content ideas or social posts based on current industry news.
+user-invocable: true
+argument-hint: [pillar name or blank for all]
+---
+
+# Trend Skill — Kritano Trending Content Engine
+
+Scan the web for trending news, updates, and developments across the 6 pillars of website health, then generate social-ready content for Instagram, X (Twitter), and LinkedIn.
+
+## Input
+
+The user's prompt: $ARGUMENTS
+
+If a specific pillar is named (e.g. "seo", "accessibility"), focus the scan on that pillar. If blank or "all", scan all 6 pillars.
+
+## The 6 Pillars
+
+| # | Pillar | Shorthand | Topics |
+|---|--------|-----------|--------|
+| 1 | **Accessibility** | a11y | WCAG updates, legal cases, inclusive design, assistive tech, overlay lawsuits, EAA |
+| 2 | **SEO** | seo | Algorithm updates, Core Web Vitals, structured data, rankings, Google changes |
+| 3 | **Security** | security | Vulnerabilities, header policies, SSL/TLS, data breaches, compliance (GDPR, etc.) |
+| 4 | **Performance** | perf | Core Web Vitals, page speed, CDNs, image optimisation, rendering strategies |
+| 5 | **Content Quality** | content | E-E-A-T updates, readability research, content strategy, helpful content updates |
+| 6 | **AI Readiness** | ai | Answer engines, AEO, AI-generated content policies, LLM citations, AI search |
+
+## Workflow
+
+### 1. Parse the input
+
+Determine:
+- Which pillars to scan (one, several, or all 6)
+- Any specific angle or topic the user mentioned
+- Whether the user wants a specific output format (IG only, X only, etc.) — default is all formats
+
+### 2. Search for trending news
+
+Read `search-strategy.md` for the full query playbook.
+
+For each targeted pillar, run **2-3 web searches** using the queries defined in `search-strategy.md`. Focus on:
+- News from the **last 7 days** (prioritise recency)
+- Official announcements (Google, W3C, browser vendors, major platforms)
+- Viral discussions (Reddit, Hacker News, X/Twitter)
+- New research, studies, or reports
+- Legal developments (lawsuits, regulations)
+- Tool releases or major updates
+
+### 3. Collect and rank findings
+
+For each result found, extract:
+- **Headline**: What happened
+- **Source**: Where it was reported
+- **Pillar**: Which of the 6 pillars it falls under
+- **Angle**: How Kritano can frame this (educational, opinion, data-driven, warning, opportunity)
+- **Engagement potential**: High / Medium / Low — based on controversy, recency, and audience relevance
+
+### 4. Present the trend brief
+
+Before generating any content, present a summary to the user:
+
+```
+## Trending This Week
+
+### 🔍 SEO
+1. **[Headline]** — [1-line summary]. Source: [source]. Angle: [angle].
+2. ...
+
+### ♿ Accessibility
+1. ...
+
+[etc. for each scanned pillar]
+
+---
+
+**Which trends would you like me to turn into content?** (e.g. "all", "1 and 3 from SEO", "accessibility only")
+```
+
+Wait for the user to select which trends to develop before proceeding.
+
+### 5. Generate content for selected trends
+
+Read `content-formats.md` for the structure of each format.
+
+For each selected trend, generate:
+
+#### a) Instagram Post (via draw patterns)
+- Create a 1080×1080px HTML visual using the `/draw` skill's brand-style rules
+- Follow all rules from the draw skill's `brand-style.md` (colours, typography, atmospheric elements)
+- Use the draw skill's HTML template skeleton
+- Save to `/docs/trend/<YYYY-MM-DD>/visuals/N.html` (keep draw assets inside the trend folder, NOT in `/docs/draw/`)
+
+#### b) X Thread
+- 4-7 tweets structured as: Hook → Context → Insight → Kritano angle → CTA
+- Each tweet ≤ 280 characters
+- Save to a markdown file
+
+#### c) Instagram Caption
+- Hook line (first 125 chars are critical — this shows before "...more")
+- Full caption in Kritano voice
+- 15-20 hashtags mixing broad and niche
+- Soft CTA
+
+#### d) LinkedIn Post
+- Professional tone, still Kritano voice
+- 1-3 paragraphs with a clear insight
+- End with a question to drive engagement
+
+#### e) Reddit Post
+- Educational, zero self-promotion in the body
+- Match the target subreddit's tone
+- Include 2-4 suggested subreddits where the post fits
+- End with a discussion question
+- See `content-formats.md` for full Reddit rules and subreddit targets per pillar
+
+### 6. Apply editorial filter
+
+Read `editorial-filter.md` before finalising. Every piece of content must pass the filter criteria.
+
+### 7. Write output files
+
+Create a folder for the batch: `/docs/trend/<YYYY-MM-DD>/`
+
+Save:
+- `brief.md` — The full trend brief (what was found) — markdown is fine, this is internal reference
+- `x-threads.txt` — All X threads (plain text for easy phone transfer)
+- `linkedin.txt` — All LinkedIn posts (plain text for easy phone transfer)
+- `captions.txt` — All Instagram captions and hashtags (plain text for easy phone transfer)
+- `reddit.txt` — Reddit post with title, body, and suggested subreddits (plain text)
+- `blog.md` — Full blog post (generated in step 8)
+- `video.html` — Animated HTML video (generated in step 9)
+- Visual assets go to `/docs/trend/<YYYY-MM-DD>/visuals/` (HTML + PNG files)
+
+### 8. Generate blog post
+
+Write a blog post about the selected trend using the `/blog` skill's rules and templates. The blog should:
+
+- Use the trend brief as source material
+- Follow the blog skill's tone-of-voice, structure templates, SEO guidelines, and frontmatter schema (read all files in `.claude/skills/blog/`)
+- Post type is typically **explainer** or **thought leadership** depending on the trend angle
+- Save to `/docs/trend/<YYYY-MM-DD>/blog.md`
+- The blog should go deeper than the social posts - it's the long-form companion piece
+- Include a clear CTA back to Kritano
+- Add the blog to the Notion publish (it will be picked up automatically as it's in the trend folder)
+
+### 9. Generate animated video
+
+Create an animated HTML video about the selected trend using the `/video` skill's rules and templates. The video should:
+
+- Read all files in `.claude/skills/video/` (SKILL.md, brand-motion.md, templates.md) for the full spec
+- Use the trend's key stat, headline, or insight as the video content
+- Follow the 5-act timeline (Intro, Build, Peak, Resolve, Outro/Loop-Reset)
+- 1080x1920px portrait format, 20-40 second seamless loop
+- Save to `/docs/trend/<YYYY-MM-DD>/video.html`
+- Pick the content type that best suits the trend:
+  - **Stat reveal** if there's a strong data point (e.g. "AI engines cite 2-7 sources")
+  - **Single statement** if the trend is a bold claim
+  - **List** if summarising multiple related updates
+  - **Before/after** if comparing old vs new approaches
+
+#### Convert to MP4
+
+After saving the HTML, convert it to MP4 by running:
+
+```bash
+node .claude/skills/trend/html-to-mp4.mjs docs/trend/<YYYY-MM-DD>/video.html docs/trend/<YYYY-MM-DD>/video.mp4 <duration_seconds> <fps>
+```
+
+This uses Playwright to capture frames at 30fps, then ffmpeg to stitch them into an MP4. Set the duration to match the `--video-duration` CSS variable in the HTML (e.g. 28 for 28s).
+
+If the recording fails, report the error but still save the HTML - the user can screen-record it manually.
+
+### 10. Publish to Notion
+
+After writing all local files, publish the content to Notion by running:
+
+```bash
+bash .claude/skills/trend/publish-to-notion.sh /Users/chris/Herd/pagepulser/docs/trend/<YYYY-MM-DD>
+```
+
+This creates a page under the Kritano Notion workspace with:
+- A parent page titled with the trend name and date
+- Sub-pages for Brief, X Thread, Instagram Captions, LinkedIn Post, Blog, and Video
+- Each sub-page contains the full content from the corresponding file
+
+If the publish fails, report the error but don't block the rest of the output.
+
+### 11. Output summary
+
+After writing all files and publishing to Notion, output:
+- Summary of trends covered
+- File paths created (social, blog, video, visuals)
+- Notion page link
+- A note on which visuals to pair with which captions
+- Suggested posting schedule (spread across the week)
+- Blog post summary and suggested publish date
+- Video file path and recording instructions
+
+## Content Rules
+
+- **British English** spelling throughout (optimise, colour, favour)
+- **Kritano voice**: Conversational expert, never corporate. See tone-of-voice rules.
+- **Educational first**: Lead with value, not promotion. Kritano is the trusted source, not the product being sold.
+- **Honest takes**: If a trend is overblown, say so. If it's genuinely important, explain why.
+- **No competitor promotion**: Never recommend or name competing audit tools.
+- **Always include #Kritano** in hashtag sets.
+- **Credit sources**: Always attribute data and quotes to their original source.
+- **No em dashes** — never use `—` in any output. Use ` - ` (space-hyphen-space) instead. Em dashes are a tell-tale sign of AI-generated content.
+- **No smart quotes** — use straight quotes (`'` and `"`) only, never curly/smart quotes.
+- **Plain text outputs** — all social content files (threads, captions, LinkedIn) must be `.txt` not `.md`, so they transfer cleanly to mobile devices.
+
+## Reference Files
+
+| File | Purpose |
+|------|---------|
+| `search-strategy.md` | Search queries, sources, and scanning approach per pillar |
+| `content-formats.md` | Structure templates for X threads, IG captions, LinkedIn posts |
+| `editorial-filter.md` | Quality and relevance criteria — what makes a trend worth covering |

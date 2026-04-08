@@ -1,0 +1,27 @@
+# Kritano
+
+> Kritano is a website health auditing platform that analyses sites across six pillars: accessibility, SEO, security, performance, content quality, and AI readiness.
+
+## Core Pages
+- [Home](https://kritano.com/)
+- [Services](https://kritano.com/services)
+- [Pricing](https://kritano.com/pricing)
+- [About](https://kritano.com/about)
+- [Contact](https://kritano.com/contact)
+- [Blog](https://kritano.com/blog)
+
+## What Kritano Does
+Kritano audits websites and produces actionable reports covering:
+- Accessibility (WCAG compliance, screen reader compatibility, colour contrast, keyboard navigation)
+- SEO (meta tags, structured data, indexability, Core Web Vitals)
+- Security (HTTPS, headers, mixed content, vulnerability detection)
+- Performance (page speed, resource optimisation, render-blocking assets)
+- Content Quality (readability, E-E-A-T signals, content structure)
+- AI Readiness (schema markup, structured data, AI crawler accessibility)
+
+## Key Facts
+- Founded by Chris Garlick
+- Based in the United Kingdom
+- Serves businesses, agencies, and developers who want to improve their website health
+- Provides PDF and CSV audit exports
+- Offers free and paid audit tiers
