@@ -90,6 +90,27 @@ For each selected trend, generate:
 - Follow all rules from the draw skill's `brand-style.md` (colours, typography, atmospheric elements)
 - Use the draw skill's HTML template skeleton
 - Save to `/docs/trend/<YYYY-MM-DD>/visuals/N.html` (keep draw assets inside the trend folder, NOT in `/docs/draw/`)
+- After creating the HTML files, convert each to PNG by running Playwright screenshot:
+```bash
+node -e "
+const { chromium } = require('playwright');
+const path = require('path');
+const fs = require('fs');
+(async () => {
+  const browser = await chromium.launch({ headless: true });
+  const dir = 'docs/trend/<YYYY-MM-DD>/visuals';
+  for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.html'))) {
+    const page = await browser.newPage();
+    await page.setViewportSize({ width: 1080, height: 1080 });
+    await page.goto('file://' + path.resolve(dir, f), { waitUntil: 'networkidle' });
+    await page.waitForTimeout(2000);
+    await page.screenshot({ path: path.resolve(dir, f.replace('.html', '.png')), type: 'png' });
+    await page.close();
+  }
+  await browser.close();
+})();
+"
+```
 
 #### b) X Thread
 - 4-7 tweets structured as: Hook → Context → Insight → Kritano angle → CTA

@@ -9,7 +9,7 @@
 
 set -euo pipefail
 
-KRITANO_PAGE_ID="32d0a555-e5a3-80dc-bc69-d33bddded316"
+TRENDS_PAGE_ID="33c0a555-e5a3-8020-9296-c0d519429ee4"
 NOTION_VERSION="2022-06-28"
 TREND_DIR="${1:?Usage: publish-to-notion.sh <trend-date-folder>}"
 
@@ -161,7 +161,7 @@ echo "Creating trend page: $PAGE_TITLE"
 PARENT_RESPONSE=$(notion_api "/pages" "$(python3 -c "
 import json
 print(json.dumps({
-    'parent': {'page_id': '$KRITANO_PAGE_ID'},
+    'parent': {'page_id': '$TRENDS_PAGE_ID'},
     'icon': {'type': 'emoji', 'emoji': '\U0001f4f0'},
     'properties': {
         'title': {

@@ -44,3 +44,6 @@ server/prospect-settings.json
 
 # Trend files
 /docs/trend
+
+# Prospect output files
+/docs/prospects
