@@ -1,27 +1,69 @@
 # Kritano
 
-> Kritano is a website health auditing platform that analyses sites across six pillars: accessibility, SEO, security, performance, content quality, and AI readiness.
+> Kritano is a website intelligence platform that audits sites across six pillars: SEO, accessibility, security, performance, content quality, and AI readiness (AEO). It provides actionable, prioritised reports with scores, findings, and fix recommendations.
 
 ## Core Pages
-- [Home](https://kritano.com/)
-- [Services](https://kritano.com/services)
-- [Pricing](https://kritano.com/pricing)
-- [About](https://kritano.com/about)
-- [Contact](https://kritano.com/contact)
-- [Blog](https://kritano.com/blog)
+- [Home](https://kritano.com/) - Main landing page
+- [Services](https://kritano.com/services) - Overview of all auditing services
+- [Pricing](https://kritano.com/pricing) - Plans from Free to Enterprise
+- [FAQ](https://kritano.com/faq) - Frequently asked questions about the platform
+- [About](https://kritano.com/about) - Mission, founder story, and six pillars explained
+- [Contact](https://kritano.com/contact) - Get in touch
+- [Blog](https://kritano.com/blog) - SEO, accessibility, security, and performance guides
+- [API Docs](https://kritano.com/docs) - REST API documentation
+
+## Service Detail Pages
+- [SEO Auditing](https://kritano.com/services/seo) - 100+ ranking factor checks
+- [Accessibility Testing](https://kritano.com/services/accessibility) - WCAG 2.2 Level AA compliance
+- [Security Scanning](https://kritano.com/services/security) - OWASP-based vulnerability detection
+- [Performance Analysis](https://kritano.com/services/performance) - Core Web Vitals and speed optimisation
 
 ## What Kritano Does
-Kritano audits websites and produces actionable reports covering:
-- Accessibility (WCAG compliance, screen reader compatibility, colour contrast, keyboard navigation)
-- SEO (meta tags, structured data, indexability, Core Web Vitals)
-- Security (HTTPS, headers, mixed content, vulnerability detection)
-- Performance (page speed, resource optimisation, render-blocking assets)
-- Content Quality (readability, E-E-A-T signals, content structure)
-- AI Readiness (schema markup, structured data, AI crawler accessibility)
+Kritano crawls websites and analyses every page against hundreds of rules, producing detailed reports with:
+- **SEO**: Meta tags, structured data, broken links, canonical URLs, Core Web Vitals, mobile-friendliness, indexability, internal linking
+- **Accessibility**: WCAG 2.2 Level AA via axe-core, colour contrast, keyboard navigation, ARIA, screen reader compatibility, EAA compliance mapping
+- **Security**: HTTPS, security headers (HSTS, CSP, X-Frame-Options), mixed content, exposed files, cookie flags, SSL/TLS configuration
+- **Performance**: Page load times, resource optimisation, render-blocking detection, caching analysis
+- **Content Quality (CQS)**: Five sub-scores (quality, E-E-A-T, readability, engagement, structure) with 400+ checks across 7 analysis modules
+- **AI Readiness (AEO)**: Answer Engine Optimisation measuring AI citability, extractable nuggets, factual density, source authority, structured data for AI systems
+
+## Content Quality Score (CQS)
+The CQS is a weighted composite score:
+- Quality (25%): Content depth, multimedia, freshness, unique content ratio
+- E-E-A-T (25%): Author signals, citations, credentials, trust indicators
+- Readability (20%): Flesch-Kincaid, Gunning Fog, sentence variety
+- Engagement (15%): CTAs, hooks, power words, transitions
+- Structure (15%): Heading hierarchy, paragraph flow, lists, table of contents
+
+## E-E-A-T Tiers
+Pages are classified into three tiers based on expertise signals:
+- Ghost Content: No author attribution, no trust signals
+- Standard Web: Basic author info, some trust signals
+- Expert Verified: Strong author credentials, citations, contact information
+
+## AEO (Answer Engine Optimisation)
+Measures how likely content is to be cited by AI systems:
+- Nugget detection: Definitions, summaries, FAQ answers, data tables, concise answers
+- Factual density scoring
+- Source authority analysis
+- Structured data for AI (FAQ, HowTo, ClaimReview schemas)
+- Content frontloading analysis
+- Tier classification: Ignored, General Reference, Primary Source
 
 ## Key Facts
-- Founded by Chris Garlick
+- Founded by Chris Garlick, software engineer specialising in web auditing and SEO
 - Based in the United Kingdom
-- Serves businesses, agencies, and developers who want to improve their website health
-- Provides PDF and CSV audit exports
-- Offers free and paid audit tiers
+- Serves businesses, agencies, and developers who want to improve website health
+- Offers Free, Starter ($19/mo), Pro ($49/mo), Agency ($99/mo), and Enterprise plans
+- Provides PDF, CSV, and JSON audit exports
+- REST API available for programmatic access
+- Supports scheduled recurring audits
+- Domain verification via DNS TXT or file-based methods
+- GDPR compliant with data export and deletion support
+
+## Blog Categories
+- SEO, Accessibility, Security, Performance, Content Quality, Structured Data, E-E-A-T, AEO, Guides, Case Studies, Product Updates
+
+## Dynamic Content
+- Blog posts with full articles: https://kritano.com/blog
+- Blog sitemap: https://kritano.com/api/blog/sitemap.xml

@@ -214,8 +214,9 @@ export async function createPost(
     `INSERT INTO blog_posts (
       slug, title, subtitle, excerpt, featured_image_url, featured_image_alt,
       content, category, tags, author_id, author_name,
-      seo_title, seo_description, reading_time_minutes
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+      seo_title, seo_description, reading_time_minutes,
+      schema_type, schema_claim_reviewed, schema_review_rating
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
     RETURNING *`,
     [
       slug,
@@ -232,6 +233,9 @@ export async function createPost(
       input.seo_title || null,
       input.seo_description || null,
       readingTime,
+      input.schema_type || 'article',
+      input.schema_claim_reviewed || null,
+      input.schema_review_rating || null,
     ]
   );
 
@@ -313,6 +317,21 @@ export async function updatePost(
   if (input.related_post_ids !== undefined) {
     fields.push(`related_post_ids = $${paramIdx++}`);
     params.push(input.related_post_ids);
+  }
+
+  if (input.schema_type !== undefined) {
+    fields.push(`schema_type = $${paramIdx++}`);
+    params.push(input.schema_type);
+  }
+
+  if (input.schema_claim_reviewed !== undefined) {
+    fields.push(`schema_claim_reviewed = $${paramIdx++}`);
+    params.push(input.schema_claim_reviewed);
+  }
+
+  if (input.schema_review_rating !== undefined) {
+    fields.push(`schema_review_rating = $${paramIdx++}`);
+    params.push(input.schema_review_rating);
   }
 
   if (fields.length === 0) return existing;

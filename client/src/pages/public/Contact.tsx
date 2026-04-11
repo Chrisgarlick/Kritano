@@ -51,23 +51,33 @@ export default function Contact() {
         title="Contact"
         description="Get in touch with the Kritano team. We're here to help with questions about our platform, pricing, or partnerships."
         path="/contact"
-        structuredData={{
-          '@context': 'https://schema.org',
-          '@type': 'ContactPage',
-          name: 'Contact Kritano',
-          url: 'https://kritano.com/contact',
-        }}
+        structuredData={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'ContactPage',
+            name: 'Contact Kritano',
+            url: 'https://kritano.com/contact',
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+              { '@type': 'ListItem', position: 2, name: 'Contact', item: 'https://kritano.com/contact' },
+            ],
+          },
+        ]}
       />
 
       {/* Hero */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">
-          <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-6">
-            Contact
-          </p>
-          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-8">
-            Let's talk.
+          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
+            Contact Us
           </h1>
+          <h2 className="font-display text-2xl lg:text-3xl text-slate-500 leading-snug mb-8">
+            Let's talk.
+          </h2>
           <p className="text-xl text-slate-600 leading-relaxed">
             Whether it's a question about features, enterprise pricing, or a partnership idea —
             we read every message personally and reply within one business day.

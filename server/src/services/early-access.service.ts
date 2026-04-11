@@ -8,11 +8,14 @@
  */
 
 import { pool } from '../db/index.js';
-import { getSetting, setSetting } from './system-settings.service.js';
+import { getSetting, setSetting, getSiteMode } from './system-settings.service.js';
 import { startTrial } from './trial.service.js';
 import { sendTemplate } from './email-template.service.js';
 
 export async function isEarlyAccessEnabled(): Promise<boolean> {
+  // Check site mode first (new system), fall back to legacy toggle
+  const mode = await getSiteMode();
+  if (mode === 'early_access') return true;
   const val = await getSetting('early_access_enabled');
   return val === true || val === 'true';
 }

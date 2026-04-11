@@ -1,13 +1,20 @@
 ---
 name: draw
-description: Generate brand-consistent visual assets (HTML or SVG) for social media. Creates 1:1 ratio images matching Kritano's editorial design language. Use when the user wants social graphics, illustrations, diagrams, or visual content.
+description: Generate brand-consistent visual assets (HTML or SVG). Supports 1:1 (social media) and 16:9 wide (blog featured images, OG images). Use when the user wants social graphics, illustrations, diagrams, blog hero images, or visual content.
 user-invocable: true
 argument-hint: [description of what to draw]
 ---
 
 # Draw Skill — Kritano Brand Visual Assets
 
-Generate 1080×1080px visual assets styled to Kritano's editorial brand language. Outputs self-contained HTML or SVG files for social media use.
+Generate visual assets styled to Kritano's editorial brand language. Outputs self-contained HTML or SVG files.
+
+## Formats
+
+| Format | Dimensions | Aspect Ratio | Use Case |
+|--------|-----------|--------------|----------|
+| `square` (default) | 1080×1080px | 1:1 | Social media posts (Instagram, LinkedIn, X) |
+| `wide` | 1920×1080px | 16:9 | Blog featured images, OG images, YouTube thumbnails |
 
 ## Input
 
@@ -22,6 +29,7 @@ Identify:
 - Any style hints (dark, light, minimal, bold, typographic, data-driven)
 - Quantity override (e.g. "5 variations of..." — default is 3)
 - Format preference (HTML or SVG — default is HTML)
+- Aspect ratio: `wide` or `16:9` for 1920×1080; otherwise default to `square` (1080×1080). When invoked from the `/blog` skill, always use `wide`.
 
 ### 2. Slugify the prompt
 
@@ -72,7 +80,9 @@ Create 3 files (or user-specified count). Each must be a **distinct creative int
 
 ### 8. Write files
 
-Save each file to `/docs/draw/<slug>/N.html` or `N.svg`.
+**Default location:** `/docs/draw/<slug>/N.html` or `N.svg`.
+
+**IMPORTANT — Output path override:** When invoked by another skill (e.g. `/trend` or `/blog`), the calling skill specifies where files should be saved. ONLY write to that location. Never also write to `/docs/draw/` when called from `/trend` (use the trend folder), and never write to `/docs/draw/` when called from `/blog` (use the blog folder). Each skill owns its own output directory.
 
 ### 9. Write caption file
 
@@ -110,8 +120,16 @@ After writing all HTML/SVG files, convert each one to a PNG using Playwright.
 Run this bash command for **each** generated file:
 
 ```bash
+# For square (1080×1080):
 npx playwright screenshot \
   --viewport-size="1080,1080" \
+  --full-page \
+  "file:///absolute/path/to/N.html" \
+  "/absolute/path/to/N.png"
+
+# For wide (1920×1080):
+npx playwright screenshot \
+  --viewport-size="1920,1080" \
   --full-page \
   "file:///absolute/path/to/N.html" \
   "/absolute/path/to/N.png"
@@ -119,6 +137,7 @@ npx playwright screenshot \
 
 - Use `file://` URLs with the absolute path to each HTML/SVG file
 - Output the PNG to the same folder with the same name but `.png` extension (e.g. `1.html` → `1.png`)
+- Match the viewport size to the format used (1080×1080 for square, 1920×1080 for wide)
 - If the screenshot command fails for any file, note the error and continue with the remaining files
 
 ### 11. Output summary
@@ -130,7 +149,9 @@ After writing all files and converting to PNG, output:
 
 ## HTML Template
 
-Every HTML output MUST use this skeleton:
+Every HTML output MUST use one of these skeletons based on the format:
+
+### Square (1080×1080) — default
 
 ```html
 <!DOCTYPE html>
@@ -168,12 +189,58 @@ Every HTML output MUST use this skeleton:
 </html>
 ```
 
-## SVG Template
+### Wide (1920×1080) — for blog featured images, OG images
 
-Every SVG output MUST use this skeleton:
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+    }
+    .font-display { font-family: 'Instrument Serif', Georgia, serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Content here -->
+  </div>
+</body>
+</html>
+```
 
+## SVG Templates
+
+### Square
 ```svg
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <!-- Gradients, filters, clip paths -->
+  </defs>
+  <!-- Content here -->
+</svg>
+```
+
+### Wide
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
   <defs>
     <!-- Gradients, filters, clip paths -->
   </defs>
@@ -215,11 +282,20 @@ Cover/CTA slides should look different through **background colour, text alignme
 6. **When in doubt, make things smaller.** It's better to have whitespace at the bottom than to clip content.
 
 ### Safe content area
-- Canvas: 1080×1080px
+
+**Square (1080×1080):**
 - Recommended padding: 80-90px on all sides
 - Bottom reserve for branding: 50px
-- Usable content area: ~900×880px (with 90px side padding, 80px top, 70px bottom + 50px brand)
-- **Max stacked content height: ~880px** (80px top padding + content + 70px bottom padding + 50px brand reserve = 1080px)
+- Usable content area: ~900×880px
+- **Max stacked content height: ~880px**
+
+**Wide (1920×1080):**
+- Recommended padding: 80-100px on all sides
+- Bottom reserve for branding: 50px
+- Usable content area: ~1720×880px
+- **Max stacked content height: ~880px** (same as square)
+- The extra horizontal space allows side-by-side layouts, larger typography, or visual elements alongside the title
+- Blog featured images should be typographic and atmospheric — the title, category label, and Kritano branding. No need to cram in data visualisations.
 
 ## Quality Checklist
 

@@ -21,7 +21,9 @@ Before writing, read ALL of these reference files to load the full skill context
 3. Write the blog post following the matching structure template
 4. Apply tone of voice, audience persona, SEO guidelines, and CTA patterns
 5. Add YAML frontmatter per the schema
-6. Output a single `.md` file — ask the user where to save it if not specified
+6. Output a single `.md` file to `docs/blog/` (use the slug from frontmatter as filename)
+7. Generate a featured image using the `/draw` skill in **wide** format (1920x1080, 16:9) — 1 variation. The image should display the post title, category label, and Kritano branding. Save to `/docs/draw/blog-<slug>/1.html` and convert to PNG.
+8. Publish to Notion by running: `.claude/skills/blog/publish-to-notion.sh <path-to-blog-post.md>`
 
 ## Quality Checklist
 
@@ -37,3 +39,5 @@ Before outputting, verify:
 - Frontmatter is complete and valid
 - Word count is appropriate for post type
 - Tone matches the brand voice — conversational expert, not corporate
+- Featured image has been generated
+- Post has been published to Notion

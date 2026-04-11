@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(160deg, #1E1B4B 0%, #0F172A 100%);
+    }
+    .font-display { font-family: 'Instrument Serif', Georgia, serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Grid overlay -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+
+    <!-- Indigo glow — top right -->
+    <div style="position:absolute;top:-150px;right:-100px;width:700px;height:700px;background:rgba(99,102,241,0.15);border-radius:50%;filter:blur(120px);pointer-events:none;"></div>
+
+    <!-- Amber glow — bottom left -->
+    <div style="position:absolute;bottom:-120px;left:200px;width:500px;height:500px;background:rgba(251,191,36,0.06);border-radius:50%;filter:blur(100px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:100px 120px 80px;height:100%;display:flex;gap:100px;align-items:center;">
+
+      <!-- Left: Text content -->
+      <div style="flex:1;max-width:1100px;">
+        <!-- Category label -->
+        <p style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:600;color:#818CF8;text-transform:uppercase;letter-spacing:0.14em;margin-bottom:28px;">
+          SEO &middot; Answer Engine Optimisation
+        </p>
+
+        <!-- Title -->
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:80px;font-weight:400;color:#FFFFFF;line-height:1.08;margin-bottom:36px;">
+          How to Get Cited<br>by AI
+        </h1>
+
+        <!-- Subtitle -->
+        <p style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:400;color:#CBD5E1;line-height:1.5;max-width:720px;margin-bottom:52px;">
+          AI search engines are choosing which websites to cite. Here's how to make sure yours is one of them.
+        </p>
+
+        <!-- Key concepts as inline tags -->
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <span style="padding:10px 22px;border:1px solid rgba(255,255,255,0.12);border-radius:10px;font-size:15px;font-weight:500;color:#CBD5E1;background:rgba(255,255,255,0.04);">
+            Factual Density
+          </span>
+          <span style="padding:10px 22px;border:1px solid rgba(255,255,255,0.12);border-radius:10px;font-size:15px;font-weight:500;color:#CBD5E1;background:rgba(255,255,255,0.04);">
+            Structured Data
+          </span>
+          <span style="padding:10px 22px;border:1px solid rgba(255,255,255,0.12);border-radius:10px;font-size:15px;font-weight:500;color:#CBD5E1;background:rgba(255,255,255,0.04);">
+            E-E-A-T Signals
+          </span>
+          <span style="padding:10px 22px;border:1px solid rgba(255,255,255,0.12);border-radius:10px;font-size:15px;font-weight:500;color:#CBD5E1;background:rgba(255,255,255,0.04);">
+            llms.txt
+          </span>
+          <span style="padding:10px 22px;border:1px solid rgba(255,255,255,0.12);border-radius:10px;font-size:15px;font-weight:500;color:#CBD5E1;background:rgba(255,255,255,0.04);">
+            Schema.org
+          </span>
+        </div>
+      </div>
+
+      <!-- Right: AI citation visual -->
+      <div style="flex-shrink:0;width:420px;">
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:36px;backdrop-filter:blur(10px);">
+          <!-- Fake AI response -->
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#818CF8;"></div>
+            <span style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.08em;">AI Response</span>
+          </div>
+
+          <p style="font-family:'Outfit',sans-serif;font-size:17px;color:#E2E8F0;line-height:1.65;margin-bottom:24px;">
+            "A good Largest Contentful Paint (LCP) score is under 2.5 seconds. Sites exceeding this threshold see significantly higher bounce rates."
+          </p>
+
+          <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:16px;">
+            <span style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:#64748B;display:block;margin-bottom:10px;">Sources cited:</span>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:6px;height:6px;border-radius:50%;background:#818CF8;flex-shrink:0;"></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#818CF8;">kritano.com</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:6px;height:6px;border-radius:50%;background:#475569;flex-shrink:0;"></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#64748B;">web.dev</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:6px;height:6px;border-radius:50%;background:#475569;flex-shrink:0;"></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#64748B;">developer.chrome.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Branding -->
+    <div style="position:absolute;bottom:36px;right:120px;display:flex;align-items:center;gap:10px;z-index:2;">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;">
+        <rect width="32" height="32" rx="7" fill="#4f46e5"/>
+        <rect x="3" y="3" width="26" height="26" rx="5" fill="#312e81"/>
+        <path d="M10 7 L10 25 L13.5 25 L13.5 17.5 L19.5 25 L24 25 L17 16 L23.5 7 L19.5 7 L13.5 14.5 L13.5 7 Z" fill="white"/>
+        <circle cx="24" cy="6.5" r="2.5" fill="#fbbf24"/>
+      </svg>
+      <span style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#FFFFFF;">Kritano</span>
+    </div>
+  </div>
+</body>
+</html>

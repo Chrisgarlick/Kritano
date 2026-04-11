@@ -14,6 +14,7 @@ import { createCampaignWorker } from './services/queue/campaign-worker.service.j
 import { createTrialWorker } from './services/queue/trial-worker.service.js';
 import { createSchedulePoller } from './services/queue/schedule-poller.service.js';
 import { createGdprWorker } from './services/queue/gdpr-worker.service.js';
+import { createGscSyncWorker } from './services/queue/gsc-sync-worker.service.js';
 // Cold prospect worker is NOT started here — run separately via `npm run prospects`
 import { setPool as setScheduleServicePool } from './services/schedule.service.js';
 import { emailService } from './services/email.service';
@@ -118,6 +119,9 @@ const schedulePoller = createSchedulePoller({ pool });
 
 // Create GDPR worker (data exports and retention cleanup)
 const gdprWorker = createGdprWorker({ pool });
+
+// Create GSC sync worker (Search Console data sync)
+const gscSyncWorker = createGscSyncWorker({ pool });
 
 // Create discovery worker (Phase 1: lightweight HTTP-only discovery)
 const discoveryWorker = createDiscoveryWorker({
@@ -405,7 +409,7 @@ const shutdown = async (signal: string) => {
   }
   stopStalledVerificationPoller();
   stopRevenueSnapshotPoller();
-  await Promise.all([discoveryWorker.stop(), worker.stop(), campaignWorker.stop(), trialWorker.stop(), schedulePoller.stop(), gdprWorker.stop()]);
+  await Promise.all([discoveryWorker.stop(), worker.stop(), campaignWorker.stop(), trialWorker.stop(), schedulePoller.stop(), gdprWorker.stop(), gscSyncWorker.stop()]);
   await pool.end();
   process.exit(0);
 };
@@ -422,7 +426,7 @@ process.on('uncaughtException', async (error) => {
   }
   stopStalledVerificationPoller();
   stopRevenueSnapshotPoller();
-  await Promise.all([discoveryWorker.stop(), worker.stop(), campaignWorker.stop(), trialWorker.stop(), schedulePoller.stop(), gdprWorker.stop()]);
+  await Promise.all([discoveryWorker.stop(), worker.stop(), campaignWorker.stop(), trialWorker.stop(), schedulePoller.stop(), gdprWorker.stop(), gscSyncWorker.stop()]);
   await pool.end();
   process.exit(1);
 });
@@ -435,7 +439,7 @@ process.on('unhandledRejection', async (reason) => {
   }
   stopStalledVerificationPoller();
   stopRevenueSnapshotPoller();
-  await Promise.all([discoveryWorker.stop(), worker.stop(), campaignWorker.stop(), trialWorker.stop(), schedulePoller.stop(), gdprWorker.stop()]);
+  await Promise.all([discoveryWorker.stop(), worker.stop(), campaignWorker.stop(), trialWorker.stop(), schedulePoller.stop(), gdprWorker.stop(), gscSyncWorker.stop()]);
   await pool.end();
   process.exit(1);
 });
@@ -450,7 +454,7 @@ console.log('');
 
 startStalledVerificationPoller();
 startRevenueSnapshotPoller();
-Promise.all([discoveryWorker.start(), worker.start(), campaignWorker.start(), trialWorker.start(), schedulePoller.start(), gdprWorker.start()]).catch(async (error) => {
+Promise.all([discoveryWorker.start(), worker.start(), campaignWorker.start(), trialWorker.start(), schedulePoller.start(), gdprWorker.start(), gscSyncWorker.start()]).catch(async (error) => {
   console.error('💥 Failed to start workers:', error);
   await pool.end();
   process.exit(1);

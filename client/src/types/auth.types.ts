@@ -22,6 +22,7 @@ export interface User {
   linkedProviders?: OAuthProviderSummary[];
   deletionRequestedAt?: string | null;
   deletionScheduledFor?: string | null;
+  betaAccess?: boolean;
 }
 
 export type UserRole = 'user' | 'admin' | 'super_admin';

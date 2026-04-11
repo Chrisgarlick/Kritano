@@ -17,14 +17,11 @@ export default function Terms() {
 
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">
-          <p className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-6">
-            Legal
-          </p>
           <h1 className="font-display text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.05] mb-4">
             Terms of Service
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Effective date: 8 March 2026
+            Effective date: <time dateTime="2026-03-08">8 March 2026</time>
           </p>
         </div>
       </section>

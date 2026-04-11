@@ -5,12 +5,16 @@
  * Editorial design: white background, typography-focused, indigo accent bar logo.
  */
 
-import { type ReactNode, useState, useRef, useCallback, useEffect } from 'react';
+import { type ReactNode, useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useAdmin } from '../../contexts/AdminContext';
+import { blogApi } from '../../services/api';
 import { useCookieConsent } from '../../contexts/CookieConsentContext';
+import { useSiteMode, type SiteMode } from '../../contexts/SiteModeContext';
 import { useFocusTrap } from '../../hooks/useFocusTrap';
 import SkipLink from '../a11y/SkipLink';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Menu, X, ChevronDown, TrendingUp, Accessibility, Shield, Zap } from 'lucide-react';
 
 const SERVICE_ITEMS = [
@@ -20,32 +24,60 @@ const SERVICE_ITEMS = [
   { href: '/services/performance', label: 'Performance', icon: Zap, description: 'Speed & Core Web Vitals' },
 ];
 
-const NAV_LINKS = [
-  { href: '/pricing', label: 'Pricing' },
-  { href: '/about', label: 'About' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/contact', label: 'Contact' },
-  { href: '/docs', label: 'API Docs' },
-];
-
-const FOOTER_LINKS = {
-  product: [
-    { href: '/services', label: 'Services' },
-    { href: '/pricing', label: 'Pricing' },
+function getNavLinks(mode: SiteMode) {
+  const links = [
+    { href: '/about', label: 'About' },
     { href: '/blog', label: 'Blog' },
-    { href: '/register', label: 'Get Started' },
-  ],
-  company: [
+    { href: '/contact', label: 'Contact' },
+  ];
+  if (mode !== 'waitlist') {
+    links.unshift({ href: '/pricing', label: 'Pricing' });
+  }
+  if (mode === 'live') {
+    links.push({ href: '/docs', label: 'API Docs' });
+  }
+  return links;
+}
+
+function getFooterLinks(mode: SiteMode, activeCategories: Set<string>) {
+  const product = [
+    { href: '/services', label: 'Services' },
+  ];
+  if (mode !== 'waitlist') {
+    product.push({ href: '/pricing', label: 'Pricing' });
+  }
+  if (mode === 'waitlist') {
+    product.push({ href: '/waitlist', label: 'Join Waitlist' });
+  } else if (mode === 'early_access') {
+    product.push({ href: '/register?ea=email', label: 'Join Early Access' });
+  } else {
+    product.push({ href: '/register', label: 'Get Started' });
+  }
+
+  const company = [
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },
-  ],
-  resources: [
-    { href: '/docs', label: 'API Docs' },
-    { href: '/blog?category=guides', label: 'Guides' },
-    { href: '/blog?category=case-studies', label: 'Case Studies' },
-    { href: '/blog?category=product-updates', label: 'Product Updates' },
-  ],
-};
+  ];
+
+  const resources = [
+    { href: '/blog', label: 'Blog' },
+    { href: '/faq', label: 'FAQ' },
+  ];
+  if (activeCategories.has('guides')) {
+    resources.push({ href: '/blog?category=guides', label: 'Guides' });
+  }
+  if (activeCategories.has('case-studies')) {
+    resources.push({ href: '/blog?category=case-studies', label: 'Case Studies' });
+  }
+  if (mode === 'live') {
+    resources.unshift({ href: '/docs', label: 'API Docs' });
+    if (activeCategories.has('product-updates')) {
+      resources.push({ href: '/blog?category=product-updates', label: 'Product Updates' });
+    }
+  }
+
+  return { product, company, resources };
+}
 
 interface Props {
   children: ReactNode;
@@ -53,8 +85,21 @@ interface Props {
 
 export function PublicLayout({ children }: Props) {
   const { isAuthenticated } = useAuth();
+  const { isAdmin } = useAdmin();
   const { openPreferences: openCookiePreferences } = useCookieConsent();
+  const mode = useSiteMode();
+  const showDashboard = isAuthenticated && (mode !== 'waitlist' || isAdmin);
   const location = useLocation();
+  const [activeCategories, setActiveCategories] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    blogApi.getCategories()
+      .then(({ data }) => {
+        setActiveCategories(new Set(data.categories.map(c => c.category)));
+      })
+      .catch(() => {});
+  }, []);
+  const navLinks = useMemo(() => getNavLinks(mode), [mode]);
+  const footerLinks = useMemo(() => getFooterLinks(mode, activeCategories), [mode, activeCategories]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -86,6 +131,16 @@ export function PublicLayout({ children }: Props) {
 
   return (
     <div className="light min-h-screen flex flex-col bg-white" style={{ colorScheme: 'light' }}>
+      <Helmet>
+        <link rel="alternate" type="application/atom+xml" title="Kritano Blog" href="https://kritano.com/api/blog/feed.xml" />
+      </Helmet>
+      {location.pathname === '/' && (
+        <Helmet>
+          <link rel="prefetch" href="/services" />
+          <link rel="prefetch" href="/pricing" />
+          <link rel="prefetch" href="/blog" />
+        </Helmet>
+      )}
       <SkipLink />
 
       {/* Navigation */}
@@ -94,7 +149,7 @@ export function PublicLayout({ children }: Props) {
           <div className="flex items-center justify-between h-[72px]">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
-              <img src="/brand/favicon-32.svg" alt="Kritano" width="32" height="32" className="group-hover:scale-105 transition-transform" />
+              <img src="/brand/favicon-32.svg" alt="Kritano" width="32" height="32" fetchPriority="high" className="group-hover:scale-105 transition-transform" />
               <span className="font-display text-2xl text-slate-900 dark:text-white">Kritano</span>
             </Link>
 
@@ -166,7 +221,7 @@ export function PublicLayout({ children }: Props) {
               </div>
 
               {/* Remaining nav links */}
-              {NAV_LINKS.map(link => (
+              {navLinks.map(link => (
                 <Link
                   key={link.href}
                   to={link.href}
@@ -183,13 +238,35 @@ export function PublicLayout({ children }: Props) {
 
             {/* Desktop CTA */}
             <div className="hidden md:flex items-center gap-6">
-              {isAuthenticated ? (
+              {showDashboard ? (
                 <Link
                   to="/dashboard"
                   className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-sm"
                 >
                   Dashboard
                 </Link>
+              ) : mode === 'waitlist' ? (
+                <Link
+                  to="/waitlist"
+                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-sm"
+                >
+                  Join the Waitlist
+                </Link>
+              ) : mode === 'early_access' ? (
+                <>
+                  <Link
+                    to="/login"
+                    className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors font-medium text-sm"
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    to="/register?ea=email"
+                    className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-sm"
+                  >
+                    Join Early Access
+                  </Link>
+                </>
               ) : (
                 <>
                   <Link
@@ -278,7 +355,7 @@ export function PublicLayout({ children }: Props) {
               </div>
 
               {/* Remaining nav links */}
-              {NAV_LINKS.map(link => (
+              {navLinks.map(link => (
                 <Link
                   key={link.href}
                   to={link.href}
@@ -293,7 +370,7 @@ export function PublicLayout({ children }: Props) {
                 </Link>
               ))}
               <div className="pt-4 border-t border-slate-100 dark:border-slate-700/50 space-y-3">
-                {isAuthenticated ? (
+                {showDashboard ? (
                   <Link
                     to="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
@@ -301,6 +378,31 @@ export function PublicLayout({ children }: Props) {
                   >
                     Dashboard
                   </Link>
+                ) : mode === 'waitlist' ? (
+                  <Link
+                    to="/waitlist"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full text-center px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium"
+                  >
+                    Join the Waitlist
+                  </Link>
+                ) : mode === 'early_access' ? (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block text-center py-3 text-slate-600 dark:text-slate-400 font-medium"
+                    >
+                      Sign in
+                    </Link>
+                    <Link
+                      to="/register?ea=email"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block w-full text-center px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium"
+                    >
+                      Join Early Access
+                    </Link>
+                  </>
                 ) : (
                   <>
                     <Link
@@ -351,7 +453,7 @@ export function PublicLayout({ children }: Props) {
                 Product
               </h2>
               <ul className="space-y-3">
-                {FOOTER_LINKS.product.map(link => (
+                {footerLinks.product.map(link => (
                   <li key={link.href}>
                     <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                       {link.label}
@@ -367,7 +469,7 @@ export function PublicLayout({ children }: Props) {
                 Company
               </h2>
               <ul className="space-y-3">
-                {FOOTER_LINKS.company.map(link => (
+                {footerLinks.company.map(link => (
                   <li key={link.href}>
                     <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                       {link.label}
@@ -383,7 +485,7 @@ export function PublicLayout({ children }: Props) {
                 Resources
               </h2>
               <ul className="space-y-3">
-                {FOOTER_LINKS.resources.map(link => (
+                {footerLinks.resources.map(link => (
                   <li key={link.href}>
                     <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                       {link.label}
@@ -420,13 +522,17 @@ export function PublicLayout({ children }: Props) {
         <div className="bg-slate-900">
           <div className="max-w-7xl mx-auto px-6 lg:px-20 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-white font-medium text-sm">
-              Judge your website before others do.
+              {mode === 'waitlist'
+                ? 'Be the first to audit your website with Kritano.'
+                : mode === 'early_access'
+                ? 'Join as a founding member. 30-day Agency trial + 50% off for life.'
+                : 'Judge your website before others do.'}
             </p>
             <Link
-              to="/register"
+              to={mode === 'waitlist' ? '/waitlist' : mode === 'early_access' ? '/register?ea=email' : '/register'}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
             >
-              Start Free Audit
+              {mode === 'waitlist' ? 'Join the Waitlist' : mode === 'early_access' ? 'Join Early Access' : 'Start Free Audit'}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

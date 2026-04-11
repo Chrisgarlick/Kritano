@@ -42,11 +42,15 @@ if [ ! -f "$BRIEF_FILE" ]; then
   exit 1
 fi
 
-# Extract the trend topic name from "### Selected Trend: ..." line, falling back to first heading
-TREND_TITLE=$(grep -m1 '### Selected Trend:' "$BRIEF_FILE" | sed 's/### Selected Trend: *//' | head -c 100)
+# Extract the trend topic name from brief heading, trying multiple formats
+TREND_TITLE=$(grep -m1 '### Selected Trend:' "$BRIEF_FILE" | sed 's/### Selected Trend: *//' | head -c 100 || true)
+if [ -z "$TREND_TITLE" ]; then
+  # Try "# Trend Brief: ..." format
+  TREND_TITLE=$(grep -m1 '^# Trend Brief:' "$BRIEF_FILE" | sed 's/^# Trend Brief: *//' | head -c 100 || true)
+fi
 if [ -z "$TREND_TITLE" ]; then
   # Fallback: try "## " heading that isn't "Pillar:"
-  TREND_TITLE=$(grep -m1 '^## ' "$BRIEF_FILE" | grep -v 'Pillar:' | sed 's/^## //' | head -c 100)
+  TREND_TITLE=$(grep -m1 '^## ' "$BRIEF_FILE" | grep -v 'Pillar:' | sed 's/^## //' | head -c 100 || true)
 fi
 if [ -z "$TREND_TITLE" ]; then
   TREND_TITLE="Trend Report"

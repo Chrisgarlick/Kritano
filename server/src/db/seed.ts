@@ -13,11 +13,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Seed configuration via env vars with defaults
-const SEED_EMAIL = process.env.SEED_EMAIL || 'cgarlick94@gmail.com';
-const SEED_PASSWORD = process.env.SEED_PASSWORD || 'password123';
-const SEED_FIRST_NAME = process.env.SEED_FIRST_NAME || 'Chris';
-const SEED_LAST_NAME = process.env.SEED_LAST_NAME || 'Garlick';
+// Seed configuration
+const SEED_EMAIL = 'cgarlick94@gmail.com';
+const SEED_PASSWORD = 'R49Setr#L7mP';
+const SEED_FIRST_NAME = 'Chris';
+const SEED_LAST_NAME = 'Garlick';
 
 async function seed(): Promise<void> {
   const pool = new Pool({
@@ -75,25 +75,43 @@ async function seed(): Promise<void> {
       // subscriptions table might have different schema, skip
     }
 
-    // 4. Seed second test user (non-admin, for CRM testing)
-    const testHash = await argon2.hash('password123', {
+    // 4. Seed beta user (Owen)
+    const owenPassword = 'dhIJT*CZc03g';
+    const owenHash = await argon2.hash(owenPassword, {
       type: argon2.argon2id,
       memoryCost: 65536,
       timeCost: 3,
       parallelism: 4,
     });
 
-    const testResult = await pool.query(
-      `INSERT INTO users (email, password_hash, first_name, last_name, email_verified, status, role)
-       VALUES ('test@example.com', $1, 'Test', 'User', true, 'active', 'user')
+    const owenResult = await pool.query(
+      `INSERT INTO users (email, password_hash, first_name, last_name, email_verified, status, role, beta_access)
+       VALUES ('owenlambert@hotmail.co.uk', $1, 'Owen', 'Lambert', true, 'active', 'user', true)
        ON CONFLICT (email) DO UPDATE SET
          password_hash = EXCLUDED.password_hash,
          status = 'active',
-         email_verified = true
+         email_verified = true,
+         beta_access = true
        RETURNING id`,
-      [testHash]
+      [owenHash]
     );
-    console.log(`  ✓ Test user created (id: ${testResult.rows[0].id})`);
+    const owenId = owenResult.rows[0].id;
+    console.log(`  ✓ Beta user created (id: ${owenId})`);
+
+    // Create org + subscription for Owen
+    const owenSlug = `user-${owenId.replace(/-/g, '')}`;
+    await pool.query(
+      `INSERT INTO organizations (name, slug, owner_id)
+       VALUES ($1, $2, $3)
+       ON CONFLICT DO NOTHING`,
+      ["Owen's Workspace", owenSlug, owenId]
+    );
+    await pool.query(
+      `INSERT INTO subscriptions (user_id, tier, status)
+       VALUES ($1, 'free', 'active')
+       ON CONFLICT DO NOTHING`,
+      [owenId]
+    );
 
     // 5. Initialize lead scores for seeded users
     await pool.query(
@@ -104,7 +122,7 @@ async function seed(): Promise<void> {
 
     console.log('\n✅ Seeding complete!');
     console.log(`\n  Admin login: ${SEED_EMAIL} / ${SEED_PASSWORD}`);
-    console.log(`  Test login:  test@example.com / password123\n`);
+    console.log(`  Beta login:  owenlambert@hotmail.co.uk / ${owenPassword}\n`);
   } catch (error) {
     console.error('❌ Seeding failed:', error);
     process.exit(1);

@@ -60,6 +60,7 @@ const fullUser: User = {
   deleted_at: null,
   deletion_requested_at: null,
   deletion_scheduled_for: null,
+  beta_access: false,
 };
 
 // ---------------------------------------------------------------------------

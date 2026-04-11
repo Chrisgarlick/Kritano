@@ -219,6 +219,7 @@ export class UserService {
       created_at: user.created_at,
       deletion_requested_at: user.deletion_requested_at,
       deletion_scheduled_for: user.deletion_scheduled_for,
+      beta_access: user.beta_access ?? false,
     };
   }
 }

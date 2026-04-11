@@ -8,7 +8,6 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { PublicLayout } from '../../components/layout/PublicLayout';
 import PageSeo from '../../components/seo/PageSeo';
 import { CheckCircle, X, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
@@ -248,44 +247,49 @@ export default function Pricing() {
         title="Pricing"
         description="Simple, transparent pricing for website auditing. Start free, upgrade as you grow. Plans starting free."
         path="/pricing"
-        structuredData={{
-          '@context': 'https://schema.org',
-          '@type': 'Product',
-          name: 'Kritano',
-          description: 'Website auditing platform for SEO, accessibility, security, and performance.',
-          offers: PLANS.filter(p => p.name !== 'Free' && p.name !== 'Enterprise').map(p => ({
-            '@type': 'Offer',
-            name: p.name,
-            price: p.monthlyPrice.replace('$', ''),
-            priceCurrency: 'USD',
-          })),
-        }}
-      />
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify({
+        structuredData={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: 'Kritano',
+            description: 'Website auditing platform for SEO, accessibility, security, and performance.',
+            offers: PLANS.filter(p => p.name !== 'Free' && p.name !== 'Enterprise').map(p => ({
+              '@type': 'Offer',
+              name: p.name,
+              price: p.monthlyPrice.replace('$', ''),
+              priceCurrency: 'USD',
+              priceValidUntil: '2026-12-31',
+              availability: 'https://schema.org/InStock',
+            })),
+          },
+          {
             '@context': 'https://schema.org',
             '@type': 'FAQPage',
             mainEntity: FAQS.map(faq => ({
               '@type': 'Question',
               name: faq.q,
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: faq.a,
-              },
+              acceptedAnswer: { '@type': 'Answer', text: faq.a },
             })),
-          })}
-        </script>
-      </Helmet>
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+              { '@type': 'ListItem', position: 2, name: 'Pricing', item: 'https://kritano.com/pricing' },
+            ],
+          },
+        ]}
+      />
 
       {/* Hero */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16 text-center">
-        <p className="text-indigo-600 dark:text-indigo-400 font-medium tracking-wide uppercase text-xs mb-5">
+        <h1 className="font-display text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.05] mb-4">
           Pricing
-        </p>
-        <h1 className="font-display text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.05] mb-6">
-          Simple, transparent pricing.
         </h1>
+        <h2 className="font-display text-2xl lg:text-3xl text-slate-500 dark:text-slate-400 leading-snug mb-6">
+          Simple, transparent pricing.
+        </h2>
         <p className="text-lg text-slate-500 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto mb-10">
           Start free and upgrade as your needs grow. Every paid plan includes a 14-day
           free trial. No credit card required.

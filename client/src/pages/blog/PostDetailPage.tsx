@@ -13,6 +13,8 @@ import { blogApi } from '../../services/api';
 import type { BlogPostDetail, BlogPostSummary } from '../../services/api';
 import BlockDisplay from '../../components/cms/BlockDisplay';
 import { Clock, ArrowLeft, Tag, Calendar } from 'lucide-react';
+import { BlogCTA } from '../../components/blog/BlogCTA';
+import { buildBlogStructuredData } from '../../utils/blogSchemaBuilder';
 
 const CATEGORY_LABELS: Record<string, string> = {
   'seo': 'SEO',
@@ -97,18 +99,7 @@ export default function PostDetailPage() {
   }
 
   const canonicalUrl = `https://kritano.com/blog/${post.slug}`;
-
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: post.title,
-    description: post.seo_description || post.excerpt,
-    image: post.featured_image_url || undefined,
-    author: { '@type': 'Person', name: post.author_name },
-    publisher: { '@type': 'Organization', name: 'Kritano' },
-    datePublished: post.published_at || post.created_at,
-    dateModified: post.updated_at,
-  };
+  const structuredData = buildBlogStructuredData(post);
 
   return (
     <PublicLayout>
@@ -119,12 +110,18 @@ export default function PostDetailPage() {
         <meta property="og:description" content={post.excerpt} />
         {post.featured_image_url && <meta property="og:image" content={post.featured_image_url} />}
         <meta property="og:type" content="article" />
+        <meta property="og:locale" content="en_GB" />
+        <meta property="article:author" content="https://kritano.com/author/chris-garlick" />
         {post.published_at && <meta property="article:published_time" content={post.published_at} />}
+        {post.updated_at && <meta property="article:modified_time" content={post.updated_at} />}
+        {post.category && <meta property="article:section" content={CATEGORY_LABELS[post.category] || post.category} />}
         {post.tags.map(tag => (
           <meta key={tag} property="article:tag" content={tag} />
         ))}
         <link rel="canonical" href={canonicalUrl} />
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+        {structuredData.map((sd, i) => (
+          <script key={i} type="application/ld+json">{JSON.stringify(sd)}</script>
+        ))}
       </Helmet>
 
       <article className="max-w-3xl mx-auto px-6 lg:px-20 py-12 lg:py-20">
@@ -158,14 +155,14 @@ export default function PostDetailPage() {
           )}
 
           <div className="mt-6 flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
-            <span className="font-medium text-slate-600 dark:text-slate-300">{post.author_name}</span>
+            <Link to="/author/chris-garlick" className="font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{post.author_name}</Link>
             {post.published_at && (
-              <span className="flex items-center gap-1">
+              <time dateTime={new Date(post.published_at).toISOString().split('T')[0]} className="flex items-center gap-1">
                 <Calendar className="w-3.5 h-3.5" />
                 {new Date(post.published_at).toLocaleDateString('en-US', {
                   month: 'long', day: 'numeric', year: 'numeric'
                 })}
-              </span>
+              </time>
             )}
           </div>
         </header>
@@ -175,9 +172,10 @@ export default function PostDetailPage() {
           <figure className="mb-10 -mx-4 sm:mx-0">
             <img
               src={post.featured_image_url}
-              alt={post.featured_image_alt || ''}
+              alt={post.featured_image_alt || `Featured image for ${post.title}`}
               className="w-full rounded-xl"
               loading="eager"
+              fetchPriority="high"
             />
           </figure>
         )}
@@ -252,21 +250,8 @@ export default function PostDetailPage() {
           </div>
         )}
 
-        {/* CTA */}
-        <div className="mt-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl p-8 md:p-10 text-center">
-          <h3 className="font-display text-2xl text-slate-900 dark:text-white mb-3">
-            Ready to audit your website?
-          </h3>
-          <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-lg mx-auto">
-            Kritano scans your site for SEO, accessibility, security, and performance issues.
-          </p>
-          <Link
-            to="/register"
-            className="inline-flex px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors"
-          >
-            Start Free Audit
-          </Link>
-        </div>
+        {/* CTA - adapts to site mode (waitlist / early access / live) */}
+        <BlogCTA />
       </article>
     </PublicLayout>
   );

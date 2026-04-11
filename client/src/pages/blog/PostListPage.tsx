@@ -8,6 +8,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { PublicLayout } from '../../components/layout/PublicLayout';
 import PageSeo from '../../components/seo/PageSeo';
 import { blogApi } from '../../services/api';
@@ -79,23 +80,37 @@ export default function PostListPage() {
         title={category ? `${CATEGORY_LABELS[category] || category} Articles` : 'Blog'}
         description="SEO guides, accessibility tips, security insights, and web performance best practices from Kritano."
         path="/blog"
-        structuredData={{
-          '@context': 'https://schema.org',
-          '@type': 'Blog',
-          name: 'Kritano Blog',
-          description: 'SEO guides, accessibility tips, and web performance insights.',
-          url: 'https://kritano.com/blog',
-        }}
+        structuredData={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Blog',
+            name: 'Kritano Blog',
+            description: 'SEO guides, accessibility tips, and web performance insights.',
+            url: 'https://kritano.com/blog',
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+              { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://kritano.com/blog' },
+            ],
+          },
+        ]}
       />
 
-      <div className="max-w-6xl mx-auto px-6 lg:px-20 py-16 lg:py-24">
+      {totalPages > 1 && (
+        <Helmet>
+          {page > 1 && <link rel="prev" href={`https://kritano.com/blog?page=${page - 1}`} />}
+          {page < totalPages && <link rel="next" href={`https://kritano.com/blog?page=${page + 1}`} />}
+        </Helmet>
+      )}
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         {/* Page title */}
         <div className="mb-16">
-          <p className="text-indigo-600 dark:text-indigo-400 font-semibold tracking-wide uppercase text-sm mb-4">
-            Blog
-          </p>
           <h1 className="font-display text-4xl lg:text-5xl text-slate-900 dark:text-white leading-tight mb-4">
-            {category ? `${CATEGORY_LABELS[category] || category}` : 'Insights & Guides'}
+            {category ? `${CATEGORY_LABELS[category] || category}` : 'Blog'}
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
             SEO guides, accessibility tips, security insights, and web performance best practices.
@@ -198,7 +213,7 @@ export default function PostListPage() {
                   <div className="mt-4 flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/50">
                     <span className="text-xs font-medium text-slate-600 dark:text-slate-300">{post.author_name}</span>
                     {post.published_at && (
-                      <time className="text-xs text-slate-500 dark:text-slate-400">
+                      <time dateTime={new Date(post.published_at).toISOString().split('T')[0]} className="text-xs text-slate-500 dark:text-slate-400">
                         {new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </time>
                     )}

@@ -68,12 +68,35 @@ Check `examples.md` to ensure the output matches the quality bar and style of ex
 ### 8. Apply frontmatter
 Add YAML frontmatter following `frontmatter-schema.md`.
 
-### 9. Output
+### 9. Generate featured image
+After writing the blog post, generate a featured image using the `/draw` skill:
+
+1. Use the **wide** format (1920×1080, 16:9)
+2. Generate **1 variation** (not the default 3)
+3. The image should be typographic and atmospheric — display the post title, category label, and Kritano branding
+4. Use the post's category to influence the colour accent (e.g. indigo for SEO, emerald for Accessibility, red for Security, sky for Performance, amber for Content)
+5. Save to `/docs/draw/blog-<slug>/1.html` and convert to PNG
+6. Reference the PNG path in the output so it can be uploaded as the post's featured image
+
+The draw prompt should be: `wide 1 variation — Blog featured image for "<post title>" in the <category> category`
+
+### 10. Publish to Notion
+After writing the `.md` file, publish it to Notion by running:
+
+```bash
+.claude/skills/blog/publish-to-notion.sh /path/to/blog-post.md
+```
+
+This creates a page under the Blogs parent page in Notion with the full post content, metadata callout, and proper formatting.
+
+### 11. Output
 Output a single `.md` file with:
 - Correct YAML frontmatter
 - The full blog post
 - Suggested meta description in the frontmatter
 - Any notes on internal linking opportunities (as an HTML comment at the bottom)
+- The path to the generated featured image PNG
+- Confirmation that the post was published to Notion (with link)
 
 ## Reference Files
 

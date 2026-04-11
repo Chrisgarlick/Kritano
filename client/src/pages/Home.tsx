@@ -12,6 +12,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { PublicLayout } from '../components/layout/PublicLayout';
 import { Button } from '../components/ui/Button';
+import { useSiteMode } from '../contexts/SiteModeContext';
 import PageSeo from '../components/seo/PageSeo';
 import {
   TrendingUp,
@@ -290,21 +291,40 @@ function DemoRing({ score, size, strokeWidth, color, animated = false, delay = 0
 // =============================================
 
 export default function Home() {
+  const mode = useSiteMode();
+  const ctaHref = mode === 'waitlist' ? '/waitlist' : mode === 'early_access' ? '/register?ea=email' : '/register';
+  const ctaLabel = mode === 'waitlist' ? 'Join the Waitlist' : mode === 'early_access' ? 'Join Early Access' : 'Start Free Audit';
+
   return (
     <PublicLayout>
       <PageSeo
         title="Website Auditing for SEO, Accessibility, Security & Performance"
         description="Kritano audits your website for SEO, accessibility, security, and performance issues. Get actionable insights to build trust online."
         path="/"
-        structuredData={{
-          '@context': 'https://schema.org',
-          '@type': 'WebApplication',
-          name: 'Kritano',
-          description: 'Comprehensive website auditing for SEO, accessibility, security, and performance.',
-          applicationCategory: 'WebApplication',
-          operatingSystem: 'Any',
-          offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-        }}
+        structuredData={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: 'Kritano',
+            description: 'Comprehensive website auditing for SEO, accessibility, security, and performance.',
+            applicationCategory: 'WebApplication',
+            operatingSystem: 'Any',
+            url: 'https://kritano.com',
+            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            creator: { '@type': 'Organization', name: 'Kritano', url: 'https://kritano.com' },
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'Kritano',
+            url: 'https://kritano.com',
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: 'https://kritano.com/blog?search={search_term_string}',
+              'query-input': 'required name=search_term_string',
+            },
+          },
+        ]}
       />
 
       {/* ═══ Hero Section ═══ */}
@@ -318,20 +338,20 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
             {/* Left: Copy */}
             <div>
-              <p className="text-indigo-600 font-medium tracking-wide uppercase text-xs mb-5">
-                Website Intelligence Platform
-              </p>
-              <h1 className="font-display text-5xl lg:text-[4.25rem] text-slate-900 leading-[1.08] mb-7">
-                The clarity your website deserves.
+              <h1 className="font-display text-5xl lg:text-[4.25rem] text-slate-900 leading-[1.08] mb-3">
+                Website Auditing Platform
               </h1>
+              <h2 className="font-display text-2xl lg:text-3xl text-slate-500 leading-snug mb-7">
+                The clarity your website deserves.
+              </h2>
               <p className="text-lg text-slate-500 leading-relaxed mb-10 max-w-lg">
                 Kritano provides deep visibility into your website's health&mdash;surfacing
                 critical issues in SEO, accessibility, security, and performance that impact
                 your bottom line.
               </p>
               <div className="flex flex-wrap items-center gap-4">
-                <Link to="/register">
-                  <Button size="lg">Start Free Audit</Button>
+                <Link to={ctaHref}>
+                  <Button size="lg">{ctaLabel}</Button>
                 </Link>
                 <Link to="/services">
                   <Button variant="ghost" size="lg" rightIcon={<ArrowRight className="w-4 h-4" />}>
@@ -406,8 +426,8 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <Link to="/register" className="inline-flex items-center gap-2 text-sm font-semibold text-teal-700 hover:text-teal-900 transition-colors">
-                Try Content Intelligence free <ArrowRight className="w-4 h-4" />
+              <Link to={ctaHref} className="inline-flex items-center gap-2 text-sm font-semibold text-teal-700 hover:text-teal-900 transition-colors">
+                {mode === 'live' ? 'Try Content Intelligence free' : ctaLabel} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
@@ -579,24 +599,29 @@ export default function Home() {
 
             <div className="relative text-center max-w-2xl mx-auto">
               <h2 className="font-display text-4xl lg:text-5xl text-white leading-tight mb-6">
-                Ready to judge your website?
+                {mode === 'waitlist' ? 'Be the first to know.' : mode === 'early_access' ? 'Join as a founding member.' : 'Ready to judge your website?'}
               </h2>
               <p className="text-lg text-indigo-200 leading-relaxed mb-10">
-                Start your free audit today and discover what's holding your site back.
-                No credit card required.
+                {mode === 'waitlist'
+                  ? 'Kritano is launching soon. Join the waitlist and be the first to audit your website across all six pillars.'
+                  : mode === 'early_access'
+                  ? 'Get a 30-day Agency trial and 50% off for life as a founding member. No credit card required.'
+                  : 'Start your free audit today and discover what\'s holding your site back. No credit card required.'}
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link to="/register">
+                <Link to={ctaHref}>
                   <Button variant="secondary" size="lg">
-                    Start Free Audit
+                    {ctaLabel}
                   </Button>
                 </Link>
-                <Link to="/pricing">
-                  <Button variant="ghost" size="lg" className="text-white hover:text-indigo-100 hover:bg-transparent">
-                    View Pricing
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </Link>
+                {mode !== 'waitlist' && (
+                  <Link to="/pricing">
+                    <Button variant="ghost" size="lg" className="text-white hover:text-indigo-100 hover:bg-transparent">
+                      View Pricing
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

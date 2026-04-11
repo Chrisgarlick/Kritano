@@ -10,6 +10,7 @@ import {
   Key,
   Gift,
   Shield,
+  SearchCheck,
   User,
   Settings,
   LogOut,
@@ -49,6 +50,7 @@ const mainNavItems: NavItem[] = [
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/schedules', label: 'Schedules', icon: CalendarClock },
   { href: '/compare', label: 'Compare', icon: GitCompareArrows },
+  { href: '/search-console', label: 'Search Console', icon: SearchCheck },
   { href: '/referrals', label: 'Referrals', icon: Gift },
   { href: '/settings/api-keys', label: 'API Keys', icon: Key },
   { href: '/admin', label: 'Admin', icon: Shield, adminOnly: true },
@@ -98,6 +100,9 @@ export function Sidebar() {
     }
     if (path === '/compare') {
       return location.pathname.startsWith('/compare');
+    }
+    if (path === '/search-console') {
+      return location.pathname.startsWith('/search-console');
     }
     if (path === '/referrals') {
       return location.pathname.startsWith('/referrals');

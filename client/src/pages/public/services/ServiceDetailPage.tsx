@@ -51,18 +51,29 @@ export default function ServiceDetailPage() {
 
   const Icon = ICON_MAP[service.iconName];
 
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: service.title,
-    description: service.seo.description,
-    provider: {
-      '@type': 'Organization',
-      name: 'Kritano',
-      url: 'https://kritano.com',
+  const structuredData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: service.title,
+      description: service.seo.description,
+      provider: {
+        '@type': 'Organization',
+        name: 'Kritano',
+        url: 'https://kritano.com',
+      },
+      url: `https://kritano.com/services/${serviceSlug}`,
     },
-    url: `https://kritano.com/services/${serviceSlug}`,
-  };
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+        { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://kritano.com/services' },
+        { '@type': 'ListItem', position: 3, name: service.title, item: `https://kritano.com/services/${serviceSlug}` },
+      ],
+    },
+  ];
 
   return (
     <PublicLayout>

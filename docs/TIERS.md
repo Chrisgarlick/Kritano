@@ -25,6 +25,16 @@
 | AEO Analysis | - | - | Yes | Yes | Yes |
 | Mobile Audit Pass | - | Yes | Yes | Yes | Yes |
 
+## Google Search Console
+
+| | Free | Starter | Pro | Agency | Enterprise |
+|---|---|---|---|---|---|
+| GSC connections | - | 1 | 3 | 50 | Unlimited |
+| GSC data retention | - | 30 days | 90 days | 1 year | Unlimited |
+| Top queries & pages | - | Yes | Yes | Yes | Yes |
+| CTR opportunity finder | - | Yes | Yes | Yes | Yes |
+| Cannibalisation detection | - | Yes | Yes | Yes | Yes |
+
 ## Sites & Sharing
 
 | | Free | Starter | Pro | Agency | Enterprise |

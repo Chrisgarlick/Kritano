@@ -12,6 +12,8 @@ import { pool } from './db/index.js';
 import { testRedisConnection } from './db/redis.js';
 import { apiRouter, initializeRoutes } from './routes/index.js';
 import { shutdownPdfBrowser } from './services/pdf-report.service.js';
+import { shutdownPrerenderBrowser } from './services/prerender.service.js';
+import { prerenderMiddleware } from './middleware/prerender.middleware.js';
 import { resendWebhookRouter } from './routes/webhooks/resend.js';
 import { initializeStripeWebhooks } from './routes/webhooks/stripe.js';
 
@@ -118,6 +120,9 @@ app.get('/api', (req, res) => {
 // API routes
 app.use('/api', apiRouter);
 
+// Pre-rendering for bot/crawler user agents (serves rendered HTML for SEO/AI citation)
+app.use(prerenderMiddleware);
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
@@ -193,12 +198,12 @@ const shutdown = (signal: string) => {
 
   if (serverRef) {
     serverRef.close(() => {
-      Promise.all([pool.end(), shutdownPdfBrowser()]).finally(() => {
+      Promise.all([pool.end(), shutdownPdfBrowser(), shutdownPrerenderBrowser()]).finally(() => {
         process.exit(0);
       });
     });
   } else {
-    Promise.all([pool.end(), shutdownPdfBrowser()]).finally(() => {
+    Promise.all([pool.end(), shutdownPdfBrowser(), shutdownPrerenderBrowser()]).finally(() => {
       process.exit(0);
     });
   }

@@ -37,6 +37,9 @@ export interface ContentBlock {
   props: Record<string, unknown>;
 }
 
+export type SchemaType = 'article' | 'howto' | 'faq' | 'claim_review';
+export type ReviewRating = 'True' | 'MostlyTrue' | 'Mixed' | 'MostlyFalse' | 'False';
+
 export interface BlogPost {
   id: string;
   slug: string;
@@ -57,6 +60,9 @@ export interface BlogPost {
   reading_time_minutes: number;
   view_count: number;
   related_post_ids: string[];
+  schema_type: SchemaType;
+  schema_claim_reviewed: string | null;
+  schema_review_rating: ReviewRating | null;
   created_at: string;
   updated_at: string;
 }
@@ -90,6 +96,9 @@ export interface CreatePostInput {
   tags?: string[];
   seo_title?: string | null;
   seo_description?: string | null;
+  schema_type?: SchemaType;
+  schema_claim_reviewed?: string | null;
+  schema_review_rating?: ReviewRating | null;
 }
 
 export interface UpdatePostInput {
@@ -104,6 +113,9 @@ export interface UpdatePostInput {
   seo_title?: string | null;
   seo_description?: string | null;
   related_post_ids?: string[];
+  schema_type?: SchemaType;
+  schema_claim_reviewed?: string | null;
+  schema_review_rating?: ReviewRating | null;
 }
 
 export interface PostFilters {

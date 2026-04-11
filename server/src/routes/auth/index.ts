@@ -4,6 +4,7 @@ import { userService } from '../../services/user.service.js';
 import { tokenService } from '../../services/token.service.js';
 import { passwordService } from '../../services/password.service.js';
 import { emailService } from '../../services/email.service.js';
+import { getSiteMode } from '../../services/system-settings.service.js';
 import { authenticate } from '../../middleware/auth.middleware.js';
 import { validateBody } from '../../middleware/validate.middleware.js';
 import {
@@ -57,6 +58,27 @@ router.post(
   validateBody(registerSchema),
   async (req: Request, res: Response): Promise<void> => {
     try {
+      // Block registration based on site mode
+      const siteMode = await getSiteMode();
+      if (siteMode === 'waitlist') {
+        res.status(403).json({
+          error: 'Registration is not available during the waitlist phase. Join the waitlist instead.',
+          code: 'REGISTRATION_CLOSED',
+        });
+        return;
+      }
+      if (siteMode === 'early_access') {
+        // Only allow registration with an early access parameter
+        const eaParam = req.query.ea || req.body.ea || req.body.earlyAccess;
+        if (!eaParam) {
+          res.status(403).json({
+            error: 'Registration is currently limited to early access members.',
+            code: 'EARLY_ACCESS_ONLY',
+          });
+          return;
+        }
+      }
+
       const input: RegisterInput = req.body;
 
       // Check if email already exists
@@ -152,7 +174,8 @@ router.post(
         try {
           const eaEnabled = await isEarlyAccessEnabled();
           if (eaEnabled) {
-            const claimed = await claimSpot(user.id, 'founding');
+            const eaChannel = (req.query.ea as string) || (req.body.ea as string) || 'email';
+            const claimed = await claimSpot(user.id, eaChannel);
             earlyAccess = claimed;
 
             if (claimed) {
@@ -543,6 +566,7 @@ router.get('/me', authenticate, async (req: Request, res: Response): Promise<voi
         emailVerified: user.email_verified,
         role: user.role,
         createdAt: user.created_at,
+        betaAccess: user.beta_access,
         hasPassword,
         linkedProviders,
       },

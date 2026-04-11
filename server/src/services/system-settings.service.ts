@@ -41,3 +41,11 @@ export async function isComingSoonEnabled(): Promise<boolean> {
   const value = await getSetting('coming_soon_enabled');
   return value === true;
 }
+
+export async function getSiteMode(): Promise<'waitlist' | 'early_access' | 'live'> {
+  const mode = await getSetting('site_mode');
+  if (mode === 'waitlist' || mode === 'early_access' || mode === 'live') return mode;
+  // Fallback: check legacy coming_soon_enabled
+  const comingSoon = await isComingSoonEnabled();
+  return comingSoon ? 'waitlist' : 'live';
+}

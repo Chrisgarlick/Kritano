@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #F8FAFC;
+    }
+    .font-display { font-family: 'Instrument Serif', Georgia, serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Atmospheric elements -->
+    <div style="position:absolute;top:-120px;right:-80px;width:600px;height:600px;background:#EEF2FF;border-radius:50%;opacity:0.7;filter:blur(100px);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-100px;left:-60px;width:500px;height:500px;background:#FFFBEB;border-radius:50%;opacity:0.5;filter:blur(90px);pointer-events:none;"></div>
+    <div style="position:absolute;top:300px;left:800px;width:400px;height:400px;background:rgba(99,102,241,0.06);border-radius:50%;filter:blur(80px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:100px 120px 80px;height:100%;display:flex;gap:80px;align-items:center;">
+
+      <!-- Left: Text content -->
+      <div style="flex:1;max-width:1050px;">
+        <!-- Category label -->
+        <p style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:600;color:#4F46E5;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:28px;">
+          Website Auditing
+        </p>
+
+        <!-- Title -->
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:76px;font-weight:400;color:#0F172A;line-height:1.1;margin-bottom:36px;">
+          What Is a Website Audit<br>and Why Does It Matter?
+        </h1>
+
+        <!-- Subtitle -->
+        <p style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:400;color:#64748B;line-height:1.5;max-width:700px;margin-bottom:48px;">
+          The comprehensive health check your website needs -- covering SEO, accessibility, security, performance, and more.
+        </p>
+
+        <!-- Pillar tags -->
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:white;border:1px solid #E2E8F0;border-radius:10px;font-size:15px;font-weight:500;color:#475569;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#8B5CF6;display:inline-block;"></span>
+            SEO
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:white;border:1px solid #E2E8F0;border-radius:10px;font-size:15px;font-weight:500;color:#475569;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#10B981;display:inline-block;"></span>
+            Accessibility
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:white;border:1px solid #E2E8F0;border-radius:10px;font-size:15px;font-weight:500;color:#475569;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#EF4444;display:inline-block;"></span>
+            Security
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:white;border:1px solid #E2E8F0;border-radius:10px;font-size:15px;font-weight:500;color:#475569;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#0EA5E9;display:inline-block;"></span>
+            Performance
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:white;border:1px solid #E2E8F0;border-radius:10px;font-size:15px;font-weight:500;color:#475569;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#F59E0B;display:inline-block;"></span>
+            Content
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:white;border:1px solid #E2E8F0;border-radius:10px;font-size:15px;font-weight:500;color:#475569;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#14B8A6;display:inline-block;"></span>
+            Structured Data
+          </span>
+        </div>
+      </div>
+
+      <!-- Right: Score ring visual -->
+      <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:24px;">
+        <div style="background:white;border:1px solid #E2E8F0;border-radius:24px;box-shadow:0 4px 24px rgba(15,23,42,0.06);padding:48px;display:flex;flex-direction:column;align-items:center;">
+          <svg width="220" height="220" viewBox="0 0 220 220" style="display:block;">
+            <!-- Track -->
+            <circle cx="110" cy="110" r="96" fill="none" stroke="#F1F5F9" stroke-width="10"/>
+            <!-- Progress arc -->
+            <circle cx="110" cy="110" r="96" fill="none" stroke="#4F46E5" stroke-width="10"
+              stroke-linecap="round"
+              stroke-dasharray="603"
+              stroke-dashoffset="60"
+              transform="rotate(-90 110 110)"/>
+            <!-- Score -->
+            <text x="110" y="100" text-anchor="middle"
+              font-family="'Instrument Serif', Georgia, serif"
+              font-size="72" fill="#0F172A">90</text>
+            <text x="110" y="130" text-anchor="middle"
+              font-family="'Outfit', sans-serif"
+              font-size="16" font-weight="500" fill="#94A3B8">Overall Score</text>
+          </svg>
+
+          <!-- Mini category scores -->
+          <div style="display:flex;gap:16px;margin-top:20px;">
+            <div style="text-align:center;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#8B5CF6;margin:0 auto 6px;"></div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#475569;">92</span>
+            </div>
+            <div style="text-align:center;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#10B981;margin:0 auto 6px;"></div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#475569;">78</span>
+            </div>
+            <div style="text-align:center;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#EF4444;margin:0 auto 6px;"></div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#475569;">95</span>
+            </div>
+            <div style="text-align:center;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#0EA5E9;margin:0 auto 6px;"></div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#475569;">83</span>
+            </div>
+            <div style="text-align:center;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#F59E0B;margin:0 auto 6px;"></div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#475569;">88</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Branding -->
+    <div style="position:absolute;bottom:36px;right:120px;display:flex;align-items:center;gap:10px;z-index:2;">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;display:inline-block;">
+        <rect width="32" height="32" rx="7" fill="#4f46e5"/>
+        <rect x="3" y="3" width="26" height="26" rx="5" fill="#312e81"/>
+        <path d="M10 7 L10 25 L13.5 25 L13.5 17.5 L19.5 25 L24 25 L17 16 L23.5 7 L19.5 7 L13.5 14.5 L13.5 7 Z" fill="white"/>
+        <circle cx="24" cy="6.5" r="2.5" fill="#fbbf24"/>
+      </svg>
+      <span style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#4F46E5;">Kritano</span>
+    </div>
+  </div>
+</body>
+</html>

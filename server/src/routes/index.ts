@@ -23,6 +23,8 @@ import { accountRouter } from './account/index.js';
 import { userWebhooksRouter } from './webhooks/user-webhooks.js';
 import { publicReportsRouter } from './public-reports/index.js';
 import { complianceRouter } from './compliance/index.js';
+import { gscRouter } from './gsc/index.js';
+import { setPool as setGscPool } from '../services/gsc.service.js';
 import { setPool as setSiteServicePool, getUserTierLimits, getUserSiteUsage } from '../services/site.service.js';
 import { startTrial } from '../services/trial.service.js';
 import { pool } from '../db/index.js';
@@ -33,7 +35,7 @@ import { setPool as setConsentServicePool } from '../services/consent.service.js
 import { setPool as setOrganizationServicePool } from '../services/organization.service.js';
 import { setPool as setDomainServicePool } from '../services/domain.service.js';
 import { setPool as setReferralServicePool } from '../services/referral.service.js';
-import { setPool as setSystemSettingsPool, getSetting, isComingSoonEnabled } from '../services/system-settings.service.js';
+import { setPool as setSystemSettingsPool, getSetting, isComingSoonEnabled, getSiteMode } from '../services/system-settings.service.js';
 import { getEarlyAccessStatus as getEAStatus } from '../services/early-access.service.js';
 import { setPool as setSeoServicePool } from '../services/seo.service.js';
 import { initializeAdminMiddleware } from '../middleware/admin.middleware.js';
@@ -119,6 +121,9 @@ router.use('/account', accountRouter);
 
 // User webhooks (authenticated)
 router.use('/webhooks', userWebhooksRouter);
+
+// Google Search Console (authenticated)
+router.use('/gsc', gscRouter);
 
 // Public shareable audit reports (mixed auth: share/revoke are authenticated, view is public)
 router.use(publicReportsRouter);
@@ -611,17 +616,18 @@ router.get('/early-access/status', async (req: Request, res: Response): Promise<
 
 router.get('/coming-soon/status', async (req: Request, res: Response): Promise<void> => {
   try {
-    const enabled = await isComingSoonEnabled();
+    const mode = await getSiteMode();
     const headline = await getSetting('coming_soon_headline');
     const description = await getSetting('coming_soon_description');
     res.json({
-      enabled,
+      enabled: mode !== 'live',
+      mode,
       headline: headline || 'Something great is on its way.',
       description: description || '',
     });
   } catch (error) {
     console.error('Coming soon status error:', error);
-    res.json({ enabled: false, headline: '', description: '' });
+    res.json({ enabled: false, mode: 'live', headline: '', description: '' });
   }
 });
 
@@ -714,6 +720,7 @@ export function initializeRoutes(pool: Pool): void {
   setSystemSettingsPool(pool);
   setSeoServicePool(pool);
   setOutreachServicePool(pool);
+  setGscPool(pool);
 }
 
 export const apiRouter = router;

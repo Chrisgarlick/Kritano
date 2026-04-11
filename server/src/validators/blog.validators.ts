@@ -168,6 +168,11 @@ export const PostCategorySchema = z.enum([
   'product-updates',
 ]);
 
+// ── Schema type ──
+
+export const SchemaTypeSchema = z.enum(['article', 'howto', 'faq', 'claim_review']);
+export const ReviewRatingSchema = z.enum(['True', 'MostlyTrue', 'Mixed', 'MostlyFalse', 'False']);
+
 // ── Post schemas ──
 
 export const CreatePostSchema = z.object({
@@ -181,6 +186,9 @@ export const CreatePostSchema = z.object({
   tags: z.array(z.string().max(30)).max(10).default([]),
   seo_title: z.string().max(200).nullable().optional(),
   seo_description: z.string().max(400).nullable().optional(),
+  schema_type: SchemaTypeSchema.default('article'),
+  schema_claim_reviewed: z.string().max(500).nullable().optional(),
+  schema_review_rating: ReviewRatingSchema.nullable().optional(),
 });
 
 export const UpdatePostSchema = z.object({
@@ -195,4 +203,7 @@ export const UpdatePostSchema = z.object({
   seo_title: z.string().max(200).nullable().optional(),
   seo_description: z.string().max(400).nullable().optional(),
   related_post_ids: z.array(z.string().uuid()).max(5).optional(),
+  schema_type: SchemaTypeSchema.optional(),
+  schema_claim_reviewed: z.string().max(500).nullable().optional(),
+  schema_review_rating: ReviewRatingSchema.nullable().optional(),
 });

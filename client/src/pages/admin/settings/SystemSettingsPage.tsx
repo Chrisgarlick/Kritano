@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
 import { adminSettingsApi } from '../../../services/api';
-import { Settings, Eye, Loader2, Save, ExternalLink, Zap, Rocket } from 'lucide-react';
+import { Settings, Eye, Loader2, Save, ExternalLink, Zap, Rocket, Globe } from 'lucide-react';
 
 const TRIGGER_TOGGLES: { key: string; label: string; description: string }[] = [
   { key: 'trigger_auto_send_first_audit_complete', label: 'First Audit Complete', description: 'Welcome email after first audit' },
@@ -22,12 +22,13 @@ export default function SystemSettingsPage() {
   const [savingTrigger, setSavingTrigger] = useState<string | null>(null);
 
   // Local form state
+  const [siteMode, setSiteMode] = useState<'waitlist' | 'early_access' | 'live'>('live');
   const [comingSoonEnabled, setComingSoonEnabled] = useState(false);
   const [headline, setHeadline] = useState('');
   const [description, setDescription] = useState('');
   const [triggerSettings, setTriggerSettings] = useState<Record<string, boolean>>({});
   const [earlyAccessEnabled, setEarlyAccessEnabled] = useState(false);
-  const [earlyAccessMaxSpots, setEarlyAccessMaxSpots] = useState(200);
+  const [earlyAccessMaxSpots, setEarlyAccessMaxSpots] = useState(250);
   const [earlyAccessDiscount, setEarlyAccessDiscount] = useState(50);
 
   useEffect(() => {
@@ -38,6 +39,8 @@ export default function SystemSettingsPage() {
     try {
       const res = await adminSettingsApi.getAll();
       const s = res.data.settings;
+      const mode = s.site_mode as string;
+      if (mode === 'waitlist' || mode === 'early_access' || mode === 'live') setSiteMode(mode);
       setComingSoonEnabled(s.coming_soon_enabled === true);
       setHeadline((s.coming_soon_headline as string) || '');
       setDescription((s.coming_soon_description as string) || '');
@@ -51,7 +54,7 @@ export default function SystemSettingsPage() {
 
       // Load early access settings
       setEarlyAccessEnabled(s.early_access_enabled === true || s.early_access_enabled === 'true');
-      setEarlyAccessMaxSpots(Number(s.early_access_max_spots) || 200);
+      setEarlyAccessMaxSpots(Number(s.early_access_max_spots) || 250);
       setEarlyAccessDiscount(Number(s.early_access_discount_percent) || 50);
     } catch (err) {
       console.error('Failed to load settings:', err);
@@ -65,6 +68,7 @@ export default function SystemSettingsPage() {
     try {
       await adminSettingsApi.update(key, value);
       sessionStorage.removeItem('coming_soon_status');
+      sessionStorage.removeItem('kritano-site-mode');
     } catch (err) {
       console.error('Failed to save setting:', err);
     } finally {
@@ -123,6 +127,60 @@ export default function SystemSettingsPage() {
           </div>
         </div>
 
+        {/* Site Mode */}
+        <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-6 space-y-4">
+          <div>
+            <h2 className="text-lg font-semibold text-white flex items-center space-x-2">
+              <Globe className="w-5 h-5 text-indigo-400" />
+              <span>Site Mode</span>
+            </h2>
+            <p className="text-sm text-slate-500 mt-1">
+              Controls which version of the public website visitors see.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {([
+              { value: 'waitlist' as const, label: 'Waitlist', desc: 'Marketing site visible, no pricing. CTAs drive to waitlist signup. Blog accessible.' },
+              { value: 'early_access' as const, label: 'Early Access', desc: 'Full site with pricing. Founding members can sign in. New users join early access.' },
+              { value: 'live' as const, label: 'Live', desc: 'Full site, standard registration open to everyone.' },
+            ]).map((option) => (
+              <button
+                key={option.value}
+                onClick={async () => {
+                  setSiteMode(option.value);
+                  await saveSetting('site_mode', option.value);
+                }}
+                disabled={saving}
+                className={`text-left p-4 rounded-lg border transition-colors ${
+                  siteMode === option.value
+                    ? 'border-indigo-500 bg-indigo-500/10'
+                    : 'border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]'
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <div className={`w-3 h-3 rounded-full ${
+                    siteMode === option.value ? 'bg-indigo-500' : 'bg-slate-600'
+                  }`} />
+                  <span className="text-sm font-semibold text-white">{option.label}</span>
+                </div>
+                <p className="text-xs text-slate-500 leading-relaxed">{option.desc}</p>
+              </button>
+            ))}
+          </div>
+
+          {siteMode === 'waitlist' && (
+            <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-3 text-amber-300 text-sm">
+              <strong>Waitlist mode active.</strong> Public visitors see the full marketing site with waitlist CTAs. Pricing and sign-in are hidden.
+            </div>
+          )}
+          {siteMode === 'early_access' && (
+            <div className="bg-indigo-900/20 border border-indigo-700/30 rounded-lg p-3 text-indigo-300 text-sm">
+              <strong>Early Access mode active.</strong> Founding members can sign in and use the app. New visitors see the marketing site with early access CTAs.
+            </div>
+          )}
+        </div>
+
         {/* Trigger Automation */}
         <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-6 space-y-4">
           <div>
@@ -168,35 +226,18 @@ export default function SystemSettingsPage() {
           </div>
         </div>
 
-        {/* Early Access */}
+        {/* Early Access Config */}
         <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-white flex items-center space-x-2">
-                <Rocket className="w-5 h-5 text-amber-400" />
-                <span>Early Access</span>
-              </h2>
-              <p className="text-sm text-slate-500 mt-1">
-                When enabled, users can claim one of 250 founding member spots via <code className="text-xs bg-white/[0.06] px-1 py-0.5 rounded">/register?ea=1</code>.
-              </p>
-            </div>
-            <button
-              onClick={async () => {
-                const newValue = !earlyAccessEnabled;
-                setEarlyAccessEnabled(newValue);
-                await saveSetting('early_access_enabled', newValue);
-              }}
-              disabled={saving}
-              className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${
-                earlyAccessEnabled ? 'bg-indigo-600' : 'bg-slate-600'
-              }`}
-            >
-              <span
-                className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                  earlyAccessEnabled ? 'translate-x-6' : 'translate-x-1'
-                }`}
-              />
-            </button>
+          <div>
+            <h2 className="text-lg font-semibold text-white flex items-center space-x-2">
+              <Rocket className="w-5 h-5 text-amber-400" />
+              <span>Early Access Campaign</span>
+            </h2>
+            <p className="text-sm text-slate-500 mt-1">
+              {siteMode === 'early_access'
+                ? 'Early access is active. Founding members register via the public site.'
+                : 'Configure the early access campaign. Set site mode to "Early Access" above to activate.'}
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -212,7 +253,7 @@ export default function SystemSettingsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">Discount %</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1">Lifetime Discount %</label>
               <input
                 type="number"
                 value={earlyAccessDiscount}
@@ -236,111 +277,25 @@ export default function SystemSettingsPage() {
           </div>
         </div>
 
-        {/* Coming Soon Mode */}
-        <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-6 space-y-6">
+        {/* Waitlist Signups Link */}
+        <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-white">Coming Soon Mode</h2>
-              <p className="text-sm text-slate-500 mt-1">
-                When enabled, all public pages show a coming soon landing page with email capture.
-                Admin routes remain accessible.
-              </p>
-            </div>
-            <button
-              onClick={handleToggle}
-              disabled={saving}
-              className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${
-                comingSoonEnabled ? 'bg-indigo-600' : 'bg-slate-600'
-              }`}
-            >
-              <span
-                className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                  comingSoonEnabled ? 'translate-x-6' : 'translate-x-1'
-                }`}
-              />
-            </button>
-          </div>
-
-          {comingSoonEnabled && (
-            <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-3 text-amber-300 text-sm">
-              Coming Soon Mode is <strong>active</strong>. All public visitors see the landing page instead of the app.
-            </div>
-          )}
-
-          <div className="border-t border-white/[0.06] pt-6 space-y-4">
-            <h3 className="text-sm font-medium text-slate-300 uppercase tracking-wider">Landing Page Content</h3>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">Headline</label>
-              <input
-                type="text"
-                value={headline}
-                onChange={(e) => setHeadline(e.target.value)}
-                className="w-full px-3 py-2 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
-                placeholder="Something great is on its way."
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">Description</label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={3}
-                className="w-full px-3 py-2 bg-white/[0.03] border border-white/[0.08] rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 resize-none"
-                placeholder="We're building something amazing..."
-              />
-            </div>
-
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={handleSaveContent}
-                disabled={saving}
-                className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
-              >
-                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                <span>Save Content</span>
-              </button>
-              <Link
-                to="/admin/coming-soon"
-                className="flex items-center space-x-2 px-4 py-2 bg-white/[0.06] hover:bg-white/[0.06] text-slate-200 text-sm font-medium rounded-lg transition"
-              >
-                <Eye className="w-4 h-4" />
-                <span>View Signups</span>
-              </Link>
-            </div>
-          </div>
-
-          {/* Preview */}
-          <div className="border-t border-white/[0.06] pt-6">
-            <h3 className="text-sm font-medium text-slate-300 uppercase tracking-wider mb-3 flex items-center space-x-2">
-              <Eye className="w-4 h-4" />
-              <span>Preview</span>
-            </h3>
-            <div className="bg-white rounded-lg p-8 text-center space-y-4">
-              <div className="flex items-center justify-center space-x-2">
-                <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">K</span>
-                </div>
-                <span className="text-lg font-bold text-slate-900 font-display">
-                  Kritano
-                </span>
-              </div>
-              <h2
-                className="text-2xl font-bold text-slate-900 font-display"
-              >
-                {headline || 'Something great is on its way.'}
+              <h2 className="text-lg font-semibold text-white flex items-center space-x-2">
+                <Eye className="w-5 h-5 text-slate-400" />
+                <span>Waitlist Signups</span>
               </h2>
-              <p className="text-slate-600 text-sm max-w-sm mx-auto">
-                {description || 'Your description will appear here...'}
+              <p className="text-sm text-slate-500 mt-1">
+                View and manage email signups from the waitlist.
               </p>
-              <div className="flex justify-center">
-                <div className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg">
-                  <ExternalLink className="w-4 h-4" />
-                  <span>Notify me</span>
-                </div>
-              </div>
             </div>
+            <Link
+              to="/admin/coming-soon"
+              className="flex items-center space-x-2 px-4 py-2 bg-white/[0.06] hover:bg-white/[0.10] text-slate-200 text-sm font-medium rounded-lg transition"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>View Signups</span>
+            </Link>
           </div>
         </div>
       </div>

@@ -1955,6 +1955,9 @@ export interface BlogContentBlock {
   props: Record<string, unknown>;
 }
 
+export type BlogSchemaType = 'article' | 'howto' | 'faq' | 'claim_review';
+export type BlogReviewRating = 'True' | 'MostlyTrue' | 'Mixed' | 'MostlyFalse' | 'False';
+
 export interface BlogPostSummary {
   id: string;
   slug: string;
@@ -1969,6 +1972,7 @@ export interface BlogPostSummary {
   published_at: string | null;
   reading_time_minutes: number;
   view_count: number;
+  schema_type: BlogSchemaType;
   created_at: string;
   updated_at: string;
 }
@@ -1980,6 +1984,8 @@ export interface BlogPostDetail extends BlogPostSummary {
   seo_title: string | null;
   seo_description: string | null;
   related_post_ids: string[];
+  schema_claim_reviewed: string | null;
+  schema_review_rating: BlogReviewRating | null;
 }
 
 export interface CreateBlogPostInput {
@@ -1993,6 +1999,9 @@ export interface CreateBlogPostInput {
   tags?: string[];
   seo_title?: string | null;
   seo_description?: string | null;
+  schema_type?: BlogSchemaType;
+  schema_claim_reviewed?: string | null;
+  schema_review_rating?: BlogReviewRating | null;
 }
 
 export type UpdateBlogPostInput = Partial<CreateBlogPostInput> & {
@@ -2670,7 +2679,7 @@ export const adminReferralsApi = {
 // Coming Soon (public, no auth)
 export const comingSoonApi = {
   getStatus: () =>
-    api.get<{ enabled: boolean; headline: string; description: string }>('/coming-soon/status'),
+    api.get<{ enabled: boolean; mode: 'waitlist' | 'early_access' | 'live'; headline: string; description: string }>('/coming-soon/status'),
   signup: (data: { email: string; name?: string }) =>
     api.post('/coming-soon/signup', data),
 };

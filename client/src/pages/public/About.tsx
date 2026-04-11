@@ -6,6 +6,7 @@
 
 import { Link } from 'react-router-dom';
 import { PublicLayout } from '../../components/layout/PublicLayout';
+import { useSiteMode } from '../../contexts/SiteModeContext';
 import PageSeo from '../../components/seo/PageSeo';
 import { ArrowRight, Eye, Sparkles, Heart, Target } from 'lucide-react';
 
@@ -19,30 +20,66 @@ const PILLARS = [
 ];
 
 export default function About() {
+  const mode = useSiteMode();
+  const ctaHref = mode === 'waitlist' ? '/waitlist' : mode === 'early_access' ? '/register?ea=email' : '/register';
+  const ctaLabel = mode === 'waitlist' ? 'Join the Waitlist' : mode === 'early_access' ? 'Join Early Access' : 'Start Free Audit';
   return (
     <PublicLayout>
       <PageSeo
         title="About Kritano"
         description="Learn about Kritano's mission to make the web more accessible, secure, and performant for everyone."
         path="/about"
-        structuredData={{
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: 'Kritano',
-          description: 'Website intelligence platform providing comprehensive auditing for SEO, accessibility, security, and performance.',
-          url: 'https://kritano.com',
-        }}
+        structuredData={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: 'Kritano',
+            url: 'https://kritano.com',
+            logo: 'https://kritano.com/brand/favicon-32.svg',
+            description: 'Website intelligence platform providing comprehensive auditing for SEO, accessibility, security, and performance.',
+            foundingDate: '2025',
+            founder: { '@type': 'Person', name: 'Chris Garlick' },
+            sameAs: [
+              'https://twitter.com/chrisgarlick',
+              'https://linkedin.com/company/kritano',
+            ],
+            contactPoint: {
+              '@type': 'ContactPoint',
+              email: 'info@kritano.com',
+              contactType: 'customer support',
+              url: 'https://kritano.com/contact',
+            },
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: 'Chris Garlick',
+            jobTitle: 'Founder',
+            worksFor: { '@type': 'Organization', name: 'Kritano', url: 'https://kritano.com' },
+            description: 'Founder of Kritano. Software engineer specialising in web auditing, SEO, accessibility, and performance optimisation.',
+            knowsAbout: ['SEO', 'Web Accessibility', 'WCAG 2.2', 'Web Security', 'Web Performance', 'Content Quality', 'Answer Engine Optimisation'],
+            url: 'https://kritano.com/about',
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+              { '@type': 'ListItem', position: 2, name: 'About', item: 'https://kritano.com/about' },
+            ],
+          },
+        ]}
       />
 
       {/* Hero — Founder voice */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">
-          <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-6">
+          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
             About Kritano
-          </p>
-          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-8">
-            I built the tool I wished existed.
           </h1>
+          <h2 className="font-display text-2xl lg:text-3xl text-slate-500 leading-snug mb-8">
+            I built the tool I wished existed.
+          </h2>
           <blockquote className="border-l-4 border-indigo-600 pl-6 mb-8">
             <p className="font-display text-2xl italic text-slate-700 leading-relaxed">
               "Most website owners don't know what's wrong until it's too late. I wanted to
@@ -179,10 +216,10 @@ export default function About() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              to="/register"
+              to={ctaHref}
               className="inline-flex items-center justify-center px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:ring-offset-2"
             >
-              Start Free Audit
+              {ctaLabel}
             </Link>
             <Link
               to="/contact"

@@ -10,6 +10,7 @@
 
 import { Link } from 'react-router-dom';
 import { PublicLayout } from '../../components/layout/PublicLayout';
+import { useSiteMode } from '../../contexts/SiteModeContext';
 import PageSeo from '../../components/seo/PageSeo';
 import {
   TrendingUp,
@@ -109,33 +110,48 @@ const SERVICES = [
 ];
 
 export default function Services() {
+  const mode = useSiteMode();
+  const ctaHref = mode === 'waitlist' ? '/waitlist' : mode === 'early_access' ? '/register?ea=email' : '/register';
+  const ctaLabel = mode === 'waitlist' ? 'Join Waitlist' : mode === 'early_access' ? 'Join Early Access' : 'Try Free';
+
   return (
     <PublicLayout>
       <PageSeo
         title="Services"
         description="Comprehensive website auditing services: SEO, accessibility (WCAG 2.2), security scanning, and performance analysis."
         path="/services"
-        structuredData={{
-          '@context': 'https://schema.org',
-          '@type': 'ItemList',
-          itemListElement: SERVICES.map((s, i) => ({
-            '@type': 'Service',
-            position: i + 1,
-            name: s.title,
-            description: s.description,
-          })),
-        }}
+        structuredData={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            itemListElement: SERVICES.map((s, i) => ({
+              '@type': 'Service',
+              position: i + 1,
+              name: s.title,
+              description: s.description,
+              provider: { '@type': 'Organization', name: 'Kritano', url: 'https://kritano.com' },
+            })),
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+              { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://kritano.com/services' },
+            ],
+          },
+        ]}
       />
 
       {/* Hero */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">
-          <p className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-6">
-            Services
-          </p>
-          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-8">
-            Six dimensions of website health.
+          <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
+            Website Auditing Services
           </h1>
+          <h2 className="font-display text-2xl lg:text-3xl text-slate-500 leading-snug mb-8">
+            Six dimensions of website health.
+          </h2>
           <p className="text-xl text-slate-600 leading-relaxed">
             Every Kritano audit covers SEO, accessibility, security, performance, content quality,
             and structured data. Each dimension is powered by a dedicated engine with hundreds of
@@ -192,10 +208,10 @@ export default function Services() {
                 {/* Actions */}
                 <div className="flex items-center gap-4">
                   <Link
-                    to="/register"
+                    to={ctaHref}
                     className="inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-sm"
                   >
-                    Try Free
+                    {ctaLabel}
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                   <Link
@@ -230,8 +246,8 @@ export default function Services() {
                 E-E-A-T analysis, Answer Engine Optimisation, readability scoring, and engagement
                 markers — unified into a Content Quality Score across 400+ checks.
               </p>
-              <Link to="/register" className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-700 hover:text-teal-900 transition-colors">
-                Try Content Intelligence free <ArrowRight className="w-4 h-4" />
+              <Link to={ctaHref} className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-700 hover:text-teal-900 transition-colors">
+                {mode === 'live' ? 'Try Content Intelligence free' : ctaLabel} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
@@ -281,10 +297,10 @@ export default function Services() {
               Run your first audit in under two minutes. No credit card, no commitment.
             </p>
             <Link
-              to="/register"
+              to={ctaHref}
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-indigo-700 rounded-lg font-semibold hover:bg-indigo-50 transition-colors"
             >
-              Start Free Audit
+              {mode === 'waitlist' ? 'Join the Waitlist' : mode === 'early_access' ? 'Join Early Access' : 'Start Free Audit'}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

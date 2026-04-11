@@ -89,7 +89,9 @@ Create 3 files (or user-specified count). Each must be a **distinct creative int
 
 ### 8. Write files
 
-Save each file to `/docs/video/<slug>/N.html`.
+**Default location:** `/docs/video/<slug>/N.html`.
+
+**IMPORTANT — Output path override:** When invoked by another skill (e.g. `/trend`), the calling skill specifies where files should be saved. ONLY write to that location. Never also write to `/docs/video/` when called from `/trend` — use the trend folder exclusively. Each skill owns its own output directory.
 
 ### 9. Write caption file
 

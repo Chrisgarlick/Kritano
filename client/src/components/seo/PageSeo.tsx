@@ -26,8 +26,8 @@ interface PageSeoProps {
   ogImage?: string;
   /** OG type — defaults to "website" */
   ogType?: string;
-  /** JSON-LD structured data object */
-  structuredData?: Record<string, unknown>;
+  /** JSON-LD structured data object(s) — single object or array of objects */
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
   /** Set to true for pages that shouldn't be indexed (auth, dashboard) */
   noindex?: boolean;
   /** Keywords meta tag */
@@ -48,7 +48,7 @@ export default function PageSeo({
   noindex: propNoindex = false,
   keywords: propKeywords,
   featuredImage: propFeaturedImage,
-  useOverrides = false,
+  useOverrides = true,
 }: PageSeoProps) {
   // Always call the hook (React rules), but only use the result when enabled
   const seoOverride = useSeoOverride(path);
@@ -85,18 +85,28 @@ export default function PageSeo({
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:type" content={ogType} />
       <meta property="og:site_name" content={SITE_NAME} />
+      <meta property="og:locale" content="en_GB" />
 
       {/* Twitter Card */}
       <meta name="twitter:card" content={twitterCard} />
+      <meta name="twitter:site" content="@kritanoapp" />
+      <meta name="twitter:creator" content="@chrisgarlick" />
       <meta name="twitter:title" content={ogTitle} />
       <meta name="twitter:description" content={ogDescription} />
       <meta name="twitter:image" content={ogImage} />
 
       {/* Structured Data */}
-      {structuredData && (
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
+      {structuredData && (Array.isArray(structuredData)
+        ? structuredData.map((sd, i) => (
+            <script key={i} type="application/ld+json">
+              {JSON.stringify(sd)}
+            </script>
+          ))
+        : (
+            <script type="application/ld+json">
+              {JSON.stringify(structuredData)}
+            </script>
+          )
       )}
     </Helmet>
   );

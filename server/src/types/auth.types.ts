@@ -22,6 +22,7 @@ export interface User {
   deleted_at: Date | null;
   deletion_requested_at: Date | null;
   deletion_scheduled_for: Date | null;
+  beta_access: boolean;
 }
 
 export type UserStatus = 'pending_verification' | 'active' | 'suspended' | 'deleted' | 'pending_deletion';
@@ -40,6 +41,7 @@ export interface SafeUser {
   created_at: Date;
   deletion_requested_at: Date | null;
   deletion_scheduled_for: Date | null;
+  beta_access: boolean;
 }
 
 // Refresh token types

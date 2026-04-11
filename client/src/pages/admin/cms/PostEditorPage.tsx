@@ -18,6 +18,8 @@ import type {
   BlogPostSummary,
   BlogContentBlock,
   BlogPostCategory,
+  BlogSchemaType,
+  BlogReviewRating,
   CreateBlogPostInput,
 } from '../../../services/api';
 import BlockDisplay from '../../../components/cms/BlockDisplay';
@@ -59,6 +61,21 @@ const CATEGORIES: { value: BlogPostCategory; label: string }[] = [
   { value: 'guides', label: 'Guides' },
   { value: 'case-studies', label: 'Case Studies' },
   { value: 'product-updates', label: 'Product Updates' },
+];
+
+const SCHEMA_TYPES: { value: BlogSchemaType; label: string; hint: string }[] = [
+  { value: 'article', label: 'Article', hint: 'Standard blog post' },
+  { value: 'howto', label: 'How-To Guide', hint: 'Steps auto-generated from headings' },
+  { value: 'faq', label: 'FAQ', hint: 'Q&A from headings ending in ?' },
+  { value: 'claim_review', label: 'Claim Review', hint: 'Fact-check with rating' },
+];
+
+const REVIEW_RATINGS: { value: BlogReviewRating; label: string }[] = [
+  { value: 'True', label: 'True' },
+  { value: 'MostlyTrue', label: 'Mostly True' },
+  { value: 'Mixed', label: 'Mixed' },
+  { value: 'MostlyFalse', label: 'Mostly False' },
+  { value: 'False', label: 'False' },
 ];
 
 const AUTO_SAVE_DELAY = 10000; // 10 seconds
@@ -114,6 +131,9 @@ export default function PostEditorPage() {
   const [featuredImageAlt, setFeaturedImageAlt] = useState('');
   const [seoTitle, setSeoTitle] = useState('');
   const [seoDescription, setSeoDescription] = useState('');
+  const [schemaType, setSchemaType] = useState<BlogSchemaType>('article');
+  const [schemaClaimReviewed, setSchemaClaimReviewed] = useState('');
+  const [schemaReviewRating, setSchemaReviewRating] = useState<BlogReviewRating>('Mixed');
 
   // Related posts state
   const [relatedPostIds, setRelatedPostIds] = useState<string[]>([]);
@@ -195,6 +215,9 @@ export default function PostEditorPage() {
       setFeaturedImageAlt(p.featured_image_alt || '');
       setSeoTitle(p.seo_title || '');
       setSeoDescription(p.seo_description || '');
+      setSchemaType(p.schema_type || 'article');
+      setSchemaClaimReviewed(p.schema_claim_reviewed || '');
+      setSchemaReviewRating(p.schema_review_rating || 'Mixed');
       const ids = p.related_post_ids || [];
       setRelatedPostIds(ids);
       // Load details for selected related posts
@@ -230,6 +253,9 @@ export default function PostEditorPage() {
         featured_image_alt: featuredImageAlt || null,
         seo_title: seoTitle || null,
         seo_description: seoDescription || null,
+        schema_type: schemaType,
+        schema_claim_reviewed: schemaType === 'claim_review' ? (schemaClaimReviewed || null) : null,
+        schema_review_rating: schemaType === 'claim_review' ? schemaReviewRating : null,
       };
 
       if (isNew) {
@@ -254,7 +280,7 @@ export default function PostEditorPage() {
     } finally {
       setSaving(false);
     }
-  }, [title, subtitle, excerpt, category, tags, blocks, featuredImageUrl, featuredImageAlt, seoTitle, seoDescription, relatedPostIds, isNew, post, saving, navigate]);
+  }, [title, subtitle, excerpt, category, tags, blocks, featuredImageUrl, featuredImageAlt, seoTitle, seoDescription, schemaType, schemaClaimReviewed, schemaReviewRating, relatedPostIds, isNew, post, saving, navigate]);
 
   const handlePublish = async () => {
     if (!post) return;
@@ -558,6 +584,51 @@ export default function PostEditorPage() {
                     <option key={c.value} value={c.value}>{c.label}</option>
                   ))}
                 </select>
+              </div>
+
+              {/* Schema Type */}
+              <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
+                <label className="text-xs font-medium text-slate-500 mb-2 block">Schema Type</label>
+                <select
+                  value={schemaType}
+                  onChange={e => setSchemaType(e.target.value as BlogSchemaType)}
+                  className="w-full px-3 py-2 bg-white/[0.03] border border-white/[0.08] rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                >
+                  {SCHEMA_TYPES.map(s => (
+                    <option key={s.value} value={s.value}>{s.label}</option>
+                  ))}
+                </select>
+                <p className="text-xs text-slate-500 mt-1.5">
+                  {SCHEMA_TYPES.find(s => s.value === schemaType)?.hint}
+                </p>
+
+                {schemaType === 'claim_review' && (
+                  <div className="mt-3 space-y-3 pt-3 border-t border-white/[0.06]">
+                    <div>
+                      <label className="text-xs font-medium text-slate-500 mb-1 block">Claim Reviewed</label>
+                      <input
+                        type="text"
+                        value={schemaClaimReviewed}
+                        onChange={e => setSchemaClaimReviewed(e.target.value)}
+                        placeholder="e.g. Security headers improve SEO rankings"
+                        maxLength={500}
+                        className="w-full px-3 py-2 bg-white/[0.03] border border-white/[0.08] rounded text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-slate-500 mb-1 block">Rating</label>
+                      <select
+                        value={schemaReviewRating}
+                        onChange={e => setSchemaReviewRating(e.target.value as BlogReviewRating)}
+                        className="w-full px-3 py-2 bg-white/[0.03] border border-white/[0.08] rounded text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                      >
+                        {REVIEW_RATINGS.map(r => (
+                          <option key={r.value} value={r.value}>{r.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Tags */}

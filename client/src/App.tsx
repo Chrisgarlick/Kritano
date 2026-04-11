@@ -8,7 +8,8 @@ import { ToastProvider } from './components/ui/Toast';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { AdminRoute } from './routes/AdminRoute';
 import { SettingsLayout } from './components/layout/SettingsLayout';
-import { ComingSoonGuard } from './components/ComingSoonGuard';
+import { SiteModeProvider } from './contexts/SiteModeContext';
+import { SiteModeGuard } from './components/SiteModeGuard';
 import { CookieConsentProvider } from './contexts/CookieConsentContext';
 import { SeoProvider } from './hooks/useSeoOverrides';
 
@@ -40,6 +41,8 @@ const ScheduleListPage = lazy(() => import('./pages/schedules/ScheduleListPage')
 const ScheduleDetailPage = lazy(() => import('./pages/schedules/ScheduleDetailPage'));
 const ReferralDashboard = lazy(() => import('./pages/referrals/ReferralDashboard'));
 const ComparePage = lazy(() => import('./pages/compare/ComparePage'));
+const SearchConsolePage = lazy(() => import('./pages/keywords/SearchConsolePage'));
+const GscCallbackPage = lazy(() => import('./pages/auth/GscCallback'));
 const SiteInvitationPage = lazy(() => import('./pages/invitations/SiteInvitation'));
 const UnsubscribePage = lazy(() => import('./pages/email/UnsubscribePage'));
 
@@ -62,11 +65,14 @@ const AboutPage = lazy(() => import('./pages/public/About'));
 const ServicesPage = lazy(() => import('./pages/public/Services'));
 const PricingPage = lazy(() => import('./pages/public/Pricing'));
 const ContactPage = lazy(() => import('./pages/public/Contact'));
+const WaitlistPage = lazy(() => import('./pages/public/Waitlist'));
+const FaqPage = lazy(() => import('./pages/public/Faq'));
 const TermsPage = lazy(() => import('./pages/public/Terms'));
 const PrivacyPage = lazy(() => import('./pages/public/Privacy'));
 const ServiceDetailPage = lazy(() => import('./pages/public/services/ServiceDetailPage'));
 const ServerErrorPage = lazy(() => import('./pages/errors/ServerError'));
 const SharedReportPage = lazy(() => import('./pages/public/SharedReport'));
+const AuthorPage = lazy(() => import('./pages/public/AuthorPage'));
 
 // Lazy-loaded: Blog
 const BlogPostListPage = lazy(() => import('./pages/blog/PostListPage'));
@@ -131,7 +137,8 @@ function App() {
           <ToastProvider>
             <BrowserRouter>
               <SeoProvider>
-              <ComingSoonGuard>
+              <SiteModeProvider>
+              <SiteModeGuard>
               <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" /></div>}>
               <Routes>
                 {/* Public routes */}
@@ -144,6 +151,7 @@ function App() {
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
                 <Route path="/verify-email" element={<VerifyEmailPage />} />
                 <Route path="/auth/callback/:provider" element={<OAuthCallbackPage />} />
+                <Route path="/auth/callback/gsc" element={<ProtectedRoute><GscCallbackPage /></ProtectedRoute>} />
 
                 {/* Site invitation routes (public with token) */}
                 <Route path="/site-invitations/:token" element={<SiteInvitationPage />} />
@@ -157,8 +165,11 @@ function App() {
                 <Route path="/services/:serviceSlug" element={<ServiceDetailPage />} />
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/faq" element={<FaqPage />} />
+                <Route path="/waitlist" element={<WaitlistPage />} />
                 <Route path="/terms" element={<TermsPage />} />
                 <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="/author/chris-garlick" element={<AuthorPage />} />
 
                 {/* API Docs (public) */}
                 <Route path="/docs" element={<DocsOverviewPage />} />
@@ -335,6 +346,16 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <ComparePage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Search Console */}
+                <Route
+                  path="/search-console"
+                  element={
+                    <ProtectedRoute>
+                      <SearchConsolePage />
                     </ProtectedRoute>
                   }
                 />
@@ -734,7 +755,8 @@ function App() {
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
               </Suspense>
-              </ComingSoonGuard>
+              </SiteModeGuard>
+              </SiteModeProvider>
               </SeoProvider>
             </BrowserRouter>
           </ToastProvider>

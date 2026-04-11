@@ -10,10 +10,11 @@ export default function RegisterPage() {
   const eaParam = searchParams.get('ea');
   const isEarlyAccess = !!eaParam;
 
-  const [eaStatus, setEaStatus] = useState<{ loading: boolean; isFull: boolean; spotsRemaining: number }>({
+  const [eaStatus, setEaStatus] = useState<{ loading: boolean; isFull: boolean; spotsRemaining: number; maxSpots: number }>({
     loading: isEarlyAccess,
     isFull: false,
     spotsRemaining: 0,
+    maxSpots: 250,
   });
   const [waitlistEmail, setWaitlistEmail] = useState('');
   const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
@@ -27,10 +28,11 @@ export default function RegisterPage() {
           loading: false,
           isFull: res.data.isFull,
           spotsRemaining: res.data.spotsRemaining,
+          maxSpots: res.data.maxSpots,
         });
       })
       .catch(() => {
-        setEaStatus({ loading: false, isFull: false, spotsRemaining: 0 });
+        setEaStatus({ loading: false, isFull: false, spotsRemaining: 0, maxSpots: 250 });
       });
   }, [isEarlyAccess]);
 
@@ -127,7 +129,7 @@ export default function RegisterPage() {
                 Claim Your Early Access
               </h1>
               <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                {eaStatus.spotsRemaining} of 200 founding member spots remaining
+                {eaStatus.spotsRemaining} of {eaStatus.maxSpots} founding member spots remaining
               </p>
             </>
           ) : (

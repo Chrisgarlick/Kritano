@@ -57,6 +57,59 @@ A 4-7 tweet thread that turns a trending topic into an educational, engaging nar
 
 ---
 
+## X (Twitter) Standalone Tweets
+
+10 individual tweets that each work completely on their own. These are for replying to conversations, quote tweeting, or posting independently throughout the week. Each takes a different angle on the same trend.
+
+### Angle Templates
+
+```
+STANDALONE TWEETS
+
+1. [THE STAT] — Lead with the most striking number from the trend.
+   Example: "Only 27% of websites use Content-Security-Policy. It's the #1 defence against XSS. The other 73% are running without a seatbelt."
+
+2. [THE HOT TAKE] — A strong opinion that invites debate.
+   Example: "If your website doesn't have a strict CSP in 2026, you're not taking security seriously. There, I said it."
+
+3. [THE QUESTION] — Ask something that makes people think.
+   Example: "Quick question: do you know what your website's security headers score is? Most site owners have no idea."
+
+4. [THE TIP] — One specific actionable thing to do right now.
+   Example: "Quick win: hide your Server header. In nginx it's one line - server_tokens off. Stops attackers knowing exactly what software you run."
+
+5. [THE COMPARISON] — Before vs after, old way vs new way.
+   Example: "2023: 55.6% of websites scored an F on security headers. 2026: 0.3%. The basics improved. The advanced stuff? Still missing."
+
+6. [THE WARNING] — Something most people are getting wrong.
+   Example: "Having a CSP is not enough. 48.8% of sites with CSP use unsafe-inline - which basically switches the protection off."
+
+7. [THE MYTH BUSTER] — Correct a common misconception.
+   Example: "Having HTTPS does not mean your site is secure. HTTPS is step 1. Without CSP, HSTS preloading, and proper headers, you're still exposed."
+
+8. [THE PREDICTION] — Where this trend is heading.
+   Example: "Prediction: within 2 years, browsers will start warning users about sites missing basic security headers. The same way they warn about HTTP now."
+
+9. [THE ANALOGY] — Explain using a relatable comparison.
+   Example: "82.9% of websites expose their Server header. That's like putting a sign on your front door saying exactly which lock you use."
+
+10. [THE PERSONAL] — Frame as first-person observation.
+    Example: "We scanned 50 client sites last week. Average security headers score: 58/100. The pattern? Everyone has HTTPS. Almost nobody has a strict CSP."
+```
+
+### Standalone Tweet Rules
+
+- **Each tweet must work with zero context** — someone sees this one tweet in their feed and it makes complete sense
+- **No thread numbering** (no "1/", no emoji threads)
+- **No hashtags** — standalone tweets perform better without them on X
+- **Vary the tone** — some authoritative, some casual, some provocative, some helpful
+- **British English** throughout
+- **No em dashes** — use ` - ` instead
+- **No smart/curly quotes** — straight quotes only
+- **Max 280 characters** per tweet
+
+---
+
 ## Instagram Caption
 
 ### Structure
