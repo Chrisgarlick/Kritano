@@ -77,6 +77,8 @@ export default function NewAuditPage() {
   // User tier for feature gating
   const [userTier, setUserTier] = useState<string>('free');
   const [tierMaxPages, setTierMaxPages] = useState<number>(500);
+  const canUseAccessibility = userTier !== 'free';
+  const canUsePerformance = userTier !== 'free';
   const canUseFileExtraction = userTier !== 'free';
 
   // Domain verification status for preset restrictions
@@ -718,16 +720,23 @@ export default function NewAuditPage() {
                         <p className="text-xs text-slate-500 dark:text-slate-400">Meta tags, headings, links</p>
                       </div>
                     </label>
-                    <label className="flex items-center p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
+                    <label className={`flex items-center p-3 border rounded-lg ${
+                      canUseAccessibility
+                        ? 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer'
+                        : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 cursor-not-allowed opacity-60'
+                    }`}>
                       <input
                         type="checkbox"
-                        checked={options.checkAccessibility}
-                        onChange={(e) => updateOption('checkAccessibility', e.target.checked)}
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
+                        checked={canUseAccessibility && options.checkAccessibility}
+                        onChange={(e) => canUseAccessibility && updateOption('checkAccessibility', e.target.checked)}
+                        disabled={!canUseAccessibility}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded disabled:opacity-50"
                       />
                       <div className="ml-3">
                         <span className="text-sm font-medium text-slate-900 dark:text-white">Accessibility</span>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">WCAG {options.wcagVersion} Level {options.wcagLevel}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          {canUseAccessibility ? `WCAG ${options.wcagVersion} Level ${options.wcagLevel}` : 'Starter plan required'}
+                        </p>
                       </div>
                     </label>
                     <label className="flex items-center p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
@@ -742,16 +751,23 @@ export default function NewAuditPage() {
                         <p className="text-xs text-slate-500 dark:text-slate-400">Headers, cookies, HTTPS</p>
                       </div>
                     </label>
-                    <label className="flex items-center p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
+                    <label className={`flex items-center p-3 border rounded-lg ${
+                      canUsePerformance
+                        ? 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer'
+                        : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 cursor-not-allowed opacity-60'
+                    }`}>
                       <input
                         type="checkbox"
-                        checked={options.checkPerformance}
-                        onChange={(e) => updateOption('checkPerformance', e.target.checked)}
-                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded"
+                        checked={canUsePerformance && options.checkPerformance}
+                        onChange={(e) => canUsePerformance && updateOption('checkPerformance', e.target.checked)}
+                        disabled={!canUsePerformance}
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-600 rounded disabled:opacity-50"
                       />
                       <div className="ml-3">
                         <span className="text-sm font-medium text-slate-900 dark:text-white">Performance</span>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Speed, page size</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          {canUsePerformance ? 'Speed, page size' : 'Starter plan required'}
+                        </p>
                       </div>
                     </label>
                     <label className={`flex items-center p-3 border rounded-lg ${

@@ -290,8 +290,8 @@ export default function SiteAnalytics() {
                 auditId: s.auditId,
                 completedAt: s.completedAt,
                 overallScore: overall,
-                totalIssues: 0, // Will be filled by waterfall data if available
-                pagesCrawled: 0,
+                totalIssues: s.totalIssues ?? 0,
+                pagesCrawled: s.pagesCrawled ?? 0,
               };
             })}
             onDotClick={(auditId) => navigate(`/app/audits/${auditId}`)}

@@ -10,6 +10,8 @@ export interface ScoreDataPoint {
   content: number | null;
   structuredData: number | null;
   cqs: number | null;
+  totalIssues?: number;
+  pagesCrawled?: number;
 }
 
 export interface ScoreSummary {

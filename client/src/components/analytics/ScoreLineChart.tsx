@@ -31,6 +31,7 @@ interface ChartDataPoint {
   content: number | null;
   structuredData: number | null;
   cqs: number | null;
+  pagesCrawled: number;
 }
 
 export function ScoreLineChart({
@@ -40,18 +41,24 @@ export function ScoreLineChart({
   onPointClick,
 }: ScoreLineChartProps) {
   const chartData = useMemo(() => {
-    return data.map(point => ({
-      date: point.completedAt,
-      formattedDate: format(parseISO(point.completedAt), 'MMM d'),
-      auditId: point.auditId,
-      seo: point.seo,
-      accessibility: point.accessibility,
-      security: point.security,
-      performance: point.performance,
-      content: point.content ?? null,
-      structuredData: point.structuredData ?? null,
-      cqs: point.cqs ?? null,
-    }));
+    return data.map(point => {
+      const pages = point.pagesCrawled ?? 0;
+      return {
+        date: point.completedAt,
+        formattedDate: pages > 0
+          ? `${format(parseISO(point.completedAt), 'MMM d')} (${pages}p)`
+          : format(parseISO(point.completedAt), 'MMM d'),
+        auditId: point.auditId,
+        seo: point.seo,
+        accessibility: point.accessibility,
+        security: point.security,
+        performance: point.performance,
+        content: point.content ?? null,
+        structuredData: point.structuredData ?? null,
+        cqs: point.cqs ?? null,
+        pagesCrawled: pages,
+      };
+    });
   }, [data]);
 
   const CustomTooltip = ({ active, payload }: any) => {
@@ -62,7 +69,10 @@ export function ScoreLineChart({
 
     return (
       <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-3">
-        <p className="text-sm font-medium text-slate-900 dark:text-white mb-2">{fullDate}</p>
+        <p className="text-sm font-medium text-slate-900 dark:text-white mb-1">{fullDate}</p>
+        {dataPoint.pagesCrawled > 0 && (
+          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">{dataPoint.pagesCrawled} page{dataPoint.pagesCrawled !== 1 ? 's' : ''} scanned</p>
+        )}
         <div className="space-y-1">
           {payload.map((entry: any) => (
             <div key={entry.dataKey} className="flex items-center justify-between gap-4 text-sm">

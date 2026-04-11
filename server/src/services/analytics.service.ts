@@ -116,6 +116,8 @@ export async function getSiteScoreHistory(options: ScoreHistoryOptions): Promise
     content_score: number | null;
     structured_data_score: number | null;
     cqs_score: number | null;
+    total_issues: number | null;
+    pages_crawled: number | null;
   }>(
     `SELECT
       id,
@@ -126,7 +128,9 @@ export async function getSiteScoreHistory(options: ScoreHistoryOptions): Promise
       performance_score,
       content_score,
       structured_data_score,
-      cqs_score
+      cqs_score,
+      total_issues,
+      pages_crawled
     FROM audit_jobs
     WHERE site_id = $1
       AND status = 'completed'
@@ -146,6 +150,8 @@ export async function getSiteScoreHistory(options: ScoreHistoryOptions): Promise
     content: row.content_score,
     structuredData: row.structured_data_score,
     cqs: row.cqs_score,
+    totalIssues: (row as any).total_issues ?? 0,
+    pagesCrawled: (row as any).pages_crawled ?? 0,
   }));
 
   // Calculate summary
@@ -1249,6 +1255,8 @@ export async function getUrlScoreHistory(options: UrlScoreHistoryOptions): Promi
     content: row.content_score,
     structuredData: row.structured_data_score,
     cqs: row.cqs_score,
+    totalIssues: (row as any).total_issues ?? 0,
+    pagesCrawled: (row as any).pages_crawled ?? 0,
   }));
 
   // Calculate summary
