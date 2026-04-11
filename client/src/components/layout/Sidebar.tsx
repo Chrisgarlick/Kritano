@@ -7,6 +7,7 @@ import {
   BarChart3,
   GitCompareArrows,
   CalendarClock,
+  ClipboardList,
   Key,
   Gift,
   Shield,
@@ -47,6 +48,7 @@ interface NavItem {
 const mainNavItems: NavItem[] = [
   { href: '/app/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/app/sites', label: 'Sites', icon: Globe },
+  { href: '/app/audits', label: 'Audits', icon: ClipboardList },
   { href: '/app/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/app/schedules', label: 'Schedules', icon: CalendarClock },
   { href: '/app/compare', label: 'Compare', icon: GitCompareArrows },
@@ -90,7 +92,10 @@ export function Sidebar() {
 
   const isActive = (path: string) => {
     if (path === '/app/sites') {
-      return location.pathname.startsWith('/app/sites') || location.pathname.startsWith('/app/audits');
+      return location.pathname.startsWith('/app/sites');
+    }
+    if (path === '/app/audits') {
+      return location.pathname.startsWith('/app/audits');
     }
     if (path === '/app/analytics') {
       return location.pathname.startsWith('/app/analytics');

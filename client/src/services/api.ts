@@ -1676,6 +1676,26 @@ export const analyticsApi = {
   getUserUrls: (search?: string, limit?: number) =>
     api.get<UserAuditedUrl[]>('/analytics/user-urls', { params: { search, limit } }),
 
+  // Issue waterfall for a site
+  getIssueWaterfall: (siteId: string) =>
+    api.get<{ steps: Array<{ auditId: string; completedAt: string; totalIssues: number; fixed: number; introduced: number }> }>(`/analytics/sites/${siteId}/waterfall`),
+
+  // Fix velocity for a site
+  getFixVelocity: (siteId: string) =>
+    api.get<{ points: Array<{ auditId: string; completedAt: string; cumulativeFixed: number; cumulativeNew: number; netChange: number }> }>(`/analytics/sites/${siteId}/fix-velocity`),
+
+  // Page finding heatmap
+  getPageHeatmap: (siteId: string, auditId: string) =>
+    api.get<{ pages: Array<{ pageId: string; url: string; categories: Record<string, { count: number; maxSeverity: string }> }> }>(`/analytics/sites/${siteId}/heatmap/${auditId}`),
+
+  // Response time distribution
+  getResponseTimeDistribution: (siteId: string, auditId: string) =>
+    api.get<{ buckets: Array<{ range: string; count: number; min: number; max: number }>; stats: { median: number; p75: number; p95: number; max: number; total: number } }>(`/analytics/sites/${siteId}/response-times/${auditId}`),
+
+  // Page size distribution
+  getPageSizeDistribution: (siteId: string, auditId: string) =>
+    api.get<{ pages: Array<{ url: string; sizeBytes: number; overBudget: boolean }>; stats: { median: number; total: number; overBudgetCount: number }; budgetBytes: number }>(`/analytics/sites/${siteId}/page-sizes/${auditId}`),
+
   // Compare two URLs side-by-side
   compareUrls: (urlSpecs: [{ siteId: string; urlId: string }, { siteId: string; urlId: string }]) =>
     api.get<UrlComparison>('/analytics/compare-urls', {

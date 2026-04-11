@@ -11,6 +11,11 @@ import {
   getUrlAnalytics,
   getUserAuditedUrls,
   compareUrls,
+  getIssueWaterfall,
+  getFixVelocity,
+  getPageHeatmap,
+  getResponseTimeDistribution,
+  getPageSizeDistribution,
   setPool as setAnalyticsPool,
 } from '../../services/analytics.service.js';
 import { Pool } from 'pg';
@@ -393,6 +398,86 @@ router.get('/compare-urls', async (req: Request, res: Response): Promise<void> =
       return;
     }
     res.status(500).json({ error: 'Failed to compare URLs' });
+  }
+});
+
+// =============================================
+// Issue Waterfall
+// =============================================
+
+router.get('/sites/:siteId/waterfall', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { siteId } = req.params;
+    const userId = req.user!.id;
+    const data = await getIssueWaterfall(siteId, userId);
+    res.json(data);
+  } catch (error) {
+    console.error('Issue waterfall error:', error);
+    res.status(500).json({ error: 'Failed to get issue waterfall' });
+  }
+});
+
+// =============================================
+// Fix Velocity
+// =============================================
+
+router.get('/sites/:siteId/fix-velocity', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { siteId } = req.params;
+    const userId = req.user!.id;
+    const data = await getFixVelocity(siteId, userId);
+    res.json(data);
+  } catch (error) {
+    console.error('Fix velocity error:', error);
+    res.status(500).json({ error: 'Failed to get fix velocity' });
+  }
+});
+
+// =============================================
+// Page Finding Heatmap
+// =============================================
+
+router.get('/sites/:siteId/heatmap/:auditId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { siteId, auditId } = req.params;
+    const userId = req.user!.id;
+    const data = await getPageHeatmap(siteId, auditId, userId);
+    res.json(data);
+  } catch (error) {
+    console.error('Page heatmap error:', error);
+    res.status(500).json({ error: 'Failed to get page heatmap' });
+  }
+});
+
+// =============================================
+// Response Time Distribution
+// =============================================
+
+router.get('/sites/:siteId/response-times/:auditId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { auditId } = req.params;
+    const userId = req.user!.id;
+    const data = await getResponseTimeDistribution(auditId, userId);
+    res.json(data);
+  } catch (error) {
+    console.error('Response time distribution error:', error);
+    res.status(500).json({ error: 'Failed to get response time distribution' });
+  }
+});
+
+// =============================================
+// Page Size Distribution
+// =============================================
+
+router.get('/sites/:siteId/page-sizes/:auditId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { auditId } = req.params;
+    const userId = req.user!.id;
+    const data = await getPageSizeDistribution(auditId, userId);
+    res.json(data);
+  } catch (error) {
+    console.error('Page size distribution error:', error);
+    res.status(500).json({ error: 'Failed to get page size distribution' });
   }
 });
 

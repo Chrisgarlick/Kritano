@@ -2397,3 +2397,271 @@ export async function compareUrls(
     findingsDiff,
   };
 }
+
+// =============================================
+// Issue Waterfall (fixed/new/remaining per audit pair)
+// =============================================
+
+export async function getIssueWaterfall(siteId: string, userId: string): Promise<{
+  steps: Array<{
+    auditId: string;
+    completedAt: string;
+    totalIssues: number;
+    fixed: number;
+    introduced: number;
+  }>;
+}> {
+  const result = await pool.query(
+    `SELECT id, completed_at, total_issues
+     FROM audit_jobs
+     WHERE site_id = (SELECT id FROM sites WHERE id = $1 AND user_id = $2)
+       AND status = 'completed'
+     ORDER BY completed_at ASC
+     LIMIT 20`,
+    [siteId, userId]
+  );
+
+  const audits = result.rows;
+  if (audits.length === 0) return { steps: [] };
+
+  const steps: Array<{
+    auditId: string;
+    completedAt: string;
+    totalIssues: number;
+    fixed: number;
+    introduced: number;
+  }> = [];
+
+  for (let i = 0; i < audits.length; i++) {
+    const audit = audits[i];
+    if (i === 0) {
+      steps.push({
+        auditId: audit.id,
+        completedAt: audit.completed_at,
+        totalIssues: audit.total_issues || 0,
+        fixed: 0,
+        introduced: audit.total_issues || 0,
+      });
+      continue;
+    }
+
+    const prev = audits[i - 1];
+    // Count findings that were in previous audit but not in current (fixed)
+    const fixedResult = await pool.query(
+      `SELECT COUNT(DISTINCT rule_id) as cnt
+       FROM audit_findings
+       WHERE audit_id = $1
+         AND rule_id NOT IN (SELECT DISTINCT rule_id FROM audit_findings WHERE audit_id = $2)`,
+      [prev.id, audit.id]
+    );
+    // Count findings that are in current but not in previous (new)
+    const newResult = await pool.query(
+      `SELECT COUNT(DISTINCT rule_id) as cnt
+       FROM audit_findings
+       WHERE audit_id = $1
+         AND rule_id NOT IN (SELECT DISTINCT rule_id FROM audit_findings WHERE audit_id = $2)`,
+      [audit.id, prev.id]
+    );
+
+    steps.push({
+      auditId: audit.id,
+      completedAt: audit.completed_at,
+      totalIssues: audit.total_issues || 0,
+      fixed: parseInt(fixedResult.rows[0].cnt) || 0,
+      introduced: parseInt(newResult.rows[0].cnt) || 0,
+    });
+  }
+
+  return { steps };
+}
+
+// =============================================
+// Fix Velocity (cumulative fixed vs new over time)
+// =============================================
+
+export async function getFixVelocity(siteId: string, userId: string): Promise<{
+  points: Array<{
+    auditId: string;
+    completedAt: string;
+    cumulativeFixed: number;
+    cumulativeNew: number;
+    netChange: number;
+  }>;
+}> {
+  const waterfall = await getIssueWaterfall(siteId, userId);
+  let cumulativeFixed = 0;
+  let cumulativeNew = 0;
+
+  const points = waterfall.steps.map(step => {
+    cumulativeFixed += step.fixed;
+    cumulativeNew += step.introduced;
+    return {
+      auditId: step.auditId,
+      completedAt: step.completedAt,
+      cumulativeFixed,
+      cumulativeNew,
+      netChange: cumulativeFixed - cumulativeNew,
+    };
+  });
+
+  return { points };
+}
+
+// =============================================
+// Page Finding Heatmap
+// =============================================
+
+export async function getPageHeatmap(siteId: string, auditId: string, userId: string): Promise<{
+  pages: Array<{
+    pageId: string;
+    url: string;
+    categories: Record<string, { count: number; maxSeverity: string }>;
+  }>;
+}> {
+  // Verify ownership
+  const siteCheck = await pool.query(
+    `SELECT 1 FROM sites WHERE id = $1 AND user_id = $2`,
+    [siteId, userId]
+  );
+  if (siteCheck.rows.length === 0) return { pages: [] };
+
+  const result = await pool.query(
+    `SELECT
+       ap.id as page_id,
+       ap.url,
+       f.category,
+       COUNT(*) as issue_count,
+       MAX(CASE
+         WHEN f.severity = 'critical' THEN 4
+         WHEN f.severity = 'serious' THEN 3
+         WHEN f.severity = 'moderate' THEN 2
+         WHEN f.severity = 'minor' THEN 1
+         ELSE 0
+       END) as max_severity_num,
+       MAX(f.severity) as max_severity
+     FROM audit_pages ap
+     LEFT JOIN audit_findings f ON f.audit_id = ap.audit_id AND f.page_id = ap.id
+     WHERE ap.audit_id = $1
+     GROUP BY ap.id, ap.url, f.category
+     ORDER BY ap.url`,
+    [auditId]
+  );
+
+  const pageMap: Record<string, {
+    pageId: string;
+    url: string;
+    categories: Record<string, { count: number; maxSeverity: string }>;
+  }> = {};
+
+  for (const row of result.rows) {
+    if (!pageMap[row.page_id]) {
+      pageMap[row.page_id] = { pageId: row.page_id, url: row.url, categories: {} };
+    }
+    if (row.category) {
+      pageMap[row.page_id].categories[row.category] = {
+        count: parseInt(row.issue_count),
+        maxSeverity: row.max_severity || 'none',
+      };
+    }
+  }
+
+  return { pages: Object.values(pageMap) };
+}
+
+// =============================================
+// Response Time Distribution
+// =============================================
+
+export async function getResponseTimeDistribution(auditId: string, userId: string): Promise<{
+  buckets: Array<{ range: string; count: number; min: number; max: number }>;
+  stats: { median: number; p75: number; p95: number; max: number; total: number };
+}> {
+  const result = await pool.query(
+    `SELECT ap.response_time_ms
+     FROM audit_pages ap
+     JOIN audit_jobs aj ON aj.id = ap.audit_id
+     JOIN sites s ON s.id = aj.site_id
+     WHERE ap.audit_id = $1 AND s.user_id = $2 AND ap.response_time_ms IS NOT NULL
+     ORDER BY ap.response_time_ms`,
+    [auditId, userId]
+  );
+
+  const times = result.rows.map(r => r.response_time_ms as number);
+  if (times.length === 0) {
+    return { buckets: [], stats: { median: 0, p75: 0, p95: 0, max: 0, total: 0 } };
+  }
+
+  // Build histogram buckets
+  const ranges = [
+    { range: '0-100ms', min: 0, max: 100 },
+    { range: '100-200ms', min: 100, max: 200 },
+    { range: '200-500ms', min: 200, max: 500 },
+    { range: '500ms-1s', min: 500, max: 1000 },
+    { range: '1-2s', min: 1000, max: 2000 },
+    { range: '2-5s', min: 2000, max: 5000 },
+    { range: '5s+', min: 5000, max: Infinity },
+  ];
+
+  const buckets = ranges.map(r => ({
+    ...r,
+    count: times.filter(t => t >= r.min && t < r.max).length,
+  }));
+
+  const percentile = (arr: number[], p: number) => {
+    const idx = Math.ceil(arr.length * p / 100) - 1;
+    return arr[Math.max(0, idx)];
+  };
+
+  return {
+    buckets,
+    stats: {
+      median: percentile(times, 50),
+      p75: percentile(times, 75),
+      p95: percentile(times, 95),
+      max: times[times.length - 1],
+      total: times.length,
+    },
+  };
+}
+
+// =============================================
+// Page Size Distribution
+// =============================================
+
+export async function getPageSizeDistribution(auditId: string, userId: string): Promise<{
+  pages: Array<{ url: string; sizeBytes: number; overBudget: boolean }>;
+  stats: { median: number; total: number; overBudgetCount: number };
+  budgetBytes: number;
+}> {
+  const BUDGET_BYTES = 500 * 1024; // 500KB default budget
+
+  const result = await pool.query(
+    `SELECT ap.url, ap.page_size_bytes
+     FROM audit_pages ap
+     JOIN audit_jobs aj ON aj.id = ap.audit_id
+     JOIN sites s ON s.id = aj.site_id
+     WHERE ap.audit_id = $1 AND s.user_id = $2 AND ap.page_size_bytes IS NOT NULL
+     ORDER BY ap.page_size_bytes DESC
+     LIMIT 50`,
+    [auditId, userId]
+  );
+
+  const pages = result.rows.map(r => ({
+    url: r.url as string,
+    sizeBytes: r.page_size_bytes as number,
+    overBudget: (r.page_size_bytes as number) > BUDGET_BYTES,
+  }));
+
+  const sizes = pages.map(p => p.sizeBytes).sort((a, b) => a - b);
+  const median = sizes.length > 0 ? sizes[Math.floor(sizes.length / 2)] : 0;
+
+  return {
+    pages,
+    stats: {
+      median,
+      total: pages.length,
+      overBudgetCount: pages.filter(p => p.overBudget).length,
+    },
+    budgetBytes: BUDGET_BYTES,
+  };
+}

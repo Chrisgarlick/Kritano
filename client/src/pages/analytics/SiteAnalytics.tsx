@@ -9,6 +9,9 @@ import { ScoreLineChart } from '../../components/analytics/ScoreLineChart';
 import { IssueTrendChart } from '../../components/analytics/IssueTrendChart';
 import { DateRangePicker } from '../../components/analytics/DateRangePicker';
 import { SiteSelector } from '../../components/analytics/SiteSelector';
+import { WaterfallChart } from '../../components/analytics/WaterfallChart';
+import { FixVelocityChart } from '../../components/analytics/FixVelocityChart';
+import { AuditTimeline } from '../../components/analytics/AuditTimeline';
 import { analyticsApi, sitesApi } from '../../services/api';
 import type { SiteWithStats, SiteUrl } from '../../types/site.types';
 import type { ScoreHistory, IssueTrends, TimeRange, GroupBy, TrendDirection, ScoreCategory } from '../../types/analytics.types';
@@ -80,6 +83,8 @@ export default function SiteAnalytics() {
   const [error, setError] = useState<string | null>(null);
   const [urlSortBy, setUrlSortBy] = useState<UrlSortBy>('last_audited_at');
   const [urlSortOrder, setUrlSortOrder] = useState<SortOrder>('desc');
+  const [waterfallSteps, setWaterfallSteps] = useState<Array<{ auditId: string; completedAt: string; totalIssues: number; fixed: number; introduced: number }>>([]);
+  const [fixVelocityPoints, setFixVelocityPoints] = useState<Array<{ auditId: string; completedAt: string; cumulativeFixed: number; cumulativeNew: number; netChange: number }>>([]);
 
   // Fetch all sites for the site selector
   useEffect(() => {
@@ -108,6 +113,15 @@ export default function SiteAnalytics() {
         setSite(siteRes.data.site);
         setScoreHistory(scoresRes.data);
         setIssueTrends(issuesRes.data);
+
+        // Fetch waterfall and fix velocity in background
+        Promise.all([
+          analyticsApi.getIssueWaterfall(siteId!),
+          analyticsApi.getFixVelocity(siteId!),
+        ]).then(([waterfallRes, velocityRes]) => {
+          setWaterfallSteps(waterfallRes.data.steps);
+          setFixVelocityPoints(velocityRes.data.points);
+        }).catch(() => { /* non-critical */ });
       } catch (err: any) {
         console.error('Failed to fetch site analytics:', err);
         setError('Failed to load site analytics');
@@ -265,6 +279,42 @@ export default function SiteAnalytics() {
             )}
           </div>
         </div>
+
+        {/* Audit Timeline */}
+        {scoreHistory.scores.length >= 2 && (
+          <AuditTimeline
+            audits={scoreHistory.scores.map(s => {
+              const mainScores = [s.seo, s.accessibility, s.security, s.performance].filter((v): v is number => v !== null);
+              const overall = mainScores.length > 0 ? Math.round(mainScores.reduce((a, b) => a + b, 0) / mainScores.length) : 0;
+              return {
+                auditId: s.auditId,
+                completedAt: s.completedAt,
+                overallScore: overall,
+                totalIssues: 0, // Will be filled by waterfall data if available
+                pagesCrawled: 0,
+              };
+            })}
+            onDotClick={(auditId) => navigate(`/app/audits/${auditId}`)}
+          />
+        )}
+
+        {/* Waterfall + Fix Velocity Row */}
+        {(waterfallSteps.length >= 2 || fixVelocityPoints.length >= 2) && (
+          <div className="grid lg:grid-cols-2 gap-6">
+            {waterfallSteps.length >= 2 && (
+              <WaterfallChart
+                steps={waterfallSteps}
+                onBarClick={(auditId) => navigate(`/app/audits/${auditId}`)}
+              />
+            )}
+            {fixVelocityPoints.length >= 2 && (
+              <FixVelocityChart
+                points={fixVelocityPoints}
+                onPointClick={(auditId) => navigate(`/app/audits/${auditId}`)}
+              />
+            )}
+          </div>
+        )}
 
         {/* URLs Table */}
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
