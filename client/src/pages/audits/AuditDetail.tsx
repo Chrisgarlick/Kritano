@@ -459,7 +459,7 @@ function PageAccordion({ page, auditId }: { page: AuditPage; auditId: string }) 
                 </a>
               </div>
               <button
-                onClick={() => navigate(`/audits/${auditId}/pages/${page.id}`)}
+                onClick={() => navigate(`/app/audits/${auditId}/pages/${page.id}`)}
                 className="mt-4 w-full px-4 py-2 bg-indigo-600 dark:bg-indigo-500 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors"
               >
                 View Full Details
@@ -843,7 +843,7 @@ export default function AuditDetailPage() {
       setDeleting(true);
       await auditsApi.delete(id);
       toast('Audit deleted', 'success');
-      navigate('/audits');
+      navigate('/app/audits');
     } catch (err) {
       setError('Failed to delete audit.');
       console.error('Failed to delete audit:', err);
@@ -858,7 +858,7 @@ export default function AuditDetailPage() {
       setRerunning(true);
       const response = await auditsApi.rerun(id);
       toast('New audit started', 'success');
-      navigate(`/audits/${response.data.audit.id}`);
+      navigate(`/app/audits/${response.data.audit.id}`);
     } catch (err) {
       toast('Failed to start new audit', 'error');
       console.error('Failed to re-run audit:', err);
@@ -934,7 +934,7 @@ export default function AuditDetailPage() {
     return (
       <DashboardLayout>
         <Alert variant="error">
-          Audit not found. <Link to="/audits" className="underline">Return to audits list</Link>
+          Audit not found. <Link to="/app/audits" className="underline">Return to audits list</Link>
         </Alert>
       </DashboardLayout>
     );
@@ -949,7 +949,7 @@ export default function AuditDetailPage() {
       <div className="mb-8 animate-reveal-up relative z-10">
         {/* Back link */}
         <Link
-          to="/sites"
+          to="/app/sites"
           className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200 mb-4 group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
@@ -1075,7 +1075,7 @@ export default function AuditDetailPage() {
                   variant="outline"
                   size="sm"
                   leftIcon={<FileText className="w-4 h-4" />}
-                  onClick={() => navigate(`/audits/${id}/statement`)}
+                  onClick={() => navigate(`/app/audits/${id}/statement`)}
                 >
                   Accessibility Statement
                 </Button>
@@ -1085,7 +1085,7 @@ export default function AuditDetailPage() {
                   variant="outline"
                   size="sm"
                   leftIcon={<ShieldCheck className="w-4 h-4" />}
-                  onClick={() => navigate(`/audits/${id}/compliance`)}
+                  onClick={() => navigate(`/app/audits/${id}/compliance`)}
                 >
                   EAA Compliance
                 </Button>

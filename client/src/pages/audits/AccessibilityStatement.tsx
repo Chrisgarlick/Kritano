@@ -377,7 +377,7 @@ export default function AccessibilityStatementPage() {
         <div className="max-w-3xl mx-auto">
           <div className="mb-6">
             <Link
-              to={`/audits/${id}`}
+              to={`/app/audits/${id}`}
               className="inline-flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -396,7 +396,7 @@ export default function AccessibilityStatementPage() {
             </Body>
             <Button
               variant="primary"
-              onClick={() => navigate('/settings/billing')}
+              onClick={() => navigate('/app/settings/billing')}
             >
               Upgrade Plan
             </Button>
@@ -418,7 +418,7 @@ export default function AccessibilityStatementPage() {
         {/* Header */}
         <div className="mb-6">
           <Link
-            to={`/audits/${id}`}
+            to={`/app/audits/${id}`}
             className="inline-flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -493,7 +493,7 @@ export default function AccessibilityStatementPage() {
             </Body>
             <Button
               variant="primary"
-              onClick={() => navigate('/settings/billing')}
+              onClick={() => navigate('/app/settings/billing')}
             >
               Upgrade Plan
             </Button>

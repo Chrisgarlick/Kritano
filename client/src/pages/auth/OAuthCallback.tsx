@@ -40,11 +40,11 @@ export default function OAuthCallbackPage() {
         if (isLinkMode) {
           await authApi.linkProvider(provider, code, state);
           await refreshUser();
-          navigate('/settings/profile', { replace: true });
+          navigate('/app/settings/profile', { replace: true });
         } else {
           await authApi.oauthCallback(provider, code, state);
           await refreshUser();
-          navigate('/dashboard', { replace: true });
+          navigate('/app/dashboard', { replace: true });
         }
       } catch (err) {
         const axiosError = err as AxiosError<ErrorResponse>;

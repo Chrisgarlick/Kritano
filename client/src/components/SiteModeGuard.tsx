@@ -119,8 +119,13 @@ export function SiteModeGuard({ children }: { children: ReactNode }) {
       return <Navigate to="/waitlist" replace />;
     }
 
-    // Everything else (dashboard, audits, sites, settings, etc.): redirect to home
-    return <Navigate to="/" replace />;
+    // App routes: redirect to home (not accessible in waitlist mode)
+    if (path.startsWith('/app')) {
+      return <Navigate to="/" replace />;
+    }
+
+    // Everything else: let through to React Router (will show 404 for unknown routes)
+    return <>{children}</>;
   }
 
   // ---- EARLY ACCESS MODE ----

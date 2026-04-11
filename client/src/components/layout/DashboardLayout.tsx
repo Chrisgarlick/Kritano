@@ -56,7 +56,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 </p>
               </div>
               <Link
-                to="/settings/profile"
+                to="/app/settings/profile"
                 className="flex items-center gap-1 text-sm font-medium hover:underline flex-shrink-0"
               >
                 Upgrade <ArrowRight className="w-3.5 h-3.5" />

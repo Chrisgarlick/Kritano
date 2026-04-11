@@ -977,7 +977,7 @@ export async function markSiteVerified(
           firstName: site.first_name || 'there',
           domain: site.domain,
           verificationMethod: method === 'dns' ? 'DNS TXT record' : 'verification file',
-          siteUrl: `${appUrl}/sites/${site.id}`,
+          siteUrl: `${appUrl}/app/sites/${site.id}`,
           verifiedDate: new Date().toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'long',

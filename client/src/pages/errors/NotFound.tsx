@@ -1,8 +1,7 @@
 /**
  * 404 Not Found Page
  *
- * Displayed when a user navigates to a non-existent route.
- * Features the Kritano brand aesthetic with helpful navigation.
+ * Context-aware: shows public layout for visitors, app layout for authenticated users.
  */
 
 import { Helmet } from 'react-helmet-async';
@@ -10,22 +9,34 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Home, ArrowLeft, Search } from 'lucide-react';
 import { Display, Body } from '../../components/ui/Typography';
 import { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import { PublicLayout } from '../../components/layout/PublicLayout';
 
-export default function NotFoundPage() {
+function useIsAppRoute() {
+  const path = window.location.pathname;
+  return path.startsWith('/app') || path.startsWith('/admin');
+}
+
+function NotFoundContent() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const isAppRoute = useIsAppRoute();
+  const showAppVersion = isAuthenticated && isAppRoute;
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/sites?search=${encodeURIComponent(searchQuery)}`);
+      if (showAppVersion) {
+        navigate(`/app/sites?search=${encodeURIComponent(searchQuery)}`);
+      } else {
+        navigate(`/blog?search=${encodeURIComponent(searchQuery)}`);
+      }
     }
   };
 
   return (
-    <>
-      <Helmet><title>Page Not Found | Kritano</title></Helmet>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center px-4">
+    <div className="min-h-[60vh] flex items-center justify-center px-4 py-16">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-3xl" />
@@ -49,7 +60,6 @@ export default function NotFoundPage() {
               viewBox="0 0 400 100"
               preserveAspectRatio="none"
             >
-              {/* Flatline with blip */}
               <path
                 d="M0,50 L120,50 L140,50 L150,20 L160,80 L170,35 L180,65 L190,50 L200,50 L400,50"
                 fill="none"
@@ -79,8 +89,8 @@ export default function NotFoundPage() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
             <input
               type="text"
-              placeholder="Search for a site..."
-              aria-label="Search for a site"
+              placeholder={showAppVersion ? 'Search for a site...' : 'Search the blog...'}
+              aria-label={showAppVersion ? 'Search for a site' : 'Search the blog'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
@@ -99,11 +109,11 @@ export default function NotFoundPage() {
           </button>
 
           <Link
-            to="/dashboard"
+            to={showAppVersion ? '/app/dashboard' : '/'}
             className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
           >
             <Home className="w-4 h-4" />
-            Dashboard
+            {showAppVersion ? 'Dashboard' : 'Home'}
           </Link>
         </div>
 
@@ -113,28 +123,57 @@ export default function NotFoundPage() {
             Looking for something specific?
           </Body>
           <div className="flex items-center justify-center gap-6 text-sm">
-            <Link
-              to="/sites"
-              className="text-indigo-600 dark:text-indigo-400 hover:underline"
-            >
-              Your Sites
-            </Link>
-            <Link
-              to="/audits"
-              className="text-indigo-600 dark:text-indigo-400 hover:underline"
-            >
-              Audits
-            </Link>
-            <Link
-              to="/settings"
-              className="text-indigo-600 dark:text-indigo-400 hover:underline"
-            >
-              Settings
-            </Link>
+            {showAppVersion ? (
+              <>
+                <Link to="/app/sites" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                  Your Sites
+                </Link>
+                <Link to="/app/audits" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                  Audits
+                </Link>
+                <Link to="/app/settings" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                  Settings
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/blog" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                  Blog
+                </Link>
+                <Link to="/services" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                  Services
+                </Link>
+                <Link to="/about" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                  About
+                </Link>
+                <Link to="/contact" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                  Contact
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function NotFoundPage() {
+  const isAppRoute = useIsAppRoute();
+  const { isAuthenticated } = useAuth();
+
+  return (
+    <>
+      <Helmet><title>Page Not Found | Kritano</title></Helmet>
+      {isAuthenticated && isAppRoute ? (
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+          <NotFoundContent />
+        </div>
+      ) : (
+        <PublicLayout>
+          <NotFoundContent />
+        </PublicLayout>
+      )}
     </>
   );
 }

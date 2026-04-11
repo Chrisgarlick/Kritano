@@ -478,8 +478,8 @@ router.post('/subscription/checkout', authenticate, async (req: Request, res: Re
       customerId: subResult.rows[0]?.stripe_customer_id || undefined,
       customerEmail: user.email,
       discountPercent: user.discount_percent || 0,
-      successUrl: `${appUrl}/settings/profile?checkout=success`,
-      cancelUrl: `${appUrl}/settings/profile?checkout=canceled`,
+      successUrl: `${appUrl}/app/settings/profile?checkout=success`,
+      cancelUrl: `${appUrl}/app/settings/profile?checkout=canceled`,
     });
 
     res.json({ url: session.url });
@@ -509,7 +509,7 @@ router.post('/subscription/portal', authenticate, async (req: Request, res: Resp
     const appUrl = process.env.APP_URL || 'http://localhost:3000';
     const session = await createPortalSession(
       subResult.rows[0].stripe_customer_id,
-      `${appUrl}/settings/profile`
+      `${appUrl}/app/settings/profile`
     );
 
     res.json({ url: session.url });

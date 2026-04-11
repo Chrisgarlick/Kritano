@@ -94,7 +94,7 @@ export function ComplianceWidget({
           )}
         </div>
         <Link
-          to={`/audits/${auditId}/compliance`}
+          to={`/app/audits/${auditId}/compliance`}
           className="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/20 rounded"
         >
           View Report

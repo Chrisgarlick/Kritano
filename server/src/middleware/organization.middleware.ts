@@ -175,7 +175,7 @@ export function requireTier(...allowedTiers: string[]) {
         error: 'Feature not available on your plan',
         required: allowedTiers,
         current: orgReq.subscription.tier,
-        upgradeUrl: `/org/${orgReq.organizationId}/settings/billing`,
+        upgradeUrl: `/app/settings/billing`,
       });
       return;
     }
@@ -208,7 +208,7 @@ export function requireFeature(feature: keyof TierLimits) {
       res.status(403).json({
         error: `This feature (${feature}) is not available on your plan`,
         current: orgReq.subscription?.tier,
-        upgradeUrl: `/org/${orgReq.organizationId}/settings/billing`,
+        upgradeUrl: `/app/settings/billing`,
       });
       return;
     }

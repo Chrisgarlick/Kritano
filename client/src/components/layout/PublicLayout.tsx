@@ -240,7 +240,7 @@ export function PublicLayout({ children }: Props) {
             <div className="hidden md:flex items-center gap-6">
               {showDashboard ? (
                 <Link
-                  to="/dashboard"
+                  to="/app/dashboard"
                   className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-sm"
                 >
                   Dashboard
@@ -372,7 +372,7 @@ export function PublicLayout({ children }: Props) {
               <div className="pt-4 border-t border-slate-100 dark:border-slate-700/50 space-y-3">
                 {showDashboard ? (
                   <Link
-                    to="/dashboard"
+                    to="/app/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
                     className="block w-full text-center px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium"
                   >

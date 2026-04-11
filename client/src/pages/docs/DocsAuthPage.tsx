@@ -19,7 +19,7 @@ export default function DocsAuthPage() {
           <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Authentication</h1>
           <p className="text-slate-600 dark:text-slate-400 mb-6">
             The Kritano API uses API keys to authenticate requests. You can create and manage API keys from your{' '}
-            <Link to="/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Settings &rarr; API Keys</Link> page.
+            <Link to="/app/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Settings &rarr; API Keys</Link> page.
           </p>
 
           <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3">API Key Format</h2>
@@ -156,7 +156,7 @@ export default function DocsAuthPage() {
           <div className="space-y-4 text-sm text-slate-600">
             <div className="flex gap-3">
               <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">1</div>
-              <div><strong className="text-slate-800">Creating keys:</strong> Go to <Link to="/settings/api-keys" className="text-indigo-600 hover:underline">Settings &rarr; API Keys</Link>. Give the key a name and select its scopes. The full key is shown only once — copy it immediately.</div>
+              <div><strong className="text-slate-800">Creating keys:</strong> Go to <Link to="/app/settings/api-keys" className="text-indigo-600 hover:underline">Settings &rarr; API Keys</Link>. Give the key a name and select its scopes. The full key is shown only once — copy it immediately.</div>
             </div>
             <div className="flex gap-3">
               <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">2</div>

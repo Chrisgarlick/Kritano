@@ -438,7 +438,7 @@ export default function SiteComparison() {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
-              <Link to="/analytics" className="hover:text-indigo-600 dark:hover:text-indigo-400">&larr; Analytics</Link>
+              <Link to="/app/analytics" className="hover:text-indigo-600 dark:hover:text-indigo-400">&larr; Analytics</Link>
             </div>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Layers className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />

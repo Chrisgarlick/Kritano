@@ -236,7 +236,7 @@ export default function AnalyticsDashboard() {
             <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-md mx-auto">
               Add your first site and run an audit to start tracking your website's health and performance over time.
             </p>
-            <Button variant="accent" onClick={() => navigate('/sites')}>
+            <Button variant="accent" onClick={() => navigate('/app/sites')}>
               Add Your First Site
             </Button>
           </div>
@@ -265,14 +265,14 @@ export default function AnalyticsDashboard() {
               sites={sites}
               value={null}
               onChange={(id) => {
-                if (id) navigate(`/analytics/sites/${id}`);
+                if (id) navigate(`/app/analytics/sites/${id}`);
               }}
               placeholder="Jump to site..."
             />
             {sites.length >= 2 && (
               <Button
                 variant="outline"
-                onClick={() => navigate('/analytics/compare-sites')}
+                onClick={() => navigate('/app/analytics/compare-sites')}
               >
                 Compare Sites
               </Button>
@@ -324,7 +324,7 @@ export default function AnalyticsDashboard() {
               {overview.sitesNeedingAttention.map(site => (
                 <button
                   key={site.id}
-                  onClick={() => navigate(`/analytics/sites/${site.id}`)}
+                  onClick={() => navigate(`/app/analytics/sites/${site.id}`)}
                   className="inline-flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-slate-800 rounded-lg border border-amber-200 dark:border-amber-800 text-sm text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-colors"
                 >
                   {site.name}
@@ -345,7 +345,7 @@ export default function AnalyticsDashboard() {
             <p className="text-slate-500 dark:text-slate-400 mb-4">
               Add a site and run audits to see analytics data here.
             </p>
-            <Button onClick={() => navigate('/sites')}>
+            <Button onClick={() => navigate('/app/sites')}>
               Manage Sites
             </Button>
           </div>
@@ -358,7 +358,7 @@ export default function AnalyticsDashboard() {
                   key={site.id}
                   site={site}
                   trend={overview.siteTrends?.[site.id] || 'stable'}
-                  onClick={() => navigate(`/analytics/sites/${site.id}`)}
+                  onClick={() => navigate(`/app/analytics/sites/${site.id}`)}
                 />
               ))}
             </div>
@@ -373,7 +373,7 @@ export default function AnalyticsDashboard() {
               {overview.recentActivity.map((activity) => (
                 <div
                   key={activity.auditId}
-                  onClick={() => navigate(`/audits/${activity.auditId}`)}
+                  onClick={() => navigate(`/app/audits/${activity.auditId}`)}
                   className="p-4 rounded-lg border border-slate-100 dark:border-slate-700/50 hover:border-indigo-200 dark:hover:border-indigo-800 hover:shadow-sm cursor-pointer transition-all group"
                 >
                   <div className="flex items-start justify-between gap-4">

@@ -366,7 +366,7 @@ export default function NewAuditPage() {
       });
 
       // Navigate to the audit detail page
-      navigate(`/audits/${response.data.audit.id}`);
+      navigate(`/app/audits/${response.data.audit.id}`);
     } catch (err: unknown) {
       const axiosError = err as { response?: { data?: { error?: string; code?: string } } };
 
@@ -619,7 +619,7 @@ export default function NewAuditPage() {
                 <p className="text-sm font-medium text-amber-800 dark:text-amber-300">Unverified domain</p>
                 <p className="text-sm text-amber-700 dark:text-amber-400 mt-0.5">
                   Multi-page audits require domain verification. You can run a single page audit, or{' '}
-                  <a href="/settings/domains" className="underline hover:text-amber-900">verify this domain</a>{' '}
+                  <a href="/app/settings/domains" className="underline hover:text-amber-900">verify this domain</a>{' '}
                   to unlock full audits.
                 </p>
               </div>
@@ -863,9 +863,9 @@ export default function NewAuditPage() {
               onClick={() => {
                 // If we came from a site, go back there; otherwise go to sites list
                 if (siteIdParam) {
-                  navigate(`/sites/${siteIdParam}`);
+                  navigate(`/app/sites/${siteIdParam}`);
                 } else {
-                  navigate('/sites');
+                  navigate('/app/sites');
                 }
               }}
               disabled={loading}

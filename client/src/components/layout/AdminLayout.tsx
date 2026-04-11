@@ -152,7 +152,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       <div className="mx-4 h-px bg-gradient-to-r from-transparent via-slate-600/50 to-transparent" />
       <div className="px-4 py-4">
         <Link
-          to="/dashboard"
+          to="/app/dashboard"
           className="flex items-center space-x-2.5 px-3 py-2 text-[13px] text-slate-500 hover:text-slate-300 rounded-lg hover:bg-white/[0.03] transition-all duration-200"
         >
           <ArrowLeft className="w-3.5 h-3.5" />

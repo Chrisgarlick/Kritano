@@ -58,7 +58,7 @@ export default function VerifyEmailPage() {
             <h1 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Email Verified</h1>
             <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">{message}</p>
             <Link
-              to="/dashboard"
+              to="/app/dashboard"
               className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition"
             >
               Go to Dashboard

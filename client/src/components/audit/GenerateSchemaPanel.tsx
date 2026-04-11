@@ -149,7 +149,7 @@ export function GenerateSchemaPanel({ auditId, pages, isFreeUser }: GenerateSche
         <p className="text-sm text-slate-500 dark:text-slate-500 mb-4">
           Upgrade to Starter to automatically generate JSON-LD structured data for your pages.
         </p>
-        <Button variant="primary" size="sm" onClick={() => window.location.href = '/settings/billing'}>
+        <Button variant="primary" size="sm" onClick={() => window.location.href = '/app/settings/billing'}>
           Upgrade to Starter
         </Button>
       </div>

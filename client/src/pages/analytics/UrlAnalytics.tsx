@@ -58,7 +58,7 @@ export default function UrlAnalytics() {
         siteId,
         options: { maxPages: 1 },
       });
-      navigate(`/audits/${response.data.audit.id}`);
+      navigate(`/app/audits/${response.data.audit.id}`);
     } catch (err: any) {
       console.error('Failed to start audit:', err);
       setError('Failed to start audit');
@@ -104,12 +104,12 @@ export default function UrlAnalytics() {
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm flex-wrap">
-          <Link to="/analytics" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
+          <Link to="/app/analytics" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
             Analytics
           </Link>
           <ChevronRight className="w-4 h-4 text-slate-500" />
           <Link
-            to={`/analytics/sites/${siteId}`}
+            to={`/app/analytics/sites/${siteId}`}
             className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
           >
             {site.name}
@@ -170,7 +170,7 @@ export default function UrlAnalytics() {
           {data.scoreHistory.scores.length > 0 ? (
             <ScoreLineChart
               data={data.scoreHistory.scores}
-              onPointClick={(auditId) => navigate(`/audits/${auditId}`)}
+              onPointClick={(auditId) => navigate(`/app/audits/${auditId}`)}
             />
           ) : (
             <div className="flex items-center justify-center h-[300px] text-slate-500 dark:text-slate-400">
@@ -219,7 +219,7 @@ export default function UrlAnalytics() {
                   {data.recentAudits.map(audit => (
                     <tr
                       key={audit.id}
-                      onClick={() => navigate(`/audits/${audit.id}`)}
+                      onClick={() => navigate(`/app/audits/${audit.id}`)}
                       className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors"
                     >
                       <td className="py-3 px-4">

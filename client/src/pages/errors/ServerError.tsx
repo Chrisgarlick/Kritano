@@ -172,7 +172,7 @@ export default function ServerErrorPage({
           </Button>
 
           <Link
-            to="/dashboard"
+            to="/app/dashboard"
             className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
           >
             <Home className="w-4 h-4" />

@@ -287,7 +287,7 @@ async function sendReferralEmails(referral: Referral & Record<string, unknown>, 
         referredName: `${referred.first_name} ${referred.last_name}`,
         bonusAudits: String(referrerBonus),
         totalBonusAudits: String(referrer.referral_bonus_audits),
-        referralsUrl: `${APP_URL}/referrals`,
+        referralsUrl: `${APP_URL}/app/referrals`,
       },
     });
   } catch (err) {
@@ -303,7 +303,7 @@ async function sendReferralEmails(referral: Referral & Record<string, unknown>, 
         firstName: referred.first_name,
         referrerName: referrer.first_name,
         bonusAudits: String(referredBonus),
-        dashboardUrl: `${APP_URL}/dashboard`,
+        dashboardUrl: `${APP_URL}/app/dashboard`,
       },
     });
   } catch (err) {
@@ -372,7 +372,7 @@ async function checkMilestones(referrerId: string, config: ReferralConfig): Prom
         milestoneCount: milestoneKey,
         rewardTier: milestone.tier.charAt(0).toUpperCase() + milestone.tier.slice(1),
         rewardDays: String(milestone.days),
-        referralsUrl: `${APP_URL}/referrals`,
+        referralsUrl: `${APP_URL}/app/referrals`,
       },
     });
   } catch (err) {

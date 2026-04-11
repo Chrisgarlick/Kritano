@@ -419,7 +419,7 @@ function buildSystemVariables(
     email,
     appUrl: APP_URL,
     unsubscribeUrl: `${APP_URL}/email/unsubscribe?token=${unsubscribeToken}`,
-    preferencesUrl: `${APP_URL}/settings/notifications`,
+    preferencesUrl: `${APP_URL}/app/settings/notifications`,
     currentYear: new Date().getFullYear().toString(),
   };
 }
@@ -457,7 +457,7 @@ export async function renderPreview(
     currentYear: new Date().getFullYear().toString(),
     domain: 'example.com',
     auditId: '00000000-0000-0000-0000-000000000000',
-    auditUrl: `${APP_URL}/audits/00000000-0000-0000-0000-000000000000`,
+    auditUrl: `${APP_URL}/app/audits/00000000-0000-0000-0000-000000000000`,
     targetUrl: 'https://example.com',
     statusText: 'Completed',
     statusMessage: 'completed successfully',

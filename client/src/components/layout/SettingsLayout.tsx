@@ -25,27 +25,27 @@ interface NavItem {
 const settingsNav: NavItem[] = [
   {
     label: 'Profile',
-    href: '/settings/profile',
+    href: '/app/settings/profile',
     icon: User,
   },
   {
     label: 'My Sites',
-    href: '/settings/sites',
+    href: '/app/settings/sites',
     icon: Globe,
   },
   {
     label: 'Branding',
-    href: '/settings/branding',
+    href: '/app/settings/branding',
     icon: Palette,
   },
   {
     label: 'Notifications',
-    href: '/settings/notifications',
+    href: '/app/settings/notifications',
     icon: Bell,
   },
   {
     label: 'API Keys',
-    href: '/settings/api-keys',
+    href: '/app/settings/api-keys',
     icon: Key,
   },
 ];

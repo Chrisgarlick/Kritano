@@ -336,7 +336,7 @@ export default function SiteDetailPage() {
     try {
       await sitesApi.delete(siteId);
       toast('Site deleted', 'success');
-      navigate('/sites');
+      navigate('/app/sites');
     } catch (err: any) {
       toast(err.response?.data?.error || 'Failed to delete site', 'error');
     }
@@ -481,7 +481,7 @@ export default function SiteDetailPage() {
       <DashboardLayout>
         <div className="max-w-6xl mx-auto">
           <Alert variant="error">{error || 'Site not found'}</Alert>
-          <Link to="/sites" className="text-indigo-600 hover:underline mt-4 inline-block">
+          <Link to="/app/sites" className="text-indigo-600 hover:underline mt-4 inline-block">
             &larr; Back to Sites
           </Link>
         </div>
@@ -515,7 +515,7 @@ export default function SiteDetailPage() {
         <div className="flex items-start justify-between">
           <div>
             <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-500 mb-2">
-              <Link to="/sites" className="hover:text-indigo-600">&larr; Sites</Link>
+              <Link to="/app/sites" className="hover:text-indigo-600">&larr; Sites</Link>
             </div>
             <div className="flex items-center gap-3">
               <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{site.name}</h1>
@@ -545,7 +545,7 @@ export default function SiteDetailPage() {
               </Button>
             )}
             {canEdit && (
-              <Button onClick={() => navigate(`/audits/new?domain=${encodeURIComponent(site.domain)}&siteId=${site.id}`)}>
+              <Button onClick={() => navigate(`/app/audits/new?domain=${encodeURIComponent(site.domain)}&siteId=${site.id}`)}>
                 Run Audit
               </Button>
             )}
@@ -622,7 +622,7 @@ export default function SiteDetailPage() {
                     {audits.slice(0, 5).map(audit => (
                       <li key={audit.id}>
                         <Link
-                          to={`/audits/${audit.id}`}
+                          to={`/app/audits/${audit.id}`}
                           className="flex justify-between items-center text-sm hover:bg-slate-50 dark:hover:bg-slate-700/50 -mx-2 px-2 py-1 rounded"
                         >
                           <span className="text-slate-700 dark:text-slate-300">{formatDate(audit.createdAt)}</span>
@@ -668,7 +668,7 @@ export default function SiteDetailPage() {
                 {auditsPagination.total} total audits
               </span>
               {canEdit && (
-                <Button onClick={() => navigate(`/audits/new?domain=${encodeURIComponent(site.domain)}&siteId=${site.id}`)}>
+                <Button onClick={() => navigate(`/app/audits/new?domain=${encodeURIComponent(site.domain)}&siteId=${site.id}`)}>
                   Run New Audit
                 </Button>
               )}
@@ -682,7 +682,7 @@ export default function SiteDetailPage() {
                   <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-2">No audits yet</h3>
                   <p className="text-slate-500 dark:text-slate-500 mb-4">Run your first audit to see results.</p>
                   {canEdit && (
-                    <Button onClick={() => navigate(`/audits/new?domain=${encodeURIComponent(site.domain)}&siteId=${site.id}`)}>
+                    <Button onClick={() => navigate(`/app/audits/new?domain=${encodeURIComponent(site.domain)}&siteId=${site.id}`)}>
                       Run First Audit
                     </Button>
                   )}
@@ -736,7 +736,7 @@ export default function SiteDetailPage() {
                           ) : '-'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                          <Link to={`/audits/${audit.id}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                          <Link to={`/app/audits/${audit.id}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">
                             View
                           </Link>
                         </td>
@@ -982,7 +982,7 @@ export default function SiteDetailPage() {
                   <ScoreLineChart
                     data={analyticsData.scores}
                     height={350}
-                    onPointClick={(auditId) => navigate(`/audits/${auditId}`)}
+                    onPointClick={(auditId) => navigate(`/app/audits/${auditId}`)}
                   />
                 </div>
 
@@ -1211,7 +1211,7 @@ export default function SiteDetailPage() {
                     <div className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600">
                       <p className="text-sm text-slate-600 dark:text-slate-400">
                         Public badges are available on the Starter plan and above.{' '}
-                        <Link to="/settings/profile" className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 font-medium">
+                        <Link to="/app/settings/profile" className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 font-medium">
                           Upgrade your plan
                         </Link>
                       </p>

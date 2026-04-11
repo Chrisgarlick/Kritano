@@ -96,7 +96,7 @@ export default function DashboardPage() {
     ? Math.round(completedAudits.reduce((sum, a) => sum + (getOverallScore(a) || 0), 0) / completedAudits.length)
     : null;
 
-  const handleNewAudit = () => navigate('/audits/new');
+  const handleNewAudit = () => navigate('/app/audits/new');
 
   return (
     <DashboardLayout>
@@ -168,7 +168,7 @@ export default function DashboardPage() {
                         Based on {completedAudits.length} completed audit{completedAudits.length !== 1 ? 's' : ''}
                       </Body>
                       <div className="mt-4 flex items-center gap-4">
-                        <Link to="/sites" className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+                        <Link to="/app/sites" className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
                           View all sites <ArrowRight className="w-4 h-4" />
                         </Link>
                       </div>
@@ -186,14 +186,14 @@ export default function DashboardPage() {
                   value={stats.total}
                   icon={<FileSearch className="w-5 h-5" />}
                   iconBg="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-                  onClick={() => navigate('/sites')}
+                  onClick={() => navigate('/app/sites')}
                 />
                 <StatCard
                   label="Sites Monitored"
                   value={stats.sites}
                   icon={<Globe className="w-5 h-5" />}
                   iconBg="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
-                  onClick={() => navigate('/sites')}
+                  onClick={() => navigate('/app/sites')}
                 />
                 <StatCard
                   label="Issues Found"
@@ -219,7 +219,7 @@ export default function DashboardPage() {
                     <Heading size="sm" as="h3">Recent Audits</Heading>
                   </div>
                   <Link
-                    to="/sites"
+                    to="/app/sites"
                     className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
                   >
                     View all <ArrowRight className="w-4 h-4" />
@@ -230,7 +230,7 @@ export default function DashboardPage() {
                   {recentAudits.map((audit, index) => (
                     <li key={audit.id} className={`animate-reveal-up stagger-${index + 4}`}>
                       <Link
-                        to={`/audits/${audit.id}`}
+                        to={`/app/audits/${audit.id}`}
                         className="group block px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                       >
                         <div className="flex items-center justify-between">

@@ -220,7 +220,7 @@ export class EmailService {
             statusText,
             statusMessage: isSuccess ? 'completed successfully' : 'failed',
             auditId: audit.id,
-            auditUrl: `${this.appUrl}/audits/${audit.id}`,
+            auditUrl: `${this.appUrl}/app/audits/${audit.id}`,
             totalIssues: String(audit.total_issues || 0),
             criticalIssues: String(audit.critical_issues || 0),
             seoScore: String(audit.seo_score || 0),
@@ -310,7 +310,7 @@ export class EmailService {
    * Send payment failure (dunning) notification email.
    */
   async sendPaymentFailedEmail(email: string, firstName: string): Promise<void> {
-    const billingUrl = `${this.appUrl}/settings/billing`;
+    const billingUrl = `${this.appUrl}/app/settings/billing`;
     const subject = 'Action needed: Your Kritano payment was unsuccessful';
     const footer = this.buildEmailFooter();
     const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="text-align: center; margin-bottom: 30px;"><h1 style="color: #4f46e5; margin: 0;">Kritano</h1></div><h2 style="color: #1f2937;">Hi ${firstName},</h2><p>We were unable to process your most recent subscription payment. This can happen for a number of reasons, such as an expired card or insufficient funds.</p><p>Your account is still active, but to avoid any interruption to your service, please update your payment method at your earliest convenience.</p><div style="text-align: center; margin: 30px 0;"><a href="${billingUrl}" style="background-color: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">Update Payment Method</a></div><p style="color: #6b7280; font-size: 14px;">If you believe this is an error or need assistance, please don't hesitate to reach out to our support team.</p>${footer}</body></html>`;
@@ -349,7 +349,7 @@ export class EmailService {
   }
 
   private buildAuditHtml(firstName: string, audit: { id: string; target_url: string; target_domain: string; status: string; total_issues: number; critical_issues: number; seo_score: number | null; accessibility_score: number | null; security_score: number | null; performance_score: number | null }): string {
-    const viewUrl = `${this.appUrl}/audits/${audit.id}`;
+    const viewUrl = `${this.appUrl}/app/audits/${audit.id}`;
     const isSuccess = audit.status === 'completed';
     const statusText = isSuccess ? 'Completed' : 'Failed';
     const scoreRow = (label: string, score: number | null) => {
@@ -357,7 +357,7 @@ export class EmailService {
       const color = score >= 80 ? '#22c55e' : score >= 50 ? '#eab308' : '#ef4444';
       return `<tr><td style="padding: 8px 16px; border-bottom: 1px solid #e5e7eb;">${label}</td><td style="padding: 8px 16px; border-bottom: 1px solid #e5e7eb; color: ${color}; font-weight: 600;">${score}/100</td></tr>`;
     };
-    const unsubscribeUrl = `${this.appUrl}/settings/notifications`;
+    const unsubscribeUrl = `${this.appUrl}/app/settings/notifications`;
     const footer = this.buildEmailFooter(true, unsubscribeUrl);
     return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="text-align: center; margin-bottom: 30px;"><h1 style="color: #4f46e5; margin: 0;">Kritano</h1></div><h2 style="color: #1f2937;">Hi ${firstName},</h2><p>Your audit of <strong>${audit.target_url}</strong> has ${isSuccess ? 'completed successfully' : 'failed'}.</p>${isSuccess ? `<div style="background: #f9fafb; border-radius: 8px; padding: 20px; margin: 20px 0;"><p style="margin: 8px 0;"><strong>Issues Found:</strong> ${audit.total_issues} (${audit.critical_issues} critical)</p><table style="width: 100%; border-collapse: collapse;">${scoreRow('SEO', audit.seo_score)}${scoreRow('Accessibility', audit.accessibility_score)}${scoreRow('Security', audit.security_score)}${scoreRow('Performance', audit.performance_score)}</table></div>` : ''}<div style="text-align: center; margin: 30px 0;"><a href="${viewUrl}" style="background-color: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">View Audit Results</a></div>${footer}<p style="color: #9ca3af; font-size: 12px; text-align: center;">You're receiving this email because you have audit notifications enabled.</p></body></html>`;
   }

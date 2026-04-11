@@ -278,7 +278,7 @@ export function ContentAnalysisPanel({
               return (
                 <a
                   key={item.key}
-                  href="/settings/billing"
+                  href="/app/settings/billing"
                   className="relative rounded-lg p-4 bg-slate-100 dark:bg-slate-800 overflow-hidden group cursor-pointer block no-underline"
                 >
                   {/* Blurred placeholder */}
@@ -596,7 +596,7 @@ function LockedSection({ icon: Icon, title, description }: { icon: React.Element
   return (
     <div className="border-t border-slate-200 dark:border-slate-700 pt-5">
       <a
-        href="/settings/billing"
+        href="/app/settings/billing"
         className="block rounded-lg border border-dashed border-slate-300 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-800/30 p-6 text-center no-underline hover:border-indigo-300 hover:bg-indigo-50/30 dark:hover:border-indigo-600 dark:hover:bg-indigo-900/10 transition-colors group"
       >
         <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center mx-auto mb-3">

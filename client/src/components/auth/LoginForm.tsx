@@ -25,7 +25,7 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/dashboard';
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/app/dashboard';
 
   const {
     register,

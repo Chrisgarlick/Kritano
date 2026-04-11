@@ -49,7 +49,7 @@ export function ScheduleCard({ schedule, onToggle }: ScheduleCardProps) {
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <Link
-            to={`/schedules/${schedule.id}`}
+            to={`/app/schedules/${schedule.id}`}
             className="text-sm font-semibold text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 truncate block"
           >
             {schedule.name || schedule.target_domain}

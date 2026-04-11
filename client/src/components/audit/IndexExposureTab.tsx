@@ -141,7 +141,7 @@ export function IndexExposureTab({ auditId }: IndexExposureTabProps) {
         </div>
 
         <a
-          href="/settings/billing"
+          href="/app/settings/billing"
           className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors"
         >
           Upgrade to Pro

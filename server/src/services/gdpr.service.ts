@@ -221,7 +221,7 @@ async function processExport(exportId: string): Promise<void> {
         to: { userId, email: user.email, firstName: user.first_name },
         variables: {
           firstName: user.first_name,
-          settingsUrl: `${appUrl}/settings/profile`,
+          settingsUrl: `${appUrl}/app/settings/profile`,
         },
       }).catch(err => console.error('Failed to send export ready email:', err));
     }
@@ -318,7 +318,7 @@ async function requestAccountDeletion(userId: string): Promise<{ scheduledFor: D
     variables: {
       firstName: user.first_name,
       deletionDate: scheduledFor.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-      settingsUrl: `${appUrl}/settings/profile`,
+      settingsUrl: `${appUrl}/app/settings/profile`,
     },
   }).catch(err => console.error('Failed to send deletion requested email:', err));
 
@@ -350,7 +350,7 @@ async function cancelAccountDeletion(userId: string): Promise<void> {
     to: { userId, email: user.email, firstName: user.first_name },
     variables: {
       firstName: user.first_name,
-      dashboardUrl: `${appUrl}/dashboard`,
+      dashboardUrl: `${appUrl}/app/dashboard`,
     },
   }).catch(err => console.error('Failed to send deletion cancelled email:', err));
 }

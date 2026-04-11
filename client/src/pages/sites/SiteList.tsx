@@ -85,7 +85,7 @@ export default function SiteListPage() {
       setNewName('');
       setNewDomain('');
       setNewDescription('');
-      navigate(`/sites/${response.data.site.id}`);
+      navigate(`/app/sites/${response.data.site.id}`);
     } catch (err: any) {
       toast(err.response?.data?.error || 'Failed to add site', 'error');
     } finally {
@@ -94,11 +94,11 @@ export default function SiteListPage() {
   };
 
   const handleRunAudit = (site: SiteWithStats) => {
-    navigate(`/audits/new?domain=${encodeURIComponent(site.domain)}&siteId=${site.id}`);
+    navigate(`/app/audits/new?domain=${encodeURIComponent(site.domain)}&siteId=${site.id}`);
   };
 
   const handleSiteClick = (site: SiteWithStats) => {
-    navigate(`/sites/${site.id}`);
+    navigate(`/app/sites/${site.id}`);
   };
 
   // Convert site stats to a mock Audit object for SiteCard

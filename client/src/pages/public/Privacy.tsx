@@ -227,15 +227,15 @@ export default function Privacy() {
           <h2>10. Your Rights (GDPR / UK-GDPR)</h2>
           <p>Under data protection law, you have the right to:</p>
           <ul>
-            <li><strong>Access:</strong> Request a copy of the personal data we hold about you. You can download a complete export of your data at any time from your <Link to="/settings/profile">account settings</Link>.</li>
+            <li><strong>Access:</strong> Request a copy of the personal data we hold about you. You can download a complete export of your data at any time from your <Link to="/app/settings/profile">account settings</Link>.</li>
             <li><strong>Rectification:</strong> Request correction of inaccurate personal data.</li>
-            <li><strong>Erasure:</strong> Request deletion of your personal data ("right to be forgotten"). You can delete your account from your <Link to="/settings/profile">account settings</Link>. Deletion includes a 30-day grace period during which you can cancel.</li>
+            <li><strong>Erasure:</strong> Request deletion of your personal data ("right to be forgotten"). You can delete your account from your <Link to="/app/settings/profile">account settings</Link>. Deletion includes a 30-day grace period during which you can cancel.</li>
             <li><strong>Portability:</strong> Request your data in a structured, machine-readable format. Our self-service data export provides your data in JSON format within a ZIP archive.</li>
             <li><strong>Object:</strong> Object to processing of your personal data for certain purposes.</li>
             <li><strong>Withdraw consent:</strong> Withdraw consent at any time where processing is based on consent.</li>
           </ul>
           <p>
-            Most of these rights can be exercised directly through your <Link to="/settings/profile">account settings</Link>.
+            Most of these rights can be exercised directly through your <Link to="/app/settings/profile">account settings</Link>.
             For any other requests, please <Link to="/contact">contact us</Link>. We will respond within 30 days.
           </p>
 
@@ -249,7 +249,7 @@ export default function Privacy() {
           <h2>12. Data Retention</h2>
           <p>
             We retain your account data for as long as your account is active. You can request deletion of your
-            account at any time from your <Link to="/settings/profile">account settings</Link>. After you request
+            account at any time from your <Link to="/app/settings/profile">account settings</Link>. After you request
             deletion, there is a 30-day grace period during which you can cancel. After this period, your account
             and all associated data are permanently deleted. Specific retention periods:
           </p>

@@ -195,7 +195,7 @@ export default function SiteAnalytics() {
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm">
-          <Link to="/analytics" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
+          <Link to="/app/analytics" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
             Analytics
           </Link>
           <ChevronRight className="w-4 h-4 text-slate-500" />
@@ -220,12 +220,12 @@ export default function SiteAnalytics() {
             <SiteSelector
               sites={allSites}
               currentSiteId={siteId}
-              onChange={(id) => navigate(`/analytics/sites/${id}`)}
+              onChange={(id) => navigate(`/app/analytics/sites/${id}`)}
             />
             <DateRangePicker value={range} onChange={setRange} />
             <Button
               variant="outline"
-              onClick={() => navigate(`/sites/${siteId}`)}
+              onClick={() => navigate(`/app/sites/${siteId}`)}
             >
               View Site
             </Button>
@@ -251,7 +251,7 @@ export default function SiteAnalytics() {
             <ScoreLineChart
               data={scoreHistory.scores}
               categories={['seo', 'accessibility', 'security', 'performance', 'content', 'structuredData', 'cqs']}
-              onPointClick={(auditId) => navigate(`/audits/${auditId}`)}
+              onPointClick={(auditId) => navigate(`/app/audits/${auditId}`)}
             />
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">
@@ -273,7 +273,7 @@ export default function SiteAnalytics() {
               URLs ({urlsTotal})
             </h2>
             <Link
-              to={`/sites/${siteId}`}
+              to={`/app/sites/${siteId}`}
               className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
             >
               View All URLs
@@ -372,7 +372,7 @@ export default function SiteAnalytics() {
                   {urls.map(url => (
                     <tr
                       key={url.id}
-                      onClick={() => navigate(`/analytics/sites/${siteId}/urls/${url.id}`)}
+                      onClick={() => navigate(`/app/analytics/sites/${siteId}/urls/${url.id}`)}
                       className="border-b border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer transition-colors"
                     >
                       <td className="py-3 px-4">

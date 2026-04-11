@@ -22,9 +22,7 @@ const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 
 // Paths that should never be pre-rendered (authenticated/dynamic)
 const BLOCKED_PREFIXES = [
-  '/dashboard', '/admin', '/settings', '/audits', '/sites',
-  '/analytics', '/compare', '/schedules', '/referrals',
-  '/search-console', '/api/', '/auth/',
+  '/app', '/admin', '/api/', '/auth/',
 ];
 
 // ── Cache ────────────────────────────────────────────────────────────

@@ -188,7 +188,7 @@ function App() {
 
                 {/* Protected routes */}
                 <Route
-                  path="/dashboard"
+                  path="/app/dashboard"
                   element={
                     <ProtectedRoute>
                       <DashboardPage />
@@ -196,7 +196,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/audits"
+                  path="/app/audits"
                   element={
                     <ProtectedRoute>
                       <AuditListPage />
@@ -204,7 +204,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/audits/new"
+                  path="/app/audits/new"
                   element={
                     <ProtectedRoute>
                       <NewAuditPage />
@@ -212,7 +212,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/audits/:id"
+                  path="/app/audits/:id"
                   element={
                     <ProtectedRoute>
                       <AuditDetailPage />
@@ -220,7 +220,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/audits/:id/pages/:pageId"
+                  path="/app/audits/:id/pages/:pageId"
                   element={
                     <ProtectedRoute>
                       <PageDetailPage />
@@ -228,7 +228,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/audits/:id/statement"
+                  path="/app/audits/:id/statement"
                   element={
                     <ProtectedRoute>
                       <AccessibilityStatementPage />
@@ -236,7 +236,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/audits/:id/compliance"
+                  path="/app/audits/:id/compliance"
                   element={
                     <ProtectedRoute>
                       <ComplianceReportPage />
@@ -246,7 +246,7 @@ function App() {
 
                 {/* Site routes */}
                 <Route
-                  path="/sites"
+                  path="/app/sites"
                   element={
                     <ProtectedRoute>
                       <SiteListPage />
@@ -254,7 +254,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/sites/:siteId"
+                  path="/app/sites/:siteId"
                   element={
                     <ProtectedRoute>
                       <SiteDetailPage />
@@ -262,7 +262,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/sites/:siteId/urls/:urlId"
+                  path="/app/sites/:siteId/urls/:urlId"
                   element={
                     <ProtectedRoute>
                       <SiteDetailPage />
@@ -272,7 +272,7 @@ function App() {
 
                 {/* Schedule routes */}
                 <Route
-                  path="/schedules"
+                  path="/app/schedules"
                   element={
                     <ProtectedRoute>
                       <ScheduleListPage />
@@ -280,7 +280,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/schedules/:id"
+                  path="/app/schedules/:id"
                   element={
                     <ProtectedRoute>
                       <ScheduleDetailPage />
@@ -290,7 +290,7 @@ function App() {
 
                 {/* Referrals route */}
                 <Route
-                  path="/referrals"
+                  path="/app/referrals"
                   element={
                     <ProtectedRoute>
                       <ReferralDashboard />
@@ -300,7 +300,7 @@ function App() {
 
                 {/* Analytics routes */}
                 <Route
-                  path="/analytics"
+                  path="/app/analytics"
                   element={
                     <ProtectedRoute>
                       <AnalyticsDashboard />
@@ -308,7 +308,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/analytics/sites/:siteId"
+                  path="/app/analytics/sites/:siteId"
                   element={
                     <ProtectedRoute>
                       <SiteAnalytics />
@@ -316,7 +316,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/analytics/sites/:siteId/urls/:urlId"
+                  path="/app/analytics/sites/:siteId/urls/:urlId"
                   element={
                     <ProtectedRoute>
                       <UrlAnalytics />
@@ -324,7 +324,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/analytics/compare"
+                  path="/app/analytics/compare"
                   element={
                     <ProtectedRoute>
                       <AuditComparison />
@@ -332,7 +332,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/analytics/compare-sites"
+                  path="/app/analytics/compare-sites"
                   element={
                     <ProtectedRoute>
                       <SiteComparison />
@@ -342,7 +342,7 @@ function App() {
 
                 {/* Compare page (unified) */}
                 <Route
-                  path="/compare"
+                  path="/app/compare"
                   element={
                     <ProtectedRoute>
                       <ComparePage />
@@ -352,7 +352,7 @@ function App() {
 
                 {/* Search Console */}
                 <Route
-                  path="/search-console"
+                  path="/app/search-console"
                   element={
                     <ProtectedRoute>
                       <SearchConsolePage />
@@ -362,14 +362,14 @@ function App() {
 
                 {/* Settings routes with unified layout */}
                 <Route
-                  path="/settings"
+                  path="/app/settings"
                   element={
                     <ProtectedRoute>
                       <SettingsLayout />
                     </ProtectedRoute>
                   }
                 >
-                  <Route index element={<Navigate to="/settings/profile" replace />} />
+                  <Route index element={<Navigate to="/app/settings/profile" replace />} />
                   <Route path="profile" element={<ProfilePage />} />
                   <Route path="sites" element={<SitesSettingsPage />} />
                   <Route path="branding" element={<BrandingSettingsPage />} />
@@ -378,7 +378,7 @@ function App() {
                 </Route>
 
                 {/* Legacy profile route redirect */}
-                <Route path="/profile" element={<Navigate to="/settings/profile" replace />} />
+                <Route path="/app/profile" element={<Navigate to="/app/settings/profile" replace />} />
 
                 {/* Admin routes (super admin only) */}
                 <Route

@@ -65,7 +65,7 @@ export default function SiteInvitationPage() {
       const response = await siteInvitationsApi.accept(token);
       toast('Invitation accepted! You now have access to this site.', 'success');
       // Navigate to the site
-      navigate(`/sites/${response.data.share.siteId}`);
+      navigate(`/app/sites/${response.data.share.siteId}`);
     } catch (error: any) {
       toast(error.response?.data?.error || 'Failed to accept invitation', 'error');
     } finally {

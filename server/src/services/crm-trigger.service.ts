@@ -360,7 +360,7 @@ async function autoSendTriggerEmail(
       firstName: user.first_name || '',
     },
     variables: mapping.variables(context),
-    sentBy: 'system',
+    sentBy: undefined,
   });
 
   // Mark trigger as sent

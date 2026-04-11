@@ -326,7 +326,7 @@ export default function SitesSettings() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => window.location.href = '/audits/new'}
+                onClick={() => window.location.href = '/app/audits/new'}
               >
                 Run an Audit
               </Button>
@@ -370,7 +370,7 @@ export default function SitesSettings() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Link
-                      to={`/sites/${site.id}`}
+                      to={`/app/sites/${site.id}`}
                       className="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 flex items-center gap-1"
                     >
                       View
@@ -819,7 +819,7 @@ export default function SitesSettings() {
                     </div>
                   </div>
                   <Link
-                    to={`/sites/${site.id}`}
+                    to={`/app/sites/${site.id}`}
                     className="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 flex items-center gap-1"
                   >
                     View

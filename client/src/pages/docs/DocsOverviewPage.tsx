@@ -39,7 +39,7 @@ export default function DocsOverviewPage() {
               <Link to="/docs/authentication" className="px-5 py-3 bg-white text-slate-900 rounded-lg font-semibold text-sm hover:bg-slate-100 transition-colors">
                 Read the Docs
               </Link>
-              <Link to="/settings/api-keys" className="px-5 py-3 bg-white/10 border border-white/20 text-white rounded-lg font-semibold text-sm hover:bg-white/15 transition-colors">
+              <Link to="/app/settings/api-keys" className="px-5 py-3 bg-white/10 border border-white/20 text-white rounded-lg font-semibold text-sm hover:bg-white/15 transition-colors">
                 Get API Key
               </Link>
             </div>
@@ -79,7 +79,7 @@ export default function DocsOverviewPage() {
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">Get your API key</h3>
               <p className="text-slate-600 dark:text-slate-400 mb-3">
-                Go to <Link to="/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Settings &rarr; API Keys</Link> and create a new key. Select the scopes you need — at minimum <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:read</code> and <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:write</code>.
+                Go to <Link to="/app/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Settings &rarr; API Keys</Link> and create a new key. Select the scopes you need — at minimum <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:read</code> and <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:write</code>.
               </p>
               <p className="text-slate-600 dark:text-slate-400 text-sm">
                 Your key will look like: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">kt_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>

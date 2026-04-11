@@ -309,7 +309,7 @@ export function FilesTab({ auditId }: FilesTabProps) {
                                 {pages.map((p) => (
                                   <div key={p.id} className="flex items-center gap-2 text-xs">
                                     <Link
-                                      to={`/audits/${auditId}/pages/${p.id}`}
+                                      to={`/app/audits/${auditId}/pages/${p.id}`}
                                       className="text-indigo-600 dark:text-indigo-400 hover:underline truncate max-w-lg"
                                     >
                                       {p.title || p.url}

@@ -465,7 +465,7 @@ export default function BrandingSettings() {
             </p>
             <p className="text-xs text-slate-500 dark:text-slate-500">
               Verify a domain in{' '}
-              <a href="/settings/sites" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+              <a href="/app/settings/sites" className="text-indigo-600 dark:text-indigo-400 hover:underline">
                 My Sites
               </a>{' '}
               to enable branding

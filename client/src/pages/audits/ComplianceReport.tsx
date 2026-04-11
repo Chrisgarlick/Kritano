@@ -265,7 +265,7 @@ export default function ComplianceReportPage() {
         {/* ─── Header ─────────────────────────────────────────── */}
         <div>
           <Link
-            to={`/audits/${id}`}
+            to={`/app/audits/${id}`}
             className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 mb-3"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -344,7 +344,7 @@ export default function ComplianceReportPage() {
               This audit did not include accessibility checks. Run a new audit with accessibility
               enabled to generate your EAA compliance report.
             </Body>
-            <Button variant="primary" onClick={() => navigate('/audits/new')}>
+            <Button variant="primary" onClick={() => navigate('/app/audits/new')}>
               Run New Audit
             </Button>
           </div>
@@ -458,7 +458,7 @@ export default function ComplianceReportPage() {
                     Upgrade to Pro or above to view the full EN 301 549 clause-by-clause analysis
                     and linked findings.
                   </Body>
-                  <Button variant="primary" size="sm" onClick={() => navigate('/settings/profile')}>
+                  <Button variant="primary" size="sm" onClick={() => navigate('/app/settings/profile')}>
                     Upgrade Plan
                   </Button>
                 </div>

@@ -45,19 +45,19 @@ interface NavItem {
 }
 
 const mainNavItems: NavItem[] = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/sites', label: 'Sites', icon: Globe },
-  { href: '/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/schedules', label: 'Schedules', icon: CalendarClock },
-  { href: '/compare', label: 'Compare', icon: GitCompareArrows },
-  { href: '/search-console', label: 'Search Console', icon: SearchCheck },
-  { href: '/referrals', label: 'Referrals', icon: Gift },
-  { href: '/settings/api-keys', label: 'API Keys', icon: Key },
+  { href: '/app/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/app/sites', label: 'Sites', icon: Globe },
+  { href: '/app/analytics', label: 'Analytics', icon: BarChart3 },
+  { href: '/app/schedules', label: 'Schedules', icon: CalendarClock },
+  { href: '/app/compare', label: 'Compare', icon: GitCompareArrows },
+  { href: '/app/search-console', label: 'Search Console', icon: SearchCheck },
+  { href: '/app/referrals', label: 'Referrals', icon: Gift },
+  { href: '/app/settings/api-keys', label: 'API Keys', icon: Key },
   { href: '/admin', label: 'Admin', icon: Shield, adminOnly: true },
 ];
 
 const bottomNavItems: NavItem[] = [
-  { href: '/settings', label: 'Settings', icon: Settings },
+  { href: '/app/settings', label: 'Settings', icon: Settings },
 ];
 
 export function Sidebar() {
@@ -89,29 +89,29 @@ export function Sidebar() {
   }, [location.pathname]);
 
   const isActive = (path: string) => {
-    if (path === '/sites') {
-      return location.pathname.startsWith('/sites') || location.pathname.startsWith('/audits');
+    if (path === '/app/sites') {
+      return location.pathname.startsWith('/app/sites') || location.pathname.startsWith('/app/audits');
     }
-    if (path === '/analytics') {
-      return location.pathname.startsWith('/analytics');
+    if (path === '/app/analytics') {
+      return location.pathname.startsWith('/app/analytics');
     }
-    if (path === '/schedules') {
-      return location.pathname.startsWith('/schedules');
+    if (path === '/app/schedules') {
+      return location.pathname.startsWith('/app/schedules');
     }
-    if (path === '/compare') {
-      return location.pathname.startsWith('/compare');
+    if (path === '/app/compare') {
+      return location.pathname.startsWith('/app/compare');
     }
-    if (path === '/search-console') {
-      return location.pathname.startsWith('/search-console');
+    if (path === '/app/search-console') {
+      return location.pathname.startsWith('/app/search-console');
     }
-    if (path === '/referrals') {
-      return location.pathname.startsWith('/referrals');
+    if (path === '/app/referrals') {
+      return location.pathname.startsWith('/app/referrals');
     }
     if (path === '/admin') {
       return location.pathname.startsWith('/admin');
     }
-    if (path === '/settings') {
-      return location.pathname.startsWith('/settings') && !location.pathname.includes('/api-keys');
+    if (path === '/app/settings') {
+      return location.pathname.startsWith('/app/settings') && !location.pathname.includes('/api-keys');
     }
     return location.pathname === path || location.pathname.startsWith(path + '/');
   };
@@ -167,7 +167,7 @@ export function Sidebar() {
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className={`flex items-center h-16 px-4 border-b border-slate-200/50 dark:border-slate-700/50 ${isCollapsed ? 'justify-center' : ''}`}>
-        <Link to="/dashboard" className="flex items-center gap-2.5 group">
+        <Link to="/app/dashboard" className="flex items-center gap-2.5 group">
           <img src="/brand/favicon-32.svg" alt="Kritano" width="36" height="36" className="rounded-lg group-hover:scale-105 transition-transform" />
           {!isCollapsed && (
             <span className="text-lg font-semibold text-slate-900 dark:text-white tracking-tight">

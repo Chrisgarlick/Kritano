@@ -134,7 +134,7 @@ export default function PageDetailPage() {
     return (
       <DashboardLayout>
         <Alert variant="error">
-          Page not found. <Link to={`/audits/${auditId}`} className="underline">Return to audit</Link>
+          Page not found. <Link to={`/app/audits/${auditId}`} className="underline">Return to audit</Link>
         </Alert>
       </DashboardLayout>
     );
@@ -145,9 +145,9 @@ export default function PageDetailPage() {
       <Helmet><title>Page Details | Kritano</title></Helmet>
       {/* Breadcrumb */}
       <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
-        <Link to="/audits" className="hover:text-slate-700 dark:hover:text-slate-300">Audits</Link>
+        <Link to="/app/audits" className="hover:text-slate-700 dark:hover:text-slate-300">Audits</Link>
         <span>/</span>
-        <Link to={`/audits/${auditId}`} className="hover:text-slate-700 dark:hover:text-slate-300">Audit Details</Link>
+        <Link to={`/app/audits/${auditId}`} className="hover:text-slate-700 dark:hover:text-slate-300">Audit Details</Link>
         <span>/</span>
         <span className="text-slate-900 dark:text-white truncate max-w-xs">{page.title || page.url}</span>
       </div>

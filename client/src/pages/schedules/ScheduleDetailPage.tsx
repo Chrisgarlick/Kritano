@@ -79,7 +79,7 @@ export default function ScheduleDetailPage() {
     try {
       await schedulesApi.delete(schedule.id);
       toast('Schedule deleted', 'success');
-      navigate('/schedules');
+      navigate('/app/schedules');
     } catch {
       toast('Failed to delete schedule', 'error');
       setDeleting(false);
@@ -101,7 +101,7 @@ export default function ScheduleDetailPage() {
       <DashboardLayout>
         <div className="text-center py-20">
           <h2 className="text-lg font-medium text-slate-900 dark:text-white">Schedule not found</h2>
-          <Link to="/schedules" className="text-sm text-indigo-600 hover:text-indigo-700 mt-2 inline-block">
+          <Link to="/app/schedules" className="text-sm text-indigo-600 hover:text-indigo-700 mt-2 inline-block">
             Back to schedules
           </Link>
         </div>
@@ -120,7 +120,7 @@ export default function ScheduleDetailPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         {/* Back link */}
         <Link
-          to="/schedules"
+          to="/app/schedules"
           className="inline-flex items-center gap-1 text-sm text-slate-500 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -267,7 +267,7 @@ export default function ScheduleDetailPage() {
                     <tr key={run.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                       <td className="px-4 py-2.5">
                         <Link
-                          to={`/audits/${run.id}`}
+                          to={`/app/audits/${run.id}`}
                           className="inline-flex items-center gap-1.5"
                         >
                           {run.status === 'completed' ? (

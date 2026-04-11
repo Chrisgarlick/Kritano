@@ -138,7 +138,7 @@ export const routeRegistry: RouteEntry[] = [
 
   // ── Dashboard (authenticated) ──────────────────────────
   {
-    path: '/dashboard',
+    path: '/app/dashboard',
     label: 'Dashboard',
     category: 'dashboard',
     defaultTitle: 'Dashboard',
@@ -146,7 +146,7 @@ export const routeRegistry: RouteEntry[] = [
     noindex: true,
   },
   {
-    path: '/audits',
+    path: '/app/audits',
     label: 'Audits',
     category: 'dashboard',
     defaultTitle: 'Audits',
@@ -154,7 +154,7 @@ export const routeRegistry: RouteEntry[] = [
     noindex: true,
   },
   {
-    path: '/sites',
+    path: '/app/sites',
     label: 'Sites',
     category: 'dashboard',
     defaultTitle: 'Sites',
@@ -162,7 +162,7 @@ export const routeRegistry: RouteEntry[] = [
     noindex: true,
   },
   {
-    path: '/schedules',
+    path: '/app/schedules',
     label: 'Schedules',
     category: 'dashboard',
     defaultTitle: 'Scheduled Audits',
@@ -170,7 +170,7 @@ export const routeRegistry: RouteEntry[] = [
     noindex: true,
   },
   {
-    path: '/analytics',
+    path: '/app/analytics',
     label: 'Analytics',
     category: 'dashboard',
     defaultTitle: 'Analytics',
@@ -178,7 +178,7 @@ export const routeRegistry: RouteEntry[] = [
     noindex: true,
   },
   {
-    path: '/referrals',
+    path: '/app/referrals',
     label: 'Referrals',
     category: 'dashboard',
     defaultTitle: 'Referrals',
@@ -186,7 +186,7 @@ export const routeRegistry: RouteEntry[] = [
     noindex: true,
   },
   {
-    path: '/compare',
+    path: '/app/compare',
     label: 'Compare',
     category: 'dashboard',
     defaultTitle: 'Compare',
@@ -194,7 +194,7 @@ export const routeRegistry: RouteEntry[] = [
     noindex: true,
   },
   {
-    path: '/settings',
+    path: '/app/settings',
     label: 'Settings',
     category: 'dashboard',
     defaultTitle: 'Settings',
@@ -202,7 +202,7 @@ export const routeRegistry: RouteEntry[] = [
     noindex: true,
   },
   {
-    path: '/audits/:id/compliance',
+    path: '/app/audits/:id/compliance',
     label: 'Compliance Report',
     category: 'dashboard',
     defaultTitle: 'EAA Compliance Report',

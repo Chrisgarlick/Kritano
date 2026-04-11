@@ -36,7 +36,7 @@ export default function GscCallback() {
 
       try {
         await api.post('/gsc/callback', { code, siteId });
-        navigate('/search-console', { replace: true });
+        navigate('/app/search-console', { replace: true });
       } catch (err: any) {
         setError(err.response?.data?.error || 'Failed to connect Search Console.');
       }
@@ -55,7 +55,7 @@ export default function GscCallback() {
               <h1 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Connection Failed</h1>
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">{error}</p>
               <button
-                onClick={() => navigate('/search-console', { replace: true })}
+                onClick={() => navigate('/app/search-console', { replace: true })}
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
               >
                 Back to Search Console

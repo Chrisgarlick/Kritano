@@ -13,7 +13,7 @@ export function useKeyboardShortcuts() {
 
       if (e.key === 'n' && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
-        navigate('/audits/new');
+        navigate('/app/audits/new');
       } else if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
         const searchInput = document.querySelector<HTMLInputElement>('input[placeholder*="Search"]');

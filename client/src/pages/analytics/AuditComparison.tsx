@@ -455,7 +455,7 @@ export function AuditComparisonContent() {
             {comparison.audits.map(audit => (
               <Link
                 key={audit.id}
-                to={`/audits/${audit.id}`}
+                to={`/app/audits/${audit.id}`}
                 className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline"
               >
                 View {audit.siteName} audit &rarr;
@@ -485,7 +485,7 @@ export default function AuditComparison() {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
-              <Link to="/analytics" className="hover:text-indigo-600 dark:hover:text-indigo-400">&larr; Analytics</Link>
+              <Link to="/app/analytics" className="hover:text-indigo-600 dark:hover:text-indigo-400">&larr; Analytics</Link>
             </div>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <GitCompare className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />

@@ -185,7 +185,7 @@ export default function AuditListPage() {
           </h1>
           <p className="text-slate-600 dark:text-slate-400 mt-1">View and manage your website audits</p>
         </div>
-        <Link to="/audits/new">
+        <Link to="/app/audits/new">
           <Button>New Audit</Button>
         </Link>
       </div>
@@ -252,7 +252,7 @@ export default function AuditListPage() {
           <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-sm mx-auto">
             Start your first website audit to discover SEO, accessibility, security, and performance issues.
           </p>
-          <Link to="/audits/new">
+          <Link to="/app/audits/new">
             <Button>Run Your First Audit</Button>
           </Link>
         </div>
@@ -374,7 +374,7 @@ export default function AuditListPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <Link
-                        to={`/audits/${audit.id}`}
+                        to={`/app/audits/${audit.id}`}
                         className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 rounded"
                         aria-label={`View details for ${audit.target_domain}`}
                       >
