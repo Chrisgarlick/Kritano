@@ -31,6 +31,7 @@ import {
   Save, Eye, EyeOff, Send, ArrowLeft, ChevronDown, ChevronUp,
   Image as ImageIcon, Clock, FileText, ExternalLink, Search, X, Link2,
 } from 'lucide-react';
+import { useToast } from '../../../components/ui/Toast';
 import {
   DndContext,
   closestCenter,
@@ -112,6 +113,7 @@ function SortableBlock({
 export default function PostEditorPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const isNew = !id;
 
   const [loading, setLoading] = useState(!isNew);
@@ -274,7 +276,13 @@ export default function PostEditorPage() {
         setHasChanges(false);
         setSaveStatus('saved');
       }
-    } catch (err) {
+    } catch (err: any) {
+      const status = err?.response?.status;
+      if (status === 413) {
+        toast('Post is too large to save. Try reducing image URLs or content blocks.', 'error');
+      } else {
+        toast('Failed to save post. Please try again.', 'error');
+      }
       console.error('Failed to save post:', err);
       setSaveStatus('unsaved');
     } finally {
@@ -289,7 +297,13 @@ export default function PostEditorPage() {
     try {
       const { data } = await adminApi.publishPost(post.id);
       setPost(data.post);
-    } catch (err) {
+    } catch (err: any) {
+      const status = err?.response?.status;
+      if (status === 413) {
+        toast('Post is too large to publish. Try reducing content size.', 'error');
+      } else {
+        toast('Failed to publish post. Please try again.', 'error');
+      }
       console.error('Failed to publish:', err);
     }
   };
@@ -300,6 +314,7 @@ export default function PostEditorPage() {
       const { data } = await adminApi.unpublishPost(post.id);
       setPost(data.post);
     } catch (err) {
+      toast('Failed to unpublish post. Please try again.', 'error');
       console.error('Failed to unpublish:', err);
     }
   };

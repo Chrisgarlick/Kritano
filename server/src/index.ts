@@ -88,8 +88,9 @@ app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads'), {
   immutable: true,
 }));
 
-// Body parsing — larger limit for admin JSON imports
+// Body parsing — larger limits for specific routes
 app.use('/api/admin/cold-prospects/import-json', express.json({ limit: '10mb' }));
+app.use('/api/admin/cms', express.json({ limit: '2mb' }));
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 

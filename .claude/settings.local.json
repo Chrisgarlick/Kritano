@@ -230,7 +230,8 @@
       "Bash(bash .claude/skills/prospects/check-and-extract.sh docs/prospects/watford-2026-04-12/raw-domains.txt docs/prospects/watford-2026-04-12/prospects.json 2>&1)",
       "Bash(bash .claude/skills/prospects/publish-to-notion.sh docs/prospects/watford-2026-04-12/prospects.json \"Agency Prospects - Watford - 2026-04-12\")",
       "Bash(bash .claude/skills/prospects/check-and-extract.sh docs/prospects/middlesbrough-2026-04-12/raw-domains.txt docs/prospects/middlesbrough-2026-04-12/prospects.json 2>&1)",
-      "Bash(bash .claude/skills/prospects/publish-to-notion.sh docs/prospects/middlesbrough-2026-04-12/prospects.json \"Agency Prospects - Middlesbrough - 2026-04-12\")"
+      "Bash(bash .claude/skills/prospects/publish-to-notion.sh docs/prospects/middlesbrough-2026-04-12/prospects.json \"Agency Prospects - Middlesbrough - 2026-04-12\")",
+      "Bash(bash .claude/skills/trend/publish-to-notion.sh /Users/chris/Herd/pagepulser/docs/trend/2026-04-12-waitlist-launch)"
     ]
   },
   "enableAllProjectMcpServers": true,

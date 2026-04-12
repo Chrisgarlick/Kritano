@@ -113,8 +113,9 @@ app.use('/uploads', express_1.default.static(path_1.default.resolve(__dirname, '
     maxAge: '7d',
     immutable: true,
 }));
-// Body parsing — larger limit for admin JSON imports
+// Body parsing — larger limits for specific routes
 app.use('/api/admin/cold-prospects/import-json', express_1.default.json({ limit: '10mb' }));
+app.use('/api/admin/cms', express_1.default.json({ limit: '2mb' }));
 app.use(express_1.default.json({ limit: '10kb' }));
 app.use(express_1.default.urlencoded({ extended: true, limit: '10kb' }));
 // Cookie parser
