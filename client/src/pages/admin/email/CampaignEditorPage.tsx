@@ -298,7 +298,7 @@ export default function CampaignEditorPage() {
                 label: 'Delivered',
                 value: campaign.stats.total > 0
                   ? `${((campaign.stats.delivered / campaign.stats.total) * 100).toFixed(1)}%`
-                  : '—',
+                  : '-',
                 sub: `${campaign.stats.delivered} / ${campaign.stats.total}`,
                 color: 'text-green-400',
               },
@@ -306,7 +306,7 @@ export default function CampaignEditorPage() {
                 label: 'Opened',
                 value: campaign.stats.delivered > 0
                   ? `${((campaign.stats.opened / campaign.stats.delivered) * 100).toFixed(1)}%`
-                  : '—',
+                  : '-',
                 sub: `${campaign.stats.opened} opens`,
                 color: 'text-blue-400',
               },
@@ -314,7 +314,7 @@ export default function CampaignEditorPage() {
                 label: 'Clicked',
                 value: campaign.stats.delivered > 0
                   ? `${((campaign.stats.clicked / campaign.stats.delivered) * 100).toFixed(1)}%`
-                  : '—',
+                  : '-',
                 sub: `${campaign.stats.clicked} clicks`,
                 color: 'text-indigo-400',
               },
@@ -322,7 +322,7 @@ export default function CampaignEditorPage() {
                 label: 'Bounced',
                 value: campaign.stats.total > 0
                   ? `${((campaign.stats.bounced / campaign.stats.total) * 100).toFixed(1)}%`
-                  : '—',
+                  : '-',
                 sub: `${campaign.stats.bounced} bounced`,
                 color: 'text-red-400',
               },
@@ -339,7 +339,7 @@ export default function CampaignEditorPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
               <div className="text-xs text-slate-500">Template</div>
-              <div className="text-sm text-white mt-1">{campaign.template_name || '—'}</div>
+              <div className="text-sm text-white mt-1">{campaign.template_name || '-'}</div>
             </div>
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
               <div className="text-xs text-slate-500">Audience</div>
@@ -348,13 +348,13 @@ export default function CampaignEditorPage() {
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
               <div className="text-xs text-slate-500">Started</div>
               <div className="text-sm text-white mt-1">
-                {campaign.started_at ? new Date(campaign.started_at).toLocaleString() : '—'}
+                {campaign.started_at ? new Date(campaign.started_at).toLocaleString() : '-'}
               </div>
             </div>
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
               <div className="text-xs text-slate-500">Completed</div>
               <div className="text-sm text-white mt-1">
-                {campaign.completed_at ? new Date(campaign.completed_at).toLocaleString() : '—'}
+                {campaign.completed_at ? new Date(campaign.completed_at).toLocaleString() : '-'}
               </div>
             </div>
           </div>
@@ -425,13 +425,13 @@ export default function CampaignEditorPage() {
                           </span>
                         </td>
                         <td className="px-4 py-2 text-xs text-slate-500">
-                          {send.sent_at ? new Date(send.sent_at).toLocaleString() : '—'}
+                          {send.sent_at ? new Date(send.sent_at).toLocaleString() : '-'}
                         </td>
                         <td className="px-4 py-2 text-xs text-slate-500">
-                          {send.opened_at ? new Date(send.opened_at).toLocaleString() : '—'}
+                          {send.opened_at ? new Date(send.opened_at).toLocaleString() : '-'}
                         </td>
                         <td className="px-4 py-2 text-xs text-slate-500">
-                          {send.clicked_at ? new Date(send.clicked_at).toLocaleString() : '—'}
+                          {send.clicked_at ? new Date(send.clicked_at).toLocaleString() : '-'}
                         </td>
                         <td className="px-4 py-2 text-xs text-red-400 truncate max-w-[200px]">
                           {send.error_message || ''}
@@ -574,7 +574,7 @@ export default function CampaignEditorPage() {
                   <div className="flex items-center gap-2 bg-white/[0.06] rounded-lg px-4 py-2">
                     <Users className="w-4 h-4 text-indigo-400" />
                     <span className="text-sm font-medium text-white">
-                      {audienceLoading ? '...' : audienceCount !== null ? audienceCount.toLocaleString() : '—'} recipients
+                      {audienceLoading ? '...' : audienceCount !== null ? audienceCount.toLocaleString() : '-'} recipients
                     </span>
                   </div>
                   {unsubCount !== null && unsubCount > 0 && (
@@ -808,7 +808,7 @@ export default function CampaignEditorPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-white/[0.03] rounded-lg p-4 space-y-3">
                   <h3 className="text-sm font-medium text-slate-300">Campaign</h3>
-                  <div className="text-sm text-white">{campaignName || '—'}</div>
+                  <div className="text-sm text-white">{campaignName || '-'}</div>
                   {campaignDescription && (
                     <div className="text-xs text-slate-500">{campaignDescription}</div>
                   )}
@@ -817,7 +817,7 @@ export default function CampaignEditorPage() {
                 <div className="bg-white/[0.03] rounded-lg p-4 space-y-3">
                   <h3 className="text-sm font-medium text-slate-300">Template</h3>
                   <div className="text-sm text-white">
-                    {templates.find(t => t.id === selectedTemplateId)?.name || '—'}
+                    {templates.find(t => t.id === selectedTemplateId)?.name || '-'}
                   </div>
                 </div>
 
@@ -826,7 +826,7 @@ export default function CampaignEditorPage() {
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-indigo-400" />
                     <span className="text-sm text-white font-medium">
-                      {audienceCount !== null ? audienceCount.toLocaleString() : '—'} recipients
+                      {audienceCount !== null ? audienceCount.toLocaleString() : '-'} recipients
                     </span>
                   </div>
                   {segment.tiers && segment.tiers.length > 0 && (
@@ -852,7 +852,7 @@ export default function CampaignEditorPage() {
                       <>
                         <Clock className="w-4 h-4 text-blue-400" />
                         <span className="text-sm text-white">
-                          {scheduledAt ? new Date(scheduledAt).toLocaleString() : '—'}
+                          {scheduledAt ? new Date(scheduledAt).toLocaleString() : '-'}
                         </span>
                       </>
                     )}

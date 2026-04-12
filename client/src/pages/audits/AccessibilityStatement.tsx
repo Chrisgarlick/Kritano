@@ -410,7 +410,7 @@ export default function AccessibilityStatementPage() {
     <DashboardLayout>
       <Helmet>
         <title>
-          {data ? `Accessibility Statement — ${data.domain}` : 'Accessibility Statement'} | Kritano
+          {data ? `Accessibility Statement - ${data.domain}` : 'Accessibility Statement'} | Kritano
         </title>
       </Helmet>
 

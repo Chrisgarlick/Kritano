@@ -24,7 +24,7 @@ export default function DocsAuthPage() {
 
           <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3">API Key Format</h2>
           <p className="text-slate-600 dark:text-slate-400 mb-3">
-            All API keys are prefixed with <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">kt_live_</code> followed by a randomly generated token. Your full key is only shown once at creation — store it securely.
+            All API keys are prefixed with <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">kt_live_</code> followed by a randomly generated token. Your full key is only shown once at creation - store it securely.
           </p>
           <CodeBlock code="kt_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" language="http" label="API Key Format" />
 
@@ -67,7 +67,7 @@ export default function DocsAuthPage() {
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h2 className="text-xl font-semibold text-slate-900 mb-2">API Scopes</h2>
           <p className="text-slate-600 mb-4">
-            When creating an API key you select which scopes it has. Each endpoint requires a specific scope — if your key is missing a required scope, you'll get a <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">403 Forbidden</code> response.
+            When creating an API key you select which scopes it has. Each endpoint requires a specific scope - if your key is missing a required scope, you'll get a <code className="text-sm bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">403 Forbidden</code> response.
           </p>
           <div className="border border-slate-200 rounded-lg overflow-hidden mb-4">
             <table className="w-full text-sm">
@@ -101,7 +101,7 @@ export default function DocsAuthPage() {
             <div>
               <div className="font-semibold text-sm text-slate-900 dark:text-white mb-1">Tip</div>
               <p className="text-sm text-slate-700 dark:text-slate-300">
-                Follow the principle of least privilege — only grant scopes your integration actually needs. You can create multiple API keys with different scopes for different purposes.
+                Follow the principle of least privilege - only grant scopes your integration actually needs. You can create multiple API keys with different scopes for different purposes.
               </p>
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function DocsAuthPage() {
           <div className="space-y-4 text-sm text-slate-600">
             <div className="flex gap-3">
               <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">1</div>
-              <div><strong className="text-slate-800">Creating keys:</strong> Go to <Link to="/app/settings/api-keys" className="text-indigo-600 hover:underline">Settings &rarr; API Keys</Link>. Give the key a name and select its scopes. The full key is shown only once — copy it immediately.</div>
+              <div><strong className="text-slate-800">Creating keys:</strong> Go to <Link to="/app/settings/api-keys" className="text-indigo-600 hover:underline">Settings &rarr; API Keys</Link>. Give the key a name and select its scopes. The full key is shown only once - copy it immediately.</div>
             </div>
             <div className="flex gap-3">
               <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">2</div>

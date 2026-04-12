@@ -27,7 +27,7 @@ const AUDIT_FIELDS = [
   { field: 'config.respectRobotsTxt', type: 'boolean', description: 'Whether robots.txt was respected' },
   { field: 'config.includeSubdomains', type: 'boolean', description: 'Whether subdomains were included' },
   { field: 'config.checks', type: 'object', description: 'Which check categories were enabled (boolean per category)' },
-  { field: 'createdAt', type: 'string', description: 'ISO 8601 timestamp — when the audit was created' },
+  { field: 'createdAt', type: 'string', description: 'ISO 8601 timestamp - when the audit was created' },
   { field: 'startedAt', type: 'string | null', description: 'When processing actually began' },
   { field: 'completedAt', type: 'string | null', description: 'When the audit finished (completed, failed, or cancelled)' },
   { field: '_links', type: 'object', description: 'HATEOAS links (only in single-audit and create responses)' },
@@ -91,7 +91,7 @@ export default function DocsObjectsPage() {
     <PublicLayout>
       <PageSeo
         title="Object Reference - API Docs"
-        description="Complete reference for Kritano API objects — Audit and Finding data structures with field descriptions."
+        description="Complete reference for Kritano API objects - Audit and Finding data structures with field descriptions."
         path="/docs/objects"
         useOverrides={true}
       />
@@ -102,7 +102,7 @@ export default function DocsObjectsPage() {
 
           <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2" id="audit-object">Audit Object</h2>
           <p className="text-slate-600 dark:text-slate-400 mb-4">
-            The audit object represents a website audit job. It contains configuration, real-time progress, scores, and issue counts. The shape varies slightly between list and detail endpoints — the detail endpoint includes <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">config</code> and <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">_links</code>.
+            The audit object represents a website audit job. It contains configuration, real-time progress, scores, and issue counts. The shape varies slightly between list and detail endpoints - the detail endpoint includes <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">config</code> and <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">_links</code>.
           </p>
           <ObjectTable fields={AUDIT_FIELDS} />
 
@@ -118,13 +118,13 @@ export default function DocsObjectsPage() {
               ))}
             </div>
             <ul className="text-xs text-slate-500 space-y-1 list-disc list-inside">
-              <li><strong>pending</strong> — Queued, waiting for a worker</li>
-              <li><strong>discovering</strong> — Initial URL discovery and crawl in progress</li>
-              <li><strong>ready</strong> — Pages discovered, about to begin auditing</li>
-              <li><strong>processing</strong> — Actively auditing pages</li>
-              <li><strong>completed</strong> — All checks finished, scores available</li>
-              <li><strong>failed</strong> — An error occurred (can happen at any stage)</li>
-              <li><strong>cancelled</strong> — User cancelled the audit</li>
+              <li><strong>pending</strong> - Queued, waiting for a worker</li>
+              <li><strong>discovering</strong> - Initial URL discovery and crawl in progress</li>
+              <li><strong>ready</strong> - Pages discovered, about to begin auditing</li>
+              <li><strong>processing</strong> - Actively auditing pages</li>
+              <li><strong>completed</strong> - All checks finished, scores available</li>
+              <li><strong>failed</strong> - An error occurred (can happen at any stage)</li>
+              <li><strong>cancelled</strong> - User cancelled the audit</li>
             </ul>
           </div>
 
@@ -201,11 +201,11 @@ export default function DocsObjectsPage() {
           <h3 className="text-sm font-semibold text-slate-700 mb-3">Severity Levels</h3>
           <div className="flex flex-wrap gap-2 mb-6">
             {[
-              { level: 'critical', color: 'bg-red-100 text-red-700', desc: 'Must fix — blocks users or has serious legal/security implications' },
-              { level: 'serious', color: 'bg-orange-100 text-orange-700', desc: 'Should fix — significant impact on user experience' },
-              { level: 'moderate', color: 'bg-amber-100 text-amber-700', desc: 'Recommended — noticeable impact, but not blocking' },
-              { level: 'minor', color: 'bg-yellow-100 text-yellow-700', desc: 'Nice to fix — minor improvement opportunity' },
-              { level: 'info', color: 'bg-blue-100 text-blue-700', desc: 'Informational — observation, not necessarily a problem' },
+              { level: 'critical', color: 'bg-red-100 text-red-700', desc: 'Must fix - blocks users or has serious legal/security implications' },
+              { level: 'serious', color: 'bg-orange-100 text-orange-700', desc: 'Should fix - significant impact on user experience' },
+              { level: 'moderate', color: 'bg-amber-100 text-amber-700', desc: 'Recommended - noticeable impact, but not blocking' },
+              { level: 'minor', color: 'bg-yellow-100 text-yellow-700', desc: 'Nice to fix - minor improvement opportunity' },
+              { level: 'info', color: 'bg-blue-100 text-blue-700', desc: 'Informational - observation, not necessarily a problem' },
             ].map(s => (
               <div key={s.level} className="flex items-start gap-2 p-3 bg-slate-50 rounded-lg w-full sm:w-auto sm:flex-1">
                 <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase whitespace-nowrap ${s.color}`}>{s.level}</span>
@@ -259,7 +259,7 @@ export default function DocsObjectsPage() {
 }`}
           />
           <p className="text-sm text-slate-500 mt-3">
-            To fetch the next page, increment the <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">page</code> query parameter. Stop when <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">page</code> equals <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">pagination.pages</code>. The maximum <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">limit</code> is 100 — any value above is clamped.
+            To fetch the next page, increment the <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">page</code> query parameter. Stop when <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">page</code> equals <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">pagination.pages</code>. The maximum <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">limit</code> is 100 - any value above is clamped.
           </p>
         </div>
       </DocsLayout>

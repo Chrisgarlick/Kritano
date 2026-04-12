@@ -124,7 +124,7 @@ export function CQSBreakdown({ auditId, cqsScore }: CQSBreakdownProps) {
           >
             <div className="text-center">
               <span className="font-display text-2xl text-teal-600 dark:text-teal-400">
-                {score ?? '—'}
+                {score ?? '-'}
               </span>
             </div>
           </ProgressRing>
@@ -149,7 +149,7 @@ export function CQSBreakdown({ auditId, cqsScore }: CQSBreakdownProps) {
               <div className="flex justify-between items-center mb-1">
                 <span className="text-xs text-slate-600 dark:text-slate-400">{sub.label}</span>
                 <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
-                  {sub.value !== null ? sub.value : '—'}
+                  {sub.value !== null ? sub.value : '-'}
                 </span>
               </div>
               <div className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
@@ -180,13 +180,13 @@ export function CQSBreakdown({ auditId, cqsScore }: CQSBreakdownProps) {
                   page.cqs !== null && page.cqs >= 50 ? 'text-orange-600 dark:text-orange-400' :
                   'text-red-600 dark:text-red-400'
                 }`}>
-                  {page.cqs ?? '—'}
+                  {page.cqs ?? '-'}
                 </span>
                 <span className="text-slate-500 dark:text-slate-500 truncate flex-1" title={page.url}>
                   {page.url}
                 </span>
                 {page.wordCount != null && page.wordCount < 100 && (
-                  <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400" title="Limited content — score may not be representative">
+                  <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400" title="Limited content - score may not be representative">
                     <AlertTriangle className="w-3 h-3" />
                     <span className="text-[10px]">Low content</span>
                   </span>

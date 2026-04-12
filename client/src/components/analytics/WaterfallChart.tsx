@@ -1,5 +1,5 @@
 /**
- * WaterfallChart — Shows issue flow between audits (fixed, new, remaining).
+ * WaterfallChart - Shows issue flow between audits (fixed, new, remaining).
  * Custom SVG implementation for clean visual storytelling.
  */
 

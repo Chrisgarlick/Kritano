@@ -106,7 +106,7 @@ X-RateLimit-Reset: 1706540400`}
           </p>
           <CodeBlock
             language="json"
-            label="429 — Rate Limit Exceeded"
+            label="429 - Rate Limit Exceeded"
             code={`{
   "error": "Rate limit exceeded",
   "code": "RATE_LIMIT_EXCEEDED",
@@ -163,7 +163,7 @@ X-RateLimit-Reset: 1706540400`}
           </p>
           <CodeBlock
             language="json"
-            label="429 — Audit Limit"
+            label="429 - Audit Limit"
             code={`{
   "error": "Concurrent audit limit reached",
   "code": "AUDIT_LIMIT_REACHED",

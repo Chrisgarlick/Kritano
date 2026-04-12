@@ -406,7 +406,7 @@ export default function PageDetailPage() {
                           </div>
                         </td>
                         <td className="px-4 py-2 text-right text-xs text-slate-500">
-                          {asset.file_size_bytes ? formatBytes(asset.file_size_bytes) : '—'}
+                          {asset.file_size_bytes ? formatBytes(asset.file_size_bytes) : '-'}
                         </td>
                         <td className="px-4 py-2 text-center">
                           <span className="text-[10px] font-medium text-slate-500">

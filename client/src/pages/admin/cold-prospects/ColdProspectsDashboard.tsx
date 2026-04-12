@@ -87,7 +87,7 @@ export default function ColdProspectsDashboard() {
       setOutreachStats(statsRes.data.stats);
       setOutreachSends(sendsRes.data.sends);
     } catch {
-      // Silent fail — outreach tables might not exist yet
+      // Silent fail - outreach tables might not exist yet
     }
   }, []);
 
@@ -137,7 +137,7 @@ export default function ColdProspectsDashboard() {
       toast(`Imported ${res.data.imported} prospects (${res.data.duplicates} duplicates, ${res.data.errors} errors)`, 'success');
       fetchData();
     } catch {
-      toast('Failed to import JSON — check the file format', 'error');
+      toast('Failed to import JSON - check the file format', 'error');
     } finally {
       setImportingJson(false);
       e.target.value = '';

@@ -1,5 +1,5 @@
 /**
- * Route Registry — Single source of truth for all app routes.
+ * Route Registry - Single source of truth for all app routes.
  *
  * Used by the admin SEO manager to list all routes with their default
  * SEO metadata. When you add a new route, add it here too so it
@@ -43,7 +43,7 @@ export const routeRegistry: RouteEntry[] = [
     label: 'Pricing',
     category: 'public',
     defaultTitle: 'Pricing',
-    defaultDescription: 'Choose the right Kritano plan for your needs — from free to enterprise.',
+    defaultDescription: 'Choose the right Kritano plan for your needs - from free to enterprise.',
   },
   {
     path: '/contact',
@@ -71,7 +71,7 @@ export const routeRegistry: RouteEntry[] = [
     label: 'Privacy Policy',
     category: 'public',
     defaultTitle: 'Privacy Policy',
-    defaultDescription: 'Kritano privacy policy — how we handle your data.',
+    defaultDescription: 'Kritano privacy policy - how we handle your data.',
   },
 
   // ── API Docs ─────────────────────────────────────────────
@@ -80,7 +80,7 @@ export const routeRegistry: RouteEntry[] = [
     label: 'API Docs',
     category: 'public',
     defaultTitle: 'API Documentation',
-    defaultDescription: 'Comprehensive API documentation for Kritano — automate website audits, retrieve findings, and build custom integrations.',
+    defaultDescription: 'Comprehensive API documentation for Kritano - automate website audits, retrieve findings, and build custom integrations.',
   },
   {
     path: '/docs/authentication',
@@ -108,14 +108,14 @@ export const routeRegistry: RouteEntry[] = [
     label: 'API Endpoints',
     category: 'public',
     defaultTitle: 'Endpoints - API Docs',
-    defaultDescription: 'Complete reference for all Kritano API v1 endpoints — create audits, list results, retrieve findings, and more.',
+    defaultDescription: 'Complete reference for all Kritano API v1 endpoints - create audits, list results, retrieve findings, and more.',
   },
   {
     path: '/docs/objects',
     label: 'API Objects',
     category: 'public',
     defaultTitle: 'Object Reference - API Docs',
-    defaultDescription: 'Complete reference for Kritano API objects — Audit and Finding data structures with field descriptions.',
+    defaultDescription: 'Complete reference for Kritano API objects - Audit and Finding data structures with field descriptions.',
   },
 
   // ── Auth ────────────────────────────────────────────────

@@ -55,7 +55,7 @@ export default function BrandingSettings() {
   const [loading, setLoading] = useState(true);
   const [sites, setSites] = useState<SiteWithStats[]>([]);
 
-  // Org id — may be null if none exists yet (auto-created on first save)
+  // Org id - may be null if none exists yet (auto-created on first save)
   const [orgId, setOrgId] = useState<string | null>(null);
 
   // Org branding form (agency+ only)
@@ -107,7 +107,7 @@ export default function BrandingSettings() {
             }
           }
         } catch {
-          // No org yet — that's fine, we'll create one on first save
+          // No org yet - that's fine, we'll create one on first save
         }
 
         // Determine which sites currently use org branding (no site-specific branding set)
@@ -132,7 +132,7 @@ export default function BrandingSettings() {
     fetchData();
   }, [fetchData]);
 
-  // Ensure we have an org — create one if needed
+  // Ensure we have an org - create one if needed
   const ensureOrg = async (): Promise<string> => {
     if (orgId) return orgId;
 
@@ -240,7 +240,7 @@ export default function BrandingSettings() {
         setSiteUseOrg(prev => ({ ...prev, [siteId]: !useOrg }));
       }
     } else {
-      // Switching to site branding — open the editor
+      // Switching to site branding - open the editor
       const site = sites.find(s => s.id === siteId);
       if (site) handleEditSite(site);
     }
@@ -316,11 +316,11 @@ export default function BrandingSettings() {
         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">PDF Report Branding</h2>
         <p className="text-sm text-slate-500 dark:text-slate-500 mt-1">
           Customize how your exported PDF audit reports look
-          {isAgencyPlus && ' — set organization-wide defaults or customize per site'}
+          {isAgencyPlus && ' - set organization-wide defaults or customize per site'}
         </p>
       </div>
 
-      {/* Organization Branding (Agency+ only — always shown) */}
+      {/* Organization Branding (Agency+ only - always shown) */}
       {isAgencyPlus && (
         <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-indigo-50 to-slate-50 dark:from-indigo-950/30 dark:to-slate-800/50">
@@ -379,7 +379,7 @@ export default function BrandingSettings() {
                   className="h-8 max-w-[120px] object-contain"
                   onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 />
-                <span className="text-xs text-slate-500 dark:text-slate-500">Logo preview — appears in PDF header</span>
+                <span className="text-xs text-slate-500 dark:text-slate-500">Logo preview - appears in PDF header</span>
               </div>
             )}
 
@@ -650,7 +650,7 @@ export default function BrandingSettings() {
                                     }}
                                     className="w-7 h-7 rounded border-2 border-white dark:border-slate-700 shadow-sm hover:scale-110 transition-transform"
                                     style={{ backgroundColor: color }}
-                                    title={`${color} — Click to apply`}
+                                    title={`${color} - Click to apply`}
                                   />
                                   <span className="text-[9px] font-mono text-slate-500">{color.slice(1, 4)}</span>
                                 </div>

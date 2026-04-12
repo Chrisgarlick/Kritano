@@ -231,7 +231,7 @@ export function ContentAnalysisPanel({
 
   return (
     <div className={`bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden ${className}`}>
-      {/* Header — clickable accordion toggle */}
+      {/* Header - clickable accordion toggle */}
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
@@ -266,7 +266,7 @@ export function ContentAnalysisPanel({
         </div>
       </button>
 
-      {/* Content — collapsible */}
+      {/* Content - collapsible */}
       {expanded && <div className="p-5 space-y-6">
         {/* Subscores Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -320,7 +320,7 @@ export function ContentAnalysisPanel({
                   <InfoTooltip text={item.tooltip} />
                 </div>
                 <div className={`text-2xl font-bold ${getScoreColor(item.score)}`}>
-                  {item.score ?? '—'}
+                  {item.score ?? '-'}
                 </div>
                 <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
                   {item.description}
@@ -345,7 +345,7 @@ export function ContentAnalysisPanel({
                   Grade Level
                 </span>
                 <span className={`text-lg font-bold ${readingLevel.color}`}>
-                  {fkGrade?.toFixed(1) ?? '—'}
+                  {fkGrade?.toFixed(1) ?? '-'}
                 </span>
               </div>
               <ReadabilityGauge value={fkGrade} maxValue={18} />
@@ -366,7 +366,7 @@ export function ContentAnalysisPanel({
                   Reading Ease
                 </span>
                 <span className={`text-lg font-bold ${fleschEase.color}`}>
-                  {frEase?.toFixed(1) ?? '—'}
+                  {frEase?.toFixed(1) ?? '-'}
                 </span>
               </div>
               <ReadabilityGauge value={frEase} maxValue={100} inverted />
@@ -416,7 +416,7 @@ export function ContentAnalysisPanel({
                       </span>
                     </div>
                     <div className={`text-xl font-bold ${getScoreColor(pillar.score)}`}>
-                      {pillar.score ?? '—'}
+                      {pillar.score ?? '-'}
                     </div>
                     {pillar.score != null && (
                       <div className="mt-1.5 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
@@ -462,7 +462,7 @@ export function ContentAnalysisPanel({
                   { label: 'Author Bio', value: metrics.has_author_bio, tooltip: 'A visible author bio section on the page that identifies who wrote the content.' },
                   { label: 'Credentials', value: metrics.has_author_credentials, tooltip: 'Author qualifications, certifications, or professional titles that demonstrate expertise.' },
                   { label: 'Contact Info', value: metrics.has_contact_info, tooltip: 'Reachable contact details such as email, phone, or a contact form on the site.' },
-                  { label: 'Privacy Policy', value: metrics.has_privacy_policy, tooltip: 'A linked privacy policy page — required for GDPR compliance and a key trust signal.' },
+                  { label: 'Privacy Policy', value: metrics.has_privacy_policy, tooltip: 'A linked privacy policy page - required for GDPR compliance and a key trust signal.' },
                   { label: 'Terms of Service', value: metrics.has_terms_of_service, tooltip: 'A linked terms of service page that outlines usage rules and legal protections.' },
                   { label: 'Citations', value: (metrics.citation_count ?? 0) > 0, count: metrics.citation_count, tooltip: 'External references or citations that back up claims made in the content.' },
                 ].map((signal) => (
@@ -524,7 +524,7 @@ export function ContentAnalysisPanel({
                 <span className="text-xs">Words</span>
               </div>
               <div className="text-xl font-bold text-slate-900 dark:text-white">
-                {metrics.word_count?.toLocaleString() ?? '—'}
+                {metrics.word_count?.toLocaleString() ?? '-'}
               </div>
             </div>
 
@@ -535,7 +535,7 @@ export function ContentAnalysisPanel({
                 <span className="text-xs">Read Time</span>
               </div>
               <div className="text-xl font-bold text-slate-900 dark:text-white">
-                {metrics.reading_time_minutes ? `${metrics.reading_time_minutes} min` : '—'}
+                {metrics.reading_time_minutes ? `${metrics.reading_time_minutes} min` : '-'}
               </div>
             </div>
 
@@ -742,7 +742,7 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
       {/* 3-Pillar Mini Grid */}
       <div className="grid grid-cols-3 gap-3 mb-4">
         {[
-          { label: 'Nuggets', score: metrics.aeo_nugget_score, icon: Search, weight: '40%', tooltip: 'Self-contained, quotable snippets that AI can extract and cite directly — definitions, answers, lists, and summaries.' },
+          { label: 'Nuggets', score: metrics.aeo_nugget_score, icon: Search, weight: '40%', tooltip: 'Self-contained, quotable snippets that AI can extract and cite directly - definitions, answers, lists, and summaries.' },
           { label: 'Factual Density', score: metrics.aeo_factual_density_score, icon: Database, weight: '30%', tooltip: 'How many verifiable facts, statistics, and concrete data points your content contains per paragraph.' },
           { label: 'Source Authority', score: metrics.aeo_source_authority_score, icon: Link2, weight: '30%', tooltip: 'Signals that make AI trust your content: citations, author credentials, external references, and structured data.' },
         ].map((pillar) => {
@@ -760,7 +760,7 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
                 </span>
               </div>
               <div className={`text-xl font-bold ${getScoreColor(pillar.score)}`}>
-                {pillar.score ?? '—'}
+                {pillar.score ?? '-'}
               </div>
               {pillar.score != null && (
                 <div className="mt-1.5 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
@@ -812,7 +812,7 @@ function AeoDetailSection({ metrics, findings = [] }: { metrics: ContentMetrics;
                   {metrics.aeo_tier === 'primary-source' ? (
                     <>According to the page, <span className="italic">"{bestNugget.text}"</span></>
                   ) : metrics.aeo_tier === 'general-reference' ? (
-                    <>One source suggests that <span className="italic">"{bestNugget.text}"</span> — though this may need further verification.</>
+                    <>One source suggests that <span className="italic">"{bestNugget.text}"</span> - though this may need further verification.</>
                   ) : (
                     <>
                       <span className="text-slate-500 dark:text-slate-500">
@@ -1047,7 +1047,7 @@ export function ContentScoreBadge({ score, size = 'md' }: ContentScoreBadgeProps
     <div
       className={`${sizeClasses[size]} rounded-lg ${getScoreBgColor(score)} flex items-center justify-center font-bold ${getScoreColor(score)}`}
     >
-      {score ?? '—'}
+      {score ?? '-'}
     </div>
   );
 }

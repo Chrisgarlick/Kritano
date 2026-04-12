@@ -234,14 +234,14 @@ export function SchemaTab({ auditId }: SchemaTabProps) {
                           {page.hasOg ? (
                             <Globe className="w-4 h-4 text-emerald-500 mx-auto" />
                           ) : (
-                            <span className="text-slate-300 dark:text-slate-600">—</span>
+                            <span className="text-slate-300 dark:text-slate-600">-</span>
                           )}
                         </td>
                         <td className="text-center px-3 py-2.5">
                           {page.hasTc ? (
                             <Twitter className="w-4 h-4 text-emerald-500 mx-auto" />
                           ) : (
-                            <span className="text-slate-300 dark:text-slate-600">—</span>
+                            <span className="text-slate-300 dark:text-slate-600">-</span>
                           )}
                         </td>
                         <td className="px-3 py-2.5 hidden sm:table-cell">

@@ -7,14 +7,13 @@
 
 import fs from 'fs/promises';
 import path from 'path';
-import crypto from 'crypto';
 import sharp from 'sharp';
 import { JSDOM } from 'jsdom';
 import DOMPurify from 'dompurify';
 import { pool } from '../db/index.js';
 import type { BlogMedia } from '../types/blog.types.js';
 
-const UPLOAD_DIR = path.resolve(process.cwd(), 'uploads', 'blog');
+const UPLOAD_DIR = path.resolve(__dirname, '..', '..', 'uploads', 'blog');
 const MAX_WIDTH = 2400;
 const THUMBNAIL_WIDTH = 400;
 const THUMBNAIL_HEIGHT = 300;
@@ -35,11 +34,36 @@ async function ensureUploadDirs(): Promise<void> {
   await fs.mkdir(path.join(UPLOAD_DIR, 'webp'), { recursive: true });
 }
 
-function generateStorageKey(originalName: string): string {
+function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80) || 'image';
+}
+
+async function uniqueStorageKey(slug: string, ext: string): Promise<string> {
+  let candidate = `${slug}${ext}`;
+  let counter = 0;
+  while (true) {
+    const filePath = path.join(UPLOAD_DIR, 'original', candidate);
+    try {
+      await fs.access(filePath);
+      // File exists, try next suffix
+      counter++;
+      candidate = `${slug}_${counter}${ext}`;
+    } catch {
+      // File doesn't exist, we can use this name
+      return candidate;
+    }
+  }
+}
+
+function generateStorageKey(originalName: string): Promise<string> {
   const ext = path.extname(originalName).toLowerCase();
-  const hash = crypto.randomBytes(16).toString('hex');
-  const timestamp = Date.now();
-  return `${timestamp}-${hash}${ext}`;
+  const base = path.basename(originalName, ext);
+  const slug = slugify(base);
+  return uniqueStorageKey(slug, ext);
 }
 
 export interface UploadResult {
@@ -62,9 +86,10 @@ export async function uploadMedia(
 
   await ensureUploadDirs();
 
-  const storageKey = generateStorageKey(file.originalname);
-  const thumbnailKey = `thumb-${storageKey.replace(/\.[^.]+$/, '.jpg')}`;
-  const webpKey = `${storageKey.replace(/\.[^.]+$/, '.webp')}`;
+  const storageKey = await generateStorageKey(file.originalname);
+  const baseName = storageKey.replace(/\.[^.]+$/, '');
+  const thumbnailKey = `thumb-${baseName}.jpg`;
+  const webpKey = `${baseName}.webp`;
 
   let width: number;
   let height: number;
@@ -215,4 +240,57 @@ export async function updateMediaAltText(mediaId: string, altText: string): Prom
     [altText, mediaId]
   );
   return result.rows[0] || null;
+}
+
+export async function renameMedia(
+  mediaId: string,
+  newName: string
+): Promise<(BlogMedia & { url: string; thumbnailUrl: string; webpUrl: string }) | null> {
+  const existing = await pool.query('SELECT * FROM blog_media WHERE id = $1', [mediaId]);
+  if (existing.rows.length === 0) return null;
+
+  const media: BlogMedia = existing.rows[0];
+  const oldExt = path.extname(media.storage_key).toLowerCase();
+  const newSlug = slugify(newName);
+  if (!newSlug) throw new Error('Invalid name');
+
+  await ensureUploadDirs();
+  const newStorageKey = await uniqueStorageKey(newSlug, oldExt);
+  const baseName = newStorageKey.replace(/\.[^.]+$/, '');
+  const newThumbnailKey = `thumb-${baseName}.jpg`;
+  const newWebpKey = `${baseName}.webp`;
+  const newFilename = `${newName}${oldExt}`;
+
+  // Rename files on disk
+  const renameFile = async (dir: string, oldKey: string | null, newKey: string) => {
+    if (!oldKey) return;
+    const oldPath = path.join(UPLOAD_DIR, dir, oldKey);
+    const newPath = path.join(UPLOAD_DIR, dir, newKey);
+    try {
+      await fs.rename(oldPath, newPath);
+    } catch {
+      // File may not exist (e.g., SVGs without thumbnails)
+    }
+  };
+
+  await Promise.all([
+    renameFile('original', media.storage_key, newStorageKey),
+    renameFile('thumbnails', media.thumbnail_key, newThumbnailKey),
+    renameFile('webp', media.webp_key, newWebpKey),
+  ]);
+
+  const result = await pool.query(
+    `UPDATE blog_media
+     SET filename = $1, storage_key = $2, thumbnail_key = $3, webp_key = $4
+     WHERE id = $5 RETURNING *`,
+    [newFilename, newStorageKey, newThumbnailKey, newWebpKey, mediaId]
+  );
+
+  const updated = result.rows[0];
+  return {
+    ...updated,
+    url: `/uploads/blog/original/${newStorageKey}`,
+    thumbnailUrl: `/uploads/blog/thumbnails/${newThumbnailKey}`,
+    webpUrl: `/uploads/blog/webp/${newWebpKey}`,
+  };
 }

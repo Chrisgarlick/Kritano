@@ -6,7 +6,8 @@ import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
 import { analyticsApi, sitesApi } from '../../services/api';
 import { ScoreComparisonTable, ScoreComparisonBar, IssueDiffTable } from '../../components/analytics';
-import { getScoreColor, SEVERITY_COLORS } from '../../types/analytics.types';
+import { BeforeAfterDiff } from '../../components/analytics/BeforeAfterDiff';
+import { getScoreColor, SEVERITY_COLORS, type ScoreCategory } from '../../types/analytics.types';
 import type { AuditComparison as AuditComparisonType, AuditSummary } from '../../types/analytics.types';
 
 interface AuditOption {
@@ -421,6 +422,16 @@ export function AuditComparisonContent() {
               scoreDeltas={comparison.comparison.scoreDeltas}
             />
           </div>
+
+          {/* Visual Before/After Diff (2 audits only) */}
+          {comparison.audits.length === 2 && (
+            <BeforeAfterDiff
+              before={comparison.audits[0].scores as Partial<Record<ScoreCategory, number | null>>}
+              after={comparison.audits[1].scores as Partial<Record<ScoreCategory, number | null>>}
+              beforeLabel={comparison.audits[0].siteName}
+              afterLabel={comparison.audits[1].siteName}
+            />
+          )}
 
           {/* Score Bar Chart */}
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6">

@@ -41,6 +41,7 @@ test-results/
 
 # Cold prospect CLI runtime data
 server/prospect-settings.json
+server/uploads
 
 # Trend files
 /docs/trend

@@ -82,7 +82,7 @@ function getEmbedUrl(raw: string): string | null {
       if (match) return `https://player.vimeo.com/video/${match[1]}`;
     }
   } catch {
-    // invalid URL – fall through
+    // invalid URL - fall through
   }
   return null;
 }

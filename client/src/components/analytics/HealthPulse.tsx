@@ -1,5 +1,5 @@
 /**
- * HealthPulse — Horizontal segmented bar showing portfolio health distribution.
+ * HealthPulse - Horizontal segmented bar showing portfolio health distribution.
  * Green (healthy: all scores 80+), Amber (needs work: any 50-79), Red (critical: any <50).
  */
 

@@ -1139,13 +1139,13 @@ export default function SiteDetailPage() {
                           </summary>
                           <ol className="mt-2 ml-4 list-decimal space-y-1.5">
                             <li>Connect to your server via SSH or FTP</li>
-                            <li>Navigate to your website's <strong>public root</strong> directory (where your <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">index.html</code> or <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">index.php</code> lives — for Laravel/Symfony this is the <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">public/</code> folder)</li>
+                            <li>Navigate to your website's <strong>public root</strong> directory (where your <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">index.html</code> or <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">index.php</code> lives - for Laravel/Symfony this is the <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">public/</code> folder)</li>
                             <li>Create the <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">.well-known</code> directory if it doesn't exist: <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">mkdir -p .well-known</code></li>
                             <li>Create the verification file with your token:
                               <code className="block mt-1 p-1.5 bg-slate-100 dark:bg-slate-900 rounded text-xs font-mono break-all">echo "{verificationInstructions.instructions.file.content}" &gt; .well-known/kritano-verification.txt</code>
                             </li>
-                            <li>Check the file is accessible by visiting <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded break-all">https://{site.domain}{verificationInstructions.instructions.file.path}</code> in your browser — you should see the token text</li>
-                            <li>If you get a 403 or 404, your web server may block dotfile directories — check your server config allows access to <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">/.well-known/</code></li>
+                            <li>Check the file is accessible by visiting <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded break-all">https://{site.domain}{verificationInstructions.instructions.file.path}</code> in your browser - you should see the token text</li>
+                            <li>If you get a 403 or 404, your web server may block dotfile directories - check your server config allows access to <code className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-1 rounded">/.well-known/</code></li>
                           </ol>
                         </details>
 

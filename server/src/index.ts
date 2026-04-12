@@ -83,7 +83,7 @@ app.use('/api/webhooks/resend', express.raw({ type: 'application/json' }), resen
 app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }), initializeStripeWebhooks(pool));
 
 // Static file serving for blog uploads
-app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads'), {
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads'), {
   maxAge: '7d',
   immutable: true,
 }));

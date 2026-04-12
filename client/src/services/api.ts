@@ -1174,6 +1174,9 @@ export const adminApi = {
   updateMediaAlt: (id: string, alt_text: string) =>
     api.patch<{ media: BlogMediaItem }>(`/admin/cms/media/${id}`, { alt_text }),
 
+  renameMedia: (id: string, name: string) =>
+    api.put<{ media: BlogMediaItem }>(`/admin/cms/media/${id}/rename`, { name }),
+
   // CMS - Stats
   getCmsStats: () =>
     api.get<CmsStatsResponse>('/admin/cms/stats'),

@@ -299,7 +299,7 @@ export default function CampaignsPage() {
                         </td>
                         <td className="px-4 py-3">
                           <span className="text-sm text-slate-500">
-                            {campaign.description || <span className="text-slate-600">—</span>}
+                            {campaign.description || <span className="text-slate-600">-</span>}
                           </span>
                         </td>
                         <td className="px-4 py-3 text-center">

@@ -1,4 +1,7 @@
+import { useState } from 'react';
+import { ImageIcon } from 'lucide-react';
 import type { ContentBlock } from './BlockDisplay';
+import MediaPicker from './MediaPicker';
 
 interface BlockRendererProps {
   block: ContentBlock;
@@ -82,52 +85,13 @@ export default function BlockRenderer({ block, onUpdate }: BlockRendererProps) {
     // ============================================================
     case 'image': {
       return (
-        <div className="flex flex-col gap-3">
-          <div>
-            <label className={labelClasses}>Image URL</label>
-            <input
-              type="text"
-              className={inputClasses}
-              value={(props.src as string) || ''}
-              onChange={(e) => updateProp('src', e.target.value)}
-              placeholder="https://example.com/image.jpg"
-            />
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div>
-              <label className={labelClasses}>Alt Text</label>
-              <input
-                type="text"
-                className={inputClasses}
-                value={(props.alt as string) || ''}
-                onChange={(e) => updateProp('alt', e.target.value)}
-                placeholder="Describe the image..."
-              />
-            </div>
-            <div>
-              <label className={labelClasses}>Caption</label>
-              <input
-                type="text"
-                className={inputClasses}
-                value={(props.caption as string) || ''}
-                onChange={(e) => updateProp('caption', e.target.value)}
-                placeholder="Optional caption text"
-              />
-            </div>
-          </div>
-          <div className="w-40">
-            <label className={labelClasses}>Width</label>
-            <select
-              className={`${selectClasses} w-full`}
-              value={(props.width as string) || 'content'}
-              onChange={(e) => updateProp('width', e.target.value)}
-            >
-              <option value="content">Content</option>
-              <option value="wide">Wide</option>
-              <option value="full">Full</option>
-            </select>
-          </div>
-        </div>
+        <ImageBlock
+          props={props}
+          updateProp={updateProp}
+          inputClasses={inputClasses}
+          selectClasses={selectClasses}
+          labelClasses={labelClasses}
+        />
       );
     }
 
@@ -400,7 +364,7 @@ export default function BlockRenderer({ block, onUpdate }: BlockRendererProps) {
       return (
         <div className="flex items-center gap-3 rounded-md border border-dashed border-slate-600 bg-slate-900/50 px-4 py-6">
           <div className="flex-1 text-center text-sm text-slate-500">
-            Two column layout — nested block editing coming soon
+            Two column layout - nested block editing coming soon
           </div>
         </div>
       );
@@ -417,4 +381,120 @@ export default function BlockRenderer({ block, onUpdate }: BlockRendererProps) {
       );
     }
   }
+}
+
+// ----------------------------------------------------------------
+// Image block with media picker
+// ----------------------------------------------------------------
+function ImageBlock({
+  props,
+  updateProp,
+  inputClasses,
+  selectClasses,
+  labelClasses,
+}: {
+  props: Record<string, unknown>;
+  updateProp: (key: string, value: unknown) => void;
+  inputClasses: string;
+  selectClasses: string;
+  labelClasses: string;
+}) {
+  const [pickerOpen, setPickerOpen] = useState(false);
+
+  const handleSelect = (url: string, alt: string) => {
+    updateProp('src', url);
+    if (alt && !(props.alt as string)) {
+      updateProp('alt', alt);
+    }
+    setPickerOpen(false);
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div>
+        <label className={labelClasses}>Image</label>
+        {(props.src as string) ? (
+          <div className="mb-2 relative group rounded-lg overflow-hidden border border-slate-600 bg-slate-900">
+            <img
+              src={props.src as string}
+              alt={(props.alt as string) || ''}
+              className="w-full max-h-48 object-contain"
+            />
+            <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button
+                type="button"
+                onClick={() => setPickerOpen(true)}
+                className="px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium transition-colors"
+              >
+                Change
+              </button>
+              <button
+                type="button"
+                onClick={() => updateProp('src', '')}
+                className="px-3 py-1.5 rounded-md bg-slate-700 hover:bg-slate-600 text-white text-xs font-medium transition-colors"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setPickerOpen(true)}
+            className="w-full flex flex-col items-center gap-2 rounded-lg border-2 border-dashed border-slate-600 bg-slate-900/50 px-4 py-8 text-slate-500 transition-colors hover:border-indigo-500/50 hover:text-indigo-400"
+          >
+            <ImageIcon className="w-8 h-8" />
+            <span className="text-sm">Choose from media library</span>
+          </button>
+        )}
+        <input
+          type="text"
+          className={`${inputClasses} mt-2`}
+          value={(props.src as string) || ''}
+          onChange={(e) => updateProp('src', e.target.value)}
+          placeholder="Or paste an image URL..."
+        />
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div>
+          <label className={labelClasses}>Alt Text</label>
+          <input
+            type="text"
+            className={inputClasses}
+            value={(props.alt as string) || ''}
+            onChange={(e) => updateProp('alt', e.target.value)}
+            placeholder="Describe the image..."
+          />
+        </div>
+        <div>
+          <label className={labelClasses}>Caption</label>
+          <input
+            type="text"
+            className={inputClasses}
+            value={(props.caption as string) || ''}
+            onChange={(e) => updateProp('caption', e.target.value)}
+            placeholder="Optional caption text"
+          />
+        </div>
+      </div>
+      <div className="w-40">
+        <label className={labelClasses}>Width</label>
+        <select
+          className={`${selectClasses} w-full`}
+          value={(props.width as string) || 'content'}
+          onChange={(e) => updateProp('width', e.target.value)}
+        >
+          <option value="content">Content</option>
+          <option value="wide">Wide</option>
+          <option value="full">Full</option>
+        </select>
+      </div>
+
+      <MediaPicker
+        isOpen={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        onSelect={handleSelect}
+      />
+    </div>
+  );
 }

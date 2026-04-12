@@ -11,7 +11,7 @@ export default function DocsEndpointsPage() {
     <PublicLayout>
       <PageSeo
         title="Endpoints - API Docs"
-        description="Complete reference for all Kritano API v1 endpoints — create audits, list results, retrieve findings, and more."
+        description="Complete reference for all Kritano API v1 endpoints - create audits, list results, retrieve findings, and more."
         path="/docs/endpoints"
         useOverrides={true}
       />
@@ -76,7 +76,7 @@ export default function DocsEndpointsPage() {
             </div>
 
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-              Start a new website audit. The audit is queued and processed asynchronously — the response returns immediately with status <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">"pending"</code>. Poll <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">GET /api/v1/audits/:id</code> to track progress.
+              Start a new website audit. The audit is queued and processed asynchronously - the response returns immediately with status <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">"pending"</code>. Poll <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">GET /api/v1/audits/:id</code> to track progress.
             </p>
 
             <ParamTable
@@ -133,7 +133,7 @@ export default function DocsEndpointsPage() {
               </div>
               <div className="flex items-start gap-2">
                 <code className="text-xs bg-red-50 text-red-700 px-1.5 py-0.5 rounded font-mono flex-shrink-0">429</code>
-                <span className="text-slate-600">Concurrent audit limit reached — wait for existing audits to complete or cancel one</span>
+                <span className="text-slate-600">Concurrent audit limit reached - wait for existing audits to complete or cancel one</span>
               </div>
             </div>
           </EndpointCard>
@@ -210,7 +210,7 @@ export default function DocsEndpointsPage() {
               <div>
                 <div className="font-semibold text-sm text-slate-900 mb-1">Pagination</div>
                 <p className="text-sm text-slate-700">
-                  Use <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">pagination.pages</code> to know the total number of pages. Increment <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">page</code> until you reach it. The maximum <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">limit</code> is 100 — values above 100 are clamped.
+                  Use <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">pagination.pages</code> to know the total number of pages. Increment <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">page</code> until you reach it. The maximum <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">limit</code> is 100 - values above 100 are clamped.
                 </p>
               </div>
             </div>
@@ -308,7 +308,7 @@ export default function DocsEndpointsPage() {
               <div>
                 <div className="font-semibold text-sm text-slate-900 mb-1">Polling for Completion</div>
                 <p className="text-sm text-slate-700">
-                  Poll this endpoint every 5-10 seconds. Check <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">status</code> — when it's <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">"completed"</code>, the <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">scores</code> and <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">issues</code> fields will be populated. While processing, <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">progress.currentUrl</code> shows the page currently being audited.
+                  Poll this endpoint every 5-10 seconds. Check <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">status</code> - when it's <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">"completed"</code>, the <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">scores</code> and <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">issues</code> fields will be populated. While processing, <code className="text-xs bg-blue-100 px-1 py-0.5 rounded font-mono">progress.currentUrl</code> shows the page currently being audited.
                 </p>
               </div>
             </div>
@@ -349,7 +349,7 @@ export default function DocsEndpointsPage() {
             <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-6 mb-2">Example Request</h4>
             <CodeBlock
               language="bash"
-              label="cURL — All critical accessibility findings"
+              label="cURL - All critical accessibility findings"
               code={`curl "https://app.kritano.io/api/v1/audits/550e8400.../findings?category=accessibility&severity=critical" \\
   -H "Authorization: Bearer kt_live_your_key"`}
             />

@@ -152,7 +152,7 @@ export default function ReferralDashboard() {
               <div className="flex items-center gap-2 mt-3">
                 <span className="text-xs text-slate-500 dark:text-slate-400">Share via:</span>
                 <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('I use Kritano to audit my website for accessibility, SEO, and security issues — try it free:')}&url=${encodeURIComponent(stats.referralLink)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('I use Kritano to audit my website for accessibility, SEO, and security issues - try it free:')}&url=${encodeURIComponent(stats.referralLink)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
@@ -170,7 +170,7 @@ export default function ReferralDashboard() {
                   LinkedIn
                 </a>
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent('Check out Kritano — it finds accessibility, SEO, and security issues on your website: ' + stats.referralLink)}`}
+                  href={`https://wa.me/?text=${encodeURIComponent('Check out Kritano - it finds accessibility, SEO, and security issues on your website: ' + stats.referralLink)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"

@@ -1,5 +1,5 @@
 /**
- * Author Page — /author/chris-garlick
+ * Author Page - /author/chris-garlick
  *
  * Dedicated author page for E-E-A-T. Shows bio, expertise, and blog posts.
  * Includes Person schema with sameAs links to social profiles.
@@ -14,15 +14,15 @@ import type { BlogPostSummary } from '../../services/api';
 import { Clock, ArrowRight } from 'lucide-react';
 
 const CATEGORY_LABELS: Record<string, string> = {
-  'seo': 'SEO',
-  'accessibility': 'Accessibility',
-  'security': 'Security',
-  'performance': 'Performance',
+  seo: 'SEO',
+  accessibility: 'Accessibility',
+  security: 'Security',
+  performance: 'Performance',
   'content-quality': 'Content Quality',
   'structured-data': 'Structured Data',
-  'eeat': 'E-E-A-T',
-  'aeo': 'AEO',
-  'guides': 'Guides',
+  eeat: 'E-E-A-T',
+  aeo: 'AEO',
+  guides: 'Guides',
   'case-studies': 'Case Studies',
   'product-updates': 'Product Updates',
 };
@@ -42,7 +42,8 @@ export default function AuthorPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    blogApi.listPosts({ limit: 100 })
+    blogApi
+      .listPosts({ limit: 100 })
       .then(({ data }) => setPosts(data.posts))
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -51,7 +52,7 @@ export default function AuthorPage() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Chris Garlick — Founder & Author"
+        title="Chris Garlick - Founder & Author"
         description="Chris Garlick is the founder of Kritano, a website intelligence platform. He writes about SEO, web accessibility, security, and performance."
         path="/author/chris-garlick"
         structuredData={[
@@ -66,7 +67,8 @@ export default function AuthorPage() {
               name: 'Kritano',
               url: 'https://kritano.com',
             },
-            description: 'Founder of Kritano. Software engineer specialising in web auditing, SEO, accessibility, and performance optimisation.',
+            description:
+              'Founder of Kritano. Software engineer specialising in web auditing, SEO, accessibility, and performance optimisation.',
             knowsAbout: [
               'SEO',
               'Web Accessibility',
@@ -77,17 +79,19 @@ export default function AuthorPage() {
               'Answer Engine Optimisation',
               'Structured Data',
             ],
-            sameAs: [
-              'https://twitter.com/chrisgarlick',
-              'https://linkedin.com/in/chrisgarlick',
-            ],
+            sameAs: ['https://twitter.com/chrisgarlick', 'https://linkedin.com/in/chrisgarlick'],
           },
           {
             '@context': 'https://schema.org',
             '@type': 'BreadcrumbList',
             itemListElement: [
               { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
-              { '@type': 'ListItem', position: 2, name: 'Chris Garlick', item: 'https://kritano.com/author/chris-garlick' },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Chris Garlick',
+                item: 'https://kritano.com/author/chris-garlick',
+              },
             ],
           },
         ]}
@@ -104,24 +108,28 @@ export default function AuthorPage() {
               <h1 className="font-display text-4xl lg:text-5xl text-slate-900 leading-tight mb-2">
                 Chris Garlick
               </h1>
-              <p className="text-lg text-slate-500">Founder of <Link to="/" className="text-indigo-600 hover:text-indigo-700 transition-colors">Kritano</Link></p>
+              <p className="text-lg text-slate-500">
+                Founder of{' '}
+                <Link to="/" className="text-indigo-600 hover:text-indigo-700 transition-colors">
+                  Kritano
+                </Link>
+              </p>
             </div>
           </div>
 
           {/* Bio */}
           <div className="prose prose-lg prose-slate max-w-none mb-12">
             <p className="text-slate-600 leading-relaxed">
-              I built Kritano because I was tired of running accessibility audits with
-              fragmented tools that generated massive reports full of false positives. I
-              wanted a single platform that could analyse a website across every dimension
-              that matters -- SEO, accessibility, security, performance, content quality,
-              and structured data -- and present the results in a way that anyone could
-              understand and act on.
+              I built Kritano because I was tired of running accessibility audits with fragmented
+              tools that generated massive reports full of false positives. I wanted a single
+              platform that could analyse a website across every dimension that matters - SEO,
+              accessibility, security, performance, content quality, and structured data - and
+              present the results in a way that anyone could understand and act on.
             </p>
             <p className="text-slate-600 leading-relaxed">
-              I write about the topics I know best: making websites faster, more
-              accessible, more secure, and easier to find. Every article on the Kritano
-              blog is informed by real auditing data from thousands of scans.
+              I write about the topics I know best: making websites faster, more accessible, more
+              secure, and easier to find. Every article on the Kritano blog is informed by real
+              auditing data from thousands of scans.
             </p>
           </div>
 
@@ -129,7 +137,7 @@ export default function AuthorPage() {
           <div className="mb-16">
             <h2 className="font-display text-2xl text-slate-900 mb-4">Areas of Expertise</h2>
             <div className="flex flex-wrap gap-2">
-              {EXPERTISE.map(area => (
+              {EXPERTISE.map((area) => (
                 <span
                   key={area}
                   className="text-sm text-slate-600 bg-slate-100 px-3 py-1.5 rounded-md"
@@ -161,7 +169,7 @@ export default function AuthorPage() {
           <p className="text-slate-500">No articles published yet. Check back soon.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map(post => (
+            {posts.map((post) => (
               <Link
                 key={post.id}
                 to={`/blog/${post.slug}`}
@@ -191,11 +199,20 @@ export default function AuthorPage() {
                   <h3 className="text-lg font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2 mb-2">
                     {post.title}
                   </h3>
-                  <p className="text-sm text-slate-500 line-clamp-3 leading-relaxed">{post.excerpt}</p>
+                  <p className="text-sm text-slate-500 line-clamp-3 leading-relaxed">
+                    {post.excerpt}
+                  </p>
                   {post.published_at && (
                     <div className="mt-4 pt-4 border-t border-slate-100">
-                      <time dateTime={new Date(post.published_at).toISOString().split('T')[0]} className="text-xs text-slate-500">
-                        {new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      <time
+                        dateTime={new Date(post.published_at).toISOString().split('T')[0]}
+                        className="text-xs text-slate-500"
+                      >
+                        {new Date(post.published_at).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
                       </time>
                     </div>
                   )}

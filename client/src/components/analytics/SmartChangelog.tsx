@@ -1,5 +1,5 @@
 /**
- * SmartChangelog — Insight-driven activity feed that highlights meaningful changes.
+ * SmartChangelog - Insight-driven activity feed that highlights meaningful changes.
  * Replaces the basic "recent activity" list with contextual, actionable summaries.
  */
 

@@ -4,15 +4,15 @@ import DocsLayout from '../../components/docs/DocsLayout';
 import CodeBlock from '../../components/docs/CodeBlock';
 
 const STATUS_CODES = [
-  { code: '200', description: 'Success — Request completed successfully', category: 'success' },
-  { code: '201', description: 'Created — Resource was created successfully (returned by POST /audits)', category: 'success' },
-  { code: '204', description: 'No Content — Successful deletion (returned by DELETE /audits/:id)', category: 'success' },
-  { code: '400', description: 'Bad Request — Invalid parameters, malformed JSON, or validation failure', category: 'error' },
-  { code: '401', description: 'Unauthorized — Missing or invalid API key', category: 'error' },
-  { code: '403', description: 'Forbidden — API key lacks the required scope for this endpoint', category: 'error' },
-  { code: '404', description: 'Not Found — The audit doesn\'t exist or doesn\'t belong to your account', category: 'error' },
-  { code: '429', description: 'Too Many Requests — Rate limit exceeded or concurrent audit limit reached', category: 'error' },
-  { code: '500', description: 'Internal Server Error — Something went wrong on our end', category: 'error' },
+  { code: '200', description: 'Success - Request completed successfully', category: 'success' },
+  { code: '201', description: 'Created - Resource was created successfully (returned by POST /audits)', category: 'success' },
+  { code: '204', description: 'No Content - Successful deletion (returned by DELETE /audits/:id)', category: 'success' },
+  { code: '400', description: 'Bad Request - Invalid parameters, malformed JSON, or validation failure', category: 'error' },
+  { code: '401', description: 'Unauthorized - Missing or invalid API key', category: 'error' },
+  { code: '403', description: 'Forbidden - API key lacks the required scope for this endpoint', category: 'error' },
+  { code: '404', description: 'Not Found - The audit doesn\'t exist or doesn\'t belong to your account', category: 'error' },
+  { code: '429', description: 'Too Many Requests - Rate limit exceeded or concurrent audit limit reached', category: 'error' },
+  { code: '500', description: 'Internal Server Error - Something went wrong on our end', category: 'error' },
 ];
 
 const ERROR_CODES = [
@@ -93,7 +93,7 @@ export default function DocsErrorsPage() {
           </p>
           <CodeBlock
             language="json"
-            label="400 — Validation Error"
+            label="400 - Validation Error"
             code={`{
   "error": "Validation failed",
   "code": "VALIDATION_ERROR",
@@ -116,7 +116,7 @@ export default function DocsErrorsPage() {
           </p>
           <CodeBlock
             language="json"
-            label="403 — Insufficient Scope"
+            label="403 - Insufficient Scope"
             code={`{
   "error": "Insufficient permissions",
   "code": "SCOPE_REQUIRED",
@@ -132,7 +132,7 @@ export default function DocsErrorsPage() {
           </p>
           <CodeBlock
             language="json"
-            label="429 — Rate Limit"
+            label="429 - Rate Limit"
             code={`{
   "error": "Rate limit exceeded",
   "code": "RATE_LIMIT_EXCEEDED",
@@ -181,15 +181,15 @@ export default function DocsErrorsPage() {
               },
               {
                 q: 'I\'m getting 403 but I have the key',
-                a: 'Your key is valid but missing the required scope. Check the error response — it tells you which scopes are needed and which your key has. Create a new key with the missing scope or update the existing one.',
+                a: 'Your key is valid but missing the required scope. Check the error response - it tells you which scopes are needed and which your key has. Create a new key with the missing scope or update the existing one.',
               },
               {
                 q: 'I\'m getting 429 but I haven\'t made many requests',
-                a: 'Check if you\'re hitting the per-day limit (not just per-minute). Also check if the error code is AUDIT_LIMIT_REACHED — this means too many concurrent audits, not too many requests.',
+                a: 'Check if you\'re hitting the per-day limit (not just per-minute). Also check if the error code is AUDIT_LIMIT_REACHED - this means too many concurrent audits, not too many requests.',
               },
               {
                 q: 'I\'m getting 404 on an audit I just created',
-                a: 'Make sure you\'re using the full UUID returned in the create response. Audits are scoped to your account — you can\'t access audits created by other users or API keys belonging to different users.',
+                a: 'Make sure you\'re using the full UUID returned in the create response. Audits are scoped to your account - you can\'t access audits created by other users or API keys belonging to different users.',
               },
             ].map((item, i) => (
               <div key={i} className="border border-slate-200 rounded-lg p-4">

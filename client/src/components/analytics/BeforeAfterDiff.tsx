@@ -1,5 +1,5 @@
 /**
- * BeforeAfterDiff — Visual score diff between two audits.
+ * BeforeAfterDiff - Visual score diff between two audits.
  * Two overlapping bars per category with delta clearly shown.
  */
 

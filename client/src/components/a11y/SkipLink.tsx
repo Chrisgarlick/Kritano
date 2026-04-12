@@ -1,5 +1,5 @@
 /**
- * SkipLink — Skip-to-content accessibility link.
+ * SkipLink - Skip-to-content accessibility link.
  *
  * Visually hidden by default, becomes visible when focused via keyboard.
  * Should be the first focusable element on every page layout.

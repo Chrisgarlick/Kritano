@@ -76,7 +76,7 @@ export function ComingSoonGuard({ children }: { children: ReactNode }) {
   if (isEaSuccessRoute || isAuthRoute || (isRegisterRoute && hasEaParam)) return <>{children}</>;
 
   if (loading) {
-    // Minimal loading state — just the logo centered
+    // Minimal loading state - just the logo centered
     return (
       <div className="min-h-screen bg-white dark:bg-slate-950 flex items-center justify-center">
         <div className="flex items-center space-x-2">

@@ -120,7 +120,7 @@ export default function TemplatesPage() {
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight font-display">Email Templates</h1>
             <p className="text-sm text-slate-500 mt-1">
-              {total} template{total !== 1 ? 's' : ''} — manage your transactional and campaign emails
+              {total} template{total !== 1 ? 's' : ''} - manage your transactional and campaign emails
             </p>
           </div>
           <Link

@@ -133,7 +133,7 @@ export default function EmailAnalyticsPage() {
                 <span className="text-xs text-slate-500">Avg Open Rate</span>
               </div>
               <div className="text-2xl font-bold text-green-400">
-                {totals.sent > 0 ? formatRate((totals.opened / totals.sent) * 100) : '—'}
+                {totals.sent > 0 ? formatRate((totals.opened / totals.sent) * 100) : '-'}
               </div>
             </div>
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
@@ -142,7 +142,7 @@ export default function EmailAnalyticsPage() {
                 <span className="text-xs text-slate-500">Avg Click Rate</span>
               </div>
               <div className="text-2xl font-bold text-blue-400">
-                {totals.sent > 0 ? formatRate((totals.clicked / totals.sent) * 100) : '—'}
+                {totals.sent > 0 ? formatRate((totals.clicked / totals.sent) * 100) : '-'}
               </div>
             </div>
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg p-4">
@@ -151,7 +151,7 @@ export default function EmailAnalyticsPage() {
                 <span className="text-xs text-slate-500">Bounce Rate</span>
               </div>
               <div className="text-2xl font-bold text-red-400">
-                {totals.sent > 0 ? formatRate((totals.bounced / totals.sent) * 100) : '—'}
+                {totals.sent > 0 ? formatRate((totals.bounced / totals.sent) * 100) : '-'}
               </div>
             </div>
           </div>

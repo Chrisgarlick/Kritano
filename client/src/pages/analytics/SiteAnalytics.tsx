@@ -12,6 +12,12 @@ import { SiteSelector } from '../../components/analytics/SiteSelector';
 import { WaterfallChart } from '../../components/analytics/WaterfallChart';
 import { FixVelocityChart } from '../../components/analytics/FixVelocityChart';
 import { AuditTimeline } from '../../components/analytics/AuditTimeline';
+import { FindingHeatmap } from '../../components/analytics/FindingHeatmap';
+import { ResponseTimeHistogram } from '../../components/analytics/ResponseTimeHistogram';
+import { PageSizeBudget } from '../../components/analytics/PageSizeBudget';
+import { CorrelationMatrix } from '../../components/analytics/CorrelationMatrix';
+import { ScoreForecast } from '../../components/analytics/ScoreForecast';
+import { ContentRadar } from '../../components/analytics/ContentRadar';
 import { analyticsApi, sitesApi } from '../../services/api';
 import type { SiteWithStats, SiteUrl } from '../../types/site.types';
 import type { ScoreHistory, IssueTrends, TimeRange, GroupBy, TrendDirection, ScoreCategory } from '../../types/analytics.types';
@@ -85,6 +91,11 @@ export default function SiteAnalytics() {
   const [urlSortOrder, setUrlSortOrder] = useState<SortOrder>('desc');
   const [waterfallSteps, setWaterfallSteps] = useState<Array<{ auditId: string; completedAt: string; totalIssues: number; fixed: number; introduced: number }>>([]);
   const [fixVelocityPoints, setFixVelocityPoints] = useState<Array<{ auditId: string; completedAt: string; cumulativeFixed: number; cumulativeNew: number; netChange: number }>>([]);
+  const [pageInsightTab, setPageInsightTab] = useState<'heatmap' | 'response-times' | 'page-sizes'>('heatmap');
+  const [heatmapData, setHeatmapData] = useState<Array<{ pageId: string; url: string; categories: Record<string, { count: number; maxSeverity: string }> }>>([]);
+  const [responseTimeData, setResponseTimeData] = useState<{ buckets: Array<{ range: string; count: number; min: number; max: number }>; stats: { median: number; p75: number; p95: number; max: number; total: number } } | null>(null);
+  const [pageSizeData, setPageSizeData] = useState<{ pages: Array<{ url: string; sizeBytes: number; overBudget: boolean }>; stats: { median: number; total: number; overBudgetCount: number }; budgetBytes: number } | null>(null);
+  const [latestAuditId, setLatestAuditId] = useState<string | null>(null);
 
   // Fetch all sites for the site selector
   useEffect(() => {
@@ -122,6 +133,23 @@ export default function SiteAnalytics() {
           setWaterfallSteps(waterfallRes.data.steps);
           setFixVelocityPoints(velocityRes.data.points);
         }).catch(() => { /* non-critical */ });
+
+        // Get latest audit ID for page-level data
+        const scores = scoresRes.data.scores;
+        if (scores.length > 0) {
+          const latest = scores[scores.length - 1].auditId;
+          setLatestAuditId(latest);
+          // Fetch page-level data for latest audit
+          Promise.all([
+            analyticsApi.getPageHeatmap(siteId!, latest),
+            analyticsApi.getResponseTimeDistribution(siteId!, latest),
+            analyticsApi.getPageSizeDistribution(siteId!, latest),
+          ]).then(([heatmapRes, rtRes, psRes]) => {
+            setHeatmapData(heatmapRes.data.pages);
+            setResponseTimeData(rtRes.data);
+            setPageSizeData(psRes.data);
+          }).catch(() => { /* non-critical */ });
+        }
       } catch (err: any) {
         console.error('Failed to fetch site analytics:', err);
         setError('Failed to load site analytics');
@@ -314,6 +342,65 @@ export default function SiteAnalytics() {
               />
             )}
           </div>
+        )}
+
+        {/* Page Insights Tabs */}
+        {latestAuditId && (heatmapData.length > 0 || responseTimeData || pageSizeData) && (
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+            {/* Tab bar */}
+            <div className="flex border-b border-slate-200 dark:border-slate-700 px-4">
+              {[
+                { key: 'heatmap' as const, label: 'Finding Heatmap', show: heatmapData.length > 0 },
+                { key: 'response-times' as const, label: 'Response Times', show: !!responseTimeData && responseTimeData.stats.total > 0 },
+                { key: 'page-sizes' as const, label: 'Page Sizes', show: !!pageSizeData && pageSizeData.pages.length > 0 },
+              ].filter(t => t.show).map(tab => (
+                <button
+                  key={tab.key}
+                  onClick={() => setPageInsightTab(tab.key)}
+                  className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                    pageInsightTab === tab.key
+                      ? 'border-indigo-600 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400'
+                      : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Tab content */}
+            <div className="p-4">
+              {pageInsightTab === 'heatmap' && heatmapData.length > 0 && (
+                <FindingHeatmap pages={heatmapData} />
+              )}
+              {pageInsightTab === 'response-times' && responseTimeData && responseTimeData.stats.total > 0 && (
+                <ResponseTimeHistogram buckets={responseTimeData.buckets} stats={responseTimeData.stats} />
+              )}
+              {pageInsightTab === 'page-sizes' && pageSizeData && pageSizeData.pages.length > 0 && (
+                <PageSizeBudget pages={pageSizeData.pages} budgetBytes={pageSizeData.budgetBytes} stats={pageSizeData.stats} />
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Advanced Analytics Row */}
+        {scoreHistory.scores.length >= 4 && (
+          <div className="grid lg:grid-cols-2 gap-6">
+            <ScoreForecast scores={scoreHistory.scores} />
+            <CorrelationMatrix scores={scoreHistory.scores} />
+          </div>
+        )}
+
+        {/* Content Quality Radar (if CQS data exists) */}
+        {scoreHistory.summary.averages.cqs !== null && (
+          <ContentRadar
+            quality={null}
+            readability={null}
+            structure={null}
+            engagement={null}
+            eeat={null}
+            overallCqs={scoreHistory.summary.averages.cqs}
+          />
         )}
 
         {/* URLs Table */}

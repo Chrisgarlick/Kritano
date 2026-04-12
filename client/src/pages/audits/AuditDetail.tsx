@@ -119,7 +119,7 @@ function EnhancedScoreCard({ score, category, onClick }: { score: number | null;
     return (
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 animate-reveal-up">
         <div className="text-center">
-          <div className="text-2xl font-semibold text-slate-300 dark:text-slate-600">—</div>
+          <div className="text-2xl font-semibold text-slate-300 dark:text-slate-600">-</div>
           <div className="text-sm text-slate-500 dark:text-slate-500 mt-1 capitalize">{categoryLabel}</div>
         </div>
       </div>
@@ -1310,7 +1310,7 @@ export default function AuditDetailPage() {
             ) :
             audit.status === 'discovering' ? 'Checking sitemaps, robots.txt, and exposed files...' :
             position !== null && position > 0 ? (
-              <>Ready for scanning — Position <span className="font-medium text-slate-700 dark:text-slate-300">#{position}</span></>
+              <>Ready for scanning - Position <span className="font-medium text-slate-700 dark:text-slate-300">#{position}</span></>
             ) : 'Waiting for an available scanner slot...';
 
           const statusIconColor =
@@ -1370,7 +1370,7 @@ export default function AuditDetailPage() {
 
               <div className="mt-5 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
                 <p className="text-xs text-slate-500 dark:text-slate-500">
-                  We'll email you when your audit is complete. You can safely leave this page — your audit will continue running in the background.
+                  We'll email you when your audit is complete. You can safely leave this page - your audit will continue running in the background.
                 </p>
               </div>
             </div>
@@ -1504,7 +1504,7 @@ export default function AuditDetailPage() {
               <span className="text-[10px] px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-full font-medium">Mobile</span>
             </div>
             <div className={`text-2xl font-bold ${getScoreColor(audit.mobile_accessibility_score ?? null)}`}>
-              {audit.mobile_accessibility_score ?? '—'}
+              {audit.mobile_accessibility_score ?? '-'}
             </div>
           </div>
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4">
@@ -1513,7 +1513,7 @@ export default function AuditDetailPage() {
               <span className="text-[10px] px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-full font-medium">Mobile</span>
             </div>
             <div className={`text-2xl font-bold ${getScoreColor(audit.mobile_performance_score ?? null)}`}>
-              {audit.mobile_performance_score ?? '—'}
+              {audit.mobile_performance_score ?? '-'}
             </div>
           </div>
         </div>
@@ -1787,7 +1787,7 @@ export default function AuditDetailPage() {
                 })}
               </select>
 
-              {/* Device Filter — only shown when mobile data exists */}
+              {/* Device Filter - only shown when mobile data exists */}
               {hasMobileData && (
                 <select
                   value={deviceFilter}

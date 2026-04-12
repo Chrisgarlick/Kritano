@@ -298,13 +298,13 @@ export default function OutreachLogPage() {
                       <td className="px-4 py-3">
                         <span className="text-white font-mono text-xs">{entry.email}</span>
                       </td>
-                      <td className="px-4 py-3 text-slate-400 text-xs">{entry.name || '—'}</td>
+                      <td className="px-4 py-3 text-slate-400 text-xs">{entry.name || '-'}</td>
                       <td className="px-4 py-3 text-slate-400 text-xs">
                         {entry.domain ? (
                           <a href={`https://${entry.domain}`} target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:underline">
                             {entry.domain}
                           </a>
-                        ) : '—'}
+                        ) : '-'}
                       </td>
                       <td className="px-4 py-3">
                         {editingId === entry.id ? (

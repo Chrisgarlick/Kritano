@@ -29,7 +29,7 @@ import {
 } from 'lucide-react';
 
 // =============================================
-// Animated Audit Demo — the hero right panel
+// Animated Audit Demo - the hero right panel
 // =============================================
 
 const DEMO_STEPS = [
@@ -136,7 +136,7 @@ function AnimatedAuditDemo() {
         </div>
       </div>
 
-      {/* Fixed-height content area — prevents layout jump between phases */}
+      {/* Fixed-height content area - prevents layout jump between phases */}
       <div className="h-[320px] relative">
 
         {/* Phase: URL Input */}
@@ -396,7 +396,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ Content Intelligence — Hero Feature (Differentiator) ═══ */}
+      {/* ═══ Content Intelligence - Hero Feature (Differentiator) ═══ */}
       <section className="bg-gradient-to-br from-teal-50 via-white to-indigo-50/30 border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -464,7 +464,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ Core Capabilities — 4 compact cards ═══ */}
+      {/* ═══ Core Capabilities - 4 compact cards ═══ */}
       <section className="bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
           <div className="max-w-2xl mb-14">
@@ -538,7 +538,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ How It Works — Horizontal stepper ═══ */}
+      {/* ═══ How It Works - Horizontal stepper ═══ */}
       <section className="bg-slate-50 border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
           <div className="text-center max-w-2xl mx-auto mb-14">
@@ -576,7 +576,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ Stats Section — Dark with pulse animation ═══ */}
+      {/* ═══ Stats Section - Dark with pulse animation ═══ */}
       <section className="bg-slate-900 relative overflow-hidden">
         {/* Subtle animated glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-indigo-500/10 rounded-full blur-3xl pointer-events-none pulse-breathe" />

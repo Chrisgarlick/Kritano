@@ -14,6 +14,7 @@ import {
   Loader2,
   FileImage,
   Save,
+  Pencil,
 } from 'lucide-react';
 
 function formatFileSize(bytes: number): string {
@@ -40,6 +41,8 @@ export default function MediaPage() {
   const [selectedMedia, setSelectedMedia] = useState<BlogMediaItem | null>(null);
   const [altText, setAltText] = useState('');
   const [isSavingAlt, setIsSavingAlt] = useState(false);
+  const [renameName, setRenameName] = useState('');
+  const [isRenaming, setIsRenaming] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -117,6 +120,9 @@ export default function MediaPage() {
   const openPreview = (item: BlogMediaItem) => {
     setSelectedMedia(item);
     setAltText(item.alt_text || '');
+    // Strip extension from filename for the rename field
+    const ext = item.filename.lastIndexOf('.');
+    setRenameName(ext > 0 ? item.filename.slice(0, ext) : item.filename);
     setDeleteConfirmId(null);
   };
 
@@ -139,6 +145,22 @@ export default function MediaPage() {
       // Silently handle error
     } finally {
       setIsSavingAlt(false);
+    }
+  };
+
+  const handleRename = async () => {
+    if (!selectedMedia || !renameName.trim()) return;
+    try {
+      setIsRenaming(true);
+      const { data } = await adminApi.renameMedia(selectedMedia.id, renameName.trim());
+      setSelectedMedia(data.media);
+      setMedia((prev) =>
+        prev.map((m) => (m.id === data.media.id ? data.media : m))
+      );
+    } catch {
+      // Silently handle error
+    } finally {
+      setIsRenaming(false);
     }
   };
 
@@ -438,6 +460,46 @@ export default function MediaPage() {
                     {formatDate(selectedMedia.created_at)}
                   </div>
                 </div>
+              </div>
+
+              {/* Rename */}
+              <div className="mb-6">
+                <label
+                  htmlFor="rename"
+                  className="block text-sm font-medium text-slate-300 mb-2"
+                >
+                  Filename
+                </label>
+                <div className="flex items-center space-x-3">
+                  <div className="flex-1 flex items-center">
+                    <input
+                      id="rename"
+                      type="text"
+                      value={renameName}
+                      onChange={(e) => setRenameName(e.target.value)}
+                      placeholder="Image name..."
+                      className="flex-1 px-3 py-2 rounded-l-md bg-white/[0.03] border border-r-0 border-white/[0.06] text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
+                    />
+                    <span className="px-3 py-2 rounded-r-md bg-white/[0.05] border border-white/[0.06] text-slate-500 text-sm">
+                      {selectedMedia.filename.includes('.') ? selectedMedia.filename.slice(selectedMedia.filename.lastIndexOf('.')) : ''}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleRename}
+                    disabled={isRenaming || !renameName.trim() || renameName.trim() === (selectedMedia.filename.includes('.') ? selectedMedia.filename.slice(0, selectedMedia.filename.lastIndexOf('.')) : selectedMedia.filename)}
+                    className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isRenaming ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Pencil className="w-4 h-4" />
+                    )}
+                    <span>Rename</span>
+                  </button>
+                </div>
+                <p className="text-xs text-slate-500 mt-1.5">
+                  URL: /uploads/blog/original/{selectedMedia.storage_key}
+                </p>
               </div>
 
               {/* Alt Text Edit */}

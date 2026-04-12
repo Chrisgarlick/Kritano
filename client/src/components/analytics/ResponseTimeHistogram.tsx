@@ -1,5 +1,5 @@
 /**
- * ResponseTimeHistogram — Distribution of page response times.
+ * ResponseTimeHistogram - Distribution of page response times.
  * Shows buckets with colour coding (green < 200ms, amber < 500ms, red > 500ms).
  */
 

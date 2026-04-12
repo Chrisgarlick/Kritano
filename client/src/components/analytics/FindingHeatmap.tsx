@@ -1,5 +1,5 @@
 /**
- * FindingHeatmap — Grid showing pages x categories with severity-coloured cells.
+ * FindingHeatmap - Grid showing pages x categories with severity-coloured cells.
  * Rows = pages, Columns = categories, Cell colour = issue severity.
  */
 

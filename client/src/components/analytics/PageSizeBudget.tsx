@@ -1,5 +1,5 @@
 /**
- * PageSizeBudget — Horizontal bars showing pages ranked by size with a budget line.
+ * PageSizeBudget - Horizontal bars showing pages ranked by size with a budget line.
  * Green under budget, red over budget.
  */
 

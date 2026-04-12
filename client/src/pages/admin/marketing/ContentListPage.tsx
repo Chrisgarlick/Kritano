@@ -326,7 +326,7 @@ export default function ContentListPage() {
                           {item.week_number ? (
                             <span className="text-xs font-mono text-indigo-400">W{item.week_number}</span>
                           ) : (
-                            <span className="text-xs text-slate-600">—</span>
+                            <span className="text-xs text-slate-600">-</span>
                           )}
                         </td>
 
@@ -335,7 +335,7 @@ export default function ContentListPage() {
                           {item.day_of_week ? (
                             <span className="text-xs text-slate-300">{DAY_SHORT[item.day_of_week]}</span>
                           ) : (
-                            <span className="text-xs text-slate-600">—</span>
+                            <span className="text-xs text-slate-600">-</span>
                           )}
                         </td>
 
@@ -375,7 +375,7 @@ export default function ContentListPage() {
                               {item.campaign.name}
                             </span>
                           ) : (
-                            <span className="text-xs text-slate-600">—</span>
+                            <span className="text-xs text-slate-600">-</span>
                           )}
                         </td>
 

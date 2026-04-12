@@ -49,7 +49,7 @@ export function SeoProvider({ children }: { children: ReactNode }) {
         setOverrides(map);
       })
       .catch(() => {
-        // Silent fail — defaults will be used
+        // Silent fail - defaults will be used
       })
       .finally(() => setLoaded(true));
   }, []);

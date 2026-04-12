@@ -91,7 +91,7 @@ function SchemaTypeInfo({ types }: { types: string[] }) {
             <div key={type} className="flex items-center gap-2 text-xs">
               <span className="font-medium text-slate-700 dark:text-slate-300">{type}</span>
               <span className="text-slate-500 dark:text-slate-500">
-                — {SCHEMA_DESCRIPTIONS[type] || 'Structured data markup'}
+                - {SCHEMA_DESCRIPTIONS[type] || 'Structured data markup'}
               </span>
             </div>
           ))}

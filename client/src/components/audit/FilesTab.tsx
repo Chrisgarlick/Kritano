@@ -251,7 +251,7 @@ export function FilesTab({ auditId }: FilesTabProps) {
 
                           {/* Size */}
                           <div className="w-20 text-right text-sm text-slate-600 dark:text-slate-500 flex-shrink-0">
-                            {asset.file_size_bytes ? formatBytes(asset.file_size_bytes) : '—'}
+                            {asset.file_size_bytes ? formatBytes(asset.file_size_bytes) : '-'}
                           </div>
 
                           {/* Pages count (clickable) */}
@@ -291,7 +291,7 @@ export function FilesTab({ auditId }: FilesTabProps) {
                                 {asset.http_status}
                               </span>
                             ) : (
-                              <span className="text-xs text-slate-500">—</span>
+                              <span className="text-xs text-slate-500">-</span>
                             )}
                           </div>
                         </div>

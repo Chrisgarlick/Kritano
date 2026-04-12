@@ -49,7 +49,7 @@ export default function ResetPasswordPage() {
       setIsReset(true);
     } catch (err: unknown) {
       const message = (err as { response?: { data?: { error?: string } } })?.response?.data?.error;
-      setError(message || 'Reset failed. The link may have expired — please request a new one.');
+      setError(message || 'Reset failed. The link may have expired - please request a new one.');
     } finally {
       setIsLoading(false);
     }

@@ -1,7 +1,7 @@
 /**
  * Admin Placeholder Page
  *
- * Used for Phase 0 route stubs — replaced with real implementations in later phases.
+ * Used for Phase 0 route stubs - replaced with real implementations in later phases.
  */
 
 import { Helmet } from 'react-helmet-async';

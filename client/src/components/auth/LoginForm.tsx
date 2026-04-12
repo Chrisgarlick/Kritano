@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useSiteMode } from '../../contexts/SiteModeContext';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { Alert } from '../ui/Alert';
@@ -22,6 +23,7 @@ export function LoginForm() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const mode = useSiteMode();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -98,12 +100,17 @@ export function LoginForm() {
         Sign in
       </Button>
 
-      <p className="text-center text-sm text-slate-600">
-        Don't have an account?{' '}
-        <Link to="/register" className="text-indigo-600 hover:text-indigo-500 font-medium">
-          Sign up
-        </Link>
-      </p>
+      {mode !== 'waitlist' && (
+        <p className="text-center text-sm text-slate-600">
+          Don't have an account?{' '}
+          <Link
+            to={mode === 'early_access' ? '/register?ea=email' : '/register'}
+            className="text-indigo-600 hover:text-indigo-500 font-medium"
+          >
+            Sign up
+          </Link>
+        </p>
+      )}
     </form>
     </div>
   );

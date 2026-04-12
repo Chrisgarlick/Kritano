@@ -315,7 +315,7 @@ export function CategoryBars({
             <div className="flex items-center justify-between mb-1">
               <span className="text-sm text-slate-600 dark:text-slate-400">{cat.label}</span>
               <span className="text-sm font-semibold text-slate-900 dark:text-white tabular-nums">
-                {cat.value ?? '—'}
+                {cat.value ?? '-'}
               </span>
             </div>
           )}

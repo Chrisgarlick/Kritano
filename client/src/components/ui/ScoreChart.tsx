@@ -279,7 +279,7 @@ export function MultiScoreChart({
                   </span>
                 </div>
                 <span className="text-sm font-semibold text-slate-900 dark:text-white tabular-nums">
-                  {entry.value ?? '—'}
+                  {entry.value ?? '-'}
                 </span>
               </div>
             ))}

@@ -84,7 +84,7 @@ export default function ServiceDetailPage() {
         structuredData={structuredData}
       />
 
-      {/* Hero — with coloured top accent */}
+      {/* Hero - with coloured top accent */}
       <section className="relative">
         <div className={`absolute top-0 left-0 right-0 h-1 ${service.colorScheme.bg.replace('bg-', 'bg-').replace('-50', '-500')}`} style={{
           background: service.colorScheme.text.includes('violet') ? '#8b5cf6'
@@ -174,7 +174,7 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
-      {/* Methodology — Stepper with connectors */}
+      {/* Methodology - Stepper with connectors */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <p className={`font-semibold tracking-wide uppercase text-sm mb-4 ${service.colorScheme.text}`}>
@@ -202,7 +202,7 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
-      {/* Common Issues — Severity-sorted list */}
+      {/* Common Issues - Severity-sorted list */}
       <section className="bg-slate-50 border-t border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
           <div className="text-center max-w-2xl mx-auto mb-14">

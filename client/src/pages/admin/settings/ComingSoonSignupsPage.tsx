@@ -139,8 +139,8 @@ export default function ComingSoonSignupsPage() {
                 {signups.map((signup) => (
                   <tr key={signup.id} className="hover:bg-white/[0.02]">
                     <td className="px-4 py-3 text-sm text-white font-medium">{signup.email}</td>
-                    <td className="px-4 py-3 text-sm text-slate-300">{signup.name || '—'}</td>
-                    <td className="px-4 py-3 text-sm text-slate-500 font-mono text-xs">{signup.ip_address || '—'}</td>
+                    <td className="px-4 py-3 text-sm text-slate-300">{signup.name || '-'}</td>
+                    <td className="px-4 py-3 text-sm text-slate-500 font-mono text-xs">{signup.ip_address || '-'}</td>
                     <td className="px-4 py-3 text-sm text-slate-500">
                       {new Date(signup.created_at).toLocaleDateString('en-GB', {
                         day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',

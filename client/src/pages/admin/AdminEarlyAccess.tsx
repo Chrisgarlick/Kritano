@@ -149,7 +149,7 @@ export default function AdminEarlyAccessPage() {
       {/* Stats Cards */}
       {stats && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-          {/* Progress card — wider, with bar */}
+          {/* Progress card - wider, with bar */}
           <div className="col-span-2 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-2">
@@ -291,7 +291,7 @@ export default function AdminEarlyAccessPage() {
                     <td className="px-5 py-3 text-xs text-slate-500 tabular-nums">
                       {user.activatedAt
                         ? new Date(user.activatedAt).toLocaleDateString()
-                        : <span className="text-slate-600">—</span>
+                        : <span className="text-slate-600">-</span>
                       }
                     </td>
                     <td className="px-5 py-3 text-xs text-slate-500 tabular-nums">

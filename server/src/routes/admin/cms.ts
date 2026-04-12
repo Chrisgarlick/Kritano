@@ -27,6 +27,7 @@ import {
   deleteMedia,
   listMedia,
   updateMediaAltText,
+  renameMedia,
 } from '../../services/blog-media.service.js';
 import {
   listAdvice,
@@ -302,6 +303,30 @@ router.patch('/media/:id', async (req: AdminRequest, res: Response): Promise<voi
     }
     console.error('Update media error:', error);
     res.status(500).json({ error: 'Failed to update media', code: 'UPDATE_MEDIA_ERROR' });
+  }
+});
+
+// PUT /api/admin/cms/media/:id/rename
+router.put('/media/:id/rename', async (req: AdminRequest, res: Response): Promise<void> => {
+  try {
+    const { name } = z.object({ name: z.string().min(1).max(200) }).parse(req.body);
+    const media = await renameMedia(req.params.id, name);
+
+    if (!media) {
+      res.status(404).json({ error: 'Media not found', code: 'MEDIA_NOT_FOUND' });
+      return;
+    }
+
+    await logAdminActivity(req.admin!.id, 'rename_media', 'blog_media', req.params.id, { name }, req);
+
+    res.json({ media });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      res.status(400).json({ error: 'Validation failed', details: error.errors });
+      return;
+    }
+    console.error('Rename media error:', error);
+    res.status(500).json({ error: 'Failed to rename media', code: 'RENAME_MEDIA_ERROR' });
   }
 });
 

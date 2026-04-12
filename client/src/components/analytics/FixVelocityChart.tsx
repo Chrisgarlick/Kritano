@@ -1,5 +1,5 @@
 /**
- * FixVelocityChart — Cumulative fixed vs new issues over time.
+ * FixVelocityChart - Cumulative fixed vs new issues over time.
  * Shows whether you're fixing faster than you're breaking.
  */
 

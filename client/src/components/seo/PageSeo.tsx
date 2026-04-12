@@ -1,5 +1,5 @@
 /**
- * PageSeo — Standardised SEO meta tags for public pages.
+ * PageSeo - Standardised SEO meta tags for public pages.
  *
  * Wraps react-helmet-async with OG tags, canonical URL, Twitter cards,
  * and optional JSON-LD structured data.
@@ -16,7 +16,7 @@ const BASE_URL = 'https://kritano.com';
 const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.png`;
 
 interface PageSeoProps {
-  /** Page title — " | Kritano" is appended automatically */
+  /** Page title - " | Kritano" is appended automatically */
   title: string;
   /** Meta description (also used for og:description and twitter:description) */
   description: string;
@@ -24,9 +24,9 @@ interface PageSeoProps {
   path: string;
   /** OG image URL (defaults to site-wide social card) */
   ogImage?: string;
-  /** OG type — defaults to "website" */
+  /** OG type - defaults to "website" */
   ogType?: string;
-  /** JSON-LD structured data object(s) — single object or array of objects */
+  /** JSON-LD structured data object(s) - single object or array of objects */
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
   /** Set to true for pages that shouldn't be indexed (auth, dashboard) */
   noindex?: boolean;

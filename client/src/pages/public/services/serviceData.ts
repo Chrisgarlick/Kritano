@@ -1,5 +1,5 @@
 /**
- * Service detail page data — keyed by URL slug.
+ * Service detail page data - keyed by URL slug.
  *
  * Each entry contains all content needed to render a deep-dive service page.
  * Adding or editing a service is a data-only change.
@@ -64,7 +64,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     title: 'SEO Auditing',
     subtitle: 'Get found. Get traffic.',
     heroDescription:
-      'Our SEO engine analyses your pages against 100+ ranking factors, from metadata and structured data to Core Web Vitals and mobile-friendliness. Every finding includes clear fix guidance so your team can act immediately — no guesswork, no wasted effort.',
+      'Our SEO engine analyses your pages against 100+ ranking factors, from metadata and structured data to Core Web Vitals and mobile-friendliness. Every finding includes clear fix guidance so your team can act immediately - no guesswork, no wasted effort.',
     iconName: 'TrendingUp',
     colorScheme: {
       text: 'text-violet-600',
@@ -76,7 +76,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     seo: {
       title: 'SEO Auditing',
       description:
-        'Analyse your website against 100+ SEO ranking factors. Kritano checks metadata, structured data, Core Web Vitals, mobile-friendliness, and more — with clear fix guidance for every issue.',
+        'Analyse your website against 100+ SEO ranking factors. Kritano checks metadata, structured data, Core Web Vitals, mobile-friendliness, and more - with clear fix guidance for every issue.',
     },
     featureGroups: [
       {
@@ -136,7 +136,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
         step: 4,
         title: 'Deliver Fix Guidance',
         description:
-          'Every issue comes with a clear explanation and actionable recommendation — copy-paste fixes where possible.',
+          'Every issue comes with a clear explanation and actionable recommendation - copy-paste fixes where possible.',
       },
     ],
     commonIssues: [
@@ -200,7 +200,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     title: 'Accessibility (WCAG 2.2)',
     subtitle: 'Inclusive by design.',
     heroDescription:
-      'Ensure your website is usable by everyone, regardless of ability. Kritano checks your pages against WCAG 2.2 Level AA criteria, helping you meet legal requirements and reach a wider audience — because no visitor should be left behind.',
+      'Ensure your website is usable by everyone, regardless of ability. Kritano checks your pages against WCAG 2.2 Level AA criteria, helping you meet legal requirements and reach a wider audience - because no visitor should be left behind.',
     iconName: 'Accessibility',
     colorScheme: {
       text: 'text-emerald-600',
@@ -336,7 +336,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     title: 'Security Scanning',
     subtitle: 'Protect your visitors.',
     heroDescription:
-      'Identify security vulnerabilities before attackers do. Our scanner checks for exposed sensitive files, insecure resources, missing security headers, and common misconfigurations that put your users at risk — giving you a clear security posture in minutes.',
+      'Identify security vulnerabilities before attackers do. Our scanner checks for exposed sensitive files, insecure resources, missing security headers, and common misconfigurations that put your users at risk - giving you a clear security posture in minutes.',
     iconName: 'Shield',
     colorScheme: {
       text: 'text-red-600',
@@ -472,7 +472,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     title: 'Performance Analysis',
     subtitle: 'Speed wins.',
     heroDescription:
-      'Page speed directly impacts user experience and search rankings. Our performance engine identifies exactly what\'s slowing your pages down, with prioritised recommendations for maximum impact — so you fix what matters most first.',
+      'Page speed directly impacts user experience and search rankings. Our performance engine identifies exactly what\'s slowing your pages down, with prioritised recommendations for maximum impact - so you fix what matters most first.',
     iconName: 'Zap',
     colorScheme: {
       text: 'text-sky-600',
@@ -484,7 +484,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     seo: {
       title: 'Performance Analysis',
       description:
-        'Identify exactly what\'s slowing your website down. Kritano analyses Core Web Vitals, resource optimisation, caching, render pipeline, and more — with prioritised fix recommendations.',
+        'Identify exactly what\'s slowing your website down. Kritano analyses Core Web Vitals, resource optimisation, caching, render pipeline, and more - with prioritised fix recommendations.',
     },
     featureGroups: [
       {

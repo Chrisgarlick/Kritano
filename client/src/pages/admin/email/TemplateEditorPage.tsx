@@ -494,7 +494,7 @@ export default function TemplateEditorPage() {
 }
 
 /**
- * Per-block settings panel — shows context-aware form fields based on block type.
+ * Per-block settings panel - shows context-aware form fields based on block type.
  */
 function BlockSettings({ block, onChange }: { block: Block; onChange: (updates: Partial<Block>) => void }) {
   return (

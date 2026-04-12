@@ -1,5 +1,5 @@
 /**
- * Sparkline — Tiny inline SVG line chart for score trends.
+ * Sparkline - Tiny inline SVG line chart for score trends.
  * No dependencies, pure SVG. ~80x24px by default.
  */
 

@@ -57,12 +57,12 @@ const STATUS_ICONS: Record<string, React.ReactNode> = {
 
 const STATUS_TOOLTIPS: Record<string, string> = {
   new: 'Registered but hasn\'t run an audit or verified a domain yet',
-  activated: 'Has completed at least one audit — showing initial interest',
+  activated: 'Has completed at least one audit - showing initial interest',
   engaged: 'Regularly running audits and actively using the platform',
-  power_user: 'Heavy usage — multiple sites, team members, or frequent audits',
+  power_user: 'Heavy usage - multiple sites, team members, or frequent audits',
   upgrade_prospect: 'Hitting plan limits or using features available on higher tiers',
-  churning: 'Activity has dropped significantly — at risk of leaving',
-  churned: 'No activity for an extended period — considered inactive',
+  churning: 'Activity has dropped significantly - at risk of leaving',
+  churned: 'No activity for an extended period - considered inactive',
 };
 
 function getScoreBadgeColor(score: number): string {

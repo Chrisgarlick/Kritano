@@ -221,7 +221,7 @@ const FAQS = [
   },
   {
     q: 'Do you offer annual billing?',
-    a: 'Yes! Switch to annual billing and save 2 months — you pay for 10 months and get 12. Use the toggle at the top of the pricing cards to see annual prices.',
+    a: 'Yes! Switch to annual billing and save 2 months - you pay for 10 months and get 12. Use the toggle at the top of the pricing cards to see annual prices.',
   },
   {
     q: 'What kind of support do you offer?',
@@ -378,7 +378,7 @@ export default function Pricing() {
                   </span>
                 </div>
 
-                {/* Features — trimmed to 3 key items */}
+                {/* Features - trimmed to 3 key items */}
                 <ul className="space-y-2.5 mb-5 flex-grow">
                   {plan.highlights.map((feature) => (
                     <li key={feature} className="flex items-start gap-2">

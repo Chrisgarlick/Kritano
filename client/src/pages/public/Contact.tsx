@@ -79,7 +79,7 @@ export default function Contact() {
             Let's talk.
           </h2>
           <p className="text-xl text-slate-600 leading-relaxed">
-            Whether it's a question about features, enterprise pricing, or a partnership idea —
+            Whether it's a question about features, enterprise pricing, or a partnership idea -
             we read every message personally and reply within one business day.
           </p>
         </div>
@@ -225,7 +225,7 @@ export default function Contact() {
                 <p className="font-semibold text-slate-900 text-sm">We reply within 24 hours</p>
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Every message is read personally. No ticket queues, no chatbots — just a real response from the team.
+                Every message is read personally. No ticket queues, no chatbots - just a real response from the team.
               </p>
             </div>
 
@@ -259,7 +259,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="font-medium text-slate-900 text-sm">Hours</p>
-                  <p className="text-sm text-slate-500">Mon–Fri, 9am–6pm GMT</p>
+                  <p className="text-sm text-slate-500">Mon-Fri, 9am-6pm GMT</p>
                 </div>
               </div>
             </div>

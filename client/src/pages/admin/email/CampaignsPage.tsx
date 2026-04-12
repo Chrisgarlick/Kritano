@@ -99,7 +99,7 @@ export default function CampaignsPage() {
   };
 
   const formatRate = (numerator: number, denominator: number) => {
-    if (denominator === 0) return '—';
+    if (denominator === 0) return '-';
     return `${((numerator / denominator) * 100).toFixed(1)}%`;
   };
 
@@ -121,7 +121,7 @@ export default function CampaignsPage() {
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight font-display">Email Campaigns</h1>
             <p className="text-sm text-slate-500 mt-1">
-              {total} campaign{total !== 1 ? 's' : ''} — send targeted emails to segmented audiences
+              {total} campaign{total !== 1 ? 's' : ''} - send targeted emails to segmented audiences
             </p>
           </div>
           <Link
@@ -225,7 +225,7 @@ export default function CampaignsPage() {
                       )}
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-sm text-slate-300">{campaign.template_name || '—'}</span>
+                      <span className="text-sm text-slate-300">{campaign.template_name || '-'}</span>
                     </td>
                     <td className="px-4 py-3">
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_BADGE[campaign.status]}`}>

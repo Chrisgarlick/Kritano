@@ -18,10 +18,10 @@ import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Menu, X, ChevronDown, TrendingUp, Accessibility, Shield, Zap } from 'lucide-react';
 
 const SERVICE_ITEMS = [
-  { href: '/services/seo', label: 'SEO Auditing', icon: TrendingUp, description: 'Search engine optimisation analysis' },
-  { href: '/services/accessibility', label: 'Accessibility', icon: Accessibility, description: 'WCAG 2.2 compliance testing' },
-  { href: '/services/security', label: 'Security Scanning', icon: Shield, description: 'Vulnerability & threat detection' },
-  { href: '/services/performance', label: 'Performance', icon: Zap, description: 'Speed & Core Web Vitals' },
+  { href: '/services/seo', label: 'SEO Auditing', icon: TrendingUp, description: 'Search engine optimisation analysis', color: 'hover:text-violet-600', iconHover: 'group-hover/item:bg-violet-50 group-hover/item:text-violet-600', activeColor: 'text-violet-600', activeIcon: 'bg-violet-100 text-violet-600' },
+  { href: '/services/accessibility', label: 'Accessibility', icon: Accessibility, description: 'WCAG 2.2 compliance testing', color: 'hover:text-emerald-700', iconHover: 'group-hover/item:bg-emerald-50 group-hover/item:text-emerald-700', activeColor: 'text-emerald-700', activeIcon: 'bg-emerald-100 text-emerald-700' },
+  { href: '/services/security', label: 'Security Scanning', icon: Shield, description: 'Vulnerability & threat detection', color: 'hover:text-red-600', iconHover: 'group-hover/item:bg-red-50 group-hover/item:text-red-600', activeColor: 'text-red-600', activeIcon: 'bg-red-100 text-red-600' },
+  { href: '/services/performance', label: 'Performance', icon: Zap, description: 'Speed & Core Web Vitals', color: 'hover:text-sky-700', iconHover: 'group-hover/item:bg-sky-50 group-hover/item:text-sky-700', activeColor: 'text-sky-700', activeIcon: 'bg-sky-100 text-sky-700' },
 ];
 
 function getNavLinks(mode: SiteMode) {
@@ -155,7 +155,7 @@ export function PublicLayout({ children }: Props) {
 
             {/* Desktop nav links */}
             <div className="hidden lg:flex items-center gap-10">
-              {/* Services dropdown — first item */}
+              {/* Services dropdown - first item */}
               <div
                 ref={servicesDropdownRef}
                 className="relative"
@@ -199,13 +199,13 @@ export function PublicLayout({ children }: Props) {
                             key={item.href}
                             to={item.href}
                             role="menuitem"
-                            className={`flex items-start gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+                            className={`group/item flex items-start gap-3 px-3 py-2.5 rounded-lg transition-colors ${
                               isActive
-                                ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400'
-                                : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
+                                ? `bg-slate-50 dark:bg-slate-700/50 ${item.activeColor}`
+                                : `text-slate-700 dark:text-slate-300 ${item.color} hover:bg-slate-50 dark:hover:bg-slate-700`
                             }`}
                           >
-                            <div className={`mt-0.5 p-1.5 rounded-md ${isActive ? 'bg-indigo-100 dark:bg-indigo-900/30' : 'bg-slate-100 dark:bg-slate-700'}`}>
+                            <div className={`mt-0.5 p-1.5 rounded-md transition-colors ${isActive ? item.activeIcon : `bg-slate-100 dark:bg-slate-700 ${item.iconHover}`}`}>
                               <Icon className="w-4 h-4" />
                             </div>
                             <div>
@@ -309,7 +309,7 @@ export function PublicLayout({ children }: Props) {
             className="md:hidden border-t border-slate-100 dark:border-slate-700/50 bg-white dark:bg-slate-900"
           >
             <div className="px-6 py-4 space-y-1">
-              {/* Services — link + expandable sub-links */}
+              {/* Services - link + expandable sub-links */}
               <div>
                 <div className="flex items-center justify-between">
                   <Link
@@ -341,8 +341,8 @@ export function PublicLayout({ children }: Props) {
                           onClick={() => setMobileMenuOpen(false)}
                           className={`flex items-center gap-2.5 py-2 text-sm font-medium transition-colors ${
                             location.pathname === item.href
-                              ? 'text-indigo-600 dark:text-indigo-400'
-                              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                              ? item.activeColor
+                              : `text-slate-600 dark:text-slate-400 ${item.color}`
                           }`}
                         >
                           <Icon className="w-4 h-4" />

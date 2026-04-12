@@ -1,5 +1,5 @@
 /**
- * AuditTimeline — Horizontal timeline showing audits as annotated dots.
+ * AuditTimeline - Horizontal timeline showing audits as annotated dots.
  * Dot size = total issues, dot colour = overall health, hover for details.
  */
 

@@ -311,7 +311,7 @@ export default function ProfilePage() {
       toast('Checkout canceled. No changes were made.', 'info');
       window.history.replaceState({}, '', window.location.pathname);
     }
-  }, [toast, refreshSubscription]); // eslint — toast and refreshSubscription are stable refs
+  }, [toast, refreshSubscription]); // eslint - toast and refreshSubscription are stable refs
 
   const loadSubscription = async () => {
     try {

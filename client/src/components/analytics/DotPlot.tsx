@@ -1,5 +1,5 @@
 /**
- * DotPlot — Strip chart showing score distribution across sites per category.
+ * DotPlot - Strip chart showing score distribution across sites per category.
  * One row per category, one dot per site positioned on the 0-100 scale.
  */
 

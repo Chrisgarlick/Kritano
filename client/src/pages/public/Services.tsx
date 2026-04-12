@@ -37,7 +37,7 @@ const SERVICES = [
     stat: '100+',
     statLabel: 'ranking factors',
     description:
-      'Metadata, structured data, broken links, Core Web Vitals, and mobile-friendliness — with clear fix guidance for every issue.',
+      'Metadata, structured data, broken links, Core Web Vitals, and mobile-friendliness - with clear fix guidance for every issue.',
     features: [
       'Title tags & meta descriptions',
       'Heading hierarchy & structure',
@@ -57,7 +57,7 @@ const SERVICES = [
     stat: 'AA',
     statLabel: 'WCAG compliance',
     description:
-      'Ensure your site is usable by everyone. Checks against WCAG 2.2 Level AA — colour contrast, keyboard nav, screen readers, ARIA, and more.',
+      'Ensure your site is usable by everyone. Checks against WCAG 2.2 Level AA - colour contrast, keyboard nav, screen readers, ARIA, and more.',
     features: [
       'Colour contrast validation',
       'Alt text & ARIA labels',
@@ -155,12 +155,12 @@ export default function Services() {
           <p className="text-xl text-slate-600 leading-relaxed">
             Every Kritano audit covers SEO, accessibility, security, performance, content quality,
             and structured data. Each dimension is powered by a dedicated engine with hundreds of
-            rules — and every finding tells you exactly how to fix it.
+            rules - and every finding tells you exactly how to fix it.
           </p>
         </div>
       </section>
 
-      {/* Service Cards — 2×2 grid with colour accents */}
+      {/* Service Cards - 2×2 grid with colour accents */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pb-16">
         <div className="grid md:grid-cols-2 gap-6">
           {SERVICES.map((service) => (
@@ -195,7 +195,7 @@ export default function Services() {
                   {service.description}
                 </p>
 
-                {/* Compact feature list — 2 columns */}
+                {/* Compact feature list - 2 columns */}
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-6">
                   {service.features.map((feature) => (
                     <div key={feature} className="flex items-center gap-2">
@@ -227,7 +227,7 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Content Intelligence Callout — Differentiator */}
+      {/* Content Intelligence Callout - Differentiator */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pb-16">
         <div className="bg-gradient-to-r from-teal-50 to-indigo-50/30 border border-teal-200/60 rounded-2xl p-8 lg:p-10">
           <div className="flex flex-col lg:flex-row items-start gap-8">
@@ -244,7 +244,7 @@ export default function Services() {
               <p className="text-sm text-slate-600 leading-relaxed mb-4 max-w-2xl">
                 The only audit tool that scores your content the way search engines evaluate it.
                 E-E-A-T analysis, Answer Engine Optimisation, readability scoring, and engagement
-                markers — unified into a Content Quality Score across 400+ checks.
+                markers - unified into a Content Quality Score across 400+ checks.
               </p>
               <Link to={ctaHref} className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal-700 hover:text-teal-900 transition-colors">
                 {mode === 'live' ? 'Try Content Intelligence free' : ctaLabel} <ArrowRight className="w-4 h-4" />

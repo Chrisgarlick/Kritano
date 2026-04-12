@@ -241,7 +241,7 @@ function CategoryMiniScore({ label, score }: { label: string; score: number | nu
     <div className="text-center">
       <p className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">{label}</p>
       <p className={`text-sm font-semibold tabular-nums ${getScoreColor(score)}`}>
-        {score !== null ? score : '—'}
+        {score !== null ? score : '-'}
       </p>
     </div>
   );

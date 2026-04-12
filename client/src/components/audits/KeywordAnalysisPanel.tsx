@@ -65,7 +65,7 @@ export function KeywordAnalysisPanel({ keywordData, className = '' }: KeywordAna
 
   return (
     <div className={`bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden ${className}`}>
-      {/* Header — clickable accordion toggle */}
+      {/* Header - clickable accordion toggle */}
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
@@ -98,7 +98,7 @@ export function KeywordAnalysisPanel({ keywordData, className = '' }: KeywordAna
         </div>
       </button>
 
-      {/* Content — collapsible */}
+      {/* Content - collapsible */}
       {expanded && (
         <div className="p-5 space-y-5">
           {/* Stuffing Warning */}

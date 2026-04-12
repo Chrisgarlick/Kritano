@@ -488,7 +488,7 @@ export default function SeoManagerPage() {
                               </div>
                             ) : (
                               <div className="h-40 bg-white/[0.06] flex items-center justify-center text-slate-500 text-sm">
-                                No image set — will use default
+                                No image set - will use default
                               </div>
                             )}
                             <div className="p-3 space-y-1">

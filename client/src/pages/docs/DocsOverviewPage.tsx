@@ -16,7 +16,7 @@ export default function DocsOverviewPage() {
     <PublicLayout>
       <PageSeo
         title="API Documentation"
-        description="Comprehensive API documentation for Kritano — automate website audits, retrieve findings, and build custom integrations."
+        description="Comprehensive API documentation for Kritano - automate website audits, retrieve findings, and build custom integrations."
         path="/docs"
         useOverrides={true}
       />
@@ -79,7 +79,7 @@ export default function DocsOverviewPage() {
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">Get your API key</h3>
               <p className="text-slate-600 dark:text-slate-400 mb-3">
-                Go to <Link to="/app/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Settings &rarr; API Keys</Link> and create a new key. Select the scopes you need — at minimum <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:read</code> and <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:write</code>.
+                Go to <Link to="/app/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Settings &rarr; API Keys</Link> and create a new key. Select the scopes you need - at minimum <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:read</code> and <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:write</code>.
               </p>
               <p className="text-slate-600 dark:text-slate-400 text-sm">
                 Your key will look like: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">kt_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>
@@ -137,13 +137,13 @@ export default function DocsOverviewPage() {
               </p>
               <CodeBlock
                 language="bash"
-                label="cURL — Check status"
+                label="cURL - Check status"
                 code={`curl "https://app.kritano.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000" \\
   -H "Authorization: Bearer kt_live_your_api_key"`}
               />
               <CodeBlock
                 language="bash"
-                label="cURL — Get findings"
+                label="cURL - Get findings"
                 code={`curl "https://app.kritano.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000/findings" \\
   -H "Authorization: Bearer kt_live_your_api_key"`}
               />
@@ -164,9 +164,9 @@ export default function DocsOverviewPage() {
 
           <p className="text-slate-600 dark:text-slate-400 mt-4 mb-2">All responses include rate limit headers:</p>
           <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-1 text-sm">
-            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Limit</code> — Max requests per minute for your tier</li>
-            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Remaining</code> — Requests remaining in current window</li>
-            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Reset</code> — Unix timestamp when window resets</li>
+            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Limit</code> - Max requests per minute for your tier</li>
+            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Remaining</code> - Requests remaining in current window</li>
+            <li><code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Reset</code> - Unix timestamp when window resets</li>
           </ul>
         </div>
 
@@ -174,7 +174,7 @@ export default function DocsOverviewPage() {
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">API Scopes</h2>
           <p className="text-slate-600 dark:text-slate-400 mb-4">
-            Each API key is created with specific scopes that control what it can access. Endpoints require specific scopes — if your key is missing a required scope, you'll receive a <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">403</code> error.
+            Each API key is created with specific scopes that control what it can access. Endpoints require specific scopes - if your key is missing a required scope, you'll receive a <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">403</code> error.
           </p>
           <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
             <table className="w-full text-sm">
@@ -190,8 +190,8 @@ export default function DocsOverviewPage() {
                   { scope: 'audits:read', used: 'GET /audits, GET /audits/:id, GET /info', desc: 'List and retrieve audit details' },
                   { scope: 'audits:write', used: 'POST /audits, POST /cancel, DELETE', desc: 'Create, cancel and delete audits' },
                   { scope: 'findings:read', used: 'GET /audits/:id/findings', desc: 'Retrieve audit findings' },
-                  { scope: 'findings:write', used: '—', desc: 'Reserved for future use' },
-                  { scope: 'exports:read', used: '—', desc: 'Reserved for future use' },
+                  { scope: 'findings:write', used: '-', desc: 'Reserved for future use' },
+                  { scope: 'exports:read', used: '-', desc: 'Reserved for future use' },
                 ].map(s => (
                   <tr key={s.scope} className="border-t border-slate-100 dark:border-slate-700/50">
                     <td className="px-4 py-3 font-mono text-xs text-indigo-600 font-medium whitespace-nowrap">{s.scope}</td>
