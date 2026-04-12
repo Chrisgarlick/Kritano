@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { AdminLayout } from '../../../components/layout/AdminLayout';
 import { adminSettingsApi } from '../../../services/api';
-import { Settings, Eye, Loader2, Save, ExternalLink, Zap, Rocket, Globe } from 'lucide-react';
+import { Settings, Eye, Loader2, ExternalLink, Zap, Rocket, Globe } from 'lucide-react';
 
 const TRIGGER_TOGGLES: { key: string; label: string; description: string }[] = [
   { key: 'trigger_auto_send_first_audit_complete', label: 'First Audit Complete', description: 'Welcome email after first audit' },
@@ -23,11 +23,11 @@ export default function SystemSettingsPage() {
 
   // Local form state
   const [siteMode, setSiteMode] = useState<'waitlist' | 'early_access' | 'live'>('live');
-  const [comingSoonEnabled, setComingSoonEnabled] = useState(false);
-  const [headline, setHeadline] = useState('');
-  const [description, setDescription] = useState('');
+  const [, setComingSoonEnabled] = useState(false);
+  const [, setHeadline] = useState('');
+  const [, setDescription] = useState('');
   const [triggerSettings, setTriggerSettings] = useState<Record<string, boolean>>({});
-  const [earlyAccessEnabled, setEarlyAccessEnabled] = useState(false);
+  const [, setEarlyAccessEnabled] = useState(false);
   const [earlyAccessMaxSpots, setEarlyAccessMaxSpots] = useState(250);
   const [earlyAccessDiscount, setEarlyAccessDiscount] = useState(50);
 
@@ -74,17 +74,6 @@ export default function SystemSettingsPage() {
     } finally {
       setSaving(false);
     }
-  };
-
-  const handleToggle = async () => {
-    const newValue = !comingSoonEnabled;
-    setComingSoonEnabled(newValue);
-    await saveSetting('coming_soon_enabled', newValue);
-  };
-
-  const handleSaveContent = async () => {
-    await saveSetting('coming_soon_headline', headline);
-    await saveSetting('coming_soon_description', description);
   };
 
   const handleTriggerToggle = async (key: string) => {
