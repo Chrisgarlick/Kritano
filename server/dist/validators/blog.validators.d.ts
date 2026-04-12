@@ -695,6 +695,7 @@ export declare const CreatePostSchema: z.ZodObject<{
     tags: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
     seo_title: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     seo_description: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    focus_keyword: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     schema_type: z.ZodDefault<z.ZodEnum<["article", "howto", "faq", "claim_review"]>>;
     schema_claim_reviewed: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     schema_review_rating: z.ZodOptional<z.ZodNullable<z.ZodEnum<["True", "MostlyTrue", "Mixed", "MostlyFalse", "False"]>>>;
@@ -798,6 +799,7 @@ export declare const CreatePostSchema: z.ZodObject<{
     featured_image_alt?: string | null | undefined;
     seo_title?: string | null | undefined;
     seo_description?: string | null | undefined;
+    focus_keyword?: string | null | undefined;
     schema_claim_reviewed?: string | null | undefined;
     schema_review_rating?: "True" | "MostlyTrue" | "Mixed" | "MostlyFalse" | "False" | null | undefined;
 }, {
@@ -899,6 +901,7 @@ export declare const CreatePostSchema: z.ZodObject<{
     tags?: string[] | undefined;
     seo_title?: string | null | undefined;
     seo_description?: string | null | undefined;
+    focus_keyword?: string | null | undefined;
     schema_type?: "article" | "faq" | "howto" | "claim_review" | undefined;
     schema_claim_reviewed?: string | null | undefined;
     schema_review_rating?: "True" | "MostlyTrue" | "Mixed" | "MostlyFalse" | "False" | null | undefined;
@@ -1252,6 +1255,7 @@ export declare const UpdatePostSchema: z.ZodObject<{
     tags: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     seo_title: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     seo_description: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    focus_keyword: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     related_post_ids: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     schema_type: z.ZodOptional<z.ZodEnum<["article", "howto", "faq", "claim_review"]>>;
     schema_claim_reviewed: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -1355,6 +1359,7 @@ export declare const UpdatePostSchema: z.ZodObject<{
     tags?: string[] | undefined;
     seo_title?: string | null | undefined;
     seo_description?: string | null | undefined;
+    focus_keyword?: string | null | undefined;
     schema_type?: "article" | "faq" | "howto" | "claim_review" | undefined;
     schema_claim_reviewed?: string | null | undefined;
     schema_review_rating?: "True" | "MostlyTrue" | "Mixed" | "MostlyFalse" | "False" | null | undefined;
@@ -1458,6 +1463,7 @@ export declare const UpdatePostSchema: z.ZodObject<{
     tags?: string[] | undefined;
     seo_title?: string | null | undefined;
     seo_description?: string | null | undefined;
+    focus_keyword?: string | null | undefined;
     schema_type?: "article" | "faq" | "howto" | "claim_review" | undefined;
     schema_claim_reviewed?: string | null | undefined;
     schema_review_rating?: "True" | "MostlyTrue" | "Mixed" | "MostlyFalse" | "False" | null | undefined;
