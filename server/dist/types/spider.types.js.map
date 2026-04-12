@@ -1,0 +1,1 @@
+{"version":3,"file":"spider.types.js","sourceRoot":"","sources":["../../src/types/spider.types.ts"],"names":[],"mappings":";;;AAca,QAAA,qBAAqB,GAAiB;IACjD,QAAQ,EAAE,GAAG;IACb,QAAQ,EAAE,CAAC;IACX,kBAAkB,EAAE,CAAC;IACrB,cAAc,EAAE,GAAG;IACnB,SAAS,EAAE,KAAK;IAChB,gBAAgB,EAAE,IAAI;IACtB,iBAAiB,EAAE,KAAK;IACxB,SAAS,EAAE,2CAA2C;CACvD,CAAC"}

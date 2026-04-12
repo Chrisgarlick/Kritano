@@ -2,8 +2,7 @@
 node_modules/
 
 # Build outputs
-dist/
-build/
+# dist/ and build/ are committed so the server can pull pre-built files
 
 # Environment files
 .env

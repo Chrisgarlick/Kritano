@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kritano.com/sitemap.xml
+
+# Disallow authenticated areas
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /admin
+Disallow: /audits
+Disallow: /sites
+Disallow: /analytics
+Disallow: /compare

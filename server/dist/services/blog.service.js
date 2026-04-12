@@ -1,0 +1,444 @@
+"use strict";
+/**
+ * Blog Service
+ *
+ * Post CRUD, slug generation, revision management, reading time calculation.
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.listPosts = listPosts;
+exports.listPublishedPosts = listPublishedPosts;
+exports.getPostById = getPostById;
+exports.getPostBySlug = getPostBySlug;
+exports.createPost = createPost;
+exports.updatePost = updatePost;
+exports.deletePost = deletePost;
+exports.publishPost = publishPost;
+exports.unpublishPost = unpublishPost;
+exports.incrementViewCount = incrementViewCount;
+exports.listRevisions = listRevisions;
+exports.restoreRevision = restoreRevision;
+exports.getPublishedCategories = getPublishedCategories;
+exports.getCmsStats = getCmsStats;
+exports.getRelatedPosts = getRelatedPosts;
+exports.getPublishedPostsForSitemap = getPublishedPostsForSitemap;
+exports.getLatestPublishedPosts = getLatestPublishedPosts;
+const index_js_1 = require("../db/index.js");
+const MAX_REVISIONS_PER_POST = 20;
+// ── Slug generation ──
+function slugify(text) {
+    return text
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+        .substring(0, 180);
+}
+async function generateUniqueSlug(title, excludeId) {
+    const base = slugify(title);
+    if (!base)
+        return `post-${Date.now()}`;
+    let slug = base;
+    let counter = 0;
+    while (true) {
+        const check = excludeId
+            ? await index_js_1.pool.query('SELECT id FROM blog_posts WHERE slug = $1 AND id != $2', [slug, excludeId])
+            : await index_js_1.pool.query('SELECT id FROM blog_posts WHERE slug = $1', [slug]);
+        if (check.rows.length === 0)
+            return slug;
+        counter++;
+        slug = `${base}-${counter}`;
+    }
+}
+// ── Reading time calculation ──
+function calculateReadingTime(content) {
+    let wordCount = 0;
+    function countWords(text) {
+        return text.trim().split(/\s+/).filter(Boolean).length;
+    }
+    function processBlocks(blocks) {
+        for (const block of blocks) {
+            const props = block.props;
+            switch (block.type) {
+                case 'text':
+                    wordCount += countWords(props.content || '');
+                    break;
+                case 'heading':
+                    wordCount += countWords(props.text || '');
+                    break;
+                case 'callout':
+                    wordCount += countWords(props.body || '');
+                    if (props.title)
+                        wordCount += countWords(props.title);
+                    break;
+                case 'quote':
+                    wordCount += countWords(props.text || '');
+                    break;
+                case 'code':
+                    wordCount += countWords(props.code || '') * 0.5; // code reads slower
+                    break;
+                case 'stat_highlight':
+                    wordCount += countWords(props.stat || '');
+                    wordCount += countWords(props.description || '');
+                    break;
+                case 'cta':
+                    wordCount += countWords(props.text || '');
+                    break;
+                case 'two_column':
+                    if (Array.isArray(props.left))
+                        processBlocks(props.left);
+                    if (Array.isArray(props.right))
+                        processBlocks(props.right);
+                    break;
+                case 'image':
+                    wordCount += 12; // images add ~3 seconds = ~12 words
+                    break;
+            }
+        }
+    }
+    processBlocks(content);
+    return Math.max(1, Math.round(wordCount / 200)); // 200 WPM average
+}
+// ── Post CRUD ──
+async function listPosts(filters = {}) {
+    const { status, category, search, page = 1, limit = 20 } = filters;
+    const conditions = [];
+    const params = [];
+    let paramIdx = 1;
+    if (status) {
+        conditions.push(`status = $${paramIdx++}`);
+        params.push(status);
+    }
+    if (category) {
+        conditions.push(`category = $${paramIdx++}`);
+        params.push(category);
+    }
+    if (search) {
+        conditions.push(`(title ILIKE $${paramIdx} OR excerpt ILIKE $${paramIdx})`);
+        params.push(`%${search}%`);
+        paramIdx++;
+    }
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+    const offset = (page - 1) * limit;
+    const [postsResult, countResult] = await Promise.all([
+        index_js_1.pool.query(`SELECT id, slug, title, subtitle, excerpt, featured_image_url, category, tags,
+              author_name, status, published_at, reading_time_minutes, view_count,
+              created_at, updated_at
+       FROM blog_posts ${where}
+       ORDER BY CASE WHEN status = 'published' THEN published_at ELSE created_at END DESC NULLS LAST
+       LIMIT $${paramIdx++} OFFSET $${paramIdx}`, [...params, limit, offset]),
+        index_js_1.pool.query(`SELECT COUNT(*)::int AS total FROM blog_posts ${where}`, params),
+    ]);
+    return {
+        posts: postsResult.rows,
+        total: countResult.rows[0].total,
+    };
+}
+async function listPublishedPosts(filters) {
+    const { category, tag, page = 1, limit = 12 } = filters;
+    const conditions = ["status = 'published'"];
+    const params = [];
+    let paramIdx = 1;
+    if (category) {
+        conditions.push(`category = $${paramIdx++}`);
+        params.push(category);
+    }
+    if (tag) {
+        conditions.push(`$${paramIdx++} = ANY(tags)`);
+        params.push(tag);
+    }
+    const where = `WHERE ${conditions.join(' AND ')}`;
+    const offset = (page - 1) * limit;
+    const [postsResult, countResult] = await Promise.all([
+        index_js_1.pool.query(`SELECT id, slug, title, subtitle, excerpt, featured_image_url, category, tags,
+              author_name, status, published_at, reading_time_minutes, view_count,
+              created_at, updated_at
+       FROM blog_posts ${where}
+       ORDER BY published_at DESC
+       LIMIT $${paramIdx++} OFFSET $${paramIdx}`, [...params, limit, offset]),
+        index_js_1.pool.query(`SELECT COUNT(*)::int AS total FROM blog_posts ${where}`, params),
+    ]);
+    return {
+        posts: postsResult.rows,
+        total: countResult.rows[0].total,
+    };
+}
+async function getPostById(id) {
+    const result = await index_js_1.pool.query('SELECT * FROM blog_posts WHERE id = $1', [id]);
+    return result.rows[0] || null;
+}
+async function getPostBySlug(slug) {
+    const result = await index_js_1.pool.query("SELECT * FROM blog_posts WHERE slug = $1 AND status = 'published'", [slug]);
+    return result.rows[0] || null;
+}
+async function createPost(input, authorId, authorName) {
+    const slug = await generateUniqueSlug(input.title);
+    const readingTime = calculateReadingTime(input.content);
+    const result = await index_js_1.pool.query(`INSERT INTO blog_posts (
+      slug, title, subtitle, excerpt, featured_image_url, featured_image_alt,
+      content, category, tags, author_id, author_name,
+      seo_title, seo_description, reading_time_minutes,
+      schema_type, schema_claim_reviewed, schema_review_rating
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+    RETURNING *`, [
+        slug,
+        input.title,
+        input.subtitle || null,
+        input.excerpt,
+        input.featured_image_url || null,
+        input.featured_image_alt || null,
+        JSON.stringify(input.content),
+        input.category,
+        input.tags || [],
+        authorId,
+        authorName,
+        input.seo_title || null,
+        input.seo_description || null,
+        readingTime,
+        input.schema_type || 'article',
+        input.schema_claim_reviewed || null,
+        input.schema_review_rating || null,
+    ]);
+    return result.rows[0];
+}
+async function updatePost(id, input, editorId, revisionNote) {
+    const existing = await getPostById(id);
+    if (!existing)
+        return null;
+    // Save revision before updating
+    await saveRevision(id, existing.content, existing.title, editorId, revisionNote || 'Auto-save');
+    const fields = [];
+    const params = [];
+    let paramIdx = 1;
+    if (input.title !== undefined) {
+        fields.push(`title = $${paramIdx++}`);
+        params.push(input.title);
+        // Re-generate slug if title changed
+        const newSlug = await generateUniqueSlug(input.title, id);
+        fields.push(`slug = $${paramIdx++}`);
+        params.push(newSlug);
+    }
+    if (input.subtitle !== undefined) {
+        fields.push(`subtitle = $${paramIdx++}`);
+        params.push(input.subtitle);
+    }
+    if (input.excerpt !== undefined) {
+        fields.push(`excerpt = $${paramIdx++}`);
+        params.push(input.excerpt);
+    }
+    if (input.featured_image_url !== undefined) {
+        fields.push(`featured_image_url = $${paramIdx++}`);
+        params.push(input.featured_image_url);
+    }
+    if (input.featured_image_alt !== undefined) {
+        fields.push(`featured_image_alt = $${paramIdx++}`);
+        params.push(input.featured_image_alt);
+    }
+    if (input.content !== undefined) {
+        fields.push(`content = $${paramIdx++}`);
+        params.push(JSON.stringify(input.content));
+        fields.push(`reading_time_minutes = $${paramIdx++}`);
+        params.push(calculateReadingTime(input.content));
+    }
+    if (input.category !== undefined) {
+        fields.push(`category = $${paramIdx++}`);
+        params.push(input.category);
+    }
+    if (input.tags !== undefined) {
+        fields.push(`tags = $${paramIdx++}`);
+        params.push(input.tags);
+    }
+    if (input.seo_title !== undefined) {
+        fields.push(`seo_title = $${paramIdx++}`);
+        params.push(input.seo_title);
+    }
+    if (input.seo_description !== undefined) {
+        fields.push(`seo_description = $${paramIdx++}`);
+        params.push(input.seo_description);
+    }
+    if (input.related_post_ids !== undefined) {
+        fields.push(`related_post_ids = $${paramIdx++}`);
+        params.push(input.related_post_ids);
+    }
+    if (input.schema_type !== undefined) {
+        fields.push(`schema_type = $${paramIdx++}`);
+        params.push(input.schema_type);
+    }
+    if (input.schema_claim_reviewed !== undefined) {
+        fields.push(`schema_claim_reviewed = $${paramIdx++}`);
+        params.push(input.schema_claim_reviewed);
+    }
+    if (input.schema_review_rating !== undefined) {
+        fields.push(`schema_review_rating = $${paramIdx++}`);
+        params.push(input.schema_review_rating);
+    }
+    if (fields.length === 0)
+        return existing;
+    fields.push(`updated_at = NOW()`);
+    params.push(id);
+    const result = await index_js_1.pool.query(`UPDATE blog_posts SET ${fields.join(', ')} WHERE id = $${paramIdx} RETURNING *`, params);
+    return result.rows[0] || null;
+}
+async function deletePost(id) {
+    const result = await index_js_1.pool.query("UPDATE blog_posts SET status = 'archived', updated_at = NOW() WHERE id = $1", [id]);
+    return (result.rowCount ?? 0) > 0;
+}
+async function publishPost(id) {
+    const result = await index_js_1.pool.query("UPDATE blog_posts SET status = 'published', published_at = NOW(), updated_at = NOW() WHERE id = $1 RETURNING *", [id]);
+    return result.rows[0] || null;
+}
+async function unpublishPost(id) {
+    const result = await index_js_1.pool.query("UPDATE blog_posts SET status = 'draft', published_at = NULL, updated_at = NOW() WHERE id = $1 RETURNING *", [id]);
+    return result.rows[0] || null;
+}
+// ── View counting (debounced per session) ──
+const viewedPosts = new Map();
+async function incrementViewCount(postId, sessionKey) {
+    if (!viewedPosts.has(sessionKey)) {
+        viewedPosts.set(sessionKey, new Set());
+    }
+    const viewed = viewedPosts.get(sessionKey);
+    if (viewed.has(postId))
+        return;
+    viewed.add(postId);
+    await index_js_1.pool.query('UPDATE blog_posts SET view_count = view_count + 1 WHERE id = $1', [postId]);
+    // Cleanup old sessions periodically (rough LRU)
+    if (viewedPosts.size > 10000) {
+        const keys = Array.from(viewedPosts.keys());
+        for (let i = 0; i < 5000; i++) {
+            viewedPosts.delete(keys[i]);
+        }
+    }
+}
+// ── Revisions ──
+async function saveRevision(postId, content, title, createdBy, note) {
+    await index_js_1.pool.query(`INSERT INTO blog_post_revisions (post_id, content, title, revision_note, created_by)
+     VALUES ($1, $2, $3, $4, $5)`, [postId, JSON.stringify(content), title, note, createdBy]);
+    // Prune old revisions (keep last N)
+    await index_js_1.pool.query(`DELETE FROM blog_post_revisions
+     WHERE post_id = $1
+       AND id NOT IN (
+         SELECT id FROM blog_post_revisions
+         WHERE post_id = $1
+         ORDER BY created_at DESC
+         LIMIT $2
+       )`, [postId, MAX_REVISIONS_PER_POST]);
+}
+async function listRevisions(postId) {
+    const result = await index_js_1.pool.query(`SELECT r.*, u.email AS editor_email
+     FROM blog_post_revisions r
+     LEFT JOIN users u ON u.id = r.created_by
+     WHERE r.post_id = $1
+     ORDER BY r.created_at DESC`, [postId]);
+    return result.rows;
+}
+async function restoreRevision(postId, revisionId, editorId) {
+    const revision = await index_js_1.pool.query('SELECT * FROM blog_post_revisions WHERE id = $1 AND post_id = $2', [revisionId, postId]);
+    if (revision.rows.length === 0)
+        return null;
+    const rev = revision.rows[0];
+    // Save current state as revision first
+    const existing = await getPostById(postId);
+    if (existing) {
+        await saveRevision(postId, existing.content, existing.title, editorId, 'Before restore');
+    }
+    const content = typeof rev.content === 'string' ? JSON.parse(rev.content) : rev.content;
+    const readingTime = calculateReadingTime(content);
+    const result = await index_js_1.pool.query(`UPDATE blog_posts
+     SET content = $1, title = $2, reading_time_minutes = $3, updated_at = NOW()
+     WHERE id = $4
+     RETURNING *`, [JSON.stringify(content), rev.title, readingTime, postId]);
+    return result.rows[0] || null;
+}
+// ── Categories ──
+async function getPublishedCategories() {
+    const result = await index_js_1.pool.query(`SELECT category, COUNT(*)::int AS count
+     FROM blog_posts
+     WHERE status = 'published'
+     GROUP BY category
+     ORDER BY count DESC`);
+    return result.rows;
+}
+// ── Stats ──
+async function getCmsStats() {
+    const [postStats, viewStats, mediaCount, topPosts] = await Promise.all([
+        index_js_1.pool.query(`SELECT
+        COUNT(*)::int AS total,
+        COUNT(*) FILTER (WHERE status = 'published')::int AS published,
+        COUNT(*) FILTER (WHERE status = 'draft')::int AS drafts,
+        COUNT(*) FILTER (WHERE status = 'archived')::int AS archived
+       FROM blog_posts`),
+        index_js_1.pool.query('SELECT COALESCE(SUM(view_count), 0)::int AS total_views FROM blog_posts'),
+        index_js_1.pool.query('SELECT COUNT(*)::int AS total FROM blog_media'),
+        index_js_1.pool.query(`SELECT id, title, slug, view_count, published_at
+       FROM blog_posts
+       WHERE status = 'published'
+       ORDER BY view_count DESC
+       LIMIT 10`),
+    ]);
+    const stats = postStats.rows[0];
+    return {
+        totalPosts: stats.total,
+        published: stats.published,
+        drafts: stats.drafts,
+        archived: stats.archived,
+        totalViews: viewStats.rows[0].total_views,
+        totalMedia: mediaCount.rows[0].total,
+        topPosts: topPosts.rows,
+    };
+}
+// ── Related posts ──
+async function getRelatedPosts(postId, category, tags, manualIds, limit = 3) {
+    // If manual IDs are set, fetch those (published only, preserve order)
+    if (manualIds.length > 0) {
+        const result = await index_js_1.pool.query(`SELECT id, slug, title, subtitle, excerpt, featured_image_url, category, tags,
+              author_name, status, published_at, reading_time_minutes, view_count,
+              created_at, updated_at
+       FROM blog_posts
+       WHERE id = ANY($1) AND status = 'published' AND id != $2
+       LIMIT $3`, [manualIds, postId, limit]);
+        // Preserve the manual order
+        const byId = new Map(result.rows.map((r) => [r.id, r]));
+        return manualIds
+            .map(id => byId.get(id))
+            .filter((p) => p !== undefined)
+            .slice(0, limit);
+    }
+    // Auto-match: score by shared tags (×3) + same category (×1), tie-break by recency
+    if (tags.length === 0) {
+        // No tags — just match by category
+        const result = await index_js_1.pool.query(`SELECT id, slug, title, subtitle, excerpt, featured_image_url, category, tags,
+              author_name, status, published_at, reading_time_minutes, view_count,
+              created_at, updated_at
+       FROM blog_posts
+       WHERE status = 'published' AND id != $1 AND category = $2
+       ORDER BY published_at DESC NULLS LAST
+       LIMIT $3`, [postId, category, limit]);
+        return result.rows;
+    }
+    const result = await index_js_1.pool.query(`SELECT id, slug, title, subtitle, excerpt, featured_image_url, category, tags,
+            author_name, status, published_at, reading_time_minutes, view_count,
+            created_at, updated_at,
+            (
+              (SELECT COUNT(*) FROM unnest(tags) t WHERE t = ANY($2)) * 3
+              + CASE WHEN category = $3 THEN 1 ELSE 0 END
+            ) AS relevance_score
+     FROM blog_posts
+     WHERE status = 'published' AND id != $1
+       AND (
+         tags && $2 OR category = $3
+       )
+     ORDER BY relevance_score DESC, published_at DESC NULLS LAST
+     LIMIT $4`, [postId, tags, category, limit]);
+    return result.rows;
+}
+// ── Sitemap & RSS helpers ──
+async function getPublishedPostsForSitemap() {
+    const result = await index_js_1.pool.query(`SELECT slug, updated_at FROM blog_posts WHERE status = 'published' ORDER BY published_at DESC`);
+    return result.rows;
+}
+async function getLatestPublishedPosts(limit = 20) {
+    const result = await index_js_1.pool.query(`SELECT * FROM blog_posts WHERE status = 'published' ORDER BY published_at DESC LIMIT $1`, [limit]);
+    return result.rows;
+}
+//# sourceMappingURL=blog.service.js.map

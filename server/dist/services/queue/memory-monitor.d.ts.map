@@ -1,0 +1,1 @@
+{"version":3,"file":"memory-monitor.d.ts","sourceRoot":"","sources":["../../../src/services/queue/memory-monitor.ts"],"names":[],"mappings":"AAMA,wBAAgB,cAAc,IAAI;IAAE,WAAW,EAAE,MAAM,CAAC;IAAC,MAAM,EAAE,MAAM,CAAC;IAAC,OAAO,EAAE,MAAM,CAAA;CAAE,CAKzF;AAED,wBAAgB,YAAY,IAAI,OAAO,CAEtC;AAED,wBAAgB,kBAAkB,IAAI,MAAM,CAE3C"}

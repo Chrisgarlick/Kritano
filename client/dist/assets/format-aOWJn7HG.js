@@ -1,0 +1,1 @@
+function a(t){return t?new Date(t).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",hour:"2-digit",minute:"2-digit"}):"-"}function e(t){if(t===null||t===0)return"0 B";const o=1024,r=["B","KB","MB","GB"],n=Math.floor(Math.log(t)/Math.log(o));return`${parseFloat((t/Math.pow(o,n)).toFixed(1))} ${r[n]}`}export{e as a,a as f};

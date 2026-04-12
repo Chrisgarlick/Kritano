@@ -1,0 +1,26 @@
+<svg width="320" height="80" viewBox="0 0 320 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Kritano AI Chip Horizontal Lockup — for light backgrounds -->
+  <!-- Chip icon -->
+  <rect x="6" y="6" width="68" height="68" rx="12" fill="#4f46e5"/>
+  <rect x="24" y="0" width="5" height="8" rx="1.5" fill="#4f46e5"/>
+  <rect x="35" y="0" width="5" height="8" rx="1.5" fill="#4f46e5"/>
+  <rect x="46" y="0" width="5" height="8" rx="1.5" fill="#4f46e5"/>
+  <rect x="24" y="72" width="5" height="8" rx="1.5" fill="#4f46e5"/>
+  <rect x="35" y="72" width="5" height="8" rx="1.5" fill="#4f46e5"/>
+  <rect x="46" y="72" width="5" height="8" rx="1.5" fill="#4f46e5"/>
+  <rect x="0" y="24" width="8" height="5" rx="1.5" fill="#4f46e5"/>
+  <rect x="0" y="35" width="8" height="5" rx="1.5" fill="#4f46e5"/>
+  <rect x="0" y="46" width="8" height="5" rx="1.5" fill="#4f46e5"/>
+  <rect x="72" y="24" width="8" height="5" rx="1.5" fill="#4f46e5"/>
+  <rect x="72" y="35" width="8" height="5" rx="1.5" fill="#4f46e5"/>
+  <rect x="72" y="46" width="8" height="5" rx="1.5" fill="#4f46e5"/>
+  <rect x="14" y="14" width="52" height="52" rx="8" fill="#312e81"/>
+  <rect x="20" y="24" width="40" height="1.5" rx="0.75" fill="#6366f1" opacity="0.35"/>
+  <rect x="20" y="30" width="40" height="1.5" rx="0.75" fill="#6366f1" opacity="0.25"/>
+  <rect x="20" y="49" width="40" height="1.5" rx="0.75" fill="#6366f1" opacity="0.25"/>
+  <rect x="20" y="55" width="40" height="1.5" rx="0.75" fill="#6366f1" opacity="0.35"/>
+  <path d="M27 20 L27 60 L33 60 L33 43 L46 60 L54 60 L39 40 L53 20 L45 20 L33 37 L33 20 Z" fill="white"/>
+  <circle cx="54" cy="19" r="3.5" fill="#fbbf24"/>
+  <!-- Wordmark -->
+  <text x="96" y="52" font-family="'Instrument Serif', Georgia, serif" font-size="42" fill="#1e1b4b" letter-spacing="-0.5">Kritano</text>
+</svg>

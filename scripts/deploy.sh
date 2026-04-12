@@ -18,8 +18,8 @@ git pull origin main
 echo "==> Installing dependencies..."
 npm run install:all
 
-echo "==> Building..."
-npm run build
+# Build is done locally and committed to git (server can't handle the build)
+# If you need to rebuild on server: npm run build
 
 echo "==> Running migrations..."
 cd server
