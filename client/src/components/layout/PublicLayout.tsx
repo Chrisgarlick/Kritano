@@ -89,6 +89,21 @@ export function PublicLayout({ children }: Props) {
   const { openPreferences: openCookiePreferences } = useCookieConsent();
   const mode = useSiteMode();
   const showDashboard = isAuthenticated && (mode !== 'waitlist' || isAdmin);
+
+  // Force light mode on public pages
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove('dark');
+    root.classList.add('light');
+    return () => {
+      const stored = localStorage.getItem('kritano-theme');
+      if (stored === 'dark' || (stored === 'system' &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        root.classList.remove('light');
+        root.classList.add('dark');
+      }
+    };
+  }, []);
   const location = useLocation();
   const [activeCategories, setActiveCategories] = useState<Set<string>>(new Set());
   useEffect(() => {

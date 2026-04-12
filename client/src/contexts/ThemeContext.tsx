@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -61,15 +60,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, [theme]);
 
-  // Apply theme class to document - dark mode only on app routes
-  const location = useLocation();
-  const isAppRoute = location.pathname.startsWith('/app');
-
+  // Apply theme class to document
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
-    root.classList.add(isAppRoute ? resolvedTheme : 'light');
-  }, [resolvedTheme, isAppRoute]);
+    root.classList.add(resolvedTheme);
+  }, [resolvedTheme]);
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
