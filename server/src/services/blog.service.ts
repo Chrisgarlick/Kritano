@@ -214,9 +214,9 @@ export async function createPost(
     `INSERT INTO blog_posts (
       slug, title, subtitle, excerpt, featured_image_url, featured_image_alt,
       content, category, tags, author_id, author_name,
-      seo_title, seo_description, reading_time_minutes,
+      seo_title, seo_description, focus_keyword, reading_time_minutes,
       schema_type, schema_claim_reviewed, schema_review_rating
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
     RETURNING *`,
     [
       slug,
@@ -232,6 +232,7 @@ export async function createPost(
       authorName,
       input.seo_title || null,
       input.seo_description || null,
+      input.focus_keyword || null,
       readingTime,
       input.schema_type || 'article',
       input.schema_claim_reviewed || null,
@@ -312,6 +313,11 @@ export async function updatePost(
   if (input.seo_description !== undefined) {
     fields.push(`seo_description = $${paramIdx++}`);
     params.push(input.seo_description);
+  }
+
+  if (input.focus_keyword !== undefined) {
+    fields.push(`focus_keyword = $${paramIdx++}`);
+    params.push(input.focus_keyword);
   }
 
   if (input.related_post_ids !== undefined) {

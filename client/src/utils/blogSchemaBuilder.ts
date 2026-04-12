@@ -82,7 +82,9 @@ function buildArticleSchema(post: BlogPostDetail, canonicalUrl: string): SchemaO
     dateModified: post.updated_at,
     wordCount: post.reading_time_minutes ? post.reading_time_minutes * 250 : undefined,
     articleSection: CATEGORY_LABELS[post.category] || post.category,
-    keywords: post.tags.join(', '),
+    keywords: post.focus_keyword
+      ? [post.focus_keyword, ...post.tags].join(', ')
+      : post.tags.join(', '),
     inLanguage: 'en-GB',
   };
 }

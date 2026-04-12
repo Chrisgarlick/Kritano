@@ -133,6 +133,7 @@ export default function PostEditorPage() {
   const [featuredImageAlt, setFeaturedImageAlt] = useState('');
   const [seoTitle, setSeoTitle] = useState('');
   const [seoDescription, setSeoDescription] = useState('');
+  const [focusKeyword, setFocusKeyword] = useState('');
   const [schemaType, setSchemaType] = useState<BlogSchemaType>('article');
   const [schemaClaimReviewed, setSchemaClaimReviewed] = useState('');
   const [schemaReviewRating, setSchemaReviewRating] = useState<BlogReviewRating>('Mixed');
@@ -176,7 +177,7 @@ export default function PostEditorPage() {
       setHasChanges(true);
       setSaveStatus('unsaved');
     }
-  }, [title, subtitle, excerpt, category, tags, blocks, featuredImageUrl, featuredImageAlt, seoTitle, seoDescription, relatedPostIds]);
+  }, [title, subtitle, excerpt, category, tags, blocks, featuredImageUrl, featuredImageAlt, seoTitle, seoDescription, focusKeyword, relatedPostIds]);
 
   // Auto-save
   useEffect(() => {
@@ -217,6 +218,7 @@ export default function PostEditorPage() {
       setFeaturedImageAlt(p.featured_image_alt || '');
       setSeoTitle(p.seo_title || '');
       setSeoDescription(p.seo_description || '');
+      setFocusKeyword(p.focus_keyword || '');
       setSchemaType(p.schema_type || 'article');
       setSchemaClaimReviewed(p.schema_claim_reviewed || '');
       setSchemaReviewRating(p.schema_review_rating || 'Mixed');
@@ -255,6 +257,7 @@ export default function PostEditorPage() {
         featured_image_alt: featuredImageAlt || null,
         seo_title: seoTitle || null,
         seo_description: seoDescription || null,
+        focus_keyword: focusKeyword || null,
         schema_type: schemaType,
         schema_claim_reviewed: schemaType === 'claim_review' ? (schemaClaimReviewed || null) : null,
         schema_review_rating: schemaType === 'claim_review' ? schemaReviewRating : null,
@@ -288,7 +291,7 @@ export default function PostEditorPage() {
     } finally {
       setSaving(false);
     }
-  }, [title, subtitle, excerpt, category, tags, blocks, featuredImageUrl, featuredImageAlt, seoTitle, seoDescription, schemaType, schemaClaimReviewed, schemaReviewRating, relatedPostIds, isNew, post, saving, navigate]);
+  }, [title, subtitle, excerpt, category, tags, blocks, featuredImageUrl, featuredImageAlt, seoTitle, seoDescription, focusKeyword, schemaType, schemaClaimReviewed, schemaReviewRating, relatedPostIds, isNew, post, saving, navigate]);
 
   const handlePublish = async () => {
     if (!post) return;
@@ -808,6 +811,17 @@ export default function PostEditorPage() {
                         rows={3}
                         maxLength={400}
                         className="w-full px-3 py-1.5 bg-white/[0.03] border border-white/[0.08] rounded text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-slate-500 mb-1 block">Focus Keyword</label>
+                      <input
+                        type="text"
+                        value={focusKeyword}
+                        onChange={e => setFocusKeyword(e.target.value)}
+                        placeholder="Primary keyword for this post..."
+                        maxLength={100}
+                        className="w-full px-3 py-1.5 bg-white/[0.03] border border-white/[0.08] rounded text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                       />
                     </div>
                   </div>

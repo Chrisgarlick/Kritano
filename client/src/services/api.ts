@@ -2006,6 +2006,7 @@ export interface BlogPostDetail extends BlogPostSummary {
   author_id: string;
   seo_title: string | null;
   seo_description: string | null;
+  focus_keyword: string | null;
   related_post_ids: string[];
   schema_claim_reviewed: string | null;
   schema_review_rating: BlogReviewRating | null;
@@ -2022,6 +2023,7 @@ export interface CreateBlogPostInput {
   tags?: string[];
   seo_title?: string | null;
   seo_description?: string | null;
+  focus_keyword?: string | null;
   schema_type?: BlogSchemaType;
   schema_claim_reviewed?: string | null;
   schema_review_rating?: BlogReviewRating | null;
