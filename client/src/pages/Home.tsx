@@ -295,6 +295,14 @@ export default function Home() {
   const ctaHref = mode === 'waitlist' ? '/waitlist' : mode === 'early_access' ? '/register?ea=email' : '/register';
   const ctaLabel = mode === 'waitlist' ? 'Join the Waitlist' : mode === 'early_access' ? 'Join Early Access' : 'Start Free Audit';
 
+  const [auditsCompleted, setAuditsCompleted] = useState<number | null>(null);
+  useEffect(() => {
+    fetch('/api/stats/public')
+      .then(r => r.json())
+      .then(d => setAuditsCompleted(d.auditsCompleted))
+      .catch(() => {});
+  }, []);
+
   return (
     <PublicLayout>
       <PageSeo
@@ -384,7 +392,7 @@ export default function Home() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
               <span className="text-slate-600 normal-case tracking-normal text-sm font-medium">
-                <span className="text-slate-900 font-semibold">12,400+</span> audits completed
+                <span className="text-slate-900 font-semibold">{auditsCompleted !== null ? auditsCompleted.toLocaleString() : '...'}</span> audits completed
               </span>
             </span>
             <span className="hidden sm:inline" aria-hidden="true">&middot;</span>

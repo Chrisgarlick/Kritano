@@ -118,6 +118,20 @@ app.get('/api', (req, res) => {
   });
 });
 
+// Public stats (no auth, cached)
+app.get('/api/stats/public', async (_req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT COUNT(*) as count FROM audit_jobs WHERE status = 'completed'`
+    );
+    const count = parseInt(result.rows[0].count, 10);
+    res.set('Cache-Control', 'public, max-age=300');
+    res.json({ auditsCompleted: count });
+  } catch {
+    res.json({ auditsCompleted: 0 });
+  }
+});
+
 // Dynamic sitemap (static pages + blog posts)
 app.get('/sitemap.xml', async (_req, res) => {
   try {
