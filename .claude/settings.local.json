@@ -239,7 +239,11 @@
       "Bash(md5 /Users/chris/Herd/pagepulser/client/public/fonts/outfit-latin.woff2)",
       "Bash(md5 /tmp/outfit-latin-ext-300.woff2)",
       "Bash(md5 /Users/chris/Herd/pagepulser/client/public/fonts/outfit-latin-ext.woff2)",
-      "Bash(md5 /tmp/outfit-latin-var.woff2)"
+      "Bash(md5 /tmp/outfit-latin-var.woff2)",
+      "WebFetch(domain:stephensolademi.com)",
+      "WebFetch(domain:www.peopleperhour.com)",
+      "Bash(bash .claude/skills/prospects-freelance/check-and-extract.sh docs/prospects/newcastle-freelance-2026-04-13/raw-domains.txt docs/prospects/newcastle-freelance-2026-04-13/prospects.json)",
+      "Bash(bash .claude/skills/prospects-freelance/publish-to-notion.sh docs/prospects/newcastle-freelance-2026-04-13/prospects.json \"Freelance Prospects - Newcastle - 2026-04-13\")"
     ]
   },
   "enableAllProjectMcpServers": true,
