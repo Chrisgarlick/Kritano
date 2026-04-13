@@ -749,7 +749,7 @@ export default function AuditDetailPage() {
     if (id && audit && audit.status === 'completed') {
       auditsApi.getCompliance(id).then(res => {
         setComplianceStatus(res.data.status);
-        if (res.data.aaStatus) {
+        if (res.data.aaStatus && res.data.wcagLevel === 'AAA') {
           setAaComplianceStatus(res.data.aaStatus);
         }
       }).catch(() => {
@@ -1008,7 +1008,7 @@ export default function AuditDetailPage() {
               {audit.wcag_level === 'AAA' && aaComplianceStatus && aaComplianceStatus !== 'not_assessed' && (
                 <ComplianceBadgeInline status={aaComplianceStatus} label="AA" />
               )}
-              <ComplianceBadgeInline status={complianceStatus} label={audit.wcag_level === 'AAA' ? 'AAA' : undefined} />
+              <ComplianceBadgeInline status={complianceStatus} label={audit.wcag_level || 'AA'} />
             </>
           )}
         </div>

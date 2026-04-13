@@ -336,15 +336,28 @@ export default function AuditListPage() {
                       <div className="text-sm text-slate-500 dark:text-slate-400 truncate max-w-[150px] sm:max-w-[200px] md:max-w-xs">{audit.target_url}</div>
                     </td>
                     <td className="px-6 py-4">
-                      {/* A4: Status badge with icon for non-color indication */}
-                      <span
-                        className={`inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full ${statusColors[audit.status]}`}
-                        role="status"
-                        aria-label={`Status: ${statusLabels[audit.status]}`}
-                      >
-                        <span aria-hidden="true">{statusIcons[audit.status]}</span>
-                        {statusLabels[audit.status]}
-                      </span>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        {/* A4: Status badge with icon for non-color indication */}
+                        <span
+                          className={`inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full ${statusColors[audit.status]}`}
+                          role="status"
+                          aria-label={`Status: ${statusLabels[audit.status]}`}
+                        >
+                          <span aria-hidden="true">{statusIcons[audit.status]}</span>
+                          {statusLabels[audit.status]}
+                        </span>
+                        {audit.wcag_level && audit.check_accessibility !== false && (
+                          <span className={`inline-flex px-1.5 py-0.5 text-[10px] font-semibold rounded ${
+                            audit.wcag_level === 'AAA'
+                              ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                              : audit.wcag_level === 'A'
+                                ? 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'
+                                : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
+                          }`}>
+                            {audit.wcag_level}
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-6 py-4 text-center hidden sm:table-cell">
                       <div className="text-sm text-slate-900 dark:text-white">{audit.pages_crawled} / {audit.pages_found}</div>

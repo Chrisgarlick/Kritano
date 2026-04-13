@@ -436,6 +436,7 @@ export const auditsApi = {
       status: 'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed';
       wcagLevel?: string;
       aaStatus?: 'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed';
+      aaaStatus?: 'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed';
       standard: string;
       summary: {
         totalClauses: number;

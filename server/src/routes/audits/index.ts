@@ -354,7 +354,8 @@ router.get('/', authenticate, async (req: Request, res: Response): Promise<void>
              pages_found, pages_crawled, pages_audited,
              total_issues, critical_issues,
              seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score,
-             started_at, completed_at, created_at
+             started_at, completed_at, created_at,
+             wcag_level, check_accessibility
       FROM audit_jobs
       WHERE user_id = $1
     `;

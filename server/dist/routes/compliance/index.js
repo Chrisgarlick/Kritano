@@ -133,15 +133,46 @@ router.get('/:id/compliance', auth_middleware_js_1.authenticate, async (req, res
         else {
             status = 'partially_compliant';
         }
-        // 9. Build response — tier-gate the clauses array
+        // 9. Calculate AAA compliance separately when audit targets AAA
         //    The EN 301 549 status is always based on WCAG AA criteria.
-        //    When the audit targets AAA, `status` reflects AA compliance and
-        //    the overall AAA conformance is the audit-level pass/fail.
+        //    AAA compliance considers all accessibility findings (AA + AAA).
         const wcagLevel = audit.wcag_level || 'AA';
+        let aaaStatus;
+        if (wcagLevel === 'AAA') {
+            // Count ALL accessibility findings (AA + AAA) for overall AAA compliance
+            const allFindingsResult = await index_js_1.pool.query(`
+        SELECT f.severity, COUNT(DISTINCT f.rule_id) as cnt
+        FROM audit_findings f
+        WHERE f.audit_job_id = $1 AND f.category = 'accessibility' AND f.status != 'dismissed'
+        GROUP BY f.severity
+      `, [auditId]);
+            let aaaCritical = 0;
+            let aaaSerious = 0;
+            let aaaTotal = 0;
+            for (const row of allFindingsResult.rows) {
+                const cnt = parseInt(row.cnt, 10);
+                aaaTotal += cnt;
+                if (row.severity === 'critical')
+                    aaaCritical += cnt;
+                if (row.severity === 'serious')
+                    aaaSerious += cnt;
+            }
+            if (aaaTotal === 0) {
+                aaaStatus = 'compliant';
+            }
+            else if (aaaCritical > 0 || aaaSerious > 5) {
+                aaaStatus = 'non_compliant';
+            }
+            else {
+                aaaStatus = 'partially_compliant';
+            }
+        }
+        // 10. Build response — tier-gate the clauses array
         const response = {
-            status,
+            status: wcagLevel === 'AAA' ? aaaStatus : status,
             wcagLevel,
             aaStatus: status,
+            aaaStatus: aaaStatus || undefined,
             standard: 'EN 301 549 (WCAG 2.2 Level AA)',
             summary: {
                 totalClauses: en_301_549_mapping_js_1.enMapping.length,

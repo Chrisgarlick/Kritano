@@ -46,6 +46,7 @@ export interface Audit {
   is_competitor?: boolean;
   competitor_profile_id?: string | null;
   check_file_extraction?: boolean;
+  check_accessibility?: boolean;
   // Mobile audit
   wcag_version?: WcagVersion;
   wcag_level?: WcagLevel;
