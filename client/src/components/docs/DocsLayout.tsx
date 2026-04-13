@@ -31,7 +31,7 @@ export default function DocsLayout({ children }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const sidebar = (
-    <nav className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm overflow-hidden">
+    <nav aria-label="API documentation" className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm overflow-hidden">
       {SIDEBAR_SECTIONS.map(section => (
         <div key={section.title} className="px-4 py-4 border-b border-slate-100 dark:border-slate-700/50 last:border-b-0">
           <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">{section.title}</div>

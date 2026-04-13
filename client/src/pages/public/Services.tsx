@@ -117,7 +117,7 @@ export default function Services() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Website Auditing Services - SEO, Accessibility & Security"
+        title="Auditing Services - SEO, Accessibility & Security"
         description="Comprehensive website auditing services: SEO, accessibility (WCAG 2.2), security scanning, and performance analysis."
         path="/services"
         structuredData={[

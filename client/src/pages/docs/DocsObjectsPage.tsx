@@ -75,7 +75,7 @@ function ObjectTable({ fields }: { fields: { field: string; type: string; descri
             <tr key={f.field} className="border-t border-slate-100 dark:border-slate-700/50 hover:bg-slate-50/50">
               <td className="px-4 py-3 font-mono text-xs text-indigo-600 font-medium whitespace-nowrap">{f.field}</td>
               <td className="px-4 py-3 whitespace-nowrap">
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">{f.type}</span>
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">{f.type}</span>
               </td>
               <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{f.description}</td>
             </tr>

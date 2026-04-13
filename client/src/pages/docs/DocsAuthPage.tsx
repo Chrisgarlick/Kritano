@@ -155,19 +155,19 @@ export default function DocsAuthPage() {
           <h2 className="text-xl font-semibold text-slate-900 mb-4">Key Management</h2>
           <div className="space-y-4 text-sm text-slate-600">
             <div className="flex gap-3">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">1</div>
-              <div><strong className="text-slate-800">Creating keys:</strong> Go to <Link to="/app/settings/api-keys" className="text-indigo-600 hover:underline">Settings &rarr; API Keys</Link>. Give the key a name and select its scopes. The full key is shown only once - copy it immediately.</div>
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-600">1</div>
+              <div><strong className="text-slate-800">Creating keys:</strong> Go to <Link to="/app/settings/api-keys" className="text-indigo-600 underline underline-offset-2 decoration-indigo-300 hover:decoration-indigo-600">Settings &rarr; API Keys</Link>. Give the key a name and select its scopes. The full key is shown only once - copy it immediately.</div>
             </div>
             <div className="flex gap-3">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">2</div>
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-600">2</div>
               <div><strong className="text-slate-800">Revoking keys:</strong> Click the revoke button next to any active key. Revoked keys are rejected immediately on all subsequent requests.</div>
             </div>
             <div className="flex gap-3">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">3</div>
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-600">3</div>
               <div><strong className="text-slate-800">Key expiry:</strong> Keys can optionally have an expiry date. Expired keys are rejected in the same way as revoked keys.</div>
             </div>
             <div className="flex gap-3">
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">4</div>
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-600">4</div>
               <div><strong className="text-slate-800">Multiple keys:</strong> You can create multiple keys with different scopes for different environments or integrations (e.g., one for CI/CD, one for a dashboard).</div>
             </div>
           </div>

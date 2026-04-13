@@ -55,7 +55,7 @@ export default function DocsRateLimitsPage() {
           </div>
 
           <p className="text-sm text-slate-500">
-            Your current tier is shown in the <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">GET /api/v1/info</code> response. To upgrade, visit the <a href="/pricing" className="text-indigo-600 hover:underline">pricing page</a>.
+            Your current tier is shown in the <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">GET /api/v1/info</code> response. To upgrade, visit the <a href="/pricing" className="text-indigo-600 underline underline-offset-2 decoration-indigo-300 hover:decoration-indigo-600">pricing page</a>.
           </p>
         </div>
 

@@ -145,7 +145,7 @@ router.post('/', auth_middleware_js_1.authenticate, (0, validate_middleware_js_1
         }
         // Apply tier limits to options
         const options = input.options || {};
-        let maxPages = Math.min(options.maxPages ?? 100, maxPagesLimit);
+        let maxPages = Math.min(options.maxPages ?? maxPagesLimit, maxPagesLimit);
         const maxDepth = Math.min(options.maxDepth ?? 5, maxDepthLimit);
         // Check if requested checks are available for this tier (site owner's)
         let checkSeo = options.checkSeo ?? true;
