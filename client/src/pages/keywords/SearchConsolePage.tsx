@@ -256,14 +256,15 @@ export default function SearchConsolePage() {
     }
   };
 
-  const formatNumber = (n: number) => {
+  const formatNumber = (n: number | null | undefined) => {
+    if (n == null) return '0';
     if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
     if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
     return n.toLocaleString();
   };
 
-  const formatCtr = (ctr: number) => (ctr * 100).toFixed(1) + '%';
-  const formatPosition = (pos: number) => pos.toFixed(1);
+  const formatCtr = (ctr: number | null | undefined) => ctr != null ? (ctr * 100).toFixed(1) + '%' : '0%';
+  const formatPosition = (pos: number | null | undefined) => pos != null ? pos.toFixed(1) : '0.0';
 
   // ========== Gated State ==========
   if (!isGscAvailable) {
