@@ -166,6 +166,13 @@ router.get('/:id/compliance', auth_middleware_js_1.authenticate, async (req, res
             else {
                 aaaStatus = 'partially_compliant';
             }
+            // AAA can never be better than AA (AAA is a superset of AA)
+            const severityRank = {
+                compliant: 0, partially_compliant: 1, non_compliant: 2, not_assessed: 3,
+            };
+            if (severityRank[aaaStatus] < severityRank[status]) {
+                aaaStatus = status;
+            }
         }
         // 10. Build response — tier-gate the clauses array
         const response = {
