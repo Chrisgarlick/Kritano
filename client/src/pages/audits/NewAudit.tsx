@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
@@ -57,6 +57,7 @@ export default function NewAuditPage() {
   const [showConsentModal, setShowConsentModal] = useState(false);
   const [domainStatus, setDomainStatus] = useState<{
     domain: string;
+    siteId: string | null;
     isVerified: boolean;
     requiresConsent: boolean;
     userSkipsWarning: boolean;
@@ -621,7 +622,7 @@ export default function NewAuditPage() {
                 <p className="text-sm font-medium text-amber-800 dark:text-amber-300">Unverified domain</p>
                 <p className="text-sm text-amber-700 dark:text-amber-400 mt-0.5">
                   Multi-page audits require domain verification. You can run a single page audit, or{' '}
-                  <a href="/app/settings/domains" className="underline hover:text-amber-900">verify this domain</a>{' '}
+                  <Link to={domainStatus?.siteId ? `/app/sites/${domainStatus.siteId}` : '/app/sites'} className="underline hover:text-amber-900">verify this domain</Link>{' '}
                   to unlock full audits.
                 </p>
               </div>

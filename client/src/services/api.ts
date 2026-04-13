@@ -203,6 +203,7 @@ export const auditsApi = {
   getDomainStatus: (url: string) =>
     api.get<{
       domain: string;
+      siteId: string | null;
       isVerified: boolean;
       requiresConsent: boolean;
       userSkipsWarning: boolean;

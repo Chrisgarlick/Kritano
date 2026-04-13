@@ -141,6 +141,7 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
 
   const uniqueSnippets = new Set(group.affectedPages.map(p => p.snippet).filter(Boolean));
   const hasConsistentSnippet = uniqueSnippets.size === 1;
+  const uniquePageCount = new Set(group.affectedPages.map(p => p.page_url || '__site_level__')).size;
 
   return (
     <div className={`bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-all hover:border-indigo-200 dark:hover:border-indigo-800 hover:shadow-md ${group.dismissed ? 'opacity-60' : ''}`}>
@@ -160,7 +161,7 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
             <span className="text-xs text-slate-500 dark:text-slate-500 whitespace-nowrap tabular-nums">
-              {group.affectedPages.length} page{group.affectedPages.length !== 1 ? 's' : ''}
+              {uniquePageCount} page{uniquePageCount !== 1 ? 's' : ''}
             </span>
             <button
               onClick={() => onDismiss(group.rule_id, group.rule_name, group.dismissed ? 'active' : 'dismissed')}
@@ -224,56 +225,79 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
 
       {/* Affected Pages Accordion */}
       <div className="border-t border-slate-100 dark:border-slate-800">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          aria-expanded={isOpen}
-          aria-controls={`affected-pages-${group.key}`}
-          className="w-full px-5 py-3 flex items-center justify-between text-sm text-slate-600 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-        >
-          <span className="font-medium">
-            Affected Pages ({group.affectedPages.length})
-          </span>
-          <ChevronDown
-            className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-          />
-        </button>
+        {(() => {
+          // Group affected pages by URL
+          const pageGroups = new Map<string, typeof group.affectedPages>();
+          for (const page of group.affectedPages) {
+            const key = page.page_url || '__site_level__';
+            if (!pageGroups.has(key)) pageGroups.set(key, []);
+            pageGroups.get(key)!.push(page);
+          }
+          const uniquePageCount = pageGroups.size;
 
-        {isOpen && (
-          <div id={`affected-pages-${group.key}`} className="px-5 pb-4 space-y-2">
-            {group.affectedPages.map((page, i) => (
-              <div key={i} className="flex items-start gap-3 py-2 border-t border-slate-50 dark:border-slate-800 first:border-0">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    {page.page_url ? (
-                      <a
-                        href={page.page_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline truncate font-mono"
-                      >
-                        {page.page_url}
-                      </a>
-                    ) : (
-                      <span className="text-xs text-slate-500 dark:text-slate-500">Site-level issue</span>
-                    )}
-                  </div>
-                  {/* Show page-specific message (e.g., score details) */}
-                  {page.message && (
-                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                      {page.message}
-                    </p>
-                  )}
-                  {/* Show per-page snippet if snippets vary */}
-                  {!hasConsistentSnippet && page.snippet && (
-                    <pre className="mt-2 p-2 bg-slate-50 dark:bg-slate-800/50 rounded text-xs text-slate-500 dark:text-slate-500 overflow-x-auto font-mono">
-                      {page.snippet}
-                    </pre>
-                  )}
+          return (
+            <>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                aria-expanded={isOpen}
+                aria-controls={`affected-pages-${group.key}`}
+                className="w-full px-5 py-3 flex items-center justify-between text-sm text-slate-600 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              >
+                <span className="font-medium">
+                  Affected Pages ({uniquePageCount})
+                </span>
+                <ChevronDown
+                  className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+
+              {isOpen && (
+                <div id={`affected-pages-${group.key}`} className="px-5 pb-4 space-y-1">
+                  {[...pageGroups.entries()].map(([pageKey, instances]) => (
+                    <div key={pageKey} className="border-t border-slate-50 dark:border-slate-800 first:border-0 py-2">
+                      <div className="flex items-center gap-2">
+                        {pageKey !== '__site_level__' ? (
+                          <a
+                            href={pageKey}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline truncate font-mono"
+                          >
+                            {pageKey}
+                          </a>
+                        ) : (
+                          <span className="text-xs text-slate-500 dark:text-slate-500">Site-level issue</span>
+                        )}
+                        {instances.length > 1 && (
+                          <span className="text-xs text-slate-400 dark:text-slate-600 tabular-nums flex-shrink-0">
+                            {instances.length} issues
+                          </span>
+                        )}
+                      </div>
+                      {/* Show individual issues within this page */}
+                      <div className="mt-1.5 space-y-1.5">
+                        {instances.map((instance, j) => (
+                          <div key={j} className="pl-3 border-l-2 border-slate-100 dark:border-slate-700">
+                            {instance.message && (
+                              <p className="text-xs text-slate-500 dark:text-slate-500">
+                                {instance.message}
+                              </p>
+                            )}
+                            {!hasConsistentSnippet && instance.snippet && (
+                              <pre className="mt-1 p-2 bg-slate-50 dark:bg-slate-800/50 rounded text-xs text-slate-500 dark:text-slate-500 overflow-x-auto font-mono">
+                                {instance.snippet}
+                              </pre>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              )}
+            </>
+          );
+        })()}
       </div>
     </div>
   );
