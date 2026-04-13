@@ -10,7 +10,10 @@ export function setPool(p: Pool): void {
   pool = p;
 }
 
-const GSC_SCOPES = ['https://www.googleapis.com/auth/webmasters.readonly'];
+const GSC_SCOPES = [
+  'https://www.googleapis.com/auth/webmasters.readonly',
+  'https://www.googleapis.com/auth/userinfo.email',
+];
 
 function createOAuth2Client(): OAuth2Client {
   return new OAuth2Client(

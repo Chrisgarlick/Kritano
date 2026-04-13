@@ -25,7 +25,10 @@ let pool;
 function setPool(p) {
     pool = p;
 }
-const GSC_SCOPES = ['https://www.googleapis.com/auth/webmasters.readonly'];
+const GSC_SCOPES = [
+    'https://www.googleapis.com/auth/webmasters.readonly',
+    'https://www.googleapis.com/auth/userinfo.email',
+];
 function createOAuth2Client() {
     return new google_auth_library_1.OAuth2Client(oauth_config_js_1.OAUTH_CONFIG.google.clientId, oauth_config_js_1.OAUTH_CONFIG.google.clientSecret, `${process.env.APP_URL}/auth/callback/gsc`);
 }
