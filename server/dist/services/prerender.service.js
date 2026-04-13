@@ -27,7 +27,7 @@ const RENDER_TIMEOUT_MS = 10_000;
 const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 // Paths that should never be pre-rendered (authenticated/dynamic)
 const BLOCKED_PREFIXES = [
-    '/app', '/admin', '/api/', '/auth/',
+    '/app', '/admin', '/api/', '/auth/', '/sitemap', '/robots',
 ];
 const cache = new Map();
 function getCached(url) {
