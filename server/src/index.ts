@@ -121,7 +121,7 @@ app.get('/api', (req, res) => {
 // Dynamic sitemap (static pages + blog posts)
 app.get('/sitemap.xml', async (_req, res) => {
   try {
-    const baseUrl = process.env.APP_URL || 'https://kritano.com';
+    const baseUrl = (process.env.APP_URL || 'https://kritano.com').replace(/^http:\/\//, 'https://');
     const posts = await getPublishedPostsForSitemap();
 
     const staticPages = [
