@@ -103,6 +103,7 @@ export default function SearchConsolePage() {
   const [syncing, setSyncing] = useState(false);
   const [connectSiteId, setConnectSiteId] = useState('');
   const [connectError, setConnectError] = useState<string | null>(null);
+  const [showAddSite, setShowAddSite] = useState(false);
 
   // Data state
   const [tab, setTab] = useState<Tab>('overview');
@@ -381,9 +382,25 @@ export default function SearchConsolePage() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
-              Search Console
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
+                Search Console
+              </h1>
+              {connections.length > 1 && (
+                <select
+                  value={activeConnection.id}
+                  onChange={e => {
+                    const conn = connections.find(c => c.id === e.target.value);
+                    if (conn) setActiveConnection(conn);
+                  }}
+                  className="px-3 py-1.5 text-sm border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium"
+                >
+                  {connections.map(c => (
+                    <option key={c.id} value={c.id}>{c.domain}</option>
+                  ))}
+                </select>
+              )}
+            </div>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {activeConnection.gsc_property} &middot; {activeConnection.google_email}
               {activeConnection.last_sync_at && (
@@ -418,6 +435,53 @@ export default function SearchConsolePage() {
             </button>
           </div>
         </div>
+
+        {/* Add another site (inline) */}
+        {(() => {
+          const unconnectedDomains = domains.filter(
+            d => !connections.some(c => c.site_id === d.id)
+          );
+          if (unconnectedDomains.length === 0) return null;
+          return showAddSite ? (
+            <div className="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-3">
+              {connectError && (
+                <span className="text-xs text-red-600 dark:text-red-400 mr-2">{connectError}</span>
+              )}
+              <select
+                value={connectSiteId}
+                onChange={e => setConnectSiteId(e.target.value)}
+                className="px-3 py-1.5 text-sm border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white flex-1"
+              >
+                <option value="">Select a domain...</option>
+                {unconnectedDomains.map(d => (
+                  <option key={d.id} value={d.id}>{d.domain}</option>
+                ))}
+              </select>
+              <button
+                onClick={handleConnect}
+                disabled={!connectSiteId || connecting}
+                className="px-3 py-1.5 text-sm bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white rounded-lg font-medium transition-colors flex items-center gap-1.5"
+              >
+                {connecting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Link2 className="w-3.5 h-3.5" />}
+                Connect
+              </button>
+              <button
+                onClick={() => { setShowAddSite(false); setConnectError(null); }}
+                className="px-3 py-1.5 text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowAddSite(true)}
+              className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium flex items-center gap-1.5"
+            >
+              <Link2 className="w-3.5 h-3.5" />
+              Connect another site
+            </button>
+          );
+        })()}
 
         {/* Tabs */}
         <div className="border-b border-slate-200 dark:border-slate-700">
