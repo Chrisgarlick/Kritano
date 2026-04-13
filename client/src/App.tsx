@@ -12,6 +12,7 @@ import { SiteModeProvider } from './contexts/SiteModeContext';
 import { SiteModeGuard } from './components/SiteModeGuard';
 import { CookieConsentProvider } from './contexts/CookieConsentContext';
 import { SeoProvider } from './hooks/useSeoOverrides';
+import { GTMRouteTracker } from './components/GTMRouteTracker';
 
 // Eagerly loaded (critical path)
 import Home from './pages/Home';
@@ -136,6 +137,7 @@ function App() {
         <AdminProvider>
           <ToastProvider>
             <BrowserRouter>
+              <GTMRouteTracker />
               <SeoProvider>
               <SiteModeProvider>
               <SiteModeGuard>
