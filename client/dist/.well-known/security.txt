@@ -1,0 +1,5 @@
+Contact: mailto:security@kritano.com
+Expires: 2027-04-13T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://kritano.com/.well-known/security.txt
+Policy: https://kritano.com/terms
