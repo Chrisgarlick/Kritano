@@ -9,6 +9,7 @@ import { configureSecurityMiddleware } from './middleware/security.middleware.js
 import { ensureCsrfToken, csrfProtection } from './middleware/csrf.middleware.js';
 import { globalRateLimiter } from './middleware/rateLimit.middleware.js';
 import { pool } from './db/index.js';
+import { getPublishedPostsForSitemap } from './services/blog.service.js';
 import { testRedisConnection } from './db/redis.js';
 import { apiRouter, initializeRoutes } from './routes/index.js';
 import { shutdownPdfBrowser } from './services/pdf-report.service.js';
@@ -115,6 +116,64 @@ app.get('/api', (req, res) => {
     version: '1.0.0',
     documentation: '/api/docs',
   });
+});
+
+// Dynamic sitemap (static pages + blog posts)
+app.get('/sitemap.xml', async (_req, res) => {
+  try {
+    const baseUrl = process.env.APP_URL || 'https://kritano.com';
+    const posts = await getPublishedPostsForSitemap();
+
+    const staticPages = [
+      { loc: '/', changefreq: 'weekly', priority: '1.0' },
+      { loc: '/about', changefreq: 'monthly', priority: '0.7' },
+      { loc: '/services', changefreq: 'monthly', priority: '0.8' },
+      { loc: '/services/seo', changefreq: 'monthly', priority: '0.7' },
+      { loc: '/services/accessibility', changefreq: 'monthly', priority: '0.7' },
+      { loc: '/services/security', changefreq: 'monthly', priority: '0.7' },
+      { loc: '/services/performance', changefreq: 'monthly', priority: '0.7' },
+      { loc: '/pricing', changefreq: 'monthly', priority: '0.9' },
+      { loc: '/faq', changefreq: 'monthly', priority: '0.8' },
+      { loc: '/contact', changefreq: 'monthly', priority: '0.5' },
+      { loc: '/author/chris-garlick', changefreq: 'monthly', priority: '0.6' },
+      { loc: '/blog', changefreq: 'daily', priority: '0.8' },
+      { loc: '/docs', changefreq: 'monthly', priority: '0.6' },
+      { loc: '/docs/authentication', changefreq: 'monthly', priority: '0.5' },
+      { loc: '/docs/endpoints', changefreq: 'monthly', priority: '0.5' },
+      { loc: '/docs/objects', changefreq: 'monthly', priority: '0.5' },
+      { loc: '/docs/rate-limits', changefreq: 'monthly', priority: '0.5' },
+      { loc: '/docs/errors', changefreq: 'monthly', priority: '0.5' },
+    ];
+
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+    for (const page of staticPages) {
+      xml += '  <url>\n';
+      xml += `    <loc>${baseUrl}${page.loc}</loc>\n`;
+      xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
+      xml += `    <priority>${page.priority}</priority>\n`;
+      xml += '  </url>\n';
+    }
+
+    for (const post of posts) {
+      xml += '  <url>\n';
+      xml += `    <loc>${baseUrl}/blog/${post.slug}</loc>\n`;
+      xml += `    <lastmod>${new Date(post.updated_at).toISOString()}</lastmod>\n`;
+      xml += '    <changefreq>monthly</changefreq>\n';
+      xml += '    <priority>0.6</priority>\n';
+      xml += '  </url>\n';
+    }
+
+    xml += '</urlset>';
+
+    res.set('Content-Type', 'application/xml');
+    res.set('Cache-Control', 'public, max-age=3600');
+    res.send(xml);
+  } catch (error) {
+    console.error('Generate sitemap error:', error);
+    res.status(500).send('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>');
+  }
 });
 
 // API routes
