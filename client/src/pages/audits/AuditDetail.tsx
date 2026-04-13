@@ -136,6 +136,51 @@ function EnhancedScoreCard({ score, category, onClick }: { score: number | null;
   );
 }
 
+function AffectedPageAccordion({ pageKey, instances, hasConsistentSnippet }: { pageKey: string; instances: GroupedFinding['affectedPages']; hasConsistentSnippet: boolean }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="border-t border-slate-50 dark:border-slate-800 first:border-0">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full py-2 flex items-center gap-2 text-left hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors rounded"
+      >
+        <ChevronDown
+          className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 flex-shrink-0 ${open ? 'rotate-180' : ''}`}
+        />
+        {pageKey !== '__site_level__' ? (
+          <span className="text-xs text-indigo-600 dark:text-indigo-400 truncate font-mono">
+            {pageKey}
+          </span>
+        ) : (
+          <span className="text-xs text-slate-500 dark:text-slate-500">Site-level issue</span>
+        )}
+        <span className="text-xs text-slate-400 dark:text-slate-600 tabular-nums flex-shrink-0">
+          {instances.length} {instances.length === 1 ? 'issue' : 'issues'}
+        </span>
+      </button>
+      {open && (
+        <div className="pl-5 pb-2 space-y-1.5">
+          {instances.map((instance, j) => (
+            <div key={j} className="pl-3 border-l-2 border-slate-100 dark:border-slate-700">
+              {instance.message && (
+                <p className="text-xs text-slate-500 dark:text-slate-500">
+                  {instance.message}
+                </p>
+              )}
+              {!hasConsistentSnippet && instance.snippet && (
+                <pre className="mt-1 p-2 bg-slate-50 dark:bg-slate-800/50 rounded text-xs text-slate-500 dark:text-slate-500 overflow-x-auto font-mono">
+                  {instance.snippet}
+                </pre>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; auditId: string; onDismiss: (ruleId: string, message: string, status: 'dismissed' | 'active') => void }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -252,46 +297,14 @@ function GroupedFindingCard({ group, onDismiss }: { group: GroupedFinding; audit
               </button>
 
               {isOpen && (
-                <div id={`affected-pages-${group.key}`} className="px-5 pb-4 space-y-1">
+                <div id={`affected-pages-${group.key}`} className="px-5 pb-4">
                   {[...pageGroups.entries()].map(([pageKey, instances]) => (
-                    <div key={pageKey} className="border-t border-slate-50 dark:border-slate-800 first:border-0 py-2">
-                      <div className="flex items-center gap-2">
-                        {pageKey !== '__site_level__' ? (
-                          <a
-                            href={pageKey}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline truncate font-mono"
-                          >
-                            {pageKey}
-                          </a>
-                        ) : (
-                          <span className="text-xs text-slate-500 dark:text-slate-500">Site-level issue</span>
-                        )}
-                        {instances.length > 1 && (
-                          <span className="text-xs text-slate-400 dark:text-slate-600 tabular-nums flex-shrink-0">
-                            {instances.length} issues
-                          </span>
-                        )}
-                      </div>
-                      {/* Show individual issues within this page */}
-                      <div className="mt-1.5 space-y-1.5">
-                        {instances.map((instance, j) => (
-                          <div key={j} className="pl-3 border-l-2 border-slate-100 dark:border-slate-700">
-                            {instance.message && (
-                              <p className="text-xs text-slate-500 dark:text-slate-500">
-                                {instance.message}
-                              </p>
-                            )}
-                            {!hasConsistentSnippet && instance.snippet && (
-                              <pre className="mt-1 p-2 bg-slate-50 dark:bg-slate-800/50 rounded text-xs text-slate-500 dark:text-slate-500 overflow-x-auto font-mono">
-                                {instance.snippet}
-                              </pre>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <AffectedPageAccordion
+                      key={pageKey}
+                      pageKey={pageKey}
+                      instances={instances}
+                      hasConsistentSnippet={hasConsistentSnippet}
+                    />
                   ))}
                 </div>
               )}
