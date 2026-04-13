@@ -41,10 +41,11 @@ const statusConfigs: Record<ComplianceStatus, StatusConfig> = {
 
 interface InlineBadgeProps {
   status: ComplianceStatus;
+  label?: string;
   className?: string;
 }
 
-export function ComplianceBadgeInline({ status, className = '' }: InlineBadgeProps) {
+export function ComplianceBadgeInline({ status, label, className = '' }: InlineBadgeProps) {
   const config = statusConfigs[status];
   const Icon = config.icon;
 
@@ -53,7 +54,7 @@ export function ComplianceBadgeInline({ status, className = '' }: InlineBadgePro
       className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${config.pillClasses} ${className}`}
     >
       <Icon className={`w-3.5 h-3.5 ${config.iconClasses}`} />
-      {config.label}
+      {label ? `${label} ${config.label}` : config.label}
     </span>
   );
 }

@@ -40,7 +40,7 @@ router.get('/:id/compliance', authenticate, async (req: Request, res: Response):
     // 1. Verify audit ownership
     const auditResult = await pool.query(
       `SELECT id, target_domain, completed_at, created_at, check_accessibility,
-              pages_found, pages_crawled, pages_audited
+              pages_found, pages_crawled, pages_audited, wcag_level, wcag_version
        FROM audit_jobs
        WHERE id = $1 AND user_id = $2`,
       [auditId, userId]
@@ -172,8 +172,14 @@ router.get('/:id/compliance', authenticate, async (req: Request, res: Response):
     }
 
     // 9. Build response — tier-gate the clauses array
+    //    The EN 301 549 status is always based on WCAG AA criteria.
+    //    When the audit targets AAA, `status` reflects AA compliance and
+    //    the overall AAA conformance is the audit-level pass/fail.
+    const wcagLevel = audit.wcag_level || 'AA';
     const response: Record<string, unknown> = {
       status,
+      wcagLevel,
+      aaStatus: status,
       standard: 'EN 301 549 (WCAG 2.2 Level AA)',
       summary: {
         totalClauses: enMapping.length,

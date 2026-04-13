@@ -570,6 +570,7 @@ export default function AuditDetailPage() {
 
   // Compliance status (fetched separately for badge)
   const [complianceStatus, setComplianceStatus] = useState<'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed' | null>(null);
+  const [aaComplianceStatus, setAaComplianceStatus] = useState<'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed' | null>(null);
 
   // Share modal state
   const [showShareModal, setShowShareModal] = useState(false);
@@ -748,6 +749,9 @@ export default function AuditDetailPage() {
     if (id && audit && audit.status === 'completed') {
       auditsApi.getCompliance(id).then(res => {
         setComplianceStatus(res.data.status);
+        if (res.data.aaStatus) {
+          setAaComplianceStatus(res.data.aaStatus);
+        }
       }).catch(() => {
         setComplianceStatus('not_assessed');
       });
@@ -1000,7 +1004,12 @@ export default function AuditDetailPage() {
           </Display>
           <StatusBadge status={audit.status} />
           {complianceStatus && complianceStatus !== 'not_assessed' && (
-            <ComplianceBadgeInline status={complianceStatus} />
+            <>
+              {audit.wcag_level === 'AAA' && aaComplianceStatus && aaComplianceStatus !== 'not_assessed' && (
+                <ComplianceBadgeInline status={aaComplianceStatus} label="AA" />
+              )}
+              <ComplianceBadgeInline status={complianceStatus} label={audit.wcag_level === 'AAA' ? 'AAA' : undefined} />
+            </>
           )}
         </div>
         <div className="flex items-center gap-3 mb-4">

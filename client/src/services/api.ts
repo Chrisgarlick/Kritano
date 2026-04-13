@@ -434,6 +434,8 @@ export const auditsApi = {
   getCompliance: (id: string) =>
     api.get<{
       status: 'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed';
+      wcagLevel?: string;
+      aaStatus?: 'compliant' | 'partially_compliant' | 'non_compliant' | 'not_assessed';
       standard: string;
       summary: {
         totalClauses: number;
