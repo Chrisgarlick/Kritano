@@ -57,7 +57,7 @@ export default function OAuthCallbackPage() {
   }, [provider, navigate, refreshUser]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4">
+    <main className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4">
       <Helmet>
         <title>Authenticating... | Kritano</title>
         <meta name="robots" content="noindex, nofollow" />
@@ -93,6 +93,6 @@ export default function OAuthCallbackPage() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }

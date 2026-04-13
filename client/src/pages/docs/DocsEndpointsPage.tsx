@@ -23,7 +23,7 @@ export default function DocsEndpointsPage() {
           </p>
           <CodeBlock code="https://app.kritano.io/api/v1" language="http" label="Base URL" />
           <p className="text-slate-600 dark:text-slate-400 mt-4 mb-2">
-            Every endpoint requires authentication via <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">Authorization: Bearer kt_live_xxx</code>. See the <a href="/docs/authentication" className="text-indigo-600 dark:text-indigo-400 hover:underline">authentication guide</a> for details.
+            Every endpoint requires authentication via <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">Authorization: Bearer kt_live_xxx</code>. See the <a href="/docs/authentication" className="text-indigo-600 dark:text-indigo-400 underline underline-offset-2 decoration-indigo-300 hover:decoration-indigo-600">authentication guide</a> for details.
           </p>
         </div>
 
@@ -91,7 +91,7 @@ export default function DocsEndpointsPage() {
               ]}
             />
 
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-6 mb-2">Example Request</h4>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
             <CodeBlock
               language="bash"
               label="cURL"
@@ -125,7 +125,7 @@ export default function DocsEndpointsPage() {
 }`}
             />
 
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-6 mb-2">Error Responses</h4>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Error Responses</h3>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
                 <code className="text-xs bg-red-50 text-red-700 px-1.5 py-0.5 rounded font-mono flex-shrink-0">400</code>
@@ -162,7 +162,7 @@ export default function DocsEndpointsPage() {
               ]}
             />
 
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-6 mb-2">Example Request</h4>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
             <CodeBlock
               language="bash"
               label="cURL"
@@ -239,7 +239,7 @@ export default function DocsEndpointsPage() {
               ]}
             />
 
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-6 mb-2">Example Request</h4>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
             <CodeBlock
               language="bash"
               label="cURL"
@@ -289,7 +289,7 @@ export default function DocsEndpointsPage() {
 }`}
             />
 
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-6 mb-2">Audit Status Lifecycle</h4>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Audit Status Lifecycle</h3>
             <p className="text-sm text-slate-600 mb-3">An audit moves through these states:</p>
             <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
               {['pending', 'discovering', 'ready', 'processing', 'completed'].map((s, i) => (
@@ -346,7 +346,7 @@ export default function DocsEndpointsPage() {
               ]}
             />
 
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-6 mb-2">Example Request</h4>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
             <CodeBlock
               language="bash"
               label="cURL - All critical accessibility findings"

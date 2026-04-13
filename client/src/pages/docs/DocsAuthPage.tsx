@@ -19,7 +19,7 @@ export default function DocsAuthPage() {
           <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Authentication</h1>
           <p className="text-slate-600 dark:text-slate-400 mb-6">
             The Kritano API uses API keys to authenticate requests. You can create and manage API keys from your{' '}
-            <Link to="/app/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Settings &rarr; API Keys</Link> page.
+            <Link to="/app/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium underline underline-offset-2 decoration-indigo-300 hover:decoration-indigo-600">Settings &rarr; API Keys</Link> page.
           </p>
 
           <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3">API Key Format</h2>

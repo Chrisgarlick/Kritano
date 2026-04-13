@@ -45,7 +45,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
       <Helmet>
         <title>Forgot Password | Kritano</title>
         <meta name="robots" content="noindex, nofollow" />
@@ -107,6 +107,6 @@ export default function ForgotPasswordPage() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

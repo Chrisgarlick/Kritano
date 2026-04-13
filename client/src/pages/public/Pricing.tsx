@@ -349,7 +349,7 @@ export default function Pricing() {
                   <h3 className={`text-base font-semibold mb-1 ${plan.popular ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
                     {plan.name}
                   </h3>
-                  <p className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-500' : 'text-slate-500 dark:text-slate-400'}`}>
+                  <p className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
                     {plan.description}
                   </p>
                 </div>
@@ -360,7 +360,7 @@ export default function Pricing() {
                     {billingPeriod === 'annual' ? plan.annualPrice : plan.monthlyPrice}
                   </span>
                   {plan.priceDetail && (
-                    <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-500' : 'text-slate-500 dark:text-slate-400'}`}>
+                    <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
                       {billingPeriod === 'annual' && plan.monthlyPrice !== '$0' && plan.monthlyPrice !== 'Custom'
                         ? '/year'
                         : plan.priceDetail}
@@ -373,7 +373,7 @@ export default function Pricing() {
                   <span className={`font-display text-2xl ${plan.popular ? 'text-indigo-400' : 'text-indigo-600'}`}>
                     {plan.pageCount}
                   </span>
-                  <span className={`text-xs ml-1 ${plan.popular ? 'text-slate-500' : 'text-slate-500 dark:text-slate-400'}`}>
+                  <span className={`text-xs ml-1 ${plan.popular ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
                     pages / audit
                   </span>
                 </div>

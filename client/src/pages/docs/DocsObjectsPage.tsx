@@ -61,7 +61,7 @@ const PAGINATION_FIELDS = [
 
 function ObjectTable({ fields }: { fields: { field: string; type: string; description: string }[] }) {
   return (
-    <div className="border border-slate-200 rounded-lg overflow-x-auto">
+    <div className="border border-slate-200 rounded-lg overflow-x-auto" tabIndex={0} role="region" aria-label="Object fields">
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-slate-50 dark:bg-slate-800/50">

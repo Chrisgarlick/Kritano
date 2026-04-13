@@ -470,7 +470,7 @@ export function PublicLayout({ children }: Props) {
               <ul className="space-y-3">
                 {footerLinks.product.map(link => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-indigo-400">
                       {link.label}
                     </Link>
                   </li>
@@ -486,7 +486,7 @@ export function PublicLayout({ children }: Props) {
               <ul className="space-y-3">
                 {footerLinks.company.map(link => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-indigo-400">
                       {link.label}
                     </Link>
                   </li>
@@ -502,7 +502,7 @@ export function PublicLayout({ children }: Props) {
               <ul className="space-y-3">
                 {footerLinks.resources.map(link => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-indigo-400">
                       {link.label}
                     </Link>
                   </li>
@@ -517,15 +517,15 @@ export function PublicLayout({ children }: Props) {
               &copy; {new Date().getFullYear()} Kritano. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <Link to="/privacy" className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
+              <Link to="/privacy" className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors">
+              <Link to="/terms" className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2">
                 Terms of Service
               </Link>
               <button
                 onClick={openCookiePreferences}
-                className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+                className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2"
               >
                 Cookie Settings
               </button>

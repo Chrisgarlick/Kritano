@@ -101,7 +101,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
     case 'text': {
       const content = (props.content as string) || '';
       return (
-        <div className="prose prose-slate max-w-none prose-headings:font-sans prose-a:text-indigo-600 prose-code:text-indigo-700 prose-code:bg-indigo-50 prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:before:content-[''] prose-code:after:content-[''] prose-img:rounded-lg">
+        <div className="prose prose-slate max-w-none prose-headings:font-sans prose-a:text-indigo-600 prose-a:underline prose-a:underline-offset-2 prose-a:decoration-indigo-300 hover:prose-a:decoration-indigo-600 prose-code:text-indigo-700 prose-code:bg-indigo-50 prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:before:content-[''] prose-code:after:content-[''] prose-img:rounded-lg">
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
             {content}
           </ReactMarkdown>

@@ -57,7 +57,7 @@ export default function DocsOverviewPage() {
                 <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${card.color}`}>
                   <Icon className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">{card.label}</h3>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">{card.label}</h2>
                 <p className="text-sm text-slate-500 dark:text-slate-400">{card.description}</p>
               </Link>
             );
@@ -79,7 +79,7 @@ export default function DocsOverviewPage() {
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-2">Get your API key</h3>
               <p className="text-slate-600 dark:text-slate-400 mb-3">
-                Go to <Link to="/app/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Settings &rarr; API Keys</Link> and create a new key. Select the scopes you need - at minimum <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:read</code> and <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:write</code>.
+                Go to <Link to="/app/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium underline underline-offset-2 decoration-indigo-300 hover:decoration-indigo-600">Settings &rarr; API Keys</Link> and create a new key. Select the scopes you need - at minimum <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:read</code> and <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">audits:write</code>.
               </p>
               <p className="text-slate-600 dark:text-slate-400 text-sm">
                 Your key will look like: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">kt_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>

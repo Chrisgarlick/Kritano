@@ -50,16 +50,16 @@ export default function RegisterPage() {
   // Loading state for early access check
   if (isEarlyAccess && eaStatus.loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <main className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
         <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
-      </div>
+      </main>
     );
   }
 
   // Early access is full - show waitlist
   if (isEarlyAccess && eaStatus.isFull) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
+      <main className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
         <Helmet>
           <title>Early Access Full | Kritano</title>
           <meta name="robots" content="noindex, nofollow" />
@@ -109,12 +109,12 @@ export default function RegisterPage() {
             )}
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
       <Helmet>
         <title>{isEarlyAccess ? 'Early Access' : 'Create Account'} | Kritano</title>
         <meta name="robots" content="noindex, nofollow" />
@@ -146,6 +146,6 @@ export default function RegisterPage() {
           <RegisterForm />
         </div>
       </div>
-    </div>
+    </main>
   );
 }

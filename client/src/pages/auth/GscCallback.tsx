@@ -46,7 +46,7 @@ export default function GscCallback() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
+    <main className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
       <div className="max-w-md w-full mx-4">
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-8 text-center">
           {error ? (
@@ -69,6 +69,6 @@ export default function GscCallback() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }
