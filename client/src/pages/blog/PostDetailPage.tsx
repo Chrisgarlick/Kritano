@@ -177,6 +177,8 @@ export default function PostDetailPage() {
               className="w-full rounded-xl"
               loading="eager"
               fetchPriority="high"
+              width={1200}
+              height={630}
             />
           </figure>
         )}
@@ -225,9 +227,11 @@ export default function PostDetailPage() {
                   {related.featured_image_url && (
                     <img
                       src={related.featured_image_url}
-                      alt={related.title}
+                      alt=""
                       className="w-full h-40 object-cover"
                       loading="lazy"
+                      width={400}
+                      height={160}
                     />
                   )}
                   <div className="p-4">

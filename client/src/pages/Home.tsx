@@ -318,6 +318,7 @@ export default function Home() {
             '@type': 'WebSite',
             name: 'Kritano',
             url: 'https://kritano.com',
+            description: 'Kritano audits your website for SEO, accessibility, security, and performance issues. See what others miss.',
             potentialAction: {
               '@type': 'SearchAction',
               target: 'https://kritano.com/blog?search={search_term_string}',

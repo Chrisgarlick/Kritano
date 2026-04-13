@@ -66,7 +66,7 @@ export default function About() {
   return (
     <PublicLayout>
       <PageSeo
-        title="About Kritano"
+        title="About Kritano - Our Mission & Story"
         description="Learn about Kritano's mission to make the web more accessible, secure, and performant for everyone."
         path="/about"
         structuredData={[
@@ -80,7 +80,7 @@ export default function About() {
               'Website intelligence platform providing comprehensive auditing for SEO, accessibility, security, and performance.',
             foundingDate: '2025',
             founder: { '@type': 'Person', name: 'Chris Garlick' },
-            sameAs: ['https://twitter.com/chrisgarlick', 'https://linkedin.com/company/kritano'],
+            sameAs: ['https://x.com/Kritanoapp', 'https://www.instagram.com/kritanoapp/'],
             contactPoint: {
               '@type': 'ContactPoint',
               email: 'info@kritano.com',
@@ -106,6 +106,10 @@ export default function About() {
               'Answer Engine Optimisation',
             ],
             url: 'https://kritano.com/about',
+            sameAs: [
+              'https://www.linkedin.com/in/chris-garlick-59a8bb91/',
+              'https://x.com/ChrisGarlick123',
+            ],
           },
           {
             '@context': 'https://schema.org',

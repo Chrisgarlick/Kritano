@@ -232,7 +232,14 @@
       "Bash(bash .claude/skills/prospects/check-and-extract.sh docs/prospects/middlesbrough-2026-04-12/raw-domains.txt docs/prospects/middlesbrough-2026-04-12/prospects.json 2>&1)",
       "Bash(bash .claude/skills/prospects/publish-to-notion.sh docs/prospects/middlesbrough-2026-04-12/prospects.json \"Agency Prospects - Middlesbrough - 2026-04-12\")",
       "Bash(bash .claude/skills/trend/publish-to-notion.sh /Users/chris/Herd/pagepulser/docs/trend/2026-04-12-waitlist-launch)",
-      "Bash(docker compose:*)"
+      "Bash(docker compose:*)",
+      "Bash(/tmp/helmet_analysis.txt:*)",
+      "Bash(/tmp/helmet_file_mapping.txt:*)",
+      "Bash(md5 /tmp/outfit-latin-300.woff2)",
+      "Bash(md5 /Users/chris/Herd/pagepulser/client/public/fonts/outfit-latin.woff2)",
+      "Bash(md5 /tmp/outfit-latin-ext-300.woff2)",
+      "Bash(md5 /Users/chris/Herd/pagepulser/client/public/fonts/outfit-latin-ext.woff2)",
+      "Bash(md5 /tmp/outfit-latin-var.woff2)"
     ]
   },
   "enableAllProjectMcpServers": true,

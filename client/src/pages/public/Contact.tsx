@@ -48,7 +48,7 @@ export default function Contact() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Contact"
+        title="Contact Us - Get in Touch with Kritano"
         description="Get in touch with the Kritano team. We're here to help with questions about our platform, pricing, or partnerships."
         path="/contact"
         structuredData={[

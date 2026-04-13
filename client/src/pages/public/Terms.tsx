@@ -10,7 +10,7 @@ export default function Terms() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Terms of Service | Kritano"
+        title="Terms of Service"
         description="Kritano terms of service covering website scanning liability, acceptable use, subscriptions, and data ownership."
         path="/terms"
       />

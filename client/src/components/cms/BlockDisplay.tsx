@@ -139,6 +139,8 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
             src={src}
             alt={alt}
             loading="lazy"
+            width={800}
+            height={450}
             className="w-full rounded-lg shadow-sm"
           />
           {caption && (

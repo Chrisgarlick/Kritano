@@ -10,7 +10,7 @@ export default function Privacy() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Privacy Policy | Kritano"
+        title="Privacy Policy"
         description="Kritano privacy policy covering data collection, cookies, GDPR rights, and how we protect your information."
         path="/privacy"
       />

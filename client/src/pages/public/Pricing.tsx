@@ -244,7 +244,7 @@ export default function Pricing() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Pricing"
+        title="Pricing - Website Audit Plans & Tools"
         description="Simple, transparent pricing for website auditing. Start free, upgrade as you grow. Plans starting free."
         path="/pricing"
         structuredData={[
