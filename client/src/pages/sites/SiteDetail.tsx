@@ -716,17 +716,20 @@ export default function SiteDetailPage() {
                             }`}>
                               {audit.status}
                             </span>
-                            {audit.wcagLevel && audit.checkAccessibility !== false && (
-                              <span className={`inline-flex px-1.5 py-0.5 text-[10px] font-semibold rounded ${
-                                audit.wcagLevel === 'AAA'
-                                  ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
-                                  : audit.wcagLevel === 'A'
-                                    ? 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'
-                                    : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
-                              }`}>
-                                {audit.wcagLevel}
-                              </span>
-                            )}
+                            {audit.checkAccessibility !== false && (() => {
+                              const level = audit.wcagLevel || 'AA';
+                              return (
+                                <span className={`inline-flex px-1.5 py-0.5 text-[10px] font-semibold rounded ${
+                                  level === 'AAA'
+                                    ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                                    : level === 'A'
+                                      ? 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'
+                                      : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
+                                }`}>
+                                  {level}
+                                </span>
+                              );
+                            })()}
                           </div>
                         </td>
                         <td className="px-6 py-4 text-center hidden sm:table-cell">
