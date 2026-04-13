@@ -392,7 +392,7 @@ export default function Home() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
               <span className="text-slate-600 normal-case tracking-normal text-sm font-medium">
-                <span className="text-slate-900 font-semibold">{auditsCompleted !== null ? auditsCompleted.toLocaleString() : '...'}</span> audits completed
+                <span className="text-slate-900 font-semibold">{auditsCompleted != null ? auditsCompleted.toLocaleString() : '...'}</span> audits completed
               </span>
             </span>
             <span className="hidden sm:inline" aria-hidden="true">&middot;</span>

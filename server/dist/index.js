@@ -120,6 +120,18 @@ app.use(express_1.default.json({ limit: '2mb' }));
 app.use(express_1.default.urlencoded({ extended: true, limit: '2mb' }));
 // Cookie parser
 app.use((0, cookie_parser_1.default)());
+// Public stats (no auth, no CSRF, cached)
+app.get('/api/stats/public', async (_req, res) => {
+    try {
+        const result = await index_js_1.pool.query(`SELECT COUNT(*) as count FROM audit_jobs WHERE status = 'completed'`);
+        const count = parseInt(result.rows[0].count, 10);
+        res.set('Cache-Control', 'public, max-age=300');
+        res.json({ auditsCompleted: count });
+    }
+    catch {
+        res.json({ auditsCompleted: 0 });
+    }
+});
 // CSRF protection
 app.use(csrf_middleware_js_1.ensureCsrfToken);
 app.use('/api', csrf_middleware_js_1.csrfProtection);
@@ -136,18 +148,6 @@ app.get('/api', (req, res) => {
         version: '1.0.0',
         documentation: '/api/docs',
     });
-});
-// Public stats (no auth, cached)
-app.get('/api/stats/public', async (_req, res) => {
-    try {
-        const result = await index_js_1.pool.query(`SELECT COUNT(*) as count FROM audit_jobs WHERE status = 'completed'`);
-        const count = parseInt(result.rows[0].count, 10);
-        res.set('Cache-Control', 'public, max-age=300');
-        res.json({ auditsCompleted: count });
-    }
-    catch {
-        res.json({ auditsCompleted: 0 });
-    }
 });
 // Dynamic sitemap (static pages + blog posts)
 app.get('/sitemap.xml', async (_req, res) => {
