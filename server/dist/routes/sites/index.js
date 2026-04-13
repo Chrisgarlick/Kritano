@@ -239,6 +239,8 @@ router.get('/:siteId/audits', site_middleware_js_1.loadSite, async (req, res) =>
                 startedAt: a.started_at,
                 completedAt: a.completed_at,
                 createdAt: a.created_at,
+                wcagLevel: a.wcag_level,
+                checkAccessibility: a.check_accessibility,
             })),
             pagination: {
                 total,

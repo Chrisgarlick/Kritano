@@ -628,6 +628,8 @@ export const sitesApi = {
         startedAt: string | null;
         completedAt: string | null;
         createdAt: string;
+        wcagLevel?: string;
+        checkAccessibility?: boolean;
       }>;
       pagination: { total: number; limit: number; offset: number };
     }>(`/sites/${siteId}/audits${query ? `?${query}` : ''}`);

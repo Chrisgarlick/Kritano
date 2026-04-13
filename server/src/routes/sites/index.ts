@@ -306,6 +306,8 @@ router.get('/:siteId/audits', loadSite, async (req: Request, res: Response): Pro
         startedAt: a.started_at,
         completedAt: a.completed_at,
         createdAt: a.created_at,
+        wcagLevel: a.wcag_level,
+        checkAccessibility: a.check_accessibility,
       })),
       pagination: {
         total,

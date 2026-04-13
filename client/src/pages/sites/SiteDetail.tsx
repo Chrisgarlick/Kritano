@@ -42,6 +42,8 @@ interface Audit {
   startedAt: string | null;
   completedAt: string | null;
   createdAt: string;
+  wcagLevel?: string;
+  checkAccessibility?: boolean;
 }
 
 function ScoreCard({ label, score, prevScore }: { label: string; score: number | null; prevScore?: number | null }) {
@@ -693,10 +695,9 @@ export default function SiteDetailPage() {
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Date</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">SEO</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">A11y</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Security</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Perf</th>
+                      <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-500 uppercase hidden sm:table-cell">Pages</th>
+                      <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-500 uppercase">Issues</th>
+                      <th className="px-6 py-3 text-center text-xs font-medium text-slate-500 dark:text-slate-500 uppercase hidden md:table-cell">Scores</th>
                       <th className="px-6 py-3"></th>
                     </tr>
                   </thead>
@@ -707,33 +708,56 @@ export default function SiteDetailPage() {
                           <div className="text-sm text-slate-900 dark:text-white">{formatDate(audit.createdAt)}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 py-1 text-xs rounded-full ${
-                            audit.status === 'completed' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' :
-                            audit.status === 'failed' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
-                            'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
-                          }`}>
-                            {audit.status}
-                          </span>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className={`px-2 py-1 text-xs rounded-full ${
+                              audit.status === 'completed' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' :
+                              audit.status === 'failed' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
+                              'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'
+                            }`}>
+                              {audit.status}
+                            </span>
+                            {audit.wcagLevel && audit.checkAccessibility !== false && (
+                              <span className={`inline-flex px-1.5 py-0.5 text-[10px] font-semibold rounded ${
+                                audit.wcagLevel === 'AAA'
+                                  ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                                  : audit.wcagLevel === 'A'
+                                    ? 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'
+                                    : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
+                              }`}>
+                                {audit.wcagLevel}
+                              </span>
+                            )}
+                          </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          {audit.seoScore !== null ? (
-                            <span className={getScoreColor(audit.seoScore)}>{audit.seoScore}</span>
-                          ) : '-'}
+                        <td className="px-6 py-4 text-center hidden sm:table-cell">
+                          <div className="text-sm text-slate-900 dark:text-white">{audit.pagesCrawled} / {audit.pagesFound}</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">crawled</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          {audit.accessibilityScore !== null ? (
-                            <span className={getScoreColor(audit.accessibilityScore)}>{audit.accessibilityScore}</span>
-                          ) : '-'}
+                        <td className="px-6 py-4 text-center">
+                          <div className="text-sm text-slate-900 dark:text-white">{audit.totalIssues}</div>
+                          {audit.criticalIssues > 0 && (
+                            <div className="text-xs text-red-600 dark:text-red-400">{audit.criticalIssues} critical</div>
+                          )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          {audit.securityScore !== null ? (
-                            <span className={getScoreColor(audit.securityScore)}>{audit.securityScore}</span>
-                          ) : '-'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          {audit.performanceScore !== null ? (
-                            <span className={getScoreColor(audit.performanceScore)}>{audit.performanceScore}</span>
-                          ) : '-'}
+                        <td className="px-6 py-4 hidden md:table-cell">
+                          <div className="flex flex-wrap justify-center gap-2 lg:gap-4">
+                            <div className="text-center">
+                              <div className={`text-sm font-bold ${getScoreColor(audit.seoScore)}`}>{audit.seoScore ?? '-'}</div>
+                              <div className="text-[10px] text-slate-500 dark:text-slate-400">SEO</div>
+                            </div>
+                            <div className="text-center">
+                              <div className={`text-sm font-bold ${getScoreColor(audit.accessibilityScore)}`}>{audit.accessibilityScore ?? '-'}</div>
+                              <div className="text-[10px] text-slate-500 dark:text-slate-400">A11y</div>
+                            </div>
+                            <div className="text-center">
+                              <div className={`text-sm font-bold ${getScoreColor(audit.securityScore)}`}>{audit.securityScore ?? '-'}</div>
+                              <div className="text-[10px] text-slate-500 dark:text-slate-400">Sec</div>
+                            </div>
+                            <div className="text-center">
+                              <div className={`text-sm font-bold ${getScoreColor(audit.performanceScore)}`}>{audit.performanceScore ?? '-'}</div>
+                              <div className="text-[10px] text-slate-500 dark:text-slate-400">Perf</div>
+                            </div>
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
                           <Link to={`/app/audits/${audit.id}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">
