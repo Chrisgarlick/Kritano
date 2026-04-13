@@ -291,28 +291,28 @@ export declare const ContentBlockSchema: z.ZodDiscriminatedUnion<"type", [z.ZodO
         description: z.ZodString;
         source: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
-        description: string;
         stat: string;
+        description: string;
         source?: string | undefined;
     }, {
-        description: string;
         stat: string;
+        description: string;
         source?: string | undefined;
     }>;
 }, "strip", z.ZodTypeAny, {
     type: "stat_highlight";
     id: string;
     props: {
-        description: string;
         stat: string;
+        description: string;
         source?: string | undefined;
     };
 }, {
     type: "stat_highlight";
     id: string;
     props: {
-        description: string;
         stat: string;
+        description: string;
         source?: string | undefined;
     };
 }>, z.ZodObject<{
@@ -639,28 +639,28 @@ export declare const CreatePostSchema: z.ZodObject<{
             description: z.ZodString;
             source: z.ZodOptional<z.ZodString>;
         }, "strip", z.ZodTypeAny, {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         }, {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         }>;
     }, "strip", z.ZodTypeAny, {
         type: "stat_highlight";
         id: string;
         props: {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         };
     }, {
         type: "stat_highlight";
         id: string;
         props: {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         };
     }>, z.ZodObject<{
@@ -770,8 +770,8 @@ export declare const CreatePostSchema: z.ZodObject<{
         type: "stat_highlight";
         id: string;
         props: {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         };
     } | {
@@ -790,10 +790,10 @@ export declare const CreatePostSchema: z.ZodObject<{
         };
     })[];
     title: string;
-    category: "seo" | "accessibility" | "security" | "performance" | "structured-data" | "eeat" | "content-quality" | "aeo" | "guides" | "case-studies" | "product-updates";
+    category: "seo" | "accessibility" | "security" | "performance" | "content-quality" | "structured-data" | "eeat" | "aeo" | "guides" | "case-studies" | "product-updates";
     excerpt: string;
     tags: string[];
-    schema_type: "article" | "faq" | "howto" | "claim_review";
+    schema_type: "article" | "howto" | "faq" | "claim_review";
     subtitle?: string | null | undefined;
     featured_image_url?: string | null | undefined;
     featured_image_alt?: string | null | undefined;
@@ -873,8 +873,8 @@ export declare const CreatePostSchema: z.ZodObject<{
         type: "stat_highlight";
         id: string;
         props: {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         };
     } | {
@@ -893,7 +893,7 @@ export declare const CreatePostSchema: z.ZodObject<{
         };
     })[];
     title: string;
-    category: "seo" | "accessibility" | "security" | "performance" | "structured-data" | "eeat" | "content-quality" | "aeo" | "guides" | "case-studies" | "product-updates";
+    category: "seo" | "accessibility" | "security" | "performance" | "content-quality" | "structured-data" | "eeat" | "aeo" | "guides" | "case-studies" | "product-updates";
     excerpt: string;
     subtitle?: string | null | undefined;
     featured_image_url?: string | null | undefined;
@@ -902,7 +902,7 @@ export declare const CreatePostSchema: z.ZodObject<{
     seo_title?: string | null | undefined;
     seo_description?: string | null | undefined;
     focus_keyword?: string | null | undefined;
-    schema_type?: "article" | "faq" | "howto" | "claim_review" | undefined;
+    schema_type?: "article" | "howto" | "faq" | "claim_review" | undefined;
     schema_claim_reviewed?: string | null | undefined;
     schema_review_rating?: "True" | "MostlyTrue" | "Mixed" | "MostlyFalse" | "False" | null | undefined;
 }>;
@@ -1199,28 +1199,28 @@ export declare const UpdatePostSchema: z.ZodObject<{
             description: z.ZodString;
             source: z.ZodOptional<z.ZodString>;
         }, "strip", z.ZodTypeAny, {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         }, {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         }>;
     }, "strip", z.ZodTypeAny, {
         type: "stat_highlight";
         id: string;
         props: {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         };
     }, {
         type: "stat_highlight";
         id: string;
         props: {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         };
     }>, z.ZodObject<{
@@ -1331,8 +1331,8 @@ export declare const UpdatePostSchema: z.ZodObject<{
         type: "stat_highlight";
         id: string;
         props: {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         };
     } | {
@@ -1351,7 +1351,7 @@ export declare const UpdatePostSchema: z.ZodObject<{
         };
     })[] | undefined;
     title?: string | undefined;
-    category?: "seo" | "accessibility" | "security" | "performance" | "structured-data" | "eeat" | "content-quality" | "aeo" | "guides" | "case-studies" | "product-updates" | undefined;
+    category?: "seo" | "accessibility" | "security" | "performance" | "content-quality" | "structured-data" | "eeat" | "aeo" | "guides" | "case-studies" | "product-updates" | undefined;
     subtitle?: string | null | undefined;
     excerpt?: string | undefined;
     featured_image_url?: string | null | undefined;
@@ -1360,7 +1360,7 @@ export declare const UpdatePostSchema: z.ZodObject<{
     seo_title?: string | null | undefined;
     seo_description?: string | null | undefined;
     focus_keyword?: string | null | undefined;
-    schema_type?: "article" | "faq" | "howto" | "claim_review" | undefined;
+    schema_type?: "article" | "howto" | "faq" | "claim_review" | undefined;
     schema_claim_reviewed?: string | null | undefined;
     schema_review_rating?: "True" | "MostlyTrue" | "Mixed" | "MostlyFalse" | "False" | null | undefined;
     related_post_ids?: string[] | undefined;
@@ -1435,8 +1435,8 @@ export declare const UpdatePostSchema: z.ZodObject<{
         type: "stat_highlight";
         id: string;
         props: {
-            description: string;
             stat: string;
+            description: string;
             source?: string | undefined;
         };
     } | {
@@ -1455,7 +1455,7 @@ export declare const UpdatePostSchema: z.ZodObject<{
         };
     })[] | undefined;
     title?: string | undefined;
-    category?: "seo" | "accessibility" | "security" | "performance" | "structured-data" | "eeat" | "content-quality" | "aeo" | "guides" | "case-studies" | "product-updates" | undefined;
+    category?: "seo" | "accessibility" | "security" | "performance" | "content-quality" | "structured-data" | "eeat" | "aeo" | "guides" | "case-studies" | "product-updates" | undefined;
     subtitle?: string | null | undefined;
     excerpt?: string | undefined;
     featured_image_url?: string | null | undefined;
@@ -1464,7 +1464,7 @@ export declare const UpdatePostSchema: z.ZodObject<{
     seo_title?: string | null | undefined;
     seo_description?: string | null | undefined;
     focus_keyword?: string | null | undefined;
-    schema_type?: "article" | "faq" | "howto" | "claim_review" | undefined;
+    schema_type?: "article" | "howto" | "faq" | "claim_review" | undefined;
     schema_claim_reviewed?: string | null | undefined;
     schema_review_rating?: "True" | "MostlyTrue" | "Mixed" | "MostlyFalse" | "False" | null | undefined;
     related_post_ids?: string[] | undefined;
