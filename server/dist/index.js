@@ -195,6 +195,7 @@ app.get('/sitemap.xml', async (_req, res) => {
         xml += '</urlset>';
         res.set('Content-Type', 'application/xml');
         res.set('Cache-Control', 'public, max-age=3600');
+        res.removeHeader('Content-Security-Policy');
         res.send(xml);
     }
     catch (error) {
