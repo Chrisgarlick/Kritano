@@ -436,7 +436,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <Link to={ctaHref} className="inline-flex items-center gap-2 text-sm font-semibold text-teal-700 hover:text-teal-900 transition-colors">
+              <Link to={ctaHref} className="inline-flex items-center gap-2 text-sm font-semibold text-teal-700 hover:text-teal-900 transition-colors underline decoration-teal-300 underline-offset-2 hover:decoration-teal-700">
                 {mode === 'live' ? 'Try Content Intelligence free' : ctaLabel} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

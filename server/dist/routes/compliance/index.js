@@ -69,6 +69,31 @@ router.get('/:id/compliance', auth_middleware_js_1.authenticate, async (req, res
       GROUP BY f.rule_id, f.severity, array_to_string(f.wcag_criteria, ',')
       ORDER BY f.rule_id
     `, [auditId]);
+        // 4b. Fetch sample selectors/snippets per rule (up to 5 per rule)
+        const samplesResult = await index_js_1.pool.query(`
+      SELECT DISTINCT ON (f.rule_id, f.selector)
+        f.rule_id,
+        COALESCE(f.selector, '') as selector,
+        COALESCE(LEFT(f.snippet, 200), '') as snippet,
+        COALESCE(p.url, '') as page_url
+      FROM audit_findings f
+      LEFT JOIN audit_pages p ON p.id = f.audit_page_id
+      WHERE f.audit_job_id = $1 AND f.category = 'accessibility'
+        AND f.selector IS NOT NULL AND f.selector != ''
+      ORDER BY f.rule_id, f.selector, f.created_at
+      LIMIT 500
+    `, [auditId]);
+        // Group samples by rule_id (max 5 per rule)
+        const samplesByRule = new Map();
+        for (const row of samplesResult.rows) {
+            if (!samplesByRule.has(row.rule_id)) {
+                samplesByRule.set(row.rule_id, []);
+            }
+            const arr = samplesByRule.get(row.rule_id);
+            if (arr.length < 5) {
+                arr.push({ selector: row.selector, snippet: row.snippet, page: row.page_url });
+            }
+        }
         // 5. Build WCAG → EN clause lookup
         const wcagToEn = (0, en_301_549_mapping_js_1.buildWcagToEnMap)();
         // 6. Map findings to EN 301 549 clauses
@@ -107,6 +132,7 @@ router.get('/:id/compliance', auth_middleware_js_1.authenticate, async (req, res
                         count,
                         description: row.description || '',
                         pages: (row.pages || []).slice(0, 10),
+                        samples: samplesByRule.get(row.rule_id) || [],
                     });
                 }
             }

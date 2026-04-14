@@ -45,6 +45,7 @@ interface ClauseResult {
     count: number;
     description?: string;
     pages?: string[];
+    samples?: Array<{ selector: string; snippet: string; page: string }>;
   }>;
 }
 
@@ -712,6 +713,24 @@ function ClauseRow({
                       </div>
                     </div>
                   )}
+                  {f.samples && f.samples.length > 0 && (
+                    <div className="mt-2">
+                      <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Affected elements</p>
+                      <div className="space-y-2">
+                        {f.samples.map((s, si) => (
+                          <div key={si} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded p-2.5">
+                            <Mono className="text-[10px] text-slate-500 dark:text-slate-400 block mb-1 truncate">{s.selector}</Mono>
+                            {s.snippet && (
+                              <pre className="text-[10px] text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 rounded p-2 overflow-x-auto whitespace-pre-wrap break-all leading-relaxed">
+                                <code>{s.snippet}</code>
+                              </pre>
+                            )}
+                            {s.page && <Mono className="text-[10px] text-slate-400 dark:text-slate-500 block mt-1 truncate">{s.page}</Mono>}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -791,6 +810,23 @@ function MobileClauseCard({
                   {f.pages.map((page) => (
                     <Mono key={page} className="text-[10px] text-indigo-600 dark:text-indigo-400 block truncate">{page}</Mono>
                   ))}
+                </div>
+              )}
+              {f.samples && f.samples.length > 0 && (
+                <div className="mt-1.5">
+                  <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Affected elements</p>
+                  <div className="space-y-1.5">
+                    {f.samples.map((s, si) => (
+                      <div key={si} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded p-2">
+                        <Mono className="text-[10px] text-slate-500 dark:text-slate-400 block truncate">{s.selector}</Mono>
+                        {s.snippet && (
+                          <pre className="text-[10px] text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 rounded p-1.5 mt-1 overflow-x-auto whitespace-pre-wrap break-all leading-relaxed">
+                            <code>{s.snippet}</code>
+                          </pre>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

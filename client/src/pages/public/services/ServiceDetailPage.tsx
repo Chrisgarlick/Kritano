@@ -112,7 +112,7 @@ export default function ServiceDetailPage() {
           <nav aria-label="Breadcrumb" className="mb-8">
             <ol className="flex items-center gap-2 text-sm text-slate-500">
               <li>
-                <Link to="/services" className="hover:text-indigo-600 transition-colors">Services</Link>
+                <Link to="/services" className="hover:text-indigo-600 transition-colors underline decoration-slate-300 underline-offset-2 hover:decoration-indigo-400">Services</Link>
               </li>
               <li aria-hidden="true"><ChevronRight className="w-4 h-4" /></li>
               <li className="text-slate-900 font-medium">{service.title}</li>

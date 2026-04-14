@@ -238,7 +238,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="font-medium text-slate-900 text-sm">Email</p>
-                  <a href="mailto:info@kritano.com" className="text-sm text-indigo-600 hover:text-indigo-700">
+                  <a href="mailto:info@kritano.com" className="text-sm text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">
                     info@kritano.com
                   </a>
                 </div>
@@ -270,17 +270,17 @@ export default function Contact() {
               <h3 className="font-semibold text-slate-900 mb-3 text-sm">Quick Links</h3>
               <ul className="space-y-2.5">
                 <li>
-                  <Link to="/pricing" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1">
+                  <Link to="/pricing" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">
                     View Pricing <ArrowRight className="w-3 h-3" />
                   </Link>
                 </li>
                 <li>
-                  <Link to="/blog" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1">
+                  <Link to="/blog" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">
                     Read the Blog <ArrowRight className="w-3 h-3" />
                   </Link>
                 </li>
                 <li>
-                  <Link to="/register" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1">
+                  <Link to="/register" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">
                     Start Free Audit <ArrowRight className="w-3 h-3" />
                   </Link>
                 </li>

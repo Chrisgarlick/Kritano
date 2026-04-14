@@ -20,6 +20,8 @@ interface ClauseFinding {
   count: number;
   description: string;
   pages: string[];
+  /** Sample selectors/snippets showing which elements fail */
+  samples: Array<{ selector: string; snippet: string; page: string }>;
 }
 
 interface ClauseResult {
@@ -109,6 +111,38 @@ router.get('/:id/compliance', authenticate, async (req: Request, res: Response):
       ORDER BY f.rule_id
     `, [auditId]);
 
+    // 4b. Fetch sample selectors/snippets per rule (up to 5 per rule)
+    const samplesResult = await pool.query<{
+      rule_id: string;
+      selector: string;
+      snippet: string;
+      page_url: string;
+    }>(`
+      SELECT DISTINCT ON (f.rule_id, f.selector)
+        f.rule_id,
+        COALESCE(f.selector, '') as selector,
+        COALESCE(LEFT(f.snippet, 200), '') as snippet,
+        COALESCE(p.url, '') as page_url
+      FROM audit_findings f
+      LEFT JOIN audit_pages p ON p.id = f.audit_page_id
+      WHERE f.audit_job_id = $1 AND f.category = 'accessibility'
+        AND f.selector IS NOT NULL AND f.selector != ''
+      ORDER BY f.rule_id, f.selector, f.created_at
+      LIMIT 500
+    `, [auditId]);
+
+    // Group samples by rule_id (max 5 per rule)
+    const samplesByRule = new Map<string, Array<{ selector: string; snippet: string; page: string }>>();
+    for (const row of samplesResult.rows) {
+      if (!samplesByRule.has(row.rule_id)) {
+        samplesByRule.set(row.rule_id, []);
+      }
+      const arr = samplesByRule.get(row.rule_id)!;
+      if (arr.length < 5) {
+        arr.push({ selector: row.selector, snippet: row.snippet, page: row.page_url });
+      }
+    }
+
     // 5. Build WCAG → EN clause lookup
     const wcagToEn = buildWcagToEnMap();
 
@@ -151,6 +185,7 @@ router.get('/:id/compliance', authenticate, async (req: Request, res: Response):
             count,
             description: row.description || '',
             pages: (row.pages || []).slice(0, 10),
+            samples: samplesByRule.get(row.rule_id) || [],
           });
         }
       }

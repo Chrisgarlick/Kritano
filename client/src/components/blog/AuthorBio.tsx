@@ -42,7 +42,7 @@ export default function AuthorBio() {
           <div className="flex items-center gap-3 mb-1">
             <Link
               to={AUTHOR.url}
-              className="font-semibold text-slate-900 dark:text-white hover:text-indigo-600 transition-colors"
+              className="font-semibold text-slate-900 dark:text-white hover:text-indigo-600 transition-colors underline decoration-slate-300 underline-offset-2 hover:decoration-indigo-400"
               itemProp="name"
             >
               {AUTHOR.name}

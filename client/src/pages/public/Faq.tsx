@@ -166,7 +166,7 @@ export default function FaqPage() {
         <div className="max-w-3xl">
           {/* Breadcrumb */}
           <nav className="mb-8 text-sm text-slate-500" aria-label="Breadcrumb">
-            <Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link>
+            <Link to="/" className="hover:text-indigo-600 transition-colors underline decoration-slate-300 underline-offset-2 hover:decoration-indigo-400">Home</Link>
             <span className="mx-2">/</span>
             <span className="text-slate-900 dark:text-white">FAQ</span>
           </nav>

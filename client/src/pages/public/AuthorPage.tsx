@@ -114,7 +114,7 @@ export default function AuthorPage() {
               </h1>
               <p className="text-lg text-slate-500">
                 Founder of{' '}
-                <Link to="/" className="text-indigo-600 hover:text-indigo-700 transition-colors">
+                <Link to="/" className="text-indigo-600 hover:text-indigo-700 transition-colors underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">
                   Kritano
                 </Link>
               </p>
