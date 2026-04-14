@@ -90,6 +90,8 @@ export class AuditWorkerService {
   private activeJobs = new Map<string, Promise<void>>();
   // Periodic stale job recovery
   private staleRecoveryInterval: ReturnType<typeof setInterval> | null = null;
+  // Timestamp of last successful poll loop iteration
+  private lastPollAt: number = 0;
 
   constructor(config: AuditWorkerConfig) {
     this.config = config;
@@ -140,7 +142,8 @@ export class AuditWorkerService {
     this.isRunning = true;
     this.queue.start();
 
-    // Run stale job recovery periodically (every 5 minutes)
+    // Run stale job recovery and process loop watchdog periodically (every 5 minutes)
+    this.lastPollAt = Date.now();
     this.staleRecoveryInterval = setInterval(async () => {
       try {
         const recovered = await this.queue.recoverStaleJobs();
@@ -149,6 +152,15 @@ export class AuditWorkerService {
         }
       } catch (err) {
         console.error('Stale recovery check failed:', err);
+      }
+
+      // Watchdog: if the process loop hasn't polled in 2 minutes, restart it
+      if (this.isRunning && this.lastPollAt > 0 && Date.now() - this.lastPollAt > 120_000) {
+        console.error('🐕 Watchdog: process loop appears stalled — restarting...');
+        this.lastPollAt = Date.now();
+        this.processLoop().catch((err) => {
+          console.error('Process loop restart failed:', err);
+        });
       }
     }, 300_000);
 
@@ -209,6 +221,8 @@ export class AuditWorkerService {
   private async processLoop(): Promise<void> {
     while (this.isRunning) {
       try {
+        this.lastPollAt = Date.now();
+
         // Clean up completed jobs from activeJobs map
         for (const [jobId, promise] of this.activeJobs) {
           // Check if the promise is settled by racing with an immediate resolve

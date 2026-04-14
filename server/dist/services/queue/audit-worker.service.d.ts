@@ -26,6 +26,7 @@ export declare class AuditWorkerService {
     private discoveredLinksPerJob;
     private activeJobs;
     private staleRecoveryInterval;
+    private lastPollAt;
     constructor(config: AuditWorkerConfig);
     /**
      * Get the current effective concurrency (adjusted by memory pressure)
