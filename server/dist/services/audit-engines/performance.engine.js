@@ -242,9 +242,12 @@ class PerformanceEngine {
                 ctx.$('head script[src]').each((_, el) => {
                     const async = ctx.$(el).attr('async');
                     const defer = ctx.$(el).attr('defer');
+                    const type = ctx.$(el).attr('type');
                     const src = ctx.$(el).attr('src') || '';
-                    // Skip inline scripts and module scripts
+                    // Skip inline scripts, data URIs, and module scripts (modules are deferred by spec)
                     if (!src || src.startsWith('data:'))
+                        return;
+                    if (type === 'module')
                         return;
                     if (async === undefined && defer === undefined) {
                         findings.push(this.createFinding('render-blocking-scripts', 'Render-Blocking Script', 'moderate', `Script blocks rendering: ${src.substring(0, 60)}`, 'Add async or defer attribute to non-critical scripts', undefined, undefined, `script[src="${src.substring(0, 50)}"]`));

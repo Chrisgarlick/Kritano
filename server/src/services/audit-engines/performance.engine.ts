@@ -296,10 +296,12 @@ export class PerformanceEngine {
         ctx.$('head script[src]').each((_: number, el: any) => {
           const async = ctx.$(el).attr('async');
           const defer = ctx.$(el).attr('defer');
+          const type = ctx.$(el).attr('type');
           const src = ctx.$(el).attr('src') || '';
 
-          // Skip inline scripts and module scripts
+          // Skip inline scripts, data URIs, and module scripts (modules are deferred by spec)
           if (!src || src.startsWith('data:')) return;
+          if (type === 'module') return;
 
           if (async === undefined && defer === undefined) {
             findings.push(this.createFinding('render-blocking-scripts', 'Render-Blocking Script', 'moderate',
