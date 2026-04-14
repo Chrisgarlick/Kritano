@@ -223,7 +223,7 @@ export default function ServiceDetailPage() {
                 {step.step}
               </div>
               <h3 className="font-semibold text-slate-900 mb-2 text-sm">{step.title}</h3>
-              <p className="text-slate-500 text-xs leading-relaxed max-w-[200px]">{step.description}</p>
+              <p className="text-slate-600 text-xs leading-relaxed max-w-[200px]">{step.description}</p>
             </div>
           ))}
         </div>
@@ -257,7 +257,7 @@ export default function ServiceDetailPage() {
                         {issue.severity}
                       </span>
                     </div>
-                    <p className="text-slate-500 text-xs leading-relaxed">{issue.description}</p>
+                    <p className="text-slate-600 text-xs leading-relaxed">{issue.description}</p>
                   </div>
                 </div>
               );

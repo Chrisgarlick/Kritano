@@ -354,7 +354,7 @@ export default function Home() {
               <h2 className="font-display text-2xl lg:text-3xl text-slate-500 leading-snug mb-7">
                 The clarity your website deserves.
               </h2>
-              <p className="text-lg text-slate-500 leading-relaxed mb-10 max-w-lg">
+              <p className="text-lg text-slate-600 leading-relaxed mb-10 max-w-lg">
                 Kritano provides deep visibility into your website's health&mdash;surfacing
                 critical issues in SEO, accessibility, security, and performance that impact
                 your bottom line.

@@ -42,7 +42,7 @@ export default function DocsOverviewPage() {
       <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-white py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-20">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 border border-white/30 text-sm font-medium mb-6">
               <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
               API Version 1.0
             </div>
@@ -56,7 +56,7 @@ export default function DocsOverviewPage() {
               <Link to="/docs/authentication" className="px-5 py-3 bg-white text-slate-900 rounded-lg font-semibold text-sm hover:bg-slate-100 transition-colors">
                 Read the Docs
               </Link>
-              <Link to="/app/settings/api-keys" className="px-5 py-3 bg-white/10 border border-white/20 text-white rounded-lg font-semibold text-sm hover:bg-white/15 transition-colors">
+              <Link to="/app/settings/api-keys" className="px-5 py-3 bg-white/15 border border-white/30 text-white rounded-lg font-semibold text-sm hover:bg-white/20 transition-colors">
                 Get API Key
               </Link>
             </div>

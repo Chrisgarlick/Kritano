@@ -52,7 +52,7 @@ const SERVICES = [
     id: 'accessibility',
     icon: <Accessibility className="w-6 h-6" />,
     accentColor: 'border-t-emerald-500',
-    iconColor: 'text-emerald-600 bg-emerald-50',
+    iconColor: 'text-emerald-700 bg-emerald-50',
     title: 'Accessibility (WCAG 2.2)',
     subtitle: 'Inclusive by design.',
     stat: 'AA',
@@ -192,7 +192,7 @@ export default function Services() {
                   </div>
                 </div>
 
-                <p className="text-sm text-slate-500 leading-relaxed mb-6">
+                <p className="text-sm text-slate-600 leading-relaxed mb-6">
                   {service.description}
                 </p>
 
@@ -279,7 +279,7 @@ export default function Services() {
                   {item.icon}
                 </div>
                 <h3 className="font-semibold text-slate-900 mb-1.5 text-sm">{item.title}</h3>
-                <p className="text-slate-500 text-xs leading-relaxed">{item.description}</p>
+                <p className="text-slate-600 text-xs leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>

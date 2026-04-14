@@ -103,7 +103,7 @@ export default function WaitlistPage() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: 'Accessibility', desc: 'WCAG compliance, screen reader support, keyboard navigation', color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-900/20' },
+              { name: 'Accessibility', desc: 'WCAG compliance, screen reader support, keyboard navigation', color: 'text-emerald-700 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-900/20' },
               { name: 'SEO', desc: 'Meta tags, structured data, indexability, Core Web Vitals', color: 'text-violet-600 dark:text-violet-400', bg: 'bg-violet-50 dark:bg-violet-900/20' },
               { name: 'Security', desc: 'HTTPS, headers, mixed content, vulnerability detection', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-900/20' },
               { name: 'Performance', desc: 'Page speed, resource optimisation, render-blocking assets', color: 'text-sky-700 dark:text-sky-400', bg: 'bg-sky-50 dark:bg-sky-900/20' },

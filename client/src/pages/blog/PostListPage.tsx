@@ -224,7 +224,7 @@ export default function PostListPage() {
                   {post.subtitle && (
                     <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-1 mb-1">{post.subtitle}</p>
                   )}
-                  <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed">{post.excerpt}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed">{post.excerpt}</p>
                   <div className="mt-4 flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/50">
                     <span className="text-xs font-medium text-slate-600 dark:text-slate-300">{post.author_name}</span>
                     {post.published_at && (

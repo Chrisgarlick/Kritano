@@ -230,7 +230,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       'Ensure your website is usable by everyone, regardless of ability. Kritano checks your pages against WCAG 2.2 Level AA criteria, helping you meet legal requirements and reach a wider audience - because no visitor should be left behind.',
     iconName: 'Accessibility',
     colorScheme: {
-      text: 'text-emerald-600',
+      text: 'text-emerald-700',
       bg: 'bg-emerald-50',
       border: 'border-emerald-100',
       badgeBg: 'bg-emerald-100',

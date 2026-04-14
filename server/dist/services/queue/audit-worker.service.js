@@ -283,6 +283,15 @@ class AuditWorkerService {
             }
             console.log(`✅ Completed job ${job.id}`);
             await this.config.onJobComplete?.(job);
+            // Recycle browser after each job to prevent memory leaks and stale state
+            try {
+                await this.shutdownBrowser();
+                await this.initializeBrowser();
+                console.log('🔄 Browser recycled');
+            }
+            catch (recycleErr) {
+                console.error('Browser recycle failed:', recycleErr);
+            }
         }
         catch (error) {
             const err = error instanceof Error ? error : new Error(String(error));
@@ -300,6 +309,15 @@ class AuditWorkerService {
                 }).catch((webhookErr) => console.error('Webhook delivery error (failed):', webhookErr.message));
             }
             await this.config.onJobFail?.(job, err);
+            // Recycle browser after failure too
+            try {
+                await this.shutdownBrowser();
+                await this.initializeBrowser();
+                console.log('🔄 Browser recycled after failure');
+            }
+            catch (recycleErr) {
+                console.error('Browser recycle after failure failed:', recycleErr);
+            }
         }
     }
     /**
