@@ -88,6 +88,8 @@ export class AuditWorkerService {
   private discoveredLinksPerJob = new Map<string, Map<string, { pageId: string; pageUrl: string; links: DiscoveredLink[] }>>();
   // Track active jobs being processed
   private activeJobs = new Map<string, Promise<void>>();
+  // Periodic stale job recovery
+  private staleRecoveryInterval: ReturnType<typeof setInterval> | null = null;
 
   constructor(config: AuditWorkerConfig) {
     this.config = config;
@@ -138,6 +140,18 @@ export class AuditWorkerService {
     this.isRunning = true;
     this.queue.start();
 
+    // Run stale job recovery periodically (every 5 minutes)
+    this.staleRecoveryInterval = setInterval(async () => {
+      try {
+        const recovered = await this.queue.recoverStaleJobs();
+        if (recovered > 0) {
+          console.log(`♻️  Recovered ${recovered} stale job(s)`);
+        }
+      } catch (err) {
+        console.error('Stale recovery check failed:', err);
+      }
+    }, 300_000);
+
     await this.processLoop();
   }
 
@@ -148,6 +162,11 @@ export class AuditWorkerService {
     console.log('🛑 Stopping audit worker...');
     this.isRunning = false;
     this.queue.stop();
+
+    if (this.staleRecoveryInterval) {
+      clearInterval(this.staleRecoveryInterval);
+      this.staleRecoveryInterval = null;
+    }
 
     // Release current job if any
     await this.queue.releaseCurrentJob();
@@ -200,6 +219,15 @@ export class AuditWorkerService {
           if (isSettled) {
             this.activeJobs.delete(jobId);
           }
+        }
+
+        // Check browser health - restart if crashed
+        if (this.browser && !this.browser.isConnected()) {
+          console.warn('⚠️  Browser disconnected — restarting...');
+          try { await this.browser.close(); } catch { /* already dead */ }
+          this.browser = null;
+          await this.initializeBrowser();
+          console.log('✅ Browser restarted');
         }
 
         // Adaptive concurrency based on memory pressure

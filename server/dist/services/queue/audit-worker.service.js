@@ -60,6 +60,8 @@ class AuditWorkerService {
     discoveredLinksPerJob = new Map();
     // Track active jobs being processed
     activeJobs = new Map();
+    // Periodic stale job recovery
+    staleRecoveryInterval = null;
     constructor(config) {
         this.config = config;
         this.pool = config.pool;
@@ -101,6 +103,18 @@ class AuditWorkerService {
         // Start processing
         this.isRunning = true;
         this.queue.start();
+        // Run stale job recovery periodically (every 5 minutes)
+        this.staleRecoveryInterval = setInterval(async () => {
+            try {
+                const recovered = await this.queue.recoverStaleJobs();
+                if (recovered > 0) {
+                    console.log(`♻️  Recovered ${recovered} stale job(s)`);
+                }
+            }
+            catch (err) {
+                console.error('Stale recovery check failed:', err);
+            }
+        }, 300_000);
         await this.processLoop();
     }
     /**
@@ -110,6 +124,10 @@ class AuditWorkerService {
         console.log('🛑 Stopping audit worker...');
         this.isRunning = false;
         this.queue.stop();
+        if (this.staleRecoveryInterval) {
+            clearInterval(this.staleRecoveryInterval);
+            this.staleRecoveryInterval = null;
+        }
         // Release current job if any
         await this.queue.releaseCurrentJob();
         // Shutdown browser
@@ -156,6 +174,17 @@ class AuditWorkerService {
                     if (isSettled) {
                         this.activeJobs.delete(jobId);
                     }
+                }
+                // Check browser health - restart if crashed
+                if (this.browser && !this.browser.isConnected()) {
+                    console.warn('⚠️  Browser disconnected — restarting...');
+                    try {
+                        await this.browser.close();
+                    }
+                    catch { /* already dead */ }
+                    this.browser = null;
+                    await this.initializeBrowser();
+                    console.log('✅ Browser restarted');
                 }
                 // Adaptive concurrency based on memory pressure
                 const mem = (0, memory_monitor_1.getMemoryUsage)();
