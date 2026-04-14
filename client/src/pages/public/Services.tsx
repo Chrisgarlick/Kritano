@@ -91,7 +91,7 @@ const SERVICES = [
     id: 'performance',
     icon: <Zap className="w-6 h-6" />,
     accentColor: 'border-t-sky-500',
-    iconColor: 'text-sky-600 bg-sky-50',
+    iconColor: 'text-sky-700 bg-sky-50',
     title: 'Performance Analysis',
     subtitle: 'Speed wins.',
     stat: '3',

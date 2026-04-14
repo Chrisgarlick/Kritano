@@ -195,6 +195,9 @@ router.get('/:siteId', loadSite, async (req: Request, res: Response): Promise<vo
         accessibility: s.accessibility,
         security: s.security,
         performance: s.performance,
+        content: s.content,
+        structuredData: s.structuredData,
+        cqs: s.cqs,
       })),
     });
   } catch (error: unknown) {

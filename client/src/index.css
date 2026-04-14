@@ -28,6 +28,25 @@ body {
   font-family: var(--font-body);
 }
 
+/*
+ * Accessibility: Ensure inline links in body content are distinguishable
+ * without relying on colour alone (WCAG 1.4.1).
+ * Targets links within <main> paragraphs, list items, and table cells.
+ * Excludes nav links, buttons, and card links which use other visual cues.
+ */
+#main-content p a:not([class*="btn"]),
+#main-content li a:not([class*="btn"]),
+#main-content td a:not([class*="btn"]) {
+  text-decoration: underline;
+  text-decoration-color: theme('colors.indigo.300');
+  text-underline-offset: 2px;
+}
+#main-content p a:not([class*="btn"]):hover,
+#main-content li a:not([class*="btn"]):hover,
+#main-content td a:not([class*="btn"]):hover {
+  text-decoration-color: theme('colors.indigo.600');
+}
+
 /* Fix browser autofill forcing light backgrounds in dark mode */
 .dark input:-webkit-autofill,
 .dark input:-webkit-autofill:hover,

@@ -56,6 +56,9 @@ export interface SiteStats {
         accessibility: number | null;
         security: number | null;
         performance: number | null;
+        content: number | null;
+        structuredData: number | null;
+        cqs: number | null;
     } | null;
     urlCount: number;
 }
@@ -69,6 +72,9 @@ export interface SiteWithStatsRow extends Site {
     latest_accessibility_score: number | null;
     latest_security_score: number | null;
     latest_performance_score: number | null;
+    latest_content_score: number | null;
+    latest_structured_data_score: number | null;
+    latest_cqs_score: number | null;
     url_count: string;
     owner_tier?: string;
 }
@@ -78,6 +84,9 @@ export interface ScoreHistoryEntry {
     accessibility: number | null;
     security: number | null;
     performance: number | null;
+    content: number | null;
+    structuredData: number | null;
+    cqs: number | null;
 }
 export interface CreateSiteInput {
     name: string;

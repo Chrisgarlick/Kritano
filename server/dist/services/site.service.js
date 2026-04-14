@@ -94,6 +94,21 @@ async function getUserSites(userId) {
         WHERE site_id = s.id AND status = 'completed'
         ORDER BY completed_at DESC LIMIT 1
       ) as latest_performance_score,
+      (
+        SELECT content_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_content_score,
+      (
+        SELECT structured_data_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_structured_data_score,
+      (
+        SELECT cqs_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_cqs_score,
       COUNT(DISTINCT su.id)::text as url_count,
       COALESCE(
         (SELECT sub.tier FROM subscriptions sub WHERE sub.user_id = COALESCE(s.owner_id, s.created_by) AND sub.status IN ('active', 'trialing') ORDER BY sub.created_at DESC LIMIT 1),
@@ -133,6 +148,21 @@ async function getUserSites(userId) {
         WHERE site_id = s.id AND status = 'completed'
         ORDER BY completed_at DESC LIMIT 1
       ) as latest_performance_score,
+      (
+        SELECT content_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_content_score,
+      (
+        SELECT structured_data_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_structured_data_score,
+      (
+        SELECT cqs_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_cqs_score,
       COUNT(DISTINCT su.id)::text as url_count,
       COALESCE(
         (SELECT sub.tier FROM subscriptions sub WHERE sub.user_id = COALESCE(s.owner_id, s.created_by) AND sub.status IN ('active', 'trialing') ORDER BY sub.created_at DESC LIMIT 1),
@@ -175,6 +205,9 @@ async function getUserSites(userId) {
                     accessibility: row.latest_accessibility_score,
                     security: row.latest_security_score,
                     performance: row.latest_performance_score,
+                    content: row.latest_content_score,
+                    structuredData: row.latest_structured_data_score,
+                    cqs: row.latest_cqs_score,
                 } : null,
                 urlCount: parseInt(row.url_count, 10),
             },
@@ -223,6 +256,21 @@ async function getSiteWithStats(siteId) {
         WHERE site_id = s.id AND status = 'completed'
         ORDER BY completed_at DESC LIMIT 1
       ) as latest_performance_score,
+      (
+        SELECT content_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_content_score,
+      (
+        SELECT structured_data_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_structured_data_score,
+      (
+        SELECT cqs_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_cqs_score,
       COUNT(DISTINCT su.id)::text as url_count
      FROM sites s
      LEFT JOIN audit_jobs aj ON aj.site_id = s.id
@@ -261,6 +309,9 @@ async function getSiteWithStats(siteId) {
                 accessibility: row.latest_accessibility_score,
                 security: row.latest_security_score,
                 performance: row.latest_performance_score,
+                content: row.latest_content_score,
+                structuredData: row.latest_structured_data_score,
+                cqs: row.latest_cqs_score,
             } : null,
             urlCount: parseInt(row.url_count, 10),
         },
@@ -469,7 +520,7 @@ async function getSiteAudits(siteId, options = {}) {
  * Get score history for a site
  */
 async function getSiteScoreHistory(siteId, limit = 30) {
-    const result = await pool.query(`SELECT completed_at, seo_score, accessibility_score, security_score, performance_score
+    const result = await pool.query(`SELECT completed_at, seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score
      FROM audit_jobs
      WHERE site_id = $1 AND status = 'completed'
      ORDER BY completed_at DESC
@@ -480,6 +531,9 @@ async function getSiteScoreHistory(siteId, limit = 30) {
         accessibility: row.accessibility_score,
         security: row.security_score,
         performance: row.performance_score,
+        content: row.content_score,
+        structuredData: row.structured_data_score,
+        cqs: row.cqs_score,
     })).reverse(); // Return in chronological order
 }
 // =============================================

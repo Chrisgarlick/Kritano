@@ -77,13 +77,16 @@ export default function DashboardPage() {
     fetchData();
   }, []);
 
-  // Helper to calculate overall score from category scores
+  // Helper to calculate overall score from all category scores
   const getOverallScore = (audit: Audit): number | null => {
     const scores = [
       audit.seo_score,
       audit.accessibility_score,
       audit.security_score,
       audit.performance_score,
+      audit.content_score,
+      audit.structured_data_score,
+      audit.cqs_score,
     ].filter((s): s is number => s !== null);
 
     if (scores.length === 0) return null;

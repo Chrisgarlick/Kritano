@@ -837,7 +837,7 @@ async function computeUserOverview(userId) {
      LIMIT 5`, [siteIds]);
     const recentActivity = recentActivityResult.rows.map(row => {
         const site = siteMap.get(row.site_id);
-        const scores = [row.seo_score, row.accessibility_score, row.security_score, row.performance_score]
+        const scores = [row.seo_score, row.accessibility_score, row.security_score, row.performance_score, row.content_score, row.structured_data_score, row.cqs_score]
             .filter((s) => s !== null);
         const overallScore = scores.length > 0
             ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)

@@ -14,6 +14,7 @@ function calculateOverallScore(scores: {
   performance: number | null;
   content?: number | null;
   structuredData?: number | null;
+  cqs?: number | null;
 }): number | null {
   const validScores = [
     scores.seo,
@@ -22,6 +23,7 @@ function calculateOverallScore(scores: {
     scores.performance,
     scores.content ?? null,
     scores.structuredData ?? null,
+    scores.cqs ?? null,
   ].filter((s): s is number => s !== null);
 
   if (validScores.length === 0) return null;

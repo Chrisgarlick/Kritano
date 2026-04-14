@@ -213,7 +213,7 @@ router.get('/public/badges/:siteId.svg', async (req, res) => {
             return;
         }
         // Fetch latest completed audit scores
-        const auditResult = await index_js_19.pool.query(`SELECT seo_score, accessibility_score, security_score, performance_score, content_score
+        const auditResult = await index_js_19.pool.query(`SELECT seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score
        FROM audit_jobs
        WHERE site_id = $1 AND status = 'completed'
        ORDER BY completed_at DESC
@@ -231,6 +231,8 @@ router.get('/public/badges/:siteId.svg', async (req, res) => {
             audit.security_score,
             audit.performance_score,
             audit.content_score,
+            audit.structured_data_score,
+            audit.cqs_score,
         ].filter((s) => s !== null);
         const overall = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null;
         res.setHeader('Content-Type', 'image/svg+xml');

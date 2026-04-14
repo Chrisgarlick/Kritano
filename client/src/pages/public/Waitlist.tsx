@@ -106,7 +106,7 @@ export default function WaitlistPage() {
               { name: 'Accessibility', desc: 'WCAG compliance, screen reader support, keyboard navigation', color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-900/20' },
               { name: 'SEO', desc: 'Meta tags, structured data, indexability, Core Web Vitals', color: 'text-violet-600 dark:text-violet-400', bg: 'bg-violet-50 dark:bg-violet-900/20' },
               { name: 'Security', desc: 'HTTPS, headers, mixed content, vulnerability detection', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-900/20' },
-              { name: 'Performance', desc: 'Page speed, resource optimisation, render-blocking assets', color: 'text-sky-600 dark:text-sky-400', bg: 'bg-sky-50 dark:bg-sky-900/20' },
+              { name: 'Performance', desc: 'Page speed, resource optimisation, render-blocking assets', color: 'text-sky-700 dark:text-sky-400', bg: 'bg-sky-50 dark:bg-sky-900/20' },
               { name: 'Content Quality', desc: 'Readability, E-E-A-T signals, content structure', color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/20' },
               { name: 'AI Readiness', desc: 'Schema markup, structured data, AI crawler accessibility', color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-50 dark:bg-indigo-900/20' },
             ].map((pillar) => (

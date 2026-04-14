@@ -517,7 +517,7 @@ export default function Home() {
             <CapabilityCard
               icon={<Zap className="w-5 h-5" />}
               accentColor="border-sky-400"
-              iconColor="text-sky-600 bg-sky-50"
+              iconColor="text-sky-700 bg-sky-50"
               title="Performance"
               description="Page speed, resource optimisation, caching, LCP/INP/CLS."
               href="/services/performance"

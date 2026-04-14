@@ -42,6 +42,7 @@ export interface SiteStats {
     performance: number | null;
     content: number | null;
     structuredData: number | null;
+    cqs: number | null;
   } | null;
   urlCount: number;
 }
@@ -80,6 +81,7 @@ export interface ScoreHistoryEntry {
   performance: number | null;
   content: number | null;
   structuredData: number | null;
+  cqs: number | null;
 }
 
 export interface SiteDetail extends Site {

@@ -59,7 +59,7 @@ export function SiteCard({
   onRunAudit,
   className = '',
 }: SiteCardProps) {
-  // Calculate overall score from category scores
+  // Calculate overall score from all category scores
   const getOverallScore = (): number | null => {
     if (!latestAudit) return null;
     const scores = [
@@ -67,6 +67,9 @@ export function SiteCard({
       latestAudit.accessibility_score,
       latestAudit.security_score,
       latestAudit.performance_score,
+      latestAudit.content_score,
+      latestAudit.structured_data_score,
+      latestAudit.cqs_score,
     ].filter((s): s is number => s !== null);
 
     if (scores.length === 0) return null;
@@ -289,7 +292,7 @@ export function SiteListItem({
   onRunAudit,
   className = '',
 }: SiteListItemProps) {
-  // Calculate overall score
+  // Calculate overall score from all category scores
   const getOverallScore = (): number | null => {
     if (!latestAudit) return null;
     const scores = [
@@ -297,6 +300,9 @@ export function SiteListItem({
       latestAudit.accessibility_score,
       latestAudit.security_score,
       latestAudit.performance_score,
+      latestAudit.content_score,
+      latestAudit.structured_data_score,
+      latestAudit.cqs_score,
     ].filter((s): s is number => s !== null);
 
     if (scores.length === 0) return null;

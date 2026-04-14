@@ -145,6 +145,9 @@ router.get('/:siteId', site_middleware_js_1.loadSite, async (req, res) => {
                 accessibility: s.accessibility,
                 security: s.security,
                 performance: s.performance,
+                content: s.content,
+                structuredData: s.structuredData,
+                cqs: s.cqs,
             })),
         });
     }

@@ -87,6 +87,21 @@ export async function getUserSites(userId: string): Promise<UserSiteAccess[]> {
         WHERE site_id = s.id AND status = 'completed'
         ORDER BY completed_at DESC LIMIT 1
       ) as latest_performance_score,
+      (
+        SELECT content_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_content_score,
+      (
+        SELECT structured_data_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_structured_data_score,
+      (
+        SELECT cqs_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_cqs_score,
       COUNT(DISTINCT su.id)::text as url_count,
       COALESCE(
         (SELECT sub.tier FROM subscriptions sub WHERE sub.user_id = COALESCE(s.owner_id, s.created_by) AND sub.status IN ('active', 'trialing') ORDER BY sub.created_at DESC LIMIT 1),
@@ -130,6 +145,21 @@ export async function getUserSites(userId: string): Promise<UserSiteAccess[]> {
         WHERE site_id = s.id AND status = 'completed'
         ORDER BY completed_at DESC LIMIT 1
       ) as latest_performance_score,
+      (
+        SELECT content_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_content_score,
+      (
+        SELECT structured_data_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_structured_data_score,
+      (
+        SELECT cqs_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_cqs_score,
       COUNT(DISTINCT su.id)::text as url_count,
       COALESCE(
         (SELECT sub.tier FROM subscriptions sub WHERE sub.user_id = COALESCE(s.owner_id, s.created_by) AND sub.status IN ('active', 'trialing') ORDER BY sub.created_at DESC LIMIT 1),
@@ -175,6 +205,9 @@ export async function getUserSites(userId: string): Promise<UserSiteAccess[]> {
           accessibility: row.latest_accessibility_score,
           security: row.latest_security_score,
           performance: row.latest_performance_score,
+          content: row.latest_content_score,
+          structuredData: row.latest_structured_data_score,
+          cqs: row.latest_cqs_score,
         } : null,
         urlCount: parseInt(row.url_count, 10),
       },
@@ -233,6 +266,21 @@ export async function getSiteWithStats(siteId: string): Promise<SiteWithStats | 
         WHERE site_id = s.id AND status = 'completed'
         ORDER BY completed_at DESC LIMIT 1
       ) as latest_performance_score,
+      (
+        SELECT content_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_content_score,
+      (
+        SELECT structured_data_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_structured_data_score,
+      (
+        SELECT cqs_score FROM audit_jobs
+        WHERE site_id = s.id AND status = 'completed'
+        ORDER BY completed_at DESC LIMIT 1
+      ) as latest_cqs_score,
       COUNT(DISTINCT su.id)::text as url_count
      FROM sites s
      LEFT JOIN audit_jobs aj ON aj.site_id = s.id
@@ -274,6 +322,9 @@ export async function getSiteWithStats(siteId: string): Promise<SiteWithStats | 
         accessibility: row.latest_accessibility_score,
         security: row.latest_security_score,
         performance: row.latest_performance_score,
+        content: row.latest_content_score,
+        structuredData: row.latest_structured_data_score,
+        cqs: row.latest_cqs_score,
       } : null,
       urlCount: parseInt(row.url_count, 10),
     },
@@ -579,8 +630,11 @@ export async function getSiteScoreHistory(
     accessibility_score: number | null;
     security_score: number | null;
     performance_score: number | null;
+    content_score: number | null;
+    structured_data_score: number | null;
+    cqs_score: number | null;
   }>(
-    `SELECT completed_at, seo_score, accessibility_score, security_score, performance_score
+    `SELECT completed_at, seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score
      FROM audit_jobs
      WHERE site_id = $1 AND status = 'completed'
      ORDER BY completed_at DESC
@@ -594,6 +648,9 @@ export async function getSiteScoreHistory(
     accessibility: row.accessibility_score,
     security: row.security_score,
     performance: row.performance_score,
+    content: row.content_score,
+    structuredData: row.structured_data_score,
+    cqs: row.cqs_score,
   })).reverse(); // Return in chronological order
 }
 

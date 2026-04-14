@@ -544,7 +544,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       'Page speed directly impacts user experience and search rankings. Our performance engine identifies exactly what\'s slowing your pages down, with prioritised recommendations for maximum impact - so you fix what matters most first.',
     iconName: 'Zap',
     colorScheme: {
-      text: 'text-sky-600',
+      text: 'text-sky-700',
       bg: 'bg-sky-50',
       border: 'border-sky-100',
       badgeBg: 'bg-sky-100',

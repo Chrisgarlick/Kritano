@@ -555,11 +555,14 @@ export default function SiteDetailPage() {
         </div>
 
         {/* Score Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           <ScoreCard label="SEO" score={site.stats.latestScores?.seo ?? null} prevScore={prevScore?.seo} />
           <ScoreCard label="Accessibility" score={site.stats.latestScores?.accessibility ?? null} prevScore={prevScore?.accessibility} />
           <ScoreCard label="Security" score={site.stats.latestScores?.security ?? null} prevScore={prevScore?.security} />
           <ScoreCard label="Performance" score={site.stats.latestScores?.performance ?? null} prevScore={prevScore?.performance} />
+          <ScoreCard label="Content" score={site.stats.latestScores?.content ?? null} prevScore={prevScore?.content} />
+          <ScoreCard label="Schema" score={site.stats.latestScores?.structuredData ?? null} prevScore={prevScore?.structuredData} />
+          <ScoreCard label="CQS" score={site.stats.latestScores?.cqs ?? null} prevScore={prevScore?.cqs} />
         </div>
 
         {/* Tabs */}

@@ -224,7 +224,7 @@ router.get('/public/badges/:siteId.svg', async (req: Request, res: Response): Pr
 
     // Fetch latest completed audit scores
     const auditResult = await pool.query(
-      `SELECT seo_score, accessibility_score, security_score, performance_score, content_score
+      `SELECT seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score
        FROM audit_jobs
        WHERE site_id = $1 AND status = 'completed'
        ORDER BY completed_at DESC
@@ -246,6 +246,8 @@ router.get('/public/badges/:siteId.svg', async (req: Request, res: Response): Pr
       audit.security_score,
       audit.performance_score,
       audit.content_score,
+      audit.structured_data_score,
+      audit.cqs_score,
     ].filter((s: number | null) => s !== null) as number[];
 
     const overall = scores.length > 0 ? Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length) : null;
