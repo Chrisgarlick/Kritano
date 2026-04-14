@@ -53,7 +53,7 @@ export default function CookieBanner() {
                 We use cookies to improve your experience
               </h2>
             </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
               We use essential cookies for security and authentication. With your permission,
               we'd also like to use analytics cookies to understand how you use Kritano so we can make it better.{' '}
               <a href="/privacy" className="text-indigo-600 dark:text-indigo-400 underline decoration-indigo-300 dark:decoration-indigo-600 underline-offset-2 hover:decoration-indigo-500">

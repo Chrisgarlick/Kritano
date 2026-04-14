@@ -418,7 +418,7 @@ export default function Home() {
               <h2 className="font-display text-4xl lg:text-5xl text-slate-900 leading-tight mb-5">
                 Content intelligence that goes beyond keywords.
               </h2>
-              <p className="text-lg text-slate-500 leading-relaxed mb-8">
+              <p className="text-lg text-slate-600 leading-relaxed mb-8">
                 Kritano is the only audit tool that scores your content the way search engines evaluate it.
                 E-E-A-T analysis, Answer Engine Optimisation, readability scoring, and engagement
                 markers&mdash;unified into a single Content Quality Score.
@@ -432,7 +432,7 @@ export default function Home() {
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
                     <CheckCircle className="w-4.5 h-4.5 text-teal-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm text-slate-600">{item}</span>
+                    <span className="text-sm text-slate-700">{item}</span>
                   </div>
                 ))}
               </div>
@@ -449,7 +449,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-xs font-medium text-teal-600 uppercase tracking-wider mb-1">Content Quality Score</p>
-                  <p className="text-sm text-slate-500">Good &mdash; E-E-A-T and engagement need work</p>
+                  <p className="text-sm text-slate-600">Good &mdash; E-E-A-T and engagement need work</p>
                 </div>
               </div>
               <div className="space-y-3">
