@@ -13,6 +13,7 @@ import { blogApi } from '../../services/api';
 import type { BlogPostDetail, BlogPostSummary } from '../../services/api';
 import BlockDisplay from '../../components/cms/BlockDisplay';
 import { Clock, ArrowLeft, Tag, Calendar } from 'lucide-react';
+import AuthorBio from '../../components/blog/AuthorBio';
 import { BlogCTA } from '../../components/blog/BlogCTA';
 import { buildBlogStructuredData } from '../../utils/blogSchemaBuilder';
 
@@ -169,25 +170,33 @@ export default function PostDetailPage() {
         </header>
 
         {/* Featured image */}
-        {post.featured_image_url && (
-          <figure className="mb-10 -mx-4 sm:mx-0">
-            <img
-              src={post.featured_image_url}
-              alt={post.featured_image_alt || `Featured image for ${post.title}`}
-              className="w-full rounded-xl"
-              loading="eager"
-              fetchPriority="high"
-              width={1200}
-              height={630}
-            />
-          </figure>
-        )}
+        {post.featured_image_url && (() => {
+          const webpUrl = post.featured_image_url
+            .replace('/original/', '/webp/')
+            .replace(/\.(png|jpe?g|gif)$/i, '.webp');
+          return (
+            <figure className="mb-10 -mx-4 sm:mx-0">
+              <picture>
+                <source srcSet={webpUrl} type="image/webp" />
+                <img
+                  src={post.featured_image_url}
+                  alt={post.featured_image_alt || `Featured image for ${post.title}`}
+                  className="w-full rounded-xl"
+                  loading="eager"
+                  fetchPriority="high"
+                  width={1200}
+                  height={630}
+                />
+              </picture>
+            </figure>
+          );
+        })()}
 
         {/* Content blocks */}
         <div className="prose prose-lg prose-slate dark:prose-invert max-w-none
           prose-headings:font-bold prose-headings:text-slate-900 dark:prose-headings:text-white
           prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-p:leading-relaxed
-          prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:no-underline hover:prose-a:underline
+          prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:underline prose-a:decoration-indigo-300 dark:prose-a:decoration-indigo-500/50 prose-a:underline-offset-2 hover:prose-a:decoration-indigo-600
           prose-img:rounded-lg prose-pre:bg-slate-900
         ">
           {post.content.map(block => (
@@ -213,6 +222,11 @@ export default function PostDetailPage() {
           </div>
         )}
 
+        {/* Author bio */}
+        <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
+          <AuthorBio />
+        </div>
+
         {/* Related posts */}
         {relatedPosts.length > 0 && (
           <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
@@ -224,16 +238,25 @@ export default function PostDetailPage() {
                   to={`/blog/${related.slug}`}
                   className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
                 >
-                  {related.featured_image_url && (
-                    <img
-                      src={related.featured_image_url}
-                      alt=""
-                      className="w-full h-40 object-cover"
-                      loading="lazy"
-                      width={400}
-                      height={160}
-                    />
-                  )}
+                  {related.featured_image_url && (() => {
+                    const webpUrl = related.featured_image_url
+                      .replace('/original/', '/webp/')
+                      .replace(/\.(png|jpe?g|gif)$/i, '.webp');
+                    return (
+                      <picture>
+                        <source srcSet={webpUrl} type="image/webp" />
+                        <img
+                          src={related.featured_image_url}
+                          alt=""
+                          role="presentation"
+                          className="w-full h-40 object-cover"
+                          loading="lazy"
+                          width={400}
+                          height={160}
+                        />
+                      </picture>
+                    );
+                  })()}
                   <div className="p-4">
                     <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
                       {CATEGORY_LABELS[related.category] || related.category}

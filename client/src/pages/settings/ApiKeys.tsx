@@ -121,7 +121,11 @@ export default function ApiKeysPage() {
 
   return (
     <>
-      <Helmet><title>API Keys | Kritano</title></Helmet>
+      <Helmet>
+        <title>API Keys | Kritano</title>
+        <meta name="description" content="Manage your Kritano API keys for programmatic access to website auditing." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="space-y-6">
       {/* Info banner */}
       <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-4">

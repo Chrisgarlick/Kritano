@@ -187,7 +187,7 @@ export default function Services() {
                   {/* Stat highlight */}
                   <div className="text-right flex-shrink-0">
                     <p className="font-display text-2xl text-slate-900">{service.stat}</p>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-wider font-medium">{service.statLabel}</p>
+                    <p className="text-[10px] text-slate-500 uppercase tracking-wider font-medium">{service.statLabel}</p>
                   </div>
                 </div>
 
@@ -199,7 +199,7 @@ export default function Services() {
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-6">
                   {service.features.map((feature) => (
                     <div key={feature} className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <CheckCircle className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
                       <span className="text-xs text-slate-600">{feature}</span>
                     </div>
                   ))}

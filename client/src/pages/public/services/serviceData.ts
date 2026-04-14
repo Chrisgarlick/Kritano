@@ -57,6 +57,12 @@ export interface ServiceData {
     buttonText: string;
   };
   relatedSlugs: string[];
+  /** One-sentence definition for AEO citability */
+  definition: string;
+  /** FAQ pairs for FAQPage schema and content engagement */
+  faqs: { question: string; answer: string }[];
+  /** Key takeaway bullets for summary extraction */
+  keyTakeaways: string[];
 }
 
 export const SERVICES_DATA: Record<string, ServiceData> = {
@@ -194,6 +200,27 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       buttonText: 'Start SEO Audit',
     },
     relatedSlugs: ['accessibility', 'security', 'performance'],
+    definition:
+      'An SEO audit is a systematic analysis of a website\'s search engine optimisation factors, including metadata, structured data, internal linking, Core Web Vitals, and mobile-friendliness, to identify issues that prevent pages from ranking well in search results.',
+    faqs: [
+      {
+        question: 'What does an SEO audit check?',
+        answer: 'Kritano\'s SEO audit analyses over 100 ranking factors across every crawled page, including title tags, meta descriptions, heading structure, canonical URLs, structured data, broken links, image alt text, Core Web Vitals, mobile-friendliness, and internal linking patterns.',
+      },
+      {
+        question: 'How long does an SEO audit take?',
+        answer: 'Most audits complete in under two minutes. Kritano crawls your pages in parallel and runs all checks simultaneously, so even sites with dozens of pages get results quickly.',
+      },
+      {
+        question: 'How often should I run an SEO audit?',
+        answer: 'We recommend running an audit after every major content or design change, and at least monthly for active sites. Scheduled audits let you track your SEO health over time and catch regressions early.',
+      },
+    ],
+    keyTakeaways: [
+      'Covers 100+ ranking factors per page, from metadata to Core Web Vitals.',
+      'Every issue includes severity, affected pages, and a clear fix recommendation.',
+      'Scheduled audits help you track SEO health over time and catch regressions.',
+    ],
   },
 
   accessibility: {
@@ -330,6 +357,27 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       buttonText: 'Start Accessibility Audit',
     },
     relatedSlugs: ['seo', 'security', 'performance'],
+    definition:
+      'A web accessibility audit is an evaluation of a website against the Web Content Accessibility Guidelines (WCAG) 2.2, testing for barriers that prevent people with disabilities from perceiving, navigating, and interacting with web content.',
+    faqs: [
+      {
+        question: 'What accessibility standard does Kritano test against?',
+        answer: 'Kritano tests against WCAG 2.2 Level AA, the internationally recognised standard for web accessibility. This covers perceivable, operable, understandable, and robust content for users with visual, auditory, motor, and cognitive disabilities.',
+      },
+      {
+        question: 'Does an accessibility audit replace manual testing?',
+        answer: 'Automated testing catches roughly 30-50% of accessibility issues. Kritano flags everything that can be detected programmatically, including colour contrast, missing alt text, keyboard traps, and ARIA misuse. Manual testing with screen readers is still recommended for complex interactions.',
+      },
+      {
+        question: 'Is web accessibility a legal requirement?',
+        answer: 'In many jurisdictions, yes. The European Accessibility Act (EAA) requires digital services to be accessible from June 2025. The ADA in the US, the Equality Act in the UK, and similar laws worldwide also mandate accessible websites.',
+      },
+    ],
+    keyTakeaways: [
+      'Tests against WCAG 2.2 Level AA across colour contrast, keyboard navigation, ARIA, and semantic HTML.',
+      'Automated checks catch 30-50% of issues; pair with manual screen reader testing for full coverage.',
+      'Accessibility is a legal requirement in many jurisdictions, including under the EAA and ADA.',
+    ],
   },
 
   security: {
@@ -466,6 +514,27 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       buttonText: 'Start Security Scan',
     },
     relatedSlugs: ['seo', 'accessibility', 'performance'],
+    definition:
+      'A website security audit is an automated scan that identifies vulnerabilities in a site\'s configuration, including insecure headers, exposed sensitive files, missing HTTPS enforcement, cookie misconfigurations, and content security policy weaknesses.',
+    faqs: [
+      {
+        question: 'What security issues does Kritano detect?',
+        answer: 'Kritano runs 40+ security checks per page, including HTTPS enforcement, security header analysis (CSP, HSTS, X-Frame-Options), exposed sensitive files, cookie security flags (Secure, HttpOnly, SameSite), mixed content, and information disclosure vulnerabilities.',
+      },
+      {
+        question: 'Is Kritano a penetration testing tool?',
+        answer: 'No. Kritano performs non-intrusive, read-only security scanning. It checks your site\'s publicly visible configuration for common misconfigurations and vulnerabilities without attempting to exploit them. For full penetration testing, use a dedicated security firm.',
+      },
+      {
+        question: 'How do security headers protect my website?',
+        answer: 'Security headers like Content-Security-Policy (CSP), Strict-Transport-Security (HSTS), and X-Content-Type-Options instruct browsers to enforce security policies. They prevent cross-site scripting, clickjacking, protocol downgrade attacks, and MIME-type confusion.',
+      },
+    ],
+    keyTakeaways: [
+      'Checks 40+ security factors including headers, HTTPS, cookies, and exposed files.',
+      'Non-intrusive scanning that identifies misconfigurations without exploiting vulnerabilities.',
+      'Security headers are your first line of defence against XSS, clickjacking, and protocol attacks.',
+    ],
   },
 
   performance: {
@@ -602,6 +671,27 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       buttonText: 'Start Performance Audit',
     },
     relatedSlugs: ['seo', 'accessibility', 'security'],
+    definition:
+      'A web performance audit measures how quickly a website loads and responds to user interaction, analysing Core Web Vitals (LCP, INP, CLS), resource sizes, server response times, caching, and render-blocking resources to identify bottlenecks.',
+    faqs: [
+      {
+        question: 'What are Core Web Vitals?',
+        answer: 'Core Web Vitals are three metrics Google uses to measure user experience: Largest Contentful Paint (LCP) measures loading speed, Interaction to Next Paint (INP) measures responsiveness, and Cumulative Layout Shift (CLS) measures visual stability. All three are ranking factors.',
+      },
+      {
+        question: 'What is a good page load time?',
+        answer: 'Google recommends LCP under 2.5 seconds, INP under 200 milliseconds, and CLS under 0.1. For overall page load, aim for under 3 seconds on mobile. Kritano measures all of these and flags pages that miss the targets.',
+      },
+      {
+        question: 'How does performance affect SEO?',
+        answer: 'Page speed is a direct Google ranking factor. Core Web Vitals are part of the Page Experience signals. Slow pages also have higher bounce rates and lower engagement, which indirectly hurt rankings through user behaviour signals.',
+      },
+    ],
+    keyTakeaways: [
+      'Measures Core Web Vitals (LCP, INP, CLS) alongside server response time and resource optimisation.',
+      'Every second of load time costs roughly 7% in conversions.',
+      'Performance is a direct Google ranking factor via Core Web Vitals.',
+    ],
   },
 };
 

@@ -17,6 +17,7 @@ function mockCrawlResult(overrides = {}) {
         h1Text: 'Hello',
         wordCount: 500,
         responseTimeMs: 200,
+        ttfbMs: 50,
         pageSizeBytes: 5000,
         links: [],
         resources: [],

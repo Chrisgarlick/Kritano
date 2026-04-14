@@ -79,7 +79,11 @@ export default function AuthorPage() {
               'Answer Engine Optimisation',
               'Structured Data',
             ],
-            sameAs: ['https://twitter.com/chrisgarlick', 'https://linkedin.com/in/chrisgarlick'],
+            image: 'https://kritano.com/brand/author-chris-garlick.png',
+            sameAs: [
+              'https://www.linkedin.com/in/chris-garlick-59a8bb91/',
+              'https://x.com/ChrisGarlick123',
+            ],
           },
           {
             '@context': 'https://schema.org',
@@ -175,17 +179,27 @@ export default function AuthorPage() {
                 to={`/blog/${post.slug}`}
                 className="bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-lg hover:border-indigo-200 transition-all duration-200 group"
               >
-                {post.featured_image_url && (
-                  <div className="aspect-video bg-slate-100 overflow-hidden">
-                    <img
-                      src={post.featured_image_url}
-                      alt=""
-                      aria-hidden="true"
-                      loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                )}
+                {post.featured_image_url && (() => {
+                  const webpUrl = post.featured_image_url
+                    .replace('/original/', '/webp/')
+                    .replace(/\.(png|jpe?g|gif)$/i, '.webp');
+                  return (
+                    <div className="aspect-video bg-slate-100 overflow-hidden">
+                      <picture>
+                        <source srcSet={webpUrl} type="image/webp" />
+                        <img
+                          src={post.featured_image_url}
+                          alt=""
+                          role="presentation"
+                          loading="lazy"
+                          width={640}
+                          height={360}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </picture>
+                    </div>
+                  );
+                })()}
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md uppercase tracking-wider">

@@ -19,6 +19,15 @@ export default function DocsRateLimitsPage() {
         description="Understand Kritano API rate limits by plan tier, rate limit headers, and how to handle 429 responses."
         path="/docs/rate-limits"
         useOverrides={true}
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+            { '@type': 'ListItem', position: 2, name: 'API Docs', item: 'https://kritano.com/docs' },
+            { '@type': 'ListItem', position: 3, name: 'Rate Limits', item: 'https://kritano.com/docs/rate-limits' },
+          ],
+        }}
       />
       <DocsLayout>
         {/* Tier Limits */}

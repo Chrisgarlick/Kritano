@@ -176,7 +176,7 @@ export default function FaqPage() {
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400 mb-12 max-w-2xl">
             Everything you need to know about Kritano. Can't find what you're looking for?{' '}
-            <Link to="/contact" className="text-indigo-600 hover:text-indigo-700 font-medium">Get in touch</Link>.
+            <Link to="/contact" className="text-indigo-600 hover:text-indigo-700 font-medium underline underline-offset-2 decoration-indigo-300 hover:decoration-indigo-600">Get in touch</Link>.
           </p>
 
           {/* Category sections */}

@@ -426,7 +426,11 @@ export default function ProfilePage() {
 
   return (
     <>
-      <Helmet><title>Profile | Kritano</title></Helmet>
+      <Helmet>
+        <title>Profile | Kritano</title>
+        <meta name="description" content="Manage your Kritano profile settings, account details, and notification preferences." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="space-y-8">
       {/* Account Information */}
       <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">

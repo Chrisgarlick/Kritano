@@ -94,6 +94,15 @@ export default function DocsObjectsPage() {
         description="Complete reference for Kritano API objects - Audit and Finding data structures with field descriptions."
         path="/docs/objects"
         useOverrides={true}
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+            { '@type': 'ListItem', position: 2, name: 'API Docs', item: 'https://kritano.com/docs' },
+            { '@type': 'ListItem', position: 3, name: 'Object Reference', item: 'https://kritano.com/docs/objects' },
+          ],
+        }}
       />
       <DocsLayout>
         {/* Audit Object */}
@@ -104,6 +113,7 @@ export default function DocsObjectsPage() {
           <p className="text-slate-600 dark:text-slate-400 mb-4">
             The audit object represents a website audit job. It contains configuration, real-time progress, scores, and issue counts. The shape varies slightly between list and detail endpoints - the detail endpoint includes <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">config</code> and <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">_links</code>.
           </p>
+          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Audit Fields</h3>
           <ObjectTable fields={AUDIT_FIELDS} />
 
           <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Audit Status Lifecycle</h3>
@@ -179,6 +189,7 @@ export default function DocsObjectsPage() {
           <p className="text-slate-600 dark:text-slate-400 mb-4">
             A finding represents an individual issue discovered during the audit. Each finding includes the issue location, severity, remediation advice, and links to relevant standards documentation.
           </p>
+          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Finding Fields</h3>
           <ObjectTable fields={FINDING_FIELDS} />
 
           <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Finding Categories</h3>

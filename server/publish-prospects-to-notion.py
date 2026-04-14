@@ -55,8 +55,8 @@ def get_notion_api_key():
 NOTION_API = None  # Set in main()
 
 
-def notion_api(endpoint, data=None, method='POST'):
-    """Make a Notion API request."""
+def notion_api(endpoint, data=None, method='POST', retries=3):
+    """Make a Notion API request with timeout and retry."""
     url = f'https://api.notion.com/v1{endpoint}'
     headers = {
         'Authorization': f'Bearer {NOTION_API}',
@@ -67,18 +67,32 @@ def notion_api(endpoint, data=None, method='POST'):
     body = json.dumps(data).encode('utf-8') if data else None
     req = urllib.request.Request(url, data=body, headers=headers, method=method)
 
-    try:
-        resp = urllib.request.urlopen(req)
-        return json.loads(resp.read().decode('utf-8'))
-    except urllib.error.HTTPError as e:
-        error_body = e.read().decode('utf-8')
-        if e.code == 429:
-            retry_after = int(e.headers.get('Retry-After', 2))
-            print(f'    Rate limited, waiting {retry_after}s...')
-            time.sleep(retry_after)
-            return notion_api(endpoint, data, method)
-        print(f'  Notion API error {e.code}: {error_body[:300]}')
-        raise
+    for attempt in range(retries):
+        try:
+            resp = urllib.request.urlopen(req, timeout=30)
+            return json.loads(resp.read().decode('utf-8'))
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode('utf-8')
+            if e.code == 429:
+                retry_after = int(e.headers.get('Retry-After', 3))
+                print(f' [rate limited {retry_after}s]', end='', flush=True)
+                time.sleep(retry_after + 1)
+                continue
+            if e.code >= 500 and attempt < retries - 1:
+                print(f' [server error, retry]', end='', flush=True)
+                time.sleep(2)
+                continue
+            print(f'\n  Notion API error {e.code}: {error_body[:300]}')
+            raise
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as e:
+            if attempt < retries - 1:
+                print(f' [timeout, retry]', end='', flush=True)
+                time.sleep(3)
+                continue
+            print(f'\n  Network error after {retries} attempts: {e}')
+            raise
+
+    raise Exception(f'Failed after {retries} retries')
 
 
 def find_child_page(parent_id, title):
@@ -137,7 +151,7 @@ def create_page(parent_id, title, icon=None, children=None):
         for i in range(0, len(remaining), 100):
             batch = remaining[i:i+100]
             notion_api(f'/blocks/{page_id}/children', {'children': batch}, method='PATCH')
-            time.sleep(0.4)
+            time.sleep(1)
 
     return page_id
 

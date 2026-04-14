@@ -243,7 +243,8 @@
       "WebFetch(domain:stephensolademi.com)",
       "WebFetch(domain:www.peopleperhour.com)",
       "Bash(bash .claude/skills/prospects-freelance/check-and-extract.sh docs/prospects/newcastle-freelance-2026-04-13/raw-domains.txt docs/prospects/newcastle-freelance-2026-04-13/prospects.json)",
-      "Bash(bash .claude/skills/prospects-freelance/publish-to-notion.sh docs/prospects/newcastle-freelance-2026-04-13/prospects.json \"Freelance Prospects - Newcastle - 2026-04-13\")"
+      "Bash(bash .claude/skills/prospects-freelance/publish-to-notion.sh docs/prospects/newcastle-freelance-2026-04-13/prospects.json \"Freelance Prospects - Newcastle - 2026-04-13\")",
+      "Bash(kill 85461 85459)"
     ]
   },
   "enableAllProjectMcpServers": true,

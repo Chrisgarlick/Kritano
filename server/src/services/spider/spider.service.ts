@@ -223,6 +223,25 @@ export class SpiderService {
 
       const responseTimeMs = Date.now() - startTime;
 
+      // Measure actual TTFB via Navigation Timing API (server response, not full page load)
+      let ttfbMs = responseTimeMs; // fallback to full load time
+      try {
+        const timing = await page.evaluate(() => {
+          const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+          if (nav) {
+            return { responseStart: nav.responseStart, requestStart: nav.requestStart, fetchStart: nav.fetchStart };
+          }
+          return null;
+        });
+        if (timing && timing.responseStart > 0) {
+          // TTFB = time from request start to first byte of response
+          const base = timing.requestStart > 0 ? timing.requestStart : timing.fetchStart;
+          ttfbMs = Math.round(timing.responseStart - base);
+        }
+      } catch {
+        // Navigation timing not available - keep fallback
+      }
+
       const statusCode = response.status();
       const headers = await response.allHeaders();
       const contentType = headers['content-type'] || '';
@@ -310,6 +329,7 @@ export class SpiderService {
         statusCode,
         contentType,
         responseTimeMs,
+        ttfbMs,
         pageSizeBytes,
         html,
         title,
@@ -471,6 +491,7 @@ export class SpiderService {
       statusCode,
       contentType,
       responseTimeMs,
+      ttfbMs: responseTimeMs,
       pageSizeBytes: 0,
       html: '',
       title: null,

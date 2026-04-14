@@ -145,7 +145,7 @@ function AnimatedAuditDemo() {
             <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-3">Enter your URL</p>
             <div className="flex items-center gap-2">
               <div className="flex-1 px-3.5 py-2.5 bg-white border border-slate-200 rounded-lg flex items-center">
-                <Search className="w-4 h-4 text-slate-400 mr-2 flex-shrink-0" />
+                <Search className="w-4 h-4 text-slate-500 mr-2 flex-shrink-0" />
                 <span className="text-sm text-slate-900 font-mono">
                   {DEMO_URL.slice(0, typedChars)}
                   <span className="inline-block w-px h-4 bg-indigo-600 ml-px align-middle animate-blink-cursor" />
@@ -154,7 +154,7 @@ function AnimatedAuditDemo() {
               <div className={`px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 typedChars >= DEMO_URL.length
                   ? 'bg-indigo-600 text-white'
-                  : 'bg-slate-100 text-slate-400'
+                  : 'bg-slate-100 text-slate-500'
               }`}>
                 Audit
               </div>
@@ -183,7 +183,7 @@ function AnimatedAuditDemo() {
             {/* Scan line visual */}
             <div className="mt-4 relative h-16 bg-slate-50 rounded-lg border border-slate-100 overflow-hidden">
               <div className="absolute left-0 right-0 h-px bg-indigo-400/60 animate-scan-sweep" />
-              <div className="flex items-center justify-center h-full text-[10px] text-slate-400 font-mono">
+              <div className="flex items-center justify-center h-full text-[10px] text-slate-500 font-mono">
                 Checking SEO, accessibility, security, performance...
               </div>
             </div>
@@ -233,7 +233,7 @@ function AnimatedAuditDemo() {
                     >
                       <Icon className={`w-3.5 h-3.5 flex-shrink-0 ${finding.color}`} />
                       <span className="text-xs text-slate-700 flex-1">{finding.label}</span>
-                      <span className="text-[10px] text-slate-400 tabular-nums">{finding.count} pages</span>
+                      <span className="text-[10px] text-slate-500 tabular-nums">{finding.count} pages</span>
                     </div>
                   );
                 })}
@@ -306,7 +306,7 @@ export default function Home() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Website Auditing for SEO, Accessibility, Security & Performance"
+        title="Website Auditing for SEO, Accessibility & Security"
         description="Kritano audits your website for SEO, accessibility, security, and performance issues. Get actionable insights to build trust online."
         path="/"
         structuredData={[
@@ -385,7 +385,7 @@ export default function Home() {
       {/* ═══ Social Proof Bar ═══ */}
       <section className="border-y border-slate-100 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-6">
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-medium uppercase tracking-wider text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-medium uppercase tracking-wider text-slate-500">
             <span className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />

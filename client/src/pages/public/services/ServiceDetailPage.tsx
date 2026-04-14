@@ -9,11 +9,13 @@
  * - Varied section backgrounds
  */
 
+import { useState } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { PublicLayout } from '../../../components/layout/PublicLayout';
 import PageSeo from '../../../components/seo/PageSeo';
 import { getServiceBySlug, SERVICES_DATA } from './serviceData';
-import type { CommonIssue } from './serviceData';
+import type { CommonIssue, ServiceData } from './serviceData';
+import AuthorBio from '../../../components/blog/AuthorBio';
 import {
   TrendingUp,
   Accessibility,
@@ -22,9 +24,13 @@ import {
   CheckCircle,
   ArrowRight,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   AlertTriangle,
   XCircle,
   Info,
+  Lightbulb,
+  HelpCircle,
 } from 'lucide-react';
 
 const ICON_MAP = {
@@ -72,6 +78,15 @@ export default function ServiceDetailPage() {
         { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://kritano.com/services' },
         { '@type': 'ListItem', position: 3, name: service.title, item: `https://kritano.com/services/${serviceSlug}` },
       ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: service.faqs.map(faq => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+      })),
     },
   ];
 
@@ -138,6 +153,18 @@ export default function ServiceDetailPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Definition block - for AEO citability */}
+      <section className="border-t border-slate-200 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-20 py-10">
+          <div className="max-w-3xl mx-auto">
+            <p className="text-lg text-slate-700 leading-relaxed">
+              <strong className="text-slate-900">What is {service.title.toLowerCase().replace(/\(.*\)/, '').trim()}?</strong>{' '}
+              {service.definition}
+            </p>
           </div>
         </div>
       </section>
@@ -239,6 +266,24 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
+      {/* Key Takeaways */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
+        <div className="max-w-3xl mx-auto bg-indigo-50 border border-indigo-100 rounded-xl p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Lightbulb className="w-5 h-5 text-indigo-600" />
+            <h2 className="font-semibold text-slate-900 text-sm uppercase tracking-wider">Key Takeaways</h2>
+          </div>
+          <ul className="space-y-2.5">
+            {service.keyTakeaways.map((takeaway) => (
+              <li key={takeaway} className="flex items-start gap-2.5">
+                <CheckCircle className="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5" />
+                <span className="text-slate-700 text-sm leading-relaxed">{takeaway}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       {/* Business Impact */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
         <div className="max-w-3xl mx-auto text-center">
@@ -250,6 +295,9 @@ export default function ServiceDetailPage() {
           </p>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FaqSection faqs={service.faqs} colorScheme={service.colorScheme} />
 
       {/* Related Services */}
       <section className="bg-slate-50 border-t border-slate-200">
@@ -291,6 +339,13 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
+      {/* Author */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
+        <div className="max-w-3xl mx-auto">
+          <AuthorBio />
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
         <div className="bg-indigo-600 rounded-2xl p-10 md:p-14 relative overflow-hidden">
@@ -313,5 +368,48 @@ export default function ServiceDetailPage() {
         </div>
       </section>
     </PublicLayout>
+  );
+}
+
+function FaqSection({ faqs, colorScheme }: { faqs: ServiceData['faqs']; colorScheme: ServiceData['colorScheme'] }) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  return (
+    <section className="max-w-7xl mx-auto px-6 lg:px-20 py-20">
+      <div className="text-center max-w-2xl mx-auto mb-14">
+        <p className={`font-semibold tracking-wide uppercase text-sm mb-4 ${colorScheme.text}`}>
+          FAQ
+        </p>
+        <h2 className="font-display text-4xl text-slate-900 leading-tight">
+          Frequently asked questions
+        </h2>
+      </div>
+
+      <div className="max-w-3xl mx-auto space-y-3">
+        {faqs.map((faq, i) => (
+          <div key={faq.question} className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+            <button
+              onClick={() => setOpenIndex(openIndex === i ? null : i)}
+              className="w-full flex items-center justify-between gap-4 p-5 text-left"
+              aria-expanded={openIndex === i}
+            >
+              <div className="flex items-start gap-3">
+                <HelpCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${colorScheme.text}`} />
+                <span className="font-semibold text-slate-900 text-sm">{faq.question}</span>
+              </div>
+              {openIndex === i
+                ? <ChevronUp className="w-5 h-5 text-slate-500 flex-shrink-0" />
+                : <ChevronDown className="w-5 h-5 text-slate-500 flex-shrink-0" />
+              }
+            </button>
+            {openIndex === i && (
+              <div className="px-5 pb-5 pt-0 pl-[3.25rem]">
+                <p className="text-sm text-slate-600 leading-relaxed">{faq.answer}</p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }

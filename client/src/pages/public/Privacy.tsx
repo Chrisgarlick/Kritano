@@ -10,9 +10,17 @@ export default function Privacy() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Privacy Policy"
+        title="Privacy Policy - How We Protect Your Data"
         description="Kritano privacy policy covering data collection, cookies, GDPR rights, and how we protect your information."
         path="/privacy"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+            { '@type': 'ListItem', position: 2, name: 'Privacy Policy', item: 'https://kritano.com/privacy' },
+          ],
+        }}
       />
 
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">

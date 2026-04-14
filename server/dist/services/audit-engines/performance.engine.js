@@ -75,11 +75,13 @@ class PerformanceEngine {
             description: 'Server took too long to respond',
             severity: 'serious',
             check: (ctx) => {
-                if (ctx.responseTimeMs > THRESHOLDS.RESPONSE_TIME_POOR) {
-                    return this.createFinding('slow-response', 'Slow Server Response', 'serious', `Server response time: ${ctx.responseTimeMs}ms (target: <${THRESHOLDS.RESPONSE_TIME_GOOD}ms)`, 'Optimize server response time, consider caching and CDN', ctx.responseTimeMs, THRESHOLDS.RESPONSE_TIME_GOOD);
+                // Use TTFB (actual server response) rather than full page load time
+                const ttfb = ctx.ttfbMs;
+                if (ttfb > THRESHOLDS.RESPONSE_TIME_POOR) {
+                    return this.createFinding('slow-response', 'Slow Server Response', 'serious', `Server response time (TTFB): ${ttfb}ms (target: <${THRESHOLDS.RESPONSE_TIME_GOOD}ms)`, 'Optimize server response time, consider caching and CDN', ttfb, THRESHOLDS.RESPONSE_TIME_GOOD);
                 }
-                else if (ctx.responseTimeMs > THRESHOLDS.RESPONSE_TIME_GOOD) {
-                    return this.createFinding('slow-response', 'Moderate Server Response', 'moderate', `Server response time: ${ctx.responseTimeMs}ms (target: <${THRESHOLDS.RESPONSE_TIME_GOOD}ms)`, 'Consider optimizing server response time', ctx.responseTimeMs, THRESHOLDS.RESPONSE_TIME_GOOD);
+                else if (ttfb > THRESHOLDS.RESPONSE_TIME_GOOD) {
+                    return this.createFinding('slow-response', 'Moderate Server Response', 'moderate', `Server response time (TTFB): ${ttfb}ms (target: <${THRESHOLDS.RESPONSE_TIME_GOOD}ms)`, 'Consider optimizing server response time', ttfb, THRESHOLDS.RESPONSE_TIME_GOOD);
                 }
                 return null;
             },
@@ -503,6 +505,7 @@ class PerformanceEngine {
             html: crawlResult.html,
             headers: crawlResult.headers,
             responseTimeMs: crawlResult.responseTimeMs,
+            ttfbMs: crawlResult.ttfbMs,
             pageSizeBytes: crawlResult.pageSizeBytes,
             resources: crawlResult.resources,
             deviceType: crawlResult.deviceType,
@@ -765,6 +768,7 @@ class PerformanceEngine {
             html: crawlResult.html,
             headers: crawlResult.headers,
             responseTimeMs: crawlResult.responseTimeMs,
+            ttfbMs: crawlResult.ttfbMs,
             pageSizeBytes: crawlResult.pageSizeBytes,
             resources: crawlResult.resources,
             deviceType: 'mobile',

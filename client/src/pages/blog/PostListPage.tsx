@@ -77,7 +77,7 @@ export default function PostListPage() {
   return (
     <PublicLayout>
       <PageSeo
-        title={category ? `${CATEGORY_LABELS[category] || category} Articles` : 'Blog'}
+        title={category ? `${CATEGORY_LABELS[category] || category} Articles` : 'Blog - Web Auditing Guides & Insights'}
         description="SEO guides, accessibility tips, security insights, and web performance best practices from Kritano."
         path="/blog"
         structuredData={[
@@ -182,19 +182,32 @@ export default function PostListPage() {
                 to={`/blog/${post.slug}`}
                 className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg hover:border-indigo-200 dark:hover:border-indigo-800 transition-all duration-200 group"
               >
-                {post.featured_image_url && (
-                  <div className="aspect-video bg-slate-100 dark:bg-slate-700 overflow-hidden">
-                    <img
-                      src={post.featured_image_url}
-                      alt=""
-                      aria-hidden="true"
-                      loading="lazy"
-                      width={640}
-                      height={360}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                )}
+                {post.featured_image_url && (() => {
+                  const webpUrl = post.featured_image_url
+                    .replace('/original/', '/webp/')
+                    .replace(/\.(png|jpe?g|gif)$/i, '.webp');
+                  const thumbUrl = post.featured_image_url
+                    .replace('/original/', '/thumbnails/')
+                    .replace(/\.(png|gif)$/i, '.jpg');
+                  return (
+                    <div className="aspect-video bg-slate-100 dark:bg-slate-700 overflow-hidden">
+                      <picture>
+                        <source srcSet={webpUrl} type="image/webp" />
+                        <img
+                          src={post.featured_image_url}
+                          srcSet={`${thumbUrl} 400w, ${post.featured_image_url} 640w`}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          alt=""
+                          role="presentation"
+                          loading="lazy"
+                          width={640}
+                          height={360}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </picture>
+                    </div>
+                  );
+                })()}
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 px-2.5 py-1 rounded-md uppercase tracking-wider">

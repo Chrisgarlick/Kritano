@@ -10,9 +10,17 @@ export default function Terms() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Terms of Service"
+        title="Terms of Service - Usage & Subscription Terms"
         description="Kritano terms of service covering website scanning liability, acceptable use, subscriptions, and data ownership."
         path="/terms"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+            { '@type': 'ListItem', position: 2, name: 'Terms of Service', item: 'https://kritano.com/terms' },
+          ],
+        }}
       />
 
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">

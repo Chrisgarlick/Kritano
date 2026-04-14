@@ -19,6 +19,23 @@ export default function DocsOverviewPage() {
         description="Comprehensive API documentation for Kritano - automate website audits, retrieve findings, and build custom integrations."
         path="/docs"
         useOverrides={true}
+        structuredData={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            name: 'Kritano API Documentation',
+            description: 'Comprehensive API documentation for Kritano - automate website audits, retrieve findings, and build custom integrations.',
+            url: 'https://kritano.com/docs',
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+              { '@type': 'ListItem', position: 2, name: 'API Docs', item: 'https://kritano.com/docs' },
+            ],
+          },
+        ]}
       />
 
       {/* Hero */}

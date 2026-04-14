@@ -164,7 +164,7 @@ export function PublicLayout({ children }: Props) {
           <div className="flex items-center justify-between h-[72px]">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
-              <img src="/brand/favicon-32.svg" alt="" width="32" height="32" fetchPriority="high" className="group-hover:scale-105 transition-transform" />
+              <img src="/brand/favicon-32.svg" alt="" role="presentation" width="32" height="32" fetchPriority="high" className="group-hover:scale-105 transition-transform" />
               <span className="font-display text-2xl text-slate-900 dark:text-white">Kritano</span>
             </Link>
 
@@ -338,7 +338,7 @@ export function PublicLayout({ children }: Props) {
                   </Link>
                   <button
                     onClick={() => setMobileServicesOpen(prev => !prev)}
-                    className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
+                    className="p-2 text-slate-500 hover:text-slate-600 transition-colors"
                     aria-expanded={mobileServicesOpen}
                     aria-label="Expand service links"
                   >
@@ -454,7 +454,7 @@ export function PublicLayout({ children }: Props) {
             {/* Brand column */}
             <div className="col-span-2 md:col-span-1">
               <Link to="/" className="flex items-center gap-3 mb-4">
-                <img src="/brand/favicon-32.svg" alt="" width="28" height="28" />
+                <img src="/brand/favicon-32.svg" alt="" role="presentation" width="28" height="28" />
                 <span className="font-display text-xl text-slate-900 dark:text-white">Kritano</span>
               </Link>
               <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">

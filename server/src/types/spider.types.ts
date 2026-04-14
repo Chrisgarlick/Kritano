@@ -33,6 +33,8 @@ export interface CrawlResult {
   statusCode: number;
   contentType: string;
   responseTimeMs: number;
+  /** Time to First Byte - actual server response time from Navigation Timing API */
+  ttfbMs: number;
   pageSizeBytes: number;
   html: string;
   title: string | null;
