@@ -29,7 +29,7 @@ export default function Privacy() {
             Privacy Policy
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Effective date: <time dateTime="2026-03-14">14 March 2026</time>
+            Effective date: <time dateTime="2026-03-14">14 March 2026</time> | Last updated: <time dateTime="2026-03-14">14 March 2026</time>
           </p>
         </div>
       </section>

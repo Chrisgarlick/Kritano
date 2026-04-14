@@ -2,6 +2,7 @@ import { type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { Book, Key, Gauge, AlertTriangle, Code2, Database, Menu, X } from 'lucide-react';
+import AuthorBio from '../blog/AuthorBio';
 
 const SIDEBAR_SECTIONS = [
   {
@@ -84,7 +85,8 @@ export default function DocsLayout({ children }: Props) {
         {/* Content */}
         <div className="flex-1 min-w-0 overflow-hidden">
           {children}
-          <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-700">
+          <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-700 space-y-4">
+            <AuthorBio />
             <p className="text-xs text-slate-500 dark:text-slate-400">
               Last updated: <time dateTime="2026-04-14">14 April 2026</time>
             </p>

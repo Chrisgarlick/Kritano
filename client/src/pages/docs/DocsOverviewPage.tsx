@@ -15,7 +15,7 @@ export default function DocsOverviewPage() {
   return (
     <PublicLayout>
       <PageSeo
-        title="API Documentation"
+        title="API Documentation - Automate Website Audits"
         description="Comprehensive API documentation for Kritano - automate website audits, retrieve findings, and build custom integrations."
         path="/docs"
         useOverrides={true}

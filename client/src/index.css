@@ -31,19 +31,15 @@ body {
 /*
  * Accessibility: Ensure inline links in body content are distinguishable
  * without relying on colour alone (WCAG 1.4.1).
- * Targets links within <main> paragraphs, list items, and table cells.
- * Excludes nav links, buttons, and card links which use other visual cues.
+ * Targets all links within <main> that aren't buttons, cards, or nav items.
+ * Uses attribute selectors to exclude common non-inline link patterns.
  */
-#main-content p a:not([class*="btn"]),
-#main-content li a:not([class*="btn"]),
-#main-content td a:not([class*="btn"]) {
+#main-content a:not([class*="btn"]):not([class*="rounded-lg"]):not([class*="rounded-xl"]):not([class*="block"]):not([class*="flex"]):not([class*="inline-flex"]):not([role="menuitem"]):not([aria-label]) {
   text-decoration: underline;
   text-decoration-color: theme('colors.indigo.300');
   text-underline-offset: 2px;
 }
-#main-content p a:not([class*="btn"]):hover,
-#main-content li a:not([class*="btn"]):hover,
-#main-content td a:not([class*="btn"]):hover {
+#main-content a:not([class*="btn"]):not([class*="rounded-lg"]):not([class*="rounded-xl"]):not([class*="block"]):not([class*="flex"]):not([class*="inline-flex"]):not([role="menuitem"]):not([aria-label]):hover {
   text-decoration-color: theme('colors.indigo.600');
 }
 

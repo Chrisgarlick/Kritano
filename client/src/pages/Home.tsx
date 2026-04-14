@@ -11,6 +11,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { PublicLayout } from '../components/layout/PublicLayout';
+import AuthorBio from '../components/blog/AuthorBio';
 import { Button } from '../components/ui/Button';
 import { useSiteMode } from '../contexts/SiteModeContext';
 import PageSeo from '../components/seo/PageSeo';
@@ -634,6 +635,13 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Author */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
+        <div className="max-w-3xl mx-auto">
+          <AuthorBio />
         </div>
       </section>
     </PublicLayout>

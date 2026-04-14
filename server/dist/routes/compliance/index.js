@@ -57,9 +57,12 @@ router.get('/:id/compliance', auth_middleware_js_1.authenticate, async (req, res
         const findingsResult = await index_js_1.pool.query(`
       SELECT
         f.rule_id,
+        MIN(f.rule_name) as rule_name,
         f.severity,
         COALESCE(array_to_string(f.wcag_criteria, ','), '') as wcag_criteria,
-        COUNT(DISTINCT CONCAT(f.rule_id, '|', COALESCE(p.url, ''))) as issue_count
+        MIN(f.description) as description,
+        COUNT(DISTINCT CONCAT(f.rule_id, '|', COALESCE(p.url, ''))) as issue_count,
+        ARRAY_AGG(DISTINCT p.url) FILTER (WHERE p.url IS NOT NULL) as pages
       FROM audit_findings f
       LEFT JOIN audit_pages p ON p.id = f.audit_page_id
       WHERE f.audit_job_id = $1 AND f.category = 'accessibility'
@@ -99,8 +102,11 @@ router.get('/:id/compliance', auth_middleware_js_1.authenticate, async (req, res
                     entry.status = 'fail';
                     entry.findings.push({
                         ruleId: row.rule_id,
+                        ruleName: row.rule_name || row.rule_id,
                         severity: row.severity,
                         count,
+                        description: row.description || '',
+                        pages: (row.pages || []).slice(0, 10),
                     });
                 }
             }

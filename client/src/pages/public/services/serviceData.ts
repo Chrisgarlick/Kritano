@@ -80,7 +80,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       badgeText: 'text-violet-700',
     },
     seo: {
-      title: 'SEO Auditing',
+      title: 'SEO Auditing - 100+ Ranking Factors Checked',
       description:
         'Analyse your website against 100+ SEO ranking factors. Kritano checks metadata, structured data, Core Web Vitals, mobile-friendliness, and more - with clear fix guidance for every issue.',
     },
@@ -394,7 +394,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       badgeText: 'text-red-700',
     },
     seo: {
-      title: 'Security Scanning',
+      title: 'Website Security Scanning - Headers, HTTPS & More',
       description:
         'Identify website security vulnerabilities before attackers do. Kritano checks HTTPS configuration, security headers, exposed files, cookie security, and more.',
     },

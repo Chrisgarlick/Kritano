@@ -1155,8 +1155,8 @@ class AuditWorkerService {
         for (const [pageId, pageData] of discoveredLinks) {
             const pageBrokenFindings = [];
             for (const link of pageData.links) {
-                if (link.isExternal) {
-                    // Collect external links for batch checking
+                if (link.isExternal && !link.isNoFollow) {
+                    // Collect external links for batch checking (skip nofollow links)
                     if (!urlsToCheck.has(link.href)) {
                         urlsToCheck.set(link.href, []);
                     }

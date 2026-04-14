@@ -10,6 +10,7 @@
 
 import { Link } from 'react-router-dom';
 import { PublicLayout } from '../../components/layout/PublicLayout';
+import AuthorBio from '../../components/blog/AuthorBio';
 import { useSiteMode } from '../../contexts/SiteModeContext';
 import PageSeo from '../../components/seo/PageSeo';
 import {
@@ -304,6 +305,13 @@ export default function Services() {
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Author */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
+        <div className="max-w-3xl mx-auto">
+          <AuthorBio />
         </div>
       </section>
     </PublicLayout>

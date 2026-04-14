@@ -29,7 +29,7 @@ export default function Terms() {
             Terms of Service
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Effective date: <time dateTime="2026-03-08">8 March 2026</time>
+            Effective date: <time dateTime="2026-03-08">8 March 2026</time> | Last updated: <time dateTime="2026-03-08">8 March 2026</time>
           </p>
         </div>
       </section>

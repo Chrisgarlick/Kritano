@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { PublicLayout } from '../../components/layout/PublicLayout';
 import { useSiteMode } from '../../contexts/SiteModeContext';
 import PageSeo from '../../components/seo/PageSeo';
+import AuthorBio from '../../components/blog/AuthorBio';
 import { ArrowRight, Eye, Sparkles, Heart, Target } from 'lucide-react';
 
 const PILLARS = [
@@ -263,6 +264,13 @@ export default function About() {
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Author */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
+        <div className="max-w-3xl mx-auto">
+          <AuthorBio />
         </div>
       </section>
 

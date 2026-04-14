@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PublicLayout } from '../../components/layout/PublicLayout';
 import PageSeo from '../../components/seo/PageSeo';
+import AuthorBio from '../../components/blog/AuthorBio';
 import { Mail, MapPin, Clock, Send, CheckCircle, Loader2, ArrowRight, MessageCircle } from 'lucide-react';
 import { api } from '../../services/api';
 
@@ -286,6 +287,13 @@ export default function Contact() {
               </ul>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Author */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
+        <div className="max-w-3xl mx-auto">
+          <AuthorBio />
         </div>
       </section>
     </PublicLayout>

@@ -9,6 +9,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PublicLayout } from '../../components/layout/PublicLayout';
+import AuthorBio from '../../components/blog/AuthorBio';
 import PageSeo from '../../components/seo/PageSeo';
 import { CheckCircle, X, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 
@@ -479,6 +480,13 @@ export default function Pricing() {
               <FAQItem key={index} question={faq.q} answer={faq.a} />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Author */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
+        <div className="max-w-3xl mx-auto">
+          <AuthorBio />
         </div>
       </section>
 

@@ -343,6 +343,7 @@ export default function ServiceDetailPage() {
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
         <div className="max-w-3xl mx-auto">
           <AuthorBio />
+          <p className="text-xs text-slate-500 mt-4">Last updated: <time dateTime="2026-04-14">14 April 2026</time></p>
         </div>
       </section>
 

@@ -51,7 +51,7 @@ export default function AuthorBio() {
               <a
                 href={AUTHOR.linkedin}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="text-slate-400 hover:text-[#0A66C2] transition-colors"
                 aria-label="LinkedIn profile"
               >
@@ -60,7 +60,7 @@ export default function AuthorBio() {
               <a
                 href={AUTHOR.x}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer nofollow"
                 className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
                 aria-label="X profile"
               >

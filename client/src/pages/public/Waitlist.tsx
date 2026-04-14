@@ -28,7 +28,7 @@ export default function WaitlistPage() {
   return (
     <PublicLayout>
       <PageSeo
-        title="Join the Waitlist - Early Access to Website Auditing"
+        title="Join the Waitlist - Early Access Web Auditing"
         description="Be the first to audit your website with Kritano. Sign up to get early access to comprehensive SEO, accessibility, security, and performance auditing."
         path="/waitlist"
         structuredData={{

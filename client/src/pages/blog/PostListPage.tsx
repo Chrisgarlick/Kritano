@@ -77,7 +77,7 @@ export default function PostListPage() {
   return (
     <PublicLayout>
       <PageSeo
-        title={category ? `${CATEGORY_LABELS[category] || category} Articles` : 'Blog - Web Auditing Guides & Insights'}
+        title={category ? `${CATEGORY_LABELS[category] || category} Articles - Web Auditing Blog` : 'Blog - Web Auditing Guides & Insights'}
         description="SEO guides, accessibility tips, security insights, and web performance best practices from Kritano."
         path="/blog"
         structuredData={[

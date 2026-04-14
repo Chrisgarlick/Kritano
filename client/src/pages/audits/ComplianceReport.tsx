@@ -40,8 +40,11 @@ interface ClauseResult {
   issueCount: number;
   findings: Array<{
     ruleId: string;
+    ruleName?: string;
     severity: string;
     count: number;
+    description?: string;
+    pages?: string[];
   }>;
 }
 
@@ -681,22 +684,34 @@ function ClauseRow({
       </tr>
       {isExpanded && hasFindings && (
         <tr>
-          <td colSpan={5} className="bg-slate-50 dark:bg-slate-900/50 px-10 py-3">
-            <div className="space-y-1.5" aria-live="polite">
+          <td colSpan={5} className="bg-slate-50 dark:bg-slate-900/50 px-10 py-4">
+            <div className="space-y-4" aria-live="polite">
               {clause.findings.map((f, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between text-xs"
-                >
-                  <div className="flex items-center gap-2">
-                    <Mono className="text-slate-600 dark:text-slate-400">{f.ruleId}</Mono>
-                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${severityColour(f.severity)}`}>
-                      {f.severity}
+                <div key={idx} className="border-l-2 border-slate-200 dark:border-slate-700 pl-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-slate-800 dark:text-slate-200">{f.ruleName || f.ruleId}</span>
+                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${severityColour(f.severity)}`}>
+                        {f.severity}
+                      </span>
+                    </div>
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                      {f.count} issue{f.count !== 1 ? 's' : ''}
                     </span>
                   </div>
-                  <span className="text-slate-500 dark:text-slate-400 font-medium">
-                    {f.count} issue{f.count !== 1 ? 's' : ''}
-                  </span>
+                  {f.description && (
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mb-2 leading-relaxed">{f.description}</p>
+                  )}
+                  {f.pages && f.pages.length > 0 && (
+                    <div className="mt-1.5">
+                      <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Affected pages</p>
+                      <div className="space-y-0.5">
+                        {f.pages.map((page) => (
+                          <Mono key={page} className="text-[11px] text-indigo-600 dark:text-indigo-400 block truncate">{page}</Mono>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -753,18 +768,31 @@ function MobileClauseCard({
       </button>
 
       {isExpanded && hasFindings && (
-        <div className="mt-2 ml-2 pl-3 border-l-2 border-slate-200 dark:border-slate-700 space-y-1.5">
+        <div className="mt-2 ml-2 pl-3 border-l-2 border-slate-200 dark:border-slate-700 space-y-3">
           {clause.findings.map((f, idx) => (
-            <div key={idx} className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2">
-                <Mono className="text-slate-600 dark:text-slate-400">{f.ruleId}</Mono>
-                <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${severityColour(f.severity)}`}>
-                  {f.severity}
+            <div key={idx}>
+              <div className="flex items-center justify-between text-xs mb-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-slate-800 dark:text-slate-200">{f.ruleName || f.ruleId}</span>
+                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${severityColour(f.severity)}`}>
+                    {f.severity}
+                  </span>
+                </div>
+                <span className="text-slate-500 dark:text-slate-400 font-medium">
+                  {f.count}
                 </span>
               </div>
-              <span className="text-slate-500 dark:text-slate-400 font-medium">
-                {f.count}
-              </span>
+              {f.description && (
+                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">{f.description}</p>
+              )}
+              {f.pages && f.pages.length > 0 && (
+                <div className="mt-1">
+                  <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-0.5">Affected pages</p>
+                  {f.pages.map((page) => (
+                    <Mono key={page} className="text-[10px] text-indigo-600 dark:text-indigo-400 block truncate">{page}</Mono>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
