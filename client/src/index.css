@@ -31,16 +31,28 @@ body {
 /*
  * Accessibility: Ensure inline links in body content are distinguishable
  * without relying on colour alone (WCAG 1.4.1).
- * Targets all links within <main> that aren't buttons, cards, or nav items.
- * Uses attribute selectors to exclude common non-inline link patterns.
+ * Applies underline to ALL links within <main>, then removes it from
+ * elements that use other visual cues (buttons, cards, nav items).
  */
-#main-content a:not([class*="btn"]):not([class*="rounded-lg"]):not([class*="rounded-xl"]):not([class*="block"]):not([class*="flex"]):not([class*="inline-flex"]):not([role="menuitem"]):not([aria-label]) {
+#main-content a {
   text-decoration: underline;
   text-decoration-color: theme('colors.indigo.300');
   text-underline-offset: 2px;
 }
-#main-content a:not([class*="btn"]):not([class*="rounded-lg"]):not([class*="rounded-xl"]):not([class*="block"]):not([class*="flex"]):not([class*="inline-flex"]):not([role="menuitem"]):not([aria-label]):hover {
+#main-content a:hover {
   text-decoration-color: theme('colors.indigo.600');
+}
+/* Remove underline from links that are visually distinct without it */
+#main-content a[class*="rounded-lg"],
+#main-content a[class*="rounded-xl"],
+#main-content a[class*="rounded-md"],
+#main-content a[class*="bg-indigo"],
+#main-content a[class*="bg-white"],
+#main-content a[class*="bg-slate"],
+#main-content a[class*="border"],
+#main-content a[role="menuitem"],
+#main-content nav a {
+  text-decoration: none;
 }
 
 /* Fix browser autofill forcing light backgrounds in dark mode */
