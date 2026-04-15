@@ -109,7 +109,7 @@ export default function About() {
             url: 'https://kritano.com/about',
             image: 'https://kritano.com/brand/author-chris-garlick.png',
             sameAs: [
-              'https://www.linkedin.com/in/chris-garlick-59a8bb91/',
+              'https://uk.linkedin.com/in/chris-garlick-59a8bb91',
               'https://x.com/ChrisGarlick123',
             ],
           },
