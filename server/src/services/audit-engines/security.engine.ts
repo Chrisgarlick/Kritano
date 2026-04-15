@@ -221,7 +221,13 @@ export class SecurityEngine {
             cookie.name.toLowerCase().includes(p)
           );
 
-          if (isLikelySensitive && !cookie.httpOnly) {
+          // CSRF cookies using the double-submit pattern intentionally omit
+          // HttpOnly so JavaScript can read the token and send it as a header.
+          // This is safe when SameSite is set to 'strict' or 'lax'.
+          const isCsrfDoubleSubmit = cookie.name.toLowerCase().includes('csrf')
+            && cookie.sameSite && ['strict', 'lax'].includes(cookie.sameSite.toLowerCase());
+
+          if (isLikelySensitive && !cookie.httpOnly && !isCsrfDoubleSubmit) {
             findings.push(this.createFinding('cookie-missing-httponly', 'Cookie Missing HttpOnly', 'moderate',
               `Cookie "${cookie.name}" is missing the HttpOnly flag`,
               'Add the HttpOnly flag to prevent JavaScript access'));

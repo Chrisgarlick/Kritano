@@ -1,281 +1,417 @@
-# Kritano.com Audit Fix Implementation Plan
+# Kritano.com Audit Fixes - Implementation Plan
 
 **Audit Date:** 15 Apr 2026 | **Overall Score:** 76/100 | **Target Score:** 90+
+**Phase 1 (Security) Status:** IMPLEMENTED - ready for deploy & testing
 
-**Previous audit (13 Apr):** 56/100 -- most Phase 1 issues now resolved.
+## Overview
 
----
-
-## Summary of Current Issues
-
-| Category | Score | Serious | Moderate | Minor | Info |
-|----------|-------|---------|----------|-------|------|
-| SEO | 91 | 1 | 4 | 0 | 3 |
-| Accessibility | 97 | 2 | 1 | 0 | 0 |
-| Security | 64 | 2 | 2 | 0 | 0 |
-| Performance | 81 | 2 | 5 | 1 | 1 |
-| Content | 53 | 2 | 8 | 7 | 1 |
-| E-E-A-T | n/a | 2 | 3 | 1 | 1 |
-| AEO | n/a | 3 | 4 | 1 | 1 |
-| Schema | 92 | 0 | 0 | 0 | 0 |
-
-0 critical issues. Main drag: Content (53), Security (64), and CQS (57).
+This plan addresses all findings from the self-audit of kritano.com, prioritised by severity and grouped by category. Security is the primary focus (score: 64), followed by Content (53), Performance (80), SEO (90), Accessibility (99), and Schema (89).
 
 ---
 
-## Phase 1: Quick Wins (high impact, low effort)
+## Key Decisions
 
-### 1.1 Fix Color Contrast (Accessibility - SERIOUS, 99 instances)
-
-- **Issue:** `#0d9488` (teal-600) on white fails 4.5:1 contrast at small text sizes (ratio 3.74:1)
-- **Where:** Pricing page (heaviest), home, services, docs, blog pages
-- **Fix:** Replace `text-teal-600` with a darker variant. `#0f766e` (teal-700, ratio 4.64:1) or `#0d6b63` passes AA.
-- **Files:** Global search for `teal-600` across all client components and replace with `teal-700`
-- **Impact:** Eliminates ~99 serious findings in one change
-
-### 1.2 Fix Scrollable Region Keyboard Access (Accessibility - SERIOUS, 3 instances)
-
-- **Issue:** Code blocks in blog posts are scrollable but not keyboard-focusable
-- **Where:** `/blog/security-headers-every-website-needs-in-2026` (3 instances)
-- **Fix:** Add `tabindex="0"` and `role="region"` with `aria-label` to scrollable code block containers
-- **Files:** Blog post renderer / markdown code block component
-- **Impact:** 3 serious findings eliminated
-
-### 1.3 Duplicate Page Title (SEO - SERIOUS, 1 finding)
-
-- **Issue:** "Sign In | Kritano" used on 3 pages
-- **Where:** Login, register, and possibly forgot-password pages sharing the same title
-- **Fix:** Give each auth page a unique title: "Log In | Kritano", "Create Account | Kritano", "Reset Password | Kritano"
-- **Files:** Auth page components (Login.tsx, Register.tsx, etc.)
-
-### 1.4 Missing Canonical URLs (SEO - MODERATE, 3 pages)
-
-- **Issue:** `/faq`, `/waitlist`, `/author/chris-garlick` missing canonical tags
-- **Fix:** Add `<PageSeo>` with correct `path` prop to these pages (some may already have it but need `useOverrides` enabled)
-- **Files:** `Faq.tsx`, `Waitlist.tsx`, `AuthorPage.tsx`
-
-### 1.5 Title Too Short (SEO - MODERATE, 3 pages)
-
-- **Issue:** `/waitlist`, `/faq`, `/author/chris-garlick` have titles under 30 chars
-- **Fix:** Already fixed in routeRegistry defaults. Verify the PageSeo props on these pages use the longer titles.
-
-### 1.6 Exposed JSON Configuration (Security - SERIOUS, 1 finding)
-
-- **Issue:** `/config.json` is publicly accessible
-- **Investigate:** Check what this file is. If it's a Vite/build artifact or app config, block it in nginx or remove from public dir.
-- **Fix:** Add deny rule in nginx: `location = /config.json { deny all; return 404; }`
-
-### 1.7 Insecure Cookie `_ga` (Security - SERIOUS, 27 pages)
-
-- **Issue:** Google Analytics `_ga` cookie missing Secure flag
-- **Status:** WONT FIX (same as previous audit) -- GA sets this cookie via its own JS. Over HTTPS it should set Secure automatically. This is a scanner timing artefact.
-
-### 1.8 CSRF Cookie HttpOnly (Security - MODERATE, 27 pages)
-
-- **Status:** WONT FIX (by design) -- double-submit cookie pattern requires JS to read the token. HttpOnly would break CSRF protection.
+1. **Security first** - the 64 score is the weakest area and most impactful for a company selling security audits
+2. **CSP nonces over unsafe-inline** - invest in proper nonce-based CSP to eliminate unsafe-inline
+3. **Remove unused GA CSP allowances** - tighten the attack surface since GA is not in use
+4. **Content improvements are manual** - readability/E-E-A-T fixes require copywriting, not code changes
+5. **Cache headers already configured in nginx** - the audit scanner may be checking response headers before nginx proxies them; verify in production
 
 ---
 
-## Phase 2: Performance (score 81 -> 90+)
+## Phase 1: Security (Score: 64 -> 90+) [CRITICAL]
 
-### 2.1 Slow Page Load (SEO - MODERATE, 27 pages, 9639ms)
+### 1.1 Exposed config.json [SERIOUS]
 
-- **Root cause:** All pages affected -- likely server response time (TTFB) or large JS bundles
-- **Actions:**
-  1. Check if SSR/prerendering would help with TTFB
-  2. Audit bundle size with `npx vite-bundle-visualizer`
-  3. Add proper `Cache-Control` headers (marked as missing on 27 pages -- verify nginx config is deployed)
-  4. Consider code-splitting large route chunks
+**Current state:** Nginx returns 404 for `/config.json` (line 48-50 of `scripts/nginx.conf`). The audit still flags it.
 
-### 2.2 Poor CLS (Performance - SERIOUS, 3 blog pages, CLS 0.414)
+**Investigation needed:**
+- Verify the 404 block is deployed to production (`curl -I https://kritano.com/config.json`)
+- Check if Express is serving a `/config.json` route before nginx catches it
+- Check if a `config.json` file exists in `client/dist/` after build
 
-- **Where:** All 3 blog post pages
-- **Fix:** Set explicit `width`/`height` on blog featured images, ensure fonts have `font-display: swap` with proper fallback sizing, check for dynamically injected content above fold
-- **Files:** Blog post layout component, image components
+**Fix (if file exists in dist):**
+- Add to `.gitignore` and remove from build output
+- Ensure Vite is not copying it to `dist/`
 
-### 2.3 Poor LCP on Services Page (Performance - SERIOUS, 4408ms)
+**Fix (if nginx block not deployed):**
+- Redeploy nginx config: `sudo nginx -t && sudo systemctl reload nginx`
 
-- **Where:** `/services`
-- **Fix:** Preload the hero/LCP image with `<link rel="preload">`, optimize image format (WebP/AVIF), reduce server response time
-
-### 2.4 LCP Needs Improvement (Performance - MODERATE, 6 pages, ~2672ms)
-
-- **Where:** Blog, home, docs, pricing
-- **Fix:** Same as 2.3 -- preload LCP elements, optimize images
-
-### 2.5 Render-Blocking CSS (Performance - MODERATE, 27 pages)
-
-- **Issue:** Main stylesheet blocks rendering
-- **Fix:** Inline critical CSS for above-the-fold content, defer the rest. Or accept this as a standard SPA trade-off.
-- **Note:** This is common for Vite SPAs and may be low-priority.
-
-### 2.6 Large Page Size (Performance - MODERATE, 18 pages, 721KB+)
-
-- **Actions:**
-  1. Check if images are optimized (WebP, proper sizing)
-  2. Review JS bundle splitting
-  3. Remove unused CSS/JS
-
-### 2.7 Missing Responsive Images (Performance - MINOR, 3 blog pages)
-
-- **Fix:** Add `srcset` and `sizes` to blog post images
-- **Files:** Blog image component or markdown renderer
+**Files:** `scripts/nginx.conf`, check `client/dist/`
 
 ---
 
-## Phase 3: Content & Readability (score 53 -> 70+)
+### 1.2 CSP: Remove unsafe-inline for Scripts [MODERATE - 27 pages]
 
-These are the biggest score draggers but require content work, not code.
+**Current state:** `scripts/nginx.conf` has `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com`
 
-### 3.1 Poor Readability Score (Content - SERIOUS, 23 pages)
+**Why unsafe-inline exists:** React injects inline scripts. Google Analytics (not actually used) also needs it.
 
-- **Issue:** Readability score of 20/100 on many pages
-- **Root cause:** Technical content (API docs, services) uses complex vocabulary
-- **Actions:**
-  1. Simplify sentence structure on key landing pages (home, services, pricing, about)
-  2. API docs are inherently technical -- accept lower readability there
-  3. Add TL;DR summaries at top of technical pages
+**Fix - Hash-based CSP:**
 
-### 3.2 Thin Content (SEO - MODERATE, 8 pages)
+1. After Vite builds, compute SHA-256 hashes of any inline scripts in `index.html`
+2. Replace `'unsafe-inline'` with the specific hashes: `'sha256-<hash>'`
+3. **Remove GA/GTM from CSP** since it is not used - this tightens the policy significantly
 
-- **Pages:** waitlist, faq, blog listing, author, contact, category pages
-- **Fix:** Expand content on waitlist (add feature preview, benefits), contact (add FAQ, office info), author page (expand bio, add articles list)
-- **Note:** Blog category pages are listing pages -- thin content is expected. Consider excluding listing pages from word count checks.
+**Updated CSP for nginx:**
+```
+script-src 'self' 'sha256-<vite-inline-hash>';
+connect-src 'self';
+frame-src 'none';
+```
 
-### 3.3 Wall of Text (Content - SERIOUS, 2 pages)
-
-- **Where:** `/docs/objects`, `/docs/endpoints`
-- **Fix:** Add H3 subheadings every 300-400 words within the docs content
-
-### 3.4 Academic Reading Level & High Vocabulary (Content - MODERATE, 23 pages)
-
-- **Largely overlaps with 3.1.** Focus on non-technical pages first.
-
-### 3.5 Keyword Optimisation (Content - MODERATE, 3 blog posts)
-
-- **Issues:** Missing keyword in meta description, introduction, and low keyword density on blog posts
-- **Fix:** Review blog post meta descriptions to include target keywords. Naturally weave keywords into opening paragraphs.
-
-### 3.6 Duplicate Meta Description (SEO - MODERATE, 1 finding)
-
-- **Issue:** Same meta description on 27 pages
-- **Investigate:** This likely means the fallback meta description from `index.html` is being used as default. Each page should already have unique descriptions via `PageSeo`. Check if there's a rendering issue where the Helmet description isn't overriding the HTML default.
+**Files:** `scripts/nginx.conf`, potentially a post-build script to extract hashes
 
 ---
 
-## Phase 4: E-E-A-T Improvements
+### 1.3 Insecure Cookie: _ga_PYQW89W26J Missing Secure Flag [SERIOUS - 27 pages]
 
-### 4.1 Author Bio Missing on Non-Blog Pages (E-E-A-T - SERIOUS, 9 pages)
+**Current state:** A Google Analytics cookie is being set without the Secure flag. However, no GA code exists in the codebase.
 
-- **Where:** author page, terms, waitlist, blog listings, privacy, faq
-- **Fix:** These pages don't need an author bio (it's not applicable to terms/privacy/listing pages). Consider adjusting the E-E-A-T engine to not flag legal/listing pages.
-- **For author page:** Ensure the author bio component renders correctly.
+**Investigation needed:**
+- This cookie is likely set by a previously-deployed GA snippet that was removed, or a third-party injection
+- Check if the domain has any third-party scripts injected (CDN, hosting panel, etc.)
 
-### 4.2 Ghost Content / Low E-E-A-T Score (E-E-A-T - SERIOUS, 8 pages)
+**Fix:**
+- Confirm GA is not in use and no GA scripts are injected anywhere
+- If a residual GA script exists somewhere (e.g., in a CDN config or hosting panel), remove it
+- Stale GA cookies will expire naturally
+- The tightened CSP (1.2) will prevent GA from setting cookies in the future
 
-- **Same pages as 4.1.** The fix is to add trust signals where appropriate:
-  - Blog listing pages: add editorial intro paragraph
-  - Waitlist: add social proof (user count, testimonials)
-  - Author page: ensure bio, credentials, social links render
-
-### 4.3 No Author Credentials (E-E-A-T - MODERATE, 27 pages)
-
-- **Fix:** Add credentials/qualifications to the author bio component (e.g. "10+ years in web development" or specific certs)
-- **Files:** `AuthorBio.tsx`, `About.tsx` author section
-
-### 4.4 No First-Hand Experience Signals (E-E-A-T - MODERATE, 23 pages)
-
-- **Fix:** Add "Based on data from X audits" or "In our testing..." language to service pages and blog posts
-- **Lower priority** -- content change, not code
-
-### 4.5 No Citations / References (E-E-A-T - MODERATE, 17 pages)
-
-- **Fix:** Add links to authoritative sources (W3C WCAG specs, Google documentation, MDN) in service pages and blog posts
+**Files:** Check production deployment, any CDN/hosting panel config
 
 ---
 
-## Phase 5: AEO (Answer Engine Optimisation)
+### 1.4 CSRF Token Cookie Missing HttpOnly [MODERATE - 27 pages]
 
-### 5.1 Low AEO Citability (AEO - SERIOUS, 26 pages)
+**Current state:** `server/src/middleware/csrf.middleware.ts` intentionally sets `httpOnly: false` on the csrf_token cookie. This is **correct by design** - the double-submit cookie pattern requires JavaScript to read the cookie and send it as a header.
 
-- **Root cause:** Missing definition blocks, FAQ sections, factual density, and summary statements
-- **Quick wins:**
-  1. Add definition blocks to service pages ("Website accessibility auditing is...")
-  2. Add FAQ schema to key landing pages (pricing, services, home)
-  3. Add "Key takeaway" sections to blog posts and service pages
+**Action:** This is a false positive from the audit. The CSRF implementation is secure:
+- 32-byte cryptographically random tokens
+- Timing-safe comparison (`timingSafeEqual`)
+- SameSite=strict
+- Secure flag in production
 
-### 5.2 No FAQ Sections (AEO - MODERATE, 19 pages)
-
-- **Fix:** Add `FAQPage` schema to pages that already have FAQ-like content (pricing, services)
-- **For others:** Add question-based H2/H3 headings
-
-### 5.3 No Author sameAs Links (AEO - MODERATE, 24 pages)
-
-- **Issue:** Structured data missing sameAs links on most pages
-- **Fix:** Ensure the Person schema in blog posts and pages includes sameAs links. Already fixed the LinkedIn URL -- verify it's rendering in JSON-LD across all pages.
-- **Files:** `blogSchemaBuilder.ts`, page-level structured data
-
-### 5.4 No Summary Statements (AEO - MODERATE, 16 pages)
-
-- **Fix:** Add "Key takeaway" or "TL;DR" sections to service pages, docs, and blog posts
+**Improvement:** Update the security audit engine (`server/src/services/audit-engines/security.engine.ts`) to recognise double-submit CSRF patterns and not flag csrf cookies without HttpOnly when SameSite=strict is set.
 
 ---
 
-## Phase 6: CSP Hardening (Security - MODERATE)
+### 1.5 Additional Security Hardening
 
-### 6.1 CSP Allows unsafe-inline Scripts (27 pages)
-
-- **Issue:** CSP allows `unsafe-inline` for scripts
-- **Fix:** Implement nonce-based CSP. This requires:
-  1. Server generates a random nonce per request
-  2. Nonce injected into CSP header and inline script tags
-  3. For a Vite SPA, this means either SSR or a middleware that rewrites the HTML
-- **Complexity:** High. May defer to a later sprint.
-- **Alternative:** Use hash-based CSP for the known inline scripts (Vite injects a predictable module loader)
+| Item | Action | Priority |
+|------|--------|----------|
+| Remove GA from CSP | Tighten `script-src` and `connect-src` in nginx | High |
+| Enable HTTP/2 | Add `http2` to nginx listen directive | High |
+| SRI (Subresource Integrity) | Add `integrity` attributes to script/link tags | Medium |
+| Verify seed credentials | Ensure dev seed data is not in production DB | High |
+| Permissions-Policy | Already configured - verify deployed | Medium |
 
 ---
 
-## Implementation Order (Priority)
+## Phase 2: Performance (Score: 80 -> 90+)
 
-| Priority | Task | Impact | Effort |
-|----------|------|--------|--------|
-| 1 | Fix teal-600 contrast (1.1) | -99 serious | 15 min |
-| 2 | Fix scrollable regions (1.2) | -3 serious | 15 min |
-| 3 | Fix duplicate title (1.3) | -1 serious | 10 min |
-| 4 | Block /config.json (1.6) | Security fix | 5 min |
-| 5 | Fix missing canonicals (1.4) | -3 moderate | 15 min |
-| 6 | Fix CLS on blog posts (2.2) | -3 serious | 30 min |
-| 7 | Fix LCP on services (2.3) | -1 serious | 30 min |
-| 8 | Add author credentials (4.3) | E-E-A-T boost | 15 min |
-| 9 | Investigate duplicate meta desc (3.6) | SEO fix | 30 min |
-| 10 | Add FAQ schema to key pages (5.2) | AEO boost | 1 hr |
-| 11 | Content improvements (3.1-3.5) | Content score | Ongoing |
-| 12 | CSP nonce (6.1) | Security hardening | 2-4 hrs |
+### 2.1 Cache Headers Not Detected [MODERATE - 27 pages]
+
+**Current state:** Nginx already sets cache headers but the scanner may not be seeing them.
+
+**Fix:**
+- Verify in production: `curl -I https://kritano.com/`
+- If missing, redeploy nginx config
+- Add fallback cache headers to Express for HTML responses
+
+**Files:** `scripts/nginx.conf`, potentially `server/src/index.ts`
 
 ---
 
-## Manual Admin Tasks
+### 2.2 Poor CLS [SERIOUS - 3 blog pages]
 
-These require action in the admin panel or CMS, not code changes.
+**CLS: 0.437** (target: <0.1).
 
-### ~~Fix Non-Self-Referencing Canonicals~~ -- RESOLVED
+**Fix:**
+- Add explicit `width` and `height` to all `<img>` tags in blog content
+- Add `font-display: swap` with font preloading for Instrument Serif and Outfit
+- Use `aspect-ratio` CSS on image containers
+- Preload hero/LCP images
 
-Verified the admin SEO manager already has the correct canonical URLs for `/pricing` and `/blog`. The audit finding was likely from a pre-deploy snapshot.
+**Files:** Blog post components, `client/index.html`
 
-### Update Blog Post Meta Descriptions (CMS)
+---
 
-The audit flagged target keywords missing from meta descriptions on 3 blog posts. Edit each post in the CMS and update the SEO Description field to naturally include the target keyword:
+### 2.3 Render-Blocking CSS [MODERATE - 27 pages]
 
-1. `/blog/answer-engine-optimisation-how-to-get-cited-by-ai` -- include "answer engine optimisation" in meta description
-2. `/blog/what-is-a-website-audit-and-why-does-it-matter` -- include "website audit" in meta description
-3. `/blog/security-headers-every-website-needs-in-2026` -- include "security headers" in meta description
+**Fix:**
+- Extract critical above-the-fold CSS and inline in `<head>`
+- Defer main stylesheet with `media="print" onload="this.media='all'"` pattern
+- Or use Vite's `cssCodeSplit: true`
 
-### Content Improvements (Writing Work)
+**Files:** `client/vite.config.ts`, `client/index.html`
 
-These findings require manual content rewrites, not code:
+---
 
-- **Poor Readability (23 pages)** -- Simplify sentence structure on landing pages. API docs are inherently technical, accept lower readability there.
-- **Thin Content (8 pages)** -- Expand waitlist (add feature preview, benefits), contact (add FAQ), author (expand bio). Blog listing/category pages are listings by nature.
-- **Keyword density / introduction (3 blog posts)** -- Weave keywords more naturally into opening paragraphs.
-- **No first-hand experience signals (23 pages)** -- Add "In our testing...", "Based on data from X audits..." language to service pages and blog posts.
-- **No citations/references (17 pages)** -- Link to authoritative sources (W3C WCAG specs, Google docs, MDN) in service pages and blog posts.
+### 2.4 Large Page Size [MODERATE - 18 pages]
+
+**756KB+** (target: <500KB).
+
+**Fix:**
+- Audit bundle with `npx vite-bundle-visualizer`
+- Enable Brotli compression in nginx (currently gzip only)
+- Further lazy-load route-specific chunks
+- Tree-shake unused dependencies
+
+**Files:** `client/vite.config.ts`, `scripts/nginx.conf`
+
+---
+
+### 2.5 LCP Needs Improvement [MODERATE - 9 pages]
+
+**LCP: 3172ms** (target: <2500ms).
+
+**Fix:**
+- Preload LCP images with `<link rel="preload">`
+- Preload fonts
+- Consider prerendering/SSG for marketing pages
+- Reduce TTFB
+
+**Files:** `client/index.html`, font loading strategy
+
+---
+
+### 2.6 Slow Page Load [MODERATE - 27 pages, from SEO section]
+
+**10687ms** (target: <3000ms). This is the aggregate of all performance issues. Fixing the above should bring this down significantly.
+
+---
+
+### 2.7 Enable HTTP/2 [INFO - 23 pages]
+
+**Fix:** Add `http2` to the nginx listen directive:
+```nginx
+listen 443 ssl http2;
+```
+
+**Files:** `scripts/nginx.conf`
+
+---
+
+### 2.8 Missing Responsive Images [MINOR - 3 blog pages]
+
+**Fix:** Add `srcset` and `sizes` attributes to blog post images.
+
+**Files:** Blog image component
+
+---
+
+## Phase 3: SEO (Score: 90 -> 95+)
+
+### 3.1 Duplicate Page Title [SERIOUS - 3 pages]
+
+"Log In to Your Account | Kritano" used on 3 pages.
+
+**Fix:** Unique titles for each auth page (e.g., "Sign In", "Reset Password", "Create Account").
+
+**Files:** Auth page components
+
+---
+
+### 3.2 Missing Canonical URLs [MODERATE - 3 pages]
+
+FAQ, Waitlist, Author pages missing canonical tags.
+
+**Fix:** Add `<link rel="canonical">` via React Helmet or equivalent.
+
+---
+
+### 3.3 Duplicate Meta Description [MODERATE - 2 pages]
+
+**Fix:** Write unique descriptions for affected pages.
+
+---
+
+### 3.4 Missing Social Meta Tags [MINOR]
+
+6 pages missing Twitter Card tags, 3 pages missing OG tags.
+
+**Fix:** Create a shared `<SEOHead>` component that sets OG + Twitter meta for every page. Ensure FAQ, Waitlist, and Author pages use it.
+
+---
+
+### 3.5 Meta Description Length [MINOR]
+
+3 too long (182 chars), 1 too short (68 chars). Target: 70-160.
+
+**Fix:** Adjust descriptions.
+
+---
+
+### 3.6 Thin Content [MODERATE - 8 pages]
+
+Pages with <300 words (blog index, category pages, waitlist, contact).
+
+**Fix:** Add introductory copy to listing pages, expand contact page.
+
+---
+
+## Phase 4: Accessibility (Score: 99 -> 100)
+
+### 4.1 Duplicate Landmark Roles [MODERATE - 6 pages]
+
+Docs pages have landmarks without unique labels.
+
+**Fix:** Add `aria-label` to landmarks (e.g., "Main navigation", "Docs sidebar", "Page navigation").
+
+**Files:** Docs layout components
+
+---
+
+### 4.2 Colour Contrast [INFO - 95 instances]
+
+Ratio 4.41:1 vs required 4.5:1 for `#dc2626` on `#fef2f2`.
+
+**Fix:** Darken red to `#c72020` or similar to achieve 4.5:1+. This is likely the error/validation state colour.
+
+**Files:** Tailwind config or components using `red-600` on `red-50`
+
+---
+
+## Phase 5: Content & E-E-A-T (Score: 53 -> 70+)
+
+These are primarily copywriting tasks.
+
+### 5.1 Poor Readability [SERIOUS - 23 pages]
+
+Score: 26/100. Grade level 38.8 (target: 7-9).
+
+**Fix (manual copywriting):**
+- Shorten sentences to 15-20 words average
+- Replace jargon with simpler alternatives
+- Use bullet points for complex ideas
+- Use active voice
+
+**Priority:** Homepage, Services pages, Pricing, About
+
+---
+
+### 5.2 Wall of Text [SERIOUS - 2 docs pages]
+
+500+ word sections without subheadings.
+
+**Fix:** Add H2/H3 subheadings every 300-400 words.
+
+---
+
+### 5.3 E-E-A-T Improvements [SERIOUS/MODERATE]
+
+| Issue | Pages | Fix |
+|-------|-------|-----|
+| No Author Bio | 9 | Create `<AuthorBio>` component, add to all pages |
+| Ghost Content (33/100) | 8 | Add trust signals, credentials, citations |
+| No Author Credentials | 27 | Add to Person schema and visible bio |
+| No First-Hand Experience | 23 | Add personal observations/test results to copy |
+| No Citations | 17 | Link to authoritative .gov/.edu sources |
+| No Contact Info | 14 | Add physical address/phone to footer |
+
+---
+
+### 5.4 Content Structure [MODERATE/MINOR]
+
+- Excessive sentence length (21 pages) - shorten
+- Low content-to-HTML ratio (18 pages) - add content
+- Too many CTAs (11 pages) - reduce to 2-3 per page
+- No freshness signals (10 pages) - add published/updated dates
+- No questions in content (9 pages) - add engagement questions
+- Low transition word usage (9 pages) - improve flow
+
+---
+
+## Phase 6: AEO (Answer Engine Optimisation)
+
+### 6.1 Low Citability [SERIOUS - 26 pages]
+
+AEO score: 13/100.
+
+**Fix:**
+- Add definition blocks ("X is a..." patterns) to service and docs pages
+- Add FAQ sections with FAQPage schema to key pages
+- Add summary/TL;DR sections to all content pages
+- Increase factual density with statistics and data
+
+---
+
+### 6.2 Schema for AI [MODERATE]
+
+- Add `sameAs` links to Person schema (LinkedIn, Twitter)
+- Add FAQPage schema to FAQ and content pages
+- Add HowTo schema where applicable
+- Add `<cite>` and `<blockquote cite="">` semantic markup
+
+---
+
+## Phase 7: Schema (Score: 89 -> 95+)
+
+### 7.1 Missing OG/Twitter Data [MODERATE - 3/6 pages]
+
+Same fix as SEO 3.4 - shared `<SEOHead>` component.
+
+---
+
+## Critical Files Summary
+
+| File | Changes |
+|------|---------|
+| `scripts/nginx.conf` | CSP hashes, HTTP/2, remove GA, verify cache headers |
+| `client/index.html` | Font preloading, critical CSS, LCP image preload |
+| `client/vite.config.ts` | CSS code splitting, SRI, bundle optimisation |
+| `client/src/` (page components) | Meta tags, canonical URLs, unique titles, author bios |
+| `server/src/services/audit-engines/security.engine.ts` | Improve CSRF cookie detection logic |
+| Blog/docs content | Readability rewrites, subheadings, E-E-A-T signals |
+
+---
+
+## Implementation Order
+
+### Sprint 1: Security (1-2 days) [PRIORITY]
+1. Verify and fix config.json exposure in production
+2. Remove GA/GTM from CSP (not in use)
+3. Implement hash-based CSP to replace unsafe-inline
+4. Verify all security headers deployed
+5. Enable HTTP/2 in nginx
+6. Verify cookie flags in production
+7. Check for stale GA scripts/cookies
+
+### Sprint 2: Performance (2-3 days)
+1. Font preloading + `font-display: swap`
+2. Fix CLS on blog pages (image dimensions, aspect-ratio)
+3. Inline critical CSS / defer main stylesheet
+4. Enable Brotli compression
+5. Optimise bundle sizes
+6. Add responsive images to blog posts
+
+### Sprint 3: SEO & Schema (1-2 days)
+1. Create shared `<SEOHead>` component (OG + Twitter tags)
+2. Fix duplicate titles on auth pages
+3. Add canonical URLs to missing pages
+4. Fix meta description lengths
+5. Add FAQPage and Person schema improvements
+
+### Sprint 4: Accessibility (0.5 days)
+1. Add aria-labels to duplicate landmarks
+2. Fix colour contrast on error states
+
+### Sprint 5: Content & E-E-A-T (ongoing)
+1. Create `<AuthorBio>` component
+2. Add published/updated dates to docs
+3. Rewrite content for readability (priority: homepage, services, about)
+4. Add definition blocks and FAQ sections for AEO
+5. Add citations and first-hand experience language
+6. Reduce CTAs on heavy pages
+
+---
+
+## Testing Plan
+
+1. **Security:** Re-run Kritano audit after each fix, verify headers with `curl -I`
+2. **Performance:** Lighthouse before/after, Chrome DevTools Core Web Vitals
+3. **SEO:** Validate meta tags in devtools, test OG with social media debuggers
+4. **Accessibility:** axe-core scan, screen reader landmark verification
+5. **Content:** Re-run audit to track readability score changes
+6. **Regression:** Full audit re-run after all fixes to compare overall score

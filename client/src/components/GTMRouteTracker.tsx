@@ -24,10 +24,11 @@ export function GTMRouteTracker() {
     if (!import.meta.env.PROD || gtmLoaded.current) return;
 
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
 
-    // Force Secure + SameSite flags on GA cookies
-    window.dataLayer.push({ event: 'gtm.init', cookie_flags: 'SameSite=Lax;Secure' });
+    // Set Secure + SameSite flags BEFORE GTM initialises so GA4 picks them up
+    window.dataLayer.push({ cookie_flags: 'SameSite=Lax;Secure' });
+
+    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
 
     const script = document.createElement('script');
     script.async = true;
