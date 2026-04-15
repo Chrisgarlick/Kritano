@@ -112,7 +112,7 @@ export default function PostListPage() {
           <h1 className="font-display text-4xl lg:text-5xl text-slate-900 dark:text-white leading-tight mb-4">
             {category ? `${CATEGORY_LABELS[category] || category}` : 'Blog'}
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
+          <p className="text-lg text-slate-700 dark:text-slate-400 max-w-2xl">
             SEO guides, accessibility tips, security insights, and web performance best practices.
           </p>
           {tag && (

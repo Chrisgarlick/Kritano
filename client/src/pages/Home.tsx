@@ -432,7 +432,7 @@ export default function Home() {
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
                     <CheckCircle className="w-4.5 h-4.5 text-teal-700 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm text-slate-800">{item}</span>
+                    <p className="text-sm text-slate-800">{item}</p>
                   </div>
                 ))}
               </div>

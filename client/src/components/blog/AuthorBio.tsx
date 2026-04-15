@@ -92,7 +92,7 @@ export default function AuthorBio() {
           <p className="text-xs text-slate-500 dark:text-slate-400 mb-2" itemProp="qualifications">
             {AUTHOR.credentials}
           </p>
-          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" itemProp="description">
+          <p className="text-sm text-slate-700 dark:text-slate-400 leading-relaxed" itemProp="description">
             {AUTHOR.bio}
           </p>
           <meta itemProp="url" content={`https://kritano.com${AUTHOR.url}`} />
