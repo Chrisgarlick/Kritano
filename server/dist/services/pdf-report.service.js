@@ -174,7 +174,7 @@ function hexToRgba(hex, alpha) {
 }
 // ── HTML builder ───────────────────────────────────────────────────
 function buildReportHtml(data, logoDataUri) {
-    const { audit, findings, brokenLinks, branding, fixSnippets, compliance } = data;
+    const { audit, findings, brokenLinks, unverifiableLinks = [], branding, fixSnippets, compliance } = data;
     // Compute stats
     const severityCounts = { critical: 0, serious: 0, moderate: 0, minor: 0, info: 0 };
     const findingsByCategory = {};
@@ -222,6 +222,9 @@ function buildReportHtml(data, logoDataUri) {
     }
     if (brokenLinks.length > 0) {
         sections.push(buildBrokenLinksPage(brokenLinks));
+    }
+    if (unverifiableLinks.length > 0) {
+        sections.push(buildUnverifiableLinksSection(unverifiableLinks));
     }
     if (compliance && compliance.status !== 'not_assessed') {
         sections.push(buildCompliancePage(compliance));
@@ -1205,6 +1208,45 @@ function buildBrokenLinksPage(brokenLinks) {
   ${overflow}
 </div>`;
 }
+function buildUnverifiableLinksSection(links) {
+    const linksToShow = links.slice(0, 20);
+    const rows = linksToShow.map(link => {
+        return `<tr class="avoid-break">
+      <td class="bl-url">${escapeHtml(truncateUrl(link.url, 60))}</td>
+      <td class="bl-url">${escapeHtml(truncateUrl(link.source_url, 45))}</td>
+    </tr>`;
+    }).join('\n');
+    const overflow = links.length > 20
+        ? `<p style="font-size:11px;color:var(--text-muted);margin-top:12px;">+ ${links.length - 20} more unverifiable links</p>`
+        : '';
+    return `<div class="page page-break">
+  <div class="cat-header">
+    <div class="cat-header-bg" style="background:#f59e0b"></div>
+    <div class="cat-header-accent"></div>
+    <div class="cat-header-accent-2"></div>
+    <div class="cat-header-content">
+      <div class="cat-header-left">
+        <div class="cat-eyebrow">LINK CHECKER</div>
+        <div class="cat-title">Unverifiable Links</div>
+        <div class="cat-issue-count">${links.length} link${links.length !== 1 ? 's' : ''} could not be verified</div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">These links go to domains that block automated requests (e.g. LinkedIn, Facebook, Instagram). They may be valid but cannot be checked programmatically. Please verify manually.</p>
+  <table class="bl-table">
+    <thead>
+      <tr>
+        <th>URL</th>
+        <th>Found On Page</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${rows}
+    </tbody>
+  </table>
+  ${overflow}
+</div>`;
+}
 function buildCompliancePage(compliance) {
     const statusLabels = {
         compliant: 'Compliant',
@@ -1270,7 +1312,7 @@ function buildCompliancePage(compliance) {
 }
 // ── Markdown builder ────────────────────────────────────────────────
 function buildReportMarkdown(data) {
-    const { audit, findings, brokenLinks, branding } = data;
+    const { audit, findings, brokenLinks, unverifiableLinks = [], branding } = data;
     const severityCounts = { critical: 0, serious: 0, moderate: 0, minor: 0, info: 0 };
     const findingsByCategory = {};
     for (const f of findings) {
@@ -1397,6 +1439,18 @@ function buildReportMarkdown(data) {
         for (const link of brokenLinks) {
             const status = link.status_code?.toString() || 'ERR';
             lines.push(`| ${status} | ${link.broken_url} | ${link.source_url} |`);
+        }
+        lines.push('');
+    }
+    if (unverifiableLinks.length > 0) {
+        lines.push('## Unverifiable Links');
+        lines.push('');
+        lines.push('These links go to domains that block automated requests (e.g. LinkedIn, Facebook, Instagram). They may be valid but cannot be checked programmatically.');
+        lines.push('');
+        lines.push('| URL | Found On |');
+        lines.push('|-----|----------|');
+        for (const link of unverifiableLinks) {
+            lines.push(`| ${link.url} | ${link.source_url} |`);
         }
         lines.push('');
     }

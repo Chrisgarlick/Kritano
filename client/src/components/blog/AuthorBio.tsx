@@ -13,7 +13,7 @@ const AUTHOR = {
   title: 'Founder of Kritano',
   photo: '/brand/author-chris-garlick.png',
   url: '/author/chris-garlick',
-  linkedin: 'https://www.linkedin.com/in/chris-garlick-59a8bb91/',
+  linkedin: 'https://uk.linkedin.com/in/chris-garlick-59a8bb91',
   x: 'https://x.com/ChrisGarlick123',
   bio: 'Chris built Kritano after years of running audits with fragmented tools. He writes about SEO, accessibility, security, and performance based on real auditing data from thousands of scans.',
   credentials: 'Software engineer specialising in web auditing and WCAG 2.2 compliance.',

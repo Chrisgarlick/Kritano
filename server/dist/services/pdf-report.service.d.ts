@@ -29,6 +29,10 @@ export interface ComplianceDataForPdf {
     domain: string;
     pagesAudited: number;
 }
+export interface UnverifiableLink {
+    url: string;
+    source_url: string;
+}
 export interface PdfReportData {
     audit: AuditJob;
     findings: Array<AuditFinding & {
@@ -39,6 +43,7 @@ export interface PdfReportData {
         source_url: string;
         status_code: number | null;
     }>;
+    unverifiableLinks?: UnverifiableLink[];
     branding: ResolvedBranding;
     fixSnippets?: Record<string, ResolvedFixSnippetForPdf>;
     compliance?: ComplianceDataForPdf;

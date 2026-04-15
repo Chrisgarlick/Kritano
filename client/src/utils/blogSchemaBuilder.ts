@@ -72,7 +72,7 @@ function buildArticleSchema(post: BlogPostDetail, canonicalUrl: string): SchemaO
       name: post.author_name,
       url: `${BASE_URL}/author/chris-garlick`,
       sameAs: [
-        'https://www.linkedin.com/in/chris-garlick-59a8bb91/',
+        'https://uk.linkedin.com/in/chris-garlick-59a8bb91',
         'https://x.com/ChrisGarlick123',
       ],
     },

@@ -35,6 +35,11 @@ export interface ComplianceDataForPdf {
   pagesAudited: number;
 }
 
+export interface UnverifiableLink {
+  url: string;
+  source_url: string;
+}
+
 export interface PdfReportData {
   audit: AuditJob;
   findings: Array<AuditFinding & { page_url: string }>;
@@ -43,6 +48,7 @@ export interface PdfReportData {
     source_url: string;
     status_code: number | null;
   }>;
+  unverifiableLinks?: UnverifiableLink[];
   branding: ResolvedBranding;
   fixSnippets?: Record<string, ResolvedFixSnippetForPdf>;
   compliance?: ComplianceDataForPdf;
@@ -227,7 +233,7 @@ function hexToRgba(hex: string, alpha: number): string {
 // ── HTML builder ───────────────────────────────────────────────────
 
 export function buildReportHtml(data: PdfReportData, logoDataUri: string | null): string {
-  const { audit, findings, brokenLinks, branding, fixSnippets, compliance } = data;
+  const { audit, findings, brokenLinks, unverifiableLinks = [], branding, fixSnippets, compliance } = data;
 
   // Compute stats
   const severityCounts: Record<string, number> = { critical: 0, serious: 0, moderate: 0, minor: 0, info: 0 };
@@ -280,6 +286,10 @@ export function buildReportHtml(data: PdfReportData, logoDataUri: string | null)
 
   if (brokenLinks.length > 0) {
     sections.push(buildBrokenLinksPage(brokenLinks));
+  }
+
+  if (unverifiableLinks.length > 0) {
+    sections.push(buildUnverifiableLinksSection(unverifiableLinks));
   }
 
   if (compliance && compliance.status !== 'not_assessed') {
@@ -1319,6 +1329,49 @@ function buildBrokenLinksPage(brokenLinks: Array<{
 </div>`;
 }
 
+function buildUnverifiableLinksSection(links: UnverifiableLink[]): string {
+  const linksToShow = links.slice(0, 20);
+
+  const rows = linksToShow.map(link => {
+    return `<tr class="avoid-break">
+      <td class="bl-url">${escapeHtml(truncateUrl(link.url, 60))}</td>
+      <td class="bl-url">${escapeHtml(truncateUrl(link.source_url, 45))}</td>
+    </tr>`;
+  }).join('\n');
+
+  const overflow = links.length > 20
+    ? `<p style="font-size:11px;color:var(--text-muted);margin-top:12px;">+ ${links.length - 20} more unverifiable links</p>`
+    : '';
+
+  return `<div class="page page-break">
+  <div class="cat-header">
+    <div class="cat-header-bg" style="background:#f59e0b"></div>
+    <div class="cat-header-accent"></div>
+    <div class="cat-header-accent-2"></div>
+    <div class="cat-header-content">
+      <div class="cat-header-left">
+        <div class="cat-eyebrow">LINK CHECKER</div>
+        <div class="cat-title">Unverifiable Links</div>
+        <div class="cat-issue-count">${links.length} link${links.length !== 1 ? 's' : ''} could not be verified</div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">These links go to domains that block automated requests (e.g. LinkedIn, Facebook, Instagram). They may be valid but cannot be checked programmatically. Please verify manually.</p>
+  <table class="bl-table">
+    <thead>
+      <tr>
+        <th>URL</th>
+        <th>Found On Page</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${rows}
+    </tbody>
+  </table>
+  ${overflow}
+</div>`;
+}
+
 function buildCompliancePage(compliance: ComplianceDataForPdf): string {
   const statusLabels: Record<string, string> = {
     compliant: 'Compliant',
@@ -1397,7 +1450,7 @@ function buildCompliancePage(compliance: ComplianceDataForPdf): string {
 // ── Markdown builder ────────────────────────────────────────────────
 
 export function buildReportMarkdown(data: PdfReportData): string {
-  const { audit, findings, brokenLinks, branding } = data;
+  const { audit, findings, brokenLinks, unverifiableLinks = [], branding } = data;
 
   const severityCounts: Record<string, number> = { critical: 0, serious: 0, moderate: 0, minor: 0, info: 0 };
   const findingsByCategory: Record<string, Array<AuditFinding & { page_url: string }>> = {};
@@ -1542,6 +1595,19 @@ export function buildReportMarkdown(data: PdfReportData): string {
     for (const link of brokenLinks) {
       const status = link.status_code?.toString() || 'ERR';
       lines.push(`| ${status} | ${link.broken_url} | ${link.source_url} |`);
+    }
+    lines.push('');
+  }
+
+  if (unverifiableLinks.length > 0) {
+    lines.push('## Unverifiable Links');
+    lines.push('');
+    lines.push('These links go to domains that block automated requests (e.g. LinkedIn, Facebook, Instagram). They may be valid but cannot be checked programmatically.');
+    lines.push('');
+    lines.push('| URL | Found On |');
+    lines.push('|-----|----------|');
+    for (const link of unverifiableLinks) {
+      lines.push(`| ${link.url} | ${link.source_url} |`);
     }
     lines.push('');
   }

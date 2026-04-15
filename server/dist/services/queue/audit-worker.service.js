@@ -1212,9 +1212,33 @@ class AuditWorkerService {
         // Batch check URLs with HEAD requests
         console.log(`🔗 Checking ${urlsToCheck.size} URLs for broken links...`);
         const checkResults = await this.batchCheckUrls(Array.from(urlsToCheck.keys()));
-        // Create findings for broken links
+        // Create findings for broken and unverifiable links
         for (const [url, status] of checkResults) {
-            if (status >= 400 || status === -1) {
+            if (status === -2) {
+                // Unverifiable link (bot-blocking domain like LinkedIn, Facebook, Instagram)
+                const sources = urlsToCheck.get(url) || [];
+                for (const source of sources) {
+                    const finding = {
+                        ruleId: 'unverifiable-link',
+                        ruleName: 'Unverifiable Link',
+                        category: 'seo',
+                        severity: 'info',
+                        message: `Link to ${url} could not be verified automatically`,
+                        description: `This domain blocks automated requests (returns a login wall or non-standard status code to bots). The link may be perfectly valid but cannot be checked programmatically.`,
+                        recommendation: 'Check this link manually in a browser to confirm it works.',
+                        selector: url,
+                        snippet: source.linkText || undefined,
+                    };
+                    const existing = brokenFindings.find(bf => bf.pageId === source.sourcePageId);
+                    if (existing) {
+                        existing.findings.push(finding);
+                    }
+                    else {
+                        brokenFindings.push({ pageId: source.sourcePageId, findings: [finding] });
+                    }
+                }
+            }
+            else if (status >= 400 || status === -1) {
                 const sources = urlsToCheck.get(url) || [];
                 for (const source of sources) {
                     const isExternal = source.isExternal;
@@ -1266,12 +1290,40 @@ class AuditWorkerService {
         for (let i = 0; i < urls.length; i += concurrency) {
             const batch = urls.slice(i, i + concurrency);
             const promises = batch.map(async (url) => {
+                if (this.isBotBlockingDomain(url)) {
+                    results.set(url, -2); // -2 = unverifiable (bot-blocking domain)
+                    return;
+                }
                 const status = await this.checkUrlStatus(url);
                 results.set(url, status);
             });
             await Promise.all(promises);
         }
         return results;
+    }
+    /**
+     * Domains known to block bots with non-standard status codes (e.g. LinkedIn 999).
+     * Links to these domains are skipped during broken link checks since the status
+     * code does not reflect whether the URL is actually valid.
+     */
+    static BOT_BLOCKING_DOMAINS = new Set([
+        'linkedin.com',
+        'www.linkedin.com',
+        'uk.linkedin.com',
+        'facebook.com',
+        'www.facebook.com',
+        'instagram.com',
+        'www.instagram.com',
+    ]);
+    isBotBlockingDomain(url) {
+        try {
+            const hostname = new URL(url).hostname;
+            return AuditWorkerService.BOT_BLOCKING_DOMAINS.has(hostname) ||
+                hostname.endsWith('.linkedin.com');
+        }
+        catch {
+            return false;
+        }
     }
     /**
      * Check a single URL status via HEAD request (fallback to GET)

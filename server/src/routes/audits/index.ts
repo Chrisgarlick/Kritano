@@ -1310,7 +1310,7 @@ router.get('/:id/broken-links', authenticate, async (req: Request, res: Response
       SELECT f.*, p.url as page_url
       FROM audit_findings f
       LEFT JOIN audit_pages p ON f.audit_page_id = p.id
-      WHERE f.audit_job_id = $1 AND f.rule_id LIKE 'broken-link%'
+      WHERE f.audit_job_id = $1 AND (f.rule_id LIKE 'broken-link%' OR f.rule_id = 'unverifiable-link')
       ORDER BY
         CASE f.severity
           WHEN 'critical' THEN 1
@@ -1322,9 +1322,13 @@ router.get('/:id/broken-links', authenticate, async (req: Request, res: Response
         f.created_at DESC
     `, [auditId]);
 
+    const brokenLinks = result.rows.filter(r => r.rule_id !== 'unverifiable-link');
+    const unverifiableLinks = result.rows.filter(r => r.rule_id === 'unverifiable-link');
+
     res.json({
-      brokenLinks: result.rows,
-      total: result.rows.length,
+      brokenLinks,
+      unverifiableLinks,
+      total: brokenLinks.length,
     });
   } catch (error) {
     console.error('Get broken links error:', error);
@@ -1905,6 +1909,15 @@ router.get('/:id/export/markdown', authenticate, async (req: Request, res: Respo
       // broken_links table doesn't exist yet - skip
     }
 
+    // Get unverifiable links from findings
+    const unverifiableResult = await pool.query<{ selector: string; page_url: string }>(`
+      SELECT f.selector, p.url as page_url
+      FROM audit_findings f
+      LEFT JOIN audit_pages p ON f.audit_page_id = p.id
+      WHERE f.audit_job_id = $1 AND f.rule_id = 'unverifiable-link'
+    `, [auditId]);
+    const unverifiableLinks = unverifiableResult.rows.map(r => ({ url: r.selector, source_url: r.page_url }));
+
     const defaultBranding: ResolvedBranding = {
       companyName: 'Kritano',
       logoUrl: null,
@@ -1920,6 +1933,7 @@ router.get('/:id/export/markdown', authenticate, async (req: Request, res: Respo
       audit,
       findings: findingsResult.rows,
       brokenLinks: brokenLinksResult.rows,
+      unverifiableLinks,
       branding: defaultBranding,
     });
 
@@ -1976,6 +1990,15 @@ router.get('/:id/export/html', authenticate, async (req: Request, res: Response)
       // broken_links table doesn't exist yet - skip
     }
 
+    // Get unverifiable links from findings
+    const unverifiableResult2 = await pool.query<{ selector: string; page_url: string }>(`
+      SELECT f.selector, p.url as page_url
+      FROM audit_findings f
+      LEFT JOIN audit_pages p ON f.audit_page_id = p.id
+      WHERE f.audit_job_id = $1 AND f.rule_id = 'unverifiable-link'
+    `, [auditId]);
+    const unverifiableLinks2 = unverifiableResult2.rows.map(r => ({ url: r.selector, source_url: r.page_url }));
+
     const defaultBranding: ResolvedBranding = {
       companyName: 'Kritano',
       logoUrl: null,
@@ -1991,6 +2014,7 @@ router.get('/:id/export/html', authenticate, async (req: Request, res: Response)
       audit,
       findings: findingsResult.rows,
       brokenLinks: brokenLinksResult.rows,
+      unverifiableLinks: unverifiableLinks2,
       branding: defaultBranding,
     }, null);
 
@@ -2060,6 +2084,15 @@ router.get('/:id/export/pdf', authenticate, async (req: Request, res: Response):
     } catch {
       // broken_links table doesn't exist yet - skip
     }
+
+    // Get unverifiable links from findings
+    const unverifiableResult3 = await pool.query<{ selector: string; page_url: string }>(`
+      SELECT f.selector, p.url as page_url
+      FROM audit_findings f
+      LEFT JOIN audit_pages p ON f.audit_page_id = p.id
+      WHERE f.audit_job_id = $1 AND f.rule_id = 'unverifiable-link'
+    `, [auditId]);
+    const unverifiableLinks3 = unverifiableResult3.rows.map(r => ({ url: r.selector, source_url: r.page_url }));
 
     // Resolve fix snippets for PDF (tier-gated: Starter+ gets code)
     const tierLimits = await getUserTierLimits(userId);
@@ -2166,6 +2199,7 @@ router.get('/:id/export/pdf', authenticate, async (req: Request, res: Response):
       audit,
       findings: findingsResult.rows,
       brokenLinks: brokenLinksResult.rows,
+      unverifiableLinks: unverifiableLinks3,
       branding,
       fixSnippets: Object.keys(fixSnippetMap).length > 0 ? fixSnippetMap : undefined,
       compliance: complianceData,

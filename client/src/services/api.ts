@@ -240,7 +240,7 @@ export const auditsApi = {
 
   // Get broken links for an audit
   getBrokenLinks: (id: string) =>
-    api.get<{ brokenLinks: Finding[]; total: number }>(`/audits/${id}/broken-links`),
+    api.get<{ brokenLinks: Finding[]; unverifiableLinks?: Finding[]; total: number }>(`/audits/${id}/broken-links`),
 
   // Get Content Quality Score breakdown
   getContentQuality: (id: string) =>

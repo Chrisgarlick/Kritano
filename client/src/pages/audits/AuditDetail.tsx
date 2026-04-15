@@ -557,6 +557,7 @@ export default function AuditDetailPage() {
   const [pages, setPages] = useState<AuditPage[]>([]);
   const [brokenLinks, setBrokenLinks] = useState<Finding[]>([]);
   const [brokenLinksTotal, setBrokenLinksTotal] = useState<number>(0);
+  const [unverifiableLinks, setUnverifiableLinks] = useState<Finding[]>([]);
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -709,6 +710,7 @@ export default function AuditDetailPage() {
       const response = await auditsApi.getBrokenLinks(id);
       setBrokenLinks(response.data.brokenLinks);
       setBrokenLinksTotal(response.data.total);
+      setUnverifiableLinks(response.data.unverifiableLinks || []);
     } catch (err) {
       console.error('Failed to fetch broken links:', err);
     }
@@ -1886,7 +1888,7 @@ export default function AuditDetailPage() {
 
       {activeTab === 'broken-links' && (
         <div>
-          {brokenLinks.length === 0 ? (
+          {brokenLinks.length === 0 && unverifiableLinks.length === 0 ? (
             <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center">
               <div className="text-4xl mb-3">🔗</div>
               <p className="text-slate-900 dark:text-white font-medium">0 broken links</p>
@@ -1894,60 +1896,124 @@ export default function AuditDetailPage() {
             </div>
           ) : (
             <div>
-              <div className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-                Found {brokenLinks.length} broken {brokenLinks.length === 1 ? 'link' : 'links'}
-              </div>
-              <div className="space-y-3">
-                {brokenLinks.map((link) => (
-                  <div key={link.id} className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center space-x-2">
-                        <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${severityColors[link.severity]}`}>
-                          {link.severity}
-                        </span>
-                        <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${
-                          link.rule_id === 'broken-link' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300' : 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-300'
-                        }`}>
-                          {link.rule_id === 'broken-link' ? 'Internal' : 'External'}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Broken URL */}
-                    <div className="mb-2">
-                      <a
-                        href={link.selector || '#'}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm font-medium text-red-600 hover:text-red-800 hover:underline break-all"
-                      >
-                        {link.selector}
-                      </a>
-                    </div>
-
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">{link.message}</p>
-
-                    {link.recommendation && (
-                      <p className="text-xs text-slate-500 dark:text-slate-400">{link.recommendation}</p>
-                    )}
-
-                    {/* Source page */}
-                    {link.page_url && (
-                      <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/50">
-                        <span className="text-xs text-slate-500 dark:text-slate-400">Found on: </span>
-                        <a
-                          href={link.page_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline"
-                        >
-                          {link.page_url}
-                        </a>
-                      </div>
-                    )}
+              {brokenLinks.length > 0 && (
+                <>
+                  <div className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+                    Found {brokenLinks.length} broken {brokenLinks.length === 1 ? 'link' : 'links'}
                   </div>
-                ))}
-              </div>
+                  <div className="space-y-3">
+                    {brokenLinks.map((link) => (
+                      <div key={link.id} className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex items-center space-x-2">
+                            <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${severityColors[link.severity]}`}>
+                              {link.severity}
+                            </span>
+                            <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${
+                              link.rule_id === 'broken-link' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300' : 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-300'
+                            }`}>
+                              {link.rule_id === 'broken-link' ? 'Internal' : 'External'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Broken URL */}
+                        <div className="mb-2">
+                          <a
+                            href={link.selector || '#'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-medium text-red-600 hover:text-red-800 hover:underline break-all"
+                          >
+                            {link.selector}
+                          </a>
+                        </div>
+
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">{link.message}</p>
+
+                        {link.recommendation && (
+                          <p className="text-xs text-slate-500 dark:text-slate-400">{link.recommendation}</p>
+                        )}
+
+                        {/* Source page */}
+                        {link.page_url && (
+                          <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/50">
+                            <span className="text-xs text-slate-500 dark:text-slate-400">Found on: </span>
+                            <a
+                              href={link.page_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline"
+                            >
+                              {link.page_url}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {brokenLinks.length === 0 && unverifiableLinks.length > 0 && (
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-8 text-center mb-6">
+                  <div className="text-4xl mb-3">🔗</div>
+                  <p className="text-slate-900 dark:text-white font-medium">0 broken links</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">No broken links were detected during this audit.</p>
+                </div>
+              )}
+
+              {/* Unverifiable links section */}
+              {unverifiableLinks.length > 0 && (
+                <div className={brokenLinks.length > 0 ? 'mt-8' : ''}>
+                  <div className="mb-4">
+                    <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                      Unverifiable Links
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      These {unverifiableLinks.length} {unverifiableLinks.length === 1 ? 'link goes' : 'links go'} to sites that block automated requests (e.g. LinkedIn, Facebook, Instagram).
+                      They could not be checked programmatically but are likely valid. Please verify manually.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    {unverifiableLinks.map((link) => (
+                      <div key={link.id} className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-3">
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="inline-flex px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                            unverifiable
+                          </span>
+                        </div>
+                        <div className="mb-1">
+                          <a
+                            href={link.selector || '#'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 hover:underline break-all"
+                          >
+                            {link.selector}
+                          </a>
+                        </div>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          This domain blocks automated requests. Check this link manually in a browser.
+                        </p>
+                        {link.page_url && (
+                          <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-700/50">
+                            <span className="text-xs text-slate-500 dark:text-slate-400">Found on: </span>
+                            <a
+                              href={link.page_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 hover:underline"
+                            >
+                              {link.page_url}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

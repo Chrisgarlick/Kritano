@@ -144,6 +144,13 @@ export declare class AuditWorkerService {
      */
     private batchCheckUrls;
     /**
+     * Domains known to block bots with non-standard status codes (e.g. LinkedIn 999).
+     * Links to these domains are skipped during broken link checks since the status
+     * code does not reflect whether the URL is actually valid.
+     */
+    private static readonly BOT_BLOCKING_DOMAINS;
+    private isBotBlockingDomain;
+    /**
      * Check a single URL status via HEAD request (fallback to GET)
      * Returns status code, or -1 for timeout/network errors
      */
