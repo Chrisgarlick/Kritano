@@ -88,15 +88,15 @@ export default function SeoManagerPage() {
     }
     const existing = overrides.get(route.path);
     setForm({
-      title: existing?.title ?? '',
-      description: existing?.description ?? '',
-      keywords: existing?.keywords ?? '',
-      og_title: existing?.og_title ?? '',
-      og_description: existing?.og_description ?? '',
-      og_image: existing?.og_image ?? '',
-      og_type: existing?.og_type ?? 'website',
+      title: existing?.title ?? route.defaultTitle,
+      description: existing?.description ?? route.defaultDescription,
+      keywords: existing?.keywords ?? route.defaultKeywords ?? '',
+      og_title: existing?.og_title ?? route.defaultTitle,
+      og_description: existing?.og_description ?? route.defaultDescription,
+      og_image: existing?.og_image ?? route.defaultOgImage ?? 'https://kritano.com/og-image.png',
+      og_type: existing?.og_type ?? route.defaultOgType ?? 'website',
       twitter_card: existing?.twitter_card ?? 'summary_large_image',
-      canonical_url: existing?.canonical_url ?? '',
+      canonical_url: existing?.canonical_url ?? route.defaultCanonicalUrl ?? `https://kritano.com${route.path}`,
       featured_image: existing?.featured_image ?? '',
       structured_data: existing?.structured_data ?? null,
       noindex: existing?.noindex ?? route.noindex ?? false,

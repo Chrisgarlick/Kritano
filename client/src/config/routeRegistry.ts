@@ -12,6 +12,10 @@ export interface RouteEntry {
   category: 'public' | 'auth' | 'dashboard' | 'admin';
   defaultTitle: string;
   defaultDescription: string;
+  defaultKeywords?: string;
+  defaultOgImage?: string;
+  defaultOgType?: string;
+  defaultCanonicalUrl?: string;
   noindex?: boolean;
 }
 
@@ -23,6 +27,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Website Auditing for SEO, Accessibility & Security',
     defaultDescription: 'Kritano audits your website for SEO, accessibility, security, and performance issues. Get actionable insights to build trust online.',
+    defaultKeywords: 'website audit, SEO audit, accessibility audit, security audit, performance audit, WCAG, web auditing tool',
   },
   {
     path: '/about',
@@ -30,6 +35,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'About Kritano - Our Mission & Story',
     defaultDescription: 'Learn about Kritano\'s mission to make the web more accessible, secure, and performant for everyone.',
+    defaultKeywords: 'Kritano, about, web accessibility, website auditing company, mission',
   },
   {
     path: '/services',
@@ -37,6 +43,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Auditing Services - SEO, Accessibility & Security',
     defaultDescription: 'Comprehensive website auditing services: SEO, accessibility (WCAG 2.2), security scanning, and performance analysis.',
+    defaultKeywords: 'website auditing services, SEO audit service, accessibility audit, WCAG 2.2, security scanning, performance analysis',
   },
   {
     path: '/pricing',
@@ -44,6 +51,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Pricing - Website Audit Plans & Tools',
     defaultDescription: 'Simple, transparent pricing for website auditing. Start free, upgrade as you grow. Plans starting free.',
+    defaultKeywords: 'Kritano pricing, website audit pricing, free website audit, audit plans',
   },
   {
     path: '/contact',
@@ -51,6 +59,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Contact Us - Get in Touch with Kritano',
     defaultDescription: 'Get in touch with the Kritano team. We\'re here to help with questions about our platform, pricing, or partnerships.',
+    defaultKeywords: 'contact Kritano, support, partnerships, website audit help',
   },
   {
     path: '/blog',
@@ -58,6 +67,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Blog - Web Auditing Guides & Insights',
     defaultDescription: 'SEO guides, accessibility tips, security insights, and web performance best practices from Kritano.',
+    defaultKeywords: 'web accessibility blog, SEO tips, security insights, performance best practices, WCAG guides',
   },
   {
     path: '/terms',
@@ -65,6 +75,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Terms of Service - Usage & Subscription Terms',
     defaultDescription: 'Kritano terms of service covering website scanning liability, acceptable use, subscriptions, and data ownership.',
+    defaultKeywords: 'terms of service, terms and conditions, Kritano legal',
   },
   {
     path: '/privacy',
@@ -72,6 +83,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Privacy Policy - How We Protect Your Data',
     defaultDescription: 'Kritano privacy policy covering data collection, cookies, GDPR rights, and how we protect your information.',
+    defaultKeywords: 'privacy policy, GDPR, data protection, cookies, Kritano privacy',
   },
   {
     path: '/faq',
@@ -79,6 +91,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Frequently Asked Questions',
     defaultDescription: 'Find answers to common questions about Kritano\'s website auditing platform, including features, pricing, security, and technical details.',
+    defaultKeywords: 'website audit FAQ, SEO audit questions, accessibility testing FAQ, Kritano help',
   },
   {
     path: '/waitlist',
@@ -86,6 +99,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Join the Waitlist - Early Access Web Auditing',
     defaultDescription: 'Be the first to audit your website with Kritano. Sign up to get early access to comprehensive SEO, accessibility, security, and performance auditing.',
+    defaultKeywords: 'Kritano waitlist, early access, website audit beta',
   },
   {
     path: '/author/chris-garlick',
@@ -93,6 +107,8 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Chris Garlick - Founder & Author',
     defaultDescription: 'Chris Garlick is the founder of Kritano, a website intelligence platform. He writes about SEO, web accessibility, security, and performance.',
+    defaultKeywords: 'Chris Garlick, Kritano founder, web accessibility author',
+    defaultOgType: 'profile',
   },
 
   // ── API Docs ─────────────────────────────────────────────
@@ -102,6 +118,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'API Documentation - Automate Website Audits',
     defaultDescription: 'Comprehensive API documentation for Kritano - automate website audits, retrieve findings, and build custom integrations.',
+    defaultKeywords: 'Kritano API, website audit API, REST API documentation, audit automation',
   },
   {
     path: '/docs/authentication',
@@ -109,6 +126,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Authentication - API Docs',
     defaultDescription: 'Learn how to authenticate your Kritano API requests using API keys and Bearer tokens.',
+    defaultKeywords: 'API authentication, API keys, Bearer tokens, Kritano API auth',
   },
   {
     path: '/docs/rate-limits',
@@ -116,6 +134,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Rate Limits - API Docs',
     defaultDescription: 'Understand Kritano API rate limits by plan tier, rate limit headers, and how to handle 429 responses.',
+    defaultKeywords: 'API rate limits, rate limiting, 429 response, Kritano API limits',
   },
   {
     path: '/docs/errors',
@@ -123,6 +142,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Error Handling - API Docs',
     defaultDescription: 'Kritano API error codes, response format, and troubleshooting guide.',
+    defaultKeywords: 'API error codes, error handling, API troubleshooting, Kritano API errors',
   },
   {
     path: '/docs/endpoints',
@@ -130,6 +150,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Endpoints - API Docs',
     defaultDescription: 'Complete reference for all Kritano API v1 endpoints - create audits, list results, retrieve findings, and more.',
+    defaultKeywords: 'API endpoints, REST endpoints, audit API, findings API, Kritano API reference',
   },
   {
     path: '/docs/objects',
@@ -137,6 +158,7 @@ export const routeRegistry: RouteEntry[] = [
     category: 'public',
     defaultTitle: 'Object Reference - API Docs',
     defaultDescription: 'Complete reference for Kritano API objects - Audit and Finding data structures with field descriptions.',
+    defaultKeywords: 'API objects, data structures, audit object, finding object, Kritano API schema',
   },
 
   // ── Auth ────────────────────────────────────────────────
