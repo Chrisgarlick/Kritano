@@ -187,7 +187,13 @@ export class AccessibilityEngine {
     // Process incomplete (needs review)
     for (const incomplete of results.incomplete) {
       for (const node of incomplete.nodes) {
-        findings.push(this.createFinding(incomplete, node, 'incomplete'));
+        const finding = this.createFinding(incomplete, node, 'incomplete');
+        // Enhance color-contrast incomplete messages to explain WHY it needs manual review
+        if (incomplete.id === 'color-contrast') {
+          finding.message = `[Manual Check] ${finding.message}`;
+          finding.description = 'The background colour could not be determined automatically (e.g. due to gradients, background images, or semi-transparent layers). This element may pass contrast requirements but needs manual verification.';
+        }
+        findings.push(finding);
       }
     }
 

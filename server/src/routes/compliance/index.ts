@@ -177,7 +177,15 @@ router.get('/:id/compliance', authenticate, async (req: Request, res: Response):
           const entry = clauseMap.get(en.clause)!;
           const count = parseInt(row.issue_count, 10);
           entry.issueCount += count;
-          entry.status = 'fail';
+          // Info-severity findings (e.g. axe-core incompletes where background
+          // can't be determined) should flag manual_review, not fail
+          if (row.severity === 'info') {
+            if (entry.status !== 'fail') {
+              entry.status = 'manual_review';
+            }
+          } else {
+            entry.status = 'fail';
+          }
           entry.findings.push({
             ruleId: row.rule_id,
             ruleName: row.rule_name || row.rule_id,
