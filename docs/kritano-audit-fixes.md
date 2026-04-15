@@ -1,369 +1,281 @@
 # Kritano.com Audit Fix Implementation Plan
 
-**Audit Date:** 13 Apr 2026 | **Overall Score:** 56/100 | **Target Score:** 80+
+**Audit Date:** 15 Apr 2026 | **Overall Score:** 76/100 | **Target Score:** 90+
+
+**Previous audit (13 Apr):** 56/100 -- most Phase 1 issues now resolved.
 
 ---
 
-## Summary of Issues
+## Summary of Current Issues
 
-| Category | Score | Critical | Serious | Moderate | Minor | Info |
-|----------|-------|----------|---------|----------|-------|------|
-| Security | 34 | 1 | 2 | 4 | 3 | 0 |
-| Accessibility | 58 | 0 | 3 | 2 | 1 | 0 |
-| Performance | 52 | 0 | 2 | 7 | 2 | 1 |
-| Content | 48 | 0 | 3 | 8 | 0 | 0 |
-| SEO | 86 | 0 | 1 | 5 | 2 | 3 |
-| AEO (CQS) | 51 | 0 | 2 | 4 | 1 | 1 |
-| Schema | 63 | 0 | 0 | 1 | 0 | 0 |
+| Category | Score | Serious | Moderate | Minor | Info |
+|----------|-------|---------|----------|-------|------|
+| SEO | 91 | 1 | 4 | 0 | 3 |
+| Accessibility | 97 | 2 | 1 | 0 | 0 |
+| Security | 64 | 2 | 2 | 0 | 0 |
+| Performance | 81 | 2 | 5 | 1 | 1 |
+| Content | 53 | 2 | 8 | 7 | 1 |
+| E-E-A-T | n/a | 2 | 3 | 1 | 1 |
+| AEO | n/a | 3 | 4 | 1 | 1 |
+| Schema | 92 | 0 | 0 | 0 | 0 |
 
----
-
-## Phase 1: CRITICAL & SECURITY -- DONE
-
-### 1.1 Exposed .env File [CRITICAL] -- DONE
-- **Fix:** Added dotfile deny rule in nginx (`location ~ /\. { deny all; return 404; }`)
-- **Also added:** `.well-known` allowlist so security.txt and ACME challenges still work
-- **Script:** `scripts/deploy-security-fixes.sh` automates deployment + verification
-- **Still needed:** Rotate ALL secrets in server/.env (DB passwords, API keys, JWT secrets)
-
-### 1.2 Missing Security Headers [SERIOUS - all 29 pages] -- DONE
-- **Fix:** Updated `scripts/nginx.conf` with all headers. Key issue was that `add_header` inside `location` blocks overrides parent-level headers -- security headers are now repeated in location blocks that use their own `add_header`.
-- **Headers added:** HSTS (with preload), X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, Content-Security-Policy
-
-### 1.3 Insecure Cookie [SERIOUS - 29 pages] -- WONT FIX
-- **Issue:** `_ga_PYQW89W26J` missing Secure flag
-- **Why:** This is a Google Analytics cookie set by GA's own JS. The Secure flag should be set automatically when served over HTTPS (which the HTTPS redirect enforces). If the audit still flags it, it may be a scanner timing issue.
-
-### 1.4 CSRF Cookie Missing HttpOnly [MODERATE - 29 pages] -- WONT FIX (by design)
-- **Issue:** `csrf_token` cookie missing HttpOnly flag
-- **Why:** The app uses the double-submit cookie pattern (`server/src/middleware/csrf.middleware.ts`). The frontend must read the CSRF token from the cookie to send it in the `x-csrf-token` header. Setting HttpOnly would break CSRF protection entirely. This is a false positive.
-
-### 1.5 Server Version Exposed [MINOR - 29 pages] -- DONE
-- **Fix:** Added `server_tokens off;` to nginx config
-
-### 1.6 Missing security.txt [MINOR] -- DONE
-- **Fix:** Created `client/public/.well-known/security.txt`
-- Deployment script copies it into `client/dist/.well-known/` without needing a rebuild
-
-### 1.7 Missing Cache Headers [MODERATE - 29 pages] -- DONE
-- **Fix:** Added `Cache-Control: public, max-age=300, stale-while-revalidate=86400` for HTML pages in nginx
-- Static assets already had aggressive caching (1 year, immutable)
-
-### 1.8 HTTP/2 [INFO] -- ALREADY HAD IT
-- nginx.conf already had `listen 443 ssl http2;`
+0 critical issues. Main drag: Content (53), Security (64), and CQS (57).
 
 ---
 
-## Phase 2: ACCESSIBILITY -- DONE
+## Phase 1: Quick Wins (high impact, low effort)
 
-### 2.1 Color Contrast Failures [SERIOUS - 275 instances] -- DONE
-- **Root Cause:** `#64748b` (slate-500) on `#1e293b` (slate-800) = 3.07:1 ratio (needs 4.5:1)
-- **Actual scope was smaller than expected:** Most components already had `dark:text-slate-400` variants. Only two areas needed fixes:
-  - `components/docs/CodeBlock.tsx` -- language label + copy button text: `text-slate-500` to `text-slate-400` on bg-slate-900
-  - `pages/public/Pricing.tsx` -- popular plan card (bg-slate-900): `text-slate-500` to `text-slate-300` on 3 elements (description, price detail, pages/audit label)
+### 1.1 Fix Color Contrast (Accessibility - SERIOUS, 99 instances)
 
-### 2.2 Links Not Distinguishable Without Color [SERIOUS - 32 pages] -- DONE
-- **Root Cause:** Links used indigo-600 against slate-500 text with only 1.32:1 contrast and no underline
-- **Fix applied per-component** (not global CSS, to preserve nav/button link styling):
-  - `pages/public/Privacy.tsx` -- changed `prose-a:no-underline hover:prose-a:underline` to persistent `prose-a:underline` with decoration styling
-  - `pages/public/Terms.tsx` -- same
-  - `components/cms/BlockDisplay.tsx` -- added `prose-a:underline` for all blog/CMS prose content
-  - `pages/docs/DocsOverviewPage.tsx` -- inline link: `hover:underline` to persistent `underline`
-  - `pages/docs/DocsEndpointsPage.tsx` -- same
-  - `pages/docs/DocsAuthPage.tsx` -- same
-  - `components/layout/PublicLayout.tsx` -- all footer links: added `underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2`
+- **Issue:** `#0d9488` (teal-600) on white fails 4.5:1 contrast at small text sizes (ratio 3.74:1)
+- **Where:** Pricing page (heaviest), home, services, docs, blog pages
+- **Fix:** Replace `text-teal-600` with a darker variant. `#0f766e` (teal-700, ratio 4.64:1) or `#0d6b63` passes AA.
+- **Files:** Global search for `teal-600` across all client components and replace with `teal-700`
+- **Impact:** Eliminates ~99 serious findings in one change
 
-### 2.3 Scrollable Region Keyboard Access [SERIOUS - 4 pages] -- DONE
-- `components/docs/CodeBlock.tsx` -- added `tabIndex={0} role="region" aria-label` to `<pre>` element
-- `pages/docs/DocsObjectsPage.tsx` -- added `tabIndex={0} role="region" aria-label="Object fields"` to scrollable table wrapper
+### 1.2 Fix Scrollable Region Keyboard Access (Accessibility - SERIOUS, 3 instances)
 
-### 2.4 Content Not in Landmarks [MODERATE - 24 pages] -- DONE
-- **Root Cause:** Auth pages used bare `<div>` wrappers with no `<main>` landmark
-- **Fix:** Changed outermost `<div>` to `<main>` on all 9 auth pages:
-  - ForgotPassword, Login, Register, ResetPassword, VerifyEmail, OAuthCallback, GscCallback, RegisterSuccess, EarlyAccessSuccess
-- PublicLayout, SettingsLayout, DashboardLayout already had proper `<main>` landmarks
+- **Issue:** Code blocks in blog posts are scrollable but not keyboard-focusable
+- **Where:** `/blog/security-headers-every-website-needs-in-2026` (3 instances)
+- **Fix:** Add `tabindex="0"` and `role="region"` with `aria-label` to scrollable code block containers
+- **Files:** Blog post renderer / markdown code block component
+- **Impact:** 3 serious findings eliminated
 
-### 2.5 Heading Hierarchy [MODERATE - 7 pages] -- DONE
-- `pages/docs/DocsEndpointsPage.tsx` -- all `<h4>` changed to `<h3>` (was skipping h3 level under h2 sections)
-- `pages/docs/DocsOverviewPage.tsx` -- quick-start cards `<h3>` changed to `<h2>` (appeared before first h2, breaking hierarchy)
+### 1.3 Duplicate Page Title (SEO - SERIOUS, 1 finding)
 
-### 2.6 Image Alt Text Duplicates Surrounding Text [MINOR - 44 instances] -- TODO
-- **Affected:** Docs, blog, services, about, homepage, privacy, terms, pricing
-- **Root Cause:** Images with alt text that repeats the adjacent heading/link text (e.g. Kritano logo next to "Kritano" text)
-- **Fix:** Change alt text to describe the image content, or use `alt="" role="presentation"` for decorative images
+- **Issue:** "Sign In | Kritano" used on 3 pages
+- **Where:** Login, register, and possibly forgot-password pages sharing the same title
+- **Fix:** Give each auth page a unique title: "Log In | Kritano", "Create Account | Kritano", "Reset Password | Kritano"
+- **Files:** Auth page components (Login.tsx, Register.tsx, etc.)
 
----
+### 1.4 Missing Canonical URLs (SEO - MODERATE, 3 pages)
 
-## Phase 3: PERFORMANCE -- TODO
+- **Issue:** `/faq`, `/waitlist`, `/author/chris-garlick` missing canonical tags
+- **Fix:** Add `<PageSeo>` with correct `path` prop to these pages (some may already have it but need `useOverrides` enabled)
+- **Files:** `Faq.tsx`, `Waitlist.tsx`, `AuthorPage.tsx`
 
-### 3.1 Slow Server Response - 10.8s average [SERIOUS - 29 pages]
-- **Target:** < 1500ms
-- **Partially addressed:** Cache headers added in Phase 1 should help repeat visits
-- **Investigation needed:**
-  - Is this the React SPA bundle download time or actual server latency?
-  - Check server resource constraints (CPU/memory)
-- **Remaining fixes:**
-  - Consider CDN (Cloudflare) for static assets
-  - Code-split the JS bundle (see 3.4)
-  - Server-side: check Express middleware chain for bottlenecks
+### 1.5 Title Too Short (SEO - MODERATE, 3 pages)
 
-### 3.2 CLS (Cumulative Layout Shift) [SERIOUS - 2 blog pages]
-- **Score:** 0.444 (target < 0.1)
-- **Affected:** Blog post pages
-- **Root cause:** Images without dimensions + late-loading content
-- **Fix:** Add explicit width/height to all `<img>` tags in blog components
-- **Files:** `client/src/pages/blog/PostListPage.tsx`, `client/src/pages/blog/PostDetailPage.tsx`
+- **Issue:** `/waitlist`, `/faq`, `/author/chris-garlick` have titles under 30 chars
+- **Fix:** Already fixed in routeRegistry defaults. Verify the PageSeo props on these pages use the longer titles.
 
-### 3.3 Render-Blocking CSS (Google Fonts) [MODERATE - 29 pages]
-- **File:** `client/index.html`
-- **Note:** `&display=swap` is already present in the font URLs
-- **Remaining fix:** Consider self-hosting fonts to eliminate the render-blocking external request entirely, or use `<link rel="preload" as="style" onload="this.rel='stylesheet'">` pattern
+### 1.6 Exposed JSON Configuration (Security - SERIOUS, 1 finding)
 
-### 3.4 Large Page Size - 1.1MB [MODERATE - 29 pages]
-- **Investigation:** Run `npx vite-bundle-visualizer` to identify heavy dependencies
-- **Fixes:**
-  - Code-split routes with React.lazy + Suspense
-  - Tree-shake unused dependencies
-  - Compress blog images to WebP
+- **Issue:** `/config.json` is publicly accessible
+- **Investigate:** Check what this file is. If it's a Vite/build artifact or app config, block it in nginx or remove from public dir.
+- **Fix:** Add deny rule in nginx: `location = /config.json { deny all; return 404; }`
 
-### 3.5 Image Optimisation [MODERATE]
-- **Large image:** `1_1.png` at 551.5KB on blog pages
-- **Missing dimensions:** 6 blog images lack width/height attributes
-- **Missing responsive images:** Blog images lack srcset attribute
-- **Fix:** Convert blog images to WebP, add width/height + srcset to `<img>` tags
-- **Files:** `client/src/pages/blog/PostListPage.tsx`, `client/src/pages/blog/PostDetailPage.tsx`
+### 1.7 Insecure Cookie `_ga` (Security - SERIOUS, 27 pages)
 
-### 3.6 Render-Blocking Script [MODERATE - 29 pages]
-- **Issue:** Main JS bundle `/assets/index-B4hOj9W6.js` blocks rendering
-- **Fix:** Vite already outputs with `type="module"` which defers by default. The real fix is code-splitting (3.4) to reduce initial bundle size.
+- **Issue:** Google Analytics `_ga` cookie missing Secure flag
+- **Status:** WONT FIX (same as previous audit) -- GA sets this cookie via its own JS. Over HTTPS it should set Secure automatically. This is a scanner timing artefact.
 
-### 3.7 LCP Needs Improvement [MODERATE - 6 pages]
-- **LCP:** 3168ms (target < 2500ms)
-- **Affected:** Services, blog list, blog posts, docs/endpoints
-- **Fix:** Preload key resources, optimize images, reduce server response time (addresses multiple issues)
+### 1.8 CSRF Cookie HttpOnly (Security - MODERATE, 27 pages)
 
-### 3.8 Google Fonts Missing display=swap [MINOR - 29 pages] -- ALREADY FIXED
-- `client/index.html` already has `&display=swap` in the Google Fonts URL
-
-### 3.9 Missing Responsive Images [MINOR - 1 page]
-- **Fix:** Add srcset and sizes attributes to blog listing images
+- **Status:** WONT FIX (by design) -- double-submit cookie pattern requires JS to read the token. HttpOnly would break CSRF protection.
 
 ---
 
-## Phase 4: SEO -- TODO
+## Phase 2: Performance (score 81 -> 90+)
 
-### 4.1 Duplicate Page Titles [SERIOUS]
-- **Issue:** "Sign In | Kritano" used on 6 pages
-- **Fix:** Give each page a unique title via React Helmet
+### 2.1 Slow Page Load (SEO - MODERATE, 27 pages, 9639ms)
 
-### 4.2 Duplicate Meta Description [MODERATE]
-- **Issue:** Same meta description on all 29 pages
-- **Fix:** Each page needs a unique meta description via Helmet
+- **Root cause:** All pages affected -- likely server response time (TTFB) or large JS bundles
+- **Actions:**
+  1. Check if SSR/prerendering would help with TTFB
+  2. Audit bundle size with `npx vite-bundle-visualizer`
+  3. Add proper `Cache-Control` headers (marked as missing on 27 pages -- verify nginx config is deployed)
+  4. Consider code-splitting large route chunks
 
-### 4.3 Missing Canonical URLs [MODERATE - 6 pages]
-- **Affected:** forgot-password, author, FAQ, settings/profile, waitlist, settings/api-keys
-- **Fix:** Add `<link rel="canonical">` via Helmet on these pages
+### 2.2 Poor CLS (Performance - SERIOUS, 3 blog pages, CLS 0.414)
 
-### 4.4 Title Length Issues [MODERATE]
-- **Too short (16 pages):** Expand titles to 30-60 characters
-- **Too long (2 pages):** Shorten pricing and homepage titles to under 60 characters
+- **Where:** All 3 blog post pages
+- **Fix:** Set explicit `width`/`height` on blog featured images, ensure fonts have `font-display: swap` with proper fallback sizing, check for dynamically injected content above fold
+- **Files:** Blog post layout component, image components
 
-### 4.5 Non-Self-Referencing Canonical [INFO - 4 pages]
-- **Affected:** register, blog?category=aeo, pricing, blog?category=guides
-- **Fix:** Ensure canonical URLs point to the page itself, or confirm this is intentional for duplicate content
+### 2.3 Poor LCP on Services Page (Performance - SERIOUS, 4408ms)
 
-### 4.6 Empty Image Alt Text [MINOR - 4 blog pages]
-- **Fix:** Add descriptive alt text to blog listing images, or `role="presentation"` if decorative
+- **Where:** `/services`
+- **Fix:** Preload the hero/LCP image with `<link rel="preload">`, optimize image format (WebP/AVIF), reduce server response time
 
-### 4.7 Heading Hierarchy [MINOR - 2 docs pages] -- DONE (covered in Phase 2)
+### 2.4 LCP Needs Improvement (Performance - MODERATE, 6 pages, ~2672ms)
 
-### 4.8 No Structured Data [INFO - 14 pages]
-- **Fix:** Add JSON-LD structured data:
-  - Homepage: Organization schema (with description field -- also fixes Schema 6.1)
-  - Blog posts: Article schema (may already exist)
-  - Pricing: Product schema (with description -- fixes Schema 6.1)
-  - FAQ: FAQPage schema (also helps AEO)
-  - About: Organization schema (with description -- fixes Schema 6.1)
-  - Docs: TechArticle schema
+- **Where:** Blog, home, docs, pricing
+- **Fix:** Same as 2.3 -- preload LCP elements, optimize images
 
-### 4.9 Page Marked as Noindex [INFO - 6 pages]
-- **Affected:** settings/profile, settings/api-keys, FAQ, author, waitlist, forgot-password
-- **Assessment:** Settings and forgot-password pages should be noindex. FAQ and author pages may benefit from being indexed -- review intentionality.
+### 2.5 Render-Blocking CSS (Performance - MODERATE, 27 pages)
 
----
+- **Issue:** Main stylesheet blocks rendering
+- **Fix:** Inline critical CSS for above-the-fold content, defer the rest. Or accept this as a standard SPA trade-off.
+- **Note:** This is common for Vite SPAs and may be low-priority.
 
-## Phase 5: CONTENT -- TODO
+### 2.6 Large Page Size (Performance - MODERATE, 18 pages, 721KB+)
 
-### 5.1 Poor Readability [SERIOUS - 26 pages]
-- **Score:** 32/100, grade-20 reading level
-- **Fix:** Rewrite copy on key user-facing pages to target grade 7-9:
-  - Priority: Homepage, pricing, services, about, contact
-  - Lower priority: Docs pages (technical audience, higher reading level acceptable)
+- **Actions:**
+  1. Check if images are optimized (WebP, proper sizing)
+  2. Review JS bundle splitting
+  3. Remove unused CSS/JS
 
-### 5.2 Thin Content [SERIOUS - 3 pages + 11 SEO-flagged]
-- **Under 300 words:** Pricing, homepage, services (content category)
-- **Under 300 words (SEO):** Waitlist, contact, FAQ, settings, blog categories, forgot-password, register, author
-- **Fix:** Add substantive content to user-facing pages. For pricing, add FAQ. For homepage, expand value propositions.
+### 2.7 Missing Responsive Images (Performance - MINOR, 3 blog pages)
 
-### 5.3 Wall of Text [SERIOUS - 2 docs pages]
-- **Affected:** docs/objects, docs/endpoints
-- **Fix:** Add H2/H3 subheadings every 300-400 words to break up long sections
-
-### 5.4 Academic Reading Level [MODERATE - 26 pages]
-- **Issue:** Content requires college-level reading ability (grade 20)
-- **Fix:** Same as 5.1 -- simplify sentence structure and vocabulary
-
-### 5.5 High Vocabulary Complexity [MODERATE - 24 pages]
-- **Issue:** Average word complexity 2.13 syllables/word
-- **Fix:** Replace complex words with simpler alternatives on marketing/public pages
-
-### 5.6 Low Content-to-HTML Ratio [MODERATE - 21 pages]
-- **Fix:** Increase substantive content relative to HTML markup. Overlaps with 5.2 (thin content).
-
-### 5.7 Excessive Sentence Length [MODERATE - 21 pages]
-- **Issue:** Multiple sentences with 35+ words
-- **Fix:** Break long sentences into shorter ones (target 15-20 words average)
-
-### 5.8 Short Content [MODERATE - 9 pages]
-- **Affected:** Services sub-pages, docs overview, docs errors/auth/rate-limits, about
-- **Fix:** Expand content to cover topics more thoroughly (target 500+ words for service pages)
-
-### 5.9 Missing CTAs [MODERATE - 6 pages]
-- **Affected:** Author, API keys, forgot-password, FAQ, waitlist, profile
-- **Fix:** Add relevant CTAs ("Start your free audit", "View pricing", etc.)
-
-### 5.10 Keyword Missing from Introduction [MODERATE - 2 blog pages]
-- **Affected:** Both blog posts
-- **Fix:** Mention target keyword naturally in the first paragraph
-
-### 5.11 Keyword Missing from Meta Description [MODERATE - 2 blog pages]
-- **Fix:** Include target keyword in meta description
-
-### 5.12 Moderate Readability [MODERATE - 2 pages]
-- **Affected:** AEO blog post, terms page
-- **Fix:** Simplify some sentences and use more common vocabulary
+- **Fix:** Add `srcset` and `sizes` to blog post images
+- **Files:** Blog image component or markdown renderer
 
 ---
 
-## Phase 6: AEO (Answer Engine Optimisation) -- TODO
+## Phase 3: Content & Readability (score 53 -> 70+)
 
-### 6.1 AI Ignored -- Low Citability [SERIOUS - 29 pages]
-- **AEO Score:** 15/100
-- **Fix:** This is a compound issue. Addressing the items below will improve citability across all pages:
-  - Add definition blocks, summaries, FAQ sections, factual data points
-  - Add author authority signals (sameAs links)
+These are the biggest score draggers but require content work, not code.
 
-### 6.2 Low Factual Density [SERIOUS - 26 pages]
-- **Issue:** Few numbers, entities, or verifiable claims
-- **Fix:** Add specific statistics, research data, named sources, and date-stamped information to content pages
-- **Priority pages:** Homepage, services, about, blog posts
+### 3.1 Poor Readability Score (Content - SERIOUS, 23 pages)
 
-### 6.3 No Definition Blocks [SERIOUS - 12 pages]
-- **Affected:** About, docs pages, services pages, privacy
-- **Fix:** Add clear definition paragraphs ("X is a...", "X refers to...") to make content citable by AI
-- **Examples:**
-  - About: "Kritano is a web accessibility auditing platform that..."
-  - Services/Accessibility: "Web accessibility is the practice of..."
-  - Services/SEO: "Search engine optimisation (SEO) is..."
+- **Issue:** Readability score of 20/100 on many pages
+- **Root cause:** Technical content (API docs, services) uses complex vocabulary
+- **Actions:**
+  1. Simplify sentence structure on key landing pages (home, services, pricing, about)
+  2. API docs are inherently technical -- accept lower readability there
+  3. Add TL;DR summaries at top of technical pages
 
-### 6.4 No Author sameAs Links [MODERATE - 29 pages]
-- **Fix:** Add `sameAs` property to JSON-LD Person schema linking to LinkedIn, Twitter/X profiles
-- **Implementation:** Add to the site-wide Organization schema or per-page Article schema
+### 3.2 Thin Content (SEO - MODERATE, 8 pages)
 
-### 6.5 No FAQ Section [MODERATE - 25 pages]
-- **Fix:** Add question-based H2/H3 headings ("What is...?", "How does...?") or implement FAQPage schema
-- **Priority pages:**
-  - FAQ page (already has Q&A but may need FAQPage schema)
-  - Pricing (add "Frequently Asked Questions" section)
-  - Services pages (add "Common questions about [service]")
-  - Homepage (add brief FAQ section)
+- **Pages:** waitlist, faq, blog listing, author, contact, category pages
+- **Fix:** Expand content on waitlist (add feature preview, benefits), contact (add FAQ, office info), author page (expand bio, add articles list)
+- **Note:** Blog category pages are listing pages -- thin content is expected. Consider excluding listing pages from word count checks.
 
-### 6.6 No Verifiable Claims [MODERATE - 15 pages]
-- **Fix:** Combine data points with source attributions, e.g. "According to WebAIM, 96.3% of home pages have detectable WCAG failures"
-- **Priority:** Blog posts, services pages, about page
+### 3.3 Wall of Text (Content - SERIOUS, 2 pages)
 
-### 6.7 No Summary Statements [MODERATE - 14 pages]
-- **Fix:** Add "Key takeaway", "In summary", or "TL;DR" sections to docs and service pages
+- **Where:** `/docs/objects`, `/docs/endpoints`
+- **Fix:** Add H3 subheadings every 300-400 words within the docs content
 
-### 6.8 No Citation-Friendly Schema [MINOR - 28 pages]
-- **Fix:** Implement FAQPage, HowTo, or ClaimReview schema markup
-- **Overlaps with:** SEO 4.8 (structured data) and AEO 6.5 (FAQ sections)
+### 3.4 Academic Reading Level & High Vocabulary (Content - MODERATE, 23 pages)
 
-### 6.9 No Semantic Citation Markup [INFO - 7 pages]
-- **Affected:** Blog posts, privacy, terms, docs
-- **Fix:** Use `<cite>` tags for source names and `<blockquote cite="URL">` for quoted content
+- **Largely overlaps with 3.1.** Focus on non-technical pages first.
+
+### 3.5 Keyword Optimisation (Content - MODERATE, 3 blog posts)
+
+- **Issues:** Missing keyword in meta description, introduction, and low keyword density on blog posts
+- **Fix:** Review blog post meta descriptions to include target keywords. Naturally weave keywords into opening paragraphs.
+
+### 3.6 Duplicate Meta Description (SEO - MODERATE, 1 finding)
+
+- **Issue:** Same meta description on 27 pages
+- **Investigate:** This likely means the fallback meta description from `index.html` is being used as default. Each page should already have unique descriptions via `PageSeo`. Check if there's a rendering issue where the Helmet description isn't overriding the HTML default.
 
 ---
 
-## Phase 7: SCHEMA -- TODO
+## Phase 4: E-E-A-T Improvements
 
-### 7.1 Missing Recommended Fields [MODERATE - 3 pages]
-- **Issue:** WebSite schema missing `description` field
-- **Affected:** Pricing, about, homepage
-- **Fix:** Add `description` field to the existing WebSite JSON-LD schema on these pages
+### 4.1 Author Bio Missing on Non-Blog Pages (E-E-A-T - SERIOUS, 9 pages)
 
----
+- **Where:** author page, terms, waitlist, blog listings, privacy, faq
+- **Fix:** These pages don't need an author bio (it's not applicable to terms/privacy/listing pages). Consider adjusting the E-E-A-T engine to not flag legal/listing pages.
+- **For author page:** Ensure the author bio component renders correctly.
 
-## Implementation Order (Updated)
+### 4.2 Ghost Content / Low E-E-A-T Score (E-E-A-T - SERIOUS, 8 pages)
 
-| Step | Task | Status | Est. Impact |
-|------|------|--------|-------------|
-| 1 | Block .env in nginx + deploy security headers | DONE | Security +30 |
-| 2 | server_tokens off, security.txt, cache headers | DONE | Security +5, Perf +3 |
-| 3 | Color contrast fixes (Pricing + CodeBlock) | DONE | A11y +15 |
-| 4 | Link underlines for distinguishability | DONE | A11y +5 |
-| 5 | Scrollable code blocks (tabIndex, role) | DONE | A11y +3 |
-| 6 | Landmark wrappers (auth pages) + heading hierarchy | DONE | A11y +3 |
-| 7 | Image alt text deduplication | TODO | A11y +2 |
-| 8 | Image dimensions + WebP conversion (CLS fix) | TODO | Perf +8 |
-| 9 | Bundle analysis + code-splitting | TODO | Perf +5 |
-| 10 | Self-host fonts (remove render-blocking CSS) | TODO | Perf +3 |
-| 11 | Unique page titles + meta descriptions | TODO | SEO +5 |
-| 12 | Canonical URLs + structured data (JSON-LD) | TODO | SEO +3, Schema +5 |
-| 13 | FAQPage schema on FAQ + pricing | TODO | SEO +2, AEO +5 |
-| 14 | Author sameAs links in JSON-LD | TODO | AEO +3 |
-| 15 | Definition blocks on services + about | TODO | AEO +5 |
-| 16 | Summary statements + factual density | TODO | AEO +5 |
-| 17 | Rewrite content for readability (grade 7-9) | TODO | Content +10 |
-| 18 | Expand thin pages + add CTAs | TODO | Content +5 |
-| 19 | Blog keyword optimisation (intro + meta) | TODO | Content +2 |
-| 20 | Server response time investigation + CDN | TODO | Perf +10 |
+- **Same pages as 4.1.** The fix is to add trust signals where appropriate:
+  - Blog listing pages: add editorial intro paragraph
+  - Waitlist: add social proof (user count, testimonials)
+  - Author page: ensure bio, credentials, social links render
+
+### 4.3 No Author Credentials (E-E-A-T - MODERATE, 27 pages)
+
+- **Fix:** Add credentials/qualifications to the author bio component (e.g. "10+ years in web development" or specific certs)
+- **Files:** `AuthorBio.tsx`, `About.tsx` author section
+
+### 4.4 No First-Hand Experience Signals (E-E-A-T - MODERATE, 23 pages)
+
+- **Fix:** Add "Based on data from X audits" or "In our testing..." language to service pages and blog posts
+- **Lower priority** -- content change, not code
+
+### 4.5 No Citations / References (E-E-A-T - MODERATE, 17 pages)
+
+- **Fix:** Add links to authoritative sources (W3C WCAG specs, Google documentation, MDN) in service pages and blog posts
 
 ---
 
-## Critical Files Summary
+## Phase 5: AEO (Answer Engine Optimisation)
 
-| File | Changes | Status |
-|------|---------|--------|
-| `scripts/nginx.conf` | Dotfile blocking, CSP, Permissions-Policy, server_tokens off, cache headers | DONE |
-| `scripts/deploy-security-fixes.sh` | Automated deployment + verification script | DONE |
-| `client/public/.well-known/security.txt` | Security disclosure policy | DONE |
-| `client/src/components/docs/CodeBlock.tsx` | Contrast fix, scrollable region a11y | DONE |
-| `client/src/pages/public/Pricing.tsx` | Contrast fix on popular plan | DONE |
-| `client/src/pages/docs/DocsEndpointsPage.tsx` | Heading hierarchy (h4 to h3), link underline | DONE |
-| `client/src/pages/docs/DocsOverviewPage.tsx` | Heading hierarchy (h3 to h2), link underline | DONE |
-| `client/src/pages/docs/DocsObjectsPage.tsx` | Scrollable table a11y | DONE |
-| `client/src/pages/docs/DocsAuthPage.tsx` | Link underline | DONE |
-| `client/src/pages/public/Privacy.tsx` | Link underlines (prose) | DONE |
-| `client/src/pages/public/Terms.tsx` | Link underlines (prose) | DONE |
-| `client/src/components/cms/BlockDisplay.tsx` | Link underlines (blog prose) | DONE |
-| `client/src/components/layout/PublicLayout.tsx` | Footer link underlines | DONE |
-| `client/src/pages/auth/*.tsx` (9 files) | Added `<main>` landmark | DONE |
-| `client/src/pages/blog/PostListPage.tsx` | Image dimensions, alt text, srcset | TODO |
-| `client/src/pages/blog/PostDetailPage.tsx` | Image dimensions, CLS fix | TODO |
-| `client/index.html` | Self-host fonts (if pursued) | TODO |
-| All page components | Unique titles, meta descriptions, canonical URLs | TODO |
-| All service/about pages | Definition blocks, summaries, readability | TODO |
-| Site-wide JSON-LD | Organization, FAQPage, Article, sameAs schemas | TODO |
+### 5.1 Low AEO Citability (AEO - SERIOUS, 26 pages)
+
+- **Root cause:** Missing definition blocks, FAQ sections, factual density, and summary statements
+- **Quick wins:**
+  1. Add definition blocks to service pages ("Website accessibility auditing is...")
+  2. Add FAQ schema to key landing pages (pricing, services, home)
+  3. Add "Key takeaway" sections to blog posts and service pages
+
+### 5.2 No FAQ Sections (AEO - MODERATE, 19 pages)
+
+- **Fix:** Add `FAQPage` schema to pages that already have FAQ-like content (pricing, services)
+- **For others:** Add question-based H2/H3 headings
+
+### 5.3 No Author sameAs Links (AEO - MODERATE, 24 pages)
+
+- **Issue:** Structured data missing sameAs links on most pages
+- **Fix:** Ensure the Person schema in blog posts and pages includes sameAs links. Already fixed the LinkedIn URL -- verify it's rendering in JSON-LD across all pages.
+- **Files:** `blogSchemaBuilder.ts`, page-level structured data
+
+### 5.4 No Summary Statements (AEO - MODERATE, 16 pages)
+
+- **Fix:** Add "Key takeaway" or "TL;DR" sections to service pages, docs, and blog posts
 
 ---
 
-## Testing Plan
+## Phase 6: CSP Hardening (Security - MODERATE)
 
-1. **After each phase:** Re-run Kritano audit to measure score improvement
-2. **Accessibility:** Test with keyboard navigation + screen reader (VoiceOver)
-3. **Contrast:** Use browser DevTools contrast checker on modified elements
-4. **Security headers:** Verify with `curl -I https://kritano.com` (automated in deploy script)
-5. **Performance:** Run Lighthouse before/after
-6. **SEO:** Validate structured data with Google Rich Results Test
-7. **AEO:** Re-run CQS audit after adding definition blocks and schemas
+### 6.1 CSP Allows unsafe-inline Scripts (27 pages)
+
+- **Issue:** CSP allows `unsafe-inline` for scripts
+- **Fix:** Implement nonce-based CSP. This requires:
+  1. Server generates a random nonce per request
+  2. Nonce injected into CSP header and inline script tags
+  3. For a Vite SPA, this means either SSR or a middleware that rewrites the HTML
+- **Complexity:** High. May defer to a later sprint.
+- **Alternative:** Use hash-based CSP for the known inline scripts (Vite injects a predictable module loader)
+
+---
+
+## Implementation Order (Priority)
+
+| Priority | Task | Impact | Effort |
+|----------|------|--------|--------|
+| 1 | Fix teal-600 contrast (1.1) | -99 serious | 15 min |
+| 2 | Fix scrollable regions (1.2) | -3 serious | 15 min |
+| 3 | Fix duplicate title (1.3) | -1 serious | 10 min |
+| 4 | Block /config.json (1.6) | Security fix | 5 min |
+| 5 | Fix missing canonicals (1.4) | -3 moderate | 15 min |
+| 6 | Fix CLS on blog posts (2.2) | -3 serious | 30 min |
+| 7 | Fix LCP on services (2.3) | -1 serious | 30 min |
+| 8 | Add author credentials (4.3) | E-E-A-T boost | 15 min |
+| 9 | Investigate duplicate meta desc (3.6) | SEO fix | 30 min |
+| 10 | Add FAQ schema to key pages (5.2) | AEO boost | 1 hr |
+| 11 | Content improvements (3.1-3.5) | Content score | Ongoing |
+| 12 | CSP nonce (6.1) | Security hardening | 2-4 hrs |
+
+---
+
+## Manual Admin Tasks
+
+These require action in the admin panel or CMS, not code changes.
+
+### ~~Fix Non-Self-Referencing Canonicals~~ -- RESOLVED
+
+Verified the admin SEO manager already has the correct canonical URLs for `/pricing` and `/blog`. The audit finding was likely from a pre-deploy snapshot.
+
+### Update Blog Post Meta Descriptions (CMS)
+
+The audit flagged target keywords missing from meta descriptions on 3 blog posts. Edit each post in the CMS and update the SEO Description field to naturally include the target keyword:
+
+1. `/blog/answer-engine-optimisation-how-to-get-cited-by-ai` -- include "answer engine optimisation" in meta description
+2. `/blog/what-is-a-website-audit-and-why-does-it-matter` -- include "website audit" in meta description
+3. `/blog/security-headers-every-website-needs-in-2026` -- include "security headers" in meta description
+
+### Content Improvements (Writing Work)
+
+These findings require manual content rewrites, not code:
+
+- **Poor Readability (23 pages)** -- Simplify sentence structure on landing pages. API docs are inherently technical, accept lower readability there.
+- **Thin Content (8 pages)** -- Expand waitlist (add feature preview, benefits), contact (add FAQ), author (expand bio). Blog listing/category pages are listings by nature.
+- **Keyword density / introduction (3 blog posts)** -- Weave keywords more naturally into opening paragraphs.
+- **No first-hand experience signals (23 pages)** -- Add "In our testing...", "Based on data from X audits..." language to service pages and blog posts.
+- **No citations/references (17 pages)** -- Link to authoritative sources (W3C WCAG specs, Google docs, MDN) in service pages and blog posts.

@@ -110,6 +110,7 @@ export default function DocsObjectsPage() {
           <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-6">Object Reference</h1>
 
           <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2" id="audit-object">Audit Object</h2>
+          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-4">Overview</h3>
           <p className="text-slate-600 dark:text-slate-400 mb-4">
             The audit object represents a website audit job. It contains configuration, real-time progress, scores, and issue counts. The shape varies slightly between list and detail endpoints - the detail endpoint includes <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">config</code> and <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">_links</code>.
           </p>
@@ -186,6 +187,7 @@ export default function DocsObjectsPage() {
         {/* Finding Object */}
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2" id="finding-object">Finding Object</h2>
+          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-4">Overview</h3>
           <p className="text-slate-600 dark:text-slate-400 mb-4">
             A finding represents an individual issue discovered during the audit. Each finding includes the issue location, severity, remediation advice, and links to relevant standards documentation.
           </p>
@@ -251,9 +253,11 @@ export default function DocsObjectsPage() {
         {/* Pagination Object */}
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2" id="pagination">Pagination Object</h2>
+          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-4">Overview</h3>
           <p className="text-slate-600 dark:text-slate-400 mb-4">
             All list endpoints include a <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">pagination</code> object. Use it to iterate through results.
           </p>
+          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Pagination Fields</h3>
           <ObjectTable fields={PAGINATION_FIELDS} />
 
           <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Pagination Example</h3>

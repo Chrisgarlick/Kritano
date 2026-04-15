@@ -70,7 +70,7 @@ export function ContentRadar({
         </div>
         {overallCqs !== null && (
           <div className="text-right">
-            <span className="text-2xl font-bold text-teal-600 dark:text-teal-400">{overallCqs}</span>
+            <span className="text-2xl font-bold text-teal-700 dark:text-teal-400">{overallCqs}</span>
             <span className="text-xs text-slate-500 ml-1">/100</span>
           </div>
         )}

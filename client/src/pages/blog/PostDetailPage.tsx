@@ -5,7 +5,7 @@
  * Uses shared PublicLayout for consistent navigation.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { PublicLayout } from '../../components/layout/PublicLayout';
@@ -37,6 +37,20 @@ export default function PostDetailPage() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [relatedPosts, setRelatedPosts] = useState<BlogPostSummary[]>([]);
+  const articleRef = useRef<HTMLElement>(null);
+
+  // Ensure all <pre> elements are keyboard-accessible (WCAG 2.1.1)
+  useEffect(() => {
+    if (!post || !articleRef.current) return;
+    const preElements = articleRef.current.querySelectorAll('pre');
+    preElements.forEach((pre) => {
+      if (!pre.hasAttribute('tabindex')) {
+        pre.setAttribute('tabindex', '0');
+        pre.setAttribute('role', 'region');
+        pre.setAttribute('aria-label', 'Code example');
+      }
+    });
+  }, [post]);
 
   useEffect(() => {
     if (slug) {
@@ -121,12 +135,20 @@ export default function PostDetailPage() {
           <meta key={tag} property="article:tag" content={tag} />
         ))}
         <link rel="canonical" href={canonicalUrl} />
+        {post.featured_image_url && (
+          <link
+            rel="preload"
+            as="image"
+            href={post.featured_image_url.replace('/original/', '/webp/').replace(/\.(png|jpe?g|gif)$/i, '.webp')}
+            type="image/webp"
+          />
+        )}
         {structuredData.map((sd, i) => (
           <script key={i} type="application/ld+json">{JSON.stringify(sd)}</script>
         ))}
       </Helmet>
 
-      <article className="max-w-3xl mx-auto px-6 lg:px-20 py-12 lg:py-20">
+      <article ref={articleRef} className="max-w-3xl mx-auto px-6 lg:px-20 py-12 lg:py-20">
         {/* Breadcrumb */}
         <Link to="/blog" className="inline-flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-10 transition-colors">
           <ArrowLeft className="w-4 h-4" />
@@ -174,12 +196,17 @@ export default function PostDetailPage() {
           const webpUrl = post.featured_image_url
             .replace('/original/', '/webp/')
             .replace(/\.(png|jpe?g|gif)$/i, '.webp');
+          const thumbUrl = post.featured_image_url
+            .replace('/original/', '/thumbnails/')
+            .replace(/\.(png|gif)$/i, '.jpg');
           return (
             <figure className="mb-10 -mx-4 sm:mx-0">
               <picture>
                 <source srcSet={webpUrl} type="image/webp" />
                 <img
                   src={post.featured_image_url}
+                  srcSet={`${thumbUrl} 400w, ${post.featured_image_url} 1200w`}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 768px"
                   alt={post.featured_image_alt || `Featured image for ${post.title}`}
                   className="w-full rounded-xl"
                   loading="eager"
@@ -242,11 +269,16 @@ export default function PostDetailPage() {
                     const webpUrl = related.featured_image_url
                       .replace('/original/', '/webp/')
                       .replace(/\.(png|jpe?g|gif)$/i, '.webp');
+                    const thumbUrl = related.featured_image_url
+                      .replace('/original/', '/thumbnails/')
+                      .replace(/\.(png|gif)$/i, '.jpg');
                     return (
                       <picture>
                         <source srcSet={webpUrl} type="image/webp" />
                         <img
                           src={related.featured_image_url}
+                          srcSet={`${thumbUrl} 400w, ${related.featured_image_url} 640w`}
+                          sizes="(max-width: 768px) 100vw, 33vw"
                           alt=""
                           role="presentation"
                           className="w-full h-40 object-cover"

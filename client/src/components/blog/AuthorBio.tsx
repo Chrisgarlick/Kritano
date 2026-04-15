@@ -6,6 +6,7 @@
  */
 
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Linkedin } from 'lucide-react';
 
 const AUTHOR = {
@@ -16,11 +17,26 @@ const AUTHOR = {
   linkedin: 'https://uk.linkedin.com/in/chris-garlick-59a8bb91',
   x: 'https://x.com/ChrisGarlick123',
   bio: 'Chris built Kritano after years of running audits with fragmented tools. He writes about SEO, accessibility, security, and performance based on real auditing data from thousands of scans.',
-  credentials: 'Software engineer specialising in web auditing and WCAG 2.2 compliance.',
+  credentials: '10+ years in software engineering. Specialises in web auditing, WCAG 2.2 compliance, and search engine optimisation.',
+};
+
+const AUTHOR_JSONLD = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: AUTHOR.name,
+  jobTitle: AUTHOR.title,
+  url: `https://kritano.com${AUTHOR.url}`,
+  image: `https://kritano.com${AUTHOR.photo}`,
+  description: AUTHOR.bio,
+  sameAs: [AUTHOR.linkedin, AUTHOR.x],
 };
 
 export default function AuthorBio() {
   return (
+    <>
+    <Helmet>
+      <script type="application/ld+json">{JSON.stringify(AUTHOR_JSONLD)}</script>
+    </Helmet>
     <div
       className="border border-slate-200 dark:border-slate-700 rounded-xl p-6 bg-slate-50 dark:bg-slate-800/50"
       itemProp="author"
@@ -70,8 +86,11 @@ export default function AuthorBio() {
               </a>
             </div>
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mb-2" itemProp="jobTitle">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-1" itemProp="jobTitle">
             {AUTHOR.title}
+          </p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2" itemProp="qualifications">
+            {AUTHOR.credentials}
           </p>
           <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" itemProp="description">
             {AUTHOR.bio}
@@ -82,5 +101,6 @@ export default function AuthorBio() {
         </div>
       </div>
     </div>
+    </>
   );
 }

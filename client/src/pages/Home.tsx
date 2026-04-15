@@ -431,8 +431,8 @@ export default function Home() {
                   '400+ content checks across 7 sub-modules',
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-2.5">
-                    <CheckCircle className="w-4.5 h-4.5 text-teal-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm text-slate-700">{item}</span>
+                    <CheckCircle className="w-4.5 h-4.5 text-teal-700 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-800">{item}</span>
                   </div>
                 ))}
               </div>
@@ -448,7 +448,7 @@ export default function Home() {
                   <DemoRing score={78} size={80} strokeWidth={5} color="#14b8a6" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-teal-600 uppercase tracking-wider mb-1">Content Quality Score</p>
+                  <p className="text-xs font-medium text-teal-700 uppercase tracking-wider mb-1">Content Quality Score</p>
                   <p className="text-sm text-slate-600">Good &mdash; E-E-A-T and engagement need work</p>
                 </div>
               </div>

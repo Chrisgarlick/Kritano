@@ -94,6 +94,15 @@ function getEmbedUrl(raw: string): string | null {
 export default function BlockDisplay({ block }: BlockDisplayProps) {
   const { type, props } = block;
 
+  // Custom components for ReactMarkdown to make scrollable code blocks keyboard-accessible
+  const markdownComponents = {
+    pre: ({ children, ...rest }: React.HTMLAttributes<HTMLPreElement>) => (
+      <pre {...rest} tabIndex={0} role="region" aria-label="Code example">
+        {children}
+      </pre>
+    ),
+  };
+
   switch (type) {
     // ============================================================
     // TEXT (Markdown)
@@ -102,7 +111,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
       const content = (props.content as string) || '';
       return (
         <div className="prose prose-slate max-w-none prose-headings:font-sans prose-a:text-indigo-600 prose-a:underline prose-a:underline-offset-2 prose-a:decoration-indigo-300 hover:prose-a:decoration-indigo-600 prose-code:text-indigo-700 prose-code:bg-indigo-50 prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:before:content-[''] prose-code:after:content-[''] prose-img:rounded-lg">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]} components={markdownComponents}>
             {content}
           </ReactMarkdown>
         </div>
@@ -133,16 +142,40 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
       const widthClass =
         width === 'full' ? 'w-full' : width === 'wide' ? 'max-w-4xl mx-auto' : 'max-w-2xl mx-auto';
 
+      const webpUrl = src
+        .replace('/original/', '/webp/')
+        .replace(/\.(png|jpe?g|gif)$/i, '.webp');
+      const thumbUrl = src
+        .replace('/original/', '/thumbnails/')
+        .replace(/\.(png|gif)$/i, '.jpg');
+      const hasVariants = src.includes('/original/');
+
       return (
         <figure className={`my-8 ${widthClass}`}>
-          <img
-            src={src}
-            alt={alt}
-            loading="lazy"
-            width={800}
-            height={450}
-            className="w-full rounded-lg shadow-sm"
-          />
+          {hasVariants ? (
+            <picture>
+              <source srcSet={webpUrl} type="image/webp" />
+              <img
+                src={src}
+                srcSet={`${thumbUrl} 400w, ${src} 800w`}
+                sizes={width === 'full' ? '100vw' : width === 'wide' ? '(max-width: 1024px) 100vw, 896px' : '(max-width: 768px) 100vw, 672px'}
+                alt={alt}
+                loading="lazy"
+                width={800}
+                height={450}
+                className="w-full rounded-lg shadow-sm"
+              />
+            </picture>
+          ) : (
+            <img
+              src={src}
+              alt={alt}
+              loading="lazy"
+              width={800}
+              height={450}
+              className="w-full rounded-lg shadow-sm"
+            />
+          )}
           {caption && (
             <figcaption className="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">{caption}</figcaption>
           )}
@@ -171,7 +204,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
                 <p className={`mb-1 font-semibold ${cfg.titleColor}`}>{title}</p>
               )}
               <div className="prose prose-sm max-w-none text-slate-700 dark:text-slate-300">
-                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]} components={markdownComponents}>
                   {body}
                 </ReactMarkdown>
               </div>
@@ -196,11 +229,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
               {filename}
             </div>
           )}
-          <pre className="overflow-x-auto p-4">
-            <code className={`text-sm font-mono text-slate-100 ${language ? `language-${language}` : ''}`}>
-              {code}
-            </code>
-          </pre>
+          <pre className="overflow-x-auto p-4" tabIndex={0} role="region" aria-label={`${language || 'Code'} example`}><code className={`text-sm font-mono text-slate-100 ${language ? `language-${language}` : ''}`}>{code}</code></pre>
         </div>
       );
     }

@@ -123,14 +123,14 @@ export function CQSBreakdown({ auditId, cqsScore }: CQSBreakdownProps) {
             animated
           >
             <div className="text-center">
-              <span className="font-display text-2xl text-teal-600 dark:text-teal-400">
+              <span className="font-display text-2xl text-teal-700 dark:text-teal-400">
                 {score ?? '-'}
               </span>
             </div>
           </ProgressRing>
         </div>
         <div className="text-center sm:text-left">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-1">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-1">
             Content Quality Score
           </h3>
           {summary && (

@@ -8,6 +8,7 @@
  * - Visual variety between sections
  */
 
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PublicLayout } from '../../components/layout/PublicLayout';
 import AuthorBio from '../../components/blog/AuthorBio';
@@ -25,6 +26,8 @@ import {
   Search,
   Gauge,
   BookOpen,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 
 const SERVICES = [
@@ -110,6 +113,15 @@ const SERVICES = [
   },
 ];
 
+const SERVICE_FAQS = [
+  { q: 'What does a website audit check?', a: 'Kritano audits six dimensions: SEO, accessibility (WCAG 2.2), security, performance, content quality, and structured data. Each dimension runs dozens of individual checks across every crawled page.' },
+  { q: 'How long does an audit take?', a: 'Most audits complete within 2-5 minutes depending on the number of pages. Kritano crawls up to 1,000 pages per audit and runs all checks in parallel for speed.' },
+  { q: 'Do I need to install anything on my website?', a: 'No. Kritano audits your site externally by crawling it like a search engine would. There is nothing to install, no code changes required, and no impact on your live site.' },
+  { q: 'What accessibility standards do you test against?', a: 'Kritano tests against WCAG 2.2 Level AA, which is the standard required by the European Accessibility Act (EAA) and most accessibility legislation worldwide.' },
+  { q: 'Can I export the audit results?', a: 'Yes. Audit results can be exported as PDF reports, CSV spreadsheets, or Markdown files. PDF reports include visual score breakdowns, issue details, and fix recommendations.' },
+  { q: 'How is this different from free audit tools?', a: 'Free tools typically check a single page for basic SEO. Kritano crawls your entire site and checks six categories with 400+ rules, content quality scoring, and actionable fix code for every issue.' },
+];
+
 export default function Services() {
   const mode = useSiteMode();
   const ctaHref = mode === 'waitlist' ? '/waitlist' : mode === 'early_access' ? '/register?ea=email' : '/register';
@@ -140,6 +152,15 @@ export default function Services() {
               { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
               { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://kritano.com/services' },
             ],
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: SERVICE_FAQS.map(faq => ({
+              '@type': 'Question',
+              name: faq.q,
+              acceptedAnswer: { '@type': 'Answer', text: faq.a },
+            })),
           },
         ]}
       />
@@ -286,6 +307,19 @@ export default function Services() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
+        <div className="max-w-3xl mx-auto text-center mb-12">
+          <h2 className="font-display text-3xl text-slate-900 mb-3">Frequently Asked Questions</h2>
+          <p className="text-slate-500">Common questions about our auditing services.</p>
+        </div>
+        <div className="max-w-3xl mx-auto space-y-3">
+          {SERVICE_FAQS.map((faq) => (
+            <ServiceFaqItem key={faq.q} question={faq.q} answer={faq.a} />
+          ))}
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
         <div className="bg-indigo-600 rounded-2xl p-10 md:p-14 relative overflow-hidden">
@@ -315,5 +349,25 @@ export default function Services() {
         </div>
       </section>
     </PublicLayout>
+  );
+}
+
+function ServiceFaqItem({ question, answer }: { question: string; answer: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="bg-white border border-slate-200 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 transition-colors"
+      >
+        <span className="font-semibold text-slate-900 text-sm pr-4">{question}</span>
+        {open ? <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />}
+      </button>
+      {open && (
+        <div className="px-5 pb-4">
+          <p className="text-sm text-slate-600 leading-relaxed">{answer}</p>
+        </div>
+      )}
+    </div>
   );
 }

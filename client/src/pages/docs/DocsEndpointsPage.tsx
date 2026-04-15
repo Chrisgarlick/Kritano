@@ -84,6 +84,7 @@ export default function DocsEndpointsPage() {
               </div>
             </div>
 
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Start a new website audit. The audit is queued and processed asynchronously - the response returns immediately with status <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">"pending"</code>. Poll <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">GET /api/v1/audits/:id</code> to track progress.
             </p>
@@ -159,6 +160,7 @@ export default function DocsEndpointsPage() {
               </div>
             </div>
 
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">List all audits for your account. Results are sorted by creation date (newest first) and support pagination and filtering.</p>
 
             <ParamTable
@@ -237,6 +239,7 @@ export default function DocsEndpointsPage() {
               </div>
             </div>
 
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Retrieve detailed information about a specific audit including its configuration, progress, scores, and HATEOAS links. Use this endpoint to poll for audit completion.
             </p>
@@ -335,6 +338,7 @@ export default function DocsEndpointsPage() {
               </div>
             </div>
 
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Retrieve all findings for a completed audit. Results are sorted by severity (critical first) then by creation date. Supports filtering by category and severity.
             </p>
@@ -416,6 +420,7 @@ export default function DocsEndpointsPage() {
               </div>
             </div>
 
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Cancel a running audit. Only audits in these states can be cancelled: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">pending</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">discovering</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">ready</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">processing</code>. No request body is needed.
             </p>
@@ -462,6 +467,7 @@ export default function DocsEndpointsPage() {
               </div>
             </div>
 
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Permanently delete an audit and all associated findings and page data. Only audits in terminal states can be deleted: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">completed</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">failed</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">cancelled</code>. This action cannot be undone.
             </p>
