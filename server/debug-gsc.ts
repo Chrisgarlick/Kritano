@@ -28,17 +28,45 @@ async function main() {
   const sites = await webmasters.sites.list();
   console.log('Accessible sites:', sites.data.siteEntry?.map(s => s.siteUrl));
 
-  // 2. Raw query with minimal dimensions
-  const resp = await webmasters.searchanalytics.query({
+  // 2. Query with all 5 dimensions (what syncQueryData uses)
+  const resp5 = await webmasters.searchanalytics.query({
     siteUrl: 'sc-domain:chrisgarlick.com',
     requestBody: {
       startDate: '2026-01-01',
       endDate: '2026-04-13',
-      dimensions: ['date'],
+      dimensions: ['query', 'page', 'device', 'country', 'date'],
       rowLimit: 10,
     },
   });
-  console.log('API response:', JSON.stringify(resp.data, null, 2));
+  console.log('5-dimension response rows:', resp5.data.rows?.length ?? 0);
+  if (resp5.data.rows?.length) {
+    console.log('Sample:', JSON.stringify(resp5.data.rows[0], null, 2));
+  }
+
+  // 3. Query with just query+date (lighter)
+  const resp2 = await webmasters.searchanalytics.query({
+    siteUrl: 'sc-domain:chrisgarlick.com',
+    requestBody: {
+      startDate: '2026-01-01',
+      endDate: '2026-04-13',
+      dimensions: ['query', 'date'],
+      rowLimit: 10,
+    },
+  });
+  console.log('query+date response rows:', resp2.data.rows?.length ?? 0);
+  if (resp2.data.rows?.length) {
+    console.log('Sample:', JSON.stringify(resp2.data.rows.slice(0, 3), null, 2));
+  }
+
+  // 4. No dimensions - just totals
+  const respTotal = await webmasters.searchanalytics.query({
+    siteUrl: 'sc-domain:chrisgarlick.com',
+    requestBody: {
+      startDate: '2026-01-01',
+      endDate: '2026-04-13',
+    },
+  });
+  console.log('Totals (no dimensions):', JSON.stringify(respTotal.data, null, 2));
 
   await pool.end();
 }
