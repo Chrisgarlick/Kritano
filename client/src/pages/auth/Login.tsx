@@ -5,7 +5,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
       <Helmet>
-        <title>Log In to Your Account | Kritano</title>
+        <title>Sign In | Kritano</title>
         <meta name="description" content="Log in to your Kritano account to access website audits, security reports, and performance insights." />
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>

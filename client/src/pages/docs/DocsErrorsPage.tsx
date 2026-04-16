@@ -34,7 +34,7 @@ export default function DocsErrorsPage() {
     <PublicLayout>
       <PageSeo
         title="Error Handling - API Docs"
-        description="Kritano API error codes, response format, and troubleshooting guide."
+        description="Kritano API error codes, HTTP status meanings, response format, and step-by-step troubleshooting guide."
         path="/docs/errors"
         useOverrides={true}
         structuredData={{

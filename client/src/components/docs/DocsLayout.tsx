@@ -78,7 +78,7 @@ export default function DocsLayout({ children }: Props) {
 
       <div className="flex gap-10">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:block w-[240px] flex-shrink-0">
+        <aside aria-label="Documentation sidebar" className="hidden lg:block w-[240px] flex-shrink-0">
           <div className="sticky top-[96px]">{sidebar('API documentation')}</div>
         </aside>
 

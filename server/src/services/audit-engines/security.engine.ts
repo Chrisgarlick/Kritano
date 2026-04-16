@@ -194,9 +194,18 @@ export class SecurityEngine {
       check: (ctx) => {
         if (!ctx.isHttps) return null;
 
+        // Third-party analytics cookies whose flags are set by external scripts
+        // (e.g. Google Analytics/GTM) and cannot be controlled by the site owner.
+        const thirdPartyCookiePrefixes = ['_ga', '_gid', '_gat', '_fbp', '_gcl'];
+
         const findings: SecurityFinding[] = [];
         for (const cookie of ctx.cookies) {
           if (!cookie.secure) {
+            const isThirdParty = thirdPartyCookiePrefixes.some(prefix =>
+              cookie.name.startsWith(prefix)
+            );
+            if (isThirdParty) continue;
+
             findings.push(this.createFinding('insecure-cookie', 'Insecure Cookie', 'serious',
               `Cookie "${cookie.name}" is missing the Secure flag`,
               'Add the Secure flag to prevent cookie transmission over HTTP'));
@@ -372,7 +381,15 @@ export class SecurityEngine {
         if (!csp) return null;
 
         const findings: SecurityFinding[] = [];
-        if (csp.includes("'unsafe-inline'") && (csp.includes('script-src') || csp.includes('default-src'))) {
+
+        // Parse individual CSP directives to avoid false positives
+        // (e.g. unsafe-inline in style-src should not flag script-src)
+        const directives = csp.split(';').map(d => d.trim().toLowerCase());
+        const scriptSrc = directives.find(d => d.startsWith('script-src'));
+        const defaultSrc = directives.find(d => d.startsWith('default-src'));
+        const effectiveScriptSrc = scriptSrc || defaultSrc || '';
+
+        if (effectiveScriptSrc.includes("'unsafe-inline'")) {
           findings.push(this.createFinding('csp-unsafe-inline', 'CSP Allows unsafe-inline Scripts', 'moderate',
             'Content Security Policy allows unsafe-inline for scripts',
             'Remove unsafe-inline and use nonce or hash-based CSP for inline scripts'));
@@ -653,10 +670,15 @@ export class SecurityEngine {
         }
 
         // Check if file is accessible
+        // Skip false positives from SPAs that return 200 + text/html for any path
         if (response.status === 200) {
-          findings.push(this.createFinding('exposed-sensitive-file', `Exposed ${file.name}`, file.severity,
-            `Sensitive file accessible: ${file.path}`,
-            'Remove this file from the public web root or restrict access immediately'));
+          const contentType = response.headers.get('content-type') || '';
+          const isSpaFallback = contentType.includes('text/html') && !file.path.endsWith('.html');
+          if (!isSpaFallback) {
+            findings.push(this.createFinding('exposed-sensitive-file', `Exposed ${file.name}`, file.severity,
+              `Sensitive file accessible: ${file.path}`,
+              'Remove this file from the public web root or restrict access immediately'));
+          }
         }
       } catch {
         // File not accessible or timeout - that's good

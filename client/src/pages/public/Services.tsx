@@ -75,7 +75,7 @@ const SERVICES = [
     id: 'security',
     icon: <Shield className="w-6 h-6" />,
     accentColor: 'border-t-red-500',
-    iconColor: 'text-red-600 bg-red-50',
+    iconColor: 'text-red-700 bg-red-50',
     title: 'Security Scanning',
     subtitle: 'Protect your visitors.',
     stat: '40+',

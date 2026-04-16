@@ -510,7 +510,7 @@ export default function Home() {
             <CapabilityCard
               icon={<Shield className="w-5 h-5" />}
               accentColor="border-red-400"
-              iconColor="text-red-600 bg-red-50"
+              iconColor="text-red-700 bg-red-50"
               title="Security"
               description="HTTPS, headers, exposed files, cookie security."
               href="/services/security"

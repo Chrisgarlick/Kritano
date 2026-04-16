@@ -20,7 +20,7 @@ import { ArrowRight, Menu, X, ChevronDown, TrendingUp, Accessibility, Shield, Za
 const SERVICE_ITEMS = [
   { href: '/services/seo', label: 'SEO Auditing', icon: TrendingUp, description: 'Search engine optimisation analysis', color: 'hover:text-violet-600', iconHover: 'group-hover/item:bg-violet-50 group-hover/item:text-violet-600', activeColor: 'text-violet-600', activeIcon: 'bg-violet-100 text-violet-600' },
   { href: '/services/accessibility', label: 'Accessibility', icon: Accessibility, description: 'WCAG 2.2 compliance testing', color: 'hover:text-emerald-700', iconHover: 'group-hover/item:bg-emerald-50 group-hover/item:text-emerald-700', activeColor: 'text-emerald-700', activeIcon: 'bg-emerald-100 text-emerald-700' },
-  { href: '/services/security', label: 'Security Scanning', icon: Shield, description: 'Vulnerability & threat detection', color: 'hover:text-red-600', iconHover: 'group-hover/item:bg-red-50 group-hover/item:text-red-600', activeColor: 'text-red-600', activeIcon: 'bg-red-100 text-red-600' },
+  { href: '/services/security', label: 'Security Scanning', icon: Shield, description: 'Vulnerability & threat detection', color: 'hover:text-red-700', iconHover: 'group-hover/item:bg-red-50 group-hover/item:text-red-700', activeColor: 'text-red-700', activeIcon: 'bg-red-100 text-red-700' },
   { href: '/services/performance', label: 'Performance', icon: Zap, description: 'Speed & Core Web Vitals', color: 'hover:text-sky-700', iconHover: 'group-hover/item:bg-sky-50 group-hover/item:text-sky-700', activeColor: 'text-sky-700', activeIcon: 'bg-sky-100 text-sky-700' },
 ];
 
@@ -443,7 +443,7 @@ export function PublicLayout({ children }: Props) {
       </nav>
 
       {/* Page content */}
-      <main id="main-content" className="flex-grow">
+      <main id="main-content" aria-label="Page content" className="flex-grow">
         {children}
       </main>
 

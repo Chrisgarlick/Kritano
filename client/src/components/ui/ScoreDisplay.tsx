@@ -53,7 +53,7 @@ function getScoreQuality(score: number): { label: string; color: string } {
   if (score >= 90) return { label: 'Excellent', color: 'text-emerald-600 dark:text-emerald-500' };
   if (score >= 70) return { label: 'Good', color: 'text-amber-500 dark:text-amber-400' };
   if (score >= 50) return { label: 'Fair', color: 'text-orange-500 dark:text-orange-400' };
-  return { label: 'Poor', color: 'text-red-600 dark:text-red-500' };
+  return { label: 'Poor', color: 'text-red-700 dark:text-red-500' };
 }
 
 export function ScoreDisplay({

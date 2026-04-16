@@ -82,7 +82,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     seo: {
       title: 'SEO Auditing - 100+ Ranking Factors Checked',
       description:
-        'Analyse your website against 100+ SEO ranking factors. Kritano checks metadata, structured data, Core Web Vitals, mobile-friendliness, and more - with clear fix guidance for every issue.',
+        'Analyse your website against 100+ SEO ranking factors including metadata, structured data, Core Web Vitals, and mobile-friendliness.',
     },
     featureGroups: [
       {
@@ -239,7 +239,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     seo: {
       title: 'Accessibility Auditing (WCAG 2.2)',
       description:
-        'Check your website against WCAG 2.2 Level AA criteria. Kritano evaluates color contrast, keyboard navigation, screen reader compatibility, semantic HTML, and more.',
+        'Check your website against WCAG 2.2 Level AA. Kritano evaluates colour contrast, keyboard navigation, screen reader support, and semantic HTML.',
     },
     featureGroups: [
       {
@@ -553,7 +553,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
     seo: {
       title: 'Performance Analysis',
       description:
-        'Identify exactly what\'s slowing your website down. Kritano analyses Core Web Vitals, resource optimisation, caching, render pipeline, and more - with prioritised fix recommendations.',
+        'Find what slows your website down. Kritano analyses Core Web Vitals, resource loading, caching, and render pipeline with prioritised fixes.',
     },
     featureGroups: [
       {
