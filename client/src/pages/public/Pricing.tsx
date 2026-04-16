@@ -288,17 +288,19 @@ export default function Pricing() {
         <h1 className="font-display text-5xl lg:text-6xl text-slate-900 dark:text-white leading-[1.05] mb-4">
           Pricing
         </h1>
-        <h2 className="font-display text-2xl lg:text-3xl text-slate-500 dark:text-slate-400 leading-snug mb-6">
+        <h2 className="font-display text-2xl lg:text-3xl text-slate-600 dark:text-slate-400 leading-snug mb-6">
           Simple, transparent pricing.
         </h2>
-        <p className="text-lg text-slate-500 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto mb-10">
-          Start free and upgrade as your needs grow. Every paid plan includes a 14-day
-          free trial. No credit card required.
+        <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto mb-4">
+          Kritano is a website auditing platform with plans for individuals, teams, and agencies. Start free and upgrade as your needs grow. Every paid plan includes a 14-day free trial with no credit card required.
+        </p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto mb-10">
+          In our experience, most small businesses start with the free plan and upgrade to Starter or Pro once they see how many issues their site actually has. Agencies typically choose the Agency plan for white-label reports and multi-site management.
         </p>
 
         {/* Billing Period Toggle */}
         <div className="flex items-center justify-center gap-3">
-          <span className={`text-sm font-medium ${billingPeriod === 'monthly' ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400'}`}>
+          <span className={`text-sm font-medium ${billingPeriod === 'monthly' ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>
             Monthly
           </span>
           <button
@@ -317,7 +319,7 @@ export default function Pricing() {
               }`}
             />
           </button>
-          <span className={`text-sm font-medium ${billingPeriod === 'annual' ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400'}`}>
+          <span className={`text-sm font-medium ${billingPeriod === 'annual' ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>
             Annual
           </span>
           <span className="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400">
@@ -350,7 +352,7 @@ export default function Pricing() {
                   <h3 className={`text-base font-semibold mb-1 ${plan.popular ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
                     {plan.name}
                   </h3>
-                  <p className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
+                  <p className={`text-xs leading-relaxed ${plan.popular ? 'text-slate-300' : 'text-slate-600 dark:text-slate-400'}`}>
                     {plan.description}
                   </p>
                 </div>
@@ -361,7 +363,7 @@ export default function Pricing() {
                     {billingPeriod === 'annual' ? plan.annualPrice : plan.monthlyPrice}
                   </span>
                   {plan.priceDetail && (
-                    <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
+                    <span className={`text-xs ml-0.5 ${plan.popular ? 'text-slate-300' : 'text-slate-600 dark:text-slate-400'}`}>
                       {billingPeriod === 'annual' && plan.monthlyPrice !== '$0' && plan.monthlyPrice !== 'Custom'
                         ? '/year'
                         : plan.priceDetail}
@@ -374,7 +376,7 @@ export default function Pricing() {
                   <span className={`font-display text-2xl ${plan.popular ? 'text-indigo-400' : 'text-indigo-600'}`}>
                     {plan.pageCount}
                   </span>
-                  <span className={`text-xs ml-1 ${plan.popular ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
+                  <span className={`text-xs ml-1 ${plan.popular ? 'text-slate-300' : 'text-slate-600 dark:text-slate-400'}`}>
                     pages / audit
                   </span>
                 </div>
@@ -428,7 +430,7 @@ export default function Pricing() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b-2 border-slate-200 dark:border-slate-700">
-                    <th scope="col" className="text-left py-3 pr-4 text-slate-500 dark:text-slate-400 font-medium w-44">&nbsp;</th>
+                    <th scope="col" className="text-left py-3 pr-4 text-slate-600 dark:text-slate-400 font-medium w-44">&nbsp;</th>
                     <th scope="col" className="text-center py-3 px-2 text-slate-900 dark:text-white font-semibold text-xs">Free</th>
                     <th scope="col" className="text-center py-3 px-2 text-slate-900 dark:text-white font-semibold text-xs">Starter</th>
                     <th scope="col" className="text-center py-3 px-2 text-slate-900 dark:text-white font-semibold text-xs bg-indigo-50 dark:bg-indigo-900/20 rounded-t-lg">Pro</th>
@@ -440,7 +442,7 @@ export default function Pricing() {
                   {COMPARISON_SECTIONS.map((section) => (
                     <>
                       <tr key={section.title}>
-                        <td colSpan={6} className="pt-6 pb-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        <td colSpan={6} className="pt-6 pb-2 text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                           {section.title}
                         </td>
                       </tr>
@@ -487,6 +489,7 @@ export default function Pricing() {
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
         <div className="max-w-3xl mx-auto">
           <AuthorBio />
+          <p className="text-xs text-slate-600 mt-4">Last updated: <time dateTime="2026-04-16">16 April 2026</time></p>
         </div>
       </section>
 
@@ -496,7 +499,7 @@ export default function Pricing() {
           <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight mb-6">
             Start for free, no strings attached
           </h2>
-          <p className="text-lg text-slate-500 dark:text-slate-400 leading-relaxed mb-10">
+          <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
             Your first audit is on us. See the value before you commit.
           </p>
           <Link
@@ -550,9 +553,9 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
       >
         <span className="font-semibold text-slate-900 dark:text-white text-sm pr-4">{question}</span>
         {open ? (
-          <ChevronUp className="w-5 h-5 text-slate-500 dark:text-slate-400 flex-shrink-0" />
+          <ChevronUp className="w-5 h-5 text-slate-600 dark:text-slate-400 flex-shrink-0" />
         ) : (
-          <ChevronDown className="w-5 h-5 text-slate-500 dark:text-slate-400 flex-shrink-0" />
+          <ChevronDown className="w-5 h-5 text-slate-600 dark:text-slate-400 flex-shrink-0" />
         )}
       </button>
       {open && (

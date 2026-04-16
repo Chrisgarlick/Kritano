@@ -94,9 +94,12 @@ const CREDENTIAL_PATTERNS = [
   /\bCPA\b/,
   /\bCFA\b/,
   /\b(certified|licensed|accredited|registered)\b/i,
-  /\b\d+\+?\s*years?\s*(of\s+)?(experience|practicing)\b/i,
+  /\b\d+\+?\s*years?\s+(of\s+|in\s+)?\S/i,   // "10+ years in software", "5 years of experience"
   /\bboard[- ]certified\b/i,
   /\bfellow (of|at)\b/i,
+  /\bspeciali[sz](es?|ing)\s+in\b/i,           // "specialises in", "specializing in"
+  /\bexpert\s+in\b/i,                           // "expert in"
+  /\bfounder\s+(of|at)\b/i,                     // "founder of"
 ];
 
 // =============================================

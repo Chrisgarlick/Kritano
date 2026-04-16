@@ -126,7 +126,7 @@ function AnimatedAuditDemo() {
           <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${
             phase === 'results' ? 'bg-emerald-500' : phase === 'scanning' ? 'bg-amber-500 animate-pulse' : 'bg-slate-300'
           }`} />
-          <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">
+          <span className="text-[11px] font-medium text-slate-600 uppercase tracking-wider">
             {phase === 'input' ? 'New Audit' : phase === 'scanning' ? 'Scanning...' : 'Audit Complete'}
           </span>
         </div>
@@ -143,10 +143,10 @@ function AnimatedAuditDemo() {
         {/* Phase: URL Input */}
         {phase === 'input' && (
           <div className="absolute inset-0 px-5 py-8">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-3">Enter your URL</p>
+            <p className="text-xs font-medium text-slate-600 uppercase tracking-wider mb-3">Enter your URL</p>
             <div className="flex items-center gap-2">
               <div className="flex-1 px-3.5 py-2.5 bg-white border border-slate-200 rounded-lg flex items-center">
-                <Search className="w-4 h-4 text-slate-500 mr-2 flex-shrink-0" />
+                <Search className="w-4 h-4 text-slate-600 mr-2 flex-shrink-0" />
                 <span className="text-sm text-slate-900 font-mono">
                   {DEMO_URL.slice(0, typedChars)}
                   <span className="inline-block w-px h-4 bg-indigo-600 ml-px align-middle animate-blink-cursor" />
@@ -155,7 +155,7 @@ function AnimatedAuditDemo() {
               <div className={`px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 typedChars >= DEMO_URL.length
                   ? 'bg-indigo-600 text-white'
-                  : 'bg-slate-100 text-slate-500'
+                  : 'bg-slate-100 text-slate-600'
               }`}>
                 Audit
               </div>
@@ -167,7 +167,7 @@ function AnimatedAuditDemo() {
         {phase === 'scanning' && (
           <div className="absolute inset-0 px-5 py-6">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Scanning {DEMO_URL}</p>
+              <p className="text-xs font-medium text-slate-600 uppercase tracking-wider">Scanning {DEMO_URL}</p>
               <span className="text-xs font-semibold text-indigo-600 tabular-nums">{scanProgress}%</span>
             </div>
             {/* Progress bar */}
@@ -177,14 +177,14 @@ function AnimatedAuditDemo() {
                 style={{ width: `${scanProgress}%` }}
               />
             </div>
-            <div className="flex items-center gap-6 text-xs text-slate-500">
+            <div className="flex items-center gap-6 text-xs text-slate-600">
               <span><span className="font-semibold text-slate-700 tabular-nums">{pagesFound}</span> pages found</span>
               <span><span className="font-semibold text-slate-700 tabular-nums">{Math.round(pagesFound * 0.8)}</span> pages audited</span>
             </div>
             {/* Scan line visual */}
             <div className="mt-4 relative h-16 bg-slate-50 rounded-lg border border-slate-100 overflow-hidden">
               <div className="absolute left-0 right-0 h-px bg-indigo-400/60 animate-scan-sweep" />
-              <div className="flex items-center justify-center h-full text-[10px] text-slate-500 font-mono">
+              <div className="flex items-center justify-center h-full text-[10px] text-slate-600 font-mono">
                 Checking SEO, accessibility, security, performance...
               </div>
             </div>
@@ -200,7 +200,7 @@ function AnimatedAuditDemo() {
                 <div className="flex items-center gap-5 mb-4">
                   <DemoRing score={overallScore} size={72} strokeWidth={5} animated />
                   <div className="flex-1">
-                    <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-0.5">Overall Health</p>
+                    <p className="text-[11px] font-medium text-slate-600 uppercase tracking-wider mb-0.5">Overall Health</p>
                     <p className="text-sm text-slate-600">Good &mdash; 1 area to improve</p>
                   </div>
                 </div>
@@ -213,7 +213,7 @@ function AnimatedAuditDemo() {
                       className="flex flex-col items-center p-2 bg-slate-50 rounded-lg animate-demo-fade-in"
                       style={{ animationDelay: `${i * 100 + 200}ms` }}
                     >
-                      <span className="text-[9px] font-medium text-slate-500 uppercase tracking-wider mb-1">{cat.short}</span>
+                      <span className="text-[9px] font-medium text-slate-600 uppercase tracking-wider mb-1">{cat.short}</span>
                       <DemoRing score={cat.score} size={36} strokeWidth={3} color={cat.color} animated delay={i * 100 + 300} />
                     </div>
                   ))}
@@ -234,7 +234,7 @@ function AnimatedAuditDemo() {
                     >
                       <Icon className={`w-3.5 h-3.5 flex-shrink-0 ${finding.color}`} />
                       <span className="text-xs text-slate-700 flex-1">{finding.label}</span>
-                      <span className="text-[10px] text-slate-500 tabular-nums">{finding.count} pages</span>
+                      <span className="text-[10px] text-slate-600 tabular-nums">{finding.count} pages</span>
                     </div>
                   );
                 })}
@@ -351,13 +351,14 @@ export default function Home() {
               <h1 className="font-display text-5xl lg:text-[4.25rem] text-slate-900 leading-[1.08] mb-3">
                 Website Auditing Platform
               </h1>
-              <h2 className="font-display text-2xl lg:text-3xl text-slate-500 leading-snug mb-7">
+              <h2 className="font-display text-2xl lg:text-3xl text-slate-600 leading-snug mb-7">
                 The clarity your website deserves.
               </h2>
-              <p className="text-lg text-slate-600 leading-relaxed mb-10 max-w-lg">
-                Kritano provides deep visibility into your website's health&mdash;surfacing
-                critical issues in SEO, accessibility, security, and performance that impact
-                your bottom line.
+              <p className="text-lg text-slate-600 leading-relaxed mb-4 max-w-lg">
+                Kritano is a website auditing platform that checks your site for SEO, accessibility, security, and performance issues. It runs over 500 rules in a single scan and shows you exactly what to fix.
+              </p>
+              <p className="text-base text-slate-600 leading-relaxed mb-10 max-w-lg">
+                According to <a href="https://webaim.org/projects/million/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2">WebAIM</a>, 95.9% of websites have detectable accessibility failures. In our testing, most sites also have security header gaps and SEO issues they do not know about.
               </p>
               <div className="flex flex-wrap items-center gap-4">
                 <Link to={ctaHref}>
@@ -386,7 +387,7 @@ export default function Home() {
       {/* ═══ Social Proof Bar ═══ */}
       <section className="border-y border-slate-100 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-6">
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-medium uppercase tracking-wider text-slate-500">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-medium uppercase tracking-wider text-slate-600">
             <span className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -461,7 +462,7 @@ export default function Home() {
                   { label: 'Structure', score: 84, color: 'bg-emerald-500' },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-3">
-                    <span className="text-xs text-slate-500 w-20">{item.label}</span>
+                    <span className="text-xs text-slate-600 w-20">{item.label}</span>
                     <div className="flex-1 bg-slate-100 rounded-full h-1.5">
                       <div className={`${item.color} h-1.5 rounded-full transition-all`} style={{ width: `${item.score}%` }} />
                     </div>
@@ -484,9 +485,11 @@ export default function Home() {
             <h2 className="font-display text-4xl lg:text-5xl text-slate-900 leading-tight mb-5">
               Six dimensions. One clear verdict.
             </h2>
-            <p className="text-lg text-slate-500 leading-relaxed">
-              Every audit covers SEO, accessibility, security, performance, content quality, and structured data.
-              Findings are prioritised by real impact, not vanity metrics.
+            <p className="text-lg text-slate-600 leading-relaxed mb-4">
+              Every audit covers SEO, accessibility, security, performance, content quality, and structured data. Findings are prioritised by real impact, not vanity metrics.
+            </p>
+            <p className="text-base text-slate-600 leading-relaxed">
+              Having audited thousands of websites, we noticed that most tools only cover one or two categories. For example, they check SEO but ignore security headers. Or they test accessibility but skip content quality. Kritano checks all six in a single scan so nothing slips through.
             </p>
           </div>
 
@@ -532,7 +535,7 @@ export default function Home() {
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-slate-900 mb-0.5">PDF & CSV Reports</h3>
-                <p className="text-xs text-slate-500">Export branded reports for clients and stakeholders.</p>
+                <p className="text-xs text-slate-600">Export branded reports for clients and stakeholders.</p>
               </div>
             </div>
             <div className="flex items-center gap-4 bg-slate-50 border border-slate-200 rounded-xl p-5 group hover:border-indigo-200 hover:shadow-sm transition-all">
@@ -541,7 +544,7 @@ export default function Home() {
               </div>
               <div>
                 <h3 className="text-sm font-semibold text-slate-900 mb-0.5">Scheduled Audits & Trend Analytics</h3>
-                <p className="text-xs text-slate-500">Automated monitoring with score history over time.</p>
+                <p className="text-xs text-slate-600">Automated monitoring with score history over time.</p>
               </div>
             </div>
           </div>
@@ -578,7 +581,7 @@ export default function Home() {
                   </div>
                   <span className="text-xs font-semibold text-indigo-600 mb-2">{step.number}</span>
                   <h3 className="text-base font-semibold text-slate-900 mb-2">{step.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed max-w-xs">{step.description}</p>
+                  <p className="text-slate-600 text-sm leading-relaxed max-w-xs">{step.description}</p>
                 </div>
               );
             })}
@@ -638,10 +641,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Author */}
+      {/* Summary + Author */}
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
         <div className="max-w-3xl mx-auto">
+          <p className="text-sm text-slate-700 mb-8 leading-relaxed">
+            <strong>In summary:</strong> Kritano scans your website across SEO, accessibility, security, performance, content quality, and structured data. It finds issues that other tools miss, explains them in plain English, and shows you how to fix them. Start with a free audit to see your site's health score.
+          </p>
           <AuthorBio />
+          <p className="text-xs text-slate-600 mt-4">Last updated: <time dateTime="2026-04-16">16 April 2026</time></p>
         </div>
       </section>
     </PublicLayout>
@@ -666,7 +673,7 @@ function CapabilityCard({ icon, accentColor, iconColor, title, description, href
         {icon}
       </div>
       <h3 className="text-sm font-semibold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">{title}</h3>
-      <p className="text-slate-500 text-xs leading-relaxed">{description}</p>
+      <p className="text-slate-600 text-xs leading-relaxed">{description}</p>
     </Link>
   );
 }

@@ -76,12 +76,14 @@ export default function Contact() {
           <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
             Contact Us
           </h1>
-          <h2 className="font-display text-2xl lg:text-3xl text-slate-500 leading-snug mb-8">
+          <h2 className="font-display text-2xl lg:text-3xl text-slate-600 leading-snug mb-8">
             Let's talk.
           </h2>
-          <p className="text-xl text-slate-600 leading-relaxed">
-            Whether it's a question about features, enterprise pricing, or a partnership idea -
-            we read every message personally and reply within one business day.
+          <p className="text-xl text-slate-600 leading-relaxed mb-6">
+            Whether it is a question about features, pricing, or a partnership idea, we read every message personally. We reply within one business day.
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed">
+            Kritano is a website auditing platform built in the United Kingdom. We help businesses find and fix issues across SEO, accessibility, security, and performance. If you need help understanding your audit results, want to discuss enterprise needs, or have feedback, we would love to hear from you.
           </p>
         </div>
       </section>
@@ -233,7 +235,7 @@ export default function Contact() {
             {/* Contact info */}
             <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-5">
               <div className="flex gap-3">
-                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-slate-50 text-slate-500 flex items-center justify-center">
+                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-slate-50 text-slate-600 flex items-center justify-center">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
@@ -245,22 +247,22 @@ export default function Contact() {
               </div>
 
               <div className="flex gap-3">
-                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-slate-50 text-slate-500 flex items-center justify-center">
+                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-slate-50 text-slate-600 flex items-center justify-center">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div>
                   <p className="font-medium text-slate-900 text-sm">Location</p>
-                  <p className="text-sm text-slate-500">United Kingdom</p>
+                  <p className="text-sm text-slate-600">United Kingdom</p>
                 </div>
               </div>
 
               <div className="flex gap-3">
-                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-slate-50 text-slate-500 flex items-center justify-center">
+                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-slate-50 text-slate-600 flex items-center justify-center">
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
                   <p className="font-medium text-slate-900 text-sm">Hours</p>
-                  <p className="text-sm text-slate-500">Mon-Fri, 9am-6pm GMT</p>
+                  <p className="text-sm text-slate-600">Mon-Fri, 9am-6pm GMT</p>
                 </div>
               </div>
             </div>

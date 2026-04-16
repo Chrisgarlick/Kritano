@@ -403,7 +403,9 @@ function analyzeAeo(html, text, sentences, words) {
             recommendation: 'Add "Key takeaway", "In summary", or "TL;DR" sections to make main points easily extractable.',
         });
     }
-    if (faqSectionCount === 0) {
+    // Only flag missing FAQ on pages with substantial content (500+ words).
+    // Short pages, legal pages, and utility pages don't benefit from FAQs.
+    if (faqSectionCount === 0 && wordCount >= 500) {
         findings.push({
             ruleId: 'aeo-no-faq-section',
             ruleName: 'No FAQ Section',

@@ -27,6 +27,9 @@ export default function DocsEndpointsPage() {
       <DocsLayout>
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Endpoints</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            An API endpoint is a specific URL that your application calls to perform an action, such as creating an audit or fetching findings. Each endpoint accepts specific HTTP methods (GET, POST, DELETE) and returns JSON responses.
+          </p>
           <p className="text-slate-600 dark:text-slate-400 mb-2">
             All endpoints are relative to the base URL:
           </p>
@@ -42,7 +45,7 @@ export default function DocsEndpointsPage() {
           <EndpointCard method="GET" path="/api/v1/info" description="Get API version, your tier, and current rate limits" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-600 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:read</code>
               </div>
             </div>
@@ -79,12 +82,12 @@ export default function DocsEndpointsPage() {
           <EndpointCard method="POST" path="/api/v1/audits" description="Create a new website audit" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-600 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:write</code>
               </div>
             </div>
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Start a new website audit. The audit is queued and processed asynchronously - the response returns immediately with status <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">"pending"</code>. Poll <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">GET /api/v1/audits/:id</code> to track progress.
             </p>
@@ -101,7 +104,7 @@ export default function DocsEndpointsPage() {
               ]}
             />
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
             <CodeBlock
               language="bash"
               label="cURL"
@@ -135,7 +138,7 @@ export default function DocsEndpointsPage() {
 }`}
             />
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Error Responses</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-6 mb-2">Error Responses</h3>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
                 <code className="text-xs bg-red-50 text-red-700 px-1.5 py-0.5 rounded font-mono flex-shrink-0">400</code>
@@ -155,12 +158,12 @@ export default function DocsEndpointsPage() {
           <EndpointCard method="GET" path="/api/v1/audits" description="List all audits with pagination and filtering" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-600 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:read</code>
               </div>
             </div>
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">List all audits for your account. Results are sorted by creation date (newest first) and support pagination and filtering.</p>
 
             <ParamTable
@@ -173,7 +176,7 @@ export default function DocsEndpointsPage() {
               ]}
             />
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
             <CodeBlock
               language="bash"
               label="cURL"
@@ -234,12 +237,12 @@ export default function DocsEndpointsPage() {
           <EndpointCard method="GET" path="/api/v1/audits/:id" description="Get detailed audit information including config and scores" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-600 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:read</code>
               </div>
             </div>
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Retrieve detailed information about a specific audit including its configuration, progress, scores, and HATEOAS links. Use this endpoint to poll for audit completion.
             </p>
@@ -251,7 +254,7 @@ export default function DocsEndpointsPage() {
               ]}
             />
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
             <CodeBlock
               language="bash"
               label="cURL"
@@ -301,17 +304,17 @@ export default function DocsEndpointsPage() {
 }`}
             />
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Audit Status Lifecycle</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-6 mb-2">Audit Status Lifecycle</h3>
             <p className="text-sm text-slate-600 mb-3">An audit moves through these states:</p>
             <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
               {['pending', 'discovering', 'ready', 'processing', 'completed'].map((s, i) => (
                 <span key={s}>
-                  {i > 0 && <span className="text-slate-500 mx-1">&rarr;</span>}
+                  {i > 0 && <span className="text-slate-600 mx-1">&rarr;</span>}
                   <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded">{s}</span>
                 </span>
               ))}
             </div>
-            <p className="text-sm text-slate-500 mt-2">
+            <p className="text-sm text-slate-600 mt-2">
               An audit can also end in <code className="text-xs bg-red-50 text-red-700 px-1.5 py-0.5 rounded font-mono">failed</code> or <code className="text-xs bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-mono">cancelled</code> at any point.
             </p>
 
@@ -333,12 +336,12 @@ export default function DocsEndpointsPage() {
           <EndpointCard method="GET" path="/api/v1/audits/:id/findings" description="Retrieve findings with filtering by category and severity" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-600 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">findings:read</code>
               </div>
             </div>
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Retrieve all findings for a completed audit. Results are sorted by severity (critical first) then by creation date. Supports filtering by category and severity.
             </p>
@@ -359,7 +362,7 @@ export default function DocsEndpointsPage() {
               ]}
             />
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-6 mb-2">Example Request</h3>
             <CodeBlock
               language="bash"
               label="cURL - All critical accessibility findings"
@@ -415,12 +418,12 @@ export default function DocsEndpointsPage() {
           <EndpointCard method="POST" path="/api/v1/audits/:id/cancel" description="Cancel a pending or in-progress audit" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-600 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:write</code>
               </div>
             </div>
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Cancel a running audit. Only audits in these states can be cancelled: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">pending</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">discovering</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">ready</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">processing</code>. No request body is needed.
             </p>
@@ -462,12 +465,12 @@ export default function DocsEndpointsPage() {
           <EndpointCard method="DELETE" path="/api/v1/audits/:id" description="Permanently delete an audit and all its data" defaultOpen>
             <div className="space-y-1 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">Scope:</span>
+                <span className="text-xs font-semibold uppercase text-slate-600 dark:text-slate-400">Scope:</span>
                 <code className="text-xs font-mono font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">audits:write</code>
               </div>
             </div>
 
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mt-4 mb-2">Overview</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-4 mb-2">Overview</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
               Permanently delete an audit and all associated findings and page data. Only audits in terminal states can be deleted: <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">completed</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">failed</code>, <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">cancelled</code>. This action cannot be undone.
             </p>
@@ -493,6 +496,13 @@ export default function DocsEndpointsPage() {
               </p>
             </div>
           </EndpointCard>
+        </div>
+
+        {/* Summary */}
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6">
+          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+            <strong>In summary:</strong> use POST to create audits, GET to check status and fetch findings, and DELETE to remove audits you no longer need. All endpoints require a Bearer token. Findings are paginated, so use the <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">page</code> and <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">limit</code> query parameters for large result sets.
+          </p>
         </div>
       </DocsLayout>
     </PublicLayout>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { PublicLayout } from '../../components/layout/PublicLayout';
 import { comingSoonApi } from '../../services/api';
 import PageSeo from '../../components/seo/PageSeo';
+import AuthorBio from '../../components/blog/AuthorBio';
 
 export default function WaitlistPage() {
   const [email, setEmail] = useState('');
@@ -48,7 +49,7 @@ export default function WaitlistPage() {
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-slate-900 dark:text-white leading-tight">
               Join the Waitlist
             </h1>
-            <h2 className="font-display text-2xl lg:text-3xl text-slate-500 dark:text-slate-400 leading-snug mt-4 mb-6">
+            <h2 className="font-display text-2xl lg:text-3xl text-slate-600 dark:text-slate-400 leading-snug mt-4 mb-6">
               Be the first to audit your website with Kritano.
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
@@ -116,6 +117,11 @@ export default function WaitlistPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* Author */}
+        <section className="max-w-6xl mx-auto px-6 pb-20">
+          <AuthorBio />
         </section>
       </div>
     </PublicLayout>

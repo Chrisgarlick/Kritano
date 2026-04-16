@@ -31,8 +31,8 @@ export default function EndpointCard({ method, path, description, children, defa
           {method}
         </span>
         <span className="font-mono text-sm font-medium text-slate-800">{path}</span>
-        <span className="text-sm text-slate-500 ml-2 hidden sm:inline">{description}</span>
-        <ChevronDown className={`w-4 h-4 text-slate-500 ml-auto transition-transform ${open ? 'rotate-180' : ''}`} />
+        <span className="text-sm text-slate-600 ml-2 hidden sm:inline">{description}</span>
+        <ChevronDown className={`w-4 h-4 text-slate-600 ml-auto transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
         <div className="p-5">

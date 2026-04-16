@@ -84,15 +84,31 @@ export default function PostDetailPage() {
     return (
       <PublicLayout>
         <div aria-live="polite" className="sr-only">Loading article...</div>
-        <div className="max-w-3xl mx-auto px-6 lg:px-20 py-16">
-          <div className="h-10 bg-slate-100 dark:bg-slate-800 rounded animate-pulse mb-4" />
-          <div className="h-6 bg-slate-100 dark:bg-slate-800 rounded animate-pulse w-2/3 mb-8" />
+        <article className="max-w-3xl mx-auto px-6 lg:px-20 py-12 lg:py-20">
+          {/* Back link placeholder */}
+          <div className="h-5 w-28 bg-slate-100 dark:bg-slate-800 rounded animate-pulse mb-10" />
+          {/* Category + reading time */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="h-7 w-20 bg-indigo-50 dark:bg-indigo-900/20 rounded-md animate-pulse" />
+            <div className="h-5 w-16 bg-slate-100 dark:bg-slate-800 rounded animate-pulse" />
+          </div>
+          {/* Title */}
+          <div className="h-12 bg-slate-100 dark:bg-slate-800 rounded animate-pulse mb-3" />
+          <div className="h-12 bg-slate-100 dark:bg-slate-800 rounded animate-pulse w-3/4 mb-4" />
+          {/* Author + date */}
+          <div className="flex items-center gap-4 mb-10">
+            <div className="h-4 w-24 bg-slate-100 dark:bg-slate-800 rounded animate-pulse" />
+            <div className="h-4 w-32 bg-slate-100 dark:bg-slate-800 rounded animate-pulse" />
+          </div>
+          {/* Featured image placeholder */}
+          <div className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 animate-pulse mb-10" style={{ aspectRatio: '1200 / 630' }} />
+          {/* Content skeleton */}
           <div className="space-y-4">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-4 bg-slate-100 dark:bg-slate-800 rounded animate-pulse" />
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="h-4 bg-slate-100 dark:bg-slate-800 rounded animate-pulse" style={{ width: `${85 + (i % 3) * 5}%` }} />
             ))}
           </div>
-        </div>
+        </article>
       </PublicLayout>
     );
   }
@@ -103,7 +119,7 @@ export default function PostDetailPage() {
         <div className="flex items-center justify-center py-32">
           <div className="text-center">
             <h1 className="font-display text-3xl text-slate-900 dark:text-white mb-3">Post not found</h1>
-            <p className="text-slate-500 dark:text-slate-400 mb-6">The article you're looking for doesn't exist or has been removed.</p>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">The article you're looking for doesn't exist or has been removed.</p>
             <Link to="/blog" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium">
               &larr; Back to blog
             </Link>
@@ -150,7 +166,7 @@ export default function PostDetailPage() {
 
       <article ref={articleRef} className="max-w-3xl mx-auto px-6 lg:px-20 py-12 lg:py-20">
         {/* Breadcrumb */}
-        <Link to="/blog" className="inline-flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-10 transition-colors">
+        <Link to="/blog" className="inline-flex items-center gap-1.5 text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-10 transition-colors">
           <ArrowLeft className="w-4 h-4" />
           Back to blog
         </Link>
@@ -164,7 +180,7 @@ export default function PostDetailPage() {
             >
               {CATEGORY_LABELS[post.category] || post.category}
             </Link>
-            <span className="flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400">
+            <span className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400">
               <Clock className="w-3.5 h-3.5" />
               {post.reading_time_minutes} min read
             </span>
@@ -175,10 +191,10 @@ export default function PostDetailPage() {
           </h1>
 
           {post.subtitle && (
-            <p className="text-xl text-slate-500 dark:text-slate-400 leading-relaxed">{post.subtitle}</p>
+            <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">{post.subtitle}</p>
           )}
 
-          <div className="mt-6 flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+          <div className="mt-6 flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
             <Link to="/author/chris-garlick" className="font-medium text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{post.author_name}</Link>
             {post.published_at && (
               <time dateTime={new Date(post.published_at).toISOString().split('T')[0]} className="flex items-center gap-1">
@@ -226,7 +242,7 @@ export default function PostDetailPage() {
           prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-p:leading-relaxed
           prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-a:underline prose-a:decoration-indigo-300 dark:prose-a:decoration-indigo-500/50 prose-a:underline-offset-2 hover:prose-a:decoration-indigo-600
           prose-img:rounded-lg prose-pre:bg-slate-900
-        ">
+        " style={{ contentVisibility: 'auto', containIntrinsicSize: 'auto 2000px' }}>
           {post.content.map(block => (
             <BlockDisplay key={block.id} block={block} />
           ))}
@@ -236,12 +252,12 @@ export default function PostDetailPage() {
         {post.tags.length > 0 && (
           <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
             <div className="flex items-center gap-2 flex-wrap">
-              <Tag className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+              <Tag className="w-4 h-4 text-slate-600 dark:text-slate-400" />
               {post.tags.map(tag => (
                 <Link
                   key={tag}
                   to={`/blog?tag=${tag}`}
-                  className="text-sm text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-3 py-1 rounded-full transition-colors"
+                  className="text-sm text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-3 py-1 rounded-full transition-colors"
                 >
                   #{tag}
                 </Link>
@@ -297,10 +313,10 @@ export default function PostDetailPage() {
                     <h3 className="mt-1.5 font-semibold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2">
                       {related.title}
                     </h3>
-                    <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+                    <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
                       {related.excerpt}
                     </p>
-                    <div className="mt-3 flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
+                    <div className="mt-3 flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400">
                       <Clock className="w-3 h-3" />
                       {related.reading_time_minutes} min read
                     </div>

@@ -171,13 +171,14 @@ export default function Services() {
           <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
             Website Auditing Services
           </h1>
-          <h2 className="font-display text-2xl lg:text-3xl text-slate-500 leading-snug mb-8">
+          <h2 className="font-display text-2xl lg:text-3xl text-slate-600 leading-snug mb-8">
             Six dimensions of website health.
           </h2>
-          <p className="text-xl text-slate-600 leading-relaxed">
-            Every Kritano audit covers SEO, accessibility, security, performance, content quality,
-            and structured data. Each dimension is powered by a dedicated engine with hundreds of
-            rules - and every finding tells you exactly how to fix it.
+          <p className="text-xl text-slate-600 leading-relaxed mb-6">
+            A website audit is a systematic review of your site's technical health. It checks for problems that affect search rankings, user experience, and security. Kritano runs over 500 rules across six categories in a single scan.
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed">
+            In our testing, we found that the average website has issues in every category. For example, research from <a href="https://webaim.org/projects/million/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">WebAIM</a> shows that 95.9% of home pages have accessibility failures. Similarly, <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Practical_implementation_guides" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">MDN security guidelines</a> recommend headers that fewer than 30% of sites implement. Every finding in Kritano tells you exactly how to fix the problem.
           </p>
         </div>
       </section>
@@ -209,7 +210,7 @@ export default function Services() {
                   {/* Stat highlight */}
                   <div className="text-right flex-shrink-0">
                     <p className="font-display text-2xl text-slate-900">{service.stat}</p>
-                    <p className="text-[10px] text-slate-500 uppercase tracking-wider font-medium">{service.statLabel}</p>
+                    <p className="text-[10px] text-slate-600 uppercase tracking-wider font-medium">{service.statLabel}</p>
                   </div>
                 </div>
 
@@ -221,7 +222,7 @@ export default function Services() {
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-6">
                   {service.features.map((feature) => (
                     <div key={feature} className="flex items-center gap-2">
-                      <CheckCircle className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
+                      <CheckCircle className="w-3.5 h-3.5 text-slate-600 flex-shrink-0" />
                       <span className="text-xs text-slate-600">{feature}</span>
                     </div>
                   ))}
@@ -238,7 +239,7 @@ export default function Services() {
                   </Link>
                   <Link
                     to={`/services/${service.id}`}
-                    className="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors flex items-center gap-1"
+                    className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-1"
                   >
                     Learn more <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
@@ -311,7 +312,7 @@ export default function Services() {
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="font-display text-3xl text-slate-900 mb-3">Frequently Asked Questions</h2>
-          <p className="text-slate-500">Common questions about our auditing services.</p>
+          <p className="text-slate-600">Common questions about our auditing services.</p>
         </div>
         <div className="max-w-3xl mx-auto space-y-3">
           {SERVICE_FAQS.map((faq) => (

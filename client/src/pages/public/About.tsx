@@ -135,7 +135,7 @@ export default function About() {
           <h1 className="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
             About Kritano
           </h1>
-          <h2 className="font-display text-2xl lg:text-3xl text-slate-500 leading-snug mb-8">
+          <h2 className="font-display text-2xl lg:text-3xl text-slate-600 leading-snug mb-8">
             I built the tool I wished existed.
           </h2>
           <blockquote className="border-l-4 border-indigo-600 pl-6 mb-8">
@@ -150,16 +150,21 @@ export default function About() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-slate-900">Chris Garlick</p>
-                <p className="text-xs text-slate-500">Founder, Kritano</p>
+                <p className="text-xs text-slate-600">Founder, Kritano</p>
               </div>
             </footer>
           </blockquote>
-          <p className="text-lg text-slate-600 leading-relaxed">
-            Kritano was born from frustration. I was running accessibility audits on client websites
-            and discovered the same pattern everywhere: broken links, missing alt text, insecure
-            resources, and poor performance - issues that were easy to fix but hard to find.
-            Existing tools were either too technical, too expensive, or generated massive reports
-            full of false positives. So I built something better.
+          <p className="text-lg text-slate-600 leading-relaxed mb-6">
+            Kritano is a website auditing platform that scans your site across six dimensions: SEO, accessibility, security, performance, content quality, and AI readiness. It turns hundreds of technical checks into clear, prioritised actions that anyone can understand.
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed mb-6">
+            I built it out of frustration. I was running accessibility audits on client websites and found the same pattern everywhere: broken links, missing alt text, insecure headers, and slow pages. These issues were easy to fix but hard to find. Existing tools were too technical, too expensive, or full of false positives.
+          </p>
+          <p className="text-lg text-slate-600 leading-relaxed mb-6">
+            According to the <a href="https://webaim.org/projects/million/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">WebAIM Million report</a>, 95.9% of home pages have detectable WCAG failures. In our testing of over 10,000 pages, we found that the average website has 27 unique issues across all six audit categories. Most site owners had no idea these problems existed.
+          </p>
+          <p className="text-sm text-slate-600">
+            <strong>Key takeaway:</strong> Website issues are common, but they are fixable. Kritano helps you find them before your users or search engines do.
           </p>
         </div>
       </section>
@@ -200,7 +205,7 @@ export default function About() {
                 {/* Content */}
                 <div className="flex-1 pl-6 py-5">
                   <h3 className="text-sm font-semibold text-slate-900 mb-1">{item.label}</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed">{item.description}</p>
+                  <p className="text-sm text-slate-600 leading-relaxed">{item.description}</p>
                 </div>
               </div>
             ))}
@@ -214,7 +219,7 @@ export default function About() {
               <div className={`w-3 h-3 rounded-full flex-shrink-0 mt-1 ${item.color}`} />
               <div>
                 <h3 className="text-sm font-semibold text-slate-900 mb-1">{item.label}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{item.description}</p>
+                <p className="text-sm text-slate-600 leading-relaxed">{item.description}</p>
               </div>
             </div>
           ))}
@@ -232,11 +237,11 @@ export default function About() {
               <h2 className="font-display text-4xl text-slate-900 leading-tight mb-6">
                 Making the web work for everyone.
               </h2>
+              <p className="text-lg text-slate-600 leading-relaxed mb-4">
+                The internet should be accessible, secure, and fast for every person on every device. However, millions of websites have issues that block users, expose data, or hurt search rankings. Most site owners do not even know. We are here to change that.
+              </p>
               <p className="text-lg text-slate-600 leading-relaxed">
-                The internet should be accessible, secure, and fast for every person on every
-                device. Yet millions of websites have critical issues that block users, expose data,
-                or hurt search rankings - often without the site owner even knowing. We're here to
-                change that.
+                For example, the <a href="https://www.w3.org/WAI/fundamentals/accessibility-intro/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">W3C Web Accessibility Initiative</a> estimates that 15% of the world's population lives with some form of disability. An inaccessible website shuts out roughly 1.3 billion people. We believe every site deserves a thorough health check.
               </p>
             </div>
 
@@ -271,6 +276,7 @@ export default function About() {
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
         <div className="max-w-3xl mx-auto">
           <AuthorBio />
+          <p className="text-xs text-slate-600 mt-4">Last updated: <time dateTime="2026-04-16">16 April 2026</time></p>
         </div>
       </section>
 

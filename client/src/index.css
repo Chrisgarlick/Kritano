@@ -10,9 +10,9 @@
   --color-accent: #fbbf24;
   --color-accent-dark: #f59e0b;
 
-  /* Typography */
-  --font-display: 'Instrument Serif', serif;
-  --font-body: 'Outfit', sans-serif;
+  /* Typography (fallback fonts use size-adjust to reduce CLS from font swap) */
+  --font-display: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
+  --font-body: 'Outfit', 'Outfit Fallback', Arial, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Transitions */
@@ -26,6 +26,25 @@
 body {
   @apply bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased;
   font-family: var(--font-body);
+}
+
+/* Fallback font with size-adjust to minimise CLS from font swap */
+@font-face {
+  font-family: 'Outfit Fallback';
+  src: local('Arial');
+  size-adjust: 100.4%;
+  ascent-override: 100%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Instrument Serif Fallback';
+  src: local('Georgia');
+  size-adjust: 109%;
+  ascent-override: 95%;
+  descent-override: 23%;
+  line-gap-override: 0%;
 }
 
 

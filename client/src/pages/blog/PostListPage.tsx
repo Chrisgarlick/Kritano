@@ -13,6 +13,7 @@ import { PublicLayout } from '../../components/layout/PublicLayout';
 import PageSeo from '../../components/seo/PageSeo';
 import { blogApi } from '../../services/api';
 import type { BlogPostSummary } from '../../services/api';
+import AuthorBio from '../../components/blog/AuthorBio';
 import { Clock, ChevronLeft, ChevronRight, Tag } from 'lucide-react';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -77,9 +78,21 @@ export default function PostListPage() {
   return (
     <PublicLayout>
       <PageSeo
-        title={category ? `${CATEGORY_LABELS[category] || category} Articles - Web Auditing Blog` : 'Blog - Web Auditing Guides & Insights'}
-        description="SEO guides, accessibility tips, security insights, and web performance best practices from Kritano."
-        path="/blog"
+        title={
+          tag
+            ? `#${tag} Articles - Web Auditing Blog`
+            : category
+              ? `${CATEGORY_LABELS[category] || category} Articles - Web Auditing Blog`
+              : 'Blog - Web Auditing Guides & Insights'
+        }
+        description={
+          tag
+            ? `Articles tagged "${tag}" - SEO guides, accessibility tips, and web performance insights from Kritano.`
+            : category
+              ? `${CATEGORY_LABELS[category] || category} articles - expert guides and insights from the Kritano team.`
+              : 'SEO guides, accessibility tips, security insights, and web performance best practices from Kritano.'
+        }
+        path={tag ? `/blog?tag=${tag}` : category ? `/blog?category=${category}` : '/blog'}
         structuredData={[
           {
             '@context': 'https://schema.org',
@@ -121,7 +134,7 @@ export default function PostListPage() {
               <span className="text-sm text-indigo-600 dark:text-indigo-400 font-medium">#{tag}</span>
               <button
                 onClick={() => setFilter('tag', null)}
-                className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 ml-2"
+                className="text-xs text-slate-600 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 ml-2"
               >
                 Clear
               </button>
@@ -172,7 +185,7 @@ export default function PostListPage() {
           </div>
         ) : posts.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-lg text-slate-500 dark:text-slate-400">No posts found</p>
+            <p className="text-lg text-slate-600 dark:text-slate-400">No posts found</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -213,7 +226,7 @@ export default function PostListPage() {
                     <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 px-2.5 py-1 rounded-md uppercase tracking-wider">
                       {CATEGORY_LABELS[post.category] || post.category}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
+                    <span className="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-400">
                       <Clock className="w-3 h-3" />
                       {post.reading_time_minutes} min
                     </span>
@@ -222,13 +235,13 @@ export default function PostListPage() {
                     {post.title}
                   </h2>
                   {post.subtitle && (
-                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-1 mb-1">{post.subtitle}</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-1 mb-1">{post.subtitle}</p>
                   )}
                   <p className="text-sm text-slate-700 dark:text-slate-400 line-clamp-3 leading-relaxed">{post.excerpt}</p>
                   <div className="mt-4 flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/50">
                     <span className="text-xs font-medium text-slate-600 dark:text-slate-300">{post.author_name}</span>
                     {post.published_at && (
-                      <time dateTime={new Date(post.published_at).toISOString().split('T')[0]} className="text-xs text-slate-500 dark:text-slate-400">
+                      <time dateTime={new Date(post.published_at).toISOString().split('T')[0]} className="text-xs text-slate-600 dark:text-slate-400">
                         {new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </time>
                     )}
@@ -253,7 +266,7 @@ export default function PostListPage() {
             >
               <ChevronLeft className="w-4 h-4" /> Previous
             </button>
-            <span className="text-sm text-slate-500 dark:text-slate-400">
+            <span className="text-sm text-slate-600 dark:text-slate-400">
               Page {page} of {totalPages}
             </span>
             <button
@@ -269,6 +282,11 @@ export default function PostListPage() {
             </button>
           </div>
         )}
+
+        {/* Author */}
+        <div className="mt-16">
+          <AuthorBio />
+        </div>
       </div>
     </PublicLayout>
   );

@@ -75,7 +75,7 @@ export default function DocsOverviewPage() {
                   <Icon className="w-6 h-6" />
                 </div>
                 <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">{card.label}</h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">{card.description}</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">{card.description}</p>
               </Link>
             );
           })}
@@ -86,8 +86,11 @@ export default function DocsOverviewPage() {
         {/* Getting Started */}
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-4">Getting Started</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            The Kritano API is a RESTful interface that lets you create website audits, retrieve findings, and integrate results into your own tools. It follows standard HTTP conventions with JSON request and response bodies.
+          </p>
           <p className="text-slate-600 dark:text-slate-400 mb-6">
-            The Kritano API lets you programmatically create website audits, retrieve detailed findings, and integrate audit results into your own tools and workflows. Follow these three steps to make your first API call.
+            Follow these three steps to make your first API call. The process takes less than two minutes.
           </p>
 
           {/* Step 1 */}
@@ -212,7 +215,7 @@ export default function DocsOverviewPage() {
                 ].map(s => (
                   <tr key={s.scope} className="border-t border-slate-100 dark:border-slate-700/50">
                     <td className="px-4 py-3 font-mono text-xs text-indigo-600 font-medium whitespace-nowrap">{s.scope}</td>
-                    <td className="px-4 py-3 font-mono text-xs text-slate-500">{s.used}</td>
+                    <td className="px-4 py-3 font-mono text-xs text-slate-600">{s.used}</td>
                     <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{s.desc}</td>
                   </tr>
                 ))}
@@ -257,6 +260,13 @@ export default function DocsOverviewPage() {
           <Link to="/docs/endpoints" className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">
             View full endpoint reference <ArrowRight className="w-4 h-4" />
           </Link>
+        </div>
+
+        {/* Summary */}
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6">
+          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+            <strong>In summary:</strong> the Kritano API lets you automate website audits with three steps: get an API key, create an audit via POST, and fetch findings via GET. All responses use JSON. Rate limits depend on your plan tier. For detailed endpoint documentation, see the <Link to="/docs/endpoints" className="text-indigo-600 dark:text-indigo-400 underline underline-offset-2 decoration-indigo-300 hover:decoration-indigo-600">endpoints reference</Link>.
+          </p>
         </div>
       </DocsLayout>
     </PublicLayout>

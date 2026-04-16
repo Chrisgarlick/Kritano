@@ -249,7 +249,15 @@
       "WebFetch(domain:support.google.com)",
       "WebFetch(domain:googletrends.github.io)",
       "WebFetch(domain:miromannino.com)",
-      "WebFetch(domain:lucumt.info)"
+      "WebFetch(domain:lucumt.info)",
+      "Bash(for file:*)",
+      "Bash(do if:*)",
+      "Read(//Users/chris/Herd/pagepulser/**)",
+      "Bash(then echo:*)",
+      "Bash(/tmp/find_contrast_issues.sh:*)",
+      "Bash(/tmp/find_contrast_issues.sh)",
+      "Bash(/tmp/audit_report.txt:*)",
+      "Read(//tmp/**)"
     ]
   },
   "enableAllProjectMcpServers": true,

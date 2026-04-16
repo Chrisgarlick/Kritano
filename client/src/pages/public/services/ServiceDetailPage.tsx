@@ -110,7 +110,7 @@ export default function ServiceDetailPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex items-center gap-2 text-sm text-slate-500">
+            <ol className="flex items-center gap-2 text-sm text-slate-600">
               <li>
                 <Link to="/services" className="hover:text-indigo-600 transition-colors underline decoration-slate-300 underline-offset-2 hover:decoration-indigo-400">Services</Link>
               </li>
@@ -149,7 +149,7 @@ export default function ServiceDetailPage() {
                   <p className={`font-display text-3xl mb-1 ${service.colorScheme.text}`}>
                     {stat.value}
                   </p>
-                  <p className="text-xs text-slate-500 leading-relaxed">{stat.label}</p>
+                  <p className="text-xs text-slate-600 leading-relaxed">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -328,7 +328,7 @@ export default function ServiceDetailPage() {
                   <h3 className="font-semibold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
                     {related.title}
                   </h3>
-                  <p className="text-slate-500 text-sm mb-3">{related.subtitle}</p>
+                  <p className="text-slate-600 text-sm mb-3">{related.subtitle}</p>
                   <span className="inline-flex items-center gap-1 text-indigo-600 text-sm font-medium">
                     Learn more <ArrowRight className="w-3.5 h-3.5" />
                   </span>
@@ -343,7 +343,7 @@ export default function ServiceDetailPage() {
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
         <div className="max-w-3xl mx-auto">
           <AuthorBio />
-          <p className="text-xs text-slate-500 mt-4">Last updated: <time dateTime="2026-04-14">14 April 2026</time></p>
+          <p className="text-xs text-slate-600 mt-4">Last updated: <time dateTime="2026-04-14">14 April 2026</time></p>
         </div>
       </section>
 
@@ -399,8 +399,8 @@ function FaqSection({ faqs, colorScheme }: { faqs: ServiceData['faqs']; colorSch
                 <span className="font-semibold text-slate-900 text-sm">{faq.question}</span>
               </div>
               {openIndex === i
-                ? <ChevronUp className="w-5 h-5 text-slate-500 flex-shrink-0" />
-                : <ChevronDown className="w-5 h-5 text-slate-500 flex-shrink-0" />
+                ? <ChevronUp className="w-5 h-5 text-slate-600 flex-shrink-0" />
+                : <ChevronDown className="w-5 h-5 text-slate-600 flex-shrink-0" />
               }
             </button>
             {openIndex === i && (

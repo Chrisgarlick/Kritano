@@ -11,6 +11,7 @@ import { PublicLayout } from '../../components/layout/PublicLayout';
 import PageSeo from '../../components/seo/PageSeo';
 import { blogApi } from '../../services/api';
 import type { BlogPostSummary } from '../../services/api';
+import AuthorBio from '../../components/blog/AuthorBio';
 import { Clock, ArrowRight } from 'lucide-react';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -112,7 +113,7 @@ export default function AuthorPage() {
               <h1 className="font-display text-4xl lg:text-5xl text-slate-900 leading-tight mb-2">
                 Chris Garlick
               </h1>
-              <p className="text-lg text-slate-500">
+              <p className="text-lg text-slate-600">
                 Founder of{' '}
                 <Link to="/" className="text-indigo-600 hover:text-indigo-700 transition-colors underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">
                   Kritano
@@ -135,6 +136,11 @@ export default function AuthorPage() {
               secure, and easier to find. Every article on the Kritano blog is informed by real
               auditing data from thousands of scans.
             </p>
+          </div>
+
+          {/* Structured author bio for E-E-A-T signals */}
+          <div className="mb-12">
+            <AuthorBio />
           </div>
 
           {/* Expertise */}
@@ -170,7 +176,7 @@ export default function AuthorPage() {
             ))}
           </div>
         ) : posts.length === 0 ? (
-          <p className="text-slate-500">No articles published yet. Check back soon.</p>
+          <p className="text-slate-600">No articles published yet. Check back soon.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => (
@@ -205,7 +211,7 @@ export default function AuthorPage() {
                     <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md uppercase tracking-wider">
                       {CATEGORY_LABELS[post.category] || post.category}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-slate-500">
+                    <span className="flex items-center gap-1 text-xs text-slate-600">
                       <Clock className="w-3 h-3" />
                       {post.reading_time_minutes} min
                     </span>
@@ -213,14 +219,14 @@ export default function AuthorPage() {
                   <h3 className="text-lg font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2 mb-2">
                     {post.title}
                   </h3>
-                  <p className="text-sm text-slate-500 line-clamp-3 leading-relaxed">
+                  <p className="text-sm text-slate-600 line-clamp-3 leading-relaxed">
                     {post.excerpt}
                   </p>
                   {post.published_at && (
                     <div className="mt-4 pt-4 border-t border-slate-100">
                       <time
                         dateTime={new Date(post.published_at).toISOString().split('T')[0]}
-                        className="text-xs text-slate-500"
+                        className="text-xs text-slate-600"
                       >
                         {new Date(post.published_at).toLocaleDateString('en-US', {
                           month: 'short',

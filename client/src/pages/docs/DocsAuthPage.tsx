@@ -26,9 +26,12 @@ export default function DocsAuthPage() {
       <DocsLayout>
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Authentication</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            API authentication is the process of verifying that a request comes from an authorised client. The Kritano API uses API keys, which are long-lived tokens that identify your account and control what endpoints you can access.
+          </p>
           <p className="text-slate-600 dark:text-slate-400 mb-6">
-            The Kritano API uses API keys to authenticate requests. You can create and manage API keys from your{' '}
-            <Link to="/app/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium underline underline-offset-2 decoration-indigo-300 hover:decoration-indigo-600">Settings &rarr; API Keys</Link> page.
+            You can create and manage API keys from your{' '}
+            <Link to="/app/settings/api-keys" className="text-indigo-600 dark:text-indigo-400 font-medium underline underline-offset-2 decoration-indigo-300 hover:decoration-indigo-600">Settings &rarr; API Keys</Link> page. Each key has scoped permissions so you can limit access to only what is needed.
           </p>
 
           <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3">API Key Format</h2>
@@ -97,7 +100,7 @@ export default function DocsAuthPage() {
                 ].map(s => (
                   <tr key={s.scope} className="border-t border-slate-100">
                     <td className="px-4 py-3 font-mono text-xs text-indigo-600 font-medium whitespace-nowrap">{s.scope}</td>
-                    <td className="px-4 py-3 font-mono text-xs text-slate-500">{s.endpoints}</td>
+                    <td className="px-4 py-3 font-mono text-xs text-slate-600">{s.endpoints}</td>
                     <td className="px-4 py-3 text-slate-600">{s.desc}</td>
                   </tr>
                 ))}
@@ -180,6 +183,13 @@ export default function DocsAuthPage() {
               <div><strong className="text-slate-800">Multiple keys:</strong> You can create multiple keys with different scopes for different environments or integrations (e.g., one for CI/CD, one for a dashboard).</div>
             </div>
           </div>
+        </div>
+
+        {/* Summary */}
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6">
+          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+            <strong>Key takeaway:</strong> create an API key in your settings, send it as a Bearer token in the Authorization header, and store it securely. Never expose keys in client-side code or public repositories. Use scoped keys with the minimum permissions needed for each integration.
+          </p>
         </div>
       </DocsLayout>
     </PublicLayout>

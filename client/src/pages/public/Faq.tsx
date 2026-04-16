@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PublicLayout } from '../../components/layout/PublicLayout';
 import PageSeo from '../../components/seo/PageSeo';
+import AuthorBio from '../../components/blog/AuthorBio';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface FaqCategory {
@@ -165,7 +166,7 @@ export default function FaqPage() {
       <section className="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
         <div className="max-w-3xl">
           {/* Breadcrumb */}
-          <nav className="mb-8 text-sm text-slate-500" aria-label="Breadcrumb">
+          <nav className="mb-8 text-sm text-slate-600" aria-label="Breadcrumb">
             <Link to="/" className="hover:text-indigo-600 transition-colors underline decoration-slate-300 underline-offset-2 hover:decoration-indigo-400">Home</Link>
             <span className="mx-2">/</span>
             <span className="text-slate-900 dark:text-white">FAQ</span>
@@ -195,8 +196,13 @@ export default function FaqPage() {
             ))}
           </div>
 
+          {/* Author */}
+          <div className="mt-16">
+            <AuthorBio />
+          </div>
+
           {/* CTA */}
-          <div className="mt-16 text-center p-8 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
+          <div className="mt-12 text-center p-8 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700">
             <h2 className="font-display text-xl text-slate-900 dark:text-white mb-2">
               Still have questions?
             </h2>
@@ -228,9 +234,9 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
       >
         <span className="font-semibold text-slate-900 dark:text-white text-sm pr-4">{question}</span>
         {open ? (
-          <ChevronUp className="w-5 h-5 text-slate-500 dark:text-slate-400 flex-shrink-0" />
+          <ChevronUp className="w-5 h-5 text-slate-600 dark:text-slate-400 flex-shrink-0" />
         ) : (
-          <ChevronDown className="w-5 h-5 text-slate-500 dark:text-slate-400 flex-shrink-0" />
+          <ChevronDown className="w-5 h-5 text-slate-600 dark:text-slate-400 flex-shrink-0" />
         )}
       </button>
       {open && (

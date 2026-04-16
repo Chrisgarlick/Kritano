@@ -36,6 +36,8 @@ export default defineConfig({
   },
   build: {
     sourcemap: 'hidden',
+    cssMinify: 'lightningcss',
+    target: 'es2020',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -43,6 +45,7 @@ export default defineConfig({
           charts: ['recharts'],
           markdown: ['react-markdown', 'rehype-highlight', 'rehype-sanitize', 'remark-gfm'],
           forms: ['react-hook-form', '@hookform/resolvers', 'zod'],
+          icons: ['lucide-react'],
         },
       },
     },

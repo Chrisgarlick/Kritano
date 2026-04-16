@@ -24,6 +24,8 @@ interface PerformanceContext {
   pageSizeBytes: number;
   resources: ResourceInfo[];
   deviceType?: 'desktop' | 'mobile';
+  /** HTTP protocol from Navigation Timing API (e.g. "h2", "http/1.1", "h3") */
+  httpProtocol?: string;
 }
 
 // Thresholds (based on Web Vitals recommendations)
@@ -590,17 +592,37 @@ export class PerformanceEngine {
       description: 'Server is not using HTTP/2 protocol',
       severity: 'minor',
       check: (ctx) => {
-        // Check for HTTP/2 server push or alt-svc header hints
-        const altSvc = ctx.headers['alt-svc'] || '';
-        // If resources loaded but no multiplexing benefits visible, flag it
-        // Note: We can't directly detect HTTP version from fetch, but alt-svc gives hints
-        if (altSvc && (altSvc.includes('h2') || altSvc.includes('h3'))) {
-          return null; // HTTP/2+ is available
+        // Use actual protocol from Navigation Timing API when available
+        if (ctx.httpProtocol) {
+          const proto = ctx.httpProtocol.toLowerCase();
+          if (proto === 'h2' || proto === 'h3' || proto === 'h2c') {
+            return null; // Already using HTTP/2+
+          }
+          // Confirmed HTTP/1.x with many resources
+          if (ctx.resources.length > 20) {
+            return this.createFinding('not-http2', 'Consider HTTP/2', 'info',
+              `Page served over ${ctx.httpProtocol} and loads ${ctx.resources.length} resources -- HTTP/2 multiplexing would help`,
+              'Enable HTTP/2 on your server for better performance with multiple resources');
+          }
+          return null;
         }
-        // Only flag if many resources suggest HTTP/2 would help
+
+        // Fallback: check alt-svc header
+        const altSvc = ctx.headers['alt-svc'] || '';
+        if (altSvc && (altSvc.includes('h2') || altSvc.includes('h3'))) {
+          return null;
+        }
+
+        // If HTTPS, HTTP/2 is very likely (most modern servers default to h2 over TLS).
+        // Don't flag without positive evidence of HTTP/1.x.
+        if (ctx.url.startsWith('https://')) {
+          return null;
+        }
+
+        // Plain HTTP with many resources
         if (ctx.resources.length > 20) {
           return this.createFinding('not-http2', 'Consider HTTP/2', 'info',
-            `Page loads ${ctx.resources.length} resources — HTTP/2 multiplexing would help`,
+            `Page loads ${ctx.resources.length} resources over HTTP -- HTTP/2 multiplexing would help`,
             'Enable HTTP/2 on your server for better performance with multiple resources');
         }
         return null;
@@ -634,6 +656,19 @@ export class PerformanceEngine {
         }
 
         if (!etag && !lastModified && !cacheControl.includes('immutable')) {
+          // HTML responses often lack ETag/Last-Modified when served through
+          // reverse proxies with content rewriting (e.g. nginx sub_filter for
+          // CSP nonces). This is expected behaviour -- skip for HTML if
+          // Cache-Control is already set with a reasonable max-age or
+          // stale-while-revalidate strategy.
+          const contentType = ctx.headers['content-type'] || '';
+          const isHtml = contentType.includes('text/html');
+          if (isHtml && cacheControl) {
+            // HTML has Cache-Control set -- validation headers are nice-to-have,
+            // not critical. Don't flag.
+            return null;
+          }
+
           return this.createFinding('missing-validation-headers', 'Missing Cache Validation', 'minor',
             'Response lacks ETag and Last-Modified headers for cache validation',
             'Add ETag or Last-Modified headers to enable conditional requests (304 responses)');
@@ -650,6 +685,19 @@ export class PerformanceEngine {
   async analyze(crawlResult: CrawlResult, page?: Page | null): Promise<PerformanceFinding[]> {
     const $ = cheerio.load(crawlResult.html);
 
+    // Detect HTTP protocol via Navigation Timing API (nextHopProtocol)
+    let httpProtocol: string | undefined;
+    if (page) {
+      try {
+        httpProtocol = await page.evaluate(() => {
+          const entries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+          return entries[0]?.nextHopProtocol || '';
+        }) || undefined;
+      } catch {
+        // Navigation timing not available -- leave undefined
+      }
+    }
+
     const ctx: PerformanceContext = {
       url: crawlResult.url,
       $,
@@ -660,6 +708,7 @@ export class PerformanceEngine {
       pageSizeBytes: crawlResult.pageSizeBytes,
       resources: crawlResult.resources,
       deviceType: crawlResult.deviceType,
+      httpProtocol,
     };
 
     const findings: PerformanceFinding[] = [];
@@ -969,6 +1018,19 @@ export class PerformanceEngine {
   async analyzeMobile(crawlResult: CrawlResult, page?: Page | null): Promise<PerformanceFinding[]> {
     const $ = cheerio.load(crawlResult.html);
 
+    // Detect HTTP protocol via Navigation Timing API
+    let httpProtocol: string | undefined;
+    if (page) {
+      try {
+        httpProtocol = await page.evaluate(() => {
+          const entries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+          return entries[0]?.nextHopProtocol || '';
+        }) || undefined;
+      } catch {
+        // Navigation timing not available
+      }
+    }
+
     const ctx: PerformanceContext = {
       url: crawlResult.url,
       $,
@@ -979,6 +1041,7 @@ export class PerformanceEngine {
       pageSizeBytes: crawlResult.pageSizeBytes,
       resources: crawlResult.resources,
       deviceType: 'mobile',
+      httpProtocol,
     };
 
     const findings: PerformanceFinding[] = [];

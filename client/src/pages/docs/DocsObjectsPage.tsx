@@ -107,12 +107,15 @@ export default function DocsObjectsPage() {
       <DocsLayout>
         {/* Audit Object */}
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
-          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-6">Object Reference</h1>
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-4">Object Reference</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
+            An API object is a structured JSON representation of a resource in the Kritano system. This page documents the two core objects you will work with: audits and findings. Each table below lists every field, its data type, and what it contains.
+          </p>
 
           <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2" id="audit-object">Audit Object</h2>
-          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-4">Overview</h3>
+          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-4">What is an audit object?</h3>
           <p className="text-slate-600 dark:text-slate-400 mb-4">
-            The audit object represents a website audit job. It contains configuration, real-time progress, scores, and issue counts. The shape varies slightly between list and detail endpoints - the detail endpoint includes <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">config</code> and <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">_links</code>.
+            The audit object represents a website audit job. It contains configuration, real-time progress, scores, and issue counts. The shape varies slightly between list and detail endpoints. For example, the detail endpoint includes <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">config</code> and <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">_links</code> while the list endpoint omits them.
           </p>
           <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Audit Fields</h3>
           <ObjectTable fields={AUDIT_FIELDS} />
@@ -123,12 +126,12 @@ export default function DocsObjectsPage() {
             <div className="flex flex-wrap items-center gap-1 text-xs font-mono mb-3">
               {['pending', 'discovering', 'ready', 'processing', 'completed'].map((s, i) => (
                 <span key={s} className="flex items-center">
-                  {i > 0 && <span className="text-slate-500 mx-1.5">&rarr;</span>}
+                  {i > 0 && <span className="text-slate-600 mx-1.5">&rarr;</span>}
                   <span className="bg-white border border-slate-200 text-slate-700 px-2.5 py-1 rounded shadow-sm">{s}</span>
                 </span>
               ))}
             </div>
-            <ul className="text-xs text-slate-500 space-y-1 list-disc list-inside">
+            <ul className="text-xs text-slate-600 space-y-1 list-disc list-inside">
               <li><strong>pending</strong> - Queued, waiting for a worker</li>
               <li><strong>discovering</strong> - Initial URL discovery and crawl in progress</li>
               <li><strong>ready</strong> - Pages discovered, about to begin auditing</li>
@@ -273,8 +276,15 @@ export default function DocsObjectsPage() {
   }
 }`}
           />
-          <p className="text-sm text-slate-500 mt-3">
+          <p className="text-sm text-slate-600 mt-3">
             To fetch the next page, increment the <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">page</code> query parameter. Stop when <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">page</code> equals <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">pagination.pages</code>. The maximum <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">limit</code> is 100 - any value above is clamped.
+          </p>
+        </div>
+
+        {/* Summary */}
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6">
+          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+            <strong>In summary:</strong> every API response uses two core objects. The Audit object tracks the scan lifecycle from pending to completed, including scores and issue counts. The Finding object describes a single issue with its severity, affected page, CSS selector, and fix recommendation. Use pagination fields to page through large result sets.
           </p>
         </div>
       </DocsLayout>

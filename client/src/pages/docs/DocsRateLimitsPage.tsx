@@ -33,8 +33,11 @@ export default function DocsRateLimitsPage() {
         {/* Tier Limits */}
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Rate Limits</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            A rate limit is a cap on how many API requests you can make in a given time window. Rate limiting is a standard practice for REST APIs. It protects the service from abuse and ensures fair access for all users.
+          </p>
           <p className="text-slate-600 dark:text-slate-400 mb-6">
-            API requests are rate limited based on your subscription tier. Limits are applied <strong>per API key</strong> to ensure fair usage. There are two types of limits: <strong>request rate limits</strong> (per minute and per day) and <strong>concurrent audit limits</strong>.
+            Kritano applies limits <strong>per API key</strong>. There are two types: <strong>request rate limits</strong> (per minute and per day) and <strong>concurrent audit limits</strong> (how many audits can run at once).
           </p>
 
           <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3">Limits by Tier</h2>
@@ -63,7 +66,7 @@ export default function DocsRateLimitsPage() {
             </table>
           </div>
 
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-600">
             Your current tier is shown in the <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">GET /api/v1/info</code> response. To upgrade, visit the <a href="/pricing" className="text-indigo-600 underline underline-offset-2 decoration-indigo-300 hover:decoration-indigo-600">pricing page</a>.
           </p>
         </div>
@@ -190,6 +193,13 @@ X-RateLimit-Reset: 1706540400`}
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Summary */}
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6">
+          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+            <strong>In summary:</strong> check the <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Remaining</code> header in every response to stay within your limits. If you receive a 429 status, wait until the time shown in <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">X-RateLimit-Reset</code> before retrying. Use exponential backoff for the best results.
+          </p>
         </div>
       </DocsLayout>
     </PublicLayout>

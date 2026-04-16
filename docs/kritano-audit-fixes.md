@@ -1,417 +1,391 @@
-# Kritano.com Audit Fixes - Implementation Plan
+# Kritano.com Audit Fixes -- Implementation Plan
 
-**Audit Date:** 15 Apr 2026 | **Overall Score:** 76/100 | **Target Score:** 90+
-**Phase 1 (Security) Status:** IMPLEMENTED - ready for deploy & testing
-
-## Overview
-
-This plan addresses all findings from the self-audit of kritano.com, prioritised by severity and grouped by category. Security is the primary focus (score: 64), followed by Content (53), Performance (80), SEO (90), Accessibility (99), and Schema (89).
+**Based on:** audit-kritano.com.md (16 Apr 2026)
+**Current Score:** 81/100
+**Target Score:** 92+/100
+**Total Issues:** 952 (0 critical, 150 serious, 424 moderate, 203 minor, 175 info)
 
 ---
 
-## Key Decisions
+## Priority Summary
 
-1. **Security first** - the 64 score is the weakest area and most impactful for a company selling security audits
-2. **CSP nonces over unsafe-inline** - invest in proper nonce-based CSP to eliminate unsafe-inline
-3. **Remove unused GA CSP allowances** - tighten the attack surface since GA is not in use
-4. **Content improvements are manual** - readability/E-E-A-T fixes require copywriting, not code changes
-5. **Cache headers already configured in nginx** - the audit scanner may be checking response headers before nginx proxies them; verify in production
-
----
-
-## Phase 1: Security (Score: 64 -> 90+) [CRITICAL]
-
-### 1.1 Exposed config.json [SERIOUS]
-
-**Current state:** Nginx returns 404 for `/config.json` (line 48-50 of `scripts/nginx.conf`). The audit still flags it.
-
-**Investigation needed:**
-- Verify the 404 block is deployed to production (`curl -I https://kritano.com/config.json`)
-- Check if Express is serving a `/config.json` route before nginx catches it
-- Check if a `config.json` file exists in `client/dist/` after build
-
-**Fix (if file exists in dist):**
-- Add to `.gitignore` and remove from build output
-- Ensure Vite is not copying it to `dist/`
-
-**Fix (if nginx block not deployed):**
-- Redeploy nginx config: `sudo nginx -t && sudo systemctl reload nginx`
-
-**Files:** `scripts/nginx.conf`, check `client/dist/`
+| Priority | Category | Current Score | Target | Impact |
+|----------|----------|---------------|--------|--------|
+| P0 | Content | 52 | 75+ | Biggest drag on overall score |
+| P0 | AEO (CQS) | 56 | 75+ | Biggest drag on overall score |
+| P1 | Performance | 86 | 93+ | Affects every page (34 pages) |
+| P1 | Accessibility | 98 | 100 | Single colour fix covers 96 issues |
+| P2 | SEO | 89 | 95+ | Quick metadata wins |
+| P2 | Schema | 88 | 95+ | Social sharing gaps |
+| P3 | Security | 96 | 98+ | Third-party cookie flag only |
 
 ---
 
-### 1.2 CSP: Remove unsafe-inline for Scripts [MODERATE - 27 pages]
+## P0: Content Fixes (Score 52 -> 75+)
 
-**Current state:** `scripts/nginx.conf` has `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com`
+These are the biggest score drags. Content and AEO share many of the same root causes.
 
-**Why unsafe-inline exists:** React injects inline scripts. Google Analytics (not actually used) also needs it.
+### 1. Readability Overhaul (29 pages, SERIOUS)
 
-**Fix - Hash-based CSP:**
+**Problem:** Readability score 20/100, grade level 17.6, high vocabulary complexity (2.06 syllables/word).
 
-1. After Vite builds, compute SHA-256 hashes of any inline scripts in `index.html`
-2. Replace `'unsafe-inline'` with the specific hashes: `'sha256-<hash>'`
-3. **Remove GA/GTM from CSP** since it is not used - this tightens the policy significantly
+**Pages to fix (priority order):**
+1. Core marketing pages: `/`, `/about`, `/pricing`, `/contact`, `/services/*`
+2. Blog posts: all 5 published articles
+3. Docs pages: `/docs`, `/docs/authentication`, `/docs/endpoints`, `/docs/objects`, `/docs/errors`, `/docs/rate-limits`
+4. Legal/utility: `/privacy`, `/terms`, `/waitlist`, `/faq`
 
-**Updated CSP for nginx:**
-```
-script-src 'self' 'sha256-<vite-inline-hash>';
-connect-src 'self';
-frame-src 'none';
-```
+**Actions:**
+- [ ] Rewrite sentences to target grade 7-9 reading level
+- [ ] Replace jargon with simpler alternatives (target < 1.8 syllables/word average)
+- [ ] Break sentences longer than 35 words into shorter ones (22 pages affected)
+- [ ] Add transition words ("however", "therefore", "for example") -- currently 0% usage on 10 pages
+- [ ] Break wall-of-text sections in `/docs/endpoints` and `/docs/objects` with H2/H3 subheadings every 300-400 words
 
-**Files:** `scripts/nginx.conf`, potentially a post-build script to extract hashes
+### 2. Thin/Short Content Expansion (14 thin + 12 short pages)
 
----
+**Problem:** 14 pages under 300 words, 12 pages under ~600 words. Low content-to-HTML ratio on 24 pages.
 
-### 1.3 Insecure Cookie: _ga_PYQW89W26J Missing Secure Flag [SERIOUS - 27 pages]
+**Thin content pages (under 300 words) -- expand to 500+:**
+- [ ] `/blog?tag=*` pages (4) -- add tag descriptions, related article summaries
+- [ ] `/blog?category=*` pages (4) -- add category intros, curated content descriptions
+- [ ] `/contact` -- add company info, team context, expected response times
+- [ ] `/author/chris-garlick` -- full author bio with credentials, experience, links
+- [ ] `/waitlist` -- add product value prop, what to expect, timeline
+- [ ] `/blog` -- add blog intro paragraph, content highlights
+- [ ] `/faq` -- expand answers, add more questions
+- [ ] `/blog/website-launch-checklist` -- this is a blog post; expand significantly
 
-**Current state:** A Google Analytics cookie is being set without the Secure flag. However, no GA code exists in the codebase.
+**Short content pages (300-600 words) -- expand to 800+:**
+- [ ] `/services/seo`, `/services/accessibility`, `/services/security`, `/services/performance` -- add methodology, case examples, expected outcomes
+- [ ] `/about` -- add founding story, mission, team expertise
+- [ ] `/` (homepage) -- add feature detail sections
+- [ ] `/pricing` -- add feature comparison detail, value explanations
+- [ ] `/docs/*` pages -- add more examples, use cases
 
-**Investigation needed:**
-- This cookie is likely set by a previously-deployed GA snippet that was removed, or a third-party injection
-- Check if the domain has any third-party scripts injected (CDN, hosting panel, etc.)
+### 3. Keyword Optimisation (blog posts)
 
-**Fix:**
-- Confirm GA is not in use and no GA scripts are injected anywhere
-- If a residual GA script exists somewhere (e.g., in a CDN config or hosting panel), remove it
-- Stale GA cookies will expire naturally
-- The tightened CSP (1.2) will prevent GA from setting cookies in the future
+**Problem:** Target keywords missing from titles, H1s, intros, meta descriptions, and content body.
 
-**Files:** Check production deployment, any CDN/hosting panel config
+**Affected post: "The State of Web Accessibility in 2026"**
+- [ ] Add "web accessibility 2026" to page title (naturally, near the beginning)
+- [ ] Add "web accessibility 2026" to H1 heading
+- [ ] Include keyword in first paragraph
+- [ ] Include keyword in meta description
+- [ ] Increase keyword density from 0.25% to 1-2%
+- [ ] Add keyword variations throughout content
+- [ ] Consider updating URL slug if feasible
 
----
+**All blog posts (keyword density + intro fixes):**
+- [ ] `/blog/answer-engine-optimisation-how-to-get-cited-by-ai` -- add "website audit" to intro, increase keyword density
+- [ ] `/blog/security-headers-every-website-needs-in-2026` -- increase keyword density
+- [ ] `/blog/what-is-a-website-audit-and-why-does-it-matter` -- add "website audit" to intro
 
-### 1.4 CSRF Token Cookie Missing HttpOnly [MODERATE - 27 pages]
+### 4. CTA Reduction (12 pages, MINOR)
 
-**Current state:** `server/src/middleware/csrf.middleware.ts` intentionally sets `httpOnly: false` on the csrf_token cookie. This is **correct by design** - the double-submit cookie pattern requires JavaScript to read the cookie and send it as a header.
+- [ ] Reduce CTAs to 2-3 per page on: `/services/*`, `/pricing`, `/`, blog posts
+- [ ] Ensure CTAs are focused and non-repetitive
 
-**Action:** This is a false positive from the audit. The CSRF implementation is secure:
-- 32-byte cryptographically random tokens
-- Timing-safe comparison (`timingSafeEqual`)
-- SameSite=strict
-- Secure flag in production
+### 5. Add Visual Content (5 pages, MINOR)
 
-**Improvement:** Update the security audit engine (`server/src/services/audit-engines/security.engine.ts`) to recognise double-submit CSRF patterns and not flag csrf cookies without HttpOnly when SameSite=strict is set.
+- [ ] `/faq` -- add illustrations or icons
+- [ ] `/blog/website-launch-checklist` -- add checklist graphics, screenshots
+- [ ] `/waitlist` -- add product preview/mockup
+- [ ] `/terms` -- add section dividers or icons (low priority)
+- [ ] `/author/chris-garlick` -- add author photo
+- [ ] `/privacy` -- add at least one image (currently flagged for long content with no images)
 
----
+### 6. Add Freshness Signals (10 pages, MINOR)
 
-### 1.5 Additional Security Hardening
-
-| Item | Action | Priority |
-|------|--------|----------|
-| Remove GA from CSP | Tighten `script-src` and `connect-src` in nginx | High |
-| Enable HTTP/2 | Add `http2` to nginx listen directive | High |
-| SRI (Subresource Integrity) | Add `integrity` attributes to script/link tags | Medium |
-| Verify seed credentials | Ensure dev seed data is not in production DB | High |
-| Permissions-Policy | Already configured - verify deployed | Medium |
-
----
-
-## Phase 2: Performance (Score: 80 -> 90+)
-
-### 2.1 Cache Headers Not Detected [MODERATE - 27 pages]
-
-**Current state:** Nginx already sets cache headers but the scanner may not be seeing them.
-
-**Fix:**
-- Verify in production: `curl -I https://kritano.com/`
-- If missing, redeploy nginx config
-- Add fallback cache headers to Express for HTML responses
-
-**Files:** `scripts/nginx.conf`, potentially `server/src/index.ts`
+- [ ] Add "Last updated: [date]" to: `/docs/*` (all 6 docs pages), `/services/seo`, `/services/accessibility`, `/services/performance`, `/terms`, `/privacy`
 
 ---
 
-### 2.2 Poor CLS [SERIOUS - 3 blog pages]
+## P0: AEO/CQS Fixes (Score 56 -> 75+)
 
-**CLS: 0.437** (target: <0.1).
+### 7. Definition Blocks (16 pages, SERIOUS)
 
-**Fix:**
-- Add explicit `width` and `height` to all `<img>` tags in blog content
-- Add `font-display: swap` with font preloading for Instrument Serif and Outfit
-- Use `aspect-ratio` CSS on image containers
-- Preload hero/LCP images
+- [ ] Add "X is a..." definition paragraphs to: `/`, `/about`, `/services/*`, `/docs/*`, `/pricing`, `/privacy`
+- [ ] Format as clear, extractable single-sentence definitions at the top of relevant sections
 
-**Files:** Blog post components, `client/index.html`
+### 8. FAQ Sections (25 pages, MODERATE)
 
----
+- [ ] Add FAQPage schema + question-based headings to key pages:
+  - Priority: `/`, `/pricing`, `/about`, `/services/*`, `/contact`
+  - Secondary: `/docs/*`, blog posts, `/terms`, `/privacy`
+- [ ] Use H2/H3 format: "What is...?", "How does...?"
+- [ ] Implement FAQPage JSON-LD schema on pages with FAQ content
 
-### 2.3 Render-Blocking CSS [MODERATE - 27 pages]
+### 9. Factual Density (28 pages, SERIOUS)
 
-**Fix:**
-- Extract critical above-the-fold CSS and inline in `<head>`
-- Defer main stylesheet with `media="print" onload="this.media='all'"` pattern
-- Or use Vite's `cssCodeSplit: true`
+- [ ] Add specific statistics, data points, and named sources throughout content
+- [ ] Include date-stamped information (e.g., "As of April 2026, 96% of websites fail accessibility standards")
+- [ ] Add verifiable claims with citations on 20 pages that currently have zero
 
-**Files:** `client/vite.config.ts`, `client/index.html`
+### 10. Summary/Takeaway Sections (16 pages, MODERATE)
 
----
+- [ ] Add "Key Takeaway" or "TL;DR" sections to: `/services/*`, `/about`, `/docs/*`, blog posts, `/terms`, `/privacy`
 
-### 2.4 Large Page Size [MODERATE - 18 pages]
+### 11. Citation-Friendly Schema (28 pages, MINOR)
 
-**756KB+** (target: <500KB).
-
-**Fix:**
-- Audit bundle with `npx vite-bundle-visualizer`
-- Enable Brotli compression in nginx (currently gzip only)
-- Further lazy-load route-specific chunks
-- Tree-shake unused dependencies
-
-**Files:** `client/vite.config.ts`, `scripts/nginx.conf`
+- [ ] Implement FAQPage, HowTo, or ClaimReview schema where appropriate
+- [ ] Add `<cite>` tags for source names on 14 pages
+- [ ] Add `<blockquote cite="URL">` for quoted content
 
 ---
 
-### 2.5 LCP Needs Improvement [MODERATE - 9 pages]
+## P1: Performance Fixes (Score 86 -> 93+)
 
-**LCP: 3172ms** (target: <2500ms).
+### 12. Fix CLS (4 blog pages, SERIOUS)
 
-**Fix:**
-- Preload LCP images with `<link rel="preload">`
-- Preload fonts
-- Consider prerendering/SSG for marketing pages
-- Reduce TTFB
+**Problem:** CLS 0.413 (target < 0.1) on blog post pages.
 
-**Files:** `client/index.html`, font loading strategy
+- [ ] Audit blog post images -- add explicit `width` and `height` attributes to all `<img>` tags
+- [ ] Add `aspect-ratio` CSS for blog hero images and inline images
+- [ ] Check for dynamically inserted content above the fold (ads, banners, cookie notices)
+- [ ] Add CSS `contain` where appropriate
+- [ ] Test with Lighthouse before/after
 
----
+### 13. Reduce Page Load Time (34 pages, MODERATE)
 
-### 2.6 Slow Page Load [MODERATE - 27 pages, from SEO section]
+**Problem:** Pages taking 9805ms (target < 3000ms).
 
-**10687ms** (target: <3000ms). This is the aggregate of all performance issues. Fixing the above should bring this down significantly.
+- [ ] **Critical CSS inlining**: Extract above-the-fold CSS from `index-BWYBTyBB.css` and inline it
+- [ ] **Defer non-critical CSS**: Load remaining CSS asynchronously with `media="print" onload="this.media='all'"`
+- [ ] **Code splitting**: Ensure route-based code splitting is working (Vite/React lazy imports)
+- [ ] **Server response time**: Review SSR/API response times, add caching headers
+- [ ] **Asset optimisation**: Compress CSS/JS bundles, enable Brotli compression
 
----
+### 14. Reduce Page Size (19 pages, MODERATE)
 
-### 2.7 Enable HTTP/2 [INFO - 23 pages]
+**Problem:** Pages over 500KB (some at 702.8KB).
 
-**Fix:** Add `http2` to the nginx listen directive:
-```nginx
-listen 443 ssl http2;
-```
+- [ ] Audit JS bundle size -- tree-shake unused dependencies
+- [ ] Compress images (convert to WebP/AVIF where possible)
+- [ ] Lazy-load below-the-fold images
+- [ ] Remove unused CSS (PurgeCSS or Tailwind's built-in purge)
 
-**Files:** `scripts/nginx.conf`
+### 15. Improve LCP (8 pages, MODERATE)
 
----
+**Problem:** LCP 2584ms (target < 2500ms). Close to passing.
 
-### 2.8 Missing Responsive Images [MINOR - 3 blog pages]
+- [ ] Add `<link rel="preload">` for hero images and key fonts
+- [ ] Ensure LCP element (likely hero image or heading) renders without waiting for JS
+- [ ] Optimise server response time (see #13)
 
-**Fix:** Add `srcset` and `sizes` attributes to blog post images.
+### 16. Add Responsive Images (4 blog pages, MINOR)
 
-**Files:** Blog image component
+- [ ] Add `srcset` and `sizes` attributes to blog post images
+- [ ] Generate multiple image sizes (320w, 640w, 960w, 1200w)
 
----
+### 17. Cache Validation Headers (34 pages, MINOR)
 
-## Phase 3: SEO (Score: 90 -> 95+)
+- [ ] Add `ETag` or `Last-Modified` headers to all responses
+- [ ] Configure in server/CDN (likely Vercel/Cloudflare)
 
-### 3.1 Duplicate Page Title [SERIOUS - 3 pages]
+### 18. Enable HTTP/2 (29 pages, INFO)
 
-"Log In to Your Account | Kritano" used on 3 pages.
-
-**Fix:** Unique titles for each auth page (e.g., "Sign In", "Reset Password", "Create Account").
-
-**Files:** Auth page components
-
----
-
-### 3.2 Missing Canonical URLs [MODERATE - 3 pages]
-
-FAQ, Waitlist, Author pages missing canonical tags.
-
-**Fix:** Add `<link rel="canonical">` via React Helmet or equivalent.
+- [ ] Verify hosting provider supports HTTP/2 and it is enabled
+- [ ] If using a reverse proxy, ensure HTTP/2 is configured
 
 ---
 
-### 3.3 Duplicate Meta Description [MODERATE - 2 pages]
+## P1: Accessibility Fix (Score 98 -> 100)
 
-**Fix:** Write unique descriptions for affected pages.
+### 19. Colour Contrast Fix (96 issues, SERIOUS)
 
----
+**Problem:** Single colour combination failing -- `#64748b` on `#f1f5f9` = 4.34:1 ratio (needs 4.5:1).
 
-### 3.4 Missing Social Meta Tags [MINOR]
+**This is `text-slate-500` on `bg-slate-100` in Tailwind.**
 
-6 pages missing Twitter Card tags, 3 pages missing OG tags.
+- [ ] Find all instances of `text-slate-500` used on `bg-slate-100` backgrounds
+- [ ] Change to `text-slate-600` (`#475569`) which gives 5.91:1 ratio on `#f1f5f9` -- passes AA
+- [ ] Or darken the text to `#5f6d80` for minimal visual change while hitting 4.5:1
+- [ ] Test across all affected pages
 
-**Fix:** Create a shared `<SEOHead>` component that sets OG + Twitter meta for every page. Ensure FAQ, Waitlist, and Author pages use it.
+### 20. Landmark Labels (6 pages, MODERATE)
 
----
-
-### 3.5 Meta Description Length [MINOR]
-
-3 too long (182 chars), 1 too short (68 chars). Target: 70-160.
-
-**Fix:** Adjust descriptions.
+- [ ] Add unique `aria-label` attributes to duplicate `<nav>` landmarks (e.g., "Main navigation", "Documentation sidebar", "Footer navigation")
+- [ ] Primarily affects docs pages with multiple nav regions
 
 ---
 
-### 3.6 Thin Content [MODERATE - 8 pages]
+## P2: SEO Fixes (Score 89 -> 95+)
 
-Pages with <300 words (blog index, category pages, waitlist, contact).
+### 21. Missing Meta Description (1 page, SERIOUS)
 
-**Fix:** Add introductory copy to listing pages, expand contact page.
+- [ ] Add meta description to `/blog/website-launch-checklist` (70-160 characters)
 
----
+### 22. Duplicate Page Title (SERIOUS)
 
-## Phase 4: Accessibility (Score: 99 -> 100)
+**Problem:** "Blog - Web Auditing Guides & Insights | Kritano" used on 5 pages.
 
-### 4.1 Duplicate Landmark Roles [MODERATE - 6 pages]
+- [ ] Make each blog listing page title unique:
+  - `/blog` -> "Blog - Web Auditing Guides & Insights | Kritano"
+  - `/blog?category=accessibility` -> "Accessibility Articles | Kritano Blog"
+  - `/blog?category=security` -> "Security Articles | Kritano Blog"
+  - `/blog?category=aeo` -> "AEO Articles | Kritano Blog"
+  - `/blog?category=guides` -> "Website Audit Guides | Kritano Blog"
 
-Docs pages have landmarks without unique labels.
+### 23. Missing Canonical URLs (4 pages, MODERATE)
 
-**Fix:** Add `aria-label` to landmarks (e.g., "Main navigation", "Docs sidebar", "Page navigation").
+- [ ] Add `<link rel="canonical">` to: `/waitlist`, `/faq`, `/author/chris-garlick`, `/blog/website-launch-checklist`
 
-**Files:** Docs layout components
+### 24. Title Length Fixes (4 pages, MODERATE)
 
----
+**Too short (under 30 chars):**
+- [ ] `/waitlist` -- expand from ~17 chars to 30-60
+- [ ] `/faq` -- expand title
+- [ ] `/author/chris-garlick` -- expand title
 
-### 4.2 Colour Contrast [INFO - 95 instances]
+**Too long (87 chars):**
+- [ ] `/blog/the-state-of-web-accessibility-in-2026...` -- shorten to under 60 chars
 
-Ratio 4.41:1 vs required 4.5:1 for `#dc2626` on `#fef2f2`.
+### 25. Duplicate Meta Description (MODERATE)
 
-**Fix:** Darken red to `#c72020` or similar to achieve 4.5:1+. This is likely the error/validation state colour.
+- [ ] Identify the 2 pages sharing the same description and write unique ones
 
-**Files:** Tailwind config or components using `red-600` on `red-50`
+### 26. Noindex Review (3 pages, INFO)
 
----
-
-## Phase 5: Content & E-E-A-T (Score: 53 -> 70+)
-
-These are primarily copywriting tasks.
-
-### 5.1 Poor Readability [SERIOUS - 23 pages]
-
-Score: 26/100. Grade level 38.8 (target: 7-9).
-
-**Fix (manual copywriting):**
-- Shorten sentences to 15-20 words average
-- Replace jargon with simpler alternatives
-- Use bullet points for complex ideas
-- Use active voice
-
-**Priority:** Homepage, Services pages, Pricing, About
+- [ ] Decide if `/faq`, `/waitlist`, `/author/chris-garlick` should be indexed
+- [ ] If yes, remove `noindex` directive
+- [ ] `/faq` in particular should probably be indexed for SEO value
 
 ---
 
-### 5.2 Wall of Text [SERIOUS - 2 docs pages]
+## P2: Schema/Social Fixes (Score 88 -> 95+)
 
-500+ word sections without subheadings.
+### 27. Open Graph Tags (4 pages, MODERATE)
 
-**Fix:** Add H2/H3 subheadings every 300-400 words.
+- [ ] Add `og:title`, `og:description`, `og:image`, `og:url` to: `/faq`, `/waitlist`, `/author/chris-garlick`, `/blog/website-launch-checklist`
 
----
+### 28. Twitter Card Tags (8 pages, MINOR)
 
-### 5.3 E-E-A-T Improvements [SERIOUS/MODERATE]
+- [ ] Add `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image` to all 8 affected pages
+- [ ] Consider creating a shared SEO/meta component that auto-populates these
 
-| Issue | Pages | Fix |
-|-------|-------|-----|
-| No Author Bio | 9 | Create `<AuthorBio>` component, add to all pages |
-| Ghost Content (33/100) | 8 | Add trust signals, credentials, citations |
-| No Author Credentials | 27 | Add to Person schema and visible bio |
-| No First-Hand Experience | 23 | Add personal observations/test results to copy |
-| No Citations | 17 | Link to authoritative .gov/.edu sources |
-| No Contact Info | 14 | Add physical address/phone to footer |
+### 29. Structured Data for Missing Pages (4 pages, INFO)
+
+- [ ] Add appropriate JSON-LD to: `/author/chris-garlick` (Person), `/waitlist` (WebPage), `/blog/website-launch-checklist` (Article), `/faq` (FAQPage)
 
 ---
 
-### 5.4 Content Structure [MODERATE/MINOR]
+## P2: E-E-A-T Fixes
 
-- Excessive sentence length (21 pages) - shorten
-- Low content-to-HTML ratio (18 pages) - add content
-- Too many CTAs (11 pages) - reduce to 2-3 per page
-- No freshness signals (10 pages) - add published/updated dates
-- No questions in content (9 pages) - add engagement questions
-- Low transition word usage (9 pages) - improve flow
+### 30. Author Bio (15 pages, SERIOUS)
+
+- [ ] Add author bio component with: photo, name, credentials, short bio, social links
+- [ ] Display on all blog posts, blog listing pages, and author page
+- [ ] Use `itemprop="author"` schema markup
+
+### 31. Author Credentials (34 pages, MODERATE)
+
+- [ ] Add professional credentials/certifications to author bio
+- [ ] Include in JSON-LD Person schema
+
+### 32. Author sameAs Links (30 pages, MODERATE)
+
+- [ ] Add `sameAs` property to JSON-LD Person schema linking to LinkedIn profile
+- [ ] Apply site-wide via shared schema component
+
+### 33. First-Hand Experience Signals (29 pages, MODERATE)
+
+- [ ] Add personal observations and test results to content
+- [ ] Use phrases like "In our testing...", "Having audited over X websites..."
+- [ ] Particularly important for blog posts and services pages
+
+### 34. Citations and References (18 pages, MODERATE)
+
+- [ ] Add links to authoritative sources (.gov, .edu, W3C, MDN)
+- [ ] Reference studies and research to support claims
+- [ ] Especially on: `/services/*`, `/`, `/about`, blog posts
+
+### 35. Contact Information (21 pages, MINOR)
+
+- [ ] Add business address or registered address to footer (visible site-wide)
+- [ ] Or add to `/contact` and link from footer on all pages
+
+### 36. Terms of Service Link (3 pages, INFO)
+
+- [ ] Ensure `/waitlist`, `/faq`, `/author/chris-garlick` pages have footer with terms link
+- [ ] These may be using a different layout -- check and unify
 
 ---
 
-## Phase 6: AEO (Answer Engine Optimisation)
+## P3: Security Fix (Score 96 -> 98+)
 
-### 6.1 Low Citability [SERIOUS - 26 pages]
+### 37. Google Analytics Cookie Secure Flag (34 pages, MINOR)
 
-AEO score: 13/100.
-
-**Fix:**
-- Add definition blocks ("X is a..." patterns) to service and docs pages
-- Add FAQ sections with FAQPage schema to key pages
-- Add summary/TL;DR sections to all content pages
-- Increase factual density with statistics and data
-
----
-
-### 6.2 Schema for AI [MODERATE]
-
-- Add `sameAs` links to Person schema (LinkedIn, Twitter)
-- Add FAQPage schema to FAQ and content pages
-- Add HowTo schema where applicable
-- Add `<cite>` and `<blockquote cite="">` semantic markup
-
----
-
-## Phase 7: Schema (Score: 89 -> 95+)
-
-### 7.1 Missing OG/Twitter Data [MODERATE - 3/6 pages]
-
-Same fix as SEO 3.4 - shared `<SEOHead>` component.
-
----
-
-## Critical Files Summary
-
-| File | Changes |
-|------|---------|
-| `scripts/nginx.conf` | CSP hashes, HTTP/2, remove GA, verify cache headers |
-| `client/index.html` | Font preloading, critical CSS, LCP image preload |
-| `client/vite.config.ts` | CSS code splitting, SRI, bundle optimisation |
-| `client/src/` (page components) | Meta tags, canonical URLs, unique titles, author bios |
-| `server/src/services/audit-engines/security.engine.ts` | Improve CSRF cookie detection logic |
-| Blog/docs content | Readability rewrites, subheadings, E-E-A-T signals |
+- [ ] Configure GA4/GTM to set Secure flag on `_ga_PYQW89W26J` cookie
+- [ ] Options: set `cookie_flags: 'SameSite=None;Secure'` in gtag config, or configure via GTM
 
 ---
 
 ## Implementation Order
 
-### Sprint 1: Security (1-2 days) [PRIORITY]
-1. Verify and fix config.json exposure in production
-2. Remove GA/GTM from CSP (not in use)
-3. Implement hash-based CSP to replace unsafe-inline
-4. Verify all security headers deployed
-5. Enable HTTP/2 in nginx
-6. Verify cookie flags in production
-7. Check for stale GA scripts/cookies
+### Sprint 1: Quick Wins (1-2 days)
+1. **#19** Colour contrast fix (single CSS change, kills 96 issues)
+2. **#21** Add missing meta description
+3. **#22** Fix duplicate page titles
+4. **#23** Add canonical URLs
+5. **#24** Fix title lengths
+6. **#25** Fix duplicate meta description
+7. **#27** Add OG tags to 4 pages
+8. **#28** Add Twitter Card tags to 8 pages
+9. **#20** Add landmark labels
+10. **#36** Fix terms link on 3 pages
+11. **#37** Fix GA cookie secure flag
 
 ### Sprint 2: Performance (2-3 days)
-1. Font preloading + `font-display: swap`
-2. Fix CLS on blog pages (image dimensions, aspect-ratio)
-3. Inline critical CSS / defer main stylesheet
-4. Enable Brotli compression
-5. Optimise bundle sizes
-6. Add responsive images to blog posts
+1. **#12** Fix CLS on blog pages
+2. **#13** Critical CSS + defer non-critical CSS
+3. **#15** Preload key resources for LCP
+4. **#16** Add responsive images
+5. **#17** Cache validation headers
+6. **#14** Reduce page size
+7. **#18** Verify HTTP/2
 
-### Sprint 3: SEO & Schema (1-2 days)
-1. Create shared `<SEOHead>` component (OG + Twitter tags)
-2. Fix duplicate titles on auth pages
-3. Add canonical URLs to missing pages
-4. Fix meta description lengths
-5. Add FAQPage and Person schema improvements
+### Sprint 3: E-E-A-T + Schema (2-3 days)
+1. **#30** Build author bio component
+2. **#31** Add author credentials
+3. **#32** Add sameAs links to Person schema
+4. **#29** Add structured data to 4 pages
+5. **#8** Add FAQPage schema to key pages
+6. **#35** Add contact info to footer
+7. **#26** Review noindex directives
 
-### Sprint 4: Accessibility (0.5 days)
-1. Add aria-labels to duplicate landmarks
-2. Fix colour contrast on error states
+### Sprint 4: Content Overhaul -- Marketing Pages (3-5 days)
+1. **#1** Readability rewrite of: `/`, `/about`, `/pricing`, `/contact`, `/services/*`
+2. **#2** Expand thin/short content on marketing pages
+3. **#7** Add definition blocks to marketing pages
+4. **#9** Add factual density (stats, data points) to marketing pages
+5. **#10** Add summary/takeaway sections
+6. **#33** Add first-hand experience signals
+7. **#34** Add citations and references
+8. **#4** Reduce CTAs on marketing pages
+9. **#6** Add freshness signals
 
-### Sprint 5: Content & E-E-A-T (ongoing)
-1. Create `<AuthorBio>` component
-2. Add published/updated dates to docs
-3. Rewrite content for readability (priority: homepage, services, about)
-4. Add definition blocks and FAQ sections for AEO
-5. Add citations and first-hand experience language
-6. Reduce CTAs on heavy pages
+### Sprint 5: Content Overhaul -- Blog + Docs (3-5 days)
+1. **#1** Readability rewrite of blog posts and docs
+2. **#2** Expand thin blog/docs content
+3. **#3** Keyword optimisation across all blog posts
+4. **#5** Add visual content to blog posts and docs
+5. **#7** Add definition blocks to docs
+6. **#9** Add factual density to blog + docs
+7. **#10** Add summary sections to docs
+8. **#11** Add citation-friendly schema and markup
 
 ---
 
-## Testing Plan
+## Expected Score Impact
 
-1. **Security:** Re-run Kritano audit after each fix, verify headers with `curl -I`
-2. **Performance:** Lighthouse before/after, Chrome DevTools Core Web Vitals
-3. **SEO:** Validate meta tags in devtools, test OG with social media debuggers
-4. **Accessibility:** axe-core scan, screen reader landmark verification
-5. **Content:** Re-run audit to track readability score changes
-6. **Regression:** Full audit re-run after all fixes to compare overall score
+| Category | Before | After Sprint 1-2 | After All |
+|----------|--------|-------------------|-----------|
+| SEO | 89 | 94 | 96 |
+| Accessibility | 98 | 100 | 100 |
+| Security | 96 | 97 | 98 |
+| Performance | 86 | 92 | 95 |
+| Content | 52 | 52 | 78 |
+| Schema | 88 | 94 | 96 |
+| AEO/CQS | 56 | 56 | 76 |
+| **Overall** | **81** | **86** | **92** |

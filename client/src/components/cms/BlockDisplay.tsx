@@ -179,7 +179,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
             />
           )}
           {caption && (
-            <figcaption className="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">{caption}</figcaption>
+            <figcaption className="mt-2 text-center text-sm text-slate-600 dark:text-slate-400">{caption}</figcaption>
           )}
         </figure>
       );
@@ -227,7 +227,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
       return (
         <div className="my-6 overflow-hidden rounded-lg border border-slate-200 bg-slate-900">
           {filename && (
-            <div className="border-b border-slate-700 bg-slate-800 px-4 py-2 text-xs font-mono text-slate-500">
+            <div className="border-b border-slate-700 bg-slate-800 px-4 py-2 text-xs font-mono text-slate-600">
               {filename}
             </div>
           )}
@@ -247,7 +247,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
         <blockquote className="my-8 border-l-4 border-indigo-300 dark:border-indigo-600 bg-indigo-50/50 dark:bg-indigo-900/10 py-4 pl-6 pr-4">
           <p className="text-lg italic text-slate-700 dark:text-slate-300">{text}</p>
           {attribution && (
-            <cite className="mt-2 block text-sm font-medium not-italic text-slate-500 dark:text-slate-400">
+            <cite className="mt-2 block text-sm font-medium not-italic text-slate-600 dark:text-slate-400">
               -- {attribution}
             </cite>
           )}
@@ -271,7 +271,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
 
       if (!embedUrl) {
         return (
-          <div className="my-6 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-6 text-center text-sm text-slate-500 dark:text-slate-400">
+          <div className="my-6 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-6 text-center text-sm text-slate-600 dark:text-slate-400">
             Unsupported embed URL
           </div>
         );
@@ -331,7 +331,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
           <p className="font-display text-5xl font-normal text-indigo-600 dark:text-indigo-400">{stat}</p>
           <p className="mt-3 text-base text-slate-700 dark:text-slate-300">{description}</p>
           {source && (
-            <p className="mt-2 text-xs text-slate-500">Source: {source}</p>
+            <p className="mt-2 text-xs text-slate-600">Source: {source}</p>
           )}
         </div>
       );
@@ -351,7 +351,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
           </div>
           <div className="min-w-0 flex-1">
             <p className="font-medium text-slate-900 dark:text-white">{customText}</p>
-            <p className="truncate text-sm text-slate-500 dark:text-slate-400">{ruleId}</p>
+            <p className="truncate text-sm text-slate-600 dark:text-slate-400">{ruleId}</p>
           </div>
         </div>
       );
@@ -385,7 +385,7 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
     // ============================================================
     default: {
       return (
-        <div className="my-4 rounded border border-dashed border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 p-4 text-sm text-slate-500 dark:text-slate-400">
+        <div className="my-4 rounded border border-dashed border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 p-4 text-sm text-slate-600 dark:text-slate-400">
           Unknown block type: <code>{type}</code>
         </div>
       );

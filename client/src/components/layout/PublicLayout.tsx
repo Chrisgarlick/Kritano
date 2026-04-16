@@ -225,7 +225,7 @@ export function PublicLayout({ children }: Props) {
                             </div>
                             <div>
                               <div className="text-sm font-medium">{item.label}</div>
-                              <div className="text-xs text-slate-500 dark:text-slate-400">{item.description}</div>
+                              <div className="text-xs text-slate-600 dark:text-slate-400">{item.description}</div>
                             </div>
                           </Link>
                         );
@@ -338,7 +338,7 @@ export function PublicLayout({ children }: Props) {
                   </Link>
                   <button
                     onClick={() => setMobileServicesOpen(prev => !prev)}
-                    className="p-2 text-slate-500 hover:text-slate-600 transition-colors"
+                    className="p-2 text-slate-600 hover:text-slate-700 transition-colors"
                     aria-expanded={mobileServicesOpen}
                     aria-label="Expand service links"
                   >
@@ -457,9 +457,12 @@ export function PublicLayout({ children }: Props) {
                 <img src="/brand/favicon-32.svg" alt="" role="presentation" width="28" height="28" />
                 <span className="font-display text-xl text-slate-900 dark:text-white">Kritano</span>
               </Link>
-              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-xs mb-4">
                 Comprehensive website auditing for SEO, accessibility, security, and performance.
               </p>
+              <a href="mailto:info@kritano.com" className="text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 underline-offset-2 hover:decoration-indigo-400">
+                info@kritano.com
+              </a>
             </div>
 
             {/* Product links */}
@@ -470,7 +473,7 @@ export function PublicLayout({ children }: Props) {
               <ul className="space-y-3">
                 {footerLinks.product.map(link => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-indigo-400">
+                    <Link to={link.href} className="text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-indigo-400">
                       {link.label}
                     </Link>
                   </li>
@@ -486,7 +489,7 @@ export function PublicLayout({ children }: Props) {
               <ul className="space-y-3">
                 {footerLinks.company.map(link => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-indigo-400">
+                    <Link to={link.href} className="text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-indigo-400">
                       {link.label}
                     </Link>
                   </li>
@@ -502,7 +505,7 @@ export function PublicLayout({ children }: Props) {
               <ul className="space-y-3">
                 {footerLinks.resources.map(link => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-indigo-400">
+                    <Link to={link.href} className="text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2 hover:decoration-indigo-400">
                       {link.label}
                     </Link>
                   </li>
@@ -513,19 +516,19 @@ export function PublicLayout({ children }: Props) {
 
           {/* Bottom bar */}
           <div className="pt-8 border-t border-slate-200 dark:border-slate-700 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               &copy; {new Date().getFullYear()} Kritano. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <Link to="/privacy" className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2">
+              <Link to="/privacy" className="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2">
+              <Link to="/terms" className="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2">
                 Terms of Service
               </Link>
               <button
                 onClick={openCookiePreferences}
-                className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2"
+                className="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline decoration-slate-300 dark:decoration-slate-600 underline-offset-2"
               >
                 Cookie Settings
               </button>

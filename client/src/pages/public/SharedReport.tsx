@@ -48,7 +48,7 @@ const categoryConfig: Record<string, { label: string; icon: typeof Shield; color
 };
 
 function getScoreColor(score: number | null): string {
-  if (score === null) return 'text-slate-500';
+  if (score === null) return 'text-slate-600';
   if (score >= 80) return 'text-emerald-600';
   if (score >= 60) return 'text-amber-600';
   return 'text-red-600';
@@ -171,7 +171,7 @@ export default function SharedReport() {
             </div>
             <span className="text-lg font-semibold text-slate-900 dark:text-white font-['Instrument_Serif']">Kritano</span>
           </Link>
-          <span className="text-xs text-slate-500 dark:text-slate-400 font-['Outfit'] bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full">Shared Report</span>
+          <span className="text-xs text-slate-600 dark:text-slate-400 font-['Outfit'] bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full">Shared Report</span>
         </div>
       </header>
 
@@ -180,8 +180,8 @@ export default function SharedReport() {
         {/* Title section */}
         <div className="mb-8">
           <Display size="sm" as="h1" className="text-slate-900 dark:text-white mb-1">{audit.targetDomain}</Display>
-          <Body size="sm" className="text-slate-500 dark:text-slate-400 font-mono">{audit.targetUrl}</Body>
-          <div className="flex items-center gap-4 mt-2 text-sm text-slate-500 dark:text-slate-400 font-['Outfit']">
+          <Body size="sm" className="text-slate-600 dark:text-slate-400 font-mono">{audit.targetUrl}</Body>
+          <div className="flex items-center gap-4 mt-2 text-sm text-slate-600 dark:text-slate-400 font-['Outfit']">
             {audit.completedAt && (
               <span>Completed {new Date(audit.completedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
             )}
@@ -277,7 +277,7 @@ export default function SharedReport() {
       {/* Footer */}
       <footer className="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-auto">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 text-center">
-          <Body size="sm" className="text-slate-500 dark:text-slate-400 mb-3">
+          <Body size="sm" className="text-slate-600 dark:text-slate-400 mb-3">
             Powered by <Link to="/" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium">Kritano</Link>
           </Body>
           <Link

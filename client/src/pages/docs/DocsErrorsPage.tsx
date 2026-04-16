@@ -51,8 +51,11 @@ export default function DocsErrorsPage() {
         {/* HTTP Status Codes */}
         <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6 mb-6">
           <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white mb-2">Error Handling</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            Error handling refers to how your application responds when an API request fails. Good error handling makes your integration more reliable and easier to debug.
+          </p>
           <p className="text-slate-600 dark:text-slate-400 mb-6">
-            The API uses conventional HTTP response codes to indicate success or failure. Codes in the <strong>2xx</strong> range indicate success, <strong>4xx</strong> indicate client errors, and <strong>5xx</strong> indicate server errors.
+            The Kritano API uses standard HTTP response codes. Codes in the <strong>2xx</strong> range mean success. Codes in the <strong>4xx</strong> range mean a client error, such as a missing parameter or invalid key. Codes in the <strong>5xx</strong> range mean a server error on our side.
           </p>
 
           <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3">HTTP Status Codes</h2>
@@ -207,6 +210,13 @@ export default function DocsErrorsPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Summary */}
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-6">
+          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+            <strong>Key takeaway:</strong> always check the HTTP status code and the <code className="text-xs bg-slate-100 dark:bg-slate-700 px-1 py-0.5 rounded text-indigo-700 dark:text-indigo-400 font-mono">error</code> field in the response body. Use the error code to decide whether to retry (429), fix your request (400, 401, 403), or report a bug (500). Retry 429 errors with exponential backoff.
+          </p>
         </div>
       </DocsLayout>
     </PublicLayout>
