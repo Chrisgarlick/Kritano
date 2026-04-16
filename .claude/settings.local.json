@@ -245,7 +245,11 @@
       "Bash(bash .claude/skills/prospects-freelance/check-and-extract.sh docs/prospects/newcastle-freelance-2026-04-13/raw-domains.txt docs/prospects/newcastle-freelance-2026-04-13/prospects.json)",
       "Bash(bash .claude/skills/prospects-freelance/publish-to-notion.sh docs/prospects/newcastle-freelance-2026-04-13/prospects.json \"Freelance Prospects - Newcastle - 2026-04-13\")",
       "Bash(kill 85461 85459)",
-      "Bash(ssh deploy@kritano.com \"nginx -V 2>&1 | grep -o ''brotli\\\\|ngx_http_brotli''\")"
+      "Bash(ssh deploy@kritano.com \"nginx -V 2>&1 | grep -o ''brotli\\\\|ngx_http_brotli''\")",
+      "WebFetch(domain:support.google.com)",
+      "WebFetch(domain:googletrends.github.io)",
+      "WebFetch(domain:miromannino.com)",
+      "WebFetch(domain:lucumt.info)"
     ]
   },
   "enableAllProjectMcpServers": true,

@@ -114,12 +114,17 @@ router.delete('/connections/:siteId', async (req, res) => {
 // Trigger manual sync
 router.post('/connections/:connectionId/sync', async (req, res) => {
     try {
+        const connectionId = req.params.connectionId;
+        // Check if this connection has any data - if not, do a full 90-day backfill
+        const dataCheck = await index_js_1.pool.query(`SELECT COUNT(*) as cnt FROM gsc_query_data WHERE connection_id = $1 LIMIT 1`, [connectionId]);
+        const hasData = parseInt(dataCheck.rows[0].cnt, 10) > 0;
         const endDate = new Date();
         endDate.setDate(endDate.getDate() - 3);
         const startDate = new Date(endDate);
-        startDate.setDate(startDate.getDate() - 7);
+        startDate.setDate(startDate.getDate() - (hasData ? 7 : 90));
         const format = (d) => d.toISOString().split('T')[0];
-        const rows = await (0, gsc_service_js_1.syncQueryData)(req.params.connectionId, format(startDate), format(endDate));
+        console.log(`GSC manual sync: ${format(startDate)} to ${format(endDate)}${!hasData ? ' (backfill)' : ''}`);
+        const rows = await (0, gsc_service_js_1.syncQueryData)(connectionId, format(startDate), format(endDate));
         res.json({ success: true, rowsSynced: rows });
     }
     catch (error) {

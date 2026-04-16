@@ -20,19 +20,23 @@ function createGscSyncWorker(config) {
                 if (!running)
                     break;
                 try {
-                    // GSC data has a ~3 day delay, sync last 7 days to catch any backfill
+                    // GSC data has a ~3 day delay
                     const endDate = new Date();
                     endDate.setDate(endDate.getDate() - 3);
-                    const startDate = new Date(endDate);
-                    startDate.setDate(startDate.getDate() - 7);
-                    // For first sync (never synced), backfill 90 days
+                    let startDate;
                     if (!conn.last_sync_at) {
-                        startDate.setDate(endDate.getDate() - 90);
+                        // First sync: backfill 90 days from endDate
+                        startDate = new Date(endDate);
+                        startDate.setDate(startDate.getDate() - 90);
                     }
+                    else {
+                        // Regular sync: last 7 days
+                        startDate = new Date(endDate);
+                        startDate.setDate(startDate.getDate() - 7);
+                    }
+                    console.log(`GSC sync: ${conn.gsc_property} ${formatDate(startDate)} to ${formatDate(endDate)}${!conn.last_sync_at ? ' (initial backfill)' : ''}`);
                     const rows = await (0, gsc_service_js_1.syncQueryData)(conn.id, formatDate(startDate), formatDate(endDate));
-                    if (rows > 0) {
-                        console.log(`GSC sync: ${conn.gsc_property} - ${rows} rows synced`);
-                    }
+                    console.log(`GSC sync: ${conn.gsc_property} - ${rows} rows synced`);
                     // Cleanup old data based on tier retention
                     const retentionDays = conn.gsc_data_retention_days || DEFAULT_RETENTION_DAYS;
                     const cleaned = await (0, gsc_service_js_1.cleanupOldData)(conn.id, retentionDays);
