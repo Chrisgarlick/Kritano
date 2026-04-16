@@ -219,7 +219,7 @@ export async function syncQueryData(
     const rowLimit = 5000;
     const dimensions = ['query', 'page', 'device', 'country', 'date'];
 
-    // Paginate through results
+    // Paginate through detailed results
     while (true) {
       const response = await webmasters.searchanalytics.query({
         siteUrl: property,
@@ -260,6 +260,48 @@ export async function syncQueryData(
 
       if (rows.length < rowLimit) break;
       startRow += rowLimit;
+    }
+
+    // Fallback: if no detailed rows returned, fetch daily aggregates.
+    // GSC anonymises sparse data and won't break it down by query/page,
+    // but still returns totals per date.
+    if (rowsInserted === 0) {
+      const dateResponse = await webmasters.searchanalytics.query({
+        siteUrl: property,
+        requestBody: {
+          startDate,
+          endDate,
+          dimensions: ['date'],
+          rowLimit: 5000,
+        },
+      });
+
+      const dateRows = dateResponse.data.rows || [];
+      for (const row of dateRows) {
+        const impressions = row.impressions || 0;
+        const clicks = row.clicks || 0;
+        if (impressions === 0 && clicks === 0) continue;
+
+        const [date] = row.keys || [];
+        await pool.query(
+          `INSERT INTO gsc_query_data (connection_id, query, page_url, date, clicks, impressions, ctr, position, device, country)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+           ON CONFLICT DO NOTHING`,
+          [
+            connectionId,
+            '(anonymised)',
+            null,
+            date,
+            clicks,
+            impressions,
+            row.ctr || 0,
+            row.position || 0,
+            null,
+            null,
+          ]
+        );
+        rowsInserted++;
+      }
     }
 
     // Update sync status
