@@ -208,7 +208,8 @@ export default function PostDetailPage() {
                   srcSet={`${thumbUrl} 400w, ${post.featured_image_url} 1200w`}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 768px"
                   alt={post.featured_image_alt || `Featured image for ${post.title}`}
-                  className="w-full rounded-xl"
+                  className="w-full h-auto rounded-xl"
+                  style={{ aspectRatio: '1200 / 630' }}
                   loading="eager"
                   fetchPriority="high"
                   width={1200}

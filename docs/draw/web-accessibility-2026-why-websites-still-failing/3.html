@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    .container {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: linear-gradient(135deg, #4F46E5 0%, #312E81 100%);
+    }
+    .font-display { font-family: 'Instrument Serif', Georgia, serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Grid overlay -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <!-- Light glow centre -->
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;background:rgba(99,102,241,0.3);border-radius:50%;filter:blur(150px);pointer-events:none;"></div>
+    <!-- Amber accent top right -->
+    <div style="position:absolute;top:-80px;right:200px;width:300px;height:300px;background:rgba(251,191,36,0.1);border-radius:50%;filter:blur(80px);pointer-events:none;"></div>
+
+    <!-- Content -->
+    <div style="position:relative;z-index:1;padding:90px 100px 70px;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+      <div style="display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 20px;">
+        <span style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:0.12em;">Accessibility Report 2026</span>
+      </div>
+
+      <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:88px;font-weight:400;color:#FFFFFF;line-height:1.08;margin-top:32px;max-width:1400px;">
+        96% of Websites Are Still Failing
+      </h1>
+
+      <p style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.5;margin-top:28px;max-width:900px;">
+        Basic accessibility issues. Massive scale. Simple fixes.<br>What the WebAIM Million data tells us about the web we are building.
+      </p>
+
+      <!-- Stat pills -->
+      <div style="display:flex;gap:20px;margin-top:48px;">
+        <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:18px 32px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;color:#FFFFFF;line-height:1;">81%</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:rgba(255,255,255,0.6);margin-top:4px;">Low contrast</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:18px 32px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;color:#FFFFFF;line-height:1;">54.5%</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:rgba(255,255,255,0.6);margin-top:4px;">No alt text</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:18px 32px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;color:#FFFFFF;line-height:1;">48.6%</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:rgba(255,255,255,0.6);margin-top:4px;">Empty links</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:18px 32px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;color:#FFFFFF;line-height:1;">45.9%</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:rgba(255,255,255,0.6);margin-top:4px;">No form labels</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:18px 32px;text-align:center;">
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:44px;color:#FFFFFF;line-height:1;">18.6%</p>
+          <p style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:rgba(255,255,255,0.6);margin-top:4px;">No lang attr</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Branding -->
+    <div style="position:absolute;bottom:32px;right:100px;display:flex;align-items:center;z-index:2;">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px;display:inline-block;">
+        <rect width="32" height="32" rx="7" fill="#4f46e5"/>
+        <rect x="3" y="3" width="26" height="26" rx="5" fill="#312e81"/>
+        <path d="M10 7 L10 25 L13.5 25 L13.5 17.5 L19.5 25 L24 25 L17 16 L23.5 7 L19.5 7 L13.5 14.5 L13.5 7 Z" fill="white"/>
+        <circle cx="24" cy="6.5" r="2.5" fill="#fbbf24"/>
+      </svg>
+      <span style="font-family:'Instrument Serif',Georgia,serif;font-size:28px;color:#FFFFFF;">Kritano</span>
+    </div>
+  </div>
+</body>
+</html>

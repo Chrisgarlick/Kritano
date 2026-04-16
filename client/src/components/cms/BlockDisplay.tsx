@@ -163,7 +163,8 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
                 loading="lazy"
                 width={800}
                 height={450}
-                className="w-full rounded-lg shadow-sm"
+                className="w-full h-auto rounded-lg shadow-sm"
+                style={{ aspectRatio: '800 / 450' }}
               />
             </picture>
           ) : (
@@ -173,7 +174,8 @@ export default function BlockDisplay({ block }: BlockDisplayProps) {
               loading="lazy"
               width={800}
               height={450}
-              className="w-full rounded-lg shadow-sm"
+              className="w-full h-auto rounded-lg shadow-sm"
+              style={{ aspectRatio: '800 / 450' }}
             />
           )}
           {caption && (
