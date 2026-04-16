@@ -257,15 +257,17 @@ export default function SearchConsolePage() {
     }
   };
 
-  const formatNumber = (n: number | null | undefined) => {
+  const formatNumber = (n: number | string | null | undefined) => {
     if (n == null) return '0';
-    if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-    if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
-    return n.toLocaleString();
+    const v = Number(n);
+    if (isNaN(v)) return '0';
+    if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
+    if (v >= 1000) return (v / 1000).toFixed(1) + 'K';
+    return v.toLocaleString();
   };
 
-  const formatCtr = (ctr: number | null | undefined) => ctr != null ? (ctr * 100).toFixed(1) + '%' : '0%';
-  const formatPosition = (pos: number | null | undefined) => pos != null ? pos.toFixed(1) : '0.0';
+  const formatCtr = (ctr: number | string | null | undefined) => ctr != null ? (Number(ctr) * 100).toFixed(1) + '%' : '0%';
+  const formatPosition = (pos: number | string | null | undefined) => pos != null ? Number(pos).toFixed(1) : '0.0';
 
   // ========== Gated State ==========
   if (!isGscAvailable) {
