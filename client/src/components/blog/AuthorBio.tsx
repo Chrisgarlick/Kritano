@@ -86,10 +86,10 @@ export default function AuthorBio() {
               </a>
             </div>
           </div>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mb-1" itemProp="jobTitle">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-1" itemProp="jobTitle">
             {AUTHOR.title}
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2" itemProp="qualifications">
+          <p className="text-xs text-slate-600 dark:text-slate-400 mb-2" itemProp="qualifications">
             {AUTHOR.credentials}
           </p>
           <p className="text-sm text-slate-700 dark:text-slate-400 leading-relaxed" itemProp="description">

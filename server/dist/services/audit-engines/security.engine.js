@@ -179,15 +179,19 @@ class SecurityEngine {
                 if (!ctx.isHttps)
                     return null;
                 // Third-party analytics cookies whose flags are set by external scripts
-                // (e.g. Google Analytics/GTM) and cannot be controlled by the site owner.
+                // (e.g. Google Analytics/GTM) — still flagged but at lower severity since
+                // site owners have limited control over these.
                 const thirdPartyCookiePrefixes = ['_ga', '_gid', '_gat', '_fbp', '_gcl'];
                 const findings = [];
                 for (const cookie of ctx.cookies) {
                     if (!cookie.secure) {
                         const isThirdParty = thirdPartyCookiePrefixes.some(prefix => cookie.name.startsWith(prefix));
-                        if (isThirdParty)
-                            continue;
-                        findings.push(this.createFinding('insecure-cookie', 'Insecure Cookie', 'serious', `Cookie "${cookie.name}" is missing the Secure flag`, 'Add the Secure flag to prevent cookie transmission over HTTP'));
+                        if (isThirdParty) {
+                            findings.push(this.createFinding('insecure-cookie', 'Third-Party Cookie Missing Secure Flag', 'minor', `Cookie "${cookie.name}" (set by analytics/tracking script) is missing the Secure flag`, 'Configure cookie flags in your Google Tag Manager or analytics settings, or add cookie_flags to your GTM data layer'));
+                        }
+                        else {
+                            findings.push(this.createFinding('insecure-cookie', 'Insecure Cookie', 'serious', `Cookie "${cookie.name}" is missing the Secure flag`, 'Add the Secure flag to prevent cookie transmission over HTTP'));
+                        }
                     }
                 }
                 return findings.length > 0 ? findings : null;
