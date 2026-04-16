@@ -1,237 +1,298 @@
 import { useState, useEffect, useCallback } from 'react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
-import { auditsApi } from '../../services/api';
-import { GoogleTrendsEmbed } from '../../components/keywords/GoogleTrendsEmbed';
+import { api } from '../../services/api';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from 'recharts';
+import { format, parseISO } from 'date-fns';
 import {
   TrendingUp,
-  Map as MapIcon,
+  TrendingDown,
   Search,
   Loader2,
   ChevronDown,
   Tag,
-  Globe,
   Clock,
   Check,
   Info,
-  ExternalLink,
+  MousePointerClick,
+  Eye,
+  Hash,
+  ArrowUpDown,
+  Minus,
 } from 'lucide-react';
-import type { Audit, AuditPage } from '../../types/audit.types';
 
-type ChartType = 'TIMESERIES' | 'GEO_MAP' | 'RELATED_QUERIES';
+interface GscConnection {
+  id: string;
+  site_id: string;
+  domain: string;
+  gsc_property: string;
+}
 
-const TIME_RANGES = [
-  { value: 'now 1-H', label: 'Past hour' },
-  { value: 'now 4-H', label: 'Past 4 hours' },
-  { value: 'now 1-d', label: 'Past day' },
-  { value: 'now 7-d', label: 'Past 7 days' },
-  { value: 'today 1-m', label: 'Past month' },
-  { value: 'today 3-m', label: 'Past 3 months' },
-  { value: 'today 12-m', label: 'Past 12 months' },
-  { value: 'today 5-y', label: 'Past 5 years' },
+interface QueryRow {
+  query: string;
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+  pages: number;
+}
+
+interface TrendPoint {
+  date: string;
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+}
+
+type MetricKey = 'clicks' | 'impressions' | 'position' | 'ctr';
+
+const DAYS_OPTIONS = [
+  { value: 7, label: '7 days' },
+  { value: 14, label: '14 days' },
+  { value: 28, label: '28 days' },
+  { value: 90, label: '90 days' },
 ];
 
-const GEO_OPTIONS = [
-  { value: '', label: 'Worldwide' },
-  { value: 'GB', label: 'United Kingdom' },
-  { value: 'US', label: 'United States' },
-  { value: 'CA', label: 'Canada' },
-  { value: 'AU', label: 'Australia' },
-  { value: 'DE', label: 'Germany' },
-  { value: 'FR', label: 'France' },
-  { value: 'ES', label: 'Spain' },
-  { value: 'IT', label: 'Italy' },
-  { value: 'NL', label: 'Netherlands' },
-  { value: 'IE', label: 'Ireland' },
-  { value: 'IN', label: 'India' },
-  { value: 'JP', label: 'Japan' },
-  { value: 'BR', label: 'Brazil' },
+const METRIC_TABS: { key: MetricKey; label: string; icon: React.ElementType; color: string }[] = [
+  { key: 'clicks', label: 'Clicks', icon: MousePointerClick, color: '#4f46e5' },
+  { key: 'impressions', label: 'Impressions', icon: Eye, color: '#0891b2' },
+  { key: 'position', label: 'Position', icon: Hash, color: '#d97706' },
+  { key: 'ctr', label: 'CTR', icon: ArrowUpDown, color: '#059669' },
 ];
 
-const CHART_TYPES: { key: ChartType; label: string; icon: React.ElementType }[] = [
-  { key: 'TIMESERIES', label: 'Interest Over Time', icon: TrendingUp },
-  { key: 'GEO_MAP', label: 'Interest by Region', icon: MapIcon },
-  { key: 'RELATED_QUERIES', label: 'Related Queries', icon: Search },
-];
+const LINE_COLORS = ['#4f46e5', '#d97706', '#0891b2', '#dc2626', '#7c3aed'];
 
-interface KeywordItem {
-  keyword: string;
-  pageUrl: string;
-  pageTitle: string | null;
-  density: number;
-  occurrences: number;
+interface KeywordTrends {
+  [keyword: string]: TrendPoint[];
 }
 
 export default function GoogleTrendsPage() {
-  // Audit selection
-  const [audits, setAudits] = useState<Audit[]>([]);
-  const [selectedAuditId, setSelectedAuditId] = useState<string>('');
-  const [auditsLoading, setAuditsLoading] = useState(true);
+  // Connection
+  const [connections, setConnections] = useState<GscConnection[]>([]);
+  const [activeConnectionId, setActiveConnectionId] = useState('');
+  const [connectionsLoading, setConnectionsLoading] = useState(true);
 
-  // Keywords from audit pages
-  const [keywords, setKeywords] = useState<KeywordItem[]>([]);
+  // Keywords list from GSC
+  const [keywords, setKeywords] = useState<QueryRow[]>([]);
   const [keywordsLoading, setKeywordsLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // Selected keyword + comparison
-  const [selectedKeyword, setSelectedKeyword] = useState<string>('');
-  const [comparisonKeywords, setComparisonKeywords] = useState<string[]>([]);
+  // Selected keywords for charting
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
 
-  // Custom keyword search
-  const [customKeyword, setCustomKeyword] = useState('');
+  // Trend data
+  const [trends, setTrends] = useState<KeywordTrends>({});
+  const [trendsLoading, setTrendsLoading] = useState(false);
 
   // Filters
-  const [timeRange, setTimeRange] = useState('today 12-m');
-  const [geo, setGeo] = useState('');
-  const [activeChart, setActiveChart] = useState<ChartType>('TIMESERIES');
+  const [days, setDays] = useState(28);
+  const [activeMetric, setActiveMetric] = useState<MetricKey>('clicks');
 
-  // Load audits
+  // Load connections
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await auditsApi.list({ status: 'completed', limit: 50 });
-        setAudits(res.data.audits);
-        if (res.data.audits.length > 0) {
-          setSelectedAuditId(res.data.audits[0].id);
+        const res = await api.get('/gsc/connections');
+        const conns: GscConnection[] = res.data.connections;
+        setConnections(conns);
+        if (conns.length > 0) {
+          setActiveConnectionId(conns[0].id);
         }
       } catch {
         // ignore
       } finally {
-        setAuditsLoading(false);
+        setConnectionsLoading(false);
       }
     };
     load();
   }, []);
 
-  // Load keywords when audit changes
+  // Load keywords when connection or days change
   const loadKeywords = useCallback(async () => {
-    if (!selectedAuditId) return;
+    if (!activeConnectionId) return;
 
     setKeywordsLoading(true);
-    setSelectedKeyword('');
-    setComparisonKeywords([]);
-
     try {
-      const res = await auditsApi.getPages(selectedAuditId, { limit: 200 });
-      const pages: AuditPage[] = res.data.pages;
-
-      const kws: KeywordItem[] = pages
-        .filter((p) => p.keyword_data?.keyword)
-        .map((p) => ({
-          keyword: p.keyword_data!.keyword,
-          pageUrl: p.url,
-          pageTitle: p.title ?? null,
-          density: p.keyword_data!.density,
-          occurrences: p.keyword_data!.occurrences,
-        }));
-
-      // Deduplicate by keyword (keep highest occurrence)
-      const uniqueMap: Record<string, KeywordItem> = {};
-      kws.forEach((kw) => {
-        const existing = uniqueMap[kw.keyword];
-        if (!existing || kw.occurrences > existing.occurrences) {
-          uniqueMap[kw.keyword] = kw;
-        }
+      const res = await api.get(`/gsc/data/${activeConnectionId}/queries`, {
+        params: {
+          sortBy: 'clicks',
+          sortDir: 'desc',
+          limit: 100,
+          search: searchTerm || undefined,
+        },
       });
-
-      const sorted = Object.values(uniqueMap).sort(
-        (a, b) => b.occurrences - a.occurrences
-      );
-
-      setKeywords(sorted);
-      if (sorted.length > 0) {
-        setSelectedKeyword(sorted[0].keyword);
-      }
+      setKeywords(res.data.queries || []);
     } catch {
-      // ignore
+      setKeywords([]);
     } finally {
       setKeywordsLoading(false);
     }
-  }, [selectedAuditId]);
+  }, [activeConnectionId, searchTerm]);
 
   useEffect(() => {
     loadKeywords();
   }, [loadKeywords]);
 
-  const toggleComparison = (kw: string) => {
-    if (kw === selectedKeyword) return;
-    setComparisonKeywords((prev) =>
-      prev.includes(kw)
-        ? prev.filter((k) => k !== kw)
-        : prev.length >= 4
-          ? prev
-          : [...prev, kw]
+  // Load trend data for selected keywords
+  const loadTrends = useCallback(async () => {
+    if (!activeConnectionId || selectedKeywords.length === 0) {
+      setTrends({});
+      return;
+    }
+
+    setTrendsLoading(true);
+    try {
+      const results: KeywordTrends = {};
+      await Promise.all(
+        selectedKeywords.map(async (kw) => {
+          const res = await api.get(
+            `/gsc/data/${activeConnectionId}/queries/${encodeURIComponent(kw)}/trend`,
+            { params: { days } }
+          );
+          results[kw] = res.data.trend || [];
+        })
+      );
+      setTrends(results);
+    } catch {
+      // ignore
+    } finally {
+      setTrendsLoading(false);
+    }
+  }, [activeConnectionId, selectedKeywords, days]);
+
+  useEffect(() => {
+    loadTrends();
+  }, [loadTrends]);
+
+  const toggleKeyword = (kw: string) => {
+    setSelectedKeywords((prev) => {
+      if (prev.includes(kw)) {
+        return prev.filter((k) => k !== kw);
+      }
+      if (prev.length >= 5) return prev;
+      return [...prev, kw];
+    });
+  };
+
+  // Build chart data - merge all keyword trends into one dataset keyed by date
+  const chartData = (() => {
+    const dateMap: Record<string, Record<string, number>> = {};
+
+    selectedKeywords.forEach((kw) => {
+      const points = trends[kw] || [];
+      points.forEach((p) => {
+        if (!dateMap[p.date]) dateMap[p.date] = {};
+        dateMap[p.date][kw] = activeMetric === 'ctr' ? p.ctr * 100 : p[activeMetric];
+      });
+    });
+
+    return Object.entries(dateMap)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, values]) => ({
+        date,
+        formattedDate: format(parseISO(date), 'MMM d'),
+        ...values,
+      }));
+  })();
+
+  // Calculate summary stats per keyword
+  const getKeywordStats = (kw: string) => {
+    const points = trends[kw] || [];
+    if (points.length < 2) return null;
+
+    const half = Math.floor(points.length / 2);
+    const recent = points.slice(half);
+    const earlier = points.slice(0, half);
+
+    const avg = (arr: TrendPoint[], key: MetricKey) => {
+      if (arr.length === 0) return 0;
+      const sum = arr.reduce((s, p) => s + (key === 'ctr' ? p.ctr * 100 : p[key]), 0);
+      return sum / arr.length;
+    };
+
+    const recentAvg = avg(recent, activeMetric);
+    const earlierAvg = avg(earlier, activeMetric);
+    const change = earlierAvg === 0 ? 0 : ((recentAvg - earlierAvg) / earlierAvg) * 100;
+
+    return { recentAvg, change };
+  };
+
+  const formatMetricValue = (value: number) => {
+    if (activeMetric === 'ctr') return `${value.toFixed(1)}%`;
+    if (activeMetric === 'position') return value.toFixed(1);
+    return value.toLocaleString();
+  };
+
+  // No connections state
+  if (!connectionsLoading && connections.length === 0) {
+    return (
+      <DashboardLayout>
+        <div className="max-w-2xl mx-auto text-center py-16">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+            <TrendingUp className="w-8 h-8 text-slate-400" />
+          </div>
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white mb-2">
+            Keyword Trends
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400 mb-6">
+            Connect Google Search Console first to track how your keywords perform over time.
+          </p>
+          <a
+            href="/app/search-console"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
+          >
+            Go to Search Console
+          </a>
+        </div>
+      </DashboardLayout>
     );
-  };
-
-  const handleCustomSearch = () => {
-    const trimmed = customKeyword.trim();
-    if (!trimmed) return;
-    setSelectedKeyword(trimmed);
-    setComparisonKeywords([]);
-    setCustomKeyword('');
-  };
-
-  const allCompareKeywords = comparisonKeywords.filter(
-    (k) => k !== selectedKeyword
-  );
+  }
 
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        {/* Info banner */}
-        <div className="flex items-start gap-3 p-4 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800">
-          <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-indigo-700 dark:text-indigo-300">
-            <p className="font-medium mb-1">Keyword Trend Explorer</p>
-            <p className="text-indigo-600 dark:text-indigo-400">
-              See how your target keywords are trending on Google. Select an audit to load its page keywords,
-              or search any keyword directly. Compare up to 5 keywords side by side.
+        {/* Header */}
+        <div className="flex items-start justify-between flex-wrap gap-4">
+          <div>
+            <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
+              Keyword Trends
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Track how your keywords perform over time using Search Console data
             </p>
           </div>
         </div>
 
         {/* Controls row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Audit selector */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Connection selector */}
           <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">
-              Audit
+              Property
             </label>
             <div className="relative">
               <select
-                value={selectedAuditId}
-                onChange={(e) => setSelectedAuditId(e.target.value)}
-                disabled={auditsLoading}
+                value={activeConnectionId}
+                onChange={(e) => {
+                  setActiveConnectionId(e.target.value);
+                  setSelectedKeywords([]);
+                  setTrends({});
+                }}
+                disabled={connectionsLoading}
                 className="w-full appearance-none bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2.5 pr-8 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50"
               >
-                {auditsLoading && <option>Loading audits...</option>}
-                {!auditsLoading && audits.length === 0 && (
-                  <option>No completed audits</option>
-                )}
-                {audits.map((a) => (
-                  <option key={a.id} value={a.id}>
-                    {a.target_domain} - {new Date(a.created_at).toLocaleDateString()}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-            </div>
-          </div>
-
-          {/* Geo filter */}
-          <div>
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">
-              <Globe className="w-3.5 h-3.5 inline mr-1" />
-              Region
-            </label>
-            <div className="relative">
-              <select
-                value={geo}
-                onChange={(e) => setGeo(e.target.value)}
-                className="w-full appearance-none bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2.5 pr-8 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-              >
-                {GEO_OPTIONS.map((g) => (
-                  <option key={g.value} value={g.value}>
-                    {g.label}
+                {connections.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.domain}
                   </option>
                 ))}
               </select>
@@ -247,13 +308,13 @@ export default function GoogleTrendsPage() {
             </label>
             <div className="relative">
               <select
-                value={timeRange}
-                onChange={(e) => setTimeRange(e.target.value)}
+                value={days}
+                onChange={(e) => setDays(Number(e.target.value))}
                 className="w-full appearance-none bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2.5 pr-8 text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
               >
-                {TIME_RANGES.map((t) => (
-                  <option key={t.value} value={t.value}>
-                    {t.label}
+                {DAYS_OPTIONS.map((d) => (
+                  <option key={d.value} value={d.value}>
+                    {d.label}
                   </option>
                 ))}
               </select>
@@ -261,29 +322,19 @@ export default function GoogleTrendsPage() {
             </div>
           </div>
 
-          {/* Custom keyword search */}
+          {/* Search */}
           <div>
             <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">
               <Search className="w-3.5 h-3.5 inline mr-1" />
-              Search Any Keyword
+              Filter Keywords
             </label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={customKeyword}
-                onChange={(e) => setCustomKeyword(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleCustomSearch()}
-                placeholder="e.g. web accessibility"
-                className="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-              />
-              <button
-                onClick={handleCustomSearch}
-                disabled={!customKeyword.trim()}
-                className="px-3 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Go
-              </button>
-            </div>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search keywords..."
+              className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+            />
           </div>
         </div>
 
@@ -295,14 +346,19 @@ export default function GoogleTrendsPage() {
               <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-700">
                 <h3 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
                   <Tag className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-                  Page Keywords
+                  Keywords
+                  {selectedKeywords.length > 0 && (
+                    <span className="text-xs font-normal text-slate-500">
+                      ({selectedKeywords.length}/5 selected)
+                    </span>
+                  )}
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  Click to view, tick to compare (max 5)
+                  Select up to 5 to compare trends
                 </p>
               </div>
 
-              <div className="max-h-[500px] overflow-y-auto">
+              <div className="max-h-[600px] overflow-y-auto">
                 {keywordsLoading && (
                   <div className="flex items-center justify-center py-8">
                     <Loader2 className="w-5 h-5 text-indigo-600 animate-spin" />
@@ -313,191 +369,292 @@ export default function GoogleTrendsPage() {
                   <div className="px-4 py-8 text-center">
                     <Tag className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
                     <p className="text-sm text-slate-500 dark:text-slate-400">
-                      No keyword data found
+                      No keyword data yet
                     </p>
                     <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
-                      Run an audit with a target keyword to see results here
+                      Sync Search Console to see your keywords here
                     </p>
                   </div>
                 )}
 
                 {!keywordsLoading &&
-                  keywords.map((kw) => {
-                    const isSelected = selectedKeyword === kw.keyword;
-                    const isComparing = comparisonKeywords.includes(kw.keyword);
+                  keywords.map((kw, idx) => {
+                    const isSelected = selectedKeywords.includes(kw.query);
+                    const colorIdx = selectedKeywords.indexOf(kw.query);
 
                     return (
-                      <div
-                        key={kw.keyword}
-                        className={`flex items-center gap-2 px-4 py-3 border-b border-slate-100 dark:border-slate-700/50 last:border-b-0 cursor-pointer transition-colors ${
+                      <button
+                        key={kw.query}
+                        onClick={() => toggleKeyword(kw.query)}
+                        disabled={!isSelected && selectedKeywords.length >= 5}
+                        className={`w-full text-left flex items-center gap-2.5 px-4 py-3 border-b border-slate-100 dark:border-slate-700/50 last:border-b-0 transition-colors ${
                           isSelected
                             ? 'bg-indigo-50 dark:bg-indigo-900/20'
                             : 'hover:bg-slate-50 dark:hover:bg-slate-700/50'
-                        }`}
+                        } disabled:opacity-40 disabled:cursor-not-allowed`}
                       >
-                        {/* Compare checkbox */}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleComparison(kw.keyword);
-                          }}
-                          disabled={
-                            isSelected ||
-                            (!isComparing && comparisonKeywords.length >= 4)
-                          }
-                          className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                            isComparing
-                              ? 'bg-indigo-600 border-indigo-600 text-white'
-                              : isSelected
-                                ? 'border-indigo-300 dark:border-indigo-700 bg-indigo-100 dark:bg-indigo-900/30'
-                                : 'border-slate-300 dark:border-slate-600 hover:border-indigo-400'
-                          } disabled:opacity-40 disabled:cursor-not-allowed`}
-                          title={
-                            isSelected
-                              ? 'Primary keyword'
-                              : isComparing
-                                ? 'Remove from comparison'
-                                : 'Add to comparison'
-                          }
-                        >
-                          {(isComparing || isSelected) && (
-                            <Check className="w-3 h-3" />
-                          )}
-                        </button>
-
-                        {/* Keyword info */}
+                        {/* Checkbox */}
                         <div
-                          className="flex-1 min-w-0"
-                          onClick={() => {
-                            setSelectedKeyword(kw.keyword);
-                            setComparisonKeywords((prev) =>
-                              prev.filter((k) => k !== kw.keyword)
-                            );
-                          }}
+                          className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+                            isSelected
+                              ? 'border-transparent text-white'
+                              : 'border-slate-300 dark:border-slate-600'
+                          }`}
+                          style={isSelected ? { backgroundColor: LINE_COLORS[colorIdx] || LINE_COLORS[0] } : undefined}
                         >
-                          <p
-                            className={`text-sm font-medium truncate ${
-                              isSelected
-                                ? 'text-indigo-600 dark:text-indigo-400'
-                                : 'text-slate-900 dark:text-white'
-                            }`}
-                          >
-                            {kw.keyword}
+                          {isSelected && <Check className="w-3 h-3" />}
+                        </div>
+
+                        {/* Info */}
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-sm font-medium truncate ${
+                            isSelected ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'
+                          }`}>
+                            {kw.query}
                           </p>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                            {kw.pageTitle || kw.pageUrl}
-                          </p>
-                          <div className="flex items-center gap-3 mt-0.5">
-                            <span className="text-xs text-slate-400 dark:text-slate-500">
-                              {kw.density.toFixed(1)}% density
-                            </span>
-                            <span className="text-xs text-slate-400 dark:text-slate-500">
-                              {kw.occurrences}x
-                            </span>
+                          <div className="flex items-center gap-3 mt-0.5 text-xs text-slate-400 dark:text-slate-500">
+                            <span>{kw.clicks.toLocaleString()} clicks</span>
+                            <span>pos {kw.position}</span>
                           </div>
                         </div>
-                      </div>
+
+                        {/* Rank badge */}
+                        <span className="flex-shrink-0 text-xs text-slate-400 dark:text-slate-500 font-medium">
+                          #{idx + 1}
+                        </span>
+                      </button>
                     );
                   })}
               </div>
             </div>
           </div>
 
-          {/* Trends charts */}
+          {/* Charts area */}
           <div className="lg:col-span-3 space-y-4">
-            {/* Active keyword display */}
-            {selectedKeyword && (
-              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-4">
-                <div className="flex items-center justify-between flex-wrap gap-3">
-                  <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium">
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        {selectedKeyword}
-                      </span>
-                      {allCompareKeywords.map((kw) => (
-                        <span
-                          key={kw}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-sm font-medium"
-                        >
-                          {kw}
-                          <button
-                            onClick={() =>
-                              setComparisonKeywords((prev) =>
-                                prev.filter((k) => k !== kw)
-                              )
-                            }
-                            className="hover:text-amber-900 dark:hover:text-amber-100"
-                          >
-                            &times;
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <a
-                    href={`https://trends.google.com/trends/explore?q=${encodeURIComponent(selectedKeyword)}&geo=${geo}&date=${encodeURIComponent(timeRange)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400 transition-colors"
-                  >
-                    Open in Google Trends
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
+            {selectedKeywords.length === 0 ? (
+              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
+                <div className="flex flex-col items-center justify-center py-20 text-center px-6">
+                  <TrendingUp className="w-12 h-12 text-slate-200 dark:text-slate-700 mb-3" />
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">
+                    Select keywords from the list to compare their trends over time
+                  </p>
                 </div>
               </div>
+            ) : (
+              <>
+                {/* Selected keyword chips */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  {selectedKeywords.map((kw, idx) => (
+                    <span
+                      key={kw}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium text-white"
+                      style={{ backgroundColor: LINE_COLORS[idx] }}
+                    >
+                      {kw}
+                      <button
+                        onClick={() => toggleKeyword(kw)}
+                        className="hover:opacity-75"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  ))}
+                  {selectedKeywords.length > 1 && (
+                    <button
+                      onClick={() => setSelectedKeywords([])}
+                      className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                    >
+                      Clear all
+                    </button>
+                  )}
+                </div>
+
+                {/* Metric tabs */}
+                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
+                  <div className="border-b border-slate-200 dark:border-slate-700 px-4">
+                    <nav className="flex gap-6 -mb-px">
+                      {METRIC_TABS.map((mt) => {
+                        const Icon = mt.icon;
+                        const active = activeMetric === mt.key;
+                        return (
+                          <button
+                            key={mt.key}
+                            onClick={() => setActiveMetric(mt.key)}
+                            className={`flex items-center gap-2 pb-3 pt-4 text-sm font-medium border-b-2 transition-colors ${
+                              active
+                                ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400'
+                                : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                            }`}
+                          >
+                            <Icon className="w-4 h-4" />
+                            {mt.label}
+                          </button>
+                        );
+                      })}
+                    </nav>
+                  </div>
+
+                  <div className="p-4">
+                    {trendsLoading ? (
+                      <div className="flex items-center justify-center py-16">
+                        <Loader2 className="w-6 h-6 text-indigo-600 animate-spin" />
+                      </div>
+                    ) : chartData.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center py-16 text-center">
+                        <Info className="w-8 h-8 text-slate-300 dark:text-slate-600 mb-2" />
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
+                          No trend data available for this period
+                        </p>
+                      </div>
+                    ) : (
+                      <ResponsiveContainer width="100%" height={350}>
+                        <LineChart
+                          data={chartData}
+                          margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                        >
+                          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                          <XAxis
+                            dataKey="formattedDate"
+                            tick={{ fontSize: 12, fill: '#64748b' }}
+                            tickLine={{ stroke: '#e2e8f0' }}
+                            axisLine={{ stroke: '#e2e8f0' }}
+                          />
+                          <YAxis
+                            tick={{ fontSize: 12, fill: '#64748b' }}
+                            tickLine={{ stroke: '#e2e8f0' }}
+                            axisLine={{ stroke: '#e2e8f0' }}
+                            width={45}
+                            reversed={activeMetric === 'position'}
+                            tickFormatter={(v: number) =>
+                              activeMetric === 'ctr' ? `${v}%` : v.toLocaleString()
+                            }
+                          />
+                          <Tooltip
+                            content={({ active, payload, label }) => {
+                              if (!active || !payload || !payload.length) return null;
+                              return (
+                                <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-3">
+                                  <p className="text-sm font-medium text-slate-900 dark:text-white mb-2">
+                                    {label}
+                                  </p>
+                                  <div className="space-y-1">
+                                    {payload.map((entry: any) => (
+                                      <div key={entry.dataKey} className="flex items-center justify-between gap-4 text-sm">
+                                        <span className="flex items-center gap-2">
+                                          <span
+                                            className="w-3 h-3 rounded-full"
+                                            style={{ backgroundColor: entry.color }}
+                                          />
+                                          <span className="text-slate-600 dark:text-slate-400 truncate max-w-[150px]">
+                                            {entry.dataKey}
+                                          </span>
+                                        </span>
+                                        <span className="font-medium text-slate-900 dark:text-white">
+                                          {formatMetricValue(entry.value)}
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              );
+                            }}
+                          />
+                          <Legend
+                            wrapperStyle={{ paddingTop: '10px' }}
+                            formatter={(value: string) => (
+                              <span className="text-sm text-slate-600 dark:text-slate-400">{value}</span>
+                            )}
+                          />
+                          {selectedKeywords.map((kw, idx) => (
+                            <Line
+                              key={kw}
+                              type="monotone"
+                              dataKey={kw}
+                              stroke={LINE_COLORS[idx]}
+                              strokeWidth={2}
+                              dot={{ r: 3, fill: LINE_COLORS[idx] }}
+                              activeDot={{ r: 5 }}
+                            />
+                          ))}
+                        </LineChart>
+                      </ResponsiveContainer>
+                    )}
+                  </div>
+                </div>
+
+                {/* Summary cards */}
+                {!trendsLoading && chartData.length > 0 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {selectedKeywords.map((kw, idx) => {
+                      const stats = getKeywordStats(kw);
+                      const isPositionMetric = activeMetric === 'position';
+                      // For position, lower is better so flip the trend direction
+                      const trendPositive = stats
+                        ? isPositionMetric
+                          ? stats.change < 0
+                          : stats.change > 0
+                        : false;
+                      const trendNegative = stats
+                        ? isPositionMetric
+                          ? stats.change > 0
+                          : stats.change < 0
+                        : false;
+
+                      return (
+                        <div
+                          key={kw}
+                          className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-4"
+                        >
+                          <div className="flex items-center gap-2 mb-3">
+                            <span
+                              className="w-3 h-3 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: LINE_COLORS[idx] }}
+                            />
+                            <span className="text-sm font-medium text-slate-900 dark:text-white truncate">
+                              {kw}
+                            </span>
+                          </div>
+                          {stats ? (
+                            <div className="flex items-end justify-between">
+                              <div>
+                                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                                  {formatMetricValue(stats.recentAvg)}
+                                </p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                  avg ({METRIC_TABS.find((m) => m.key === activeMetric)?.label})
+                                </p>
+                              </div>
+                              <div className={`flex items-center gap-1 text-sm font-medium ${
+                                trendPositive
+                                  ? 'text-emerald-600 dark:text-emerald-400'
+                                  : trendNegative
+                                    ? 'text-red-600 dark:text-red-400'
+                                    : 'text-slate-400'
+                              }`}>
+                                {trendPositive ? (
+                                  <TrendingUp className="w-4 h-4" />
+                                ) : trendNegative ? (
+                                  <TrendingDown className="w-4 h-4" />
+                                ) : (
+                                  <Minus className="w-4 h-4" />
+                                )}
+                                {Math.abs(stats.change).toFixed(1)}%
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-sm text-slate-400">Not enough data</p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </>
             )}
 
-            {/* Chart type tabs */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
-              <div className="border-b border-slate-200 dark:border-slate-700 px-4">
-                <nav className="flex gap-6 -mb-px">
-                  {CHART_TYPES.map((ct) => {
-                    const Icon = ct.icon;
-                    const active = activeChart === ct.key;
-                    return (
-                      <button
-                        key={ct.key}
-                        onClick={() => setActiveChart(ct.key)}
-                        className={`flex items-center gap-2 pb-3 pt-4 text-sm font-medium border-b-2 transition-colors ${
-                          active
-                            ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400'
-                            : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
-                        }`}
-                      >
-                        <Icon className="w-4 h-4" />
-                        {ct.label}
-                      </button>
-                    );
-                  })}
-                </nav>
-              </div>
-
-              <div className="p-4">
-                {!selectedKeyword ? (
-                  <div className="flex flex-col items-center justify-center py-16 text-center">
-                    <TrendingUp className="w-12 h-12 text-slate-200 dark:text-slate-700 mb-3" />
-                    <p className="text-slate-500 dark:text-slate-400 text-sm">
-                      Select a keyword from the sidebar or search one above to view trends
-                    </p>
-                  </div>
-                ) : (
-                  <GoogleTrendsEmbed
-                    key={`${selectedKeyword}-${allCompareKeywords.join(',')}-${activeChart}-${geo}-${timeRange}`}
-                    keyword={selectedKeyword}
-                    comparisonKeywords={allCompareKeywords}
-                    type={activeChart}
-                    geo={geo}
-                    time={timeRange}
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* Attribution */}
+            {/* Data source note */}
             <p className="text-xs text-slate-400 dark:text-slate-500 text-center">
-              Data provided by Google Trends
+              Data from Google Search Console
             </p>
           </div>
         </div>

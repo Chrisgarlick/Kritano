@@ -54,7 +54,7 @@ const mainNavItems: NavItem[] = [
   { href: '/app/schedules', label: 'Schedules', icon: CalendarClock },
   { href: '/app/compare', label: 'Compare', icon: GitCompareArrows },
   { href: '/app/search-console', label: 'Search Console', icon: SearchCheck },
-  { href: '/app/google-trends', label: 'Google Trends', icon: TrendingUp },
+  { href: '/app/google-trends', label: 'Keyword Trends', icon: TrendingUp },
   { href: '/app/referrals', label: 'Referrals', icon: Gift },
   { href: '/app/settings/api-keys', label: 'API Keys', icon: Key },
   { href: '/admin', label: 'Admin', icon: Shield, adminOnly: true },
