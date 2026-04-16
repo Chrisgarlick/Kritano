@@ -3,6 +3,17 @@ import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../services/api';
 import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from 'recharts';
+import { format, parseISO } from 'date-fns';
+import {
   Search,
   ArrowUpDown,
   ExternalLink,
@@ -19,6 +30,9 @@ import {
   ChevronUp,
   Loader2,
   Lock,
+  Check,
+  Hash,
+  Minus,
 } from 'lucide-react';
 
 interface GscConnection {
@@ -88,7 +102,16 @@ interface DomainOption {
   verified: boolean;
 }
 
-type Tab = 'overview' | 'queries' | 'pages' | 'opportunities' | 'cannibalisation';
+type Tab = 'overview' | 'queries' | 'pages' | 'opportunities' | 'cannibalisation' | 'trends';
+type TrendMetricKey = 'clicks' | 'impressions' | 'position' | 'ctr';
+
+const TREND_LINE_COLORS = ['#4f46e5', '#d97706', '#0891b2', '#dc2626', '#7c3aed'];
+const TREND_METRIC_TABS: { key: TrendMetricKey; label: string; icon: React.ElementType }[] = [
+  { key: 'clicks', label: 'Clicks', icon: MousePointerClick },
+  { key: 'impressions', label: 'Impressions', icon: Eye },
+  { key: 'position', label: 'Position', icon: Hash },
+  { key: 'ctr', label: 'CTR', icon: ArrowUpDown },
+];
 
 export default function SearchConsolePage() {
   const { subscription } = useAuth();
@@ -120,6 +143,14 @@ export default function SearchConsolePage() {
   const [days, setDays] = useState(28);
   const [dataLoading, setDataLoading] = useState(false);
   const [expandedCannibal, setExpandedCannibal] = useState<string | null>(null);
+
+  // Keyword Trends tab state
+  const [trendKeywords, setTrendKeywords] = useState<QueryRow[]>([]);
+  const [selectedTrendKeywords, setSelectedTrendKeywords] = useState<string[]>([]);
+  const [keywordTrends, setKeywordTrends] = useState<Record<string, TrendPoint[]>>({});
+  const [trendsLoading, setTrendsLoading] = useState(false);
+  const [trendMetric, setTrendMetric] = useState<TrendMetricKey>('clicks');
+  const [trendSearch, setTrendSearch] = useState('');
 
   // Load connections and domains
   useEffect(() => {
@@ -201,13 +232,101 @@ export default function SearchConsolePage() {
           setCannibalisation(res.data.cannibalisation);
           break;
         }
+        case 'trends': {
+          const params = new URLSearchParams({
+            sortBy: 'clicks',
+            sortDir: 'desc',
+            limit: '100',
+            ...(trendSearch && { search: trendSearch }),
+          });
+          const res = await api.get(`/gsc/data/${connId}/queries?${params}`);
+          setTrendKeywords(res.data.queries || []);
+          break;
+        }
       }
     } catch (err) {
       console.error('Failed to load tab data:', err);
     } finally {
       setDataLoading(false);
     }
-  }, [activeConnection, tab, days, sortBy, sortDir, searchTerm]);
+  }, [activeConnection, tab, days, sortBy, sortDir, searchTerm, trendSearch]);
+
+  // Load trend data for selected keywords
+  const loadKeywordTrends = useCallback(async () => {
+    if (!activeConnection || selectedTrendKeywords.length === 0) {
+      setKeywordTrends({});
+      return;
+    }
+    setTrendsLoading(true);
+    try {
+      const results: Record<string, TrendPoint[]> = {};
+      await Promise.all(
+        selectedTrendKeywords.map(async (kw) => {
+          const res = await api.get(
+            `/gsc/data/${activeConnection.id}/queries/${encodeURIComponent(kw)}/trend`,
+            { params: { days } }
+          );
+          results[kw] = res.data.trend || [];
+        })
+      );
+      setKeywordTrends(results);
+    } catch {
+      // ignore
+    } finally {
+      setTrendsLoading(false);
+    }
+  }, [activeConnection, selectedTrendKeywords, days]);
+
+  useEffect(() => {
+    loadKeywordTrends();
+  }, [loadKeywordTrends]);
+
+  const toggleTrendKeyword = (kw: string) => {
+    setSelectedTrendKeywords((prev) => {
+      if (prev.includes(kw)) return prev.filter((k) => k !== kw);
+      if (prev.length >= 5) return prev;
+      return [...prev, kw];
+    });
+  };
+
+  const trendChartData = (() => {
+    const dateMap: Record<string, Record<string, number>> = {};
+    selectedTrendKeywords.forEach((kw) => {
+      (keywordTrends[kw] || []).forEach((p) => {
+        if (!dateMap[p.date]) dateMap[p.date] = {};
+        dateMap[p.date][kw] = trendMetric === 'ctr' ? Number(p.ctr) * 100 : Number(p[trendMetric]);
+      });
+    });
+    return Object.entries(dateMap)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, values]) => ({
+        date,
+        formattedDate: format(parseISO(date), 'MMM d'),
+        ...values,
+      }));
+  })();
+
+  const getTrendKeywordStats = (kw: string) => {
+    const points = keywordTrends[kw] || [];
+    if (points.length < 2) return null;
+    const half = Math.floor(points.length / 2);
+    const recent = points.slice(half);
+    const earlier = points.slice(0, half);
+    const avg = (arr: TrendPoint[], key: TrendMetricKey) => {
+      if (arr.length === 0) return 0;
+      return arr.reduce((s, p) => s + (key === 'ctr' ? Number(p.ctr) * 100 : Number(p[key])), 0) / arr.length;
+    };
+    const recentAvg = avg(recent, trendMetric);
+    const earlierAvg = avg(earlier, trendMetric);
+    const change = earlierAvg === 0 ? 0 : ((recentAvg - earlierAvg) / earlierAvg) * 100;
+    return { recentAvg, change };
+  };
+
+  const formatTrendMetricValue = (value: number) => {
+    if (trendMetric === 'ctr') return `${value.toFixed(1)}%`;
+    if (trendMetric === 'position') return value.toFixed(1);
+    return value.toLocaleString();
+  };
 
   const handleConnect = async () => {
     if (!connectSiteId) return;
@@ -376,6 +495,7 @@ export default function SearchConsolePage() {
     { key: 'pages', label: 'Pages', icon: ExternalLink },
     { key: 'opportunities', label: 'CTR Opportunities', icon: Target },
     { key: 'cannibalisation', label: 'Cannibalisation', icon: AlertTriangle },
+    { key: 'trends', label: 'Keyword Trends', icon: TrendingUp },
   ];
 
   return (
@@ -755,6 +875,278 @@ export default function SearchConsolePage() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+        {/* Keyword Trends Tab */}
+        {!dataLoading && tab === 'trends' && (
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Keyword selector sidebar */}
+            <div className="lg:col-span-1">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
+                <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-700">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+                    Keywords
+                    {selectedTrendKeywords.length > 0 && (
+                      <span className="text-xs font-normal text-slate-500 ml-1">
+                        ({selectedTrendKeywords.length}/5)
+                      </span>
+                    )}
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Select up to 5 to compare
+                  </p>
+                </div>
+
+                {/* Filter within the list */}
+                <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800">
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                    <input
+                      type="text"
+                      placeholder="Filter..."
+                      value={trendSearch}
+                      onChange={(e) => setTrendSearch(e.target.value)}
+                      className="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-200 dark:border-slate-700 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="max-h-[500px] overflow-y-auto">
+                  {trendKeywords.length === 0 && (
+                    <p className="px-4 py-8 text-sm text-slate-500 dark:text-slate-400 text-center">
+                      No keyword data yet
+                    </p>
+                  )}
+                  {trendKeywords.map((kw, idx) => {
+                    const isSelected = selectedTrendKeywords.includes(kw.query);
+                    const colorIdx = selectedTrendKeywords.indexOf(kw.query);
+                    return (
+                      <button
+                        key={kw.query}
+                        onClick={() => toggleTrendKeyword(kw.query)}
+                        disabled={!isSelected && selectedTrendKeywords.length >= 5}
+                        className={`w-full text-left flex items-center gap-2.5 px-4 py-2.5 border-b border-slate-100 dark:border-slate-700/50 last:border-b-0 transition-colors ${
+                          isSelected
+                            ? 'bg-indigo-50 dark:bg-indigo-900/20'
+                            : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                        } disabled:opacity-40 disabled:cursor-not-allowed`}
+                      >
+                        <div
+                          className={`flex-shrink-0 w-4 h-4 rounded border-2 flex items-center justify-center transition-colors ${
+                            isSelected ? 'border-transparent text-white' : 'border-slate-300 dark:border-slate-600'
+                          }`}
+                          style={isSelected ? { backgroundColor: TREND_LINE_COLORS[colorIdx] || TREND_LINE_COLORS[0] } : undefined}
+                        >
+                          {isSelected && <Check className="w-2.5 h-2.5" />}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{kw.query}</p>
+                          <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500">
+                            <span>{formatNumber(kw.clicks)} clicks</span>
+                            <span>pos {formatPosition(kw.position)}</span>
+                          </div>
+                        </div>
+                        <span className="flex-shrink-0 text-[10px] text-slate-400 font-medium">#{idx + 1}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Chart area */}
+            <div className="lg:col-span-3 space-y-4">
+              {selectedTrendKeywords.length === 0 ? (
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
+                  <div className="flex flex-col items-center justify-center py-20 text-center px-6">
+                    <TrendingUp className="w-12 h-12 text-slate-200 dark:text-slate-700 mb-3" />
+                    <p className="text-slate-500 dark:text-slate-400 text-sm">
+                      Select keywords from the list to compare their trends
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* Keyword chips */}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {selectedTrendKeywords.map((kw, idx) => (
+                      <span
+                        key={kw}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium text-white"
+                        style={{ backgroundColor: TREND_LINE_COLORS[idx] }}
+                      >
+                        {kw}
+                        <button onClick={() => toggleTrendKeyword(kw)} className="hover:opacity-75">&times;</button>
+                      </span>
+                    ))}
+                    {selectedTrendKeywords.length > 1 && (
+                      <button
+                        onClick={() => setSelectedTrendKeywords([])}
+                        className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                      >
+                        Clear all
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Metric tabs + chart */}
+                  <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
+                    <div className="border-b border-slate-200 dark:border-slate-700 px-4">
+                      <nav className="flex gap-6 -mb-px">
+                        {TREND_METRIC_TABS.map((mt) => {
+                          const Icon = mt.icon;
+                          const active = trendMetric === mt.key;
+                          return (
+                            <button
+                              key={mt.key}
+                              onClick={() => setTrendMetric(mt.key)}
+                              className={`flex items-center gap-2 pb-3 pt-4 text-sm font-medium border-b-2 transition-colors ${
+                                active
+                                  ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400 dark:border-indigo-400'
+                                  : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                              }`}
+                            >
+                              <Icon className="w-4 h-4" />
+                              {mt.label}
+                            </button>
+                          );
+                        })}
+                      </nav>
+                    </div>
+
+                    <div className="p-4">
+                      {trendsLoading ? (
+                        <div className="flex items-center justify-center py-16">
+                          <Loader2 className="w-6 h-6 text-indigo-600 animate-spin" />
+                        </div>
+                      ) : trendChartData.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-16 text-center">
+                          <p className="text-sm text-slate-500 dark:text-slate-400">
+                            No trend data available for this period
+                          </p>
+                        </div>
+                      ) : (
+                        <ResponsiveContainer width="100%" height={350}>
+                          <LineChart data={trendChartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                            <XAxis
+                              dataKey="formattedDate"
+                              tick={{ fontSize: 12, fill: '#64748b' }}
+                              tickLine={{ stroke: '#e2e8f0' }}
+                              axisLine={{ stroke: '#e2e8f0' }}
+                            />
+                            <YAxis
+                              tick={{ fontSize: 12, fill: '#64748b' }}
+                              tickLine={{ stroke: '#e2e8f0' }}
+                              axisLine={{ stroke: '#e2e8f0' }}
+                              width={45}
+                              reversed={trendMetric === 'position'}
+                              tickFormatter={(v: number) =>
+                                trendMetric === 'ctr' ? `${v}%` : v.toLocaleString()
+                              }
+                            />
+                            <Tooltip
+                              content={({ active, payload, label }) => {
+                                if (!active || !payload || !payload.length) return null;
+                                return (
+                                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg p-3">
+                                    <p className="text-sm font-medium text-slate-900 dark:text-white mb-2">{label}</p>
+                                    <div className="space-y-1">
+                                      {payload.map((entry: any) => (
+                                        <div key={entry.dataKey} className="flex items-center justify-between gap-4 text-sm">
+                                          <span className="flex items-center gap-2">
+                                            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }} />
+                                            <span className="text-slate-600 dark:text-slate-400 truncate max-w-[150px]">{entry.dataKey}</span>
+                                          </span>
+                                          <span className="font-medium text-slate-900 dark:text-white">
+                                            {formatTrendMetricValue(entry.value)}
+                                          </span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                );
+                              }}
+                            />
+                            <Legend
+                              wrapperStyle={{ paddingTop: '10px' }}
+                              formatter={(value: string) => (
+                                <span className="text-sm text-slate-600 dark:text-slate-400">{value}</span>
+                              )}
+                            />
+                            {selectedTrendKeywords.map((kw, idx) => (
+                              <Line
+                                key={kw}
+                                type="monotone"
+                                dataKey={kw}
+                                stroke={TREND_LINE_COLORS[idx]}
+                                strokeWidth={2}
+                                dot={{ r: 3, fill: TREND_LINE_COLORS[idx] }}
+                                activeDot={{ r: 5 }}
+                              />
+                            ))}
+                          </LineChart>
+                        </ResponsiveContainer>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Summary cards */}
+                  {!trendsLoading && trendChartData.length > 0 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {selectedTrendKeywords.map((kw, idx) => {
+                        const stats = getTrendKeywordStats(kw);
+                        const isPosition = trendMetric === 'position';
+                        const trendPositive = stats ? (isPosition ? stats.change < 0 : stats.change > 0) : false;
+                        const trendNegative = stats ? (isPosition ? stats.change > 0 : stats.change < 0) : false;
+
+                        return (
+                          <div
+                            key={kw}
+                            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm p-4"
+                          >
+                            <div className="flex items-center gap-2 mb-3">
+                              <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: TREND_LINE_COLORS[idx] }} />
+                              <span className="text-sm font-medium text-slate-900 dark:text-white truncate">{kw}</span>
+                            </div>
+                            {stats ? (
+                              <div className="flex items-end justify-between">
+                                <div>
+                                  <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                                    {formatTrendMetricValue(stats.recentAvg)}
+                                  </p>
+                                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                    avg ({TREND_METRIC_TABS.find((m) => m.key === trendMetric)?.label})
+                                  </p>
+                                </div>
+                                <div className={`flex items-center gap-1 text-sm font-medium ${
+                                  trendPositive
+                                    ? 'text-emerald-600 dark:text-emerald-400'
+                                    : trendNegative
+                                      ? 'text-red-600 dark:text-red-400'
+                                      : 'text-slate-400'
+                                }`}>
+                                  {trendPositive ? (
+                                    <TrendingUp className="w-4 h-4" />
+                                  ) : trendNegative ? (
+                                    <TrendingDown className="w-4 h-4" />
+                                  ) : (
+                                    <Minus className="w-4 h-4" />
+                                  )}
+                                  {Math.abs(stats.change).toFixed(1)}%
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-sm text-slate-400">Not enough data</p>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         )}
       </div>

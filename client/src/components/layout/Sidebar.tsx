@@ -12,7 +12,6 @@ import {
   Gift,
   Shield,
   SearchCheck,
-  TrendingUp,
   User,
   Settings,
   LogOut,
@@ -54,7 +53,6 @@ const mainNavItems: NavItem[] = [
   { href: '/app/schedules', label: 'Schedules', icon: CalendarClock },
   { href: '/app/compare', label: 'Compare', icon: GitCompareArrows },
   { href: '/app/search-console', label: 'Search Console', icon: SearchCheck },
-  { href: '/app/google-trends', label: 'Keyword Trends', icon: TrendingUp },
   { href: '/app/referrals', label: 'Referrals', icon: Gift },
   { href: '/app/settings/api-keys', label: 'API Keys', icon: Key },
   { href: '/admin', label: 'Admin', icon: Shield, adminOnly: true },
@@ -110,9 +108,6 @@ export function Sidebar() {
     }
     if (path === '/app/search-console') {
       return location.pathname.startsWith('/app/search-console');
-    }
-    if (path === '/app/google-trends') {
-      return location.pathname.startsWith('/app/google-trends');
     }
     if (path === '/app/referrals') {
       return location.pathname.startsWith('/app/referrals');
