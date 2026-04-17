@@ -9,11 +9,11 @@ exports.requireScope = requireScope;
 const crypto_1 = __importDefault(require("crypto"));
 const apiKey_service_js_1 = require("../services/apiKey.service.js");
 /**
- * Validate the API key from environment and resolve user context.
- * Called once at MCP server startup.
+ * Validate the API key and resolve user context.
+ * Accepts an explicit key (for HTTP transport) or falls back to KRITANO_API_KEY env var (for stdio).
  */
-async function authenticateMcp(pool) {
-    const apiKey = process.env.KRITANO_API_KEY;
+async function authenticateMcp(pool, explicitKey) {
+    const apiKey = explicitKey || process.env.KRITANO_API_KEY;
     if (!apiKey) {
         throw new Error('KRITANO_API_KEY environment variable is required. Generate one at Settings > API Keys in the Kritano dashboard.');
     }

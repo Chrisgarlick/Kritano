@@ -8,10 +8,10 @@ export interface McpContext {
     rateLimits: (typeof RATE_LIMIT_TIERS)[RateLimitTier];
 }
 /**
- * Validate the API key from environment and resolve user context.
- * Called once at MCP server startup.
+ * Validate the API key and resolve user context.
+ * Accepts an explicit key (for HTTP transport) or falls back to KRITANO_API_KEY env var (for stdio).
  */
-export declare function authenticateMcp(pool: Pool): Promise<McpContext>;
+export declare function authenticateMcp(pool: Pool, explicitKey?: string): Promise<McpContext>;
 /**
  * Check if the MCP context has a required scope
  */

@@ -11,6 +11,7 @@ node_modules/
 
 # Claude Code MCP config (contains API tokens)
 .claude/mcp.json
+.mcp.json
 
 # IDE
 .vscode/

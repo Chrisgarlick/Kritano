@@ -11,11 +11,11 @@ export interface McpContext {
 }
 
 /**
- * Validate the API key from environment and resolve user context.
- * Called once at MCP server startup.
+ * Validate the API key and resolve user context.
+ * Accepts an explicit key (for HTTP transport) or falls back to KRITANO_API_KEY env var (for stdio).
  */
-export async function authenticateMcp(pool: Pool): Promise<McpContext> {
-  const apiKey = process.env.KRITANO_API_KEY;
+export async function authenticateMcp(pool: Pool, explicitKey?: string): Promise<McpContext> {
+  const apiKey = explicitKey || process.env.KRITANO_API_KEY;
 
   if (!apiKey) {
     throw new Error(

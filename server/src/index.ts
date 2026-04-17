@@ -17,6 +17,7 @@ import { shutdownPrerenderBrowser } from './services/prerender.service.js';
 import { prerenderMiddleware } from './middleware/prerender.middleware.js';
 import { resendWebhookRouter } from './routes/webhooks/resend.js';
 import { initializeStripeWebhooks } from './routes/webhooks/stripe.js';
+import { mcpHttpRouter } from './mcp/http.js';
 
 // Load environment variables
 dotenv.config();
@@ -75,7 +76,8 @@ app.use(
     origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
     credentials: true, // Allow cookies
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token', 'mcp-session-id'],
+    exposedHeaders: ['mcp-session-id'],
   })
 );
 
@@ -110,6 +112,9 @@ app.get('/api/stats/public', async (_req, res) => {
     res.json({ auditsCompleted: 0 });
   }
 });
+
+// MCP Streamable HTTP endpoint (API key auth, no CSRF)
+app.use('/mcp', mcpHttpRouter);
 
 // CSRF protection
 app.use(ensureCsrfToken);

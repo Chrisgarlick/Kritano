@@ -55,6 +55,7 @@ const prerender_service_js_1 = require("./services/prerender.service.js");
 const prerender_middleware_js_1 = require("./middleware/prerender.middleware.js");
 const resend_js_1 = require("./routes/webhooks/resend.js");
 const stripe_js_1 = require("./routes/webhooks/stripe.js");
+const http_js_1 = require("./mcp/http.js");
 // Load environment variables
 dotenv_1.default.config();
 // Initialize Sentry (#68)
@@ -104,7 +105,8 @@ app.use((0, cors_1.default)({
     origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
     credentials: true, // Allow cookies
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token', 'mcp-session-id'],
+    exposedHeaders: ['mcp-session-id'],
 }));
 // Webhook routes — registered BEFORE body parsers for raw body access
 app.use('/api/webhooks/resend', express_1.default.raw({ type: 'application/json' }), resend_js_1.resendWebhookRouter);
@@ -132,6 +134,8 @@ app.get('/api/stats/public', async (_req, res) => {
         res.json({ auditsCompleted: 0 });
     }
 });
+// MCP Streamable HTTP endpoint (API key auth, no CSRF)
+app.use('/mcp', http_js_1.mcpHttpRouter);
 // CSRF protection
 app.use(csrf_middleware_js_1.ensureCsrfToken);
 app.use('/api', csrf_middleware_js_1.csrfProtection);
