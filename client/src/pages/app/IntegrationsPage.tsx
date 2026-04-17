@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Plug, Copy, Check, ExternalLink, Terminal } from 'lucide-react';
 import { useState } from 'react';
+import { DashboardLayout } from '../../components/layout/DashboardLayout';
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
@@ -44,6 +45,7 @@ const TOOL_CATEGORIES = [
 
 export default function IntegrationsPage() {
   return (
+    <DashboardLayout>
     <div className="max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-8">
@@ -194,5 +196,6 @@ export default function IntegrationsPage() {
         <p className="text-sm text-slate-400 dark:text-slate-500">More integrations coming soon</p>
       </div>
     </div>
+    </DashboardLayout>
   );
 }
