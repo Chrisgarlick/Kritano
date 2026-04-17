@@ -30,6 +30,13 @@ export default function ApiKeysPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newKeyName, setNewKeyName] = useState('');
   const [newKeySecret, setNewKeySecret] = useState<string | null>(null);
+  const [newKeyScopes, setNewKeyScopes] = useState<string[]>([
+    'audits:read',
+    'audits:write',
+    'findings:read',
+    'findings:write',
+    'exports:read',
+  ]);
   const [copiedKey, setCopiedKey] = useState(false);
 
   const fetchKeys = useCallback(async () => {
@@ -55,7 +62,7 @@ export default function ApiKeysPage() {
 
     setCreating(true);
     try {
-      const response = await apiKeysApi.create({ name: newKeyName.trim() });
+      const response = await apiKeysApi.create({ name: newKeyName.trim(), scopes: newKeyScopes });
       setNewKeySecret(response.data.secretKey);
       setKeys((prev) => [response.data.key, ...prev]);
       toast('API key created successfully', 'success');
@@ -113,7 +120,14 @@ export default function ApiKeysPage() {
     setShowCreateModal(false);
     setNewKeyName('');
     setNewKeySecret(null);
+    setNewKeyScopes(['audits:read', 'audits:write', 'findings:read', 'findings:write', 'exports:read']);
     setCopiedKey(false);
+  };
+
+  const toggleScope = (scope: string) => {
+    setNewKeyScopes((prev) =>
+      prev.includes(scope) ? prev.filter((s) => s !== scope) : [...prev, scope]
+    );
   };
 
   const activeKeys = keys.filter((k) => k.isActive && !k.revokedAt);
@@ -309,11 +323,44 @@ export default function ApiKeysPage() {
                       Give your key a descriptive name to remember what it's used for.
                     </p>
                   </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                      Permissions
+                    </label>
+                    <div className="space-y-2">
+                      {[
+                        { scope: 'audits:read', label: 'Read Audits', desc: 'View and list audits' },
+                        { scope: 'audits:write', label: 'Write Audits', desc: 'Create, cancel, and delete audits' },
+                        { scope: 'findings:read', label: 'Read Findings', desc: 'View audit findings and details' },
+                        { scope: 'findings:write', label: 'Write Findings', desc: 'Dismiss and manage findings' },
+                        { scope: 'exports:read', label: 'Export Data', desc: 'Export audit data (CSV, JSON, PDF)' },
+                      ].map(({ scope, label, desc }) => (
+                        <label
+                          key={scope}
+                          className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={newKeyScopes.includes(scope)}
+                            onChange={() => toggleScope(scope)}
+                            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                          />
+                          <div>
+                            <span className="text-sm font-medium text-slate-900 dark:text-white">{label}</span>
+                            <p className="text-xs text-slate-500 dark:text-slate-500">{desc}</p>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                    {newKeyScopes.length === 0 && (
+                      <p className="text-xs text-red-500 mt-1">Select at least one permission.</p>
+                    )}
+                  </div>
                   <div className="flex justify-end gap-3">
                     <Button variant="outline" onClick={closeCreateModal}>
                       Cancel
                     </Button>
-                    <Button onClick={handleCreateKey} isLoading={creating}>
+                    <Button onClick={handleCreateKey} isLoading={creating} disabled={newKeyScopes.length === 0}>
                       Create Key
                     </Button>
                   </div>

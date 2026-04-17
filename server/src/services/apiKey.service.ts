@@ -115,7 +115,7 @@ export class ApiKeyService {
         input.name,
         prefix,
         hash,
-        input.scopes || ['audits:read', 'audits:write', 'findings:read', 'findings:write', 'exports:read'],
+        input.scopes || ['audits:read', 'audits:write'],
         input.expiresAt || null,
       ]
     );
