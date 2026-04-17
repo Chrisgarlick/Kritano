@@ -117,8 +117,11 @@ export default function DocsObjectsPage() {
           <p className="text-slate-600 dark:text-slate-400 mb-4">
             The audit object represents a website audit job. It contains configuration, real-time progress, scores, and issue counts. The shape varies slightly between list and detail endpoints. For example, the detail endpoint includes <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">config</code> and <code className="text-xs bg-slate-100 px-1 py-0.5 rounded text-indigo-700 font-mono">_links</code> while the list endpoint omits them.
           </p>
-          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Audit Fields</h3>
-          <ObjectTable fields={AUDIT_FIELDS} />
+          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Core Audit Fields</h3>
+          <ObjectTable fields={AUDIT_FIELDS.slice(0, 18)} />
+
+          <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Configuration and Timestamp Fields</h3>
+          <ObjectTable fields={AUDIT_FIELDS.slice(18)} />
 
           <h3 className="text-sm font-semibold text-slate-700 mb-3 mt-6">Audit Status Lifecycle</h3>
           <p className="text-sm text-slate-600 mb-3">An audit progresses through these states:</p>

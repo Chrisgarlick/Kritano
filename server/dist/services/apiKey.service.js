@@ -70,8 +70,14 @@ class ApiKeyService {
      */
     async createKey(input) {
         const { key, prefix, hash } = this.generateKey();
-        const result = await index_js_1.pool.query(`INSERT INTO api_keys (user_id, name, key_prefix, key_hash, scopes, expires_at)
-       VALUES ($1, $2, $3, $4, $5, $6)
+        // Resolve the user's subscription tier so the API key inherits it
+        const tierResult = await index_js_1.pool.query(`SELECT COALESCE(
+        (SELECT s.tier FROM subscriptions s WHERE s.user_id = $1 AND s.status IN ('active', 'trialing') ORDER BY s.created_at DESC LIMIT 1),
+        'free'
+      ) as tier`, [input.userId]);
+        const tier = tierResult.rows[0]?.tier || 'free';
+        const result = await index_js_1.pool.query(`INSERT INTO api_keys (user_id, name, key_prefix, key_hash, scopes, rate_limit_tier, expires_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id, user_id, name, key_prefix, scopes, rate_limit_tier,
                  last_used_at, last_used_ip, request_count, is_active,
                  expires_at, revoked_at, revoked_reason, created_at, updated_at`, [
@@ -80,6 +86,7 @@ class ApiKeyService {
             prefix,
             hash,
             input.scopes || ['audits:read', 'audits:write'],
+            tier,
             input.expiresAt || null,
         ]);
         return {

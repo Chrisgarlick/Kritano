@@ -183,6 +183,8 @@ export default function DocsEndpointsPage() {
               code={`curl "https://app.kritano.io/api/v1/audits?status=completed&domain=example.com&limit=10" \\
   -H "Authorization: Bearer kt_live_your_key"`}
             />
+
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-6 mb-2">Example Response</h3>
             <CodeBlock
               language="json"
               label="Response · 200 OK"
@@ -261,6 +263,8 @@ export default function DocsEndpointsPage() {
               code={`curl "https://app.kritano.io/api/v1/audits/550e8400-e29b-41d4-a716-446655440000" \\
   -H "Authorization: Bearer kt_live_your_key"`}
             />
+
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-6 mb-2">Example Response</h3>
             <CodeBlock
               language="json"
               label="Response · 200 OK"
@@ -369,6 +373,8 @@ export default function DocsEndpointsPage() {
               code={`curl "https://app.kritano.io/api/v1/audits/550e8400.../findings?category=accessibility&severity=critical" \\
   -H "Authorization: Bearer kt_live_your_key"`}
             />
+
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mt-6 mb-2">Example Response</h3>
             <CodeBlock
               language="json"
               label="Response · 200 OK"

@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { Book, Key, Gauge, AlertTriangle, Code2, Database, Menu, X } from 'lucide-react';
+import { Book, Key, Gauge, AlertTriangle, Code2, Database, Menu, X, Plug } from 'lucide-react';
 import AuthorBio from '../blog/AuthorBio';
 
 const SIDEBAR_SECTIONS = [
@@ -19,6 +19,12 @@ const SIDEBAR_SECTIONS = [
     links: [
       { href: '/docs/endpoints', label: 'Endpoints', icon: Code2 },
       { href: '/docs/objects', label: 'Object Reference', icon: Database },
+    ],
+  },
+  {
+    title: 'Integrations',
+    links: [
+      { href: '/docs/mcp', label: 'MCP (Claude Code)', icon: Plug },
     ],
   },
 ];

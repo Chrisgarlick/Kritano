@@ -9,8 +9,9 @@ node_modules/
 .env.local
 .env.*.local
 
-# Claude Code MCP config (contains API tokens)
+# Claude Code (contains API tokens and user-specific permissions)
 .claude/mcp.json
+.claude/settings.local.json
 .mcp.json
 
 # IDE

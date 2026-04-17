@@ -86,6 +86,7 @@ const DocsRateLimitsPage = lazy(() => import('./pages/docs/DocsRateLimitsPage'))
 const DocsErrorsPage = lazy(() => import('./pages/docs/DocsErrorsPage'));
 const DocsEndpointsPage = lazy(() => import('./pages/docs/DocsEndpointsPage'));
 const DocsObjectsPage = lazy(() => import('./pages/docs/DocsObjectsPage'));
+const DocsMcpPage = lazy(() => import('./pages/docs/DocsMcpPage'));
 
 // Lazy-loaded: Admin pages
 const AdminDashboardPage = lazy(() => import('./pages/admin/AdminDashboard'));
@@ -180,6 +181,7 @@ function App() {
                 <Route path="/docs/errors" element={<DocsErrorsPage />} />
                 <Route path="/docs/endpoints" element={<DocsEndpointsPage />} />
                 <Route path="/docs/objects" element={<DocsObjectsPage />} />
+                <Route path="/docs/mcp" element={<DocsMcpPage />} />
 
                 {/* Public blog routes */}
                 <Route path="/blog" element={<BlogPostListPage />} />
