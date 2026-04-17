@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { randomUUID } from 'crypto';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import { pool } from '../db/index.js';
 import { authenticateMcp, type McpContext } from './auth.js';
 import { registerAuditTools } from './tools/audit-tools.js';
@@ -197,4 +198,66 @@ mcpHttpRouter.delete('/', async (req: Request, res: Response) => {
   sessions.delete(sessionId);
   sessionLastActive.delete(sessionId);
   res.status(200).json({ ok: true });
+});
+
+// ── SSE Transport (legacy, used by clients that don't support Streamable HTTP) ──
+
+// SSE sessions: sessionId -> transport
+const sseSessions = new Map<string, SSEServerTransport>();
+
+// GET /mcp/sse — establish SSE stream (client connects here first)
+mcpHttpRouter.get('/sse', async (req: Request, res: Response) => {
+  const apiKey = extractApiKey(req);
+  if (!apiKey) {
+    res.status(401).json({ error: 'Missing Authorization header. Use: Bearer <your-api-key>' });
+    return;
+  }
+
+  try {
+    const ctx = await authenticateMcp(pool, apiKey);
+
+    const server = new McpServer({
+      name: 'kritano',
+      version: '1.0.0',
+    });
+
+    registerAuditTools(server, pool, ctx);
+    registerFindingTools(server, pool, ctx);
+    registerSiteTools(server, pool, ctx);
+    registerAnalyticsTools(server, pool, ctx);
+    registerComplianceTools(server, pool, ctx);
+    registerExportTools(server, pool, ctx);
+    registerGscTools(server, pool, ctx);
+
+    // The message endpoint path is relative to the SSE endpoint
+    const transport = new SSEServerTransport('/mcp/sse/message', res);
+
+    transport.onclose = () => {
+      sseSessions.delete(transport.sessionId);
+    };
+
+    sseSessions.set(transport.sessionId, transport);
+
+    await server.connect(transport);
+    // start() begins streaming SSE events; the response stays open
+    await transport.start();
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Authentication failed';
+    if (!res.headersSent) {
+      res.status(401).json({ error: message });
+    }
+  }
+});
+
+// POST /mcp/sse/message — client sends JSON-RPC messages here
+mcpHttpRouter.post('/sse/message', async (req: Request, res: Response) => {
+  const sessionId = req.query.sessionId as string | undefined;
+
+  if (!sessionId || !sseSessions.has(sessionId)) {
+    res.status(404).json({ error: 'SSE session not found. Connect via GET /mcp/sse first.' });
+    return;
+  }
+
+  const transport = sseSessions.get(sessionId)!;
+  await transport.handlePostMessage(req, res, req.body);
 });
