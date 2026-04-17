@@ -90,7 +90,12 @@ router.post('/', auth_middleware_js_1.authenticate, (0, validate_middleware_js_1
                 name: apiKey.name,
                 keyPrefix: apiKey.key_prefix,
                 scopes: apiKey.scopes,
+                rateLimitTier: apiKey.rate_limit_tier,
+                lastUsedAt: apiKey.last_used_at,
+                requestCount: apiKey.request_count,
+                isActive: apiKey.is_active,
                 expiresAt: apiKey.expires_at,
+                revokedAt: apiKey.revoked_at,
                 createdAt: apiKey.created_at,
             },
             // IMPORTANT: This is the only time the full key is returned!
