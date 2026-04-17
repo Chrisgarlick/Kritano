@@ -132,6 +132,11 @@ export default function PostDetailPage() {
   const canonicalUrl = `https://kritano.com/blog/${post.slug}`;
   const structuredData = buildBlogStructuredData(post);
 
+  // OG image must be an absolute URL for social crawlers
+  const ogImage = post.featured_image_url
+    ? (post.featured_image_url.startsWith('http') ? post.featured_image_url : `https://kritano.com${post.featured_image_url}`)
+    : 'https://kritano.com/og-image.png';
+
   return (
     <PublicLayout>
       <Helmet>
@@ -140,7 +145,7 @@ export default function PostDetailPage() {
         {post.focus_keyword && <meta name="keywords" content={[post.focus_keyword, ...post.tags].join(', ')} />}
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
-        {post.featured_image_url && <meta property="og:image" content={post.featured_image_url} />}
+        <meta property="og:image" content={ogImage} />
         <meta property="og:type" content="article" />
         <meta property="og:locale" content="en_GB" />
         <meta property="article:author" content="https://kritano.com/author/chris-garlick" />

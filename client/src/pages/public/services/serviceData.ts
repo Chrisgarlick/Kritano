@@ -43,6 +43,8 @@ export interface ServiceData {
     title: string;
     description: string;
   };
+  /** OG image path for social sharing (relative to public/) */
+  ogImage: string;
   featureGroups: FeatureGroup[];
   methodology: MethodologyStep[];
   commonIssues: CommonIssue[];
@@ -84,6 +86,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       description:
         'Analyse your website against 100+ SEO ranking factors including metadata, structured data, Core Web Vitals, and mobile-friendliness.',
     },
+    ogImage: '/brand/og-service-seo.png',
     featureGroups: [
       {
         title: 'Metadata & Content',
@@ -241,6 +244,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       description:
         'Check your website against WCAG 2.2 Level AA. Kritano evaluates colour contrast, keyboard navigation, screen reader support, and semantic HTML.',
     },
+    ogImage: '/brand/og-service-accessibility.png',
     featureGroups: [
       {
         title: 'Visual Accessibility',
@@ -398,6 +402,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       description:
         'Identify website security vulnerabilities before attackers do. Kritano checks HTTPS configuration, security headers, exposed files, cookie security, and more.',
     },
+    ogImage: '/brand/og-service-security.png',
     featureGroups: [
       {
         title: 'Transport Security',
@@ -555,6 +560,7 @@ export const SERVICES_DATA: Record<string, ServiceData> = {
       description:
         'Find what slows your website down. Kritano analyses Core Web Vitals, resource loading, caching, and render pipeline with prioritised fixes.',
     },
+    ogImage: '/brand/og-service-performance.png',
     featureGroups: [
       {
         title: 'Core Web Vitals',

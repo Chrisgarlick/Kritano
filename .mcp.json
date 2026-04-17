@@ -7,6 +7,16 @@
         "--browser-url",
         "http://127.0.0.1:9222"
       ]
+    },
+    "kritano": {
+      "command": "npx",
+      "args": [
+        "tsx",
+        "server/src/mcp.ts"
+      ],
+      "env": {
+        "KRITANO_API_KEY": ""
+      }
     }
   }
 }

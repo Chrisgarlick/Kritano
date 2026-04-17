@@ -96,6 +96,7 @@ export default function ServiceDetailPage() {
         title={service.seo.title}
         description={service.seo.description}
         path={`/services/${serviceSlug}`}
+        ogImage={service.ogImage}
         structuredData={structuredData}
       />
 

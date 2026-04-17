@@ -18,6 +18,7 @@ export default function DocsOverviewPage() {
         title="API Documentation - Automate Website Audits"
         description="Comprehensive API documentation for Kritano - automate website audits, retrieve findings, and build custom integrations."
         path="/docs"
+        ogImage="/brand/og-docs.png"
         useOverrides={true}
         structuredData={[
           {

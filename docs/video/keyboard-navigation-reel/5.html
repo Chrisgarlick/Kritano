@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=450" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --video-duration: 36s;
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    html { width: 450px; height: 800px; overflow: hidden; background: #F8FAFC; }
+
+    body {
+      width: 1080px; height: 1920px; overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      position: relative;
+      transform: scale(0.41667); transform-origin: top left;
+    }
+
+    .canvas {
+      width: 1080px; height: 1920px; position: relative; overflow: hidden;
+      background: #F8FAFC;
+    }
+
+    .atmosphere { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+
+    .glow-1 {
+      position: absolute; top: -120px; left: -100px;
+      width: 600px; height: 600px;
+      background: #EEF2FF; border-radius: 50%;
+      opacity: 0.7; filter: blur(100px);
+      animation: drift-1 8s ease-in-out infinite;
+    }
+    .glow-2 {
+      position: absolute; bottom: 100px; right: -80px;
+      width: 450px; height: 450px;
+      background: #FFFBEB; border-radius: 50%;
+      opacity: 0.6; filter: blur(100px);
+      animation: drift-2 10s ease-in-out infinite;
+    }
+    @keyframes drift-1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(80px, 120px) scale(1.2); }
+    }
+    @keyframes drift-2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-60px, -80px) scale(1.15); }
+    }
+
+    .content {
+      position: relative; z-index: 1;
+      padding: 100px;
+      height: calc(1920px - 60px);
+      display: flex; flex-direction: column;
+    }
+
+    .brand-reserve {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 60px; display: flex; align-items: center; justify-content: center; z-index: 2;
+    }
+    .wordmark {
+      font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 18px;
+      letter-spacing: 0.15em; text-transform: uppercase; color: #94A3B8;
+      animation: wordmark-pulse 4s ease-in-out infinite;
+    }
+    @keyframes wordmark-pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.8; }
+    }
+
+    /* ── SCENE 1: Three keys appear dramatically ── */
+    .keys-scene {
+      opacity: 0; display: flex; flex-direction: column; align-items: center;
+      animation: keys-scene-life var(--video-duration) var(--ease-smooth) infinite;
+    }
+    @keyframes keys-scene-life {
+      0%   { opacity: 0; }
+      3%   { opacity: 1; }
+      30%  { opacity: 1; }
+      36%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    .scene-label {
+      font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 600;
+      color: #4f46e5; text-transform: uppercase; letter-spacing: 0.12em;
+      opacity: 0;
+      animation: label-enter var(--video-duration) var(--ease-smooth) infinite;
+    }
+    @keyframes label-enter {
+      0%   { opacity: 0; transform: translateY(20px); }
+      3%   { opacity: 1; transform: translateY(0); }
+      28%  { opacity: 1; transform: translateY(0); }
+      34%  { opacity: 0; transform: translateY(-15px); }
+      100% { opacity: 0; transform: translateY(20px); }
+    }
+
+    .scene-title {
+      font-family: 'Instrument Serif', Georgia, serif; font-size: 76px;
+      color: #0f172a; line-height: 1.1; text-align: center; margin-top: 20px;
+      opacity: 0;
+      animation: title-enter var(--video-duration) var(--ease-smooth) infinite;
+    }
+    @keyframes title-enter {
+      0%   { opacity: 0; transform: translateY(40px); }
+      2%   { opacity: 0; transform: translateY(40px); }
+      7%   { opacity: 1; transform: translateY(0); }
+      28%  { opacity: 1; transform: translateY(0); }
+      34%  { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 0; transform: translateY(40px); }
+    }
+    .scene-title em { color: #4f46e5; font-style: italic; }
+
+    .key-row {
+      display: flex; gap: 24px; margin-top: 60px; justify-content: center;
+    }
+
+    .key-cap {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 200px; height: 160px;
+      background: #ffffff;
+      border: 3px solid #e2e8f0;
+      border-radius: 20px;
+      box-shadow: 0 6px 0 #cbd5e1, 0 12px 30px rgba(0,0,0,0.08);
+      position: relative;
+      opacity: 0;
+    }
+    .key-cap-text {
+      font-family: 'JetBrains Mono', monospace; font-size: 36px; font-weight: 500; color: #0f172a;
+    }
+    .key-cap-sub {
+      font-family: 'Outfit', sans-serif; font-size: 20px; color: #94a3b8; margin-top: 4px;
+    }
+
+    .key-cap:nth-child(1) {
+      animation: key-pop-1 var(--video-duration) var(--ease-bounce) infinite;
+    }
+    .key-cap:nth-child(2) {
+      animation: key-pop-2 var(--video-duration) var(--ease-bounce) infinite;
+    }
+    .key-cap:nth-child(3) {
+      animation: key-pop-3 var(--video-duration) var(--ease-bounce) infinite;
+    }
+
+    @keyframes key-pop-1 {
+      0%   { opacity: 0; transform: scale(0.5) translateY(40px); }
+      6%   { opacity: 0; transform: scale(0.5) translateY(40px); }
+      11%  { opacity: 1; transform: scale(1) translateY(0); }
+      28%  { opacity: 1; transform: scale(1) translateY(0); }
+      34%  { opacity: 0; transform: scale(0.8) translateY(-20px); }
+      100% { opacity: 0; transform: scale(0.5) translateY(40px); }
+    }
+    @keyframes key-pop-2 {
+      0%   { opacity: 0; transform: scale(0.5) translateY(40px); }
+      9%   { opacity: 0; transform: scale(0.5) translateY(40px); }
+      14%  { opacity: 1; transform: scale(1) translateY(0); }
+      28%  { opacity: 1; transform: scale(1) translateY(0); }
+      34%  { opacity: 0; transform: scale(0.8) translateY(-20px); }
+      100% { opacity: 0; transform: scale(0.5) translateY(40px); }
+    }
+    @keyframes key-pop-3 {
+      0%   { opacity: 0; transform: scale(0.5) translateY(40px); }
+      12%  { opacity: 0; transform: scale(0.5) translateY(40px); }
+      17%  { opacity: 1; transform: scale(1) translateY(0); }
+      28%  { opacity: 1; transform: scale(1) translateY(0); }
+      34%  { opacity: 0; transform: scale(0.8) translateY(-20px); }
+      100% { opacity: 0; transform: scale(0.5) translateY(40px); }
+    }
+
+    /* Shimmer on keys */
+    .key-cap::after {
+      content: '';
+      position: absolute; inset: 0; border-radius: 18px;
+      background: linear-gradient(90deg, transparent 30%, rgba(79,70,229,0.06) 50%, transparent 70%);
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* ── SCENE 2: Before / After split ── */
+    .split-scene {
+      opacity: 0; position: absolute; top: 100px; left: 100px; right: 100px;
+      animation: split-scene-life var(--video-duration) var(--ease-smooth) infinite;
+    }
+    @keyframes split-scene-life {
+      0%   { opacity: 0; transform: translateY(40px); }
+      33%  { opacity: 0; transform: translateY(40px); }
+      39%  { opacity: 1; transform: translateY(0); }
+      64%  { opacity: 1; transform: translateY(0); }
+      70%  { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 0; transform: translateY(40px); }
+    }
+
+    .split-label {
+      font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 600;
+      color: #4f46e5; text-transform: uppercase; letter-spacing: 0.12em;
+    }
+    .split-title {
+      font-family: 'Instrument Serif', Georgia, serif; font-size: 64px;
+      color: #0f172a; line-height: 1.15; margin-top: 16px;
+    }
+
+    .split-container {
+      margin-top: 48px; position: relative; height: 520px;
+      border-radius: 24px; overflow: hidden;
+    }
+
+    .split-before, .split-after {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 48px;
+    }
+
+    .split-before {
+      background: #fef2f2;
+    }
+    .split-after {
+      background: #ecfdf5;
+      clip-path: inset(0 100% 0 0);
+      animation: split-reveal var(--video-duration) var(--ease-smooth) infinite;
+    }
+    @keyframes split-reveal {
+      0%   { clip-path: inset(0 100% 0 0); }
+      48%  { clip-path: inset(0 100% 0 0); }
+      56%  { clip-path: inset(0 0% 0 0); }
+      64%  { clip-path: inset(0 0% 0 0); }
+      70%  { clip-path: inset(0 100% 0 0); }
+      100% { clip-path: inset(0 100% 0 0); }
+    }
+
+    .split-state-label {
+      font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .split-state-label.bad { color: #b91c1c; }
+    .split-state-label.good { color: #047857; }
+
+    .split-score {
+      font-family: 'Instrument Serif', Georgia, serif; font-size: 96px; line-height: 1; margin-top: 16px;
+    }
+    .split-score.bad { color: #ef4444; }
+    .split-score.good { color: #10b981; }
+
+    .split-desc {
+      font-family: 'Outfit', sans-serif; font-size: 30px; color: #64748b; margin-top: 16px; line-height: 1.4;
+    }
+
+    .split-items {
+      display: flex; flex-direction: column; gap: 12px; margin-top: 24px;
+    }
+    .split-item {
+      font-family: 'Outfit', sans-serif; font-size: 26px; color: #475569;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .split-item .icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .split-item .icon.x { background: #fecaca; color: #b91c1c; }
+    .split-item .icon.check { background: #d1fae5; color: #047857; }
+
+    /* ── SCENE 3: Impact stat + CTA ── */
+    .stat-scene {
+      opacity: 0; position: absolute; top: 100px; left: 100px; right: 100px;
+      bottom: 160px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center;
+      animation: stat-life var(--video-duration) var(--ease-smooth) infinite;
+    }
+    @keyframes stat-life {
+      0%   { opacity: 0; transform: scale(0.9); }
+      67%  { opacity: 0; transform: scale(0.9); }
+      73%  { opacity: 1; transform: scale(1); }
+      90%  { opacity: 1; transform: scale(1); }
+      96%  { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 0; transform: scale(0.9); }
+    }
+
+    .stat-number {
+      font-family: 'Outfit', sans-serif; font-size: 180px; font-weight: 700;
+      color: #4f46e5; line-height: 1;
+      animation: num-pulse 2s ease-in-out infinite;
+    }
+    @keyframes num-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .stat-desc {
+      font-family: 'Outfit', sans-serif; font-size: 42px; font-weight: 400;
+      color: #475569; line-height: 1.4; margin-top: 24px; max-width: 700px;
+    }
+
+    .stat-cta {
+      margin-top: 64px;
+      font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 600;
+      color: #ffffff; background: #4f46e5;
+      padding: 24px 48px; border-radius: 16px;
+      animation: cta-glow 3s ease-in-out infinite;
+    }
+    @keyframes cta-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(79,70,229,0); }
+      50% { box-shadow: 0 0 30px 10px rgba(79,70,229,0.2); }
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="atmosphere">
+      <div class="glow-1"></div>
+      <div class="glow-2"></div>
+    </div>
+
+    <div class="content">
+      <!-- SCENE 1: Three keys -->
+      <div class="keys-scene">
+        <div class="scene-label">Keyboard accessibility</div>
+        <div class="scene-title">Three keys your<br/>site <em>must</em> support</div>
+        <div class="key-row">
+          <div class="key-cap">
+            <span class="key-cap-text">Tab</span>
+            <span class="key-cap-sub">Navigate</span>
+          </div>
+          <div class="key-cap">
+            <span class="key-cap-text">Enter</span>
+            <span class="key-cap-sub">Activate</span>
+          </div>
+          <div class="key-cap">
+            <span class="key-cap-text">Esc</span>
+            <span class="key-cap-sub">Escape</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 2: Before / After -->
+      <div class="split-scene">
+        <div class="split-label">The difference</div>
+        <div class="split-title">One audit. Huge impact.</div>
+
+        <div class="split-container">
+          <div class="split-before">
+            <span class="split-state-label bad">Before</span>
+            <span class="split-score bad">34</span>
+            <span class="split-desc">Keyboard score</span>
+            <div class="split-items">
+              <div class="split-item"><span class="icon x">&times;</span> No focus indicators</div>
+              <div class="split-item"><span class="icon x">&times;</span> Keyboard traps in modals</div>
+              <div class="split-item"><span class="icon x">&times;</span> Skip links missing</div>
+            </div>
+          </div>
+          <div class="split-after">
+            <span class="split-state-label good">After</span>
+            <span class="split-score good">96</span>
+            <span class="split-desc">Keyboard score</span>
+            <div class="split-items">
+              <div class="split-item"><span class="icon check">&check;</span> Visible focus on every element</div>
+              <div class="split-item"><span class="icon check">&check;</span> Escape closes all modals</div>
+              <div class="split-item"><span class="icon check">&check;</span> Skip to content link added</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 3: Impact stat -->
+      <div class="stat-scene">
+        <div class="stat-number">15%</div>
+        <div class="stat-desc">of your users rely on keyboard navigation. Are you locking them out?</div>
+        <div class="stat-cta">Scan your site free</div>
+      </div>
+    </div>
+
+    <div class="brand-reserve">
+      <span class="wordmark"><svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:8px;display:inline-block;"><rect width="32" height="32" rx="7" fill="#4f46e5"/><rect x="3" y="3" width="26" height="26" rx="5" fill="#312e81"/><path d="M10 7 L10 25 L13.5 25 L13.5 17.5 L19.5 25 L24 25 L17 16 L23.5 7 L19.5 7 L13.5 14.5 L13.5 7 Z" fill="white"/><circle cx="24" cy="6.5" r="2.5" fill="#fbbf24"/></svg>Kritano</span>
+    </div>
+  </div>
+</body>
+</html>

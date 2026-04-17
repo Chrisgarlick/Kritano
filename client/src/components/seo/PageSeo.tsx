@@ -15,6 +15,12 @@ const SITE_NAME = 'Kritano';
 const BASE_URL = 'https://kritano.com';
 const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.png`;
 
+/** Ensure an image URL is absolute (social crawlers require absolute URLs). */
+function toAbsoluteUrl(url: string): string {
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+}
+
 interface PageSeoProps {
   /** Page title - " | Kritano" is appended automatically */
   title: string;
@@ -58,7 +64,7 @@ export default function PageSeo({
   const description = override?.description || propDescription;
   const keywords = override?.keywords || propKeywords;
   const featuredImage = override?.featured_image || propFeaturedImage;
-  const ogImage = override?.og_image || propOgImage || featuredImage || DEFAULT_OG_IMAGE;
+  const ogImage = toAbsoluteUrl(override?.og_image || propOgImage || featuredImage || DEFAULT_OG_IMAGE);
   const ogType = override?.og_type || propOgType;
   const ogTitle = override?.og_title || title;
   const ogDescription = override?.og_description || description;

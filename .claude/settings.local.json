@@ -257,7 +257,15 @@
       "Bash(/tmp/find_contrast_issues.sh:*)",
       "Bash(/tmp/find_contrast_issues.sh)",
       "Bash(/tmp/audit_report.txt:*)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(env)",
+      "Bash(PARENT=\"3440a555-e5a3-810c-93a9-cdd1f3f3edcb\")",
+      "Bash(AUTH=\"Authorization: Bearer ntn_b27738699878tWNDU2NekxxnaPBAwbEJa3qp7BWRtYj8aW\")",
+      "Bash(VER=\"Notion-Version: 2022-06-28\")",
+      "Bash(CT=\"Content-Type: application/json\")",
+      "Bash(__NEW_LINE_db4277252e617194__ curl:*)",
+      "Bash(find /Users/chris/Herd/pagepulser -type f \\\\\\(-name *.config.* -o -name vite.config.* -o -name prerender* \\\\\\))",
+      "Bash(gtimeout 5 npx tsx src/mcp.ts)"
     ]
   },
   "enableAllProjectMcpServers": true,

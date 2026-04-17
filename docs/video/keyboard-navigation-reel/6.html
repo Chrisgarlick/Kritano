@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=450" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --video-duration: 36s;
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    html { width: 450px; height: 800px; overflow: hidden; background: #312E81; }
+
+    body {
+      width: 1080px; height: 1920px; overflow: hidden;
+      font-family: 'Outfit', system-ui, sans-serif;
+      position: relative;
+      transform: scale(0.41667); transform-origin: top left;
+    }
+
+    .canvas {
+      width: 1080px; height: 1920px; position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #4F46E5 0%, #312E81 50%, #1E1B4B 100%);
+      background-size: 200% 200%;
+      animation: bg-shift 12s linear infinite;
+    }
+    @keyframes bg-shift {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+    }
+
+    .atmosphere { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+
+    .grid-overlay {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .glow-center {
+      position: absolute; top: 300px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: rgba(129,140,248,0.2);
+      border-radius: 50%; filter: blur(150px);
+      animation: center-drift 8s ease-in-out infinite;
+    }
+    @keyframes center-drift {
+      0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.2; }
+      50% { transform: translateX(-50%) scale(1.15); opacity: 0.28; }
+    }
+
+    .content {
+      position: relative; z-index: 1;
+      padding: 100px;
+      height: calc(1920px - 60px);
+      display: flex; flex-direction: column;
+    }
+
+    .brand-reserve {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 60px; display: flex; align-items: center; justify-content: center; z-index: 2;
+    }
+    .wordmark {
+      font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 18px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      animation: wordmark-pulse 4s ease-in-out infinite;
+    }
+    @keyframes wordmark-pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+
+    /* ── SCENE 1: Bold statement with typing cursor ── */
+    .statement-scene {
+      opacity: 0;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      animation: scene1-life var(--video-duration) var(--ease-smooth) infinite;
+    }
+    @keyframes scene1-life {
+      0%   { opacity: 0; transform: scale(0.85); filter: blur(8px); }
+      5%   { opacity: 1; transform: scale(1); filter: blur(0); }
+      25%  { opacity: 1; transform: scale(1); filter: blur(0); }
+      31%  { opacity: 0; transform: scale(1.05); filter: blur(8px); }
+      100% { opacity: 0; transform: scale(0.85); filter: blur(8px); }
+    }
+
+    .hook-text {
+      font-family: 'Instrument Serif', Georgia, serif; font-size: 88px;
+      color: #ffffff; line-height: 1.1; max-width: 800px;
+    }
+    .hook-text .amber { color: #fbbf24; }
+
+    .cursor-line {
+      display: flex; align-items: center; gap: 16px; margin-top: 48px;
+    }
+    .mono-prompt {
+      font-family: 'JetBrains Mono', monospace; font-size: 32px; color: rgba(255,255,255,0.6);
+    }
+    .cursor-blink {
+      width: 3px; height: 36px; background: #fbbf24;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .hook-sub {
+      font-family: 'Outfit', sans-serif; font-size: 36px; color: rgba(255,255,255,0.6);
+      margin-top: 32px; line-height: 1.4;
+    }
+
+    /* ── SCENE 2: Animated keyboard with focus ring moving across fake page ── */
+    .demo-scene {
+      opacity: 0; position: absolute; top: 80px; left: 100px; right: 100px;
+      display: flex; flex-direction: column;
+      animation: scene2-life var(--video-duration) var(--ease-smooth) infinite;
+    }
+    @keyframes scene2-life {
+      0%   { opacity: 0; transform: translateY(50px); }
+      30%  { opacity: 0; transform: translateY(50px); }
+      36%  { opacity: 1; transform: translateY(0); }
+      62%  { opacity: 1; transform: translateY(0); }
+      68%  { opacity: 0; transform: translateY(-30px); }
+      100% { opacity: 0; transform: translateY(50px); }
+    }
+
+    /* Fake browser chrome */
+    .browser {
+      background: rgba(0,0,0,0.3); border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .browser-bar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 16px 24px;
+      background: rgba(0,0,0,0.2);
+    }
+    .browser-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+    }
+    .browser-url {
+      flex: 1; margin-left: 12px;
+      background: rgba(255,255,255,0.08); border-radius: 8px;
+      padding: 8px 16px;
+      font-family: 'JetBrains Mono', monospace; font-size: 20px; color: rgba(255,255,255,0.4);
+    }
+
+    .browser-content {
+      padding: 32px; display: flex; flex-direction: column; gap: 16px;
+    }
+
+    .fake-nav {
+      display: flex; gap: 12px;
+    }
+    .fake-link {
+      font-family: 'Outfit', sans-serif; font-size: 24px; color: rgba(255,255,255,0.5);
+      padding: 12px 20px; border-radius: 10px; border: 2px solid transparent;
+      transition: all 0.3s;
+    }
+
+    /* Focus ring animation cycling through nav links */
+    .fake-link:nth-child(1) { animation: nav-focus-1 5s var(--ease-smooth) infinite; }
+    .fake-link:nth-child(2) { animation: nav-focus-2 5s var(--ease-smooth) infinite; }
+    .fake-link:nth-child(3) { animation: nav-focus-3 5s var(--ease-smooth) infinite; }
+    .fake-link:nth-child(4) { animation: nav-focus-4 5s var(--ease-smooth) infinite; }
+    .fake-link:nth-child(5) { animation: nav-focus-5 5s var(--ease-smooth) infinite; }
+
+    @keyframes nav-focus-1 {
+      0%, 2%   { border-color: transparent; color: rgba(255,255,255,0.5); background: transparent; }
+      5%, 17%  { border-color: #fbbf24; color: #fff; background: rgba(251,191,36,0.1); box-shadow: 0 0 0 3px rgba(251,191,36,0.2); }
+      22%, 100% { border-color: transparent; color: rgba(255,255,255,0.5); background: transparent; box-shadow: none; }
+    }
+    @keyframes nav-focus-2 {
+      0%, 17%  { border-color: transparent; color: rgba(255,255,255,0.5); background: transparent; box-shadow: none; }
+      22%, 35% { border-color: #fbbf24; color: #fff; background: rgba(251,191,36,0.1); box-shadow: 0 0 0 3px rgba(251,191,36,0.2); }
+      40%, 100% { border-color: transparent; color: rgba(255,255,255,0.5); background: transparent; box-shadow: none; }
+    }
+    @keyframes nav-focus-3 {
+      0%, 35%  { border-color: transparent; color: rgba(255,255,255,0.5); background: transparent; box-shadow: none; }
+      40%, 55% { border-color: #fbbf24; color: #fff; background: rgba(251,191,36,0.1); box-shadow: 0 0 0 3px rgba(251,191,36,0.2); }
+      60%, 100% { border-color: transparent; color: rgba(255,255,255,0.5); background: transparent; box-shadow: none; }
+    }
+    @keyframes nav-focus-4 {
+      0%, 55%  { border-color: transparent; color: rgba(255,255,255,0.5); background: transparent; box-shadow: none; }
+      60%, 75% { border-color: #fbbf24; color: #fff; background: rgba(251,191,36,0.1); box-shadow: 0 0 0 3px rgba(251,191,36,0.2); }
+      80%, 100% { border-color: transparent; color: rgba(255,255,255,0.5); background: transparent; box-shadow: none; }
+    }
+    @keyframes nav-focus-5 {
+      0%, 75%  { border-color: transparent; color: rgba(255,255,255,0.5); background: transparent; box-shadow: none; }
+      80%, 95% { border-color: #fbbf24; color: #fff; background: rgba(251,191,36,0.1); box-shadow: 0 0 0 3px rgba(251,191,36,0.2); }
+      100% { border-color: transparent; color: rgba(255,255,255,0.5); background: transparent; box-shadow: none; }
+    }
+
+    .fake-hero {
+      background: rgba(255,255,255,0.04); border-radius: 16px;
+      padding: 36px; margin-top: 8px;
+    }
+    .fake-hero-text {
+      font-family: 'Outfit', sans-serif; font-size: 28px; color: rgba(255,255,255,0.3);
+      height: 12px; width: 70%; background: rgba(255,255,255,0.1); border-radius: 6px;
+    }
+    .fake-hero-text2 {
+      font-family: 'Outfit', sans-serif; font-size: 28px; color: rgba(255,255,255,0.3);
+      height: 12px; width: 50%; background: rgba(255,255,255,0.07); border-radius: 6px;
+      margin-top: 12px;
+    }
+    .fake-btn-row {
+      display: flex; gap: 12px; margin-top: 20px;
+    }
+    .fake-btn {
+      padding: 12px 24px; border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 22px;
+    }
+    .fake-btn.primary { background: #4f46e5; color: #fff; }
+    .fake-btn.secondary { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+
+    /* Floating Tab key indicator */
+    .floating-tab {
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 32px; gap: 16px;
+    }
+    .tab-indicator {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: rgba(251,191,36,0.15); border: 2px solid rgba(251,191,36,0.3);
+      border-radius: 12px; padding: 14px 28px;
+      font-family: 'JetBrains Mono', monospace; font-size: 28px; color: #fbbf24;
+      animation: tab-bounce 1.5s var(--ease-smooth) infinite;
+    }
+    @keyframes tab-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .demo-caption {
+      font-family: 'Instrument Serif', Georgia, serif; font-size: 52px;
+      color: #ffffff; text-align: center; margin-top: 40px; line-height: 1.2;
+    }
+    .demo-caption .amber { color: #fbbf24; font-style: italic; }
+
+    /* ── SCENE 3: Checklist with urgency ── */
+    .checklist-scene {
+      opacity: 0; position: absolute; top: 100px; left: 100px; right: 100px;
+      display: flex; flex-direction: column;
+      animation: scene3-life var(--video-duration) var(--ease-smooth) infinite;
+    }
+    @keyframes scene3-life {
+      0%   { opacity: 0; transform: translateY(40px); }
+      65%  { opacity: 0; transform: translateY(40px); }
+      71%  { opacity: 1; transform: translateY(0); }
+      90%  { opacity: 1; transform: translateY(0); }
+      96%  { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 0; transform: translateY(40px); }
+    }
+
+    .check-label {
+      font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 700;
+      color: #fbbf24; text-transform: uppercase; letter-spacing: 0.12em;
+    }
+    .check-title {
+      font-family: 'Instrument Serif', Georgia, serif; font-size: 68px;
+      color: #ffffff; line-height: 1.15; margin-top: 16px;
+    }
+
+    .checklist {
+      display: flex; flex-direction: column; gap: 24px; margin-top: 48px;
+    }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 20px;
+      opacity: 0;
+    }
+    .check-item:nth-child(1) { animation: check-1 var(--video-duration) var(--ease-smooth) infinite; }
+    .check-item:nth-child(2) { animation: check-2 var(--video-duration) var(--ease-smooth) infinite; }
+    .check-item:nth-child(3) { animation: check-3 var(--video-duration) var(--ease-smooth) infinite; }
+    .check-item:nth-child(4) { animation: check-4 var(--video-duration) var(--ease-smooth) infinite; }
+
+    @keyframes check-1 {
+      0%   { opacity: 0; transform: translateX(-30px); }
+      72%  { opacity: 0; transform: translateX(-30px); }
+      76%  { opacity: 1; transform: translateX(0); }
+      90%  { opacity: 1; transform: translateX(0); }
+      96%  { opacity: 0; transform: translateX(20px); }
+      100% { opacity: 0; transform: translateX(-30px); }
+    }
+    @keyframes check-2 {
+      0%   { opacity: 0; transform: translateX(-30px); }
+      74%  { opacity: 0; transform: translateX(-30px); }
+      78%  { opacity: 1; transform: translateX(0); }
+      90%  { opacity: 1; transform: translateX(0); }
+      96%  { opacity: 0; transform: translateX(20px); }
+      100% { opacity: 0; transform: translateX(-30px); }
+    }
+    @keyframes check-3 {
+      0%   { opacity: 0; transform: translateX(-30px); }
+      76%  { opacity: 0; transform: translateX(-30px); }
+      80%  { opacity: 1; transform: translateX(0); }
+      90%  { opacity: 1; transform: translateX(0); }
+      96%  { opacity: 0; transform: translateX(20px); }
+      100% { opacity: 0; transform: translateX(-30px); }
+    }
+    @keyframes check-4 {
+      0%   { opacity: 0; transform: translateX(-30px); }
+      78%  { opacity: 0; transform: translateX(-30px); }
+      82%  { opacity: 1; transform: translateX(0); }
+      90%  { opacity: 1; transform: translateX(0); }
+      96%  { opacity: 0; transform: translateX(20px); }
+      100% { opacity: 0; transform: translateX(-30px); }
+    }
+
+    .check-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 700;
+      background: rgba(251,191,36,0.15); color: #fbbf24;
+    }
+    .check-text {
+      font-family: 'Outfit', sans-serif; font-size: 36px; color: rgba(255,255,255,0.9);
+      line-height: 1.35; padding-top: 6px;
+    }
+
+    .final-cta {
+      margin-top: auto; text-align: center; padding-top: 48px;
+      opacity: 0;
+      animation: final-cta-life var(--video-duration) var(--ease-smooth) infinite;
+    }
+    @keyframes final-cta-life {
+      0%   { opacity: 0; transform: translateY(20px); }
+      80%  { opacity: 0; transform: translateY(20px); }
+      85%  { opacity: 1; transform: translateY(0); }
+      90%  { opacity: 1; transform: translateY(0); }
+      96%  { opacity: 0; transform: translateY(-15px); }
+      100% { opacity: 0; transform: translateY(20px); }
+    }
+    .final-cta-btn {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif; font-size: 34px; font-weight: 600;
+      color: #1e1b4b; background: #fbbf24;
+      padding: 24px 56px; border-radius: 16px;
+      animation: cta-glow 3s ease-in-out infinite;
+    }
+    @keyframes cta-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); }
+      50% { box-shadow: 0 0 40px 10px rgba(251,191,36,0.25); }
+    }
+    .final-cta-sub {
+      font-family: 'Outfit', sans-serif; font-size: 26px; color: rgba(255,255,255,0.5);
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="atmosphere">
+      <div class="grid-overlay"></div>
+      <div class="glow-center"></div>
+    </div>
+
+    <div class="content">
+      <!-- SCENE 1: Bold statement -->
+      <div class="statement-scene">
+        <div class="hook-text">
+          Your site looks<br/>great. But can<br/>anyone use it<br/><span class="amber">without a mouse?</span>
+        </div>
+        <div class="cursor-line">
+          <span class="mono-prompt">$ tab tab tab...</span>
+          <span class="cursor-blink"></span>
+        </div>
+        <div class="hook-sub">2.5 billion people have a disability.<br/>Keyboard navigation is not optional.</div>
+      </div>
+
+      <!-- SCENE 2: Browser demo -->
+      <div class="demo-scene">
+        <div class="browser">
+          <div class="browser-bar">
+            <div class="browser-dot" style="background:#ef4444;"></div>
+            <div class="browser-dot" style="background:#fbbf24;"></div>
+            <div class="browser-dot" style="background:#10b981;"></div>
+            <div class="browser-url">yoursite.co.uk</div>
+          </div>
+          <div class="browser-content">
+            <div class="fake-nav">
+              <div class="fake-link">Home</div>
+              <div class="fake-link">About</div>
+              <div class="fake-link">Services</div>
+              <div class="fake-link">Blog</div>
+              <div class="fake-link">Contact</div>
+            </div>
+            <div class="fake-hero">
+              <div class="fake-hero-text"></div>
+              <div class="fake-hero-text2"></div>
+              <div class="fake-btn-row">
+                <div class="fake-btn primary">Get Started</div>
+                <div class="fake-btn secondary">Learn More</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="floating-tab">
+          <div class="tab-indicator">Tab &rarr; moving through links</div>
+        </div>
+
+        <div class="demo-caption">Every element needs a<br/><span class="amber">visible focus ring</span></div>
+      </div>
+
+      <!-- SCENE 3: Action checklist -->
+      <div class="checklist-scene">
+        <div class="check-label">Fix it today</div>
+        <div class="check-title">4 keyboard<br/>quick wins</div>
+
+        <div class="checklist">
+          <div class="check-item">
+            <div class="check-icon">1</div>
+            <div class="check-text">Add visible focus indicators to every interactive element</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">2</div>
+            <div class="check-text">Ensure Escape closes modals and dropdowns</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">3</div>
+            <div class="check-text">Add a "skip to content" link at the top</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">4</div>
+            <div class="check-text">Test your entire checkout with Tab only</div>
+          </div>
+        </div>
+
+        <div class="final-cta">
+          <div class="final-cta-btn">Scan your site free</div>
+          <div class="final-cta-sub">Link in bio</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-reserve">
+      <span class="wordmark"><svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:8px;display:inline-block;"><rect width="32" height="32" rx="7" fill="#4f46e5"/><rect x="3" y="3" width="26" height="26" rx="5" fill="#312e81"/><path d="M10 7 L10 25 L13.5 25 L13.5 17.5 L19.5 25 L24 25 L17 16 L23.5 7 L19.5 7 L13.5 14.5 L13.5 7 Z" fill="white"/><circle cx="24" cy="6.5" r="2.5" fill="#fbbf24"/></svg>Kritano</span>
+    </div>
+  </div>
+</body>
+</html>

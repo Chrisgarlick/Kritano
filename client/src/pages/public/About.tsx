@@ -70,6 +70,7 @@ export default function About() {
         title="About Kritano - Our Mission & Story"
         description="Learn about Kritano's mission to make the web more accessible, secure, and performant for everyone."
         path="/about"
+        ogImage="/brand/og-about.png"
         structuredData={[
           {
             '@context': 'https://schema.org',

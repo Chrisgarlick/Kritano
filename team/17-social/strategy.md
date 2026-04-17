@@ -1,132 +1,226 @@
-# Social Media Strategy — Reddit Focus
+# Social Media Strategy -- Kritano (Updated April 2026)
 
-## Platform Selection
-
-| Platform | Priority | Rationale |
-|----------|----------|-----------|
-| **Reddit** | **Primary** | Core audience (developers, founders, agency owners) lives here. Authentic engagement > marketing. The anti-marketing platform rewards genuine expertise — perfectly aligned with Kritano's brand voice. |
-| X (Twitter) | Primary | Already covered in existing social strategy. Daily cadence. |
-| LinkedIn | Secondary | Agency persona ("Agency Alex") spends time here. Already covered. |
-| Instagram | Secondary | Visual social assets produced via /draw skill. Already covered. |
-| TikTok | Skip | Not a fit for the current audience. Developer/agency buyers don't discover SaaS tools on TikTok. |
-| Facebook | Skip | Not worth the effort for this audience segment. |
-| YouTube | Future | Video content potential for tutorials and audits — defer until product is more mature. |
-
-**This document focuses entirely on Reddit.** Other platforms are covered in `team/03-marketing/social-media.md`.
+> **Context:** 2 weeks live, slow growth. This plan replaces the previous strategy with a ruthlessly practical, day-by-day execution plan for a solo founder.
 
 ---
 
-## Reddit Strategy
+## The Honest Assessment
 
-### Why Reddit Matters for Kritano
+Two weeks is too early to judge. Most SaaS social accounts see near-zero traction for the first 30-60 days. The algorithms need to learn who you are and who your audience is. The people who grow fast either already had an audience or got lucky with one viral post. Neither is a strategy.
 
-Reddit is the #1 platform where developers, founders, and agency owners discover tools organically. A genuine, helpful comment in a Reddit thread has more conversion power than 100 tweets. But Reddit also has the strongest immune system against marketing — one sniff of self-promotion and you're downvoted to oblivion.
+**What actually works at this stage:**
+1. Consistent posting (the algorithm rewards reliability)
+2. Engaging with OTHER people's content (this is 60% of the work)
+3. Providing genuine value in communities where your audience already hangs out
+4. Building in public with real numbers (transparency is magnetic)
 
-**The approach:** Be the most helpful person in the room. Share knowledge freely. Mention Kritano only when it's genuinely the answer to someone's question — and even then, with full transparency ("I built this").
-
-### Target Subreddits
-
-#### Tier 1 — High-value, post regularly (2-3x/week across these)
-
-| Subreddit | Members | Why | Culture Notes |
-|-----------|---------|-----|---------------|
-| r/webdev | 2.3M+ | Core audience. Frontend/backend devs discussing web development daily. | Technical, opinionated. Code examples appreciated. Don't be vague. |
-| r/SEO | 250K+ | SEO practitioners asking questions Kritano directly answers. | Tolerant of tool mentions if you add genuine value. Hates "10 tips" style content. |
-| r/Entrepreneur | 2M+ | Founder Fran lives here. "How do I improve my website?" questions daily. | Practical advice valued. No "guru" energy. Show specifics, not theory. |
-| r/smallbusiness | 1.3M+ | Small business owners asking about website performance. | Very anti-marketing. Help first, never pitch. |
-| r/accessibility | 45K+ | Accessibility professionals and advocates. | Expert community. Don't oversimplify. Reference WCAG spec numbers. |
-
-#### Tier 2 — Monitor and engage when relevant (1-2x/week)
-
-| Subreddit | Members | Why | Culture Notes |
-|-----------|---------|-----|---------------|
-| r/web_design | 800K+ | Design-focused developers. Accessibility and performance overlap. | Visual examples get upvotes. Link to live demos. |
-| r/SideProject | 180K+ | Founders showing their projects. Good for launch posts. | Very supportive community. "I built this" posts welcome if genuine. |
-| r/SaaS | 90K+ | SaaS founders sharing lessons. Growth, pricing, launch stories. | Transparent data and honest stories valued. |
-| r/bigseo | 45K+ | Professional SEO community (more advanced than r/SEO). | Very technical. No beginners or fluff. Peer-level conversation only. |
-| r/WordPress | 400K+ | WordPress users — a huge Kritano audience. | Plugin/tool recommendations are common and welcome. |
-| r/webhosting | 100K+ | Overlaps with performance discussions. | Practical, comparison-focused. |
-| r/startups | 1.3M+ | Startup founders. Good for launch and milestone posts. | Rules are strict. Read sidebar before posting. |
-| r/IndieDev / r/IndieHackers-adjacent | Various | Solo builders who care about site quality. | Build-in-public is the language here. |
-
-#### Tier 3 — Opportunistic (when a thread fits perfectly)
-
-| Subreddit | Why |
-|-----------|-----|
-| r/javascript | Performance-related threads |
-| r/reactjs | Frontend performance, accessibility in React |
-| r/freelance | Freelancers asking about client deliverables |
-| r/digital_marketing | Marketers asking about site audits |
-| r/AskProgramming | "How do I check my site for X?" questions |
-| r/UKBusiness | UK-focused business community (Kritano is UK-based) |
+**What does NOT work at this stage:**
+- Posting into the void and hoping for likes
+- Cross-posting the same content everywhere
+- Spending hours on visual perfection for 12 followers
+- Hashtag-stuffing
+- Following/unfollowing tactics
 
 ---
 
-## Content Pillars (Reddit-Adapted)
+## Platform Priority (Reordered for Early-Stage Reality)
 
-| Pillar | % of Content | Reddit Format | Example |
-|--------|-------------|---------------|---------|
-| **Expert Answers** | 40% | Comments on existing threads | Someone asks "How do I check my site's accessibility?" — you write a comprehensive answer. |
-| **Original Insights** | 25% | Self-posts with data/analysis | "I audited 50 UK e-commerce sites for WCAG compliance. Here's what I found." |
-| **Build in Public** | 15% | Self-posts in r/SideProject, r/SaaS | "Month 3 update: what we learned about churn in a website audit SaaS" |
-| **Resource Sharing** | 10% | Link posts or comments | Sharing Kritano blog posts when they genuinely answer the thread's question |
-| **Community Engagement** | 10% | Upvoting, commenting, asking questions | Being a real member of the community, not just a poster |
+| Priority | Platform | Why | Time/Week |
+|----------|----------|-----|-----------|
+| 1 | **LinkedIn** | Your buyers (agencies, freelancers, business owners) are here. Highest conversion intent. LinkedIn's algorithm actively boosts new creators right now. | 3 hrs |
+| 2 | **X (Twitter)** | Dev and accessibility community lives here. Fast feedback loops. Build-in-public resonates. | 2 hrs |
+| 3 | **Reddit** | Highest quality signups. One good comment can drive 10+ registrations. But requires patience and karma-building. | 1.5 hrs |
+| 4 | **Instagram** | Brand building for non-technical audience. Batch-create on Sunday. Lower priority until LinkedIn and X are working. | 1.5 hrs |
+| **Skip** | TikTok, Facebook, Threads, Bluesky | Not where your buyers discover B2B SaaS tools. Revisit at 500+ followers on primary platforms. | 0 |
+
+**Total weekly commitment: ~8 hours** (realistic for a solo founder shipping product)
+
+---
+
+## Content Pillars
+
+| Pillar | % | What It Is | Why It Works |
+|--------|---|------------|--------------|
+| **Expert Insights** | 35% | Share real audit data, accessibility stats, SEO findings. "I audited 30 sites this week -- here's what I found." | Establishes authority. People follow for knowledge. |
+| **Build in Public** | 25% | Revenue, user numbers, features shipped, lessons learned. Raw and honest. | Creates emotional investment. People root for transparent founders. |
+| **Quick Tips** | 20% | Actionable, single-topic tips. "3 security headers every site needs." "How to check your WCAG contrast ratio in 10 seconds." | High save/bookmark rate. Evergreen reach. |
+| **Industry Commentary** | 15% | Hot takes on EAA, AI-generated content, accessibility lawsuits, Google updates. | Drives engagement through debate. Gets reshared. |
+| **Social Proof** | 5% | User testimonials, milestone celebrations, case study snippets. | Builds trust. Only use when genuine. |
+
+---
+
+## The 80/20 Rule for Early-Stage Social
+
+**80% of your time should be spent engaging with others. 20% creating your own posts.**
+
+This feels backwards but it's how every successful SaaS founder grew their social presence:
+- Comment on 10 posts before you write 1
+- Your comments should be mini-posts (3-5 sentences of genuine insight, not "Great post!")
+- Follow and engage with people in your target audience DAILY
+- Reply to every single comment on your posts within 2 hours
 
 ---
 
 ## Posting Cadence
 
-| Activity | Frequency | Time Investment |
-|----------|-----------|-----------------|
-| Browse Tier 1 subreddits for threads to answer | Daily | 15 min |
-| Write 2-3 helpful comments | Daily | 20 min |
-| Post 1 original insight/data post | Weekly | 45 min |
-| Post 1 build-in-public update | Fortnightly | 30 min |
-| Share a blog post (when relevant) | 1-2x/month | 10 min |
+### LinkedIn (Primary -- 4-5 posts/week)
+| Day | Type | Notes |
+|-----|------|-------|
+| Mon | Data insight | Use real anonymised audit data |
+| Tue | Industry commentary | React to news, EAA, Google updates |
+| Wed | Quick tip / how-to | Actionable, saveable content |
+| Thu | Build in public | Numbers, lessons, transparency |
+| Fri | Question / poll | Drive engagement, learn from audience |
 
-**Best posting times (UK-adjusted for US audience overlap):**
-- Weekdays: 13:00–15:00 GMT (8-10am EST — peak Reddit activity)
-- Weekends: 15:00–17:00 GMT (10am-12pm EST)
+**Best times:** 07:30-08:30 UK (people check LinkedIn with morning coffee) or 12:00-13:00 UK (lunch scroll)
 
----
+**Daily engagement routine (15 min):**
+1. Comment on 5-10 posts from target accounts (agency owners, freelancers, accessibility advocates)
+2. Reply to all comments on your posts
+3. Accept connection requests from target industries
+4. Send 2-3 personalised connection requests to people who engaged with similar content
 
-## Engagement Rules
+### X/Twitter (Primary -- 1 post/day + engagement)
+| Day | Type |
+|-----|------|
+| Mon | Audit insight with specific data |
+| Tue | Share blog post with pull-quote |
+| Wed | Thread: quick tip or how-to |
+| Thu | Share blog post |
+| Fri | Build in public update |
+| Sat | Quote-tweet interesting a11y/webdev post with your take |
+| Sun | Hot take / opinion |
 
-### The Golden Rules
+**Best times:** 13:00-15:00 UK (8-10am EST when US devs are online)
 
-1. **Never post "Check out my tool!" as a standalone post.** Instant death.
-2. **Always lead with the value.** The insight, the data, the answer. Kritano mention comes after — and only if natural.
-3. **Be transparent.** When mentioning Kritano, always disclose: "Full disclosure: I built this" or "Disclaimer: this is my product."
-4. **Match the subreddit's tone.** r/webdev is casual and technical. r/SEO is direct and metric-focused. r/accessibility is precise and standards-aware.
-5. **Engage with replies.** If someone comments on your post, reply. Reddit rewards conversation.
-6. **Don't delete downvoted posts.** Take the feedback. Adjust.
-7. **Build karma first.** Spend 2 weeks being helpful before any self-promotion.
+**Daily engagement routine (10 min):**
+1. Search #a11y, #webdev, #WCAG, #CoreWebVitals -- reply to 3-5 posts with genuine insight
+2. Reply to all comments on your posts
+3. Retweet 1-2 posts from accessibility/webdev thought leaders
 
-### Response Framework
+### Reddit (Secondary -- 30 min, 3x/week)
+- Browse Tier 1 subreddits (r/webdev, r/SEO, r/Entrepreneur, r/smallbusiness, r/accessibility)
+- Write 2-3 genuinely helpful comments per session
+- Only mention Kritano when it's a natural answer to someone's question
+- Always disclose: "Full disclosure: I built this"
+- **Do not post your own threads until you have 500+ comment karma on the account**
 
-| Situation | Approach |
-|-----------|----------|
-| Someone asks "How do I audit my website?" | Comprehensive answer with manual steps first, then "There are tools like Lighthouse, WAVE, and Kritano (disclosure: mine) that automate this." |
-| Someone asks for tool recommendations | Only mention Kritano if it genuinely fits. List 2-3 alternatives too. Honesty builds trust. |
-| Someone shares a bad website | Don't pile on. Offer constructive, specific feedback. |
-| Someone criticises your post/product | Thank them. Ask what they'd improve. Never get defensive. |
-| A thread is about a topic you wrote a blog post on | Share the insight in the comment, then link the post as "I wrote more about this here: [link]" — not just the link. |
+### Instagram (Secondary -- batch on Sunday)
+- Create 5-7 posts on Sunday for the week ahead
+- Use /draw skill for branded carousels and stat graphics
+- 3x carousel (educational), 2x stat graphic, 1x reel, daily stories
+- Engage 10 min/day: reply to comments, engage with 5 target accounts
 
 ---
 
 ## Hashtag Strategy
 
-Reddit doesn't use hashtags. Skip this section for Reddit. Use flair tags where subreddits require them.
+### LinkedIn (3-5 per post, no more)
+**Primary rotation:**
+`#WebAccessibility` `#WCAG` `#a11y` `#DigitalAccessibility` `#SEO` `#WebDev` `#CoreWebVitals` `#WebPerformance` `#EAA` `#InclusiveDesign`
+
+**Niche (use 1-2 per post based on topic):**
+`#TechnicalSEO` `#WebSecurity` `#EEAT` `#AnswerEngineOptimisation` `#AccessibilityTesting` `#FreelanceWebDev` `#AgencyLife` `#WebDesignAgency`
+
+### X/Twitter (2-3 per post)
+`#a11y` `#webdev` `#WCAG` `#CoreWebVitals` `#SEO` `#accessibility` `#BuildInPublic` `#IndieHackers` `#SaaS`
+
+### Instagram (20-25 in first comment)
+**Group A (accessibility):** `#WebAccessibility #WCAG #a11y #AccessibilityTesting #InclusiveDesign #DigitalAccessibility #EAA #AccessibilityMatters #A11yFirst #UniversalDesign`
+**Group B (web dev):** `#WebDev #WebDesign #FrontendDev #WebPerformance #CoreWebVitals #SEO #TechnicalSEO #WebDevelopment #CodingLife #DevCommunity`
+**Group C (business):** `#SaaS #StartupLife #BuildInPublic #DigitalAgency #FreelanceWebDev #SmallBusinessTips #WebsiteAudit #DigitalMarketing #MarketingTips #Kritano`
+
+Rotate between groups. Use Group A + C or B + C per post.
 
 ---
 
-## Metrics That Matter
+## Growth Tactics That Work at This Stage
 
-| Metric | Target | Why |
-|--------|--------|-----|
-| Comment karma on target subreddits | +500/month | Indicates genuine value being added |
-| Profile page views | Tracked monthly | People clicking through = interest |
-| Referral traffic from reddit.com | Tracked in analytics | Direct measure of clicks to Kritano |
-| DMs/chat requests | Tracked monthly | High-intent leads |
-| Post upvote ratio | >80% on original posts | Content is landing well |
-| Subreddit-specific flair/recognition | Long-term | Some subreddits give "trusted contributor" flair |
+### 1. The "Value Comment" Strategy (LinkedIn + X)
+Find posts from people in your target audience that are getting engagement. Write a thoughtful comment (3-5 sentences) that adds genuine value -- a counter-point, additional data, a related insight. This puts you in front of THEIR audience. Do this 10x/day.
+
+### 2. The "Data Post" Formula (LinkedIn)
+Posts with real data outperform everything else on LinkedIn. Format:
+```
+[Surprising stat or hook]
+
+[Context -- what you did]
+
+[3-5 bullet points of findings]
+
+[One actionable takeaway]
+
+[Question to drive comments]
+```
+Example: "I audited 50 UK agency websites this month. 43 of them have critical accessibility issues. Here's what keeps coming up..."
+
+### 3. The "Build in Public" Thread (X)
+Weekly thread format:
+```
+Week [N] building Kritano:
+
+Users: [number]
+MRR: [number]
+What shipped: [feature]
+What broke: [honest thing]
+What's next: [plan]
+
+The lesson this week: [one genuine insight]
+```
+
+### 4. Reddit "Expert Answer" Drop
+When someone asks "How do I check my website's accessibility?" or "What tools should I use for a site audit?" -- write a genuinely comprehensive answer. List manual steps first, mention 2-3 alternatives, then mention Kritano with disclosure. One great Reddit answer can drive traffic for months.
+
+### 5. The "Free Audit" Hook
+Offer to audit someone's website for free in exchange for feedback. Do this in:
+- LinkedIn comments on posts from agency owners
+- Reddit threads where people share their new sites
+- X replies to indie hackers sharing launches
+
+This creates goodwill, social proof, and content (with permission, share anonymised findings).
+
+---
+
+## Metrics to Track
+
+### Month 1 (Weeks 1-4) -- Building Foundations
+| Metric | Target | Notes |
+|--------|--------|-------|
+| LinkedIn connections | 200+ in target audience | Quality over quantity |
+| LinkedIn post impressions | 500+ per post | Will grow with consistency |
+| X followers | 100+ | Slow but compounding |
+| X engagement rate | 2%+ | More important than follower count |
+| Reddit comment karma | 200+ | Before any self-promotion |
+| Posts published | 20+ across platforms | Consistency is the goal |
+| Comments written on others' posts | 150+ | This is the real work |
+
+### Month 2 (Weeks 5-8) -- Gaining Traction
+| Metric | Target |
+|--------|--------|
+| LinkedIn connections | 500+ |
+| LinkedIn post impressions | 1,000+ per post |
+| X followers | 250+ |
+| Reddit referral signups | 5-10 |
+| Social referral traffic | 50+ sessions/week |
+| DMs/conversations started | 10+ |
+
+### Month 3 (Weeks 9-12) -- Compounding
+| Metric | Target |
+|--------|--------|
+| LinkedIn connections | 1,000+ |
+| LinkedIn post impressions | 2,000+ per post |
+| X followers | 500+ |
+| Social-attributed signups | 20+ total |
+| One post with 5,000+ impressions | Viral-ish hit |
+
+---
+
+## What NOT to Do
+
+1. **Don't buy followers or use engagement pods.** Platforms detect this and suppress your reach.
+2. **Don't post and ghost.** If you post but don't engage, the algorithm buries you.
+3. **Don't be salesy.** "Check out Kritano!" as a standalone post will get zero traction.
+4. **Don't compare to accounts with 10K+ followers.** They have years of compounding. You're at week 2.
+5. **Don't spread too thin.** LinkedIn + X is enough to start. Add platforms only when these are working.
+6. **Don't spend more than 30 min on any single post.** Speed and consistency beat perfection.
+7. **Don't ignore DMs.** Every DM is a potential customer or collaborator.

@@ -25,9 +25,11 @@
     "test:coverage": "vitest run --coverage",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "mcp": "tsx src/mcp.ts"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@sentry/node": "^10.43.0",
     "adm-zip": "^0.5.16",
     "archiver": "^7.0.1",

@@ -248,6 +248,7 @@ export default function Pricing() {
         title="Pricing - Website Audit Plans & Tools"
         description="Simple, transparent pricing for website auditing. Start free, upgrade as you grow. Plans starting free."
         path="/pricing"
+        ogImage="/brand/og-pricing.png"
         structuredData={[
           {
             '@context': 'https://schema.org',

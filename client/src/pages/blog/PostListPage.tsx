@@ -93,6 +93,7 @@ export default function PostListPage() {
               : 'SEO guides, accessibility tips, security insights, and web performance best practices from Kritano.'
         }
         path={tag ? `/blog?tag=${tag}` : category ? `/blog?category=${category}` : '/blog'}
+        ogImage="/brand/og-blog.png"
         structuredData={[
           {
             '@context': 'https://schema.org',

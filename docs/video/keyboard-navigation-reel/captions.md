@@ -37,3 +37,47 @@ Try navigating a website without your mouse. 96% of the top million sites fail a
 ## YouTube Shorts
 **Title**: 96% of websites fail keyboard navigation — here's why it matters
 **Description**: Most websites are impossible to navigate with just a keyboard. No visible focus indicators, keyboard traps, and missing skip links make the web inaccessible for millions of users. Kritano catches these issues automatically.
+
+---
+
+# Video Captions — Keyboard Navigation Reel V2 (Variations 4-6)
+
+## Combined Caption (all platforms)
+**Hook:** Your site looks great. But can anyone use it without a mouse?
+**Caption:** 2.5 billion people worldwide have a disability. If your website has keyboard traps, invisible focus rings, or missing skip links, you are locking real users out. Tab through your site right now -- you might be surprised what you find.
+
+---
+
+## Instagram Reels
+
+Your site looks great. But can anyone use it without a mouse?
+
+2.5 billion people worldwide have a disability. Keyboard navigation is not optional -- it is a legal requirement under the European Accessibility Act.
+
+70% of websites have at least one keyboard trap. That means users physically cannot escape a modal, dropdown, or form field using only their keyboard.
+
+The fix takes minutes:
+- Add visible focus indicators
+- Make sure Escape closes modals
+- Add a skip-to-content link
+- Test your checkout with Tab only
+
+Scan your site free -- link in bio.
+
+### Hashtags
+#WebAccessibility #A11y #KeyboardNavigation #WCAG #Kritano #WebDesign #DigitalAccessibility #InclusiveDesign #AccessibilityTesting #WebDev #UXDesign #FocusIndicator #AssistiveTechnology #AccessibleWeb #TabNavigation #WebStandards #DesignForAll #EAA2025
+
+---
+
+## TikTok
+
+Your site looks great but can anyone use it without a mouse? 70% of websites have keyboard traps. 15% of users rely on keyboard navigation. The fix takes 5 minutes. Scan free -- link in bio.
+
+### Hashtags
+#WebAccessibility #A11y #TechTok #WebDesign #Kritano #WCAG #KeyboardNavigation #InclusiveDesign #WebDev #UX #AccessibilityMatters #FocusIndicator #EAA2025
+
+---
+
+## YouTube Shorts
+**Title**: Can your website survive a keyboard-only test?
+**Description**: 70% of websites have at least one keyboard trap. If users cannot Tab through your site, reach every link, and escape every modal, you have an accessibility problem. Here is how to fix it in minutes.

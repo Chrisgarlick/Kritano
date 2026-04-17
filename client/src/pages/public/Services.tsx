@@ -133,6 +133,7 @@ export default function Services() {
         title="Auditing Services - SEO, Accessibility & Security"
         description="Comprehensive website auditing services: SEO, accessibility (WCAG 2.2), security scanning, and performance analysis."
         path="/services"
+        ogImage="/brand/og-services.png"
         structuredData={[
           {
             '@context': 'https://schema.org',
