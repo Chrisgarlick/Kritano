@@ -14,7 +14,7 @@ const analytics_tools_js_1 = require("./tools/analytics-tools.js");
 const compliance_tools_js_1 = require("./tools/compliance-tools.js");
 const export_tools_js_1 = require("./tools/export-tools.js");
 const gsc_tools_js_1 = require("./tools/gsc-tools.js");
-// Active sessions: sessionId -> { transport, server }
+// Active sessions: sessionId -> session
 const sessions = new Map();
 // Clean up stale sessions after 30 minutes of inactivity
 const SESSION_TTL_MS = 30 * 60 * 1000;
@@ -44,6 +44,25 @@ function extractApiKey(req) {
         return null;
     return token;
 }
+/**
+ * Create a deferred McpContext proxy.
+ * Tools receive this as a normal McpContext, but property access throws
+ * until resolve() is called with a real authenticated context.
+ * This allows the MCP initialize handshake to complete without auth,
+ * deferring authentication to the first tool call.
+ */
+function createDeferredContext() {
+    let real = null;
+    const proxy = new Proxy({}, {
+        get(_target, prop) {
+            if (!real) {
+                throw new Error('Authentication required. Provide an Authorization header with your API key: Bearer <your-api-key>');
+            }
+            return real[prop];
+        },
+    });
+    return { proxy, resolve: (ctx) => { real = ctx; } };
+}
 exports.mcpHttpRouter = (0, express_1.Router)();
 // Prevent search engines from indexing MCP responses
 exports.mcpHttpRouter.use((_req, res, next) => {
@@ -53,16 +72,23 @@ exports.mcpHttpRouter.use((_req, res, next) => {
 // Handle POST /mcp (main MCP endpoint - initialize + messages)
 exports.mcpHttpRouter.post('/', async (req, res) => {
     const apiKey = extractApiKey(req);
-    if (!apiKey) {
-        res.status(401).json({ error: 'Missing Authorization header. Use: Bearer <your-api-key>' });
-        return;
-    }
-    // Check for existing session
     const sessionId = req.headers['mcp-session-id'];
     if (sessionId && sessions.has(sessionId)) {
-        // Existing session - forward the request
+        // Existing session - lazily authenticate if Bearer token present
         const session = sessions.get(sessionId);
         sessionLastActive.set(sessionId, Date.now());
+        if (!session.authenticated && apiKey) {
+            try {
+                const ctx = await (0, auth_js_1.authenticateMcp)(index_js_1.pool, apiKey);
+                session.resolveCtx(ctx);
+                session.authenticated = true;
+            }
+            catch (err) {
+                const message = err instanceof Error ? err.message : 'Authentication failed';
+                res.status(401).json({ error: message });
+                return;
+            }
+        }
         await session.transport.handleRequest(req, res, req.body);
         return;
     }
@@ -71,9 +97,16 @@ exports.mcpHttpRouter.post('/', async (req, res) => {
         res.status(404).json({ error: 'Session not found. Initialize a new session.' });
         return;
     }
-    // New session - authenticate and create server
+    // New session - auth is deferred; initialize handshake does not require a key
     try {
-        const ctx = await (0, auth_js_1.authenticateMcp)(index_js_1.pool, apiKey);
+        const { proxy: ctx, resolve: resolveCtx } = createDeferredContext();
+        let authenticated = false;
+        // If API key provided on init, authenticate immediately
+        if (apiKey) {
+            const realCtx = await (0, auth_js_1.authenticateMcp)(index_js_1.pool, apiKey);
+            resolveCtx(realCtx);
+            authenticated = true;
+        }
         const server = new mcp_js_1.McpServer({
             name: 'kritano',
             version: '1.0.0',
@@ -103,13 +136,13 @@ exports.mcpHttpRouter.post('/', async (req, res) => {
         // Now the session ID is set
         const newSessionId = transport.sessionId;
         if (newSessionId) {
-            sessions.set(newSessionId, { transport, server });
+            sessions.set(newSessionId, { transport, server, resolveCtx, authenticated });
             sessionLastActive.set(newSessionId, Date.now());
         }
     }
     catch (err) {
-        const message = err instanceof Error ? err.message : 'Authentication failed';
-        res.status(401).json({ error: message });
+        const message = err instanceof Error ? err.message : 'Server error';
+        res.status(500).json({ error: message });
     }
 });
 // Handle GET /mcp (SSE stream for server-initiated messages)
