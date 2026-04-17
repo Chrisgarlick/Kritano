@@ -13,7 +13,7 @@ const createKeySchema = z.object({
   scopes: z
     .array(z.enum(API_SCOPES as unknown as [string, ...string[]]))
     .optional()
-    .default(['audits:read', 'audits:write']),
+    .default(['audits:read', 'audits:write', 'findings:read', 'findings:write', 'exports:read']),
   expiresInDays: z.number().int().min(1).max(365).optional(),
 });
 

@@ -265,7 +265,13 @@
       "Bash(CT=\"Content-Type: application/json\")",
       "Bash(__NEW_LINE_db4277252e617194__ curl:*)",
       "Bash(find /Users/chris/Herd/pagepulser -type f \\\\\\(-name *.config.* -o -name vite.config.* -o -name prerender* \\\\\\))",
-      "Bash(gtimeout 5 npx tsx src/mcp.ts)"
+      "Bash(gtimeout 5 npx tsx src/mcp.ts)",
+      "mcp__kritano__list_sites",
+      "mcp__kritano__start_audit",
+      "mcp__kritano__get_audit_progress",
+      "mcp__kritano__get_audit",
+      "mcp__kritano__get_findings_summary",
+      "mcp__kritano__list_findings"
     ]
   },
   "enableAllProjectMcpServers": true,

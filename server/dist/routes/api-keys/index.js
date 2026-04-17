@@ -13,7 +13,7 @@ const createKeySchema = zod_1.z.object({
     scopes: zod_1.z
         .array(zod_1.z.enum(apiKey_service_js_1.API_SCOPES))
         .optional()
-        .default(['audits:read', 'audits:write']),
+        .default(['audits:read', 'audits:write', 'findings:read', 'findings:write', 'exports:read']),
     expiresInDays: zod_1.z.number().int().min(1).max(365).optional(),
 });
 const updateKeySchema = zod_1.z.object({
