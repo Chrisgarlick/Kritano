@@ -202,7 +202,7 @@ function registerAuditTools(server, pool, ctx) {
                 const scores = a.status === 'completed'
                     ? `SEO: ${(0, formatting_js_1.formatScore)(a.seo_score)} | A11y: ${(0, formatting_js_1.formatScore)(a.accessibility_score)} | Sec: ${(0, formatting_js_1.formatScore)(a.security_score)} | Perf: ${(0, formatting_js_1.formatScore)(a.performance_score)}`
                     : '';
-                lines.push(`${a.id.substring(0, 8)}  ${(0, formatting_js_1.formatStatus)(a.status).padEnd(14)}  ${a.target_domain}`);
+                lines.push(`${a.id}  ${(0, formatting_js_1.formatStatus)(a.status).padEnd(14)}  ${a.target_domain}`);
                 if (scores)
                     lines.push(`         ${scores}`);
                 if (a.status === 'completed') {

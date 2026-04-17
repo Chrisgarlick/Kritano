@@ -271,12 +271,24 @@
       "mcp__kritano__get_audit_progress",
       "mcp__kritano__get_audit",
       "mcp__kritano__get_findings_summary",
-      "mcp__kritano__list_findings"
+      "mcp__kritano__list_findings",
+      "Bash(npm search:*)",
+      "Bash(npm view:*)",
+      "Bash(npx -y mcp-remote --help)",
+      "Read(//private/tmp/**)",
+      "Bash(npm pack:*)",
+      "Bash(tar xf:*)",
+      "Bash(rm -rf package mcp-remote-*.tgz)",
+      "Bash(KRITANO_AUTH=\"Bearer kt_live_5N7AlG0GN1gydg4iKl5AefmYCXH9X7oz\" npx mcp-remote https://kritano.com/mcp/sse --header \"Authorization:$KRITANO_AUTH\")",
+      "Bash(gtimeout 10 node /Users/chris/Herd/pagepulser/scripts/mcp-proxy.mjs https://kritano.com/mcp/sse kt_live_5N7AlG0GN1gydg4iKl5AefmYCXH9X7oz)",
+      "mcp__kritano__list_audits",
+      "mcp__kritano__get_site_history"
     ]
   },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
-    "chrome-devtools"
+    "chrome-devtools",
+    "kritano"
   ],
   "enabledPlugins": {
     "team@team-skill": true

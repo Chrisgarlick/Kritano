@@ -245,7 +245,7 @@ export function registerAuditTools(server: McpServer, pool: Pool, ctx: McpContex
             ? `SEO: ${formatScore(a.seo_score)} | A11y: ${formatScore(a.accessibility_score)} | Sec: ${formatScore(a.security_score)} | Perf: ${formatScore(a.performance_score)}`
             : '';
 
-          lines.push(`${a.id.substring(0, 8)}  ${formatStatus(a.status).padEnd(14)}  ${a.target_domain}`);
+          lines.push(`${a.id}  ${formatStatus(a.status).padEnd(14)}  ${a.target_domain}`);
           if (scores) lines.push(`         ${scores}`);
           if (a.status === 'completed') {
             lines.push(`         Issues: ${a.total_issues} total, ${a.critical_issues} critical | ${formatDate(a.completed_at)}`);
