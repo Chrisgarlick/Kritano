@@ -12,6 +12,7 @@ import {
   Gift,
   Shield,
   SearchCheck,
+  Plug,
   User,
   Settings,
   LogOut,
@@ -55,6 +56,7 @@ const mainNavItems: NavItem[] = [
   { href: '/app/search-console', label: 'Search Console', icon: SearchCheck },
   { href: '/app/referrals', label: 'Referrals', icon: Gift },
   { href: '/app/settings/api-keys', label: 'API Keys', icon: Key },
+  { href: '/app/integrations', label: 'Integrations', icon: Plug },
   { href: '/admin', label: 'Admin', icon: Shield, adminOnly: true },
 ];
 

@@ -43,6 +43,7 @@ const ScheduleDetailPage = lazy(() => import('./pages/schedules/ScheduleDetailPa
 const ReferralDashboard = lazy(() => import('./pages/referrals/ReferralDashboard'));
 const ComparePage = lazy(() => import('./pages/compare/ComparePage'));
 const SearchConsolePage = lazy(() => import('./pages/keywords/SearchConsolePage'));
+const IntegrationsPage = lazy(() => import('./pages/app/IntegrationsPage'));
 const GscCallbackPage = lazy(() => import('./pages/auth/GscCallback'));
 const SiteInvitationPage = lazy(() => import('./pages/invitations/SiteInvitation'));
 const UnsubscribePage = lazy(() => import('./pages/email/UnsubscribePage'));
@@ -360,6 +361,16 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <SearchConsolePage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Integrations */}
+                <Route
+                  path="/app/integrations"
+                  element={
+                    <ProtectedRoute>
+                      <IntegrationsPage />
                     </ProtectedRoute>
                   }
                 />
