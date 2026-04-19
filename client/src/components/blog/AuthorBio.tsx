@@ -17,7 +17,7 @@ const AUTHOR = {
   linkedin: 'https://uk.linkedin.com/in/chris-garlick-59a8bb91',
   x: 'https://x.com/ChrisGarlick123',
   bio: 'Chris built Kritano after years of running audits with fragmented tools. He writes about SEO, accessibility, security, and performance based on real auditing data from thousands of scans.',
-  credentials: '10+ years in software engineering. Specialises in web auditing, WCAG 2.2 compliance, and search engine optimisation.',
+  credentials: '5 years in web development. Specialises in web auditing, WCAG 2.2 compliance, and search engine optimisation.',
 };
 
 const AUTHOR_JSONLD = {
