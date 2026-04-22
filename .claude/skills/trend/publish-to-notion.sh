@@ -245,8 +245,86 @@ create_subpage "LinkedIn Post" "💼" "$TREND_DIR/linkedin.txt"
 # Reddit Post
 create_subpage "Reddit Post" "🤖" "$TREND_DIR/reddit.txt"
 
-# Blog Post
-create_subpage "Blog Post" "📝" "$TREND_DIR/blog.md"
+# Blog Post — create subpage and append SEO metadata
+BLOG_FILE="$TREND_DIR/blog.md"
+if [ -f "$BLOG_FILE" ]; then
+  BLOG_BLOCKS=$(file_to_notion_blocks "$BLOG_FILE")
+
+  BLOG_RESPONSE=$(notion_api "/pages" "$(python3 -c "
+import json, sys
+blocks = json.loads(sys.argv[1])
+print(json.dumps({
+    'parent': {'page_id': '$PARENT_PAGE_ID'},
+    'icon': {'type': 'emoji', 'emoji': sys.argv[2]},
+    'properties': {
+        'title': {
+            'title': [{'text': {'content': sys.argv[3]}}]
+        }
+    },
+    'children': blocks
+}))
+" "$BLOG_BLOCKS" "📝" "Blog Post")")
+
+  BLOG_PAGE_ID=$(echo "$BLOG_RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin).get('id','FAILED'))" 2>/dev/null)
+  echo "  Created: Blog Post ($BLOG_PAGE_ID)"
+
+  # Extract keyword and description from blog frontmatter and append to the page
+  if [ "$BLOG_PAGE_ID" != "FAILED" ] && [ -n "$BLOG_PAGE_ID" ]; then
+    SEO_BLOCKS=$(python3 - "$BLOG_FILE" <<'PYEOF'
+import json, sys, re
+
+content = open(sys.argv[1], 'r').read()
+
+fm_match = re.search(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+keyword = ''
+description = ''
+if fm_match:
+    fm = fm_match.group(1)
+    kw_match = re.search(r'^keyword:\s*"(.*?)"', fm, re.MULTILINE)
+    desc_match = re.search(r'^description:\s*"(.*?)"', fm, re.MULTILINE)
+    if kw_match:
+        keyword = kw_match.group(1)
+    if desc_match:
+        description = desc_match.group(1)
+
+blocks = []
+if keyword or description:
+    blocks.append({'object': 'block', 'type': 'divider', 'divider': {}})
+    blocks.append({
+        'object': 'block', 'type': 'heading_2',
+        'heading_2': {'rich_text': [{'type': 'text', 'text': {'content': 'SEO Metadata'}}]}
+    })
+if keyword:
+    blocks.append({
+        'object': 'block', 'type': 'paragraph',
+        'paragraph': {'rich_text': [
+            {'type': 'text', 'text': {'content': 'Keyword: '}, 'annotations': {'bold': True}},
+            {'type': 'text', 'text': {'content': keyword}}
+        ]}
+    })
+if description:
+    blocks.append({
+        'object': 'block', 'type': 'paragraph',
+        'paragraph': {'rich_text': [
+            {'type': 'text', 'text': {'content': 'Meta Description: '}, 'annotations': {'bold': True}},
+            {'type': 'text', 'text': {'content': description}}
+        ]}
+    })
+
+print(json.dumps(blocks))
+PYEOF
+)
+
+    # Only append if we have SEO blocks
+    HAS_SEO=$(echo "$SEO_BLOCKS" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))")
+    if [ "$HAS_SEO" -gt 0 ]; then
+      notion_api "/blocks/${BLOG_PAGE_ID}/children" "{\"children\": $SEO_BLOCKS}" > /dev/null 2>&1
+      echo "  Appended: SEO metadata (keyword + meta description)"
+    fi
+  fi
+else
+  echo "  Skipping Blog Post - no file found at $BLOG_FILE"
+fi
 
 # Video (just the file path reference since it's HTML/MP4)
 if [ -f "$TREND_DIR/video.html" ] || [ -f "$TREND_DIR/video.mp4" ]; then

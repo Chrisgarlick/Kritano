@@ -174,12 +174,57 @@ Save:
 - `video.html` — Animated HTML video (generated in step 9)
 - Visual assets go to `/docs/trend/<YYYY-MM-DD>/visuals/` (HTML + PNG files)
 
+### 7.5. SEO optimisation pass (before writing the blog)
+
+Before writing the blog post, run an SEO analysis to maximise search visibility:
+
+#### a) Fetch live blog URLs
+
+Fetch `https://kritano.com/sitemap.xml` using WebFetch and extract all live blog URLs. These are the ONLY blog URLs you may link to in the blog post. Do NOT link to blog slugs from the `/docs/blog/` folder unless they appear in the live sitemap. If a relevant blog exists locally but isn't live, reference the topic in plain text without a link.
+
+#### b) Read the keyword strategy
+
+Read `team/18-seo/keyword-strategy.md` and `team/18-seo/topic-clusters.md` to understand:
+- Which keywords Kritano is targeting and at what priority
+- Which topic cluster this trend maps to
+- What gaps exist that this post could fill
+
+#### c) Determine SEO targeting for this post
+
+For the specific trend being covered, determine:
+
+1. **Primary keyword** - the single keyword this post should rank for. Check if it aligns with an existing keyword in the strategy, or if it's a new opportunity (news-driven keywords spike and are worth targeting).
+2. **Secondary keywords** - 4-6 related terms to weave naturally into the content. These go in the frontmatter as `secondary_keywords` (array).
+3. **Title tag** - under 60 characters, primary keyword near the front.
+4. **Meta description** - under 155 characters, benefit-led, includes primary keyword, conversational.
+5. **H1 and H2 structure** - plan the heading hierarchy before writing. Each H2 should target a related keyword or answer a question.
+6. **FAQ questions** - 3-5 questions for the FAQ section, optimised for People Also Ask and AI extraction. These will be wrapped in FAQPage schema.
+7. **Internal links** - map which live blog URLs to link to and where in the post.
+
+#### d) AI extraction structure
+
+Plan the "concise answer pattern" for every H2 section: the first 1-2 sentences must directly answer the section's question in under 50 words, so AI engines can extract it verbatim. Do not open sections with rhetorical questions or vague set-up text.
+
+#### e) Blog frontmatter
+
+The blog frontmatter MUST include these SEO fields:
+```yaml
+keyword: "primary target keyword"
+secondary_keywords:
+  - "secondary keyword 1"
+  - "secondary keyword 2"
+  - "secondary keyword 3"
+description: "Meta description - under 155 chars, benefit-led, includes keyword"
+```
+
 ### 8. Generate blog post
 
 Write a blog post about the selected trend using the `/blog` skill's rules and templates. The blog should:
 
 - Use the trend brief as source material
 - Follow the blog skill's tone-of-voice, structure templates, SEO guidelines, and frontmatter schema (read all files in `.claude/skills/blog/`)
+- **Apply all SEO decisions from step 7.5** - target keyword, heading structure, FAQ questions, internal links, AI extraction pattern
+- **Only link to live blog URLs** from the sitemap scan in step 7.5a
 - Post type is typically **explainer** or **thought leadership** depending on the trend angle
 - Save to `/docs/trend/<YYYY-MM-DD>/blog.md`
 - The blog should go deeper than the social posts - it's the long-form companion piece
@@ -247,7 +292,7 @@ After writing all files and publishing to Notion, output:
 - **Honest takes**: If a trend is overblown, say so. If it's genuinely important, explain why.
 - **No competitor promotion**: Never recommend or name competing audit tools.
 - **Always include #Kritano** in hashtag sets.
-- **Credit sources**: Always attribute data and quotes to their original source.
+- **Credit sources**: Always attribute data and quotes to their original source. **Every quote and every data point in the blog post MUST include a hyperlink to the original source.** Unlinked quotes are not credible. If you can't find a direct URL for a claim, don't include the claim.
 - **No em dashes** — never use `—` in any output. Use ` - ` (space-hyphen-space) instead. Em dashes are a tell-tale sign of AI-generated content.
 - **No smart quotes** — use straight quotes (`'` and `"`) only, never curly/smart quotes.
 - **Plain text outputs** — all social content files (threads, captions, LinkedIn) must be `.txt` not `.md`, so they transfer cleanly to mobile devices.

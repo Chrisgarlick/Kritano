@@ -142,7 +142,7 @@ export default function PostDetailPage() {
       <Helmet>
         <title>{post.seo_title || post.title} | Kritano</title>
         <meta name="description" content={post.seo_description || post.excerpt} />
-        {post.focus_keyword && <meta name="keywords" content={[post.focus_keyword, ...post.tags].join(', ')} />}
+        {post.focus_keyword && <meta name="keywords" content={[post.focus_keyword, ...(post.secondary_keywords || []), ...post.tags].join(', ')} />}
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
         <meta property="og:image" content={ogImage} />

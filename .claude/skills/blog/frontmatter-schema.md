@@ -12,6 +12,10 @@ date: "YYYY-MM-DD"
 author: "Chris Garlick"
 description: "Meta description — 150-160 characters, benefit-led, includes keyword."
 keyword: "primary target keyword"
+secondary_keywords:
+  - "secondary keyword 1"
+  - "secondary keyword 2"
+  - "secondary keyword 3"
 category: "web-development"
 tags:
   - "tag-one"
@@ -33,6 +37,7 @@ featured: false
 | `author` | Yes | Default to "Chris Garlick" unless specified. |
 | `description` | Yes | Meta description. 150-160 characters. Benefit-led, conversational, includes keyword. |
 | `keyword` | Yes | The primary SEO keyword the post is targeting. |
+| `secondary_keywords` | Yes | 3-6 secondary/related keywords to weave naturally into the content. Array of strings. |
 | `category` | Yes | One of the categories below. |
 | `tags` | Yes | 2-5 relevant tags from the tag list below. |
 | `post_type` | Yes | The structural type: `how-to`, `thought-leadership`, `listicle`, `comparison`, `case-study`, `explainer`. |
@@ -70,6 +75,11 @@ date: "2026-03-07"
 author: "Chris Garlick"
 description: "Is your website slow? Here are 7 practical, no-jargon tips to speed up your site and keep visitors from bouncing."
 keyword: "speed up your website"
+secondary_keywords:
+  - "page load speed"
+  - "website performance"
+  - "Core Web Vitals"
+  - "site speed optimisation"
 category: "performance"
 tags:
   - "page-speed"
