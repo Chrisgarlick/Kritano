@@ -29,6 +29,7 @@ export interface BlogPost {
     seo_title: string | null;
     seo_description: string | null;
     focus_keyword: string | null;
+    secondary_keywords: string[];
     reading_time_minutes: number;
     view_count: number;
     related_post_ids: string[];
@@ -67,6 +68,7 @@ export interface CreatePostInput {
     seo_title?: string | null;
     seo_description?: string | null;
     focus_keyword?: string | null;
+    secondary_keywords?: string[];
     schema_type?: SchemaType;
     schema_claim_reviewed?: string | null;
     schema_review_rating?: ReviewRating | null;
@@ -83,6 +85,7 @@ export interface UpdatePostInput {
     seo_title?: string | null;
     seo_description?: string | null;
     focus_keyword?: string | null;
+    secondary_keywords?: string[];
     related_post_ids?: string[];
     schema_type?: SchemaType;
     schema_claim_reviewed?: string | null;

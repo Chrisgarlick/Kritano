@@ -177,9 +177,9 @@ async function createPost(input, authorId, authorName) {
     const result = await index_js_1.pool.query(`INSERT INTO blog_posts (
       slug, title, subtitle, excerpt, featured_image_url, featured_image_alt,
       content, category, tags, author_id, author_name,
-      seo_title, seo_description, focus_keyword, reading_time_minutes,
+      seo_title, seo_description, focus_keyword, secondary_keywords, reading_time_minutes,
       schema_type, schema_claim_reviewed, schema_review_rating
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
     RETURNING *`, [
         slug,
         input.title,
@@ -195,6 +195,7 @@ async function createPost(input, authorId, authorName) {
         input.seo_title || null,
         input.seo_description || null,
         input.focus_keyword || null,
+        input.secondary_keywords || [],
         readingTime,
         input.schema_type || 'article',
         input.schema_claim_reviewed || null,
@@ -260,6 +261,10 @@ async function updatePost(id, input, editorId, revisionNote) {
     if (input.focus_keyword !== undefined) {
         fields.push(`focus_keyword = $${paramIdx++}`);
         params.push(input.focus_keyword);
+    }
+    if (input.secondary_keywords !== undefined) {
+        fields.push(`secondary_keywords = $${paramIdx++}`);
+        params.push(input.secondary_keywords);
     }
     if (input.related_post_ids !== undefined) {
         fields.push(`related_post_ids = $${paramIdx++}`);
