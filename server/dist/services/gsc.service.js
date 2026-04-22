@@ -187,7 +187,8 @@ async function syncQueryData(connectionId, startDate, endDate) {
                 const [query, pageUrl, device, country, date] = row.keys || [];
                 await pool.query(`INSERT INTO gsc_query_data (connection_id, query, page_url, date, clicks, impressions, ctr, position, device, country)
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-           ON CONFLICT DO NOTHING`, [
+           ON CONFLICT (connection_id, query, COALESCE(page_url, ''), date, COALESCE(device, ''), COALESCE(country, ''))
+           DO UPDATE SET clicks = EXCLUDED.clicks, impressions = EXCLUDED.impressions, ctr = EXCLUDED.ctr, position = EXCLUDED.position`, [
                     connectionId,
                     query,
                     pageUrl,
@@ -227,7 +228,8 @@ async function syncQueryData(connectionId, startDate, endDate) {
                 const [date] = row.keys || [];
                 await pool.query(`INSERT INTO gsc_query_data (connection_id, query, page_url, date, clicks, impressions, ctr, position, device, country)
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-           ON CONFLICT DO NOTHING`, [
+           ON CONFLICT (connection_id, query, COALESCE(page_url, ''), date, COALESCE(device, ''), COALESCE(country, ''))
+           DO UPDATE SET clicks = EXCLUDED.clicks, impressions = EXCLUDED.impressions, ctr = EXCLUDED.ctr, position = EXCLUDED.position`, [
                     connectionId,
                     '(anonymised)',
                     null,

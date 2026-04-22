@@ -135,6 +135,7 @@ export default function PostEditorPage() {
   const [seoDescription, setSeoDescription] = useState('');
   const [focusKeyword, setFocusKeyword] = useState('');
   const [secondaryKeywords, setSecondaryKeywords] = useState<string[]>([]);
+  const [secondaryKeywordsRaw, setSecondaryKeywordsRaw] = useState('');
   const [schemaType, setSchemaType] = useState<BlogSchemaType>('article');
   const [schemaClaimReviewed, setSchemaClaimReviewed] = useState('');
   const [schemaReviewRating, setSchemaReviewRating] = useState<BlogReviewRating>('Mixed');
@@ -221,6 +222,7 @@ export default function PostEditorPage() {
       setSeoDescription(p.seo_description || '');
       setFocusKeyword(p.focus_keyword || '');
       setSecondaryKeywords(p.secondary_keywords || []);
+      setSecondaryKeywordsRaw((p.secondary_keywords || []).join(', '));
       setSchemaType(p.schema_type || 'article');
       setSchemaClaimReviewed(p.schema_claim_reviewed || '');
       setSchemaReviewRating(p.schema_review_rating || 'Mixed');
@@ -831,8 +833,13 @@ export default function PostEditorPage() {
                       <label className="text-xs text-slate-500 mb-1 block">Secondary Keywords</label>
                       <input
                         type="text"
-                        value={secondaryKeywords.join(', ')}
-                        onChange={e => setSecondaryKeywords(e.target.value ? e.target.value.split(',').map(k => k.trim()).filter(Boolean) : [])}
+                        value={secondaryKeywordsRaw}
+                        onChange={e => setSecondaryKeywordsRaw(e.target.value)}
+                        onBlur={() => {
+                          const parsed = secondaryKeywordsRaw.split(',').map(k => k.trim()).filter(Boolean);
+                          setSecondaryKeywords(parsed);
+                          setSecondaryKeywordsRaw(parsed.join(', '));
+                        }}
                         placeholder="Comma-separated secondary keywords..."
                         className="w-full px-3 py-1.5 bg-white/[0.03] border border-white/[0.08] rounded text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                       />
