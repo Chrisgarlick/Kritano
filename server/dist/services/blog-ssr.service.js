@@ -6,11 +6,37 @@
  * This ensures search engines see fully rendered content without needing
  * JavaScript execution or Puppeteer pre-rendering.
  */
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.renderBlogPost = renderBlogPost;
 exports.renderBlogListing = renderBlogListing;
 exports.renderBlogNotFound = renderBlogNotFound;
 const marked_1 = require("marked");
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+// ── Discover Vite-built CSS file ─────────────────────────────────────
+// Scan client dist for the hashed CSS file so SSR pages reference
+// the same stylesheet nginx serves, instead of the Tailwind CDN.
+function discoverCssFile() {
+    const candidates = [
+        path_1.default.resolve(process.cwd(), 'client', 'dist', 'assets'),
+        path_1.default.resolve(process.cwd(), '..', 'client', 'dist', 'assets'),
+        '/home/deploy/kritano/client/dist/assets',
+    ];
+    for (const dir of candidates) {
+        try {
+            const files = fs_1.default.readdirSync(dir);
+            const cssFile = files.find((f) => f.startsWith('index-') && f.endsWith('.css'));
+            if (cssFile)
+                return `/assets/${cssFile}`;
+        }
+        catch { /* directory doesn't exist */ }
+    }
+    return null;
+}
+const VITE_CSS_PATH = discoverCssFile();
 const BASE_URL = process.env.APP_URL?.replace(/^http:\/\//, 'https://') || 'https://kritano.com';
 const CATEGORY_LABELS = {
     'seo': 'SEO',
@@ -378,7 +404,7 @@ function buildStructuredData(post) {
 // ── HTML Shell ───────────────────────────────────────────────────────
 function htmlShell(opts) {
     return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -401,12 +427,7 @@ function htmlShell(opts) {
   <meta name="twitter:image" content="${escapeHtml(opts.ogImage)}" />
   <link rel="alternate" type="application/atom+xml" title="Kritano Blog" href="${BASE_URL}/api/blog/feed.xml" />
   <link rel="preload" as="font" type="font/woff2" href="/fonts/instrument-serif-regular.woff2" crossorigin />
-  <link rel="preload" as="font" type="font/woff2" href="/fonts/outfit-latin.woff2" crossorigin />
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script>
-    tailwindcss = { config: { theme: { extend: { fontFamily: { display: ['Instrument Serif', 'Georgia', 'serif'], sans: ['Outfit', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] } } } } };
-    if (typeof tailwind !== 'undefined') tailwind.config = tailwindcss.config;
-  </script>
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/outfit-latin.woff2" crossorigin />${VITE_CSS_PATH ? `\n  <link rel="stylesheet" href="${VITE_CSS_PATH}" />` : ''}
   <style>
     @font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/instrument-serif-regular.woff2') format('woff2'); }
     @font-face { font-family: 'Outfit'; font-style: normal; font-weight: 300; font-display: swap; src: url('/fonts/outfit-latin.woff2') format('woff2'); }
@@ -418,10 +439,12 @@ function htmlShell(opts) {
     body { font-family: 'Outfit', system-ui, sans-serif; }
     .font-display { font-family: 'Instrument Serif', Georgia, serif; }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
   </style>
   ${opts.extraHead}
 </head>
 <body class="bg-white text-slate-900 antialiased">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-indigo-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold">Skip to content</a>
   ${renderNav()}
   ${opts.body}
   ${renderFooter()}
@@ -430,58 +453,58 @@ function htmlShell(opts) {
 }
 // ── Nav / Footer ─────────────────────────────────────────────────────
 function renderNav() {
-    return `<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
-    <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    return `<header role="banner" class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+    <nav aria-label="Main navigation" class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2" aria-label="Kritano home">
-        <img src="/brand/favicon-32.svg" alt="" width="28" height="28" />
+        <img src="/brand/favicon-32.svg" alt="" width="28" height="28" role="presentation" />
         <span class="font-display text-xl text-slate-900">Kritano</span>
       </a>
-      <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-        <a href="/about" class="hover:text-slate-900 transition-colors">About</a>
-        <a href="/blog" class="text-indigo-600 font-semibold">Blog</a>
-        <a href="/pricing" class="hover:text-slate-900 transition-colors">Pricing</a>
-        <a href="/contact" class="hover:text-slate-900 transition-colors">Contact</a>
+      <div class="flex items-center gap-2 text-sm font-medium text-slate-600">
+        <a href="/about" class="hover:text-slate-900 transition-colors px-3 py-2 rounded-md min-h-[44px] inline-flex items-center">About</a>
+        <a href="/blog" class="text-indigo-600 font-semibold px-3 py-2 rounded-md min-h-[44px] inline-flex items-center" aria-current="page">Blog</a>
+        <a href="/pricing" class="hover:text-slate-900 transition-colors px-3 py-2 rounded-md min-h-[44px] inline-flex items-center">Pricing</a>
+        <a href="/contact" class="hover:text-slate-900 transition-colors px-3 py-2 rounded-md min-h-[44px] inline-flex items-center">Contact</a>
+        <a href="/app" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 min-h-[44px] text-sm font-semibold text-white hover:bg-indigo-700 transition-colors">Dashboard</a>
       </div>
-      <a href="/app" class="hidden md:inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors">Dashboard</a>
     </nav>
   </header>`;
 }
 function renderFooter() {
-    return `<footer class="bg-slate-50 border-t border-slate-200 mt-16">
+    return `<footer role="contentinfo" class="bg-slate-50 border-t border-slate-200 mt-16">
     <div class="max-w-7xl mx-auto px-6 py-12">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <nav aria-label="Footer navigation" class="grid grid-cols-2 md:grid-cols-4 gap-8">
         <div>
           <a href="/" class="flex items-center gap-2 mb-4">
-            <img src="/brand/favicon-32.svg" alt="" width="24" height="24" />
+            <img src="/brand/favicon-32.svg" alt="" width="24" height="24" role="presentation" />
             <span class="font-display text-lg text-slate-900">Kritano</span>
           </a>
           <p class="text-sm text-slate-600">See what others miss.</p>
         </div>
         <div>
-          <h3 class="font-semibold text-sm text-slate-900 mb-3">Product</h3>
-          <ul class="space-y-2 text-sm text-slate-600">
-            <li><a href="/pricing" class="hover:text-slate-900">Pricing</a></li>
-            <li><a href="/docs" class="hover:text-slate-900">API Docs</a></li>
+          <h2 class="font-semibold text-sm text-slate-900 mb-3">Product</h2>
+          <ul class="space-y-1 text-sm text-slate-600">
+            <li><a href="/pricing" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">Pricing</a></li>
+            <li><a href="/docs" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">API Docs</a></li>
           </ul>
         </div>
         <div>
-          <h3 class="font-semibold text-sm text-slate-900 mb-3">Company</h3>
-          <ul class="space-y-2 text-sm text-slate-600">
-            <li><a href="/about" class="hover:text-slate-900">About</a></li>
-            <li><a href="/blog" class="hover:text-slate-900">Blog</a></li>
-            <li><a href="/contact" class="hover:text-slate-900">Contact</a></li>
+          <h2 class="font-semibold text-sm text-slate-900 mb-3">Company</h2>
+          <ul class="space-y-1 text-sm text-slate-600">
+            <li><a href="/about" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">About</a></li>
+            <li><a href="/blog" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">Blog</a></li>
+            <li><a href="/contact" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">Contact</a></li>
           </ul>
         </div>
         <div>
-          <h3 class="font-semibold text-sm text-slate-900 mb-3">Resources</h3>
-          <ul class="space-y-2 text-sm text-slate-600">
-            <li><a href="/faq" class="hover:text-slate-900">FAQ</a></li>
-            <li><a href="/author/chris-garlick" class="hover:text-slate-900">Author</a></li>
+          <h2 class="font-semibold text-sm text-slate-900 mb-3">Resources</h2>
+          <ul class="space-y-1 text-sm text-slate-600">
+            <li><a href="/faq" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">FAQ</a></li>
+            <li><a href="/author/chris-garlick" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">Author</a></li>
           </ul>
         </div>
-      </div>
+      </nav>
       <div class="mt-10 pt-6 border-t border-slate-200 text-center text-xs text-slate-600">
-        &copy; ${new Date().getFullYear()} Kritano. All rights reserved.
+        <p>&copy; ${new Date().getFullYear()} Kritano. All rights reserved.</p>
       </div>
     </div>
   </footer>`;
@@ -497,10 +520,10 @@ function renderAuthorBio() {
         <div class="flex items-center gap-3 mb-1">
           <a href="/author/chris-garlick" class="font-semibold text-slate-900 hover:text-indigo-600 transition-colors underline decoration-slate-300 underline-offset-2" itemprop="name">Chris Garlick</a>
           <div class="flex items-center gap-2">
-            <a href="https://uk.linkedin.com/in/chris-garlick-59a8bb91" target="_blank" rel="noopener noreferrer nofollow" class="text-slate-400 hover:text-[#0A66C2] transition-colors" aria-label="LinkedIn profile">
+            <a href="https://uk.linkedin.com/in/chris-garlick-59a8bb91" target="_blank" rel="noopener noreferrer nofollow" class="text-slate-400 hover:text-[#0A66C2] transition-colors inline-flex items-center justify-center w-10 h-10 rounded-md" aria-label="LinkedIn profile">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
             </a>
-            <a href="https://x.com/ChrisGarlick123" target="_blank" rel="noopener noreferrer nofollow" class="text-slate-400 hover:text-slate-900 transition-colors" aria-label="X profile">
+            <a href="https://x.com/ChrisGarlick123" target="_blank" rel="noopener noreferrer nofollow" class="text-slate-400 hover:text-slate-900 transition-colors inline-flex items-center justify-center w-10 h-10 rounded-md" aria-label="X profile">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
           </div>
@@ -564,19 +587,19 @@ function renderBlogPost(post) {
         tagsHtml = `<div class="mt-12 pt-8 border-t border-slate-200">
       <div class="flex items-center gap-2 flex-wrap">
         <svg class="w-4 h-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
-        ${post.tags.map(tag => `<a href="/blog?tag=${encodeURIComponent(tag)}" class="text-sm text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-1 rounded-full transition-colors">#${escapeHtml(tag)}</a>`).join('\n        ')}
+        ${post.tags.map(tag => `<a href="/blog?tag=${encodeURIComponent(tag)}" class="text-sm text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-full transition-colors inline-block min-h-[44px] leading-[28px]">#${escapeHtml(tag)}</a>`).join('\n        ')}
       </div>
     </div>`;
     }
-    const body = `<main>
+    const body = `<main id="main-content">
     <article class="max-w-3xl mx-auto px-6 lg:px-20 py-12 lg:py-20">
-      <a href="/blog" class="inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-indigo-600 mb-10 transition-colors">
+      <a href="/blog" class="inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-indigo-600 mb-10 transition-colors py-2 min-h-[44px]">
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
         Back to blog
       </a>
       <header class="mb-10">
         <div class="flex items-center gap-3 mb-5">
-          <a href="/blog?category=${encodeURIComponent(post.category)}" class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-md hover:bg-indigo-100 transition-colors uppercase tracking-wider">${escapeHtml(CATEGORY_LABELS[post.category] || post.category)}</a>
+          <a href="/blog?category=${encodeURIComponent(post.category)}" class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-2.5 rounded-md hover:bg-indigo-100 transition-colors uppercase tracking-wider inline-flex items-center min-h-[44px]">${escapeHtml(CATEGORY_LABELS[post.category] || post.category)}</a>
           <span class="flex items-center gap-1 text-sm text-slate-600">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             ${post.reading_time_minutes} min read
@@ -698,7 +721,7 @@ function renderBlogListing(posts, total, page, totalPages, category, tag) {
         }
         paginationHtml = `<nav class="mt-12 flex items-center justify-center gap-4" aria-label="Pagination">${links.join('\n')}</nav>`;
     }
-    const body = `<main class="max-w-7xl mx-auto px-6 py-12 lg:py-20">
+    const body = `<main id="main-content" class="max-w-7xl mx-auto px-6 py-12 lg:py-20">
     <header class="mb-10">
       <h1 class="font-display text-4xl text-slate-900 mb-3">${escapeHtml(title)}</h1>
       <p class="text-lg text-slate-600">${escapeHtml(description)}</p>
@@ -729,7 +752,7 @@ function renderBlogNotFound() {
         ogImage: `${BASE_URL}/og-image.png`,
         ogType: 'website',
         extraHead: '<meta name="robots" content="noindex" />',
-        body: `<main class="flex items-center justify-center py-32">
+        body: `<main id="main-content" class="flex items-center justify-center py-32">
       <div class="text-center">
         <h1 class="font-display text-3xl text-slate-900 mb-3">Post not found</h1>
         <p class="text-slate-600 mb-6">The article you are looking for does not exist or has been removed.</p>
