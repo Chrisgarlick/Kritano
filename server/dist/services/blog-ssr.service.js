@@ -440,29 +440,16 @@ function htmlShell(opts) {
     .font-display { font-family: 'Instrument Serif', Georgia, serif; }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
-    .min-h-\\[44px\\] { min-height: 44px; }
-    .leading-\\[28px\\] { line-height: 28px; }
-    .w-\\[72px\\] { width: 72px; }
-    .h-\\[72px\\] { height: 72px; }
-    .z-\\[100\\] { z-index: 100; }
-    .hover\\:text-\\[\\#0A66C2\\]:hover { color: #0A66C2; }
-    .focus\\:not-sr-only:focus { position: static; width: auto; height: auto; padding: 0; margin: 0; overflow: visible; clip: auto; white-space: normal; }
-    .focus\\:absolute:focus { position: absolute; }
-    .focus\\:top-4:focus { top: 1rem; }
-    .focus\\:left-4:focus { left: 1rem; }
-    .focus\\:z-\\[100\\]:focus { z-index: 100; }
-    .focus\\:bg-indigo-600:focus { background-color: #4f46e5; }
-    .focus\\:text-white:focus { color: #fff; }
-    .focus\\:px-4:focus { padding-left: 1rem; padding-right: 1rem; }
-    .focus\\:py-2:focus { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-    .focus\\:rounded-md:focus { border-radius: 0.375rem; }
-    .focus\\:text-sm:focus { font-size: 0.875rem; line-height: 1.25rem; }
-    .focus\\:font-semibold:focus { font-weight: 600; }
+    .ssr-touch { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px; }
+    .ssr-touch-block { display: inline-block; min-height: 44px; padding: 6px 0; }
+    .ssr-touch-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
+    .ssr-tag { display: inline-block; min-height: 44px; padding: 8px 12px; line-height: 28px; }
+    .ssr-skip:focus { position: absolute; top: 1rem; left: 1rem; z-index: 100; background: #4f46e5; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; width: auto; height: auto; clip: auto; white-space: normal; overflow: visible; }
   </style>
   ${opts.extraHead}
 </head>
 <body class="bg-white text-slate-900 antialiased">
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-indigo-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold">Skip to content</a>
+  <a href="#main-content" class="sr-only ssr-skip">Skip to content</a>
   ${renderNav()}
   ${opts.body}
   ${renderFooter()}
@@ -478,11 +465,11 @@ function renderNav() {
         <span class="font-display text-xl text-slate-900">Kritano</span>
       </a>
       <div class="flex items-center gap-2 text-sm font-medium text-slate-600">
-        <a href="/about" class="hover:text-slate-900 transition-colors px-3 py-2 rounded-md min-h-[44px] inline-flex items-center">About</a>
-        <a href="/blog" class="text-indigo-600 font-semibold px-3 py-2 rounded-md min-h-[44px] inline-flex items-center" aria-current="page">Blog</a>
-        <a href="/pricing" class="hover:text-slate-900 transition-colors px-3 py-2 rounded-md min-h-[44px] inline-flex items-center">Pricing</a>
-        <a href="/contact" class="hover:text-slate-900 transition-colors px-3 py-2 rounded-md min-h-[44px] inline-flex items-center">Contact</a>
-        <a href="/app" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 min-h-[44px] text-sm font-semibold text-white hover:bg-indigo-700 transition-colors">Dashboard</a>
+        <a href="/about" class="ssr-touch hover:text-slate-900 transition-colors rounded-md">About</a>
+        <a href="/blog" class="ssr-touch text-indigo-600 font-semibold rounded-md" aria-current="page">Blog</a>
+        <a href="/pricing" class="ssr-touch hover:text-slate-900 transition-colors rounded-md">Pricing</a>
+        <a href="/contact" class="ssr-touch hover:text-slate-900 transition-colors rounded-md">Contact</a>
+        <a href="/app" class="ssr-touch rounded-md bg-indigo-600 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors">Dashboard</a>
       </div>
     </nav>
   </header>`;
@@ -501,23 +488,23 @@ function renderFooter() {
         <div>
           <h2 class="font-semibold text-sm text-slate-900 mb-3">Product</h2>
           <ul class="space-y-1 text-sm text-slate-600">
-            <li><a href="/pricing" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">Pricing</a></li>
-            <li><a href="/docs" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">API Docs</a></li>
+            <li><a href="/pricing" class="ssr-touch-block hover:text-slate-900">Pricing</a></li>
+            <li><a href="/docs" class="ssr-touch-block hover:text-slate-900">API Docs</a></li>
           </ul>
         </div>
         <div>
           <h2 class="font-semibold text-sm text-slate-900 mb-3">Company</h2>
           <ul class="space-y-1 text-sm text-slate-600">
-            <li><a href="/about" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">About</a></li>
-            <li><a href="/blog" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">Blog</a></li>
-            <li><a href="/contact" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">Contact</a></li>
+            <li><a href="/about" class="ssr-touch-block hover:text-slate-900">About</a></li>
+            <li><a href="/blog" class="ssr-touch-block hover:text-slate-900">Blog</a></li>
+            <li><a href="/contact" class="ssr-touch-block hover:text-slate-900">Contact</a></li>
           </ul>
         </div>
         <div>
           <h2 class="font-semibold text-sm text-slate-900 mb-3">Resources</h2>
           <ul class="space-y-1 text-sm text-slate-600">
-            <li><a href="/faq" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">FAQ</a></li>
-            <li><a href="/author/chris-garlick" class="hover:text-slate-900 inline-block py-1.5 min-h-[44px]">Author</a></li>
+            <li><a href="/faq" class="ssr-touch-block hover:text-slate-900">FAQ</a></li>
+            <li><a href="/author/chris-garlick" class="ssr-touch-block hover:text-slate-900">Author</a></li>
           </ul>
         </div>
       </nav>
@@ -532,16 +519,16 @@ function renderAuthorBio() {
     return `<div class="border border-slate-200 rounded-xl p-6 bg-slate-50" itemprop="author" itemscope itemtype="https://schema.org/Person">
     <div class="flex items-start gap-5">
       <a href="/author/chris-garlick" class="flex-shrink-0">
-        <img src="/brand/author-chris-garlick.png" alt="Chris Garlick" itemprop="image" width="72" height="72" class="w-[72px] h-[72px] rounded-full object-cover border-2 border-white shadow-sm" />
+        <img src="/brand/author-chris-garlick.png" alt="Chris Garlick" itemprop="image" width="72" height="72" class="rounded-full object-cover border-2 border-white shadow-sm" style="width:72px;height:72px" />
       </a>
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-3 mb-1">
           <a href="/author/chris-garlick" class="font-semibold text-slate-900 hover:text-indigo-600 transition-colors underline decoration-slate-300 underline-offset-2" itemprop="name">Chris Garlick</a>
           <div class="flex items-center gap-2">
-            <a href="https://uk.linkedin.com/in/chris-garlick-59a8bb91" target="_blank" rel="noopener noreferrer nofollow" class="text-slate-400 hover:text-[#0A66C2] transition-colors inline-flex items-center justify-center w-10 h-10 rounded-md" aria-label="LinkedIn profile">
+            <a href="https://uk.linkedin.com/in/chris-garlick-59a8bb91" target="_blank" rel="noopener noreferrer nofollow" class="ssr-touch-icon text-slate-400 hover:text-slate-900 transition-colors rounded-md" aria-label="LinkedIn profile">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
             </a>
-            <a href="https://x.com/ChrisGarlick123" target="_blank" rel="noopener noreferrer nofollow" class="text-slate-400 hover:text-slate-900 transition-colors inline-flex items-center justify-center w-10 h-10 rounded-md" aria-label="X profile">
+            <a href="https://x.com/ChrisGarlick123" target="_blank" rel="noopener noreferrer nofollow" class="ssr-touch-icon text-slate-400 hover:text-slate-900 transition-colors rounded-md" aria-label="X profile">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
           </div>
@@ -605,19 +592,19 @@ function renderBlogPost(post) {
         tagsHtml = `<div class="mt-12 pt-8 border-t border-slate-200">
       <div class="flex items-center gap-2 flex-wrap">
         <svg class="w-4 h-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
-        ${post.tags.map(tag => `<a href="/blog?tag=${encodeURIComponent(tag)}" class="text-sm text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-full transition-colors inline-block min-h-[44px] leading-[28px]">#${escapeHtml(tag)}</a>`).join('\n        ')}
+        ${post.tags.map(tag => `<a href="/blog?tag=${encodeURIComponent(tag)}" class="ssr-tag text-sm text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors">#${escapeHtml(tag)}</a>`).join('\n        ')}
       </div>
     </div>`;
     }
     const body = `<main id="main-content">
     <article class="max-w-3xl mx-auto px-6 lg:px-20 py-12 lg:py-20">
-      <a href="/blog" class="inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-indigo-600 mb-10 transition-colors py-2 min-h-[44px]">
+      <a href="/blog" class="ssr-touch text-sm text-slate-600 hover:text-indigo-600 mb-10 transition-colors gap-1.5">
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
         Back to blog
       </a>
       <header class="mb-10">
         <div class="flex items-center gap-3 mb-5">
-          <a href="/blog?category=${encodeURIComponent(post.category)}" class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-2.5 rounded-md hover:bg-indigo-100 transition-colors uppercase tracking-wider inline-flex items-center min-h-[44px]">${escapeHtml(CATEGORY_LABELS[post.category] || post.category)}</a>
+          <a href="/blog?category=${encodeURIComponent(post.category)}" class="ssr-touch text-xs font-semibold text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 transition-colors uppercase tracking-wider">${escapeHtml(CATEGORY_LABELS[post.category] || post.category)}</a>
           <span class="flex items-center gap-1 text-sm text-slate-600">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             ${post.reading_time_minutes} min read
