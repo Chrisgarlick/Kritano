@@ -440,6 +440,24 @@ function htmlShell(opts) {
     .font-display { font-family: 'Instrument Serif', Georgia, serif; }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
+    .min-h-\\[44px\\] { min-height: 44px; }
+    .leading-\\[28px\\] { line-height: 28px; }
+    .w-\\[72px\\] { width: 72px; }
+    .h-\\[72px\\] { height: 72px; }
+    .z-\\[100\\] { z-index: 100; }
+    .hover\\:text-\\[\\#0A66C2\\]:hover { color: #0A66C2; }
+    .focus\\:not-sr-only:focus { position: static; width: auto; height: auto; padding: 0; margin: 0; overflow: visible; clip: auto; white-space: normal; }
+    .focus\\:absolute:focus { position: absolute; }
+    .focus\\:top-4:focus { top: 1rem; }
+    .focus\\:left-4:focus { left: 1rem; }
+    .focus\\:z-\\[100\\]:focus { z-index: 100; }
+    .focus\\:bg-indigo-600:focus { background-color: #4f46e5; }
+    .focus\\:text-white:focus { color: #fff; }
+    .focus\\:px-4:focus { padding-left: 1rem; padding-right: 1rem; }
+    .focus\\:py-2:focus { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .focus\\:rounded-md:focus { border-radius: 0.375rem; }
+    .focus\\:text-sm:focus { font-size: 0.875rem; line-height: 1.25rem; }
+    .focus\\:font-semibold:focus { font-weight: 600; }
   </style>
   ${opts.extraHead}
 </head>
