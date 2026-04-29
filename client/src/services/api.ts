@@ -1241,6 +1241,21 @@ export const adminApi = {
   deleteStory: (id: string) =>
     api.delete<{ success: boolean }>(`/admin/cms/stories/${id}`),
 
+  // CMS - Redirects
+  listRedirects: (params: { search?: string; page?: number; limit?: number } = {}) => {
+    const sp = new URLSearchParams();
+    if (params.search) sp.set('search', params.search);
+    if (params.page) sp.set('page', String(params.page));
+    if (params.limit) sp.set('limit', String(params.limit));
+    return api.get<{ redirects: BlogRedirectItem[]; total: number; page: number; totalPages: number }>(`/admin/cms/redirects?${sp.toString()}`);
+  },
+
+  createRedirect: (data: { post_id: string; old_slug: string }) =>
+    api.post<{ redirect: BlogRedirectItem }>('/admin/cms/redirects', data),
+
+  deleteRedirect: (id: string) =>
+    api.delete<{ success: boolean }>(`/admin/cms/redirects/${id}`),
+
   // Marketing - Campaigns
   listMarketingCampaigns: () =>
     api.get<{ campaigns: MarketingCampaign[] }>('/admin/marketing/campaigns'),
@@ -2021,6 +2036,7 @@ export interface BlogPostDetail extends BlogPostSummary {
 
 export interface CreateBlogPostInput {
   title: string;
+  slug?: string | null;
   subtitle?: string | null;
   excerpt: string;
   featured_image_url?: string | null;
@@ -2050,6 +2066,16 @@ export interface BlogRevision {
   created_by: string;
   created_at: string;
   editor_email?: string;
+}
+
+export interface BlogRedirectItem {
+  id: string;
+  post_id: string;
+  old_slug: string;
+  created_at: string;
+  post_title: string;
+  current_slug: string;
+  post_status: string;
 }
 
 export interface BlogMediaItem {

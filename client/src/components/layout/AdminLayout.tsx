@@ -10,7 +10,7 @@ import {
   LayoutDashboard, Users, Building2, Bug, Lightbulb, Activity, CalendarClock,
   UserSearch, Zap, Mail, Send, Crosshair, Gift, ClipboardList,
   Share2, Tags,
-  FileText, Image, BookOpen, Megaphone, Trophy,
+  FileText, Image, BookOpen, Megaphone, Trophy, ArrowRightLeft,
   Funnel, TrendingUp, DollarSign, BarChart3,
   Settings, Clock, Search, Rocket,
   ChevronDown, ArrowLeft,
@@ -78,6 +78,7 @@ const navGroups: NavGroup[] = [
       { href: '/admin/cms/advice', label: 'Advice Editor', icon: BookOpen },
       { href: '/admin/cms/announcements', label: 'Announcements', icon: Megaphone },
       { href: '/admin/cms/stories', label: 'Stories', icon: Trophy },
+      { href: '/admin/cms/redirects', label: 'Redirects', icon: ArrowRightLeft },
     ],
   },
   {

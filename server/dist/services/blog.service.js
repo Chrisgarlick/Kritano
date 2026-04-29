@@ -22,6 +22,10 @@ exports.getCmsStats = getCmsStats;
 exports.getRelatedPosts = getRelatedPosts;
 exports.getPublishedPostsForSitemap = getPublishedPostsForSitemap;
 exports.getLatestPublishedPosts = getLatestPublishedPosts;
+exports.getRedirectByOldSlug = getRedirectByOldSlug;
+exports.listRedirects = listRedirects;
+exports.deleteRedirect = deleteRedirect;
+exports.createRedirect = createRedirect;
 const index_js_1 = require("../db/index.js");
 const MAX_REVISIONS_PER_POST = 20;
 // ── Slug generation ──
@@ -172,7 +176,9 @@ async function getPostBySlug(slug) {
     return result.rows[0] || null;
 }
 async function createPost(input, authorId, authorName) {
-    const slug = await generateUniqueSlug(input.title);
+    const slug = input.slug
+        ? await generateUniqueSlug(input.slug)
+        : await generateUniqueSlug(input.title);
     const readingTime = calculateReadingTime(input.content);
     const result = await index_js_1.pool.query(`INSERT INTO blog_posts (
       slug, title, subtitle, excerpt, featured_image_url, featured_image_alt,
@@ -212,13 +218,22 @@ async function updatePost(id, input, editorId, revisionNote) {
     const fields = [];
     const params = [];
     let paramIdx = 1;
+    if (input.slug !== undefined && input.slug !== null) {
+        const newSlug = await generateUniqueSlug(input.slug, id);
+        if (newSlug !== existing.slug) {
+            // Save old slug as redirect
+            await index_js_1.pool.query(`INSERT INTO blog_post_redirects (post_id, old_slug)
+         VALUES ($1, $2)
+         ON CONFLICT (old_slug) DO UPDATE SET post_id = $1, created_at = NOW()`, [id, existing.slug]);
+            // Clean up any redirect pointing to the new slug (avoid circular redirects)
+            await index_js_1.pool.query('DELETE FROM blog_post_redirects WHERE old_slug = $1', [newSlug]);
+        }
+        fields.push(`slug = $${paramIdx++}`);
+        params.push(newSlug);
+    }
     if (input.title !== undefined) {
         fields.push(`title = $${paramIdx++}`);
         params.push(input.title);
-        // Re-generate slug if title changed
-        const newSlug = await generateUniqueSlug(input.title, id);
-        fields.push(`slug = $${paramIdx++}`);
-        params.push(newSlug);
     }
     if (input.subtitle !== undefined) {
         fields.push(`subtitle = $${paramIdx++}`);
@@ -450,5 +465,59 @@ async function getPublishedPostsForSitemap() {
 async function getLatestPublishedPosts(limit = 20) {
     const result = await index_js_1.pool.query(`SELECT * FROM blog_posts WHERE status = 'published' ORDER BY published_at DESC LIMIT $1`, [limit]);
     return result.rows;
+}
+async function getRedirectByOldSlug(oldSlug) {
+    const result = await index_js_1.pool.query(`SELECT r.post_id, p.slug AS current_slug
+     FROM blog_post_redirects r
+     JOIN blog_posts p ON p.id = r.post_id
+     WHERE r.old_slug = $1`, [oldSlug]);
+    return result.rows[0] || null;
+}
+async function listRedirects(filters = {}) {
+    const { search, page = 1, limit = 50 } = filters;
+    const conditions = [];
+    const params = [];
+    let paramIdx = 1;
+    if (search) {
+        conditions.push(`(r.old_slug ILIKE $${paramIdx} OR p.title ILIKE $${paramIdx} OR p.slug ILIKE $${paramIdx})`);
+        params.push(`%${search}%`);
+        paramIdx++;
+    }
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+    const [rows, countResult] = await Promise.all([
+        index_js_1.pool.query(`SELECT r.id, r.post_id, r.old_slug, r.created_at,
+              p.title AS post_title, p.slug AS current_slug, p.status AS post_status
+       FROM blog_post_redirects r
+       JOIN blog_posts p ON p.id = r.post_id
+       ${where}
+       ORDER BY r.created_at DESC
+       LIMIT $${paramIdx++} OFFSET $${paramIdx}`, [...params, limit, (page - 1) * limit]),
+        index_js_1.pool.query(`SELECT COUNT(*)::int AS total FROM blog_post_redirects r JOIN blog_posts p ON p.id = r.post_id ${where}`, params),
+    ]);
+    return { redirects: rows.rows, total: countResult.rows[0].total };
+}
+async function deleteRedirect(id) {
+    const result = await index_js_1.pool.query('DELETE FROM blog_post_redirects WHERE id = $1', [id]);
+    return (result.rowCount ?? 0) > 0;
+}
+async function createRedirect(postId, oldSlug) {
+    // Don't allow redirecting to the current slug
+    const post = await getPostById(postId);
+    if (!post)
+        return null;
+    if (post.slug === oldSlug)
+        return null;
+    // Don't allow if old_slug matches another post's current slug
+    const conflict = await index_js_1.pool.query('SELECT id FROM blog_posts WHERE slug = $1', [oldSlug]);
+    if (conflict.rows.length > 0)
+        return null;
+    const result = await index_js_1.pool.query(`INSERT INTO blog_post_redirects (post_id, old_slug)
+     VALUES ($1, $2)
+     ON CONFLICT (old_slug) DO UPDATE SET post_id = $1, created_at = NOW()
+     RETURNING *`, [postId, oldSlug]);
+    if (result.rows.length === 0)
+        return null;
+    const r = result.rows[0];
+    return { ...r, post_title: post.title, current_slug: post.slug, post_status: post.status };
 }
 //# sourceMappingURL=blog.service.js.map

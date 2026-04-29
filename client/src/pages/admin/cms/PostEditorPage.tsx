@@ -123,6 +123,8 @@ export default function PostEditorPage() {
 
   // Form state
   const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
+  const [slugManual, setSlugManual] = useState(false);
   const [subtitle, setSubtitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [category, setCategory] = useState<BlogPostCategory>('guides');
@@ -211,6 +213,8 @@ export default function PostEditorPage() {
       const p = data.post;
       setPost(p);
       setTitle(p.title);
+      setSlug(p.slug || '');
+      setSlugManual(true);
       setSubtitle(p.subtitle || '');
       setExcerpt(p.excerpt);
       setCategory(p.category);
@@ -252,6 +256,7 @@ export default function PostEditorPage() {
     try {
       const postData: CreateBlogPostInput = {
         title,
+        slug: slug || null,
         subtitle: subtitle || null,
         excerpt,
         category,
@@ -534,6 +539,37 @@ export default function PostEditorPage() {
                 placeholder="Post title..."
                 className="w-full px-4 py-3 bg-white/[0.02] border border-white/[0.06] rounded-lg text-xl font-bold text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
               />
+
+              {/* Slug */}
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-500 whitespace-nowrap">/blog/</span>
+                <input
+                  type="text"
+                  value={slug}
+                  onChange={e => {
+                    const val = e.target.value
+                      .toLowerCase()
+                      .replace(/[^a-z0-9-]/g, '')
+                      .replace(/-+/g, '-');
+                    setSlug(val);
+                    setSlugManual(true);
+                  }}
+                  placeholder={title ? title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/[\s_]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').substring(0, 180) : 'auto-generated-from-title'}
+                  className="flex-1 px-3 py-1.5 bg-white/[0.02] border border-white/[0.06] rounded-lg text-xs text-slate-300 font-mono placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                />
+                {slugManual && slug && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSlug('');
+                      setSlugManual(false);
+                    }}
+                    className="text-xs text-slate-500 hover:text-slate-300"
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
 
               {/* Subtitle */}
               <input

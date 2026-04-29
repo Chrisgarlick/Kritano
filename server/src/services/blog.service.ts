@@ -207,7 +207,9 @@ export async function createPost(
   authorId: string,
   authorName: string
 ): Promise<BlogPost> {
-  const slug = await generateUniqueSlug(input.title);
+  const slug = input.slug
+    ? await generateUniqueSlug(input.slug)
+    : await generateUniqueSlug(input.title);
   const readingTime = calculateReadingTime(input.content);
 
   const result = await pool.query(
@@ -260,13 +262,26 @@ export async function updatePost(
   const params: unknown[] = [];
   let paramIdx = 1;
 
+  if (input.slug !== undefined && input.slug !== null) {
+    const newSlug = await generateUniqueSlug(input.slug, id);
+    if (newSlug !== existing.slug) {
+      // Save old slug as redirect
+      await pool.query(
+        `INSERT INTO blog_post_redirects (post_id, old_slug)
+         VALUES ($1, $2)
+         ON CONFLICT (old_slug) DO UPDATE SET post_id = $1, created_at = NOW()`,
+        [id, existing.slug]
+      );
+      // Clean up any redirect pointing to the new slug (avoid circular redirects)
+      await pool.query('DELETE FROM blog_post_redirects WHERE old_slug = $1', [newSlug]);
+    }
+    fields.push(`slug = $${paramIdx++}`);
+    params.push(newSlug);
+  }
+
   if (input.title !== undefined) {
     fields.push(`title = $${paramIdx++}`);
     params.push(input.title);
-    // Re-generate slug if title changed
-    const newSlug = await generateUniqueSlug(input.title, id);
-    fields.push(`slug = $${paramIdx++}`);
-    params.push(newSlug);
   }
 
   if (input.subtitle !== undefined) {
@@ -613,4 +628,90 @@ export async function getLatestPublishedPosts(limit: number = 20): Promise<BlogP
     [limit]
   );
   return result.rows;
+}
+
+// ── Redirects ──
+
+export interface BlogRedirect {
+  id: string;
+  post_id: string;
+  old_slug: string;
+  created_at: string;
+  post_title: string;
+  current_slug: string;
+  post_status: string;
+}
+
+export async function getRedirectByOldSlug(oldSlug: string): Promise<{ post_id: string; current_slug: string } | null> {
+  const result = await pool.query(
+    `SELECT r.post_id, p.slug AS current_slug
+     FROM blog_post_redirects r
+     JOIN blog_posts p ON p.id = r.post_id
+     WHERE r.old_slug = $1`,
+    [oldSlug]
+  );
+  return result.rows[0] || null;
+}
+
+export async function listRedirects(filters: { search?: string; page?: number; limit?: number } = {}): Promise<{ redirects: BlogRedirect[]; total: number }> {
+  const { search, page = 1, limit = 50 } = filters;
+  const conditions: string[] = [];
+  const params: unknown[] = [];
+  let paramIdx = 1;
+
+  if (search) {
+    conditions.push(`(r.old_slug ILIKE $${paramIdx} OR p.title ILIKE $${paramIdx} OR p.slug ILIKE $${paramIdx})`);
+    params.push(`%${search}%`);
+    paramIdx++;
+  }
+
+  const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
+  const [rows, countResult] = await Promise.all([
+    pool.query(
+      `SELECT r.id, r.post_id, r.old_slug, r.created_at,
+              p.title AS post_title, p.slug AS current_slug, p.status AS post_status
+       FROM blog_post_redirects r
+       JOIN blog_posts p ON p.id = r.post_id
+       ${where}
+       ORDER BY r.created_at DESC
+       LIMIT $${paramIdx++} OFFSET $${paramIdx}`,
+      [...params, limit, (page - 1) * limit]
+    ),
+    pool.query(
+      `SELECT COUNT(*)::int AS total FROM blog_post_redirects r JOIN blog_posts p ON p.id = r.post_id ${where}`,
+      params
+    ),
+  ]);
+
+  return { redirects: rows.rows, total: countResult.rows[0].total };
+}
+
+export async function deleteRedirect(id: string): Promise<boolean> {
+  const result = await pool.query('DELETE FROM blog_post_redirects WHERE id = $1', [id]);
+  return (result.rowCount ?? 0) > 0;
+}
+
+export async function createRedirect(postId: string, oldSlug: string): Promise<BlogRedirect | null> {
+  // Don't allow redirecting to the current slug
+  const post = await getPostById(postId);
+  if (!post) return null;
+  if (post.slug === oldSlug) return null;
+
+  // Don't allow if old_slug matches another post's current slug
+  const conflict = await pool.query('SELECT id FROM blog_posts WHERE slug = $1', [oldSlug]);
+  if (conflict.rows.length > 0) return null;
+
+  const result = await pool.query(
+    `INSERT INTO blog_post_redirects (post_id, old_slug)
+     VALUES ($1, $2)
+     ON CONFLICT (old_slug) DO UPDATE SET post_id = $1, created_at = NOW()
+     RETURNING *`,
+    [postId, oldSlug]
+  );
+
+  if (result.rows.length === 0) return null;
+
+  const r = result.rows[0];
+  return { ...r, post_title: post.title, current_slug: post.slug, post_status: post.status };
 }

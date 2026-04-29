@@ -14,6 +14,7 @@ import {
   getLatestPublishedPosts,
   incrementViewCount,
   getRelatedPosts,
+  getRedirectByOldSlug,
 } from '../services/blog.service.js';
 import type { ContentBlock } from '../types/blog.types.js';
 
@@ -46,6 +47,11 @@ router.get('/posts/:slug', async (req: Request, res: Response): Promise<void> =>
   try {
     const post = await getPostBySlug(req.params.slug);
     if (!post) {
+      const redirect = await getRedirectByOldSlug(req.params.slug);
+      if (redirect) {
+        res.redirect(301, `/api/blog/posts/${redirect.current_slug}`);
+        return;
+      }
       res.status(404).json({ error: 'Post not found' });
       return;
     }

@@ -177,6 +177,7 @@ export const ReviewRatingSchema = z.enum(['True', 'MostlyTrue', 'Mixed', 'Mostly
 
 export const CreatePostSchema = z.object({
   title: z.string().min(1).max(300),
+  slug: z.string().max(200).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase alphanumeric with hyphens').nullable().optional(),
   subtitle: z.string().max(500).nullable().optional(),
   excerpt: z.string().min(1).max(500),
   featured_image_url: z.string().max(1000).nullable().optional(),
@@ -195,6 +196,7 @@ export const CreatePostSchema = z.object({
 
 export const UpdatePostSchema = z.object({
   title: z.string().min(1).max(300).optional(),
+  slug: z.string().max(200).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase alphanumeric with hyphens').nullable().optional(),
   subtitle: z.string().max(500).nullable().optional(),
   excerpt: z.string().min(1).max(500).optional(),
   featured_image_url: z.string().max(1000).nullable().optional(),

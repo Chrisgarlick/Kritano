@@ -52,6 +52,12 @@ router.get('/:slug', async (req, res) => {
     try {
         const post = await (0, blog_service_js_1.getPostBySlug)(req.params.slug);
         if (!post) {
+            // Check for a slug redirect before returning 404
+            const redirect = await (0, blog_service_js_1.getRedirectByOldSlug)(req.params.slug);
+            if (redirect) {
+                res.redirect(301, `/blog/${redirect.current_slug}`);
+                return;
+            }
             const html = (0, blog_ssr_service_js_1.renderBlogNotFound)();
             setSsrHeaders(res);
             res.status(404).send(html);

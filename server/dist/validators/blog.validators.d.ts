@@ -348,6 +348,7 @@ export declare const SchemaTypeSchema: z.ZodEnum<["article", "howto", "faq", "cl
 export declare const ReviewRatingSchema: z.ZodEnum<["True", "MostlyTrue", "Mixed", "MostlyFalse", "False"]>;
 export declare const CreatePostSchema: z.ZodObject<{
     title: z.ZodString;
+    slug: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     subtitle: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     excerpt: z.ZodString;
     featured_image_url: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -796,6 +797,7 @@ export declare const CreatePostSchema: z.ZodObject<{
     tags: string[];
     secondary_keywords: string[];
     schema_type: "article" | "howto" | "faq" | "claim_review";
+    slug?: string | null | undefined;
     subtitle?: string | null | undefined;
     featured_image_url?: string | null | undefined;
     featured_image_alt?: string | null | undefined;
@@ -897,6 +899,7 @@ export declare const CreatePostSchema: z.ZodObject<{
     title: string;
     category: "seo" | "accessibility" | "security" | "performance" | "content-quality" | "structured-data" | "eeat" | "aeo" | "guides" | "case-studies" | "product-updates";
     excerpt: string;
+    slug?: string | null | undefined;
     subtitle?: string | null | undefined;
     featured_image_url?: string | null | undefined;
     featured_image_alt?: string | null | undefined;
@@ -911,6 +914,7 @@ export declare const CreatePostSchema: z.ZodObject<{
 }>;
 export declare const UpdatePostSchema: z.ZodObject<{
     title: z.ZodOptional<z.ZodString>;
+    slug: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     subtitle: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     excerpt: z.ZodOptional<z.ZodString>;
     featured_image_url: z.ZodOptional<z.ZodNullable<z.ZodString>>;
@@ -1356,6 +1360,7 @@ export declare const UpdatePostSchema: z.ZodObject<{
     })[] | undefined;
     title?: string | undefined;
     category?: "seo" | "accessibility" | "security" | "performance" | "content-quality" | "structured-data" | "eeat" | "aeo" | "guides" | "case-studies" | "product-updates" | undefined;
+    slug?: string | null | undefined;
     subtitle?: string | null | undefined;
     excerpt?: string | undefined;
     featured_image_url?: string | null | undefined;
@@ -1461,6 +1466,7 @@ export declare const UpdatePostSchema: z.ZodObject<{
     })[] | undefined;
     title?: string | undefined;
     category?: "seo" | "accessibility" | "security" | "performance" | "content-quality" | "structured-data" | "eeat" | "aeo" | "guides" | "case-studies" | "product-updates" | undefined;
+    slug?: string | null | undefined;
     subtitle?: string | null | undefined;
     excerpt?: string | undefined;
     featured_image_url?: string | null | undefined;

@@ -12,6 +12,7 @@ import {
   listPublishedPosts,
   getPostBySlug,
   incrementViewCount,
+  getRedirectByOldSlug,
 } from '../services/blog.service.js';
 import {
   renderBlogPost,
@@ -67,6 +68,12 @@ router.get('/:slug', async (req: Request, res: Response): Promise<void> => {
     const post = await getPostBySlug(req.params.slug);
 
     if (!post) {
+      // Check for a slug redirect before returning 404
+      const redirect = await getRedirectByOldSlug(req.params.slug);
+      if (redirect) {
+        res.redirect(301, `/blog/${redirect.current_slug}`);
+        return;
+      }
       const html = renderBlogNotFound();
       setSsrHeaders(res);
       res.status(404).send(html);

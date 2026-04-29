@@ -58,6 +58,7 @@ export interface PostSummary {
 }
 export interface CreatePostInput {
     title: string;
+    slug?: string | null;
     subtitle?: string | null;
     excerpt: string;
     featured_image_url?: string | null;
@@ -75,6 +76,7 @@ export interface CreatePostInput {
 }
 export interface UpdatePostInput {
     title?: string;
+    slug?: string | null;
     subtitle?: string | null;
     excerpt?: string;
     featured_image_url?: string | null;

@@ -115,6 +115,7 @@ const AdminMediaPage = lazy(() => import('./pages/admin/cms/MediaPage'));
 const AdminAdvicePage = lazy(() => import('./pages/admin/cms/AdvicePage'));
 const AdminAnnouncementsPage = lazy(() => import('./pages/admin/cms/AnnouncementsPage'));
 const AdminStoriesPage = lazy(() => import('./pages/admin/cms/StoriesPage'));
+const AdminRedirectsPage = lazy(() => import('./pages/admin/cms/RedirectsPage'));
 const AdminMarketingContentListPage = lazy(() => import('./pages/admin/marketing/ContentListPage'));
 const AdminMarketingContentEditorPage = lazy(() => import('./pages/admin/marketing/ContentEditorPage'));
 const AdminMarketingCampaignsPage = lazy(() => import('./pages/admin/marketing/CampaignsPage'));
@@ -617,6 +618,14 @@ function App() {
                   element={
                     <AdminRoute>
                       <AdminStoriesPage />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/cms/redirects"
+                  element={
+                    <AdminRoute>
+                      <AdminRedirectsPage />
                     </AdminRoute>
                   }
                 />

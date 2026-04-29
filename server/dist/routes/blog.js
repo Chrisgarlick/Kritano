@@ -35,6 +35,11 @@ router.get('/posts/:slug', async (req, res) => {
     try {
         const post = await (0, blog_service_js_1.getPostBySlug)(req.params.slug);
         if (!post) {
+            const redirect = await (0, blog_service_js_1.getRedirectByOldSlug)(req.params.slug);
+            if (redirect) {
+                res.redirect(301, `/api/blog/posts/${redirect.current_slug}`);
+                return;
+            }
             res.status(404).json({ error: 'Post not found' });
             return;
         }

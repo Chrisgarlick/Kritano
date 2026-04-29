@@ -21,6 +21,9 @@ import {
   listRevisions,
   restoreRevision,
   getCmsStats,
+  listRedirects,
+  deleteRedirect,
+  createRedirect,
 } from '../../services/blog.service.js';
 import {
   uploadMedia,
@@ -633,6 +636,79 @@ router.delete('/stories/:id', async (req: AdminRequest, res: Response): Promise<
   } catch (error) {
     console.error('Delete story error:', error);
     res.status(500).json({ error: 'Failed to delete story', code: 'DELETE_STORY_ERROR' });
+  }
+});
+
+// ═══════════════════════════════════════
+// ── Blog Redirects ──
+// ═══════════════════════════════════════
+
+// GET /api/admin/cms/redirects
+router.get('/redirects', async (req: AdminRequest, res: Response): Promise<void> => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
+    const search = (req.query.search as string) || undefined;
+
+    const result = await listRedirects({ search, page, limit });
+
+    res.json({
+      redirects: result.redirects,
+      total: result.total,
+      page,
+      totalPages: Math.ceil(result.total / limit),
+    });
+  } catch (error) {
+    console.error('List redirects error:', error);
+    res.status(500).json({ error: 'Failed to load redirects', code: 'LIST_REDIRECTS_ERROR' });
+  }
+});
+
+// POST /api/admin/cms/redirects
+router.post('/redirects', async (req: AdminRequest, res: Response): Promise<void> => {
+  try {
+    const { post_id, old_slug } = req.body;
+    if (!post_id || !old_slug) {
+      res.status(400).json({ error: 'post_id and old_slug are required' });
+      return;
+    }
+
+    const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+    if (!slugPattern.test(old_slug)) {
+      res.status(400).json({ error: 'Slug must be lowercase alphanumeric with hyphens' });
+      return;
+    }
+
+    const redirect = await createRedirect(post_id, old_slug);
+    if (!redirect) {
+      res.status(400).json({ error: 'Cannot create redirect. The slug may conflict with an existing post or match the current slug.' });
+      return;
+    }
+
+    await logAdminActivity(req.admin!.id, 'create_redirect', 'blog_redirect', redirect.id, { old_slug, post_id }, req);
+
+    res.status(201).json({ redirect });
+  } catch (error) {
+    console.error('Create redirect error:', error);
+    res.status(500).json({ error: 'Failed to create redirect', code: 'CREATE_REDIRECT_ERROR' });
+  }
+});
+
+// DELETE /api/admin/cms/redirects/:id
+router.delete('/redirects/:id', async (req: AdminRequest, res: Response): Promise<void> => {
+  try {
+    const deleted = await deleteRedirect(req.params.id);
+    if (!deleted) {
+      res.status(404).json({ error: 'Redirect not found' });
+      return;
+    }
+
+    await logAdminActivity(req.admin!.id, 'delete_redirect', 'blog_redirect', req.params.id, {}, req);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Delete redirect error:', error);
+    res.status(500).json({ error: 'Failed to delete redirect', code: 'DELETE_REDIRECT_ERROR' });
   }
 });
 

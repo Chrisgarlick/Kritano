@@ -38,4 +38,27 @@ export declare function getPublishedPostsForSitemap(): Promise<Array<{
     updated_at: string;
 }>>;
 export declare function getLatestPublishedPosts(limit?: number): Promise<BlogPost[]>;
+export interface BlogRedirect {
+    id: string;
+    post_id: string;
+    old_slug: string;
+    created_at: string;
+    post_title: string;
+    current_slug: string;
+    post_status: string;
+}
+export declare function getRedirectByOldSlug(oldSlug: string): Promise<{
+    post_id: string;
+    current_slug: string;
+} | null>;
+export declare function listRedirects(filters?: {
+    search?: string;
+    page?: number;
+    limit?: number;
+}): Promise<{
+    redirects: BlogRedirect[];
+    total: number;
+}>;
+export declare function deleteRedirect(id: string): Promise<boolean>;
+export declare function createRedirect(postId: string, oldSlug: string): Promise<BlogRedirect | null>;
 //# sourceMappingURL=blog.service.d.ts.map

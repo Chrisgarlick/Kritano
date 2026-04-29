@@ -155,6 +155,7 @@ exports.ReviewRatingSchema = zod_1.z.enum(['True', 'MostlyTrue', 'Mixed', 'Mostl
 // ── Post schemas ──
 exports.CreatePostSchema = zod_1.z.object({
     title: zod_1.z.string().min(1).max(300),
+    slug: zod_1.z.string().max(200).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase alphanumeric with hyphens').nullable().optional(),
     subtitle: zod_1.z.string().max(500).nullable().optional(),
     excerpt: zod_1.z.string().min(1).max(500),
     featured_image_url: zod_1.z.string().max(1000).nullable().optional(),
@@ -172,6 +173,7 @@ exports.CreatePostSchema = zod_1.z.object({
 });
 exports.UpdatePostSchema = zod_1.z.object({
     title: zod_1.z.string().min(1).max(300).optional(),
+    slug: zod_1.z.string().max(200).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase alphanumeric with hyphens').nullable().optional(),
     subtitle: zod_1.z.string().max(500).nullable().optional(),
     excerpt: zod_1.z.string().min(1).max(500).optional(),
     featured_image_url: zod_1.z.string().max(1000).nullable().optional(),
