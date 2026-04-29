@@ -347,7 +347,7 @@ export default function RedirectsPage() {
                         type="text"
                         value={postSearch}
                         onChange={e => setPostSearch(e.target.value)}
-                        placeholder="Search for a post by title..."
+                        placeholder="Search by title or slug, then select..."
                         className="w-full px-3 py-2 bg-white/[0.02] border border-white/[0.06] rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                       />
                       {postSearching && (

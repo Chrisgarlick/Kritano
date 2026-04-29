@@ -118,7 +118,7 @@ async function listPosts(filters = {}) {
         params.push(category);
     }
     if (search) {
-        conditions.push(`(title ILIKE $${paramIdx} OR excerpt ILIKE $${paramIdx})`);
+        conditions.push(`(title ILIKE $${paramIdx} OR excerpt ILIKE $${paramIdx} OR slug ILIKE $${paramIdx})`);
         params.push(`%${search}%`);
         paramIdx++;
     }

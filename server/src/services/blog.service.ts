@@ -119,7 +119,7 @@ export async function listPosts(filters: PostFilters = {}): Promise<{ posts: Pos
   }
 
   if (search) {
-    conditions.push(`(title ILIKE $${paramIdx} OR excerpt ILIKE $${paramIdx})`);
+    conditions.push(`(title ILIKE $${paramIdx} OR excerpt ILIKE $${paramIdx} OR slug ILIKE $${paramIdx})`);
     params.push(`%${search}%`);
     paramIdx++;
   }
