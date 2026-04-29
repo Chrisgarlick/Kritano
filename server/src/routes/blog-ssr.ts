@@ -21,6 +21,24 @@ import {
 
 const router = Router();
 
+// SSR pages serve full HTML documents, not API JSON. Override Helmet's
+// restrictive API CSP with the same policy nginx uses for SPA pages.
+function setSsrHeaders(res: Response): void {
+  res.set('Content-Type', 'text/html');
+  res.removeHeader('Content-Security-Policy');
+  res.set('Content-Security-Policy',
+    "default-src 'self'; " +
+    "script-src 'self'; " +
+    "style-src 'self' 'unsafe-inline'; " +
+    "font-src 'self'; " +
+    "img-src 'self' data: https:; " +
+    "connect-src 'self'; " +
+    "frame-src 'none'; " +
+    "frame-ancestors 'self'; " +
+    "base-uri 'self'"
+  );
+}
+
 // GET /blog - Blog listing page
 router.get('/', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -34,7 +52,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 
     const html = renderBlogListing(result.posts, result.total, page, totalPages, category, tag);
 
-    res.set('Content-Type', 'text/html');
+    setSsrHeaders(res);
     res.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=60');
     res.send(html);
   } catch (error) {
@@ -50,7 +68,8 @@ router.get('/:slug', async (req: Request, res: Response): Promise<void> => {
 
     if (!post) {
       const html = renderBlogNotFound();
-      res.status(404).set('Content-Type', 'text/html').send(html);
+      setSsrHeaders(res);
+      res.status(404).send(html);
       return;
     }
 
@@ -62,7 +81,7 @@ router.get('/:slug', async (req: Request, res: Response): Promise<void> => {
 
     const html = renderBlogPost(post);
 
-    res.set('Content-Type', 'text/html');
+    setSsrHeaders(res);
     res.set('Cache-Control', 'public, max-age=600, stale-while-revalidate=120');
     res.send(html);
   } catch (error) {
