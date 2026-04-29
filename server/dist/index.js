@@ -53,6 +53,7 @@ const index_js_2 = require("./routes/index.js");
 const pdf_report_service_js_1 = require("./services/pdf-report.service.js");
 const prerender_service_js_1 = require("./services/prerender.service.js");
 const prerender_middleware_js_1 = require("./middleware/prerender.middleware.js");
+const blog_ssr_js_1 = require("./routes/blog-ssr.js");
 const resend_js_1 = require("./routes/webhooks/resend.js");
 const stripe_js_1 = require("./routes/webhooks/stripe.js");
 const http_js_1 = require("./mcp/http.js");
@@ -209,6 +210,8 @@ app.get('/sitemap.xml', async (_req, res) => {
 });
 // API routes
 app.use('/api', index_js_2.apiRouter);
+// Blog SSR — serves fully rendered HTML for /blog pages (no JS execution needed)
+app.use('/blog', blog_ssr_js_1.blogSsrRouter);
 // Pre-rendering for bot/crawler user agents (serves rendered HTML for SEO/AI citation)
 app.use(prerender_middleware_js_1.prerenderMiddleware);
 // 404 handler

@@ -70,6 +70,11 @@ function prerenderMiddleware(req, res, next) {
         next();
         return;
     }
+    // Skip blog routes (served by blog SSR)
+    if (req.path === '/blog' || req.path.startsWith('/blog/')) {
+        next();
+        return;
+    }
     // Skip static assets
     if (STATIC_EXTENSIONS.test(req.path)) {
         next();
