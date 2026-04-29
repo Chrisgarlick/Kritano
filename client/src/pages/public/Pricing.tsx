@@ -12,6 +12,7 @@ import { PublicLayout } from '../../components/layout/PublicLayout';
 import AuthorBio from '../../components/blog/AuthorBio';
 import PageSeo from '../../components/seo/PageSeo';
 import { CheckCircle, X, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { useSiteMode } from '../../contexts/SiteModeContext';
 
 interface Plan {
   name: string;
@@ -241,6 +242,8 @@ const FAQS = [
 export default function Pricing() {
   const [comparisonOpen, setComparisonOpen] = useState(false);
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
+  const mode = useSiteMode();
+  const isEarlyAccess = mode === 'early_access';
 
   return (
     <PublicLayout>
@@ -399,14 +402,14 @@ export default function Pricing() {
 
                 {/* CTA */}
                 <Link
-                  to={plan.ctaLink}
+                  to={isEarlyAccess ? '/register?ea=email' : plan.ctaLink}
                   className={`block text-center px-4 py-2.5 rounded-lg font-medium text-sm transition-colors ${
                     plan.popular
                       ? 'bg-indigo-600 hover:bg-indigo-500 text-white'
                       : 'border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
-                  {plan.cta}
+                  {isEarlyAccess ? 'Join Early Access' : plan.cta}
                 </Link>
               </div>
             </div>
@@ -498,16 +501,18 @@ export default function Pricing() {
       <section className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="font-display text-4xl text-slate-900 dark:text-white leading-tight mb-6">
-            Start for free, no strings attached
+            {isEarlyAccess ? 'Join early access today' : 'Start for free, no strings attached'}
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
-            Your first audit is on us. See the value before you commit.
+            {isEarlyAccess
+              ? 'Limited spots available. Lock in discounted pricing for life.'
+              : 'Your first audit is on us. See the value before you commit.'}
           </p>
           <Link
-            to="/register"
+            to={isEarlyAccess ? '/register?ea=email' : '/register'}
             className="inline-flex items-center gap-2 px-7 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
           >
-            Start Free Audit
+            {isEarlyAccess ? 'Join Early Access' : 'Start Free Audit'}
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
