@@ -33,7 +33,7 @@ function getNavLinks(mode: SiteMode) {
   if (mode !== 'waitlist') {
     links.unshift({ href: '/pricing', label: 'Pricing' });
   }
-  if (mode === 'live') {
+  if (mode !== 'waitlist') {
     links.push({ href: '/docs', label: 'API Docs' });
   }
   return links;
@@ -69,7 +69,7 @@ function getFooterLinks(mode: SiteMode, activeCategories: Set<string>) {
   if (activeCategories.has('case-studies')) {
     resources.push({ href: '/blog?category=case-studies', label: 'Case Studies' });
   }
-  if (mode === 'live') {
+  if (mode !== 'waitlist') {
     resources.unshift({ href: '/docs', label: 'API Docs' });
     if (activeCategories.has('product-updates')) {
       resources.push({ href: '/blog?category=product-updates', label: 'Product Updates' });

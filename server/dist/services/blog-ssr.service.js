@@ -445,6 +445,21 @@ function htmlShell(opts) {
     .ssr-touch-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
     .ssr-tag { display: inline-block; min-height: 44px; padding: 8px 12px; line-height: 28px; }
     .ssr-skip:focus { position: absolute; top: 1rem; left: 1rem; z-index: 100; background: #4f46e5; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; width: auto; height: auto; clip: auto; white-space: normal; overflow: visible; }
+
+    /* Mobile nav toggle */
+    .ssr-mobile-checkbox { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
+    .ssr-mobile-menu { display: none; }
+    .ssr-hamburger { display: none; }
+    .ssr-hamburger-close { display: none; }
+    .ssr-desktop-nav { display: flex; }
+
+    @media (max-width: 767px) {
+      .ssr-desktop-nav { display: none; }
+      .ssr-hamburger { display: inline-flex; }
+      .ssr-mobile-checkbox:checked ~ nav .ssr-hamburger-open { display: none; }
+      .ssr-mobile-checkbox:checked ~ nav .ssr-hamburger-close { display: block; }
+      .ssr-mobile-checkbox:checked ~ .ssr-mobile-menu { display: block; }
+    }
   </style>
   ${opts.extraHead}
 </head>
@@ -459,19 +474,35 @@ function htmlShell(opts) {
 // ── Nav / Footer ─────────────────────────────────────────────────────
 function renderNav() {
     return `<header role="banner" class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+    <input type="checkbox" id="ssr-mobile-toggle" class="ssr-mobile-checkbox" />
     <nav aria-label="Main navigation" class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2" aria-label="Kritano home">
         <img src="/brand/favicon-32.svg" alt="" width="28" height="28" role="presentation" />
         <span class="font-display text-xl text-slate-900">Kritano</span>
       </a>
-      <div class="flex items-center gap-2 text-sm font-medium text-slate-600">
+      <div class="ssr-desktop-nav items-center gap-2 text-sm font-medium text-slate-600">
         <a href="/about" class="ssr-touch hover:text-slate-900 transition-colors rounded-md">About</a>
         <a href="/blog" class="ssr-touch text-indigo-600 font-semibold rounded-md" aria-current="page">Blog</a>
         <a href="/pricing" class="ssr-touch hover:text-slate-900 transition-colors rounded-md">Pricing</a>
+        <a href="/docs" class="ssr-touch hover:text-slate-900 transition-colors rounded-md">API Docs</a>
         <a href="/contact" class="ssr-touch hover:text-slate-900 transition-colors rounded-md">Contact</a>
         <a href="/app" class="ssr-touch rounded-md bg-indigo-600 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors">Dashboard</a>
       </div>
+      <label for="ssr-mobile-toggle" class="ssr-hamburger ssr-touch-icon cursor-pointer text-slate-600 hover:text-slate-900" aria-label="Toggle menu">
+        <svg class="ssr-hamburger-open w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg class="ssr-hamburger-close w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </label>
     </nav>
+    <div class="ssr-mobile-menu border-t border-slate-200 bg-white">
+      <div class="px-6 py-4 space-y-1 text-sm font-medium text-slate-600">
+        <a href="/about" class="ssr-touch-block hover:text-slate-900 block">About</a>
+        <a href="/blog" class="ssr-touch-block text-indigo-600 font-semibold block" aria-current="page">Blog</a>
+        <a href="/pricing" class="ssr-touch-block hover:text-slate-900 block">Pricing</a>
+        <a href="/docs" class="ssr-touch-block hover:text-slate-900 block">API Docs</a>
+        <a href="/contact" class="ssr-touch-block hover:text-slate-900 block">Contact</a>
+        <a href="/app" class="ssr-touch block rounded-md bg-indigo-600 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors text-center mt-2">Dashboard</a>
+      </div>
+    </div>
   </header>`;
 }
 function renderFooter() {
