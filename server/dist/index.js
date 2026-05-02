@@ -182,9 +182,11 @@ app.get('/sitemap.xml', async (_req, res) => {
         let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
         xml += '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>\n';
         xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+        const now = new Date().toISOString();
         for (const page of staticPages) {
             xml += '  <url>\n';
             xml += `    <loc>${baseUrl}${page.loc}</loc>\n`;
+            xml += `    <lastmod>${now}</lastmod>\n`;
             xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
             xml += `    <priority>${page.priority}</priority>\n`;
             xml += '  </url>\n';
@@ -193,8 +195,8 @@ app.get('/sitemap.xml', async (_req, res) => {
             xml += '  <url>\n';
             xml += `    <loc>${baseUrl}/blog/${post.slug}</loc>\n`;
             xml += `    <lastmod>${new Date(post.updated_at).toISOString()}</lastmod>\n`;
-            xml += '    <changefreq>monthly</changefreq>\n';
-            xml += '    <priority>0.6</priority>\n';
+            xml += '    <changefreq>weekly</changefreq>\n';
+            xml += '    <priority>0.8</priority>\n';
             xml += '  </url>\n';
         }
         xml += '</urlset>';

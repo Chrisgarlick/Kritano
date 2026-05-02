@@ -120,7 +120,8 @@ router.get('/sitemap.xml', async (_req: Request, res: Response): Promise<void> =
       xml += '  <url>\n';
       xml += `    <loc>${baseUrl}/blog/${post.slug}</loc>\n`;
       xml += `    <lastmod>${new Date(post.updated_at).toISOString()}</lastmod>\n`;
-      xml += '    <priority>0.6</priority>\n';
+      xml += '    <changefreq>weekly</changefreq>\n';
+      xml += '    <priority>0.8</priority>\n';
       xml += '  </url>\n';
     }
 

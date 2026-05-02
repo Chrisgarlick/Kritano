@@ -7,21 +7,23 @@ import { AdminProvider } from './contexts/AdminContext';
 import { ToastProvider } from './components/ui/Toast';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { AdminRoute } from './routes/AdminRoute';
-import { SettingsLayout } from './components/layout/SettingsLayout';
 import { SiteModeProvider } from './contexts/SiteModeContext';
 import { SiteModeGuard } from './components/SiteModeGuard';
 import { CookieConsentProvider } from './contexts/CookieConsentContext';
 import { SeoProvider } from './hooks/useSeoOverrides';
 import { GTMRouteTracker } from './components/GTMRouteTracker';
 
-// Eagerly loaded (critical path)
+// Eagerly loaded (critical path — minimal)
 import Home from './pages/Home';
-import LoginPage from './pages/auth/Login';
-import RegisterPage from './pages/auth/Register';
 import NotFoundPage from './pages/errors/NotFound';
 
-// Lazy-loaded: Auth pages
+// Lazy-loaded: Auth pages (react-hook-form + zod stay out of main bundle)
+const LoginPage = lazy(() => import('./pages/auth/Login'));
+const RegisterPage = lazy(() => import('./pages/auth/Register'));
 const RegisterSuccessPage = lazy(() => import('./pages/auth/RegisterSuccess'));
+
+// Lazy-loaded: Settings layout (pulls in DashboardLayout + Sidebar icons)
+const SettingsLayout = lazy(() => import('./components/layout/SettingsLayout').then(m => ({ default: m.SettingsLayout })));
 const VerifyEmailPage = lazy(() => import('./pages/auth/VerifyEmail'));
 const OAuthCallbackPage = lazy(() => import('./pages/auth/OAuthCallback'));
 const ForgotPasswordPage = lazy(() => import('./pages/auth/ForgotPassword'));

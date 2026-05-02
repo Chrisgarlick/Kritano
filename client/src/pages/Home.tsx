@@ -27,6 +27,7 @@ import {
   CheckCircle,
   AlertTriangle,
   XCircle,
+  Clock,
 } from 'lucide-react';
 
 // =============================================
@@ -603,6 +604,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ Latest from the Blog ═══ */}
+      <LatestBlogPosts />
+
       {/* ═══ CTA Section ═══ */}
       <section>
         <div className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
@@ -684,5 +688,119 @@ function StatItem({ value, label }: { value: string; label: string }) {
       <p className="font-display text-4xl lg:text-5xl text-white mb-2">{value}</p>
       <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">{label}</p>
     </div>
+  );
+}
+
+interface BlogPostSummary {
+  slug: string;
+  title: string;
+  excerpt: string;
+  featured_image_url: string | null;
+  category: string;
+  reading_time_minutes: number;
+  published_at: string;
+}
+
+const CATEGORY_COLORS: Record<string, string> = {
+  seo: 'bg-violet-50 text-violet-700',
+  accessibility: 'bg-emerald-50 text-emerald-700',
+  security: 'bg-red-50 text-red-700',
+  performance: 'bg-sky-50 text-sky-700',
+  'web-development': 'bg-indigo-50 text-indigo-700',
+  'content-quality': 'bg-amber-50 text-amber-700',
+  business: 'bg-slate-100 text-slate-700',
+  industry: 'bg-slate-100 text-slate-700',
+};
+
+function LatestBlogPosts() {
+  const [posts, setPosts] = useState<BlogPostSummary[]>([]);
+
+  useEffect(() => {
+    fetch('/api/blog/posts?limit=3')
+      .then(r => r.json())
+      .then(d => setPosts(d.posts ?? []))
+      .catch(() => {});
+  }, []);
+
+  if (posts.length === 0) return null;
+
+  return (
+    <section className="bg-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-20 py-24">
+        <div className="flex items-end justify-between mb-12">
+          <div>
+            <p className="text-indigo-600 font-medium tracking-wide uppercase text-xs mb-4">
+              From the Blog
+            </p>
+            <h2 className="font-display text-4xl lg:text-5xl text-slate-900 leading-tight">
+              Guides, insights, and auditing tips.
+            </h2>
+          </div>
+          <Link
+            to="/blog"
+            className="hidden md:inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition-colors"
+          >
+            View all posts <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {posts.map((post) => {
+            const colorClass = CATEGORY_COLORS[post.category] ?? 'bg-slate-100 text-slate-700';
+            const webpUrl = post.featured_image_url?.replace('/original/', '/webp/').replace(/\.(png|jpg|jpeg|gif)$/i, '.webp');
+            const thumbUrl = post.featured_image_url?.replace('/original/', '/thumbnails/');
+            return (
+              <Link
+                key={post.slug}
+                to={`/blog/${post.slug}`}
+                className="group bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              >
+                {post.featured_image_url && (
+                  <div className="aspect-[16/9] overflow-hidden bg-slate-100">
+                    <picture>
+                      {webpUrl && <source srcSet={webpUrl} type="image/webp" />}
+                      <img
+                        src={thumbUrl ?? post.featured_image_url}
+                        srcSet={thumbUrl ? `${thumbUrl} 400w, ${post.featured_image_url} 800w` : undefined}
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        alt={post.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </picture>
+                  </div>
+                )}
+                <div className="p-5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${colorClass}`}>
+                      {post.category.replace('-', ' ')}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-slate-400">
+                      <Clock className="w-3 h-3" />
+                      {post.reading_time_minutes} min
+                    </span>
+                  </div>
+                  <h3 className="text-base font-semibold text-slate-900 mb-2 group-hover:text-indigo-600 transition-colors leading-snug line-clamp-2">
+                    {post.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
+                    {post.excerpt}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="mt-8 text-center md:hidden">
+          <Link
+            to="/blog"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition-colors"
+          >
+            View all posts <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }
