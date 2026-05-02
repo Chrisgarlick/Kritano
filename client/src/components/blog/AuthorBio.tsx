@@ -45,14 +45,18 @@ export default function AuthorBio() {
     >
       <div className="flex items-start gap-5">
         <Link to={AUTHOR.url} className="flex-shrink-0">
-          <img
-            src={AUTHOR.photo}
-            alt={AUTHOR.name}
-            itemProp="image"
-            width={72}
-            height={72}
-            className="w-[72px] h-[72px] rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm"
-          />
+          <picture>
+            <source srcSet="/brand/author-chris-garlick-150.webp" type="image/webp" />
+            <img
+              src="/brand/author-chris-garlick-150.png"
+              alt={AUTHOR.name}
+              itemProp="image"
+              width={72}
+              height={72}
+              loading="lazy"
+              className="w-[72px] h-[72px] rounded-full object-cover border-2 border-white dark:border-slate-700 shadow-sm"
+            />
+          </picture>
         </Link>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 mb-1">

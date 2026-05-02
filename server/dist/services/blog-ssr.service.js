@@ -550,7 +550,7 @@ function renderAuthorBio() {
     return `<div class="border border-slate-200 rounded-xl p-6 bg-slate-50" itemprop="author" itemscope itemtype="https://schema.org/Person">
     <div class="flex items-start gap-5">
       <a href="/author/chris-garlick" class="flex-shrink-0">
-        <img src="/brand/author-chris-garlick.png" alt="Chris Garlick" itemprop="image" width="72" height="72" class="rounded-full object-cover border-2 border-white shadow-sm" style="width:72px;height:72px" />
+        <picture><source srcset="/brand/author-chris-garlick-150.webp" type="image/webp" /><img src="/brand/author-chris-garlick-150.png" alt="Chris Garlick" itemprop="image" width="72" height="72" loading="lazy" class="rounded-full object-cover border-2 border-white shadow-sm" style="width:72px;height:72px" /></picture>
       </a>
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-3 mb-1">
