@@ -46,6 +46,7 @@ export default defineConfig({
     sourcemap: 'hidden',
     cssMinify: 'lightningcss',
     target: 'es2020',
+    modulePreload: false,
     rollupOptions: {
       output: {
         manualChunks: {
