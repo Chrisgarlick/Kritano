@@ -25,6 +25,8 @@ export declare class AuditWorkerService {
     private effectiveConcurrency;
     private discoveredLinksPerJob;
     private activeJobs;
+    private settledJobs;
+    private activeJobStartTimes;
     private staleRecoveryInterval;
     private lastPollAt;
     constructor(config: AuditWorkerConfig);

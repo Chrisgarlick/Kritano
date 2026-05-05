@@ -60,6 +60,10 @@ class AuditWorkerService {
     discoveredLinksPerJob = new Map();
     // Track active jobs being processed
     activeJobs = new Map();
+    // Track jobs whose promises have settled (resolved or rejected)
+    settledJobs = new Set();
+    // Track when each job was started (for stale slot detection)
+    activeJobStartTimes = new Map();
     // Periodic stale job recovery
     staleRecoveryInterval = null;
     // Timestamp of last successful poll loop iteration
@@ -177,14 +181,20 @@ class AuditWorkerService {
             try {
                 this.lastPollAt = Date.now();
                 // Clean up completed jobs from activeJobs map
-                for (const [jobId, promise] of this.activeJobs) {
-                    // Check if the promise is settled by racing with an immediate resolve
-                    const isSettled = await Promise.race([
-                        promise.then(() => true).catch(() => true),
-                        Promise.resolve(false),
-                    ]);
-                    if (isSettled) {
+                for (const [jobId] of this.activeJobs) {
+                    if (this.settledJobs.has(jobId)) {
                         this.activeJobs.delete(jobId);
+                        this.settledJobs.delete(jobId);
+                        this.activeJobStartTimes.delete(jobId);
+                    }
+                    else {
+                        // Safety net: evict slots stuck longer than the audit timeout + 2 min buffer
+                        const startedAt = this.activeJobStartTimes.get(jobId);
+                        if (startedAt && Date.now() - startedAt > AUDIT_TIMEOUT_MS + 120_000) {
+                            console.warn(`⚠️  Force-evicting stale job slot ${jobId} (exceeded ${AUDIT_TIMEOUT_MS / 60000 + 2}min)`);
+                            this.activeJobs.delete(jobId);
+                            this.activeJobStartTimes.delete(jobId);
+                        }
                     }
                 }
                 // Check browser health - restart if crashed
@@ -224,11 +234,15 @@ class AuditWorkerService {
                         break; // No more pending jobs
                     console.log(`📋 Starting job ${job.id} (${this.activeJobs.size + 1}/${this.effectiveConcurrency} slots): ${job.target_url}`);
                     // Start job processing without awaiting (concurrent)
-                    const jobPromise = this.processJob(job).catch((error) => {
+                    const jobPromise = this.processJob(job).then(() => {
+                        this.settledJobs.add(job.id);
+                    }).catch((error) => {
                         // Log but don't throw - error handling is done in processJob
                         console.error(`Job ${job.id} failed:`, error);
+                        this.settledJobs.add(job.id);
                     });
                     this.activeJobs.set(job.id, jobPromise);
+                    this.activeJobStartTimes.set(job.id, Date.now());
                 }
                 // If we have no active jobs and no jobs were claimed, wait before polling again
                 if (this.activeJobs.size === 0) {
