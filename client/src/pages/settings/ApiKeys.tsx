@@ -408,7 +408,7 @@ export default function ApiKeysPage() {
                     <h4 className="text-sm font-medium text-slate-900 dark:text-white mb-2">Quick Start</h4>
                     <code className="block text-xs bg-slate-900 text-slate-100 p-2 rounded overflow-x-auto">
                       curl -H "Authorization: Bearer {newKeySecret.slice(0, 20)}..." \<br />
-                      &nbsp;&nbsp;https://app.kritano.io/api/v1/audits
+                      &nbsp;&nbsp;https://kritano.com/api/v1/audits
                     </code>
                   </div>
 
