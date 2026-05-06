@@ -62,8 +62,6 @@ class AuditWorkerService {
     activeJobs = new Map();
     // Track jobs whose promises have settled (resolved or rejected)
     settledJobs = new Set();
-    // Track when each job was started (for stale slot detection)
-    activeJobStartTimes = new Map();
     // Periodic stale job recovery
     staleRecoveryInterval = null;
     // Timestamp of last successful poll loop iteration
@@ -174,6 +172,30 @@ class AuditWorkerService {
         }
     }
     /**
+     * Recycle browser only when safe (no other active jobs using it).
+     * Counts active jobs that haven't settled yet - if this is the only one
+     * finishing, recycle. Otherwise skip (the last job to finish will recycle).
+     */
+    async tryRecycleBrowser() {
+        const activeCount = this.activeJobs.size - this.settledJobs.size;
+        // activeCount includes the current job which hasn't been cleaned from activeJobs yet
+        // but HAS been added to settledJobs by the .then() wrapper, so activeCount reflects
+        // only genuinely in-flight jobs. If 0 or 1 (just us), safe to recycle.
+        if (activeCount <= 1) {
+            try {
+                await this.shutdownBrowser();
+                await this.initializeBrowser();
+                console.log('🔄 Browser recycled');
+            }
+            catch (recycleErr) {
+                console.error('Browser recycle failed:', recycleErr);
+            }
+        }
+        else {
+            console.log(`⏭️  Skipping browser recycle (${activeCount} jobs still active)`);
+        }
+    }
+    /**
      * Main processing loop - supports concurrent job processing
      */
     async processLoop() {
@@ -185,16 +207,6 @@ class AuditWorkerService {
                     if (this.settledJobs.has(jobId)) {
                         this.activeJobs.delete(jobId);
                         this.settledJobs.delete(jobId);
-                        this.activeJobStartTimes.delete(jobId);
-                    }
-                    else {
-                        // Safety net: evict slots stuck longer than the audit timeout + 2 min buffer
-                        const startedAt = this.activeJobStartTimes.get(jobId);
-                        if (startedAt && Date.now() - startedAt > AUDIT_TIMEOUT_MS + 120_000) {
-                            console.warn(`⚠️  Force-evicting stale job slot ${jobId} (exceeded ${AUDIT_TIMEOUT_MS / 60000 + 2}min)`);
-                            this.activeJobs.delete(jobId);
-                            this.activeJobStartTimes.delete(jobId);
-                        }
                     }
                 }
                 // Check browser health - restart if crashed
@@ -209,15 +221,15 @@ class AuditWorkerService {
                     console.log('✅ Browser restarted');
                 }
                 // Adaptive concurrency based on memory pressure
+                // Never exceed maxConcurrentJobs - the shared Playwright browser
+                // cannot safely handle more concurrent jobs than configured
                 const mem = (0, memory_monitor_1.getMemoryUsage)();
                 const prevConcurrency = this.effectiveConcurrency;
-                if (mem.usedPercent < 60) {
-                    this.effectiveConcurrency = Math.min(this.maxConcurrentJobs + 1, this.maxConcurrentJobs * 2);
-                }
-                else if (mem.usedPercent <= 85) {
+                if (mem.usedPercent <= 85) {
                     this.effectiveConcurrency = this.maxConcurrentJobs;
                 }
                 else {
+                    // Under memory pressure, stop accepting new jobs (but let active ones finish)
                     this.effectiveConcurrency = Math.max(1, this.activeJobs.size);
                 }
                 if (prevConcurrency !== this.effectiveConcurrency) {
@@ -242,7 +254,6 @@ class AuditWorkerService {
                         this.settledJobs.add(job.id);
                     });
                     this.activeJobs.set(job.id, jobPromise);
-                    this.activeJobStartTimes.set(job.id, Date.now());
                 }
                 // If we have no active jobs and no jobs were claimed, wait before polling again
                 if (this.activeJobs.size === 0) {
@@ -297,15 +308,8 @@ class AuditWorkerService {
             }
             console.log(`✅ Completed job ${job.id}`);
             await this.config.onJobComplete?.(job);
-            // Recycle browser after each job to prevent memory leaks and stale state
-            try {
-                await this.shutdownBrowser();
-                await this.initializeBrowser();
-                console.log('🔄 Browser recycled');
-            }
-            catch (recycleErr) {
-                console.error('Browser recycle failed:', recycleErr);
-            }
+            // Recycle browser to prevent memory leaks - but only if no other jobs are using it
+            await this.tryRecycleBrowser();
         }
         catch (error) {
             const err = error instanceof Error ? error : new Error(String(error));
@@ -323,15 +327,8 @@ class AuditWorkerService {
                 }).catch((webhookErr) => console.error('Webhook delivery error (failed):', webhookErr.message));
             }
             await this.config.onJobFail?.(job, err);
-            // Recycle browser after failure too
-            try {
-                await this.shutdownBrowser();
-                await this.initializeBrowser();
-                console.log('🔄 Browser recycled after failure');
-            }
-            catch (recycleErr) {
-                console.error('Browser recycle after failure failed:', recycleErr);
-            }
+            // Recycle browser after failure - but only if no other jobs are using it
+            await this.tryRecycleBrowser();
         }
     }
     /**

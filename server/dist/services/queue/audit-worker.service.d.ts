@@ -26,7 +26,6 @@ export declare class AuditWorkerService {
     private discoveredLinksPerJob;
     private activeJobs;
     private settledJobs;
-    private activeJobStartTimes;
     private staleRecoveryInterval;
     private lastPollAt;
     constructor(config: AuditWorkerConfig);
@@ -58,6 +57,12 @@ export declare class AuditWorkerService {
      * Shutdown browser
      */
     private shutdownBrowser;
+    /**
+     * Recycle browser only when safe (no other active jobs using it).
+     * Counts active jobs that haven't settled yet - if this is the only one
+     * finishing, recycle. Otherwise skip (the last job to finish will recycle).
+     */
+    private tryRecycleBrowser;
     /**
      * Main processing loop - supports concurrent job processing
      */
