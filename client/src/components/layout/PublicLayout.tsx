@@ -26,6 +26,7 @@ const SERVICE_ITEMS = [
 
 function getNavLinks(mode: SiteMode) {
   const links = [
+    { href: '/compare', label: 'Compare' },
     { href: '/about', label: 'About' },
     { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contact' },
