@@ -6,4 +6,5 @@
  * without needing JavaScript execution.
  */
 export declare function renderHomepage(): string;
+export declare function renderAboutPage(): string;
 //# sourceMappingURL=public-ssr.service.d.ts.map

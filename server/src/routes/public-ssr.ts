@@ -9,7 +9,7 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { setSsrHeaders } from '../services/ssr-shared.service.js';
-import { renderHomepage } from '../services/public-ssr.service.js';
+import { renderHomepage, renderAboutPage } from '../services/public-ssr.service.js';
 
 const router = Router();
 
@@ -24,6 +24,19 @@ router.get('/', (_req: Request, res: Response): void => {
     res.send(html);
   } catch (error) {
     console.error('Homepage SSR error:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+// GET /about - About page
+router.get('/about', (_req: Request, res: Response): void => {
+  try {
+    const html = renderAboutPage();
+    setSsrHeaders(res);
+    res.set('Cache-Control', SSR_CACHE);
+    res.send(html);
+  } catch (error) {
+    console.error('About SSR error:', error);
     res.status(500).send('Internal server error');
   }
 });

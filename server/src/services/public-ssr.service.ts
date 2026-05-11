@@ -396,3 +396,221 @@ export function renderHomepage(): string {
     activePath: '/',
   });
 }
+
+// ── About Page ──────────────────────────────────────────────────────
+
+export function renderAboutPage(): string {
+  const structuredData = [
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Kritano',
+      url: 'https://kritano.com',
+      logo: 'https://kritano.com/brand/favicon-32.svg',
+      description: 'Website intelligence platform providing comprehensive auditing for SEO, accessibility, security, and performance.',
+      foundingDate: '2025',
+      founder: { '@type': 'Person', name: 'Chris Garlick' },
+      sameAs: ['https://x.com/Kritanoapp', 'https://www.instagram.com/kritanoapp/'],
+      contactPoint: {
+        '@type': 'ContactPoint',
+        email: 'info@kritano.com',
+        contactType: 'customer support',
+        url: 'https://kritano.com/contact',
+      },
+    }),
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'Chris Garlick',
+      jobTitle: 'Founder',
+      worksFor: { '@type': 'Organization', name: 'Kritano', url: 'https://kritano.com' },
+      description: 'Founder of Kritano. Software engineer specialising in web auditing, SEO, accessibility, and performance optimisation.',
+      knowsAbout: ['SEO', 'Web Accessibility', 'WCAG 2.2', 'Web Security', 'Web Performance', 'Content Quality', 'Answer Engine Optimisation'],
+      url: 'https://kritano.com/about',
+      image: 'https://kritano.com/brand/author-chris-garlick.png',
+      sameAs: ['https://uk.linkedin.com/in/chris-garlick-59a8bb91', 'https://x.com/ChrisGarlick123'],
+    }),
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kritano.com' },
+        { '@type': 'ListItem', position: 2, name: 'About', item: 'https://kritano.com/about' },
+      ],
+    }),
+  ].join('\n  ');
+
+  const pillars = [
+    { label: 'SEO', color: 'bg-violet-500 border-violet-500', description: '100+ ranking factors - metadata, structured data, broken links, Core Web Vitals, and mobile-friendliness.' },
+    { label: 'Accessibility', color: 'bg-emerald-500 border-emerald-500', description: 'WCAG 2.2 Level AA - colour contrast, keyboard navigation, screen readers, ARIA, and semantic HTML.' },
+    { label: 'Security', color: 'bg-red-500 border-red-500', description: '40+ checks - HTTPS, security headers, exposed files, mixed content, and cookie flags.' },
+    { label: 'Performance', color: 'bg-sky-500 border-sky-500', description: 'Core Web Vitals (LCP, INP, CLS), resource optimisation, caching, and render-blocking detection.' },
+    { label: 'Content Intelligence', color: 'bg-amber-500 border-amber-500', description: 'E-E-A-T scoring, AEO analysis, readability, engagement markers - 400+ content checks across 7 sub-modules.' },
+    { label: 'Structured Data', color: 'bg-teal-500 border-teal-500', description: 'Schema.org validation, rich result eligibility, JSON-LD parsing, and markup completeness.' },
+  ];
+
+  const timelineDesktop = pillars.map((item, i) => `
+          <div class="flex items-stretch">
+            <div class="flex flex-col items-center w-10 flex-shrink-0">
+              <div class="w-px flex-1 ${i === 0 ? 'bg-transparent' : 'bg-slate-200'}"></div>
+              <div class="w-3.5 h-3.5 rounded-full flex-shrink-0 ${item.color} ring-4 ring-white"></div>
+              <div class="w-px flex-1 ${i === pillars.length - 1 ? 'bg-transparent' : 'bg-slate-200'}"></div>
+            </div>
+            <div class="flex-1 pl-6 py-5">
+              <h3 class="text-sm font-semibold text-slate-900 mb-1">${item.label}</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">${item.description}</p>
+            </div>
+          </div>`).join('');
+
+  const timelineMobile = pillars.map(item => `
+          <div class="flex gap-4 items-start">
+            <div class="w-3 h-3 rounded-full flex-shrink-0 mt-1 ${item.color}"></div>
+            <div>
+              <h3 class="text-sm font-semibold text-slate-900 mb-1">${item.label}</h3>
+              <p class="text-sm text-slate-600 leading-relaxed">${item.description}</p>
+            </div>
+          </div>`).join('');
+
+  const values = [
+    { title: 'Clarity Over Complexity', description: "We translate technical findings into plain English. If a business owner can't understand the result, we haven't done our job.", icon: '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>' },
+    { title: 'Precision Matters', description: "We'd rather show you 10 real issues than 100 false positives. Every finding is verified before it reaches your report.", icon: '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>' },
+    { title: 'Accessibility First', description: "Our own platform meets WCAG 2.2 guidelines. We don't just audit accessibility - we practise it.", icon: '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>' },
+    { title: 'Continuous Improvement', description: '500+ rules and growing. Our scanning engine updates with every new browser standard, WCAG criterion, and SEO best practice.', icon: '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>' },
+  ];
+
+  const valuesHtml = values.map(v => `
+              <div class="flex gap-4">
+                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                  ${v.icon}
+                </div>
+                <div>
+                  <h3 class="font-semibold text-slate-900 mb-1">${v.title}</h3>
+                  <p class="text-slate-600 text-sm leading-relaxed">${v.description}</p>
+                </div>
+              </div>`).join('');
+
+  const body = `<main id="main-content" aria-label="Page content">
+
+    <!-- Hero -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-16">
+      <div class="max-w-3xl">
+        <h1 class="font-display text-5xl lg:text-6xl text-slate-900 leading-[1.05] mb-4">
+          About Kritano
+        </h1>
+        <h2 class="font-display text-2xl lg:text-3xl text-slate-600 leading-snug mb-8">
+          I built the tool I wished existed.
+        </h2>
+        <blockquote class="border-l-4 border-indigo-600 pl-6 mb-8">
+          <p class="font-display text-2xl italic text-slate-700 leading-relaxed">
+            "Most website owners don't know what's wrong until it's too late. I wanted to change
+            that - to give every business the same visibility into their website's health that
+            enterprise teams take for granted."
+          </p>
+          <footer class="mt-4 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center">
+              <span class="text-sm font-bold text-white">CG</span>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-slate-900">Chris Garlick</p>
+              <p class="text-xs text-slate-600">Founder, Kritano</p>
+            </div>
+          </footer>
+        </blockquote>
+        <p class="text-lg text-slate-600 leading-relaxed mb-6">
+          Kritano is a website auditing platform that scans your site across six dimensions: SEO, accessibility, security, performance, content quality, and AI readiness. It turns hundreds of technical checks into clear, prioritised actions that anyone can understand.
+        </p>
+        <p class="text-lg text-slate-600 leading-relaxed mb-6">
+          I built it out of frustration. I was running accessibility audits on client websites and found the same pattern everywhere: broken links, missing alt text, insecure headers, and slow pages. These issues were easy to fix but hard to find. Existing tools were too technical, too expensive, or full of false positives.
+        </p>
+        <p class="text-lg text-slate-600 leading-relaxed mb-6">
+          According to the <a href="https://webaim.org/projects/million/" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">WebAIM Million report</a>, 95.9% of home pages have detectable WCAG failures. In our testing of over 10,000 pages, we found that the average website has 27 unique issues across all six audit categories. Most site owners had no idea these problems existed.
+        </p>
+        <p class="text-sm text-slate-600">
+          <strong>Key takeaway:</strong> Website issues are common, but they are fixable. Kritano helps you find them before your users or search engines do.
+        </p>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="max-w-7xl mx-auto px-6 lg:px-20">
+      <div class="border-t border-slate-200"></div>
+    </div>
+
+    <!-- What We Cover -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-20 py-24">
+      <div class="max-w-2xl mb-14">
+        <p class="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-4">What We Cover</p>
+        <h2 class="font-display text-4xl text-slate-900 leading-tight">Six dimensions. 500+ rules.</h2>
+      </div>
+
+      <div class="relative hidden md:block">
+        <div class="space-y-0">${timelineDesktop}
+        </div>
+      </div>
+
+      <div class="md:hidden space-y-6">${timelineMobile}
+      </div>
+    </section>
+
+    <!-- Values -->
+    <section class="bg-slate-50 border-y border-slate-200">
+      <div class="max-w-7xl mx-auto px-6 lg:px-20 py-24">
+        <div class="grid lg:grid-cols-2 gap-16 items-start">
+          <div>
+            <p class="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-4">What We Stand For</p>
+            <h2 class="font-display text-4xl text-slate-900 leading-tight mb-6">
+              Making the web work for everyone.
+            </h2>
+            <p class="text-lg text-slate-600 leading-relaxed mb-4">
+              The internet should be accessible, secure, and fast for every person on every device. However, millions of websites have issues that block users, expose data, or hurt search rankings. Most site owners do not even know. We are here to change that.
+            </p>
+            <p class="text-lg text-slate-600 leading-relaxed">
+              For example, the <a href="https://www.w3.org/WAI/fundamentals/accessibility-intro/" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">W3C Web Accessibility Initiative</a> estimates that 15% of the world's population lives with some form of disability. An inaccessible website shuts out roughly 1.3 billion people. We believe every site deserves a thorough health check.
+            </p>
+          </div>
+          <div class="space-y-8">${valuesHtml}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Author -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-20 py-12">
+      <div class="max-w-3xl mx-auto">
+        ${renderAuthorBio()}
+        <p class="text-xs text-slate-600 mt-4">Last updated: <time datetime="2026-04-16">16 April 2026</time></p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-20 py-24">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="font-display text-4xl text-slate-900 leading-tight mb-6">
+          Ready to improve your web presence?
+        </h2>
+        <p class="text-lg text-slate-600 leading-relaxed mb-10">
+          Start your first audit today. It's free, fast, and requires no credit card.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="/register?ea=email" class="inline-flex items-center justify-center px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition-colors">Join Early Access</a>
+          <a href="/contact" class="px-8 py-4 text-slate-700 hover:text-slate-900 font-semibold transition-colors flex items-center gap-2">
+            Get in Touch
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>`;
+
+  return htmlShell({
+    title: 'About Kritano - Our Mission & Story',
+    description: "Learn about Kritano's mission to make the web more accessible, secure, and performant for everyone.",
+    canonicalUrl: `${BASE_URL}/about`,
+    ogImage: `${BASE_URL}/brand/og-about.png`,
+    ogType: 'website',
+    extraHead: structuredData,
+    body,
+    activePath: '/about',
+  });
+}
