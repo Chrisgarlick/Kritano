@@ -347,7 +347,7 @@ export class SpiderService {
         viewport: fingerprint.viewport,
       };
     } finally {
-      await context.close();
+      try { await context.close(); } catch {}
     }
   }
 

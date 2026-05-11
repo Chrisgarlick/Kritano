@@ -312,7 +312,10 @@ class SpiderService {
             };
         }
         finally {
-            await context.close();
+            try {
+                await context.close();
+            }
+            catch { }
         }
     }
     /**

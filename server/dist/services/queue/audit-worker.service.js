@@ -16,6 +16,7 @@ const asset_extractor_service_js_1 = require("../asset-extractor.service.js");
 const audit_shared_1 = require("./audit-shared");
 const memory_monitor_1 = require("./memory-monitor");
 const webhook_service_js_1 = require("../webhook.service.js");
+const email_service_js_1 = require("../email.service.js");
 // Maximum audit duration (30 minutes)
 const AUDIT_TIMEOUT_MS = 30 * 60 * 1000;
 // Max retries for failed page crawls
@@ -62,6 +63,10 @@ class AuditWorkerService {
     activeJobs = new Map();
     // Track jobs whose promises have settled (resolved or rejected)
     settledJobs = new Set();
+    // Track when each job started (for stall detection)
+    jobStartTimes = new Map();
+    // Track which jobs have already triggered a stall alert (avoid spam)
+    stallAlertSent = new Set();
     // Periodic stale job recovery
     staleRecoveryInterval = null;
     // Timestamp of last successful poll loop iteration
@@ -196,6 +201,21 @@ class AuditWorkerService {
         }
     }
     /**
+     * Send an urgent email alert when a job appears to be stalled.
+     */
+    async sendStallAlert(jobId, url, runningMins) {
+        const html = `
+      <h2 style="color:#dc2626;">Worker Stall Detected</h2>
+      <p><strong>Job ID:</strong> ${jobId}</p>
+      <p><strong>URL:</strong> ${url}</p>
+      <p><strong>Running for:</strong> ${runningMins} minutes</p>
+      <p>The audit worker has been processing this job for over 15 minutes, which indicates it may be hung. Please check the worker logs and restart if necessary.</p>
+      <p style="margin-top:16px;"><code>pm2 restart kritano-worker</code></p>
+    `;
+        await email_service_js_1.emailService.sendGenericEmail('info@kritano.com', 'URGENT: Audit worker stalled', html);
+        console.log(`📧 Stall alert email sent for job ${jobId}`);
+    }
+    /**
      * Main processing loop - supports concurrent job processing
      */
     async processLoop() {
@@ -219,6 +239,17 @@ class AuditWorkerService {
                     this.browser = null;
                     await this.initializeBrowser();
                     console.log('✅ Browser restarted');
+                }
+                // Stall detection - alert if any job has been running for >15 minutes
+                const STALL_THRESHOLD_MS = 15 * 60 * 1000;
+                const now = Date.now();
+                for (const [jobId, info] of this.jobStartTimes) {
+                    if (!this.settledJobs.has(jobId) && !this.stallAlertSent.has(jobId) && (now - info.startedAt) > STALL_THRESHOLD_MS) {
+                        this.stallAlertSent.add(jobId);
+                        const runningMins = Math.round((now - info.startedAt) / 60000);
+                        console.warn(`🚨 STALL DETECTED: Job ${jobId} (${info.url}) has been running for ${runningMins} minutes`);
+                        this.sendStallAlert(jobId, info.url, runningMins).catch(err => console.error('Failed to send stall alert email:', err));
+                    }
                 }
                 // Adaptive concurrency based on memory pressure
                 // Never exceed maxConcurrentJobs - the shared Playwright browser
@@ -245,13 +276,19 @@ class AuditWorkerService {
                     if (!job)
                         break; // No more pending jobs
                     console.log(`📋 Starting job ${job.id} (${this.activeJobs.size + 1}/${this.effectiveConcurrency} slots): ${job.target_url}`);
+                    // Track job start time for stall detection
+                    this.jobStartTimes.set(job.id, { startedAt: Date.now(), url: job.target_url });
                     // Start job processing without awaiting (concurrent)
                     const jobPromise = this.processJob(job).then(() => {
                         this.settledJobs.add(job.id);
+                        this.jobStartTimes.delete(job.id);
+                        this.stallAlertSent.delete(job.id);
                     }).catch((error) => {
                         // Log but don't throw - error handling is done in processJob
                         console.error(`Job ${job.id} failed:`, error);
                         this.settledJobs.add(job.id);
+                        this.jobStartTimes.delete(job.id);
+                        this.stallAlertSent.delete(job.id);
                     });
                     this.activeJobs.set(job.id, jobPromise);
                 }
@@ -553,20 +590,34 @@ class AuditWorkerService {
                         let auditResult = { findings: [] };
                         if (isHtmlContent) {
                             let page = null;
-                            if (job.check_accessibility || job.check_performance) {
-                                const context = await this.browser.newContext({
-                                    userAgent: spiderConfig.userAgent,
-                                    viewport: { width: 1920, height: 1080 },
-                                });
-                                page = await context.newPage();
-                                await page.goto(queueItem.url, {
-                                    waitUntil: 'networkidle',
-                                    timeout: 30000,
-                                });
+                            let context = null;
+                            try {
+                                if (job.check_accessibility || job.check_performance) {
+                                    context = await this.browser.newContext({
+                                        userAgent: spiderConfig.userAgent,
+                                        viewport: { width: 1920, height: 1080 },
+                                    });
+                                    page = await context.newPage();
+                                    await page.goto(queueItem.url, {
+                                        waitUntil: 'networkidle',
+                                        timeout: 30000,
+                                    });
+                                }
+                                auditResult = await this.auditCoordinator.analyzePage(crawlResult, page, auditConfig, queueItem.depth);
                             }
-                            auditResult = await this.auditCoordinator.analyzePage(crawlResult, page, auditConfig, queueItem.depth);
-                            if (page) {
-                                await page.context().close();
+                            finally {
+                                if (page) {
+                                    try {
+                                        await page.close();
+                                    }
+                                    catch { }
+                                }
+                                if (context) {
+                                    try {
+                                        await context.close();
+                                    }
+                                    catch { }
+                                }
                             }
                         }
                         else {
@@ -695,30 +746,44 @@ class AuditWorkerService {
                             continue;
                         // Create mobile Playwright page for axe-core
                         let mobilePage = null;
-                        if (this.browser && (job.check_accessibility || job.check_performance)) {
-                            const mobileContext = await this.browser.newContext({
-                                userAgent: mobileCrawlResult.viewport ? `Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1` : spiderConfig.userAgent,
-                                viewport: mobileCrawlResult.viewport || { width: 390, height: 844 },
-                                isMobile: true,
-                                hasTouch: true,
-                            });
-                            mobilePage = await mobileContext.newPage();
-                            try {
-                                await mobilePage.goto(pageRow.url, {
-                                    waitUntil: 'networkidle',
-                                    timeout: 30000,
+                        let mobileContext = null;
+                        let mobileResult = { findings: [] };
+                        try {
+                            if (this.browser && (job.check_accessibility || job.check_performance)) {
+                                mobileContext = await this.browser.newContext({
+                                    userAgent: mobileCrawlResult.viewport ? `Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1` : spiderConfig.userAgent,
+                                    viewport: mobileCrawlResult.viewport || { width: 390, height: 844 },
+                                    isMobile: true,
+                                    hasTouch: true,
                                 });
+                                mobilePage = await mobileContext.newPage();
+                                try {
+                                    await mobilePage.goto(pageRow.url, {
+                                        waitUntil: 'networkidle',
+                                        timeout: 30000,
+                                    });
+                                }
+                                catch {
+                                    // Page load failed on mobile - skip but don't fail the audit
+                                    continue;
+                                }
                             }
-                            catch {
-                                // Page load failed on mobile — skip but don't fail the audit
-                                await mobilePage.context().close();
-                                continue;
-                            }
+                            // Run mobile-only engines (accessibility + performance)
+                            mobileResult = await this.auditCoordinator.analyzeMobilePage(mobileCrawlResult, mobilePage, auditConfig);
                         }
-                        // Run mobile-only engines (accessibility + performance)
-                        const mobileResult = await this.auditCoordinator.analyzeMobilePage(mobileCrawlResult, mobilePage, auditConfig);
-                        if (mobilePage) {
-                            await mobilePage.context().close();
+                        finally {
+                            if (mobilePage) {
+                                try {
+                                    await mobilePage.close();
+                                }
+                                catch { }
+                            }
+                            if (mobileContext) {
+                                try {
+                                    await mobileContext.close();
+                                }
+                                catch { }
+                            }
                         }
                         // Store mobile findings
                         if (mobileResult.findings.length > 0) {

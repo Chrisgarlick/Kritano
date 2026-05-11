@@ -26,6 +26,8 @@ export declare class AuditWorkerService {
     private discoveredLinksPerJob;
     private activeJobs;
     private settledJobs;
+    private jobStartTimes;
+    private stallAlertSent;
     private staleRecoveryInterval;
     private lastPollAt;
     constructor(config: AuditWorkerConfig);
@@ -63,6 +65,10 @@ export declare class AuditWorkerService {
      * finishing, recycle. Otherwise skip (the last job to finish will recycle).
      */
     private tryRecycleBrowser;
+    /**
+     * Send an urgent email alert when a job appears to be stalled.
+     */
+    private sendStallAlert;
     /**
      * Main processing loop - supports concurrent job processing
      */
