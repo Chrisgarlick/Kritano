@@ -9,7 +9,7 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { setSsrHeaders } from '../services/ssr-shared.service.js';
-import { renderHomepage, renderAboutPage } from '../services/public-ssr.service.js';
+import { renderHomepage, renderAboutPage, renderServicesPage, renderServiceDetailPage } from '../services/public-ssr.service.js';
 
 const router = Router();
 
@@ -37,6 +37,36 @@ router.get('/about', (_req: Request, res: Response): void => {
     res.send(html);
   } catch (error) {
     console.error('About SSR error:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+// GET /services - Services listing page
+router.get('/services', (_req: Request, res: Response): void => {
+  try {
+    const html = renderServicesPage();
+    setSsrHeaders(res);
+    res.set('Cache-Control', SSR_CACHE);
+    res.send(html);
+  } catch (error) {
+    console.error('Services SSR error:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+// GET /services/:slug - Service detail page
+router.get('/services/:slug', (req: Request, res: Response): void => {
+  try {
+    const html = renderServiceDetailPage(req.params.slug);
+    if (!html) {
+      res.status(404).send('Not found');
+      return;
+    }
+    setSsrHeaders(res);
+    res.set('Cache-Control', SSR_CACHE);
+    res.send(html);
+  } catch (error) {
+    console.error('Service detail SSR error:', error);
     res.status(500).send('Internal server error');
   }
 });

@@ -40,4 +40,34 @@ router.get('/about', (_req, res) => {
         res.status(500).send('Internal server error');
     }
 });
+// GET /services - Services listing page
+router.get('/services', (_req, res) => {
+    try {
+        const html = (0, public_ssr_service_js_1.renderServicesPage)();
+        (0, ssr_shared_service_js_1.setSsrHeaders)(res);
+        res.set('Cache-Control', SSR_CACHE);
+        res.send(html);
+    }
+    catch (error) {
+        console.error('Services SSR error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// GET /services/:slug - Service detail page
+router.get('/services/:slug', (req, res) => {
+    try {
+        const html = (0, public_ssr_service_js_1.renderServiceDetailPage)(req.params.slug);
+        if (!html) {
+            res.status(404).send('Not found');
+            return;
+        }
+        (0, ssr_shared_service_js_1.setSsrHeaders)(res);
+        res.set('Cache-Control', SSR_CACHE);
+        res.send(html);
+    }
+    catch (error) {
+        console.error('Service detail SSR error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
 //# sourceMappingURL=public-ssr.js.map

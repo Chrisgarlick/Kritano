@@ -7,4 +7,6 @@
  */
 export declare function renderHomepage(): string;
 export declare function renderAboutPage(): string;
+export declare function renderServicesPage(): string;
+export declare function renderServiceDetailPage(slug: string): string | null;
 //# sourceMappingURL=public-ssr.service.d.ts.map
