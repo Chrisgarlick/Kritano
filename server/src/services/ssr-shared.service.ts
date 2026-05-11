@@ -206,6 +206,7 @@ export function renderFooter(): string {
           <h2 class="font-semibold text-sm text-slate-900 mb-3">Product</h2>
           <ul class="space-y-1 text-sm text-slate-600">
             <li><a href="/pricing" class="ssr-touch-block hover:text-slate-900">Pricing</a></li>
+            <li><a href="/compare" class="ssr-touch-block hover:text-slate-900">Compare</a></li>
             <li><a href="/docs" class="ssr-touch-block hover:text-slate-900">API Docs</a></li>
           </ul>
         </div>

@@ -237,7 +237,7 @@ function renderHomepage() {
             Every audit covers SEO, accessibility, security, performance, content quality, and structured data. Findings are prioritised by real impact, not vanity metrics.
           </p>
           <p class="text-base text-slate-600 leading-relaxed">
-            Having audited thousands of websites, we noticed that most tools only cover one or two categories. For example, they check SEO but ignore security headers. Or they test accessibility but skip content quality. Kritano checks all six in a single scan so nothing slips through.
+            Having audited thousands of websites, we noticed that most tools only cover one or two categories. For example, they check SEO but ignore security headers. Or they test accessibility but skip content quality. Kritano checks all six in a single scan so nothing slips through. <a href="/compare" class="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">See how we compare</a>.
           </p>
         </div>
 
@@ -510,7 +510,7 @@ function renderAboutPage() {
           Kritano is a website auditing platform that scans your site across six dimensions: SEO, accessibility, security, performance, content quality, and AI readiness. It turns hundreds of technical checks into clear, prioritised actions that anyone can understand.
         </p>
         <p class="text-lg text-slate-600 leading-relaxed mb-6">
-          I built it out of frustration. I was running accessibility audits on client websites and found the same pattern everywhere: broken links, missing alt text, insecure headers, and slow pages. These issues were easy to fix but hard to find. Existing tools were too technical, too expensive, or full of false positives.
+          I built it out of frustration. I was running accessibility audits on client websites and found the same pattern everywhere: broken links, missing alt text, insecure headers, and slow pages. These issues were easy to fix but hard to find. Existing tools were <a href="/compare/best-website-audit-tools" class="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">too technical, too expensive, or full of false positives</a>.
         </p>
         <p class="text-lg text-slate-600 leading-relaxed mb-6">
           According to the <a href="https://webaim.org/projects/million/" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-600">WebAIM Million report</a>, 95.9% of home pages have detectable WCAG failures. In our testing of over 10,000 pages, we found that the average website has 27 unique issues across all six audit categories. Most site owners had no idea these problems existed.
@@ -1024,7 +1024,7 @@ const SERVICE_FAQS = [
     { q: 'Do I need to install anything on my website?', a: 'No. Kritano audits your site externally by crawling it like a search engine would. There is nothing to install, no code changes required, and no impact on your live site.' },
     { q: 'What accessibility standards do you test against?', a: 'Kritano tests against WCAG 2.2 Level AA, which is the standard required by the European Accessibility Act (EAA) and most accessibility legislation worldwide.' },
     { q: 'Can I export the audit results?', a: 'Yes. Audit results can be exported as PDF reports, CSV spreadsheets, or Markdown files. PDF reports include visual score breakdowns, issue details, and fix recommendations.' },
-    { q: 'How is this different from free audit tools?', a: 'Free tools typically check a single page for basic SEO. Kritano crawls your entire site and checks six categories with 400+ rules, content quality scoring, and actionable fix code for every issue.' },
+    { q: 'How is this different from free audit tools?', a: 'Free tools typically check a single page for basic SEO. Kritano crawls your entire site and checks six categories with 400+ rules, content quality scoring, and actionable fix code for every issue. See our detailed comparison of website audit tools at <a href="/compare/best-website-audit-tools">kritano.com/compare</a> for a full breakdown.' },
 ];
 function renderServicesPage() {
     const checkCircleSvg = '<svg class="w-3.5 h-3.5 text-slate-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';

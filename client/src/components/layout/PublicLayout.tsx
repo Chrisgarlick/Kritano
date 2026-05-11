@@ -43,6 +43,7 @@ function getNavLinks(mode: SiteMode) {
 function getFooterLinks(mode: SiteMode, activeCategories: Set<string>) {
   const product = [
     { href: '/services', label: 'Services' },
+    { href: '/compare', label: 'Compare' },
   ];
   if (mode !== 'waitlist') {
     product.push({ href: '/pricing', label: 'Pricing' });
