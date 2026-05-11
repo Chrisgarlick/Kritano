@@ -9,7 +9,7 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { setSsrHeaders } from '../services/ssr-shared.service.js';
-import { renderHomepage, renderAboutPage, renderServicesPage, renderServiceDetailPage } from '../services/public-ssr.service.js';
+import { renderHomepage, renderAboutPage, renderServicesPage, renderServiceDetailPage, renderPricingPage, renderContactPage, renderFaqPage, renderAuthorPage } from '../services/public-ssr.service.js';
 
 const router = Router();
 
@@ -67,6 +67,58 @@ router.get('/services/:slug', (req: Request, res: Response): void => {
     res.send(html);
   } catch (error) {
     console.error('Service detail SSR error:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+// GET /pricing - Pricing page
+router.get('/pricing', (_req: Request, res: Response): void => {
+  try {
+    const html = renderPricingPage();
+    setSsrHeaders(res);
+    res.set('Cache-Control', SSR_CACHE);
+    res.send(html);
+  } catch (error) {
+    console.error('Pricing SSR error:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+// GET /contact - Contact page
+router.get('/contact', (_req: Request, res: Response): void => {
+  try {
+    const html = renderContactPage();
+    setSsrHeaders(res);
+    res.set('Cache-Control', SSR_CACHE);
+    res.send(html);
+  } catch (error) {
+    console.error('Contact SSR error:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+// GET /faq - FAQ page
+router.get('/faq', (_req: Request, res: Response): void => {
+  try {
+    const html = renderFaqPage();
+    setSsrHeaders(res);
+    res.set('Cache-Control', SSR_CACHE);
+    res.send(html);
+  } catch (error) {
+    console.error('FAQ SSR error:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+// GET /author/chris-garlick - Author page
+router.get('/author/chris-garlick', (_req: Request, res: Response): void => {
+  try {
+    const html = renderAuthorPage();
+    setSsrHeaders(res);
+    res.set('Cache-Control', SSR_CACHE);
+    res.send(html);
+  } catch (error) {
+    console.error('Author SSR error:', error);
     res.status(500).send('Internal server error');
   }
 });

@@ -70,4 +70,56 @@ router.get('/services/:slug', (req, res) => {
         res.status(500).send('Internal server error');
     }
 });
+// GET /pricing - Pricing page
+router.get('/pricing', (_req, res) => {
+    try {
+        const html = (0, public_ssr_service_js_1.renderPricingPage)();
+        (0, ssr_shared_service_js_1.setSsrHeaders)(res);
+        res.set('Cache-Control', SSR_CACHE);
+        res.send(html);
+    }
+    catch (error) {
+        console.error('Pricing SSR error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// GET /contact - Contact page
+router.get('/contact', (_req, res) => {
+    try {
+        const html = (0, public_ssr_service_js_1.renderContactPage)();
+        (0, ssr_shared_service_js_1.setSsrHeaders)(res);
+        res.set('Cache-Control', SSR_CACHE);
+        res.send(html);
+    }
+    catch (error) {
+        console.error('Contact SSR error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// GET /faq - FAQ page
+router.get('/faq', (_req, res) => {
+    try {
+        const html = (0, public_ssr_service_js_1.renderFaqPage)();
+        (0, ssr_shared_service_js_1.setSsrHeaders)(res);
+        res.set('Cache-Control', SSR_CACHE);
+        res.send(html);
+    }
+    catch (error) {
+        console.error('FAQ SSR error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+// GET /author/chris-garlick - Author page
+router.get('/author/chris-garlick', (_req, res) => {
+    try {
+        const html = (0, public_ssr_service_js_1.renderAuthorPage)();
+        (0, ssr_shared_service_js_1.setSsrHeaders)(res);
+        res.set('Cache-Control', SSR_CACHE);
+        res.send(html);
+    }
+    catch (error) {
+        console.error('Author SSR error:', error);
+        res.status(500).send('Internal server error');
+    }
+});
 //# sourceMappingURL=public-ssr.js.map

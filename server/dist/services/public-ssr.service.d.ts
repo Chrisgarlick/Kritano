@@ -9,4 +9,8 @@ export declare function renderHomepage(): string;
 export declare function renderAboutPage(): string;
 export declare function renderServicesPage(): string;
 export declare function renderServiceDetailPage(slug: string): string | null;
+export declare function renderPricingPage(): string;
+export declare function renderContactPage(): string;
+export declare function renderFaqPage(): string;
+export declare function renderAuthorPage(): string;
 //# sourceMappingURL=public-ssr.service.d.ts.map

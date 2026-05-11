@@ -1652,3 +1652,657 @@ ${relatedHtml}
     activePath: '/services',
   });
 }
+
+// ── Pricing Page ─────────────────────────────────────────────────────
+
+const CHECK_SVG = '<svg class="w-4 h-4 text-indigo-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
+const X_SVG = '<svg class="w-4 h-4 text-slate-300 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+
+function boolCell(val: boolean): string {
+  return val ? CHECK_SVG : X_SVG;
+}
+
+function textCell(val: string, isProCol = false): string {
+  return `<td class="px-4 py-3 text-sm text-slate-700 text-center${isProCol ? ' bg-indigo-50' : ''}">${escapeHtml(val)}</td>`;
+}
+
+function boolRow(label: string, vals: [boolean, boolean, boolean, boolean, boolean]): string {
+  return `<tr class="border-b border-slate-100">
+    <td class="px-4 py-3 text-sm text-slate-700">${escapeHtml(label)}</td>
+    <td class="px-4 py-3 text-center">${boolCell(vals[0])}</td>
+    <td class="px-4 py-3 text-center">${boolCell(vals[1])}</td>
+    <td class="px-4 py-3 text-center bg-indigo-50">${boolCell(vals[2])}</td>
+    <td class="px-4 py-3 text-center">${boolCell(vals[3])}</td>
+    <td class="px-4 py-3 text-center">${boolCell(vals[4])}</td>
+  </tr>`;
+}
+
+function textRow(label: string, vals: [string, string, string, string, string]): string {
+  return `<tr class="border-b border-slate-100">
+    <td class="px-4 py-3 text-sm text-slate-700">${escapeHtml(label)}</td>
+    <td class="px-4 py-3 text-sm text-slate-700 text-center">${escapeHtml(vals[0])}</td>
+    <td class="px-4 py-3 text-sm text-slate-700 text-center">${escapeHtml(vals[1])}</td>
+    <td class="px-4 py-3 text-sm text-slate-700 text-center bg-indigo-50">${escapeHtml(vals[2])}</td>
+    <td class="px-4 py-3 text-sm text-slate-700 text-center">${escapeHtml(vals[3])}</td>
+    <td class="px-4 py-3 text-sm text-slate-700 text-center">${escapeHtml(vals[4])}</td>
+  </tr>`;
+}
+
+function sectionHeader(title: string): string {
+  return `<tr class="bg-slate-50">
+    <td colspan="6" class="px-4 py-3 text-sm font-semibold text-slate-900">${escapeHtml(title)}</td>
+  </tr>`;
+}
+
+export function renderPricingPage(): string {
+  const plans = [
+    { name: 'Free', desc: 'For personal projects and small sites.', price: '$0', period: '/mo', pages: '50 pages', features: ['5 audits per month', 'SEO, security &amp; content checks', '30-day data retention'], cta: 'Join Early Access', highlight: false },
+    { name: 'Starter', desc: 'For freelancers and growing sites.', price: '$19', period: '/mo', pages: '250 pages', features: ['10 audits per month', 'Accessibility &amp; performance checks', '90-day data retention'], cta: 'Join Early Access', highlight: false },
+    { name: 'Pro', desc: 'For professionals who need full insight.', price: '$49', period: '/mo', pages: '1,000 pages', features: ['Unlimited audits', 'All check categories', '1-year data retention'], cta: 'Join Early Access', highlight: true, badge: 'Most Popular' },
+    { name: 'Agency', desc: 'For agencies managing client sites.', price: '$99', period: '/mo', pages: '5,000 pages', features: ['White-label reports', '50 sites included', '2-year data retention'], cta: 'Join Early Access', highlight: false },
+    { name: 'Enterprise', desc: 'For large organisations with custom needs.', price: 'Custom', period: '', pages: '10,000+ pages', features: ['Dedicated account manager', 'Unlimited sites &amp; seats', 'Unlimited data retention'], cta: 'Contact Us', highlight: false },
+  ];
+
+  const pricingCards = plans.map(p => {
+    const cardClasses = p.highlight
+      ? 'relative bg-slate-900 text-white ring-2 ring-indigo-600 rounded-2xl p-6 flex flex-col'
+      : 'relative bg-white border border-slate-200 rounded-2xl p-6 flex flex-col';
+    const nameClasses = p.highlight ? 'text-lg font-semibold text-white' : 'text-lg font-semibold text-slate-900';
+    const descClasses = p.highlight ? 'text-sm text-slate-300 mt-1' : 'text-sm text-slate-500 mt-1';
+    const priceClasses = p.highlight ? 'text-4xl font-bold text-white mt-4' : 'text-4xl font-bold text-slate-900 mt-4';
+    const periodClasses = p.highlight ? 'text-sm text-slate-400' : 'text-sm text-slate-500';
+    const pagesClasses = p.highlight ? 'text-sm text-slate-300 mt-1' : 'text-sm text-slate-500 mt-1';
+    const featureClasses = p.highlight ? 'text-sm text-slate-200' : 'text-sm text-slate-600';
+    const btnClasses = p.highlight
+      ? 'mt-auto block w-full text-center px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-sm'
+      : 'mt-auto block w-full text-center px-4 py-2.5 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-lg font-medium transition-colors text-sm';
+
+    const badge = p.badge ? `<span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-medium px-3 py-1 rounded-full">${p.badge}</span>` : '';
+
+    return `<div class="${cardClasses}">
+      ${badge}
+      <div class="${nameClasses}">${p.name}</div>
+      <p class="${descClasses}">${p.desc}</p>
+      <div class="${priceClasses}">${p.price}<span class="${periodClasses}">${p.period}</span></div>
+      <p class="${pagesClasses}">${p.pages}</p>
+      <ul class="mt-6 mb-8 space-y-3 flex-1">
+        ${p.features.map(f => `<li class="flex items-start gap-2"><span class="text-indigo-400 mt-0.5">&middot;</span><span class="${featureClasses}">${f}</span></li>`).join('\n        ')}
+      </ul>
+      <a href="/register?ea=email" class="${btnClasses}">${p.cta}</a>
+    </div>`;
+  }).join('\n    ');
+
+  const comparisonTable = `
+  <table class="w-full text-left border-collapse">
+    <thead>
+      <tr class="border-b-2 border-slate-200">
+        <th class="px-4 py-3 text-sm font-semibold text-slate-900">Feature</th>
+        <th class="px-4 py-3 text-sm font-semibold text-slate-900 text-center">Free</th>
+        <th class="px-4 py-3 text-sm font-semibold text-slate-900 text-center">Starter</th>
+        <th class="px-4 py-3 text-sm font-semibold text-slate-900 text-center bg-indigo-50">Pro</th>
+        <th class="px-4 py-3 text-sm font-semibold text-slate-900 text-center">Agency</th>
+        <th class="px-4 py-3 text-sm font-semibold text-slate-900 text-center">Enterprise</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${sectionHeader('Audit & Crawl')}
+      ${textRow('Max pages per audit', ['50', '250', '1,000', '5,000', '10,000'])}
+      ${textRow('Max crawl depth', ['3', '5', '10', '10', '10'])}
+      ${textRow('Audits per month', ['5', '10', 'Unlimited', 'Unlimited', 'Unlimited'])}
+      ${textRow('Concurrent audits', ['1', '3', '10', '50', '100'])}
+
+      ${sectionHeader('Available Checks')}
+      ${boolRow('SEO', [true, true, true, true, true])}
+      ${boolRow('Security', [true, true, true, true, true])}
+      ${boolRow('Content', [true, true, true, true, true])}
+      ${boolRow('Accessibility', [false, true, true, true, true])}
+      ${boolRow('Performance', [false, true, true, true, true])}
+      ${boolRow('File Extraction', [false, true, true, true, true])}
+      ${boolRow('Structured Data', [false, false, false, true, true])}
+      ${boolRow('Google Dorking', [false, false, true, true, true])}
+      ${boolRow('E-E-A-T Analysis', [false, false, true, true, true])}
+      ${boolRow('AEO Analysis', [false, false, true, true, true])}
+      ${boolRow('Mobile Audit Pass', [false, true, true, true, true])}
+
+      ${sectionHeader('Sites & Sharing')}
+      ${textRow('Max sites', ['1', '3', '10', '50', 'Unlimited'])}
+      ${textRow('Members per site', ['0', '1', '3', '10', 'Unlimited'])}
+      ${boolRow('Domain locking', [true, false, false, false, false])}
+
+      ${sectionHeader('Scheduling')}
+      ${boolRow('Scheduled audits', [false, true, true, true, true])}
+      ${textRow('Min schedule interval', ['-', '7 days', '1 day', '1 hour', '15 min'])}
+
+      ${sectionHeader('Exports & Sharing')}
+      ${boolRow('PDF export', [false, true, true, true, true])}
+      ${textRow('PDF branding', ['-', 'Site colours', 'Site colours', 'White-label', 'White-label'])}
+      ${boolRow('CSV export', [false, false, true, true, true])}
+      ${boolRow('JSON export', [false, false, true, true, true])}
+      ${boolRow('White-label', [false, false, false, true, true])}
+      ${boolRow('Shareable report links', [false, false, true, true, true])}
+      ${boolRow('Accessibility statement', [false, false, true, true, true])}
+      ${boolRow('Public audit badge', [false, true, true, true, true])}
+      ${boolRow('Fix snippets code', [false, true, true, true, true])}
+      ${boolRow('Fix explanations', [true, true, true, true, true])}
+
+      ${sectionHeader('Content Intelligence')}
+      ${textRow('Content Quality Score', ['Score only', 'Breakdown', 'Full detail', 'Full detail', 'Full detail'])}
+      ${boolRow('E-E-A-T analysis', [false, false, true, true, true])}
+      ${boolRow('AEO analysis', [false, false, true, true, true])}
+
+      ${sectionHeader('Compliance')}
+      ${boolRow('EAA compliance status', [true, true, true, true, true])}
+      ${boolRow('Full compliance report', [false, false, true, true, true])}
+      ${boolRow('Compliance PDF export', [false, false, true, true, true])}
+
+      ${sectionHeader('API & Data')}
+      ${textRow('API requests/day', ['100', '1,000', '10,000', '100,000', 'Unlimited'])}
+      ${textRow('API requests/min', ['10', '60', '300', '1,000', '2,000'])}
+      ${textRow('Data retention', ['30 days', '90 days', '1 year', '2 years', 'Unlimited'])}
+
+      ${sectionHeader('Teams')}
+      ${textRow('Max seats', ['1', '1', '5', 'Unlimited', 'Unlimited'])}
+    </tbody>
+  </table>`;
+
+  const faqs: Array<{ q: string; a: string }> = [
+    { q: 'How does the free plan work?', a: 'The free plan lets you audit one website with up to 50 pages per scan and 5 audits per month. You get SEO, security, and content checks with 30-day data retention. No credit card required, no time limit.' },
+    { q: 'Can I upgrade or downgrade at any time?', a: 'Yes. You can switch plans whenever you need to. If you upgrade mid-cycle, you\'ll be charged a prorated amount. Downgrades take effect at the end of your current billing period.' },
+    { q: 'What counts as a "page" in an audit?', a: 'Each unique URL that our scanner crawls counts as one page. The homepage, blog posts, product pages, and other distinct URLs are each counted separately.' },
+    { q: 'What is domain locking on the Free tier?', a: 'Free tier users can only have one site, and the domain can only be changed once per month. This prevents abuse while still letting you try the platform.' },
+    { q: 'Is there a free trial for paid plans?', a: 'Every paid plan includes a 14-day free trial with full access. No credit card required to start.' },
+    { q: 'Do you offer annual billing?', a: 'Yes! Switch to annual billing and save 2 months - you pay for 10 months and get 12. Use the toggle at the top of the pricing cards to see annual prices.' },
+    { q: 'What kind of support do you offer?', a: 'Free and Starter users get community support. Pro users get priority email support. Agency and Enterprise customers get dedicated account management.' },
+    { q: 'What happens to my data if I cancel?', a: 'Your data is retained for the period specified in your plan (30 days for Free, 90 days for Starter, etc.). After cancellation, your account is downgraded to the Free tier and data beyond the Free retention window is deleted after 30 days.' },
+    { q: 'Do you offer refunds?', a: 'We offer a full refund within 14 days of your first payment if you are not satisfied. Contact us at info@kritano.com.' },
+  ];
+
+  const faqHtml = faqs.map(f => `<details class="border border-slate-200 rounded-lg">
+        <summary class="px-5 py-4 cursor-pointer text-sm font-medium text-slate-900 hover:bg-slate-50">${escapeHtml(f.q)}</summary>
+        <div class="px-5 pb-4 text-sm text-slate-600 leading-relaxed">${escapeHtml(f.a)}</div>
+      </details>`).join('\n      ');
+
+  const faqLd = faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  }));
+
+  const structuredData = [
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: 'Kritano',
+      description: 'Comprehensive website auditing for SEO, accessibility, security, and performance.',
+      brand: { '@type': 'Organization', name: 'Kritano' },
+      offers: [
+        { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD', url: `${BASE_URL}/pricing` },
+        { '@type': 'Offer', name: 'Starter', price: '19', priceCurrency: 'USD', url: `${BASE_URL}/pricing` },
+        { '@type': 'Offer', name: 'Pro', price: '49', priceCurrency: 'USD', url: `${BASE_URL}/pricing` },
+        { '@type': 'Offer', name: 'Agency', price: '99', priceCurrency: 'USD', url: `${BASE_URL}/pricing` },
+        { '@type': 'Offer', name: 'Enterprise', price: '0', priceCurrency: 'USD', url: `${BASE_URL}/pricing`, description: 'Custom pricing' },
+      ],
+    }),
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqLd,
+    }),
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Pricing', item: `${BASE_URL}/pricing` },
+      ],
+    }),
+  ].join('\n  ');
+
+  const body = `<main id="main-content" aria-label="Page content">
+
+    <!-- Hero -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-12 text-center">
+      <h1 class="font-display text-5xl lg:text-6xl text-slate-900 leading-tight mb-3">Pricing</h1>
+      <h2 class="font-display text-2xl lg:text-3xl text-slate-600 leading-snug mb-5">Simple, transparent pricing.</h2>
+      <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-3">Start free, upgrade as you grow. Every plan includes a 14-day free trial with full access.</p>
+      <p class="text-base text-slate-500 max-w-2xl mx-auto">No credit card required. Cancel any time.</p>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-20 pb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        ${pricingCards}
+      </div>
+    </section>
+
+    <!-- Feature Comparison -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-20 pb-16">
+      <details class="border border-slate-200 rounded-xl overflow-hidden">
+        <summary class="px-6 py-4 cursor-pointer text-lg font-semibold text-slate-900 hover:bg-slate-50 bg-white">Full Feature Comparison</summary>
+        <div class="overflow-x-auto">
+          ${comparisonTable}
+        </div>
+      </details>
+    </section>
+
+    <!-- FAQs -->
+    <section class="max-w-3xl mx-auto px-6 lg:px-20 pb-16">
+      <h2 class="font-display text-3xl text-slate-900 mb-8 text-center">Frequently Asked Questions</h2>
+      <div class="space-y-3">
+        ${faqHtml}
+      </div>
+    </section>
+
+    <!-- Author Bio -->
+    <section class="max-w-3xl mx-auto px-6 lg:px-20 pb-16">
+      ${renderAuthorBio()}
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-slate-50 border-t border-slate-200">
+      <div class="max-w-3xl mx-auto px-6 lg:px-20 py-16 text-center">
+        <h2 class="font-display text-3xl text-slate-900 mb-4">Ready to see what you are missing?</h2>
+        <p class="text-lg text-slate-600 mb-8">Start your free audit today and discover how Kritano can help improve your website.</p>
+        <a href="/register?ea=email" class="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors">Join Early Access</a>
+      </div>
+    </section>
+
+  </main>`;
+
+  return htmlShell({
+    title: 'Pricing - Website Audit Plans & Tools',
+    description: 'Simple, transparent pricing for website auditing. Start free, upgrade as you grow. Plans starting free.',
+    canonicalUrl: `${BASE_URL}/pricing`,
+    ogImage: `${BASE_URL}/brand/og-default.png`,
+    ogType: 'website',
+    extraHead: structuredData,
+    body,
+    activePath: '/pricing',
+  });
+}
+
+// ── Contact Page ─────────────────────────────────────────────────────
+
+export function renderContactPage(): string {
+  const structuredData = [
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'ContactPage',
+      name: 'Contact Kritano',
+      description: 'Get in touch with the Kritano team.',
+      url: `${BASE_URL}/contact`,
+      mainEntity: {
+        '@type': 'Organization',
+        name: 'Kritano',
+        email: 'info@kritano.com',
+        url: BASE_URL,
+        address: {
+          '@type': 'PostalAddress',
+          addressCountry: 'GB',
+        },
+      },
+    }),
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Contact', item: `${BASE_URL}/contact` },
+      ],
+    }),
+  ].join('\n  ');
+
+  const sendIconSvg = '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>';
+
+  const body = `<main id="main-content" aria-label="Page content">
+
+    <!-- Hero -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-12">
+      <div class="max-w-2xl">
+        <h1 class="font-display text-5xl lg:text-6xl text-slate-900 leading-tight mb-3">Contact Us</h1>
+        <h2 class="font-display text-2xl lg:text-3xl text-slate-600 leading-snug mb-5">Let's talk.</h2>
+        <p class="text-lg text-slate-600 leading-relaxed mb-3">Have a question about Kritano, need help with your account, or want to explore a partnership? We would love to hear from you.</p>
+        <p class="text-base text-slate-500 leading-relaxed">Fill in the form below and we will get back to you within one working day.</p>
+      </div>
+    </section>
+
+    <!-- Contact Form + Sidebar -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-20 pb-16">
+      <div class="grid lg:grid-cols-3 gap-12">
+
+        <!-- Form -->
+        <div class="lg:col-span-2">
+          <form method="POST" action="/api/contact" class="space-y-6">
+            <div>
+              <label for="contact-name" class="block text-sm font-medium text-slate-700 mb-1.5">Name <span class="text-red-500">*</span></label>
+              <input type="text" id="contact-name" name="name" required autocomplete="name" class="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors" placeholder="Your name" />
+            </div>
+            <div>
+              <label for="contact-email" class="block text-sm font-medium text-slate-700 mb-1.5">Email <span class="text-red-500">*</span></label>
+              <input type="email" id="contact-email" name="email" required autocomplete="email" class="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors" placeholder="you@example.com" />
+            </div>
+            <div>
+              <label for="contact-subject" class="block text-sm font-medium text-slate-700 mb-1.5">Subject</label>
+              <select id="contact-subject" name="subject" class="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors bg-white">
+                <option value="General Enquiry">General Enquiry</option>
+                <option value="Sales & Pricing">Sales &amp; Pricing</option>
+                <option value="Technical Support">Technical Support</option>
+                <option value="Partnerships">Partnerships</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="contact-message" class="block text-sm font-medium text-slate-700 mb-1.5">Message <span class="text-red-500">*</span></label>
+              <textarea id="contact-message" name="message" required rows="6" class="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors resize-y" placeholder="How can we help?"></textarea>
+            </div>
+            <button type="submit" class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors text-sm">
+              Send Message ${sendIconSvg}
+            </button>
+          </form>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="space-y-6">
+          <!-- Response guarantee -->
+          <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-5">
+            <h3 class="text-sm font-semibold text-indigo-900 mb-2">Response Guarantee</h3>
+            <p class="text-sm text-indigo-700 leading-relaxed">We aim to respond to every enquiry within one working day. Most messages receive a reply within a few hours.</p>
+          </div>
+
+          <!-- Contact info -->
+          <div class="bg-white border border-slate-200 rounded-xl p-5 space-y-4">
+            <h3 class="text-sm font-semibold text-slate-900">Contact Information</h3>
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-slate-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <div>
+                <p class="text-sm font-medium text-slate-700">Email</p>
+                <a href="mailto:info@kritano.com" class="text-sm text-indigo-600 hover:text-indigo-700">info@kritano.com</a>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-slate-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <div>
+                <p class="text-sm font-medium text-slate-700">Location</p>
+                <p class="text-sm text-slate-600">United Kingdom</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-slate-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <div>
+                <p class="text-sm font-medium text-slate-700">Hours</p>
+                <p class="text-sm text-slate-600">Mon - Fri, 9am - 6pm GMT</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick links -->
+          <div class="bg-white border border-slate-200 rounded-xl p-5">
+            <h3 class="text-sm font-semibold text-slate-900 mb-3">Quick Links</h3>
+            <ul class="space-y-2">
+              <li><a href="/pricing" class="text-sm text-indigo-600 hover:text-indigo-700">Pricing</a></li>
+              <li><a href="/blog" class="text-sm text-indigo-600 hover:text-indigo-700">Blog</a></li>
+              <li><a href="/register?ea=email" class="text-sm text-indigo-600 hover:text-indigo-700">Start Free Audit</a></li>
+            </ul>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- Author Bio -->
+    <section class="max-w-3xl mx-auto px-6 lg:px-20 pb-16">
+      ${renderAuthorBio()}
+    </section>
+
+  </main>`;
+
+  return htmlShell({
+    title: 'Contact Us - Get in Touch with Kritano',
+    description: 'Get in touch with the Kritano team. We\'re here to help with questions about our platform, pricing, or partnerships.',
+    canonicalUrl: `${BASE_URL}/contact`,
+    ogImage: `${BASE_URL}/brand/og-default.png`,
+    ogType: 'website',
+    extraHead: structuredData,
+    body,
+    activePath: '/contact',
+  });
+}
+
+// ── FAQ Page ─────────────────────────────────────────────────────────
+
+export function renderFaqPage(): string {
+  const categories: Array<{ title: string; faqs: Array<{ q: string; a: string }> }> = [
+    {
+      title: 'Product',
+      faqs: [
+        { q: 'What is Kritano?', a: 'Kritano is a website auditing platform that checks your site for SEO, accessibility, security, and performance issues. It runs over 500 rules in a single scan and shows you exactly what to fix.' },
+        { q: 'Who is Kritano for?', a: 'Kritano is built for web developers, SEO professionals, digital agencies, and business owners who want to understand and improve their website quality.' },
+        { q: 'What does an audit check?', a: 'A Kritano audit covers SEO (meta tags, headings, links, structured data), accessibility (WCAG 2.2 compliance), security (headers, HTTPS, vulnerabilities), performance (Core Web Vitals, page speed), content quality (E-E-A-T, readability), and AI readiness (AEO, structured data).' },
+        { q: 'How many pages can I audit?', a: 'It depends on your plan. Free accounts can audit up to 50 pages, Starter up to 250, Pro up to 1,000, Agency up to 5,000, and Enterprise up to 10,000 pages per audit.' },
+        { q: 'Can I schedule recurring audits?', a: 'Yes, on paid plans. Starter allows weekly schedules, Pro allows daily, Agency allows hourly, and Enterprise allows schedules as frequent as every 15 minutes.' },
+        { q: 'Do you support white-label reports?', a: 'Yes. Agency and Enterprise plans include full white-label support, allowing you to brand PDF reports with your own logo, colours, and domain.' },
+        { q: 'What export formats are available?', a: 'Depending on your plan, you can export audits as PDF, CSV, or JSON. Pro and above also get shareable report links and accessibility statements.' },
+        { q: 'Is there an API?', a: 'Yes. Every plan includes API access. Free gets 100 requests per day, Starter gets 1,000, Pro gets 10,000, Agency gets 100,000, and Enterprise gets unlimited.' },
+      ],
+    },
+    {
+      title: 'Technical',
+      faqs: [
+        { q: 'How does the crawler work?', a: 'Kritano\'s crawler starts from the URL you provide, discovers internal links, and follows them up to the crawl depth limit for your plan. It respects robots.txt and rate limits itself to avoid overloading your server.' },
+        { q: 'Does Kritano execute JavaScript?', a: 'Yes. Our crawler renders pages in a headless browser, so it sees the same content your visitors do, including dynamically loaded elements.' },
+        { q: 'Will Kritano slow down my website?', a: 'No. The crawler is rate-limited and sends requests at a controlled pace. It behaves like a polite bot and should not cause any noticeable impact on your server performance.' },
+        { q: 'What browsers does Kritano support?', a: 'Kritano is a web application that works in all modern browsers including Chrome, Firefox, Safari, and Edge. We recommend using the latest version for the best experience.' },
+        { q: 'Can I audit password-protected pages?', a: 'Not currently. Kritano can only audit publicly accessible pages. Support for authenticated crawling is on our roadmap.' },
+        { q: 'Does Kritano check mobile responsiveness?', a: 'Yes. Paid plans include a mobile audit pass that checks your site at mobile viewport sizes and flags responsive design issues.' },
+      ],
+    },
+    {
+      title: 'Security and Privacy',
+      faqs: [
+        { q: 'Is my data secure?', a: 'Yes. All data is encrypted in transit (TLS 1.3) and at rest. We follow security best practices including input validation, rate limiting, and regular security audits of our own infrastructure.' },
+        { q: 'Do you store my website content?', a: 'We store audit results and page metadata (titles, headings, meta tags) for the duration of your plan\'s retention period. We do not store full page HTML or assets beyond what is needed for the audit report.' },
+        { q: 'Who can see my audit results?', a: 'Only you and any team members you explicitly invite to your site. Audit results are private by default. You can optionally generate shareable links for specific reports.' },
+        { q: 'Are you GDPR compliant?', a: 'Yes. Kritano is built with privacy by design. We only collect the minimum data necessary to provide the service, offer data export and deletion on request, and maintain a clear privacy policy.' },
+      ],
+    },
+    {
+      title: 'Billing and Plans',
+      faqs: [
+        { q: 'How does the free plan work?', a: 'The free plan lets you audit one website with up to 50 pages per scan and 5 audits per month. You get SEO, security, and content checks with 30-day data retention. No credit card required, no time limit.' },
+        { q: 'Can I upgrade or downgrade at any time?', a: 'Yes. You can switch plans whenever you need to. If you upgrade mid-cycle, you\'ll be charged a prorated amount. Downgrades take effect at the end of your current billing period.' },
+        { q: 'Do you offer annual billing?', a: 'Yes! Switch to annual billing and save 2 months - you pay for 10 months and get 12.' },
+        { q: 'Is there a free trial for paid plans?', a: 'Every paid plan includes a 14-day free trial with full access. No credit card required to start.' },
+        { q: 'What happens to my data if I cancel?', a: 'Your data is retained for the period specified in your plan (30 days for Free, 90 days for Starter, etc.). After cancellation, your account is downgraded to the Free tier and data beyond the Free retention window is deleted after 30 days.' },
+        { q: 'Do you offer refunds?', a: 'We offer a full refund within 14 days of your first payment if you are not satisfied. Contact us at info@kritano.com.' },
+      ],
+    },
+  ];
+
+  const allFaqsLd = categories.flatMap(cat => cat.faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })));
+
+  const structuredData = [
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: allFaqsLd,
+    }),
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
+        { '@type': 'ListItem', position: 2, name: 'FAQ', item: `${BASE_URL}/faq` },
+      ],
+    }),
+  ].join('\n  ');
+
+  const categorySections = categories.map(cat => {
+    const faqItems = cat.faqs.map(f => `<details class="border border-slate-200 rounded-lg">
+          <summary class="px-5 py-4 cursor-pointer text-sm font-medium text-slate-900 hover:bg-slate-50">${escapeHtml(f.q)}</summary>
+          <div class="px-5 pb-4 text-sm text-slate-600 leading-relaxed">${escapeHtml(f.a)}</div>
+        </details>`).join('\n        ');
+
+    return `<div class="mb-12">
+        <h2 class="font-display text-2xl text-slate-900 mb-6">${escapeHtml(cat.title)}</h2>
+        <div class="space-y-3">
+          ${faqItems}
+        </div>
+      </div>`;
+  }).join('\n      ');
+
+  const body = `<main id="main-content" aria-label="Page content">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="max-w-3xl mx-auto px-6 lg:px-20 pt-8">
+      <ol class="flex items-center gap-2 text-sm text-slate-500">
+        <li><a href="/" class="hover:text-indigo-600 transition-colors">Home</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-slate-900 font-medium" aria-current="page">FAQ</li>
+      </ol>
+    </nav>
+
+    <!-- Hero -->
+    <section class="max-w-3xl mx-auto px-6 lg:px-20 pt-10 pb-12">
+      <h1 class="font-display text-5xl lg:text-6xl text-slate-900 leading-tight mb-5">Frequently Asked Questions</h1>
+      <p class="text-lg text-slate-600 leading-relaxed">Find answers to common questions about Kritano. Can't find what you are looking for? <a href="/contact" class="text-indigo-600 hover:text-indigo-700 underline decoration-indigo-300 underline-offset-2">Get in touch</a> and we will be happy to help.</p>
+    </section>
+
+    <!-- FAQ Categories -->
+    <section class="max-w-3xl mx-auto px-6 lg:px-20 pb-16">
+      ${categorySections}
+    </section>
+
+    <!-- Author Bio -->
+    <section class="max-w-3xl mx-auto px-6 lg:px-20 pb-16">
+      ${renderAuthorBio()}
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-slate-50 border-t border-slate-200">
+      <div class="max-w-3xl mx-auto px-6 lg:px-20 py-16 text-center">
+        <h2 class="font-display text-3xl text-slate-900 mb-4">Still have questions?</h2>
+        <p class="text-lg text-slate-600 mb-8">Our team is here to help. Send us a message and we will get back to you within one working day.</p>
+        <a href="/contact" class="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors">Contact Us</a>
+      </div>
+    </section>
+
+  </main>`;
+
+  return htmlShell({
+    title: 'Frequently Asked Questions',
+    description: 'Find answers to common questions about Kritano\'s website auditing platform, including features, pricing, security, and technical details.',
+    canonicalUrl: `${BASE_URL}/faq`,
+    ogImage: `${BASE_URL}/brand/og-default.png`,
+    ogType: 'website',
+    extraHead: structuredData,
+    body,
+    activePath: '/faq',
+  });
+}
+
+// ── Author Page ──────────────────────────────────────────────────────
+
+export function renderAuthorPage(): string {
+  const expertiseAreas = [
+    'Search Engine Optimisation (SEO)',
+    'Web Accessibility & WCAG 2.2',
+    'Web Security',
+    'Web Performance & Core Web Vitals',
+    'Content Quality & E-E-A-T',
+    'Answer Engine Optimisation (AEO)',
+    'Structured Data & Schema.org',
+  ];
+
+  const structuredData = [
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'Chris Garlick',
+      jobTitle: 'Founder',
+      url: `${BASE_URL}/author/chris-garlick`,
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Kritano',
+        url: BASE_URL,
+      },
+      knowsAbout: expertiseAreas,
+      sameAs: [
+        'https://www.linkedin.com/in/chris-garlick-developer/',
+      ],
+      description: 'Chris Garlick is the founder of Kritano, a website intelligence platform. He writes about SEO, web accessibility, security, and performance.',
+    }),
+    jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Chris Garlick', item: `${BASE_URL}/author/chris-garlick` },
+      ],
+    }),
+  ].join('\n  ');
+
+  const expertiseTags = expertiseAreas.map(area =>
+    `<span class="inline-block px-3 py-1.5 bg-indigo-50 text-indigo-700 text-sm rounded-full border border-indigo-100">${escapeHtml(area)}</span>`
+  ).join('\n            ');
+
+  const body = `<main id="main-content" aria-label="Page content">
+
+    <!-- Author Header -->
+    <section class="max-w-3xl mx-auto px-6 lg:px-20 pt-20 lg:pt-28 pb-12">
+      <div class="flex items-center gap-6 mb-8">
+        <div class="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center flex-shrink-0">
+          <span class="text-2xl font-bold text-white">CG</span>
+        </div>
+        <div>
+          <h1 class="font-display text-4xl lg:text-5xl text-slate-900 leading-tight">Chris Garlick</h1>
+          <p class="text-lg text-slate-600 mt-1">Founder of Kritano</p>
+        </div>
+      </div>
+
+      <div class="prose prose-slate max-w-none">
+        <p class="text-lg text-slate-600 leading-relaxed mb-4">Chris is the founder of Kritano, a website intelligence platform that helps developers, agencies, and business owners understand the health of their websites. He has been building for the web for over 5 years, with a focus on making the web more accessible, secure, and performant.</p>
+        <p class="text-base text-slate-600 leading-relaxed mb-4">Before starting Kritano, Chris worked across front-end and back-end development, gaining hands-on experience with the kinds of issues that most website owners never see - missing security headers, inaccessible forms, broken structured data, and performance bottlenecks that silently hurt search rankings.</p>
+        <p class="text-base text-slate-600 leading-relaxed">Kritano was born from the belief that every website owner deserves clear, actionable insight into what is working and what is not - without needing to be a technical expert.</p>
+      </div>
+    </section>
+
+    <!-- Author Bio Card -->
+    <section class="max-w-3xl mx-auto px-6 lg:px-20 pb-12">
+      ${renderAuthorBio()}
+    </section>
+
+    <!-- Expertise -->
+    <section class="max-w-3xl mx-auto px-6 lg:px-20 pb-12">
+      <h2 class="font-display text-2xl text-slate-900 mb-6">Areas of Expertise</h2>
+      <div class="flex flex-wrap gap-2">
+        ${expertiseTags}
+      </div>
+    </section>
+
+    <!-- Articles -->
+    <section class="max-w-3xl mx-auto px-6 lg:px-20 pb-16">
+      <h2 class="font-display text-2xl text-slate-900 mb-6">Articles by Chris</h2>
+      <p class="text-slate-600 mb-6">Chris writes about SEO, web accessibility, security, performance, and content quality on the Kritano blog.</p>
+      <a href="/blog" class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium transition-colors">
+        View all articles on the blog
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </a>
+    </section>
+
+  </main>`;
+
+  return htmlShell({
+    title: 'Chris Garlick - Founder & Author',
+    description: 'Chris Garlick is the founder of Kritano, a website intelligence platform. He writes about SEO, web accessibility, security, and performance.',
+    canonicalUrl: `${BASE_URL}/author/chris-garlick`,
+    ogImage: `${BASE_URL}/brand/og-default.png`,
+    ogType: 'profile',
+    extraHead: structuredData,
+    body,
+    activePath: '/author/chris-garlick',
+  });
+}
