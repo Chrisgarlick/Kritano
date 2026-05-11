@@ -19,26 +19,9 @@ import {
   renderBlogListing,
   renderBlogNotFound,
 } from '../services/blog-ssr.service.js';
+import { setSsrHeaders } from '../services/ssr-shared.service.js';
 
 const router = Router();
-
-// SSR pages serve full HTML documents, not API JSON. Override Helmet's
-// restrictive API CSP with the same policy nginx uses for SPA pages.
-function setSsrHeaders(res: Response): void {
-  res.set('Content-Type', 'text/html');
-  res.removeHeader('Content-Security-Policy');
-  res.set('Content-Security-Policy',
-    "default-src 'self'; " +
-    "script-src 'self'; " +
-    "style-src 'self' 'unsafe-inline'; " +
-    "font-src 'self'; " +
-    "img-src 'self' data: https:; " +
-    "connect-src 'self'; " +
-    "frame-src 'none'; " +
-    "frame-ancestors 'self'; " +
-    "base-uri 'self'"
-  );
-}
 
 // GET /blog - Blog listing page
 router.get('/', async (req: Request, res: Response): Promise<void> => {
