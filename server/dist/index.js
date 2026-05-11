@@ -55,6 +55,7 @@ const prerender_service_js_1 = require("./services/prerender.service.js");
 const prerender_middleware_js_1 = require("./middleware/prerender.middleware.js");
 const blog_ssr_js_1 = require("./routes/blog-ssr.js");
 const public_ssr_js_1 = require("./routes/public-ssr.js");
+const compare_ssr_js_1 = require("./routes/compare-ssr.js");
 const resend_js_1 = require("./routes/webhooks/resend.js");
 const stripe_js_1 = require("./routes/webhooks/stripe.js");
 const http_js_1 = require("./mcp/http.js");
@@ -215,6 +216,8 @@ app.get('/sitemap.xml', async (_req, res) => {
 app.use('/api', index_js_2.apiRouter);
 // Blog SSR — serves fully rendered HTML for /blog pages (no JS execution needed)
 app.use('/blog', blog_ssr_js_1.blogSsrRouter);
+// Comparison pages SSR — serves fully rendered HTML for /compare pages
+app.use('/compare', compare_ssr_js_1.compareSsrRouter);
 // Public pages SSR — serves fully rendered HTML for marketing pages (homepage, about, etc.)
 app.use(public_ssr_js_1.publicSsrRouter);
 // Pre-rendering for bot/crawler user agents (serves rendered HTML for SEO/AI citation)

@@ -17,6 +17,7 @@ import { shutdownPrerenderBrowser } from './services/prerender.service.js';
 import { prerenderMiddleware } from './middleware/prerender.middleware.js';
 import { blogSsrRouter } from './routes/blog-ssr.js';
 import { publicSsrRouter } from './routes/public-ssr.js';
+import { compareSsrRouter } from './routes/compare-ssr.js';
 import { resendWebhookRouter } from './routes/webhooks/resend.js';
 import { initializeStripeWebhooks } from './routes/webhooks/stripe.js';
 import { mcpHttpRouter } from './mcp/http.js';
@@ -206,6 +207,9 @@ app.use('/api', apiRouter);
 
 // Blog SSR — serves fully rendered HTML for /blog pages (no JS execution needed)
 app.use('/blog', blogSsrRouter);
+
+// Comparison pages SSR — serves fully rendered HTML for /compare pages
+app.use('/compare', compareSsrRouter);
 
 // Public pages SSR — serves fully rendered HTML for marketing pages (homepage, about, etc.)
 app.use(publicSsrRouter);
