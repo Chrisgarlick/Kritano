@@ -18,7 +18,7 @@ exports.blogSsrRouter = router;
 router.get('/', async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = 12;
+        const limit = 9;
         const category = req.query.category;
         const tag = req.query.tag;
         const result = await (0, blog_service_js_1.listPublishedPosts)({ category, tag, page, limit });

@@ -230,10 +230,10 @@ const COMPARISONS: Record<string, ComparisonEntry> = {
       {
         name: 'Beyond Auditing',
         features: [
-          { name: 'Keyword research', kritano: false, competitor: true },
-          { name: 'Backlink analysis', kritano: false, competitor: true },
-          { name: 'Rank tracking', kritano: false, competitor: true },
-          { name: 'Competitor analysis', kritano: false, competitor: true },
+          { name: 'Keyword research', kritano: 'Coming soon', competitor: true },
+          { name: 'Backlink analysis', kritano: 'Coming soon', competitor: true },
+          { name: 'Rank tracking', kritano: 'Coming soon', competitor: true },
+          { name: 'Competitor analysis', kritano: 'Coming soon', competitor: true },
           { name: 'PPC/advertising tools', kritano: false, competitor: true },
         ],
       },
@@ -671,10 +671,23 @@ function renderCta(): string {
 
 // ── Landing Page ─────────────────────────────────────────────────────
 
-export function renderCompareLanding(): string {
-  const entries = Object.values(COMPARISONS);
-  const vsEntries = entries.filter(e => e.type === 'vs');
-  const altEntries = entries.filter(e => e.type === 'alternatives');
+export function renderCompareLanding(opts?: { page?: number; type?: string }): string {
+  const allEntries = Object.values(COMPARISONS);
+  const currentPage = opts?.page ?? 1;
+  const typeFilter = opts?.type;
+  const limit = 6;
+
+  // Filter by type if specified
+  const filtered = typeFilter && (typeFilter === 'vs' || typeFilter === 'alternatives')
+    ? allEntries.filter(e => e.type === typeFilter)
+    : allEntries;
+
+  const totalPages = Math.ceil(filtered.length / limit);
+  const paginated = filtered.slice((currentPage - 1) * limit, currentPage * limit);
+
+  // Count per type for filter badges
+  const vsCount = allEntries.filter(e => e.type === 'vs').length;
+  const altCount = allEntries.filter(e => e.type === 'alternatives').length;
 
   const breadcrumbLd = jsonLd({
     '@context': 'https://schema.org',
@@ -689,7 +702,7 @@ export function renderCompareLanding(): string {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: 'Kritano Comparisons',
-    itemListElement: entries.map((entry, i) => ({
+    itemListElement: allEntries.map((entry, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       name: entry.seo.title,
@@ -702,37 +715,66 @@ export function renderCompareLanding(): string {
       ? `Feature-by-feature comparison of Kritano and ${entry.competitor}.`
       : `The best alternatives to ${entry.competitor} for website auditing.`;
     return `
-      <a href="/compare/${escapeHtml(entry.slug)}" class="block border border-slate-200 rounded-lg p-6 bg-white shadow-sm hover:shadow-md hover:border-indigo-200 transition-all">
+      <a href="/compare/${escapeHtml(entry.slug)}" class="block border border-slate-200 rounded-xl p-6 bg-white shadow-sm hover:shadow-md hover:border-indigo-200 transition-all">
         <span class="inline-block text-xs font-medium px-2 py-1 rounded-full mb-3 ${entry.type === 'vs' ? 'bg-indigo-50 text-indigo-700' : 'bg-amber-50 text-amber-700'}">${entry.type === 'vs' ? 'Comparison' : 'Alternatives'}</span>
         <h2 class="text-lg font-semibold text-slate-900 mb-2">${escapeHtml(entry.seo.title)}</h2>
-        <p class="text-sm text-slate-600">${escapeHtml(summary)}</p>
+        <p class="text-sm text-slate-600 leading-relaxed">${escapeHtml(summary)}</p>
       </a>`;
   }
 
-  let cardsHtml = '';
-
-  if (vsEntries.length > 0) {
-    cardsHtml += `<h2 class="text-xl font-display text-slate-900 mb-4 mt-8">Head-to-Head Comparisons</h2>
-    <div class="grid gap-6 md:grid-cols-2 mb-8">
-      ${vsEntries.map(renderCard).join('\n      ')}
-    </div>`;
+  // Filter tabs
+  function filterLink(label: string, value: string | undefined, count: number): string {
+    const isActive = typeFilter === value || (!typeFilter && !value);
+    const href = value ? `/compare?type=${value}` : '/compare';
+    return `<a href="${href}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${isActive ? 'bg-indigo-600 text-white' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}">${escapeHtml(label)} <span class="${isActive ? 'text-indigo-200' : 'text-slate-400'}">${count}</span></a>`;
   }
 
-  if (altEntries.length > 0) {
-    cardsHtml += `<h2 class="text-xl font-display text-slate-900 mb-4 mt-8">Alternatives & Roundups</h2>
-    <div class="grid gap-6 md:grid-cols-2 mb-8">
-      ${altEntries.map(renderCard).join('\n      ')}
+  const filtersHtml = `
+    <div class="flex flex-wrap gap-2 mb-8" role="navigation" aria-label="Filter comparisons">
+      ${filterLink('All', undefined, allEntries.length)}
+      ${filterLink('Head-to-Head', 'vs', vsCount)}
+      ${filterLink('Alternatives', 'alternatives', altCount)}
     </div>`;
+
+  const cardsHtml = `
+    <div class="grid gap-6 md:grid-cols-2">
+      ${paginated.map(renderCard).join('\n      ')}
+    </div>`;
+
+  // Pagination
+  let paginationHtml = '';
+  if (totalPages > 1) {
+    const links: string[] = [];
+    const buildHref = (p: number) => {
+      const params = new URLSearchParams();
+      if (typeFilter) params.set('type', typeFilter);
+      if (p > 1) params.set('page', String(p));
+      const qs = params.toString();
+      return `/compare${qs ? '?' + qs : ''}`;
+    };
+
+    if (currentPage > 1) {
+      links.push(`<a href="${buildHref(currentPage - 1)}" class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-md hover:bg-slate-50">Previous</a>`);
+    }
+    links.push(`<span class="px-4 py-2 text-sm text-slate-600">Page ${currentPage} of ${totalPages}</span>`);
+    if (currentPage < totalPages) {
+      links.push(`<a href="${buildHref(currentPage + 1)}" class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-md hover:bg-slate-50">Next</a>`);
+    }
+
+    paginationHtml = `<nav class="mt-10 flex items-center justify-center gap-4" aria-label="Pagination">${links.join('\n')}</nav>`;
   }
 
   const body = `
-  <main id="main-content" class="max-w-5xl mx-auto px-6 py-12">
+  <main id="main-content" class="max-w-5xl mx-auto px-6 py-12 lg:py-20">
     <h1 class="text-3xl md:text-4xl font-display text-slate-900 mb-4">Compare Kritano</h1>
     <p class="text-lg text-slate-600 mb-8 max-w-3xl">See how Kritano compares to other website auditing tools. Honest, feature-by-feature comparisons to help you choose the right tool for your needs.</p>
+    ${filtersHtml}
     ${cardsHtml}
-    ${renderCta()}
+    ${paginationHtml}
+    <div class="mt-12">${renderCta()}</div>
   </main>`;
 
+  // Canonical URL without filter/page params (all point to /compare)
   return htmlShell({
     title: 'Compare Kritano - Website Audit Tool Comparisons',
     description: 'Compare Kritano with other website auditing tools. Feature-by-feature comparisons, pricing breakdowns, and honest recommendations.',

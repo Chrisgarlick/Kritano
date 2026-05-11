@@ -27,7 +27,7 @@ const router = Router();
 router.get('/', async (req: Request, res: Response): Promise<void> => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const limit = 12;
+    const limit = 9;
     const category = req.query.category as string | undefined;
     const tag = req.query.tag as string | undefined;
 

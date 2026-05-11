@@ -6,10 +6,12 @@ import { renderCompareLanding, renderCompareDetail } from '../services/compare-s
 const router = Router();
 const SSR_CACHE = 'public, max-age=300, stale-while-revalidate=86400';
 
-// GET /compare - Landing page
-router.get('/', (_req: Request, res: Response): void => {
+// GET /compare - Landing page with optional filtering and pagination
+router.get('/', (req: Request, res: Response): void => {
   try {
-    const html = renderCompareLanding();
+    const page = parseInt(req.query.page as string) || 1;
+    const type = (req.query.type as string) || undefined;
+    const html = renderCompareLanding({ page, type });
     setSsrHeaders(res);
     res.set('Cache-Control', SSR_CACHE);
     res.send(html);

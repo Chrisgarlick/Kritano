@@ -7,10 +7,12 @@ const compare_ssr_service_js_1 = require("../services/compare-ssr.service.js");
 const router = (0, express_1.Router)();
 exports.compareSsrRouter = router;
 const SSR_CACHE = 'public, max-age=300, stale-while-revalidate=86400';
-// GET /compare - Landing page
-router.get('/', (_req, res) => {
+// GET /compare - Landing page with optional filtering and pagination
+router.get('/', (req, res) => {
     try {
-        const html = (0, compare_ssr_service_js_1.renderCompareLanding)();
+        const page = parseInt(req.query.page) || 1;
+        const type = req.query.type || undefined;
+        const html = (0, compare_ssr_service_js_1.renderCompareLanding)({ page, type });
         (0, ssr_shared_service_js_1.setSsrHeaders)(res);
         res.set('Cache-Control', SSR_CACHE);
         res.send(html);
