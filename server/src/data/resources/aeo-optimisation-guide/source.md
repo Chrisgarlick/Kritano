@@ -6,6 +6,16 @@ AI Engine Optimisation (AEO) is the practice of getting your content surfaced an
 
 This is not a list of hacks. AI engines reward structure, citability, and demonstrable expertise. The work translates directly into stronger classical SEO as a side effect.
 
+### Contents
+
+1. The fundamental shift
+2. The five pillars of AEO
+3. The AEO audit framework
+4. Common AEO mistakes
+5. A six-week AEO programme
+6. What AEO is not
+7. How Kritano helps
+
 ## 1. The fundamental shift
 
 Classical SEO optimises for **ranking on a query**. AEO optimises for **being quoted in an answer**.

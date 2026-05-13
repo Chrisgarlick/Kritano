@@ -6,6 +6,17 @@ The European Accessibility Act (Directive 2019/882) became enforceable on 28 Jun
 
 This is not legal advice. It is a practical engineering guide written from the perspective of someone running audits against real sites every week.
 
+### Contents
+
+1. Does it apply to you?
+2. Who is responsible
+3. Clause-by-clause audit
+4. Documenting conformance
+5. Operationalising compliance
+6. What enforcement looks like
+7. The fast path
+8. How Kritano helps
+
 ## How to use this guide
 
 1. Confirm the EAA applies to you (section 1).

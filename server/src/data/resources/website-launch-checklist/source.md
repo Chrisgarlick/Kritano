@@ -6,6 +6,16 @@ This is the checklist agencies print and run with clients in the final week befo
 
 The structure follows the launch timeline: pre-launch (T minus 7 days), launch day, and post-launch (T plus 24 hours and T plus 7 days). Items marked **[critical]** are blockers; do not flip the DNS until they are green.
 
+### Contents
+
+1. Pre-launch: T minus 7 days
+2. Pre-launch: T minus 1 day
+3. Launch day
+4. Post-launch: T plus 24 hours
+5. Post-launch: T plus 7 days
+6. Post-launch: Ongoing
+7. How to use this checklist
+
 ## Pre-launch: T minus 7 days
 
 ### Domain and DNS

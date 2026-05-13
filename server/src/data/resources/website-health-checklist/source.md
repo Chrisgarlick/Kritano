@@ -4,6 +4,16 @@ The 80 checks every website should pass before launch, and quarterly thereafter,
 
 This is the same checklist we built our scanner on. Use it as a manual audit, print it for client kick-offs, or run it against any site you are about to ship.
 
+### Contents
+
+1. SEO
+2. Accessibility
+3. Security
+4. Performance
+5. Content quality
+6. AI readiness (AEO)
+7. Pre-launch and post-launch checks
+
 ## How to use this checklist
 
 Each pillar is a section. Each item is either a binary pass/fail or a "review this and decide" prompt. Aim for 100% on the critical sections (Accessibility, Security, SEO basics); flag exceptions and the reason for any deliberate misses.
