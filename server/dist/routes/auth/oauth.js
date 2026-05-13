@@ -10,6 +10,7 @@ const rateLimit_middleware_js_1 = require("../../middleware/rateLimit.middleware
 const ip_utils_js_1 = require("../../utils/ip.utils.js");
 const auth_config_js_1 = require("../../config/auth.config.js");
 const oauth_config_js_1 = require("../../config/oauth.config.js");
+const gated_resource_service_js_1 = require("../../services/gated-resource.service.js");
 const router = (0, express_1.Router)();
 const VALID_PROVIDERS = ['google', 'facebook'];
 function isValidProvider(provider) {
@@ -82,6 +83,15 @@ router.post('/:provider/callback', rateLimit_middleware_js_1.oauthRateLimiter, a
         const { profile, tokens } = await oauth_service_js_1.oauthService.exchangeCode(provider, code, storedData.codeVerifier);
         // Handle login/register
         const { user, isNewUser } = await oauth_service_js_1.oauthService.handleOAuthLogin(profile, tokens);
+        // Link any prior anonymous gated-resource leads to a new OAuth user
+        if (isNewUser) {
+            (0, gated_resource_service_js_1.linkLeadsToUser)(user.email, user.id)
+                .then((n) => {
+                if (n > 0)
+                    console.log(`Linked ${n} gated-resource lead(s) to OAuth user ${user.id}`);
+            })
+                .catch((err) => console.error('Lead linking failed (OAuth):', err));
+        }
         // Record login success
         const ipAddress = (0, ip_utils_js_1.getClientIp)(req);
         await user_service_js_1.userService.recordLoginSuccess(user.id, ipAddress);

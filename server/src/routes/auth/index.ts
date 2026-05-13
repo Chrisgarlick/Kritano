@@ -42,6 +42,7 @@ import type {
 } from '../../schemas/auth.schemas.js';
 import { recordTosAcceptance } from '../../services/consent.service.js';
 import { TOS_VERSION } from '../../constants/consent.constants.js';
+import { linkLeadsToUser } from '../../services/gated-resource.service.js';
 
 const router = Router();
 
@@ -167,6 +168,13 @@ router.post(
 
       // CRM: Recalculate lead score on registration
       recalculateScore(user.id).catch(err => console.error('CRM score recalc failed:', err));
+
+      // Link any prior anonymous gated-resource leads to the new user
+      linkLeadsToUser(user.email, user.id)
+        .then((n) => {
+          if (n > 0) console.log(`Linked ${n} gated-resource lead(s) to new user ${user.id}`);
+        })
+        .catch((err) => console.error('Lead linking failed:', err));
 
       // Handle early access claim if flag set
       let earlyAccess = false;

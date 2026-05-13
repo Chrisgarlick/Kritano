@@ -34,6 +34,7 @@ import { adminComingSoonRouter } from './coming-soon.js';
 import { adminSeoRouter } from './seo.js';
 import { adminEarlyAccessRouter } from './early-access.js';
 import { adminOutreachLogRouter } from './outreach-log.js';
+import { adminResourcesRouter } from './resources.js';
 import { pool } from '../../db/index.js';
 
 const router = Router();
@@ -54,6 +55,7 @@ router.use('/coming-soon', adminComingSoonRouter);
 router.use('/seo', adminSeoRouter);
 router.use('/early-access', adminEarlyAccessRouter);
 router.use('/outreach-log', adminOutreachLogRouter);
+router.use('/resources', adminResourcesRouter);
 
 // =============================================
 // Dashboard & Analytics

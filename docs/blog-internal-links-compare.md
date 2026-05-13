@@ -1,65 +1,78 @@
 # Blog Internal Links to Compare Pages
 
-Update these LIVE blog posts in the CMS to add internal links to comparison pages. Only includes posts that are currently published on kritano.com.
+Based on the ACTUAL live content on kritano.com (verified May 2026). Only includes posts where a comparison link fits naturally with existing content.
 
 ---
 
-## High Priority
+## Best Opportunities (tool mentions already exist)
 
-### 1. Website Launch Checklist: 25 Things to Check Before Going Live
-
-**URL:** `/blog/website-launch-checklist-25-things-to-check-before-going-live`
-
-**Where:** Where the WAVE extension is mentioned as an accessibility check.
-
-**Add:** After the WAVE mention:
-> WAVE is great for single-page spot-checks, but for site-wide scanning you'll want something more comprehensive. [See the best WAVE alternatives](/compare/wave-alternative) for tools that crawl your entire site.
-
----
-
-### 2. The State of Web Accessibility in 2026: Why 96% of Websites Are Still Failing
-
-**URL:** `/blog/the-state-of-web-accessibility-in-2026-why-96-of-websites-are-still-failing`
-
-**Where:** The section discussing tools for testing accessibility (Lighthouse, axe DevTools, etc.).
-
-**Add:** After listing the tools:
-> For a full breakdown of accessibility testing tools and how they compare, see our [comparison of WAVE alternatives](/compare/wave-alternative) and [best website audit tools](/compare/best-website-audit-tools).
-
----
-
-### 3. The Complete Guide to Website Audits
+### 1. The Complete Guide to Website Audits
 
 **URL:** `/blog/the-complete-guide-to-website-audits`
 
-**Where:** The "DIY vs Tool-Based Audits" section or the comparison table (Manual vs Free Tools vs Dedicated Tool).
+**Existing mentions:** WAVE, Lighthouse, securityheaders.com. Has a "DIY vs Tool-Based Audits" comparison table (Manual vs Free Tools vs Dedicated Tool).
 
-**Add:** After the comparison table:
+**Where:** After the comparison table in the "DIY vs Tool-Based Audits" section.
+
+**Add:**
 > For a deeper look at how specific tools compare - including Semrush, Siteimprove, WAVE, and more - see our [full audit tool comparisons](/compare).
+
+**Also:** Where "Google Lighthouse, WAVE (for accessibility), and securityheaders.com are all free" is mentioned:
+> These free tools are great for spot-checks. For a full breakdown of what each covers, see our [comparison of the best website audit tools](/compare/best-website-audit-tools).
 
 ---
 
-### 4. Answer Engine Optimisation: How to Get Cited by AI
+### 2. The State of Web Accessibility in 2026
+
+**URL:** `/blog/the-state-of-web-accessibility-in-2026-why-96-of-websites-are-still-failing`
+
+**Existing mentions:** Lighthouse, axe DevTools, WebAIM Contrast Checker.
+
+**Where:** After the "Run your site through Lighthouse or axe DevTools" recommendation.
+
+**Add:**
+> These are great for single-page checks. For site-wide accessibility scanning, [see how the leading tools compare](/compare/wave-alternative).
+
+---
+
+### 3. Website Launch Checklist
+
+**URL:** `/blog/website-launch-checklist-25-things-to-check-before-going-live`
+
+**Existing mentions:** Lighthouse only (no WAVE despite what the local draft said).
+
+**Where:** After the Lighthouse mention in the Core Web Vitals section.
+
+**Add:**
+> Lighthouse covers performance and basic SEO, but misses security headers, content quality, and deep accessibility checks. [See which tools cover all six dimensions](/compare/best-website-audit-tools).
+
+---
+
+### 4. Answer Engine Optimisation
 
 **URL:** `/blog/answer-engine-optimisation-how-to-get-cited-by-ai`
 
-**Where:** Where specific tools like Lighthouse are named, or where "best website audit tools" is mentioned as an example query.
+**Existing mentions:** Lighthouse, PageSpeed Insights, Kritano.
+
+**Where:** After "use Google's PageSpeed Insights, Lighthouse, or Kritano to measure your Core Web Vitals."
 
 **Add:**
-> Choosing the right audit tool matters for AEO. You need one that checks structured data, content quality, and E-E-A-T signals - not just SEO basics. [Compare the best website audit tools](/compare/best-website-audit-tools) to find the right fit.
+> For AEO specifically, you need a tool that checks structured data, content quality, and E-E-A-T signals - not just performance. [Compare the best audit tools for AEO readiness](/compare/best-website-audit-tools).
 
 ---
 
-## Medium Priority
+## Moderate Opportunities (general tool context)
 
 ### 5. Core Web Vitals Explained
 
 **URL:** `/blog/core-web-vitals-explained`
 
-**Where:** The section listing free tools (PageSpeed Insights, Lighthouse, etc.).
+**Existing mentions:** Lighthouse (in DevTools), PageSpeed Insights, Google Search Console.
+
+**Where:** After the Lighthouse audit recommendation.
 
 **Add:**
-> These free tools are excellent for performance checks. For a tool that also covers SEO, accessibility, security, and content quality alongside Core Web Vitals, [compare your options](/compare/best-website-audit-tools).
+> Lighthouse covers performance well, but for a tool that also checks SEO, accessibility, security, and content quality alongside Core Web Vitals, [compare your options](/compare/best-website-audit-tools).
 
 ---
 
@@ -67,39 +80,30 @@ Update these LIVE blog posts in the CMS to add internal links to comparison page
 
 **URL:** `/blog/security-headers-every-website-needs-in-2026`
 
-**Where:** Near the closing section or CTA about checking your headers.
+**Existing mentions:** SecurityHeaders.com, Mozilla Observatory.
+
+**Where:** After the SecurityHeaders.com/Mozilla Observatory recommendations.
 
 **Add:**
-> Most website audit tools skip security headers entirely. [See which tools actually check them](/compare/best-website-audit-tools).
+> Most website audit tools skip security headers entirely. [See which tools actually include security scanning](/compare/best-website-audit-tools).
 
 ---
 
-### 7. What Is a Website Audit and Why Does It Matter?
+## No Natural Fit (skip these)
 
-**URL:** `/blog/what-is-a-website-audit-and-why-does-it-matter`
+These live posts don't mention any competitor tools or have a context where a comparison link would feel natural:
 
-**Where:** Where it discusses what an audit covers or mentions different audit approaches.
-
-**Add:**
-> Not all audit tools cover the same ground. [Compare the best website audit tools](/compare/best-website-audit-tools) to see which ones check SEO, accessibility, security, and performance.
-
----
-
-### 8. Only 56% of Websites Pass Core Web Vitals
-
-**URL:** `/blog/only-56-percent-of-websites-pass-core-web-vitals`
-
-**Where:** Near the section about checking your own Core Web Vitals or discussing tools.
-
-**Add:**
-> For a tool that checks Core Web Vitals alongside SEO, accessibility, and security in one scan, [see how the leading audit tools compare](/compare/best-website-audit-tools).
+- `/blog/content-quality-score` - No tool mentions
+- `/blog/ecommerce-accessibility` - No tool comparisons
+- `/blog/the-ada-web-accessibility-deadline-just-got-extended` - Legal focus, no tools
+- `/blog/what-is-a-website-audit-and-why-does-it-matter` - No specific tools named
+- `/blog/only-56-percent-of-websites-pass-core-web-vitals` - No tool mentions
 
 ---
 
 ## Notes
 
-- Keep link text natural - it should read like part of the paragraph
-- Use relative URLs (`/compare/...`)
 - Max 1-2 comparison links per blog post
-- Prioritise posts 1-4 first (most natural fit)
-- Posts not on this list (ecommerce-accessibility, ada-deadline, content-quality-score) don't have natural comparison link opportunities
+- Only link where a tool is already mentioned - don't shoehorn
+- Post #1 (Complete Guide) is the highest value - it already has a tool comparison table
+- Use relative URLs (`/compare/...`)

@@ -18,8 +18,10 @@ import {
   renderBlogPost,
   renderBlogListing,
   renderBlogNotFound,
+  anchorSlugForCategory,
 } from '../services/blog-ssr.service.js';
 import { setSsrHeaders } from '../services/ssr-shared.service.js';
+import { getResourceBySlug } from '../services/gated-resource.service.js';
 
 const router = Router();
 
@@ -69,7 +71,14 @@ router.get('/:slug', async (req: Request, res: Response): Promise<void> => {
       console.error('Blog view count increment failed:', err)
     );
 
-    const html = renderBlogPost(post);
+    // Resolve the end-of-post resource anchor for this category. Failures
+    // here must not break the post render — fall back to no anchor card.
+    const anchorSlug = anchorSlugForCategory(post.category);
+    const anchorResource = anchorSlug
+      ? await getResourceBySlug(anchorSlug).catch(() => null)
+      : null;
+
+    const html = renderBlogPost(post, anchorResource);
 
     setSsrHeaders(res);
     res.set('Cache-Control', 'public, max-age=600, stale-while-revalidate=120');

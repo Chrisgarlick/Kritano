@@ -198,6 +198,13 @@ const COMPARISON_SECTIONS = [
       { label: 'Max seats', free: '1', starter: '1', pro: '5', agency: 'Unlimited', enterprise: 'Unlimited' },
     ],
   },
+  {
+    title: 'Free Resources Library',
+    rows: [
+      { label: 'Gated resource library', free: true, starter: true, pro: true, agency: true, enterprise: true },
+      { label: 'Skip email gate when logged in', free: true, starter: true, pro: true, agency: true, enterprise: true },
+    ],
+  },
 ];
 
 const FAQS = [

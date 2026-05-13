@@ -8,12 +8,48 @@
 
 import { marked } from 'marked';
 import type { BlogPost, PostSummary, ContentBlock } from '../types/blog.types.js';
+import type { GatedResource } from '../types/gated-resource.types.js';
 import {
   BASE_URL,
   escapeHtml,
   htmlShell,
   renderAuthorBio,
 } from './ssr-shared.service.js';
+
+/**
+ * Primary anchor resource per blog category. Drives the end-of-post CTA card
+ * that surfaces a relevant lead magnet. The slugs map to rows in
+ * `gated_resources`; missing or unpublished rows are handled gracefully by
+ * `renderResourceAnchor` (it returns an empty string).
+ *
+ * Matrix lives in /docs/gated_resources.md and is duplicated here so that
+ * SSR rendering stays a synchronous, in-memory operation.
+ */
+const CATEGORY_ANCHOR_SLUG: Record<string, string> = {
+  seo: 'website-health-checklist',
+  accessibility: 'wcag-quick-reference-card',
+  security: 'security-headers-guide',
+  performance: 'core-web-vitals-fix-guide',
+  'content-quality': 'website-health-checklist',
+  'structured-data': 'schema-markup-cheat-sheet',
+  eeat: 'eeat-audit-worksheet',
+  aeo: 'aeo-optimisation-guide',
+  guides: 'website-health-checklist',
+  'case-studies': 'website-health-checklist',
+  // product-updates intentionally omitted — these posts pitch the product, not
+  // a lead magnet.
+};
+
+/**
+ * Returns the slug of the anchor resource for a blog category, or null if
+ * the category has no associated anchor. Always falls back to the Website
+ * Health Checklist for categories we plan to add later, so every post gets
+ * a CTA card.
+ */
+export function anchorSlugForCategory(category: string): string | null {
+  if (category === 'product-updates') return null;
+  return CATEGORY_ANCHOR_SLUG[category] ?? 'website-health-checklist';
+}
 
 const CATEGORY_LABELS: Record<string, string> = {
   'seo': 'SEO',
@@ -411,7 +447,48 @@ function buildStructuredData(post: BlogPost): object[] {
 /**
  * Render a single blog post as a complete HTML page.
  */
-export function renderBlogPost(post: BlogPost): string {
+/**
+ * Render the end-of-post resource anchor card. Returns an empty string when
+ * no resource is supplied (category has no anchor, or the resource lookup
+ * came back null/unpublished), so callers can interpolate the result
+ * unconditionally.
+ */
+export function renderResourceAnchor(resource: GatedResource | null): string {
+  if (!resource || !resource.published) return '';
+
+  const url = `/resources/${escapeHtml(resource.slug)}`;
+  const formatBadges = resource.formats
+    .map(
+      (f) =>
+        `<span class="inline-block px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded bg-white/60 text-indigo-700 border border-indigo-200">${escapeHtml(f)}</span>`
+    )
+    .join(' ');
+
+  return `<aside class="mt-16 not-prose" aria-labelledby="resource-anchor-heading">
+    <a href="${url}" class="block rounded-2xl border border-indigo-200 bg-indigo-50 p-6 lg:p-8 hover:border-indigo-300 hover:shadow-md transition-all group">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-semibold text-indigo-700 uppercase tracking-wider mb-1">Free resource</p>
+          <h2 id="resource-anchor-heading" class="font-display text-2xl text-slate-900 leading-tight mb-2 group-hover:text-indigo-700 transition-colors">${escapeHtml(resource.title)}</h2>
+          <p class="text-sm text-slate-700 leading-relaxed mb-3">${escapeHtml(resource.hook)}</p>
+          <div class="flex items-center gap-2 flex-wrap">
+            ${formatBadges}
+            ${resource.page_count ? `<span class="text-xs text-slate-500">${resource.page_count} pages</span>` : ''}
+          </div>
+        </div>
+        <div class="flex-shrink-0 inline-flex items-center gap-1 text-sm font-semibold text-indigo-700 group-hover:gap-2 transition-all">
+          Get it free
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+        </div>
+      </div>
+    </a>
+  </aside>`;
+}
+
+export function renderBlogPost(post: BlogPost, anchorResource?: GatedResource | null): string {
   const canonicalUrl = `${BASE_URL}/blog/${post.slug}`;
   const ogImage = post.featured_image_url
     ? (post.featured_image_url.startsWith('http') ? post.featured_image_url : `${BASE_URL}${post.featured_image_url}`)
@@ -494,6 +571,7 @@ export function renderBlogPost(post: BlogPost): string {
         ${contentHtml}
       </div>
       ${tagsHtml}
+      ${renderResourceAnchor(anchorResource ?? null)}
       <div class="mt-12 pt-8 border-t border-slate-200">
         ${renderAuthorBio()}
       </div>

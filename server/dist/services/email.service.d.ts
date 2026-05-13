@@ -65,6 +65,24 @@ export declare class EmailService {
      * Send a generic email (used for contact form notifications, admin alerts, etc.).
      */
     sendGenericEmail(to: string, subject: string, html: string): Promise<void>;
+    /**
+     * Send the gated-resource delivery email.
+     * Logged-in users go through the template system (preferences, branding,
+     * email_sends log); anonymous leads fall back to a direct send because
+     * `sendTemplate` requires a userId.
+     */
+    sendGatedResourceDeliveryEmail(params: {
+        email: string;
+        resourceSlug: string;
+        resourceTitle: string;
+        token: string;
+        formats: string[];
+        typesetEnabled: boolean;
+        userId?: string;
+        firstName?: string;
+    }): Promise<void>;
+    private buildGatedResourceHtml;
+    private escapeHtml;
     private sendEmailDirect;
     /**
      * Get the SMTP transport (used by template service for SMTP sends).

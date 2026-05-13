@@ -9,6 +9,7 @@ import { getDeviceInfo, getClientIp } from '../../utils/ip.utils.js';
 import { COOKIE_CONFIG, JWT_CONFIG, REFRESH_TOKEN_CONFIG, OAUTH_STATE_COOKIE_CONFIG } from '../../config/auth.config.js';
 import { OAUTH_CONFIG } from '../../config/oauth.config.js';
 import type { OAuthProvider } from '../../types/auth.types.js';
+import { linkLeadsToUser } from '../../services/gated-resource.service.js';
 
 const router = Router();
 
@@ -94,6 +95,15 @@ router.post('/:provider/callback', oauthRateLimiter, async (req: Request, res: R
 
     // Handle login/register
     const { user, isNewUser } = await oauthService.handleOAuthLogin(profile, tokens);
+
+    // Link any prior anonymous gated-resource leads to a new OAuth user
+    if (isNewUser) {
+      linkLeadsToUser(user.email, user.id)
+        .then((n) => {
+          if (n > 0) console.log(`Linked ${n} gated-resource lead(s) to OAuth user ${user.id}`);
+        })
+        .catch((err) => console.error('Lead linking failed (OAuth):', err));
+    }
 
     // Record login success
     const ipAddress = getClientIp(req);

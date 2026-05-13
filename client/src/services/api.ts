@@ -2833,6 +2833,74 @@ export const earlyAccessApi = {
 };
 
 // Admin Early Access
+// =============================================
+// ADMIN: GATED RESOURCES
+// =============================================
+
+export interface AdminResourceSummary {
+  id: string;
+  slug: string;
+  title: string;
+  category: string;
+  formats: string[];
+  published: boolean;
+  page_count: number | null;
+  download_count: number;
+  lead_count: number;
+  downloads_30d: number;
+  updated_at: string;
+  created_at: string;
+}
+
+export interface AdminGatedResource {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  hook: string;
+  category: string;
+  audience: string | null;
+  description: string;
+  preview_md: string;
+  source_md_path: string;
+  formats: string[];
+  content_hash: string;
+  page_count: number | null;
+  published: boolean;
+  download_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AdminResourceLead {
+  id: string;
+  email: string;
+  consent_newsletter: boolean;
+  utm_source: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+  referer: string | null;
+  user_id: string | null;
+  created_at: string;
+}
+
+export const adminResourcesApi = {
+  list: () => api.get<{ resources: AdminResourceSummary[] }>('/admin/resources'),
+  get: (id: string) => api.get<{ resource: AdminGatedResource }>(`/admin/resources/${id}`),
+  create: (input: Partial<AdminGatedResource>) =>
+    api.post<{ resource: AdminGatedResource }>('/admin/resources', input),
+  update: (id: string, patch: Partial<AdminGatedResource>) =>
+    api.patch<{ resource: AdminGatedResource }>(`/admin/resources/${id}`, patch),
+  regenerate: (id: string) =>
+    api.post<{ content_hash: string }>(`/admin/resources/${id}/regenerate`),
+  listLeads: (id: string, params?: { page?: number; limit?: number }) =>
+    api.get<{
+      leads: AdminResourceLead[];
+      pagination: { page: number; limit: number; total: number; pages: number };
+    }>(`/admin/resources/${id}/leads`, { params }),
+  exportLeadsUrl: (id: string) => `/api/admin/resources/${id}/leads.csv`,
+};
+
 export const adminEarlyAccessApi = {
   getStats: () =>
     api.get('/admin/early-access/stats'),

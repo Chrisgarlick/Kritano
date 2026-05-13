@@ -143,7 +143,9 @@ export type TriggerEvent =
   | 'domain_verified'
   | 'member_added'
   | 'score_recalculated'
-  | 'limit_hit';
+  | 'limit_hit'
+  | 'gated_resource_lead_captured'
+  | 'gated_resource_downloaded';
 
 // =============================================
 // Trigger Evaluation

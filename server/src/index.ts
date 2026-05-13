@@ -10,6 +10,7 @@ import { ensureCsrfToken, csrfProtection } from './middleware/csrf.middleware.js
 import { globalRateLimiter } from './middleware/rateLimit.middleware.js';
 import { pool } from './db/index.js';
 import { getPublishedPostsForSitemap } from './services/blog.service.js';
+import { listPublishedResources } from './services/gated-resource.service.js';
 import { testRedisConnection } from './db/redis.js';
 import { apiRouter, initializeRoutes } from './routes/index.js';
 import { shutdownPdfBrowser } from './services/pdf-report.service.js';
@@ -18,6 +19,7 @@ import { prerenderMiddleware } from './middleware/prerender.middleware.js';
 import { blogSsrRouter } from './routes/blog-ssr.js';
 import { publicSsrRouter } from './routes/public-ssr.js';
 import { compareSsrRouter } from './routes/compare-ssr.js';
+import { resourcesSsrRouter } from './routes/resources-ssr.js';
 import { resendWebhookRouter } from './routes/webhooks/resend.js';
 import { initializeStripeWebhooks } from './routes/webhooks/stripe.js';
 import { mcpHttpRouter } from './mcp/http.js';
@@ -145,6 +147,7 @@ app.get('/sitemap.xml', async (_req, res) => {
   try {
     const baseUrl = (process.env.APP_URL || 'https://kritano.com').replace(/^http:\/\//, 'https://');
     const posts = await getPublishedPostsForSitemap();
+    const resources = await listPublishedResources();
 
     const staticPages = [
       { loc: '/', changefreq: 'weekly', priority: '1.0' },
@@ -159,6 +162,7 @@ app.get('/sitemap.xml', async (_req, res) => {
       { loc: '/contact', changefreq: 'monthly', priority: '0.5' },
       { loc: '/author/chris-garlick', changefreq: 'monthly', priority: '0.6' },
       { loc: '/blog', changefreq: 'daily', priority: '0.8' },
+      { loc: '/resources', changefreq: 'weekly', priority: '0.8' },
       { loc: '/docs', changefreq: 'monthly', priority: '0.6' },
       { loc: '/docs/authentication', changefreq: 'monthly', priority: '0.5' },
       { loc: '/docs/endpoints', changefreq: 'monthly', priority: '0.5' },
@@ -190,6 +194,15 @@ app.get('/sitemap.xml', async (_req, res) => {
       xml += '  </url>\n';
     }
 
+    for (const r of resources) {
+      xml += '  <url>\n';
+      xml += `    <loc>${baseUrl}/resources/${r.slug}</loc>\n`;
+      xml += `    <lastmod>${new Date(r.updated_at).toISOString()}</lastmod>\n`;
+      xml += '    <changefreq>monthly</changefreq>\n';
+      xml += '    <priority>0.7</priority>\n';
+      xml += '  </url>\n';
+    }
+
     xml += '</urlset>';
 
     res.set('Content-Type', 'application/xml');
@@ -210,6 +223,9 @@ app.use('/blog', blogSsrRouter);
 
 // Comparison pages SSR — serves fully rendered HTML for /compare pages
 app.use('/compare', compareSsrRouter);
+
+// Gated resources SSR — list, detail, thanks
+app.use('/resources', resourcesSsrRouter);
 
 // Public pages SSR — serves fully rendered HTML for marketing pages (homepage, about, etc.)
 app.use(publicSsrRouter);

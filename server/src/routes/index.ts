@@ -15,6 +15,7 @@ import siteInvitationsRouter from './site-invitations/index.js';
 import analyticsRouter, { setPool as setAnalyticsPool } from './analytics/index.js';
 import emailRouter from './email/index.js';
 import { blogRouter } from './blog.js';
+import { resourcesRouter } from './resources/index.js';
 import { referralsRouter } from './referrals/index.js';
 import { cookieConsentRouter } from './consent/cookie-consent.js';
 import { emailService } from '../services/email.service.js';
@@ -38,6 +39,7 @@ import { setPool as setReferralServicePool } from '../services/referral.service.
 import { setPool as setSystemSettingsPool, getSetting, isComingSoonEnabled, getSiteMode } from '../services/system-settings.service.js';
 import { getEarlyAccessStatus as getEAStatus } from '../services/early-access.service.js';
 import { setPool as setSeoServicePool } from '../services/seo.service.js';
+import { setPool as setGatedResourceServicePool } from '../services/gated-resource.service.js';
 import { initializeAdminMiddleware } from '../middleware/admin.middleware.js';
 import { initializeAdminService } from '../services/admin.service.js';
 import { initializeAdminAnalyticsService } from '../services/admin-analytics.service.js';
@@ -106,6 +108,9 @@ router.use('/email', emailRouter);
 
 // Public blog routes (no auth)
 router.use('/blog', blogRouter);
+
+// Gated resources (email gate + downloads)
+router.use('/resources', resourcesRouter);
 
 // Referrals (authenticated)
 router.use('/referrals', referralsRouter);
@@ -723,6 +728,7 @@ export function initializeRoutes(pool: Pool): void {
   setSeoServicePool(pool);
   setOutreachServicePool(pool);
   setGscPool(pool);
+  setGatedResourceServicePool(pool);
 }
 
 export const apiRouter = router;

@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Plus,
   Activity,
+  BookOpen,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
@@ -146,8 +147,32 @@ export default function DashboardPage() {
             </button>
           </div>
         ) : recentAudits.length === 0 ? (
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12">
-            <NoAuditsEmptyState onCreateAudit={handleNewAudit} />
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12">
+              <NoAuditsEmptyState onCreateAudit={handleNewAudit} />
+            </div>
+            <Link
+              to="/resources/website-health-checklist"
+              className="block group rounded-2xl border border-indigo-200 dark:border-indigo-800/60 bg-indigo-50 dark:bg-indigo-900/20 p-6 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-sm transition-all"
+            >
+              <div className="flex items-center gap-5">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center">
+                  <BookOpen className="w-6 h-6" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300 uppercase tracking-wider mb-1">
+                    Free resource
+                  </p>
+                  <p className="font-semibold text-slate-900 dark:text-white">
+                    Grab the Website Health Checklist
+                  </p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-0.5">
+                    The 85 pre-launch checks Kritano audits automatically. One click, no email needed.
+                  </p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </Link>
           </div>
         ) : (
           <>

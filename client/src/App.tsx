@@ -103,6 +103,8 @@ const AdminFeatureRequestDetailPage = lazy(() => import('./pages/admin/AdminFeat
 const AdminSchedulesPage = lazy(() => import('./pages/admin/AdminSchedules'));
 const AdminScheduleDetailPage = lazy(() => import('./pages/admin/AdminScheduleDetail'));
 const AdminEarlyAccessPage = lazy(() => import('./pages/admin/AdminEarlyAccess'));
+const AdminResourcesPage = lazy(() => import('./pages/admin/AdminResources'));
+const AdminResourceEditPage = lazy(() => import('./pages/admin/AdminResourceEdit'));
 const AdminLeadsPage = lazy(() => import('./pages/admin/crm/LeadsPage'));
 const AdminLeadDetailPage = lazy(() => import('./pages/admin/crm/LeadDetailPage'));
 const AdminTriggersPage = lazy(() => import('./pages/admin/crm/TriggersPage'));
@@ -718,6 +720,24 @@ function App() {
                   element={
                     <AdminRoute>
                       <AdminEarlyAccessPage />
+                    </AdminRoute>
+                  }
+                />
+
+                {/* Admin Gated Resources routes */}
+                <Route
+                  path="/admin/resources"
+                  element={
+                    <AdminRoute>
+                      <AdminResourcesPage />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/resources/:id"
+                  element={
+                    <AdminRoute>
+                      <AdminResourceEditPage />
                     </AdminRoute>
                   }
                 />

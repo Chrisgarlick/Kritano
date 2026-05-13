@@ -37,7 +37,7 @@ export interface TriggerStats {
     actioned: number;
     by_type: Record<string, number>;
 }
-export type TriggerEvent = 'audit_completed' | 'registration' | 'email_verified' | 'domain_verified' | 'member_added' | 'score_recalculated' | 'limit_hit';
+export type TriggerEvent = 'audit_completed' | 'registration' | 'email_verified' | 'domain_verified' | 'member_added' | 'score_recalculated' | 'limit_hit' | 'gated_resource_lead_captured' | 'gated_resource_downloaded';
 /**
  * Check and fire triggers for a user based on an event.
  * This is the main entry point — call after relevant events.

@@ -53,19 +53,20 @@ const index_js_11 = __importDefault(require("./site-invitations/index.js"));
 const index_js_12 = __importStar(require("./analytics/index.js"));
 const index_js_13 = __importDefault(require("./email/index.js"));
 const blog_js_1 = require("./blog.js");
-const index_js_14 = require("./referrals/index.js");
+const index_js_14 = require("./resources/index.js");
+const index_js_15 = require("./referrals/index.js");
 const cookie_consent_js_1 = require("./consent/cookie-consent.js");
 const email_service_js_1 = require("../services/email.service.js");
 const seo_js_1 = require("./seo.js");
-const index_js_15 = require("./account/index.js");
+const index_js_16 = require("./account/index.js");
 const user_webhooks_js_1 = require("./webhooks/user-webhooks.js");
-const index_js_16 = require("./public-reports/index.js");
-const index_js_17 = require("./compliance/index.js");
-const index_js_18 = require("./gsc/index.js");
+const index_js_17 = require("./public-reports/index.js");
+const index_js_18 = require("./compliance/index.js");
+const index_js_19 = require("./gsc/index.js");
 const gsc_service_js_1 = require("../services/gsc.service.js");
 const site_service_js_1 = require("../services/site.service.js");
 const trial_service_js_1 = require("../services/trial.service.js");
-const index_js_19 = require("../db/index.js");
+const index_js_20 = require("../db/index.js");
 const site_sharing_service_js_1 = require("../services/site-sharing.service.js");
 const site_middleware_js_1 = require("../middleware/site.middleware.js");
 const domain_verification_service_js_1 = require("../services/domain-verification.service.js");
@@ -76,6 +77,7 @@ const referral_service_js_1 = require("../services/referral.service.js");
 const system_settings_service_js_1 = require("../services/system-settings.service.js");
 const early_access_service_js_1 = require("../services/early-access.service.js");
 const seo_service_js_1 = require("../services/seo.service.js");
+const gated_resource_service_js_1 = require("../services/gated-resource.service.js");
 const admin_middleware_js_1 = require("../middleware/admin.middleware.js");
 const admin_service_js_1 = require("../services/admin.service.js");
 const admin_analytics_service_js_1 = require("../services/admin-analytics.service.js");
@@ -99,7 +101,7 @@ router.use('/site-invitations', index_js_11.default);
 // Audits routes
 router.use('/audits', index_js_2.auditsRouter);
 // EAA Compliance (nested under audits path)
-router.use('/audits', index_js_17.complianceRouter);
+router.use('/audits', index_js_18.complianceRouter);
 // Analytics routes
 router.use('/analytics', index_js_12.default);
 // API key management routes
@@ -120,20 +122,22 @@ router.use('/feature-requests', index_js_8.default);
 router.use('/email', index_js_13.default);
 // Public blog routes (no auth)
 router.use('/blog', blog_js_1.blogRouter);
+// Gated resources (email gate + downloads)
+router.use('/resources', index_js_14.resourcesRouter);
 // Referrals (authenticated)
-router.use('/referrals', index_js_14.referralsRouter);
+router.use('/referrals', index_js_15.referralsRouter);
 // Cookie consent (public, no auth)
 router.use('/consent/cookies', cookie_consent_js_1.cookieConsentRouter);
 // Public SEO entries (no auth, cached)
 router.use('/seo', seo_js_1.seoRouter);
 // Account management (GDPR: data export, deletion)
-router.use('/account', index_js_15.accountRouter);
+router.use('/account', index_js_16.accountRouter);
 // User webhooks (authenticated)
 router.use('/webhooks', user_webhooks_js_1.userWebhooksRouter);
 // Google Search Console (authenticated)
-router.use('/gsc', index_js_18.gscRouter);
+router.use('/gsc', index_js_19.gscRouter);
 // Public shareable audit reports (mixed auth: share/revoke are authenticated, view is public)
-router.use(index_js_16.publicReportsRouter);
+router.use(index_js_17.publicReportsRouter);
 // Contact form (public, no auth)
 const contactAttempts = new Map();
 // Periodic cleanup to prevent unbounded memory growth
@@ -167,7 +171,7 @@ router.post('/contact', async (req, res) => {
             message: zod_1.z.string().min(1).max(5000),
         });
         const { name, email, subject, message } = schema.parse(req.body);
-        await index_js_19.pool.query(`INSERT INTO contact_submissions (name, email, subject, message, ip_address)
+        await index_js_20.pool.query(`INSERT INTO contact_submissions (name, email, subject, message, ip_address)
        VALUES ($1, $2, $3, $4, $5)`, [name, email, subject || null, message, ip]);
         // Email notification to info@kritano.com
         const CONTACT_EMAIL = process.env.CONTACT_EMAIL || 'info@kritano.com';
@@ -207,13 +211,13 @@ router.get('/public/badges/:siteId.svg', async (req, res) => {
             return;
         }
         // Check badge_enabled
-        const siteResult = await index_js_19.pool.query(`SELECT id, badge_enabled FROM sites WHERE id = $1`, [siteId]);
+        const siteResult = await index_js_20.pool.query(`SELECT id, badge_enabled FROM sites WHERE id = $1`, [siteId]);
         if (siteResult.rows.length === 0 || !siteResult.rows[0].badge_enabled) {
             res.status(404).setHeader('Content-Type', 'image/svg+xml').send(generateBadgeSvg('Not Found', null));
             return;
         }
         // Fetch latest completed audit scores
-        const auditResult = await index_js_19.pool.query(`SELECT seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score
+        const auditResult = await index_js_20.pool.query(`SELECT seo_score, accessibility_score, security_score, performance_score, content_score, structured_data_score, cqs_score
        FROM audit_jobs
        WHERE site_id = $1 AND status = 'completed'
        ORDER BY completed_at DESC
@@ -329,7 +333,7 @@ router.get('/subscription', auth_middleware_js_1.authenticate, async (req, res) 
         const tierLimits = await (0, site_service_js_1.getUserTierLimits)(userId);
         const usage = await (0, site_service_js_1.getUserSiteUsage)(userId);
         // Get actual subscription from DB
-        const subResult = await index_js_19.pool.query(`SELECT id, user_id, tier, status, trial_start, trial_end, stripe_customer_id, created_at, updated_at
+        const subResult = await index_js_20.pool.query(`SELECT id, user_id, tier, status, trial_start, trial_end, stripe_customer_id, created_at, updated_at
        FROM subscriptions
        WHERE user_id = $1 AND status IN ('active', 'trialing', 'past_due')
        ORDER BY created_at DESC LIMIT 1`, [userId]);
@@ -339,7 +343,7 @@ router.get('/subscription', auth_middleware_js_1.authenticate, async (req, res) 
             daysRemaining = Math.max(0, Math.ceil((new Date(sub.trial_end).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
         }
         // Check if user has used trial
-        const userResult = await index_js_19.pool.query(`SELECT has_used_trial FROM users WHERE id = $1`, [userId]);
+        const userResult = await index_js_20.pool.query(`SELECT has_used_trial FROM users WHERE id = $1`, [userId]);
         const hasUsedTrial = userResult.rows[0]?.has_used_trial || false;
         res.json({
             subscription: {
@@ -378,14 +382,14 @@ router.post('/subscription/start-trial', auth_middleware_js_1.authenticate, asyn
             return;
         }
         // Require verified email
-        const userResult = await index_js_19.pool.query(`SELECT email_verified FROM users WHERE id = $1`, [userId]);
+        const userResult = await index_js_20.pool.query(`SELECT email_verified FROM users WHERE id = $1`, [userId]);
         if (!userResult.rows[0]?.email_verified) {
             res.status(403).json({ error: 'Please verify your email before starting a trial.' });
             return;
         }
         const result = await (0, trial_service_js_1.startTrial)(userId, tier);
         // Reload subscription data to return
-        const subResult = await index_js_19.pool.query(`SELECT id, user_id, tier, status, trial_start, trial_end FROM subscriptions WHERE id = $1`, [result.subscriptionId]);
+        const subResult = await index_js_20.pool.query(`SELECT id, user_id, tier, status, trial_start, trial_end FROM subscriptions WHERE id = $1`, [result.subscriptionId]);
         const sub = subResult.rows[0];
         const daysRemaining = Math.max(0, Math.ceil((new Date(sub.trial_end).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
         res.json({
@@ -415,11 +419,11 @@ router.post('/subscription/checkout', auth_middleware_js_1.authenticate, async (
             return;
         }
         // Get user's current subscription (for existing stripe_customer_id)
-        const subResult = await index_js_19.pool.query(`SELECT stripe_customer_id FROM subscriptions
+        const subResult = await index_js_20.pool.query(`SELECT stripe_customer_id FROM subscriptions
        WHERE user_id = $1 AND status IN ('active', 'trialing', 'past_due')
        ORDER BY created_at DESC LIMIT 1`, [userId]);
         // Get user's discount_percent (early access founding members)
-        const userResult = await index_js_19.pool.query(`SELECT email, discount_percent FROM users WHERE id = $1`, [userId]);
+        const userResult = await index_js_20.pool.query(`SELECT email, discount_percent FROM users WHERE id = $1`, [userId]);
         const user = userResult.rows[0];
         if (!user) {
             res.status(404).json({ error: 'User not found' });
@@ -446,7 +450,7 @@ router.post('/subscription/checkout', auth_middleware_js_1.authenticate, async (
 router.post('/subscription/portal', auth_middleware_js_1.authenticate, async (req, res) => {
     try {
         const userId = req.user.id;
-        const subResult = await index_js_19.pool.query(`SELECT stripe_customer_id FROM subscriptions
+        const subResult = await index_js_20.pool.query(`SELECT stripe_customer_id FROM subscriptions
        WHERE user_id = $1 AND stripe_customer_id IS NOT NULL
        ORDER BY created_at DESC LIMIT 1`, [userId]);
         if (!subResult.rows[0]?.stripe_customer_id) {
@@ -594,7 +598,7 @@ router.post('/coming-soon/signup', async (req, res) => {
             name: zod_1.z.string().max(200).optional(),
         });
         const { email, name } = schema.parse(req.body);
-        await index_js_19.pool.query(`INSERT INTO coming_soon_signups (email, name, ip_address)
+        await index_js_20.pool.query(`INSERT INTO coming_soon_signups (email, name, ip_address)
        VALUES ($1, $2, $3)
        ON CONFLICT (email) DO NOTHING`, [email, name || null, ip]);
         // Notify you at info@
@@ -644,6 +648,7 @@ function initializeRoutes(pool) {
     (0, seo_service_js_1.setPool)(pool);
     (0, outreach_service_js_1.setPool)(pool);
     (0, gsc_service_js_1.setPool)(pool);
+    (0, gated_resource_service_js_1.setPool)(pool);
 }
 exports.apiRouter = router;
 //# sourceMappingURL=index.js.map

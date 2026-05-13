@@ -116,6 +116,10 @@ export function htmlShell(opts: {
     .ssr-tag { display: inline-block; min-height: 44px; padding: 8px 12px; line-height: 28px; }
     .ssr-skip:focus { position: absolute; top: 1rem; left: 1rem; z-index: 100; background: #4f46e5; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; width: auto; height: auto; clip: auto; white-space: normal; overflow: visible; }
 
+    /* Services dropdown (CSS-only hover) */
+    .ssr-dropdown-panel { display: none !important; }
+    .ssr-dropdown:hover .ssr-dropdown-panel { display: block !important; }
+
     /* Mobile nav toggle (CSS-only, no JS) */
     .ssr-mobile-checkbox { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
     .ssr-mobile-menu { display: none; }
@@ -138,23 +142,48 @@ export function htmlShell(opts: {
 // ── Nav ──────────────────────────────────────────────────────────────
 
 const NAV_LINKS = [
-  { href: '/services', label: 'Services' },
-  { href: '/compare', label: 'Compare' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/compare', label: 'Compare' },
   { href: '/about', label: 'About' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
   { href: '/docs', label: 'API Docs' },
 ];
 
+const SERVICE_ITEMS = [
+  { href: '/services/seo', label: 'SEO Auditing', description: 'Search engine optimisation analysis', color: 'text-violet-600', iconBg: 'bg-violet-50', icon: '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>' },
+  { href: '/services/accessibility', label: 'Accessibility', description: 'WCAG 2.2 compliance testing', color: 'text-emerald-700', iconBg: 'bg-emerald-50', icon: '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>' },
+  { href: '/services/security', label: 'Security Scanning', description: 'Vulnerability & threat detection', color: 'text-red-700', iconBg: 'bg-red-50', icon: '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>' },
+  { href: '/services/performance', label: 'Performance', description: 'Speed & Core Web Vitals', color: 'text-sky-700', iconBg: 'bg-sky-50', icon: '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>' },
+];
+
 export function renderNav(activePath?: string): string {
+  const isServicesActive = activePath === '/services' || activePath?.startsWith('/services/');
+
   const desktopLinks = NAV_LINKS.map(link => {
-    const isActive = activePath === link.href || (link.href === '/blog' && activePath?.startsWith('/blog'));
+    const isActive = activePath === link.href || (link.href === '/blog' && activePath?.startsWith('/blog')) || (link.href === '/compare' && activePath?.startsWith('/compare'));
     return `<a href="${link.href}" class="text-[15px] font-medium ${isActive ? 'text-indigo-600' : 'text-slate-600 hover:text-indigo-600'} transition-colors"${isActive ? ' aria-current="page"' : ''}>${link.label}</a>`;
-  }).join('\n        ');
+  }).join('\n          ');
+
+  const serviceDropdownItems = SERVICE_ITEMS.map(item =>
+    `<a href="${item.href}" class="flex items-start gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors">
+                  <div class="mt-0.5 p-1.5 rounded-md ${item.iconBg} ${item.color}">${item.icon}</div>
+                  <div>
+                    <div class="text-sm font-medium">${item.label}</div>
+                    <div class="text-xs text-slate-600">${item.description}</div>
+                  </div>
+                </a>`
+  ).join('\n                ');
+
+  const mobileServiceItems = SERVICE_ITEMS.map(item =>
+    `<a href="${item.href}" class="flex items-center gap-2.5 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+              <span class="${item.color}">${item.icon}</span>
+              ${item.label}
+            </a>`
+  ).join('\n            ');
 
   const mobileLinks = NAV_LINKS.map(link => {
-    const isActive = activePath === link.href || (link.href === '/blog' && activePath?.startsWith('/blog'));
+    const isActive = activePath === link.href || (link.href === '/blog' && activePath?.startsWith('/blog')) || (link.href === '/compare' && activePath?.startsWith('/compare'));
     return `<a href="${link.href}" class="block py-3 text-base font-medium ${isActive ? 'text-indigo-600' : 'text-slate-600 hover:text-slate-900'} transition-colors"${isActive ? ' aria-current="page"' : ''}>${link.label}</a>`;
   }).join('\n        ');
 
@@ -166,6 +195,22 @@ export function renderNav(activePath?: string): string {
         <span class="font-display text-xl text-slate-900">Kritano</span>
       </a>
       <div class="hidden md:flex items-center gap-6">
+        <!-- Services dropdown (CSS-only hover) -->
+        <div class="ssr-dropdown relative">
+          <a href="/services" class="flex items-center gap-1 text-[15px] font-medium ${isServicesActive ? 'text-indigo-600' : 'text-slate-600 hover:text-indigo-600'} transition-colors"${isServicesActive ? ' aria-current="page"' : ''}>
+            Services
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </a>
+          <div class="ssr-dropdown-panel absolute top-full left-1/2 -translate-x-1/2 pt-3">
+            <div class="w-[340px] bg-white rounded-xl border border-slate-200 shadow-lg p-2">
+              <a href="/services" class="flex items-center gap-1.5 px-3 py-2.5 mb-1 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors">
+                All Services
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </a>
+              ${serviceDropdownItems}
+            </div>
+          </div>
+        </div>
         ${desktopLinks}
       </div>
       <div class="hidden md:flex items-center gap-6">
@@ -179,6 +224,10 @@ export function renderNav(activePath?: string): string {
     </nav>
     <div class="ssr-mobile-menu md:hidden border-t border-slate-100 bg-white">
       <div class="px-6 py-4 space-y-1">
+        <a href="/services" class="block py-3 text-base font-medium ${isServicesActive ? 'text-indigo-600' : 'text-slate-600 hover:text-slate-900'} transition-colors"${isServicesActive ? ' aria-current="page"' : ''}>Services</a>
+        <div class="pl-4 pb-2 space-y-1">
+          ${mobileServiceItems}
+        </div>
         ${mobileLinks}
         <div class="pt-4 border-t border-slate-100 space-y-3">
           <a href="/login" class="block text-center py-3 text-slate-600 font-medium">Sign in</a>

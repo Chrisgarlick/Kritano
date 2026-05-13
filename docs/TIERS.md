@@ -109,6 +109,15 @@
 | Milestone: 5 referrals | Starter features (30d) | Starter features (30d) | Starter features (30d) | Starter features (30d) | Starter features (30d) |
 | Milestone: 10 referrals | Pro features (30d) | Pro features (30d) | Pro features (30d) | Pro features (30d) | Pro features (30d) |
 
+## Free Resources Library
+
+| | Free | Starter | Pro | Agency | Enterprise |
+|---|---|---|---|---|---|
+| Access to gated resource library | Yes | Yes | Yes | Yes | Yes |
+| Skip email gate when logged in | Yes | Yes | Yes | Yes | Yes |
+
+Lead magnets (checklists, references, guides) at `/resources` are free for every tier and free for anonymous visitors who provide an email. Logged-in users bypass the email gate entirely and get one-click downloads in any supported format.
+
 ## Admin Features (not tier-gated)
 
 | Feature | Description |

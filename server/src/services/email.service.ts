@@ -252,6 +252,89 @@ export class EmailService {
     await this.sendEmailDirect(to, subject, html);
   }
 
+  /**
+   * Send the gated-resource delivery email.
+   * Logged-in users go through the template system (preferences, branding,
+   * email_sends log); anonymous leads fall back to a direct send because
+   * `sendTemplate` requires a userId.
+   */
+  async sendGatedResourceDeliveryEmail(params: {
+    email: string;
+    resourceSlug: string;
+    resourceTitle: string;
+    token: string;
+    formats: string[];
+    typesetEnabled: boolean;
+    userId?: string;
+    firstName?: string;
+  }): Promise<void> {
+    const { email, resourceSlug, resourceTitle, token, formats, typesetEnabled, userId, firstName } = params;
+
+    const downloadUrlFor = (fmt: string): string =>
+      `${this.appUrl}/api/resources/${encodeURIComponent(resourceSlug)}/download/${encodeURIComponent(fmt)}?token=${encodeURIComponent(token)}`;
+
+    const downloadMdUrl = downloadUrlFor('md');
+
+    // Build the "additional formats" block (PDF and DOCX get a button when
+    // typeset is enabled, or a friendly "preparing" note when it is not).
+    const otherFormats = formats.filter((f) => f !== 'md');
+    let additionalFormatsHtml = '';
+    if (otherFormats.length > 0) {
+      const readyFormats = typesetEnabled ? otherFormats : [];
+      const pendingFormats = typesetEnabled ? [] : otherFormats;
+      if (readyFormats.length > 0) {
+        additionalFormatsHtml = readyFormats
+          .map(
+            (f) =>
+              `<p style="text-align:center;margin:8px 0;"><a href="${downloadUrlFor(f)}" style="color:#4f46e5;font-weight:600;text-decoration:underline;">Download ${f.toUpperCase()}</a></p>`
+          )
+          .join('');
+      } else if (pendingFormats.length > 0) {
+        additionalFormatsHtml = `<p style="color:#92400e;background:#fef3c7;border:1px solid #fcd34d;border-radius:6px;padding:10px 14px;font-size:14px;">The ${pendingFormats.map((f) => f.toUpperCase()).join(' and ')} version ${pendingFormats.length === 1 ? 'is' : 'are'} still being prepared. We'll email you again as soon as ${pendingFormats.length === 1 ? 'it is' : 'they are'} ready.</p>`;
+      }
+    }
+
+    if (userId) {
+      try {
+        await sendTemplate({
+          templateSlug: 'gated_resource_delivery',
+          to: { userId, email, firstName: firstName || '' },
+          variables: {
+            resourceTitle,
+            downloadMdUrl,
+            additionalFormatsHtml,
+            appUrl: this.appUrl,
+          },
+        });
+        return;
+      } catch (err) {
+        console.warn('Gated resource template send failed, falling back to direct send:', err);
+      }
+    }
+
+    const subject = `Your ${resourceTitle} download is ready`;
+    const html = this.buildGatedResourceHtml(resourceTitle, downloadMdUrl, additionalFormatsHtml);
+    await this.sendEmailDirect(email, subject, html);
+  }
+
+  private buildGatedResourceHtml(
+    resourceTitle: string,
+    downloadMdUrl: string,
+    additionalFormatsHtml: string
+  ): string {
+    const footer = this.buildEmailFooter();
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;"><div style="text-align: center; margin-bottom: 30px;"><h1 style="color: #4f46e5; margin: 0;">Kritano</h1></div><h2 style="color: #1f2937;">Your download is ready</h2><p>Thanks for requesting <strong>${this.escapeHtml(resourceTitle)}</strong>. Click below to grab your copy:</p><div style="text-align: center; margin: 30px 0;"><a href="${downloadMdUrl}" style="background-color: #4f46e5; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">Download Markdown</a></div>${additionalFormatsHtml}<p style="color: #6b7280; font-size: 14px;">This link works for 7 days, so you can come back any time during that window.</p><div style="background:#f9fafb;border-radius:8px;padding:16px;margin:24px 0;font-size:14px;color:#374151;"><strong>While you're here:</strong> Kritano scans your website for the same issues this resource covers, automatically, on every change. <a href="${this.appUrl}/register?ea=resources" style="color:#4f46e5;font-weight:600;">Start a free scan</a> in under a minute.</div>${footer}<p style="color: #9ca3af; font-size: 12px;">You received this because you requested ${this.escapeHtml(resourceTitle)} from kritano.com.</p></body></html>`;
+  }
+
+  private escapeHtml(s: string): string {
+    return s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   private async sendEmailDirect(to: string, subject: string, html: string): Promise<void> {
     if (this.smtpTransport) {
       try {

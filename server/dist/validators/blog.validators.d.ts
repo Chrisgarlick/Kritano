@@ -62,8 +62,8 @@ export declare const ContentBlockSchema: z.ZodDiscriminatedUnion<"type", [z.ZodO
         caption: z.ZodOptional<z.ZodString>;
         width: z.ZodDefault<z.ZodEnum<["full", "wide", "content"]>>;
     }, "strip", z.ZodTypeAny, {
-        width: "content" | "full" | "wide";
         src: string;
+        width: "content" | "full" | "wide";
         alt: string;
         caption?: string | undefined;
     }, {
@@ -76,8 +76,8 @@ export declare const ContentBlockSchema: z.ZodDiscriminatedUnion<"type", [z.ZodO
     type: "image";
     id: string;
     props: {
-        width: "content" | "full" | "wide";
         src: string;
+        width: "content" | "full" | "wide";
         alt: string;
         caption?: string | undefined;
     };
@@ -411,8 +411,8 @@ export declare const CreatePostSchema: z.ZodObject<{
             caption: z.ZodOptional<z.ZodString>;
             width: z.ZodDefault<z.ZodEnum<["full", "wide", "content"]>>;
         }, "strip", z.ZodTypeAny, {
-            width: "content" | "full" | "wide";
             src: string;
+            width: "content" | "full" | "wide";
             alt: string;
             caption?: string | undefined;
         }, {
@@ -425,8 +425,8 @@ export declare const CreatePostSchema: z.ZodObject<{
         type: "image";
         id: string;
         props: {
-            width: "content" | "full" | "wide";
             src: string;
+            width: "content" | "full" | "wide";
             alt: string;
             caption?: string | undefined;
         };
@@ -719,8 +719,8 @@ export declare const CreatePostSchema: z.ZodObject<{
         type: "image";
         id: string;
         props: {
-            width: "content" | "full" | "wide";
             src: string;
+            width: "content" | "full" | "wide";
             alt: string;
             caption?: string | undefined;
         };
@@ -977,8 +977,8 @@ export declare const UpdatePostSchema: z.ZodObject<{
             caption: z.ZodOptional<z.ZodString>;
             width: z.ZodDefault<z.ZodEnum<["full", "wide", "content"]>>;
         }, "strip", z.ZodTypeAny, {
-            width: "content" | "full" | "wide";
             src: string;
+            width: "content" | "full" | "wide";
             alt: string;
             caption?: string | undefined;
         }, {
@@ -991,8 +991,8 @@ export declare const UpdatePostSchema: z.ZodObject<{
         type: "image";
         id: string;
         props: {
-            width: "content" | "full" | "wide";
             src: string;
+            width: "content" | "full" | "wide";
             alt: string;
             caption?: string | undefined;
         };
@@ -1286,8 +1286,8 @@ export declare const UpdatePostSchema: z.ZodObject<{
         type: "image";
         id: string;
         props: {
-            width: "content" | "full" | "wide";
             src: string;
+            width: "content" | "full" | "wide";
             alt: string;
             caption?: string | undefined;
         };

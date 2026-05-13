@@ -25,6 +25,7 @@ const coming_soon_js_1 = require("./coming-soon.js");
 const seo_js_1 = require("./seo.js");
 const early_access_js_1 = require("./early-access.js");
 const outreach_log_js_1 = require("./outreach-log.js");
+const resources_js_1 = require("./resources.js");
 const index_js_1 = require("../../db/index.js");
 const router = (0, express_1.Router)();
 exports.adminRouter = router;
@@ -43,6 +44,7 @@ router.use('/coming-soon', coming_soon_js_1.adminComingSoonRouter);
 router.use('/seo', seo_js_1.adminSeoRouter);
 router.use('/early-access', early_access_js_1.adminEarlyAccessRouter);
 router.use('/outreach-log', outreach_log_js_1.adminOutreachLogRouter);
+router.use('/resources', resources_js_1.adminResourcesRouter);
 // =============================================
 // Dashboard & Analytics
 // =============================================

@@ -48,6 +48,7 @@ const csrf_middleware_js_1 = require("./middleware/csrf.middleware.js");
 const rateLimit_middleware_js_1 = require("./middleware/rateLimit.middleware.js");
 const index_js_1 = require("./db/index.js");
 const blog_service_js_1 = require("./services/blog.service.js");
+const gated_resource_service_js_1 = require("./services/gated-resource.service.js");
 const redis_js_1 = require("./db/redis.js");
 const index_js_2 = require("./routes/index.js");
 const pdf_report_service_js_1 = require("./services/pdf-report.service.js");
@@ -56,6 +57,7 @@ const prerender_middleware_js_1 = require("./middleware/prerender.middleware.js"
 const blog_ssr_js_1 = require("./routes/blog-ssr.js");
 const public_ssr_js_1 = require("./routes/public-ssr.js");
 const compare_ssr_js_1 = require("./routes/compare-ssr.js");
+const resources_ssr_js_1 = require("./routes/resources-ssr.js");
 const resend_js_1 = require("./routes/webhooks/resend.js");
 const stripe_js_1 = require("./routes/webhooks/stripe.js");
 const http_js_1 = require("./mcp/http.js");
@@ -161,6 +163,7 @@ app.get('/sitemap.xml', async (_req, res) => {
     try {
         const baseUrl = (process.env.APP_URL || 'https://kritano.com').replace(/^http:\/\//, 'https://');
         const posts = await (0, blog_service_js_1.getPublishedPostsForSitemap)();
+        const resources = await (0, gated_resource_service_js_1.listPublishedResources)();
         const staticPages = [
             { loc: '/', changefreq: 'weekly', priority: '1.0' },
             { loc: '/about', changefreq: 'monthly', priority: '0.7' },
@@ -174,6 +177,7 @@ app.get('/sitemap.xml', async (_req, res) => {
             { loc: '/contact', changefreq: 'monthly', priority: '0.5' },
             { loc: '/author/chris-garlick', changefreq: 'monthly', priority: '0.6' },
             { loc: '/blog', changefreq: 'daily', priority: '0.8' },
+            { loc: '/resources', changefreq: 'weekly', priority: '0.8' },
             { loc: '/docs', changefreq: 'monthly', priority: '0.6' },
             { loc: '/docs/authentication', changefreq: 'monthly', priority: '0.5' },
             { loc: '/docs/endpoints', changefreq: 'monthly', priority: '0.5' },
@@ -201,6 +205,14 @@ app.get('/sitemap.xml', async (_req, res) => {
             xml += '    <priority>0.8</priority>\n';
             xml += '  </url>\n';
         }
+        for (const r of resources) {
+            xml += '  <url>\n';
+            xml += `    <loc>${baseUrl}/resources/${r.slug}</loc>\n`;
+            xml += `    <lastmod>${new Date(r.updated_at).toISOString()}</lastmod>\n`;
+            xml += '    <changefreq>monthly</changefreq>\n';
+            xml += '    <priority>0.7</priority>\n';
+            xml += '  </url>\n';
+        }
         xml += '</urlset>';
         res.set('Content-Type', 'application/xml');
         res.set('Cache-Control', 'public, max-age=3600');
@@ -218,6 +230,8 @@ app.use('/api', index_js_2.apiRouter);
 app.use('/blog', blog_ssr_js_1.blogSsrRouter);
 // Comparison pages SSR — serves fully rendered HTML for /compare pages
 app.use('/compare', compare_ssr_js_1.compareSsrRouter);
+// Gated resources SSR — list, detail, thanks
+app.use('/resources', resources_ssr_js_1.resourcesSsrRouter);
 // Public pages SSR — serves fully rendered HTML for marketing pages (homepage, about, etc.)
 app.use(public_ssr_js_1.publicSsrRouter);
 // Pre-rendering for bot/crawler user agents (serves rendered HTML for SEO/AI citation)

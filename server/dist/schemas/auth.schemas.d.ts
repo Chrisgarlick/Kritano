@@ -62,11 +62,11 @@ export declare const passwordResetSchema: z.ZodObject<{
     token: z.ZodString;
     password: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    password: string;
     token: string;
+    password: string;
 }, {
-    password: string;
     token: string;
+    password: string;
 }>;
 export declare const verifyEmailSchema: z.ZodObject<{
     token: z.ZodString;

@@ -20,6 +20,7 @@ import {
   Users, Eye, Send, AlertTriangle,
   Database, Cpu, Activity, CircleAlert,
   RefreshCw, Power, Loader2, Clock, XCircle,
+  BookOpen,
 } from 'lucide-react';
 
 function formatUptime(ms: number): string {
@@ -477,6 +478,18 @@ export default function AdminDashboardPage() {
                 </div>
               </>
             )}
+          </ModuleCard>
+
+          {/* Gated Resources */}
+          <ModuleCard
+            icon={BookOpen}
+            iconColor="text-indigo-300"
+            iconBg="bg-indigo-500/10"
+            title="Resources"
+            link="/admin/resources"
+            loading={false}
+          >
+            <p className="text-xs text-slate-500">Lead-magnet library. Manage downloads, capture leads, and export CSVs for outreach.</p>
           </ModuleCard>
 
           {/* CMS */}

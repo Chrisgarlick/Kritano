@@ -26,7 +26,7 @@ async function recalculateScore(userId) {
     const client = await index_js_1.pool.connect();
     try {
         // Gather all scoring signals in parallel queries
-        const [userRow, auditStats, siteStats, domainStats, teamStats, usageStats] = await Promise.all([
+        const [userRow, auditStats, siteStats, domainStats, teamStats, usageStats, resourceStats] = await Promise.all([
             client.query(`SELECT email_verified, last_login_at, created_at FROM users WHERE id = $1`, [userId]),
             client.query(`SELECT
           COUNT(*) FILTER (WHERE status = 'completed') as completed,
@@ -47,6 +47,15 @@ async function recalculateScore(userId) {
         FROM usage_records ur
         JOIN sites s ON s.organization_id = ur.organization_id
         WHERE s.created_by = $1`, [userId]),
+            // Gated resource downloads — engagement signal. Counts downloads either
+            // attributed directly to the user OR captured anonymously as a lead and
+            // later linked to this user on registration (see milestone 7).
+            client.query(`SELECT
+           COUNT(*) AS total_downloads,
+           COUNT(DISTINCT d.resource_id) AS unique_resources
+         FROM gated_resource_downloads d
+         LEFT JOIN gated_resource_leads l ON l.id = d.lead_id
+         WHERE d.user_id = $1 OR l.user_id = $1`, [userId]),
         ]);
         const user = userRow.rows[0];
         if (!user)
@@ -57,6 +66,8 @@ async function recalculateScore(userId) {
         const verifiedDomains = parseInt(domainStats.rows[0].count) || 0;
         const teamMembers = parseInt(teamStats.rows[0].count) || 0;
         const exports = parseInt(usageStats.rows[0].exports) || 0;
+        const resourceDownloads = parseInt(resourceStats.rows[0].total_downloads) || 0;
+        const uniqueResources = parseInt(resourceStats.rows[0].unique_resources) || 0;
         // Calculate score
         let score = 0;
         // Account created: +5
@@ -85,6 +96,11 @@ async function recalculateScore(userId) {
         // Exported PDF: +10
         if (exports > 0)
             score += 10;
+        // Gated resource engagement: +5 for first download, +5 more for 3+ distinct resources
+        if (resourceDownloads >= 1)
+            score += 5;
+        if (uniqueResources >= 3)
+            score += 5;
         // Check if hitting tier limits: site limit +40, audit limit +35
         const tierLimitResult = await client.query(`SELECT tl.max_domains, tl.max_audits_per_month
        FROM subscriptions sub

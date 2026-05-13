@@ -12,6 +12,7 @@ const express_1 = require("express");
 const blog_service_js_1 = require("../services/blog.service.js");
 const blog_ssr_service_js_1 = require("../services/blog-ssr.service.js");
 const ssr_shared_service_js_1 = require("../services/ssr-shared.service.js");
+const gated_resource_service_js_1 = require("../services/gated-resource.service.js");
 const router = (0, express_1.Router)();
 exports.blogSsrRouter = router;
 // GET /blog - Blog listing page
@@ -52,7 +53,13 @@ router.get('/:slug', async (req, res) => {
         // Increment view count (debounced by IP)
         const sessionKey = (req.ip || req.headers['x-forwarded-for'] || 'unknown');
         (0, blog_service_js_1.incrementViewCount)(post.id, sessionKey).catch(err => console.error('Blog view count increment failed:', err));
-        const html = (0, blog_ssr_service_js_1.renderBlogPost)(post);
+        // Resolve the end-of-post resource anchor for this category. Failures
+        // here must not break the post render — fall back to no anchor card.
+        const anchorSlug = (0, blog_ssr_service_js_1.anchorSlugForCategory)(post.category);
+        const anchorResource = anchorSlug
+            ? await (0, gated_resource_service_js_1.getResourceBySlug)(anchorSlug).catch(() => null)
+            : null;
+        const html = (0, blog_ssr_service_js_1.renderBlogPost)(post, anchorResource);
         (0, ssr_shared_service_js_1.setSsrHeaders)(res);
         res.set('Cache-Control', 'public, max-age=600, stale-while-revalidate=120');
         res.send(html);

@@ -23,6 +23,7 @@ const oauth_js_1 = require("./oauth.js");
 const oauth_service_js_1 = require("../../services/oauth.service.js");
 const consent_service_js_1 = require("../../services/consent.service.js");
 const consent_constants_js_1 = require("../../constants/consent.constants.js");
+const gated_resource_service_js_1 = require("../../services/gated-resource.service.js");
 const router = (0, express_1.Router)();
 // Register OAuth sub-router
 router.use('/oauth', oauth_js_1.oauthRouter);
@@ -127,6 +128,13 @@ router.post('/register', rateLimit_middleware_js_1.registerRateLimiter, (0, vali
         }
         // CRM: Recalculate lead score on registration
         (0, lead_scoring_service_js_1.recalculateScore)(user.id).catch(err => console.error('CRM score recalc failed:', err));
+        // Link any prior anonymous gated-resource leads to the new user
+        (0, gated_resource_service_js_1.linkLeadsToUser)(user.email, user.id)
+            .then((n) => {
+            if (n > 0)
+                console.log(`Linked ${n} gated-resource lead(s) to new user ${user.id}`);
+        })
+            .catch((err) => console.error('Lead linking failed:', err));
         // Handle early access claim if flag set
         let earlyAccess = false;
         if (input.earlyAccess) {
