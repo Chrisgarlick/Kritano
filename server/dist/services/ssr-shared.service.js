@@ -134,6 +134,7 @@ const NAV_LINKS = [
     { href: '/compare', label: 'Compare' },
     { href: '/about', label: 'About' },
     { href: '/blog', label: 'Blog' },
+    { href: '/resources', label: 'Resources' },
     { href: '/contact', label: 'Contact' },
     { href: '/docs', label: 'API Docs' },
 ];
@@ -245,6 +246,7 @@ function renderFooter() {
         <div>
           <h2 class="font-semibold text-sm text-slate-900 mb-3">Resources</h2>
           <ul class="space-y-1 text-sm text-slate-600">
+            <li><a href="/resources" class="ssr-touch-block hover:text-slate-900">Free library</a></li>
             <li><a href="/faq" class="ssr-touch-block hover:text-slate-900">FAQ</a></li>
             <li><a href="/author/chris-garlick" class="ssr-touch-block hover:text-slate-900">Author</a></li>
           </ul>
