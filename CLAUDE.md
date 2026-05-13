@@ -21,6 +21,30 @@ Security is a must. This app needs to be as secure as possible - we don't want u
 ## Audit Issues
 Please always use the unique amount of issues rather than the total issues.
 
+## Free Resources Library — Cross-linking from blog content
+
+Kritano publishes a free, email-gated resource library at `/resources`. Every published blog post in a supported category already gets an automatic end-of-post anchor card pointing at the most relevant resource (this is wired in `blog-ssr.service.ts`, no action needed).
+
+**Additionally**, whenever a blog post is written by the `/blog` skill, the `/trend` skill, or any other content-generation flow, the author should look for natural in-body opportunities to reference a relevant resource. Mid-post references convert better than end-of-post cards and reinforce internal linking for SEO and AEO.
+
+### Current published resources
+
+| Slug | Topic | When to reference |
+|---|---|---|
+| `website-health-checklist` | 85-check pre-launch audit across all 6 pillars | Any post about site quality, multi-pillar audits, launch readiness, or "what should I check" |
+| `website-launch-checklist` | 65-check launch timeline (T-7 to T+7) | Any post about launching, migrations, DNS, pre/post-launch process |
+| `eaa-compliance-guide` | European Accessibility Act / EN 301 549 deep dive | Any post about EAA, accessibility law, EU compliance, accessibility statements |
+| `wcag-quick-reference-card` | 20 most-common WCAG 2.2 failures with fixes | Any post about WCAG, screen readers, keyboard navigation, contrast, ARIA, accessibility fixes |
+| `aeo-optimisation-guide` | How to get cited by ChatGPT/Claude/Perplexity/Gemini | Any post about AEO, AI search, citation, LLM crawlers, content frontloading |
+
+### Rules
+
+1. **Only reference a resource if it genuinely adds value at that point in the post.** Forced links read as spammy and devalue both the post and the resource.
+2. **Reference URL is always** `/resources/<slug>` (relative, no domain) — works in dev, staging, and prod identically.
+3. **Phrase it as a useful tip, not a CTA**: prefer "We've packaged the 20 most-common WCAG failures and their fixes into a one-page reference card (`/resources/wcag-quick-reference-card`)" over "Download our free WCAG checklist!"
+4. **At most one resource link per blog post body**, ideally placed after a relevant H2 where a reader who just read that section would benefit. The auto-injected end-of-post anchor card handles the redundant top-of-funnel CTA.
+5. **Skip the cross-link entirely if no resource is a strong match** for the post's topic. The end-of-post anchor still appears via category mapping; the body stays clean.
+
 ## Database Migrations
 
 Migration files live in `server/src/db/migrations/`. The runner (`server/src/db/migrate.ts`) automatically wraps each migration in a transaction. If a migration uses `CREATE INDEX CONCURRENTLY` (or any other `CONCURRENTLY` operation), it **must not** be wrapped in `BEGIN`/`COMMIT` — the runner detects `CONCURRENTLY` and skips the transaction automatically. Never add explicit `BEGIN`/`COMMIT` to migration files that use `CONCURRENTLY`.

@@ -189,11 +189,30 @@ export function renderResourceDetail(opts: RenderDetailOpts): string {
     ? renderLoggedInChooser(resource, typesetReady)
     : renderGateForm(resource, typesetReady);
 
-  const learningResourceJsonLd = {
+  // pg returns timestamptz as Date despite the declared `string` type. Coerce
+  // and normalise to ISO 8601 before any downstream use.
+  const updatedIso = new Date(resource.updated_at as unknown as string | Date).toISOString();
+
+  // SEO scaffolding with graceful fallbacks. Hand-curated seo_title /
+  // seo_description / focus_keyword take precedence; otherwise we synthesise.
+  const pageTitle =
+    resource.seo_title?.trim() || `${resource.title} | Kritano`;
+  const pageDescription =
+    resource.seo_description?.trim() || resource.hook;
+  const keywordsList = [
+    resource.focus_keyword,
+    ...(resource.secondary_keywords ?? []),
+    ...(resource.tags ?? []),
+  ]
+    .filter((k): k is string => Boolean(k && k.trim().length > 0))
+    .map((k) => k.trim());
+  const keywordsContent = keywordsList.join(', ');
+
+  const learningResourceJsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'LearningResource',
     name: resource.title,
-    description: resource.hook,
+    description: pageDescription,
     url: `${BASE_URL}/resources/${resource.slug}`,
     learningResourceType: 'Reference',
     educationalLevel: 'Professional',
@@ -204,8 +223,17 @@ export function renderResourceDetail(opts: RenderDetailOpts): string {
       url: BASE_URL,
     },
     about: categoryLabel(resource.category),
-    dateModified: resource.updated_at,
+    dateModified: updatedIso,
   };
+  if (keywordsList.length > 0) {
+    learningResourceJsonLd.keywords = keywordsContent;
+  }
+  if (resource.audience) {
+    learningResourceJsonLd.audience = {
+      '@type': 'Audience',
+      audienceType: resource.audience,
+    };
+  }
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -226,9 +254,23 @@ export function renderResourceDetail(opts: RenderDetailOpts): string {
     ],
   };
 
+  const keywordsMeta = keywordsContent
+    ? `\n  <meta name="keywords" content="${escapeHtml(keywordsContent)}" />`
+    : '';
+  const articleTagsMeta = (resource.tags ?? [])
+    .filter((t) => t && t.trim().length > 0)
+    .map((t) => `\n  <meta property="article:tag" content="${escapeHtml(t)}" />`)
+    .join('');
+  const articleSection = `\n  <meta property="article:section" content="${escapeHtml(categoryLabel(resource.category))}" />`;
+  const articleModified = `\n  <meta property="article:modified_time" content="${escapeHtml(updatedIso)}" />`;
+
   const extraHead =
     `<script type="application/ld+json">${JSON.stringify(learningResourceJsonLd)}</script>\n  ` +
-    `<script type="application/ld+json">${JSON.stringify(breadcrumbJsonLd)}</script>`;
+    `<script type="application/ld+json">${JSON.stringify(breadcrumbJsonLd)}</script>` +
+    keywordsMeta +
+    articleSection +
+    articleModified +
+    articleTagsMeta;
 
   const body = `<main id="main-content">
     <article class="max-w-6xl mx-auto px-6 lg:px-12 py-12 lg:py-16">
@@ -262,8 +304,8 @@ export function renderResourceDetail(opts: RenderDetailOpts): string {
   </main>`;
 
   return htmlShell({
-    title: `${resource.title} | Free Resource | Kritano`,
-    description: resource.hook,
+    title: pageTitle,
+    description: pageDescription,
     canonicalUrl: `${BASE_URL}/resources/${resource.slug}`,
     ogImage: `${BASE_URL}/og-image.png`,
     ogType: 'article',

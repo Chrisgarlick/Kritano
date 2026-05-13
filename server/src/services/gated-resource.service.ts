@@ -376,6 +376,11 @@ export interface AdminUpdateInput {
   formats?: ResourceFormat[];
   page_count?: number | null;
   published?: boolean;
+  focus_keyword?: string | null;
+  secondary_keywords?: string[];
+  seo_title?: string | null;
+  seo_description?: string | null;
+  tags?: string[];
 }
 
 export async function adminUpdateResource(
@@ -415,6 +420,11 @@ export interface AdminCreateInput {
   source_md_path: string;
   formats?: ResourceFormat[];
   page_count?: number | null;
+  focus_keyword?: string | null;
+  secondary_keywords?: string[];
+  seo_title?: string | null;
+  seo_description?: string | null;
+  tags?: string[];
 }
 
 export async function adminCreateResource(
@@ -426,9 +436,11 @@ export async function adminCreateResource(
   const result = await pool.query<GatedResource>(
     `INSERT INTO gated_resources (
         slug, title, subtitle, hook, category, audience, description,
-        preview_md, source_md_path, formats, content_hash, page_count, published
+        preview_md, source_md_path, formats, content_hash, page_count, published,
+        focus_keyword, secondary_keywords, seo_title, seo_description, tags
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, false)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, false,
+              $13, $14, $15, $16, $17)
       RETURNING *`,
     [
       input.slug,
@@ -443,6 +455,11 @@ export async function adminCreateResource(
       input.formats ?? ['md', 'pdf'],
       hash,
       input.page_count ?? null,
+      input.focus_keyword ?? null,
+      input.secondary_keywords ?? [],
+      input.seo_title ?? null,
+      input.seo_description ?? null,
+      input.tags ?? [],
     ]
   );
   return result.rows[0];

@@ -2868,6 +2868,11 @@ export interface AdminGatedResource {
   page_count: number | null;
   published: boolean;
   download_count: number;
+  focus_keyword: string | null;
+  secondary_keywords: string[];
+  seo_title: string | null;
+  seo_description: string | null;
+  tags: string[];
   created_at: string;
   updated_at: string;
 }

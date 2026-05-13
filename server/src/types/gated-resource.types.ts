@@ -27,6 +27,12 @@ export interface GatedResource {
   page_count: number | null;
   published: boolean;
   download_count: number;
+  /** SEO scaffolding — mirrors blog_posts. All nullable; SSR falls back gracefully. */
+  focus_keyword: string | null;
+  secondary_keywords: string[];
+  seo_title: string | null;
+  seo_description: string | null;
+  tags: string[];
   created_at: string;
   updated_at: string;
 }

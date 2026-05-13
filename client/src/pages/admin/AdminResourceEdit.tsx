@@ -37,7 +37,22 @@ const NEW_RESOURCE: Partial<AdminGatedResource> = {
   source_md_path: '',
   formats: ['md', 'pdf'],
   page_count: null,
+  focus_keyword: null,
+  secondary_keywords: [],
+  seo_title: null,
+  seo_description: null,
+  tags: [],
 };
+
+function arrayToText(arr: string[] | undefined): string {
+  return (arr ?? []).join(', ');
+}
+function textToArray(s: string): string[] {
+  return s
+    .split(',')
+    .map((x) => x.trim())
+    .filter((x) => x.length > 0);
+}
 
 export default function AdminResourceEdit(): JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -320,6 +335,63 @@ export default function AdminResourceEdit(): JSX.Element {
             <p className="text-xs text-slate-500 mt-3">
               MD is always served natively. PDF and DOCX route through typeset.chrisgarlick.com. HTML is reserved for when typeset adds support.
             </p>
+          </FormSection>
+
+          <FormSection title="SEO">
+            <FormField label="SEO title" hint="Used as the <title> tag. Aim for under 60 chars. Falls back to the display title if blank.">
+              <input
+                type="text"
+                value={resource.seo_title || ''}
+                maxLength={200}
+                onChange={(e) => update('seo_title', e.target.value || null)}
+                placeholder="e.g. Website Health Checklist (85 Free Checks) | Kritano"
+                className="w-full px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.06] text-white text-sm focus:outline-none focus:border-indigo-500/40"
+              />
+              <span className="block text-xs mt-1 tabular-nums" style={{ color: (resource.seo_title?.length ?? 0) > 60 ? '#fb923c' : '#475569' }}>
+                {(resource.seo_title?.length ?? 0)}/60 chars (Google truncates around 60)
+              </span>
+            </FormField>
+            <FormField label="Meta description" hint="Aim for 120-160 chars. Falls back to hook if blank.">
+              <textarea
+                rows={3}
+                value={resource.seo_description || ''}
+                maxLength={400}
+                onChange={(e) => update('seo_description', e.target.value || null)}
+                placeholder="Benefit-led, conversational, includes the focus keyword."
+                className="w-full px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.06] text-white text-sm focus:outline-none focus:border-indigo-500/40 resize-y"
+              />
+              <span className="block text-xs mt-1 tabular-nums" style={{ color: ((resource.seo_description?.length ?? 0) > 160 || ((resource.seo_description?.length ?? 0) > 0 && (resource.seo_description?.length ?? 0) < 120)) ? '#fb923c' : '#475569' }}>
+                {(resource.seo_description?.length ?? 0)}/160 chars (sweet spot 120-160)
+              </span>
+            </FormField>
+            <FormField label="Focus keyword" hint="The single primary keyword this page should rank for.">
+              <input
+                type="text"
+                value={resource.focus_keyword || ''}
+                maxLength={100}
+                onChange={(e) => update('focus_keyword', e.target.value || null)}
+                placeholder="e.g. website health checklist"
+                className="w-full px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.06] text-white text-sm focus:outline-none focus:border-indigo-500/40"
+              />
+            </FormField>
+            <FormField label="Secondary keywords" hint="Comma-separated. Up to 6 recommended.">
+              <input
+                type="text"
+                value={arrayToText(resource.secondary_keywords)}
+                onChange={(e) => update('secondary_keywords', textToArray(e.target.value))}
+                placeholder="e.g. website audit, pre-launch checks, 6-pillar audit"
+                className="w-full px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.06] text-white text-sm focus:outline-none focus:border-indigo-500/40"
+              />
+            </FormField>
+            <FormField label="Tags" hint="Comma-separated. Used for <article:tag> meta and admin filtering.">
+              <input
+                type="text"
+                value={arrayToText(resource.tags)}
+                onChange={(e) => update('tags', textToArray(e.target.value))}
+                placeholder="e.g. accessibility, wcag, compliance"
+                className="w-full px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.06] text-white text-sm focus:outline-none focus:border-indigo-500/40"
+              />
+            </FormField>
           </FormSection>
         </div>
 

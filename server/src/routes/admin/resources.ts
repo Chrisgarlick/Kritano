@@ -44,6 +44,14 @@ const CATEGORY_ENUM = [
   'product-updates',
 ] as const;
 
+const seoFields = {
+  focus_keyword: z.string().max(100).nullable().optional(),
+  secondary_keywords: z.array(z.string().max(100)).max(20).optional(),
+  seo_title: z.string().max(200).nullable().optional(),
+  seo_description: z.string().max(400).nullable().optional(),
+  tags: z.array(z.string().max(50)).max(20).optional(),
+};
+
 const createSchema = z.object({
   slug: z
     .string()
@@ -60,6 +68,7 @@ const createSchema = z.object({
   source_md_path: z.string().min(1).max(400),
   formats: z.array(z.enum(FORMATS_ENUM)).min(1).optional(),
   page_count: z.number().int().positive().nullable().optional(),
+  ...seoFields,
 });
 
 const updateSchema = z.object({
@@ -74,6 +83,7 @@ const updateSchema = z.object({
   formats: z.array(z.enum(FORMATS_ENUM)).min(1).optional(),
   page_count: z.number().int().positive().nullable().optional(),
   published: z.boolean().optional(),
+  ...seoFields,
 });
 
 // ── List + create ───────────────────────────────────────────────────
