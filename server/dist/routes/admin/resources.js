@@ -34,6 +34,13 @@ const CATEGORY_ENUM = [
     'case-studies',
     'product-updates',
 ];
+const seoFields = {
+    focus_keyword: zod_1.z.string().max(100).nullable().optional(),
+    secondary_keywords: zod_1.z.array(zod_1.z.string().max(100)).max(20).optional(),
+    seo_title: zod_1.z.string().max(200).nullable().optional(),
+    seo_description: zod_1.z.string().max(400).nullable().optional(),
+    tags: zod_1.z.array(zod_1.z.string().max(50)).max(20).optional(),
+};
 const createSchema = zod_1.z.object({
     slug: zod_1.z
         .string()
@@ -50,6 +57,7 @@ const createSchema = zod_1.z.object({
     source_md_path: zod_1.z.string().min(1).max(400),
     formats: zod_1.z.array(zod_1.z.enum(FORMATS_ENUM)).min(1).optional(),
     page_count: zod_1.z.number().int().positive().nullable().optional(),
+    ...seoFields,
 });
 const updateSchema = zod_1.z.object({
     title: zod_1.z.string().min(1).max(200).optional(),
@@ -63,6 +71,7 @@ const updateSchema = zod_1.z.object({
     formats: zod_1.z.array(zod_1.z.enum(FORMATS_ENUM)).min(1).optional(),
     page_count: zod_1.z.number().int().positive().nullable().optional(),
     published: zod_1.z.boolean().optional(),
+    ...seoFields,
 });
 // ── List + create ───────────────────────────────────────────────────
 router.get('/', async (_req, res) => {

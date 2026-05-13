@@ -254,9 +254,11 @@ async function adminCreateResource(input) {
     const hash = await computeContentHashFromPath(input.source_md_path).catch(() => 'pending');
     const result = await pool.query(`INSERT INTO gated_resources (
         slug, title, subtitle, hook, category, audience, description,
-        preview_md, source_md_path, formats, content_hash, page_count, published
+        preview_md, source_md_path, formats, content_hash, page_count, published,
+        focus_keyword, secondary_keywords, seo_title, seo_description, tags
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, false)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, false,
+              $13, $14, $15, $16, $17)
       RETURNING *`, [
         input.slug,
         input.title,
@@ -270,6 +272,11 @@ async function adminCreateResource(input) {
         input.formats ?? ['md', 'pdf'],
         hash,
         input.page_count ?? null,
+        input.focus_keyword ?? null,
+        input.secondary_keywords ?? [],
+        input.seo_title ?? null,
+        input.seo_description ?? null,
+        input.tags ?? [],
     ]);
     return result.rows[0];
 }

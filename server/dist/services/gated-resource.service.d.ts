@@ -108,6 +108,11 @@ export interface AdminUpdateInput {
     formats?: ResourceFormat[];
     page_count?: number | null;
     published?: boolean;
+    focus_keyword?: string | null;
+    secondary_keywords?: string[];
+    seo_title?: string | null;
+    seo_description?: string | null;
+    tags?: string[];
 }
 export declare function adminUpdateResource(id: string, patch: AdminUpdateInput): Promise<GatedResource | null>;
 export interface AdminCreateInput {
@@ -122,6 +127,11 @@ export interface AdminCreateInput {
     source_md_path: string;
     formats?: ResourceFormat[];
     page_count?: number | null;
+    focus_keyword?: string | null;
+    secondary_keywords?: string[];
+    seo_title?: string | null;
+    seo_description?: string | null;
+    tags?: string[];
 }
 export declare function adminCreateResource(input: AdminCreateInput): Promise<GatedResource>;
 export declare function getResourceById(id: string): Promise<GatedResource | null>;
