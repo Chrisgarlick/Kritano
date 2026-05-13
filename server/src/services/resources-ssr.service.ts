@@ -101,7 +101,7 @@ function renderResourceCard(r: ResourceSummary): string {
         Get it free
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
       </span>
-      ${r.page_count ? `<span class="text-xs text-slate-500">${r.page_count} pages</span>` : ''}
+      ${r.page_count ? `<span class="text-xs text-slate-600">${r.page_count} pages</span>` : ''}
     </div>
   </a>`;
 }
@@ -283,7 +283,7 @@ export function renderResourceDetail(opts: RenderDetailOpts): string {
         <h1 class="font-display text-4xl lg:text-5xl text-slate-900 leading-tight mb-4">${escapeHtml(resource.title)}</h1>
         ${resource.subtitle ? `<p class="text-xl text-slate-600 leading-relaxed mb-2">${escapeHtml(resource.subtitle)}</p>` : ''}
         <p class="text-lg text-slate-700 leading-relaxed">${escapeHtml(resource.hook)}</p>
-        ${resource.audience ? `<p class="mt-3 text-sm text-slate-500"><span class="font-semibold text-slate-700">For:</span> ${escapeHtml(resource.audience)}</p>` : ''}
+        ${resource.audience ? `<p class="mt-3 text-sm text-slate-600"><span class="font-semibold text-slate-700">For:</span> ${escapeHtml(resource.audience)}</p>` : ''}
       </header>
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
         <div class="lg:col-span-3">
@@ -350,7 +350,10 @@ function renderGateForm(resource: GatedResource, typesetReady: boolean): string 
     </ul>
     ${pendingHtml}
     <form method="POST" action="/resources/${escapeHtml(resource.slug)}/request" class="space-y-4 mt-5" novalidate>
-      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="sr-only" />
+      <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+        <label for="gate-hp-website-${escapeHtml(resource.slug)}">Leave this field empty</label>
+        <input type="text" id="gate-hp-website-${escapeHtml(resource.slug)}" name="website" tabindex="-1" autocomplete="off" />
+      </div>
       <div>
         <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Work email</label>
         <input
@@ -373,12 +376,12 @@ function renderGateForm(resource: GatedResource, typesetReady: boolean): string 
       >
         Get the download link
       </button>
-      <p class="text-xs text-slate-500 leading-relaxed">
+      <p class="text-xs text-slate-600 leading-relaxed">
         We use your email only to deliver this resource and, if you opt in, our newsletter.
         <a href="/privacy" class="underline hover:text-slate-700">Read our privacy policy</a>.
       </p>
     </form>
-    <p class="mt-5 pt-5 border-t border-slate-100 text-xs text-slate-500 text-center">
+    <p class="mt-5 pt-5 border-t border-slate-100 text-xs text-slate-600 text-center">
       Already have a Kritano account? <a href="/login?next=/resources/${escapeHtml(resource.slug)}" class="text-indigo-600 hover:text-indigo-700 font-medium">Sign in</a> to skip this step.
     </p>
   </div>`;
@@ -397,15 +400,15 @@ function renderLoggedInChooser(
         return `<a href="/api/resources/${escapeHtml(resource.slug)}/download/${escapeHtml(f)}" class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-lg hover:border-indigo-300 hover:shadow-sm transition-all group">
           <div>
             <p class="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">${escapeHtml(FORMAT_LABELS[f])}</p>
-            <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(FORMAT_DESCRIPTIONS[f])}</p>
+            <p class="text-xs text-slate-600 mt-0.5">${escapeHtml(FORMAT_DESCRIPTIONS[f])}</p>
           </div>
           <svg class="w-5 h-5 text-indigo-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0l-4 4m4-4v12" /></svg>
         </a>`;
       }
       return `<div class="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-lg">
           <div>
-            <p class="font-semibold text-slate-500">${escapeHtml(FORMAT_LABELS[f])}</p>
-            <p class="text-xs text-slate-500 mt-0.5">Preparing. We'll email you when it's ready.</p>
+            <p class="font-semibold text-slate-600">${escapeHtml(FORMAT_LABELS[f])}</p>
+            <p class="text-xs text-slate-600 mt-0.5">Preparing. We'll email you when it's ready.</p>
           </div>
           <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>`;
@@ -449,8 +452,8 @@ export function renderResourceThanks(opts: RenderThanksOpts): string {
       }
       return `<div class="flex items-center justify-between p-5 bg-slate-50 border-2 border-slate-200 rounded-lg">
           <div>
-            <p class="font-display text-xl text-slate-500">${escapeHtml(FORMAT_LABELS[f])}</p>
-            <p class="text-sm text-slate-500 mt-1">Preparing. We'll email you when it's ready.</p>
+            <p class="font-display text-xl text-slate-600">${escapeHtml(FORMAT_LABELS[f])}</p>
+            <p class="text-sm text-slate-600 mt-1">Preparing. We'll email you when it's ready.</p>
           </div>
           <svg class="w-6 h-6 text-amber-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>`;

@@ -166,7 +166,7 @@ function renderNav(activePath) {
         return `<a href="${link.href}" class="block py-3 text-base font-medium ${isActive ? 'text-indigo-600' : 'text-slate-600 hover:text-slate-900'} transition-colors"${isActive ? ' aria-current="page"' : ''}>${link.label}</a>`;
     }).join('\n        ');
     return `<header role="banner" class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
-    <input type="checkbox" id="ssr-mobile-toggle" class="ssr-mobile-checkbox" />
+    <input type="checkbox" id="ssr-mobile-toggle" class="ssr-mobile-checkbox" aria-label="Toggle mobile menu" tabindex="-1" />
     <nav aria-label="Main navigation" class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2" aria-label="Kritano home">
         <img src="/brand/favicon-32.svg" alt="" width="28" height="28" role="presentation" />
