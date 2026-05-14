@@ -6,7 +6,7 @@
  * JavaScript execution or Puppeteer pre-rendering.
  */
 
-import { marked } from 'marked';
+import { Marked } from 'marked';
 import type { BlogPost, PostSummary, ContentBlock } from '../types/blog.types.js';
 import type { GatedResource } from '../types/gated-resource.types.js';
 import {
@@ -67,8 +67,30 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
+function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/<[^>]+>/g, '')
+    .replace(/&[a-z]+;/gi, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+const blogMarked = new Marked({
+  renderer: {
+    heading({ tokens, depth }) {
+      const text = this.parser.parseInline(tokens);
+      const id = slugifyHeading(text);
+      return `<h${depth} id="${id}">${text}</h${depth}>\n`;
+    },
+  },
+});
+
 function renderMarkdown(md: string): string {
-  return marked.parse(md, { async: false }) as string;
+  return blogMarked.parse(md, { async: false }) as string;
 }
 
 function formatDate(dateStr: string): string {
@@ -115,12 +137,14 @@ function renderBlock(block: ContentBlock): string {
     }
 
     case 'heading': {
-      const text = escapeHtml((props.text as string) || '');
+      const raw = (props.text as string) || '';
+      const text = escapeHtml(raw);
       const level = (props.level as number) || 2;
-      const classes = 'font-sans font-semibold text-slate-900';
-      if (level === 2) return `<h2 class="${classes} text-2xl mt-10 mb-4">${text}</h2>`;
-      if (level === 3) return `<h3 class="${classes} text-xl mt-8 mb-3">${text}</h3>`;
-      return `<h4 class="${classes} text-lg mt-6 mb-2">${text}</h4>`;
+      const id = slugifyHeading(raw);
+      const classes = 'font-sans font-semibold text-slate-900 scroll-mt-24';
+      if (level === 2) return `<h2 id="${id}" class="${classes} text-2xl mt-10 mb-4">${text}</h2>`;
+      if (level === 3) return `<h3 id="${id}" class="${classes} text-xl mt-8 mb-3">${text}</h3>`;
+      return `<h4 id="${id}" class="${classes} text-lg mt-6 mb-2">${text}</h4>`;
     }
 
     case 'image': {
