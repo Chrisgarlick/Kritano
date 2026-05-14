@@ -193,7 +193,7 @@ const seoTemplates = {
         fallbackTemplate: '<title>Your Page Title — Your Brand</title>',
         explanation: 'Add a unique, descriptive title tag inside <head>. Aim for 50-60 characters — this is the headline people see in search results.',
         effort: 'small',
-        learnMoreUrl: '/blog/website-launch-checklist-25-things',
+        learnMoreUrl: '/blog/website-launch-checklist-25-things-to-check-before-going-live',
     },
     'missing-meta-description': {
         ruleId: 'missing-meta-description',
@@ -204,7 +204,7 @@ const seoTemplates = {
         fallbackTemplate: '<meta name="description" content="A concise summary of this page in 150-160 characters that encourages people to click through from search results.">',
         explanation: 'Add a meta description tag inside <head>. Keep it between 150-160 characters — it acts as an advert for your page in search results.',
         effort: 'small',
-        learnMoreUrl: '/blog/website-launch-checklist-25-things',
+        learnMoreUrl: '/blog/website-launch-checklist-25-things-to-check-before-going-live',
     },
     'duplicate-title': {
         ruleId: 'duplicate-title',
@@ -215,7 +215,7 @@ const seoTemplates = {
         fallbackTemplate: '<!-- Each page needs a unique title -->\n<title>About Us — Your Brand</title>\n<!-- not the same as -->\n<title>Home — Your Brand</title>',
         explanation: 'Multiple pages share the same title tag. Give each page a unique title that accurately describes its content so search engines can tell them apart.',
         effort: 'medium',
-        learnMoreUrl: '/blog/website-launch-checklist-25-things',
+        learnMoreUrl: '/blog/website-launch-checklist-25-things-to-check-before-going-live',
     },
     'missing-canonical': {
         ruleId: 'missing-canonical',
@@ -347,7 +347,7 @@ const seoTemplates = {
         fallbackTemplate: '<meta name="viewport" content="width=device-width, initial-scale=1">',
         explanation: 'Add a viewport meta tag so the page scales correctly on mobile devices. Without it, mobile users see a tiny desktop layout.',
         effort: 'small',
-        learnMoreUrl: '/blog/website-launch-checklist-25-things',
+        learnMoreUrl: '/blog/website-launch-checklist-25-things-to-check-before-going-live',
     },
 };
 // ---------------------------------------------------------------------------

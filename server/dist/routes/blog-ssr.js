@@ -18,6 +18,14 @@ exports.blogSsrRouter = router;
 // GET /blog - Blog listing page
 router.get('/', async (req, res) => {
     try {
+        // Canonicalise ?page=1 → bare URL to avoid duplicate-content listings.
+        if (req.query.page === '1') {
+            const params = new URLSearchParams(req.query);
+            params.delete('page');
+            const qs = params.toString();
+            res.redirect(301, `/blog${qs ? `?${qs}` : ''}`);
+            return;
+        }
         const page = parseInt(req.query.page) || 1;
         const limit = 9;
         const category = req.query.category;

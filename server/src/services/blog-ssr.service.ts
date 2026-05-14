@@ -618,16 +618,24 @@ export function renderBlogPost(post: BlogPost, anchorResource?: GatedResource | 
  * Render the blog listing page as a complete HTML page.
  */
 export function renderBlogListing(posts: PostSummary[], total: number, page: number, totalPages: number, category?: string, tag?: string): string {
-  let title = 'Blog';
-  let description = 'Insights on SEO, accessibility, security, and web performance from the Kritano team.';
+  let title = 'Blog — SEO, Accessibility, Security & Performance Insights';
+  let description = 'Expert insights and practical guides on SEO, accessibility (WCAG 2.2), web security, Core Web Vitals, and content quality from the Kritano team.';
+  let intro = 'In-depth articles on website auditing, ranking factors, accessibility compliance, security headers, and the performance metrics that drive search visibility. Updated weekly.';
 
   if (category) {
-    title = `${CATEGORY_LABELS[category] || category} - Blog`;
-    description = `${CATEGORY_LABELS[category] || category} articles from the Kritano blog.`;
+    const label = CATEGORY_LABELS[category] || category;
+    title = `${label} Articles — Guides, Audits & Best Practices`;
+    description = `Read our ${label} articles. Practical guides, expert analysis, and actionable tips on ${label.toLowerCase()} from the Kritano auditing platform.`;
+    intro = `Everything we publish about ${label.toLowerCase()}: ranking factors, real-world audit findings, fix-by-fix walkthroughs, and the standards that matter in 2026.`;
   }
   if (tag) {
-    title = `#${tag} - Blog`;
-    description = `Articles tagged with "${tag}" from the Kritano blog.`;
+    const tagDisplay = tag.replace(/[-+]/g, ' ');
+    title = `Articles Tagged "${tagDisplay}" — Insights & How-Tos | Kritano`;
+    description = `Browse articles tagged ${tagDisplay}. Expert insights on web auditing, WCAG compliance, Core Web Vitals, and site optimisation from the Kritano team.`;
+    intro = `Every article on the Kritano blog tagged ${tagDisplay}. Practical guides, audit findings, and fix walkthroughs covering this topic in depth.`;
+  }
+  if (page > 1) {
+    title = `${title} — Page ${page}`;
   }
 
   const canonicalPath = category ? `/blog?category=${encodeURIComponent(category)}` : tag ? `/blog?tag=${encodeURIComponent(tag)}` : '/blog';
@@ -708,10 +716,22 @@ export function renderBlogListing(posts: PostSummary[], total: number, page: num
     paginationHtml = `<nav class="mt-12 flex items-center justify-center gap-4" aria-label="Pagination">${links.join('\n')}</nav>`;
   }
 
+  const headerLabel = tag
+    ? `Tag: ${tag.replace(/[-+]/g, ' ')}`
+    : category
+    ? `${CATEGORY_LABELS[category] || category}`
+    : 'Kritano Blog';
+  const resultCountLine = total > 0
+    ? `<p class="text-sm text-slate-500 mt-4">Showing ${posts.length} of ${total} ${total === 1 ? 'article' : 'articles'}${page > 1 ? ` — page ${page} of ${totalPages}` : ''}.</p>`
+    : '';
+
   const body = `<main id="main-content" class="max-w-7xl mx-auto px-6 py-12 lg:py-20">
-    <header class="mb-10">
+    <header class="mb-10 max-w-3xl">
+      <p class="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">${escapeHtml(headerLabel)}</p>
       <h1 class="font-display text-4xl text-slate-900 mb-3">${escapeHtml(title)}</h1>
-      <p class="text-lg text-slate-600">${escapeHtml(description)}</p>
+      <p class="text-lg text-slate-600 mb-3">${escapeHtml(description)}</p>
+      <p class="text-base text-slate-600">${escapeHtml(intro)}</p>
+      ${resultCountLine}
     </header>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       ${postsHtml}
@@ -719,8 +739,9 @@ export function renderBlogListing(posts: PostSummary[], total: number, page: num
     ${paginationHtml}
   </main>`;
 
+  const shellTitle = title.includes('Kritano') ? title : `${title} | Kritano`;
   return htmlShell({
-    title: `${title} | Kritano`,
+    title: shellTitle,
     description,
     canonicalUrl,
     ogImage: `${BASE_URL}/brand/og-blog.png`,

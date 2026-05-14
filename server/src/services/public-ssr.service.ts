@@ -242,7 +242,7 @@ export function renderHomepage(): string {
           </p>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
           <a href="/services/seo" class="bg-white border-t-[3px] border-t-violet-400 border border-slate-200 rounded-xl p-5 hover:shadow-md transition-all block">
             <div class="w-10 h-10 rounded-lg text-violet-600 bg-violet-50 flex items-center justify-center mb-3">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
@@ -270,6 +270,13 @@ export function renderHomepage(): string {
             </div>
             <h3 class="text-sm font-semibold text-slate-900 mb-1">Performance</h3>
             <p class="text-slate-600 text-xs leading-relaxed">Page speed, resource optimisation, caching, LCP/INP/CLS.</p>
+          </a>
+          <a href="/services/content-quality" class="bg-white border-t-[3px] border-t-amber-400 border border-slate-200 rounded-xl p-5 hover:shadow-md transition-all block">
+            <div class="w-10 h-10 rounded-lg text-amber-700 bg-amber-50 flex items-center justify-center mb-3">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            </div>
+            <h3 class="text-sm font-semibold text-slate-900 mb-1">Content Quality</h3>
+            <p class="text-slate-600 text-xs leading-relaxed">Readability, structure, E-E-A-T signals and AI search citation.</p>
           </a>
         </div>
 
@@ -643,7 +650,7 @@ interface ServiceData {
   title: string;
   subtitle: string;
   heroDescription: string;
-  iconName: 'TrendingUp' | 'Accessibility' | 'Shield' | 'Zap';
+  iconName: 'TrendingUp' | 'Accessibility' | 'Shield' | 'Zap' | 'BookOpen';
   colorScheme: {
     text: string;
     bg: string;
@@ -1037,6 +1044,98 @@ const SERVICES_DATA: Record<string, ServiceData> = {
       'Performance is a direct Google ranking factor via Core Web Vitals.',
     ],
   },
+  'content-quality': {
+    title: 'Content Quality Scoring',
+    subtitle: 'Content that ranks and converts.',
+    heroDescription:
+      'Search engines and readers both reward content that is clear, well-structured, and trustworthy. Kritano scores every page across readability, structure, engagement, and E-E-A-T signals (experience, expertise, authoritativeness, trust). Our content engine reads your page like a Google quality rater would, flagging thin copy, weak headings, missing author signals, and on-page issues that quietly suppress rankings. In our audits, the average site has a Content Quality Score (CQS) of just 63 out of 100 — and a clear list of fixes that move the number quickly.',
+    iconName: 'BookOpen',
+    colorScheme: {
+      text: 'text-amber-700',
+      bg: 'bg-amber-50',
+      border: 'border-amber-100',
+      badgeBg: 'bg-amber-100',
+      badgeText: 'text-amber-700',
+    },
+    seo: {
+      title: 'Content Quality Auditing - Readability, Structure & E-E-A-T',
+      description:
+        'Score your pages on readability, structure, engagement, and E-E-A-T. Kritano flags thin content, weak headings, and missing author signals that hurt rankings.',
+    },
+    ogImage: '/brand/og-service-content-quality.png',
+    featureGroups: [
+      {
+        title: 'Readability & Clarity',
+        items: [
+          'Flesch reading ease and grade level',
+          'Sentence length and complexity analysis',
+          'Passive voice and jargon detection',
+          'Paragraph length and rhythm',
+          'Transition word usage',
+          'Plain English scoring',
+        ],
+      },
+      {
+        title: 'Structure & On-Page',
+        items: [
+          'Heading hierarchy (H1-H6) validation',
+          'Word count and content depth',
+          'Internal linking density',
+          'List and table presence',
+          'Image usage with descriptive alt text',
+          'Above-the-fold content evaluation',
+        ],
+      },
+      {
+        title: 'E-E-A-T & Trust Signals',
+        items: [
+          'Author byline and bio detection',
+          'Last-updated date freshness',
+          'Citation and source linking',
+          'Schema (Article, Author, Organization)',
+          'About-page and contact-page presence',
+          'Original research and data signals',
+        ],
+      },
+    ],
+    methodology: [
+      { step: 1, title: 'Read Every Page', description: 'We parse the visible content of every crawled page and analyse it the way a search quality rater would.' },
+      { step: 2, title: 'Score the Four Pillars', description: 'Readability, structure, engagement, and E-E-A-T each receive a 0-100 sub-score, then combine into a single Content Quality Score.' },
+      { step: 3, title: 'Compare Against Benchmarks', description: 'Your scores are compared to category averages and Google quality rater guidelines so you know exactly where you stand.' },
+      { step: 4, title: 'Prioritise High-Impact Fixes', description: 'Every finding includes a plain-English explanation and a recommended change ranked by ranking impact.' },
+    ],
+    commonIssues: [
+      { title: 'Thin content (under 300 words)', severity: 'critical', description: 'Pages with too little substance struggle to rank. Search engines see them as low-value and often skip them.' },
+      { title: 'No author byline or bio', severity: 'serious', description: 'After the Helpful Content Update, pages without clear author attribution are treated as lower E-E-A-T and demoted for YMYL queries.' },
+      { title: 'Missing or weak heading structure', severity: 'serious', description: 'Pages without a clear H1 → H2 → H3 hierarchy confuse both readers and crawlers, hurting featured-snippet eligibility.' },
+      { title: 'Excessive sentence length', severity: 'moderate', description: 'Sentences over 25 words consistently raise reading grade level and lower comprehension on mobile.' },
+      { title: 'No internal links from the body', severity: 'moderate', description: 'Body-text links signal topical authority and pass PageRank. Pages without them are weaker ranking targets.' },
+      { title: 'Missing last-updated date', severity: 'minor', description: 'Freshness signals — visible dates and updated schema — measurably influence rankings on time-sensitive queries.' },
+    ],
+    businessImpact: {
+      headline: 'Why content quality matters for your business',
+      description: 'High-quality content ranks higher, converts better, and is far more likely to get cited by AI search engines like ChatGPT, Claude, and Perplexity.',
+      stats: [
+        { value: '63', label: 'average Content Quality Score across audited sites — most have a clear ceiling' },
+        { value: '2.3×', label: 'higher CTR on results with clear author bylines and updated dates' },
+        { value: '300+', label: 'minimum word count Google rewards as substantive on most topics' },
+      ],
+    },
+    cta: { headline: 'See your Content Quality Score', description: 'Run a free Kritano audit and find out exactly how your pages score on readability, structure, and E-E-A-T.', buttonText: 'Start Content Audit' },
+    relatedSlugs: ['seo', 'accessibility', 'performance'],
+    definition: 'A content quality audit evaluates web pages against the principles search engines use to rank content — readability, structural clarity, engagement, and E-E-A-T (experience, expertise, authoritativeness, trustworthiness) — and assigns a Content Quality Score along with specific, prioritised improvements.',
+    faqs: [
+      { question: 'What is a Content Quality Score?', answer: 'Kritano\'s Content Quality Score (CQS) is a single 0-100 number that combines readability (Flesch reading ease, sentence length), structure (heading hierarchy, internal links), engagement (visual breaks, lists), and E-E-A-T signals (author, dates, citations). It tells you at a glance how well a page is positioned to rank and convert.' },
+      { question: 'How is this different from SEO auditing?', answer: 'SEO auditing focuses on technical factors and metadata: titles, schema, links, Core Web Vitals. Content quality auditing focuses on the words on the page — whether they are clear, well-structured, and credible. Both matter. Most sites we audit fail on content quality long before they fail on technical SEO.' },
+      { question: 'What is E-E-A-T and why does it matter?', answer: 'E-E-A-T stands for Experience, Expertise, Authoritativeness, and Trustworthiness — the framework Google\'s quality raters use to evaluate content. Since the Helpful Content Update, pages without clear author signals, citations, and freshness markers are demoted in search results, especially for YMYL (your money or your life) topics.' },
+      { question: 'Does content quality affect AI search visibility?', answer: 'Yes — significantly. ChatGPT, Claude, Perplexity, and Gemini all preferentially cite content that is well-structured, factually clear, and includes author and freshness signals. The same fixes that raise CQS also raise the odds of being cited as a source in AI answers.' },
+    ],
+    keyTakeaways: [
+      'Scores every page on readability, structure, engagement, and E-E-A-T signals.',
+      'Most audited sites score 63/100 — and the fixes are usually short and specific.',
+      'The same improvements that lift CQS also improve AI search citation rates.',
+    ],
+  },
 };
 
 // ── SVG Icon Helpers ────────────────────────────────────────────────
@@ -1046,6 +1145,7 @@ const SERVICE_ICON_SVGS: Record<string, string> = {
   Accessibility: '<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
   Shield: '<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>',
   Zap: '<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
+  BookOpen: '<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>',
 };
 
 const SERVICE_ICON_SVGS_SM: Record<string, string> = {
@@ -1053,6 +1153,7 @@ const SERVICE_ICON_SVGS_SM: Record<string, string> = {
   Accessibility: '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
   Shield: '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>',
   Zap: '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
+  BookOpen: '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>',
 };
 
 const SERVICE_ICON_SVGS_LG: Record<string, string> = {
@@ -1060,6 +1161,7 @@ const SERVICE_ICON_SVGS_LG: Record<string, string> = {
   Accessibility: '<svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
   Shield: '<svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>',
   Zap: '<svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
+  BookOpen: '<svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>',
 };
 
 const ACCENT_COLORS: Record<string, string> = {
@@ -1067,12 +1169,14 @@ const ACCENT_COLORS: Record<string, string> = {
   emerald: '#10b981',
   red: '#ef4444',
   sky: '#0ea5e9',
+  amber: '#f59e0b',
 };
 
 function getAccentColor(colorScheme: ServiceData['colorScheme']): string {
   if (colorScheme.text.includes('violet')) return ACCENT_COLORS.violet;
   if (colorScheme.text.includes('emerald')) return ACCENT_COLORS.emerald;
   if (colorScheme.text.includes('red')) return ACCENT_COLORS.red;
+  if (colorScheme.text.includes('amber')) return ACCENT_COLORS.amber;
   return ACCENT_COLORS.sky;
 }
 
@@ -1100,6 +1204,7 @@ const SERVICES_LISTING = [
   { id: 'accessibility', accentColor: 'border-t-emerald-500', iconColor: 'text-emerald-700 bg-emerald-50', stat: 'AA', statLabel: 'WCAG compliance', description: 'Ensure your site is usable by everyone. Checks against WCAG 2.2 Level AA - colour contrast, keyboard nav, screen readers, ARIA, and more.', features: ['Colour contrast validation', 'Alt text & ARIA labels', 'Keyboard navigation', 'Screen reader compatibility', 'Form label & error handling', 'Semantic HTML structure'] },
   { id: 'security', accentColor: 'border-t-red-500', iconColor: 'text-red-700 bg-red-50', stat: '40+', statLabel: 'security checks', description: 'Exposed files, missing headers, mixed content, cookie flags, and common misconfigurations that put your users at risk.', features: ['HTTPS & SSL validation', 'Security headers (CSP, HSTS)', 'Exposed .env & backups', 'Mixed content detection', 'Cookie security flags', 'CORS configuration'] },
   { id: 'performance', accentColor: 'border-t-sky-500', iconColor: 'text-sky-700 bg-sky-50', stat: '3', statLabel: 'Core Web Vitals', description: 'Page speed directly impacts rankings and conversions. We identify exactly what slows your pages down, prioritised by impact.', features: ['LCP, INP & CLS', 'Image optimisation', 'JS & CSS analysis', 'Caching headers', 'Render-blocking resources', 'Third-party script impact'] },
+  { id: 'content-quality', accentColor: 'border-t-amber-500', iconColor: 'text-amber-700 bg-amber-50', stat: 'CQS', statLabel: 'content quality score', description: 'Readability, structure, engagement, and E-E-A-T signals scored on every page — the same factors search engines and AI search use to rank content.', features: ['Readability & grade level', 'Heading hierarchy', 'Word count & depth', 'Author & freshness signals', 'Internal link density', 'E-E-A-T scoring'] },
 ];
 
 const SERVICE_FAQS = [

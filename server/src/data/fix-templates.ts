@@ -259,7 +259,7 @@ const seoTemplates: Record<string, FixTemplate> = {
     explanation:
       'Add a unique, descriptive title tag inside <head>. Aim for 50-60 characters — this is the headline people see in search results.',
     effort: 'small',
-    learnMoreUrl: '/blog/website-launch-checklist-25-things',
+    learnMoreUrl: '/blog/website-launch-checklist-25-things-to-check-before-going-live',
   },
 
   'missing-meta-description': {
@@ -273,7 +273,7 @@ const seoTemplates: Record<string, FixTemplate> = {
     explanation:
       'Add a meta description tag inside <head>. Keep it between 150-160 characters — it acts as an advert for your page in search results.',
     effort: 'small',
-    learnMoreUrl: '/blog/website-launch-checklist-25-things',
+    learnMoreUrl: '/blog/website-launch-checklist-25-things-to-check-before-going-live',
   },
 
   'duplicate-title': {
@@ -287,7 +287,7 @@ const seoTemplates: Record<string, FixTemplate> = {
     explanation:
       'Multiple pages share the same title tag. Give each page a unique title that accurately describes its content so search engines can tell them apart.',
     effort: 'medium',
-    learnMoreUrl: '/blog/website-launch-checklist-25-things',
+    learnMoreUrl: '/blog/website-launch-checklist-25-things-to-check-before-going-live',
   },
 
   'missing-canonical': {
@@ -458,7 +458,7 @@ const seoTemplates: Record<string, FixTemplate> = {
     explanation:
       'Add a viewport meta tag so the page scales correctly on mobile devices. Without it, mobile users see a tiny desktop layout.',
     effort: 'small',
-    learnMoreUrl: '/blog/website-launch-checklist-25-things',
+    learnMoreUrl: '/blog/website-launch-checklist-25-things-to-check-before-going-live',
   },
 };
 

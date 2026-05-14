@@ -157,6 +157,7 @@ app.get('/sitemap.xml', async (_req, res) => {
       { loc: '/services/accessibility', changefreq: 'monthly', priority: '0.7' },
       { loc: '/services/security', changefreq: 'monthly', priority: '0.7' },
       { loc: '/services/performance', changefreq: 'monthly', priority: '0.7' },
+      { loc: '/services/content-quality', changefreq: 'monthly', priority: '0.7' },
       { loc: '/pricing', changefreq: 'monthly', priority: '0.9' },
       { loc: '/faq', changefreq: 'monthly', priority: '0.8' },
       { loc: '/contact', changefreq: 'monthly', priority: '0.5' },
